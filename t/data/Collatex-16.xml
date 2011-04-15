@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+    <key attr.name="number" attr.type="int" for="node" id="d1"/>
+    <key attr.name="token" attr.type="string" for="node" id="d0"/>
+    <key attr.name="identity" attr.type="int" for="node" id="d2"/>
+    <key attr.name="A" attr.type="string" for="edge" id="w0"/>
+    <key attr.name="B" attr.type="string" for="edge" id="w1"/>
+    <key attr.name="C" attr.type="string" for="edge" id="w2"/>
+    <graph edgedefault="directed" id="0">
+        <node id="0">
+            <data key="d0">#</data>
+            <data key="d1">0</data>
+        </node>
+        <node id="1">
+            <data key="d0">when</data>
+            <data key="d1">1</data>
+        </node>
+        <node id="2">
+            <data key="d0">april</data>
+            <data key="d1">2</data>
+	    <data key="d2">9</data>
+        </node>
+	<node id="3">
+	    <data key="d0">with his</data>
+	    <data key="d1">3</data>
+	</node>
+        <node id="8">
+            <data key="d0">showers sweet with</data>
+            <data key="d1">8</data>
+        </node>
+        <node id="9">
+            <data key="d0">april</data>
+            <data key="d1">9</data>
+	    <data key="d2">2</data>
+        </node>
+	<node id="12">
+            <data key="d0">fruit</data>
+            <data key="d1">12</data>
+        </node>
+        <node id="13">
+            <data key="d0">the</data>
+            <data key="d1">13</data>
+        </node>
+        <node id="14">
+            <data key="d0">drought</data>
+            <data key="d1">14</data>
+	    <data key="d2">18</data>
+        </node>
+        <node id="15">
+            <data key="d0">march</data>
+            <data key="d1">15</data>
+	    <data key="d2">17</data>
+        </node>
+        <node id="16">
+            <data key="d0">of</data>
+            <data key="d1">16</data>
+        </node>
+        <node id="17">
+            <data key="d0">march</data>
+            <data key="d1">17</data>
+	    <data key="d2">15</data>
+        </node>
+        <node id="18">
+            <data key="d0">drought</data>
+            <data key="d1">18</data>
+	    <data key="d2">14</data>
+        </node>
+        <node id="19">
+            <data key="d0">has</data>
+            <data key="d1">19</data>
+        </node>
+        <node id="20">
+            <data key="d0">pierced</data>
+            <data key="d1">20</data>
+        </node>
+        <node id="21">
+            <data key="d0">unto</data>
+            <data key="d1">21</data>
+        </node>
+        <node id="22">
+            <data key="d0">to</data>
+            <data key="d1">22</data>
+        </node>
+        <node id="23">
+            <data key="d0">the</data>
+            <data key="d1">23</data>
+        </node>
+        <node id="24">
+            <data key="d0">root</data>
+            <data key="d1">24</data>
+        </node>
+        <node id="26">
+            <data key="d0">rood</data>
+            <data key="d1">26</data>
+        </node>
+        <node id="27">
+            <data key="d0">#</data>
+            <data key="d1">27</data>
+        </node>
+        <edge id="0" source="0" target="1">
+            <data key="w0">A</data>
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="1" source="1" target="2">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="2" source="2" target="3">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="3" source="3" target="8">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="4" source="8" target="12">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="7" source="1" target="8">
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="8" source="8" target="9">
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="9" source="9" target="12">
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="13" source="12" target="13">
+            <data key="w0">A</data>
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="14" source="13" target="14">
+            <data key="w0">A</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="15" source="13" target="15">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="16" source="14" target="16">
+            <data key="w0">A</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="17" source="15" target="16">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="18" source="16" target="17">
+            <data key="w0">A</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="19" source="16" target="18">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="20" source="17" target="19">
+            <data key="w0">A</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="21" source="18" target="19">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="22" source="19" target="20">
+            <data key="w0">A</data>
+            <data key="w1">B</data>
+            <data key="w2">C</data>
+        </edge>
+        <edge id="23" source="20" target="21">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="24" source="20" target="22">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="25" source="21" target="23">
+            <data key="w0">A</data>
+        </edge>
+        <edge id="26" source="22" target="23">
+            <data key="w1">B</data>
+        </edge>
+        <edge id="27" source="23" target="24">
+            <data key="w0">A</data>
+            <data key="w1">B</data>
+        </edge>
+        <edge id="28" source="20" target="23">
+            <data key="w2">C</data>
+        </edge>
+        <edge id="29" source="23" target="26">
+            <data key="w2">C</data>
+        </edge>
+        <edge id="30" source="24" target="27">
+            <data key="w0">A</data>
+            <data key="w1">B</data>
+        </edge>
+        <edge id="31" source="26" target="27">
+            <data key="w2">C</data>
+        </edge>
+    </graph>
+</graphml>
