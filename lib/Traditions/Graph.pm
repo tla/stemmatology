@@ -5,6 +5,65 @@ use warnings;
 use Graph::Easy;
 use IPC::Run qw( run binary );
 use Module::Load;
+use Traditions::Graph::Position;
+
+=head1 NAME
+
+(Text?)::Traditions::Graph
+
+=head1 SYNOPSIS
+
+use Traditions::Graph;
+
+my $text = Traditions::Graph->new( 'GraphML' => '/my/graphml/file.xml' );
+my $text = Traditions::Graph->new( 'TEI' => '/my/tei/file.xml' );
+my $text = Traditions::Graph->new( 'CSV' => '/my/csv/file.csv',
+                                   'base' => '/my/basefile.txt' );
+my $text = Traditions::Graph->new( 'CTE' => '/my/cte/file.txt',
+                                   'base' => '/my/basefile.txt' );
+
+my $svg_string = $text->as_svg();
+
+my $lemma_nodes = $text->active_nodes();
+$text->toggle_node( 'some_word' );
+
+=head1 DESCRIPTION
+
+A text tradition is the representation of our knowledge of a text that
+has been passed down via manuscript copies from a time before printing
+presses.  Each text has a number of witnesses, that is, manuscripts
+that bear a version of the text.  The tradition is the aggregation of
+these witnesses, which is to say, the collation of the text.
+
+This module takes a text collation and represents it as a horizontal
+directed graph, suitable for SVG rendering and for analysis of various
+forms.  Since this module was written by a medievalist, it also
+provides a facility for making a critical text reconstruction by
+choosing certain variants to be 'lemma' text - that is, text which
+should be considered the 'standard' reading.
+
+Although the graph is a very good way to render text collation, and is
+visually very easy for a human to interpret, it doesn't have any
+inherent information about which nodes 'go together' - that is, which
+text readings appear in the same place as other readings.  This module
+therefore calculates 'positions' on the graph, thus holding some
+information about which readings can and can't be substituted for
+others.
+
+=head1 METHODS
+
+=over 4
+
+=item B<new>
+
+Constructor.  Takes a source collation file from which to construct
+the initial graph.  This file can be TEI (parallel segmentation) XML,
+CSV in a format yet to be documented, GraphML as documented (someday)
+by CollateX, or a Classical Text Editor apparatus.  For CSV and
+Classical Text Editor files, the user must also supply a base text to
+which the line numbering in the collation file refers.
+
+=cut
 
 sub new {
     my $proto = shift;
@@ -107,9 +166,9 @@ sub start {
     return $self->{'graph'}->node('#START#');
 }
 
-sub save_positions {
-    my( $self, $positions ) = @_;
-    $self->{'positions'} = $positions;
+sub set_identical_nodes {
+    my( $self, $node_hash ) = @_;
+    $self->{'identical_nodes'} = $node_hash;
 }
 
 sub next_word {
@@ -208,43 +267,70 @@ sub as_svg {
     return $svg;
 }
 
-1;
-__END__
-#### EXAMINE BELOW ####
+## Methods for lemmatizing a text.
 
-# Returns a list of the nodes that are currently on and the nodes for
-# which an ellipsis needs to stand in.  Optionally takes a list of
-# nodes that have just been turned off, to include in the list.
+sub init_lemmatizer {
+    my $self = shift;
+    # Initialize the 'lemma' hash, going through all the nodes and seeing
+    # which ones are common nodes.  This should only be called once.
+
+    return if exists $self->{'lemma'};
+
+    my $lemma = {};
+    foreach my $node ( $self->nodes() ) {
+	my $state = $node->get_attribute('class') eq 'common' ? 1 : 0;
+	$lemma->{ $node->name() } = $state;
+    }
+
+    $self->{'lemma'} = $lemma;
+}
+
+sub make_positions {
+    my( $self, $common_nodes, $paths ) = @_;
+    my $positions = Traditions::Graph::Position->new( $common_nodes, $paths );
+    $self->{'positions'} = $positions;
+}
+
+# Takes a list of nodes that have just been turned off, and returns a
+# set of tuples of the form ['node', 'state'] that indicates what
+# changes need to be made to the graph.
+# A state of 1 means 'turn on this node'
+# A state of 0 means 'turn off this node'
+# A state of undef means 'an ellipsis belongs in the text here because
+#   no decision has been made'
 sub active_nodes {
     my( $self, @toggled_off_nodes ) = @_;
-    
-    my $all_nodes = {};
-    map { $all_nodes->{ $_ } = $self->_find_position( $_ ) } keys %{$self->{node_state}};
-    my $positions = _invert_hash( $all_nodes );
+
+    # In case this is the first run
+    $self->init_lemmatizer();
+    # First get the positions of those nodes which have been
+    # toggled off.
     my $positions_off = {};
-    map { $positions_off->{ $all_nodes->{$_} } = $_ } @toggled_off_nodes;
+    map { $positions_off->{ $self->{'positions'}->node_position( $_ ) } = $_ }
+	      @toggled_off_nodes;
+ 
     
     # Now for each position, we have to see if a node is on, and we
     # have to see if a node has been turned off.
     my @answer;
-    foreach my $pos ( @{$self->{_all_positions}} ) {
-	my $nodes = $positions->{$pos};
-
+    foreach my $pos ( $self->{'positions'}->all() ) {
+	my @nodes = $self->{'positions'}->nodes_at_position( $pos );
+	
 	# See if there is an active node for this position.
-	my @active_nodes = grep { $self->{node_state}->{$_} == 1 } @$nodes;
+	my @active_nodes = grep { $self->{'lemma'}->{$_} == 1 } @nodes;
 	warn "More than one active node at position $pos!"
 	    unless scalar( @active_nodes ) < 2;
 	my $active;
 	if( scalar( @active_nodes ) ) {
-	    $active = $self->node_to_svg( $active_nodes[0]  );
+	    $active = $active_nodes[0] ;
 	}
 
 	# Is there a formerly active node that was toggled off?
 	if( exists( $positions_off->{$pos} ) ) {
-	    my $off_node = $self->node_to_svg( $positions_off->{$pos} );
+	    my $off_node = $positions_off->{$pos};
 	    if( $active ) {
 		push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
-	    } elsif ( scalar @$nodes == 1 ) {
+	    } elsif ( scalar @nodes == 1 ) {
 		# This was the only node at its position. No ellipsis.
 		push( @answer, [ $off_node, 0 ] );
 	    } else {
@@ -260,173 +346,96 @@ sub active_nodes {
 	} else {
 	    # There is no change here; we need an ellipsis. Use
 	    # the first node in the list, arbitrarily.
-	    push( @answer, [ $self->node_to_svg( $nodes->[0] ), undef ] );
+	    push( @answer, [ $nodes[0] , undef ] );
 	}
     }
 
     return @answer;
 }
 
-# Compares two nodes according to their positions in the witness 
-# index hash.
-sub _by_position {
-    my $self = shift;
-    return _cmp_position( $self->_find_position( $a ), 
-			 $self->_find_position( $b ) );
+# A couple of helpers. TODO These should be gathered in the same place
+# eventually
+
+sub is_common {
+    my( $self, $node ) = @_;
+    $node = $self->_nodeobj( $node );
+    return $node->get_attribute('class') eq 'common';
 }
 
-# Takes two position strings (X,Y) and sorts them.
-sub _cmp_position {
-    my @pos_a = split(/,/, $a );
-    my @pos_b = split(/,/, $b );
-
-    my $big_cmp = $pos_a[0] <=> $pos_b[0];
-    return $big_cmp if $big_cmp;
-    # else 
-    return $pos_a[1] <=> $pos_b[1];
-}
- 
-# Finds the position of a node in the witness index hash.  Warns if
-# the same node has non-identical positions across witnesses.  Quite
-# possibly should not warn.
-sub _find_position {
-    my $self = shift;
-    my $node = shift;
-
-    my $position;
-    foreach my $wit ( keys %{$self->{indices}} ) {
-	if( exists $self->{indices}->{$wit}->{$node} ) {
-	    if( $position && $self->{indices}->{$wit}->{$node} ne $position ) {
-		warn "Position for node $node varies between witnesses";
-	    }
-	    $position = $self->{indices}->{$wit}->{$node};
-	}
+sub _nodeobj {
+    my( $self, $node ) = @_;
+    unless( ref $node eq 'Graph::Easy::Node' ) {
+	$node = $self->node( $node );
     }
-
-    warn "No position found for node $node" unless $position;
-    return $position;
+    return $node;
 }
 
-sub _invert_hash {
-    my ( $hash, $plaintext_keys ) = @_;
-    my %new_hash;
-    foreach my $key ( keys %$hash ) {
-        my $val = $hash->{$key};
-        my $valkey = $val;
-        if( $plaintext_keys 
-            && ref( $val ) ) {
-            $valkey = $plaintext_keys->{ scalar( $val ) };
-            warn( "No plaintext value given for $val" ) unless $valkey;
-        }
-        if( exists ( $new_hash{$valkey} ) ) {
-            push( @{$new_hash{$valkey}}, $key );
-        } else {
-            $new_hash{$valkey} = [ $key ];
-        }
-    }
-    return \%new_hash;
-}
+# toggle_node takes a node name, and either lemmatizes or de-lemmatizes it.
+# Returns a list of nodes that are de-lemmatized as a result of the toggle.
 
-
-# Takes a node ID to toggle; returns a list of nodes that are
-# turned OFF as a result.
 sub toggle_node {
-    my( $self, $node_id ) = @_;
-    $node_id = $self->node_from_svg( $node_id );
+    my( $self, $node ) = @_;
+    
+    # In case this is being called for the first time.
+    $self->init_lemmatizer();
 
-    # Is it a common node? If so, we don't want to turn it off.
-    # Later we might want to allow it off, but give a warning.
-    if( grep { $_ =~ /^$node_id$/ } @{$self->{common_nodes}} ) {
-	return ();
-    }
+    if( $self->is_common( $node ) ) {
+	# Do nothing, it's a common node.
+	return;
+    } 
 
     my @nodes_off;
     # If we are about to turn on a node...
-    if( !$self->{node_state}->{$node_id} ) {
+    if( !$self->{'lemma'}->{ $node } ) {
 	# Turn on the node.
-	$self->{node_state}->{$node_id} = 1;
+	$self->{'lemma'}->{ $node } = 1;
 	# Turn off any other 'on' nodes in the same position.
-	push( @nodes_off, $self->colocated_nodes( $node_id ) );
+	push( @nodes_off, $self->colocated_nodes( $node ) );
 	# Turn off any node that is an identical transposed one.
-	push( @nodes_off, $self->identical_nodes( $node_id ) )
-	    if $self->identical_nodes( $node_id );
+	push( @nodes_off, $self->identical_nodes( $node ) )
+	    if $self->identical_nodes( $node );
     } else {
-	push( @nodes_off, $node_id );
+	push( @nodes_off, $node );
     }
+    @nodes_off = unique_list( @nodes_off );
 
     # Turn off the nodes that need to be turned off.
-    map { $self->{node_state}->{$_} = 0 } @nodes_off;
+    map { $self->{'lemma'}->{$_} = 0 } @nodes_off;
     return @nodes_off;
 }
 
-sub node_from_svg {
-    my( $self, $node_id ) = @_;
-    # TODO: implement this for real.  Need a mapping between SVG titles
-    # and GraphML IDs, as created in make_graphviz.
-    $node_id =~ s/^node_//;
-    return $node_id;
-}
-
-sub node_to_svg {
-    my( $self, $node_id ) = @_;
-    # TODO: implement this for real.  Need a mapping between SVG titles
-    # and GraphML IDs, as created in make_graphviz.
-    $node_id = "node_$node_id";
-    return $node_id;
-}
-
 sub colocated_nodes {
-    my( $self, $node ) = @_;
-    my @cl;
-
-    # Get the position of the stated node.
-    my $position;
-    foreach my $index ( values %{$self->{indices}} ) {
-	if( exists( $index->{$node} ) ) {
-	    if( $position && $position ne $index->{$node} ) {
-		warn "Two ms positions for the same node!";
-	    }
-	    $position = $index->{$node};
-	}
-    }
-	
-    # Now find the other nodes in that position, if any.
-    foreach my $index ( values %{$self->{indices}} ) {
-	my %location = reverse( %$index );
-	push( @cl, $location{$position} )
-	    if( exists $location{$position} 
-		&& $location{$position} ne $node );
-    }
-    return @cl;
+    my $self = shift;
+    return $self->{'positions'}->colocated_nodes( @_ );
 }
 
 sub identical_nodes {
     my( $self, $node ) = @_;
-    return undef unless exists $self->{transpositions} &&
-	exists $self->{transpositions}->{$node};
-    return $self->{transpositions}->{$node};
-}
-
-sub text_for_witness {
-    my( $self, $wit ) = @_;
-    # Get the witness name
-    my %wit_id_for = reverse %{$self->{witnesses}};
-    my $wit_id = $wit_id_for{$wit};
-    unless( $wit_id ) {
-        warn "Could not find an ID for witness $wit";
-        return;
-    }
-    
-    my $path = $self->{indices}->{$wit_id};
-    my @nodes = sort { $self->_cmp_position( $path->{$a}, $path->{$b} ) } keys( %$path );
-    my @words = map { $self->text_of_node( $_ ) } @nodes;
-    return join( ' ', @words );
+    return undef unless exists $self->{'identical_nodes'} &&
+	exists $self->{'identical_nodes'}->{$node};
+    return $self->{'identical_nodes'}->{$node};
 }
 
 sub text_of_node {
     my( $self, $node_id ) = @_;
-    my $xpath = '//g:node[@id="' . $self->node_from_svg( $node_id) .
-        '"]/g:data[@key="' . $self->{nodedata}->{token} . '"]/child::text()';
-    return $self->{xpc}->findvalue( $xpath );
+    # This is the label of the given node.
+    return $self->node( $node_id )->label();
 }
+
+sub text_for_witness {
+    my( $self, $wit ) = @_;
+    
+    my @nodes = $self->{'positions'}->witness_path( $wit );
+    my @words = map { $self->node( $_ )->label() } @nodes;
+    return join( ' ', @words );
+}
+
+sub unique_list {
+    my( @list ) = @_;
+    my %h;
+    map { $h{$_} = 1 } @list;
+    return keys( %h );
+}
+
 1;
+

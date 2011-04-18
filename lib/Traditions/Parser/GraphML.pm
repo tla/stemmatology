@@ -75,7 +75,19 @@ sub parse {
 
     ## Reverse the node_name hash so that we have two-way lookup.
     my %node_id = reverse %node_name;
-    ## TODO mark transpositions somehow.
+
+    ## Record the nodes that are marked as transposed.
+    my $id_xpath = '//g:node[g:data[@key="' . $nodedata{'identity'} . '"]]';
+    my $transposed_nodes = $xpc->find( $id_xpath );
+    my $identical_nodes;
+    foreach my $tn ( @$transposed_nodes ) {
+        $identical_nodes->{ $node_name{ $tn->getAttribute('id') }} = 
+            $node_name{ $xpc->findvalue( './g:data[@key="' 
+					 . $nodedata{'identity'} 
+					 . '"]/text()', $tn ) };
+    }
+    $graph->set_identical_nodes( $identical_nodes );
+
 
     # Find the beginning and end nodes of the graph.  The beginning node
     # has no incoming edges; the end node has no outgoing edges.
@@ -151,38 +163,9 @@ sub parse {
 	    unless $n->get_attribute( 'class' ) eq 'common';
     }
 
-    # And then we have to calculate the position identifiers for
-    # each word, keyed on the common nodes.  This will be 'fun'.
-    # The end result is a hash per witness, whose key is the word
-    # node and whose value is its position in the text.  Common 
-    # nodes are always N,1 so have identical positions in each text.
-    my $wit_indices = {};
-    my $positions = {};
-    foreach my $wit ( values %witnesses ) {
-	my $wit_matrix = [];
-	my $cn = 0;
-	my $row = [];
-	foreach my $wn ( @{$paths->{$wit}} ) {
-	    if( $wn eq $common_nodes[$cn] ) {
-		$cn++;
-		push( @$wit_matrix, $row ) if scalar( @$row );
-		$row = [];
-	    }
-	    push( @$row, $wn );
-	}
-	push( @$wit_matrix, $row );
-	# Now we have a matrix; we really want to invert this.
-	my $wit_index;
-	foreach my $li ( 1..scalar(@$wit_matrix) ) {
-	    foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
-		$wit_index->{ $wit_matrix->[$li-1]->[$di-1] } = "$li,$di";
-		$positions->{ "$li,$di" } = 1;
-	    }
-	}
-	
-	$wit_indices->{$wit} = $wit_index;
-    }
-    $graph->save_positions( $positions, $wit_indices );
+    # Now calculate graph positions.
+    $graph->make_positions( \@common_nodes, $paths );
+
 }
     
 1;

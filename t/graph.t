@@ -3,7 +3,7 @@
 use strict; use warnings;
 use Test::More;
 use lib 'lib';
-use lemmatizer::Model::Graph;
+use Traditions::Graph;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -12,7 +12,7 @@ my $datafile = 't/data/Collatex-16.xml';
 open( GRAPHFILE, $datafile ) or die "Could not open $datafile";
 my @lines = <GRAPHFILE>;
 close GRAPHFILE;
-my $graph = lemmatizer::Model::Graph->new( 'xml' => join( '', @lines ) );
+my $graph = Traditions::Graph->new( 'GraphML' => join( '', @lines ) );
 
 # Test the svg creation
 my $parser = XML::LibXML->new();
@@ -31,7 +31,7 @@ my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar @svg_edges, 27, "Correct number of edges in the graph" );
 
 # Test for the correct common nodes
-my @expected_nodes = map { [ "node_$_", 1 ] } qw/0 1 8 12 13 16 19 20 23 27/;
+my @expected_nodes = map { [ $_, 1 ] } qw/#START# 1 8 12 13 16 19 20 23 27/;
 foreach my $idx ( qw/2 3 5 8 10 13 15/ ) {
     splice( @expected_nodes, $idx, 0, [ "node_null", undef ] );
 }
@@ -83,20 +83,20 @@ my $transposed_nodes = { 2 => 9,
 			 17 => 15,
 			 18 => 14
 };
-is_deeply( $graph->{transpositions}, $transposed_nodes, "Found the right transpositions" );
+is_deeply( $graph->{'identical_nodes'}, $transposed_nodes, "Found the right transpositions" );
 
 # Test turning on a node
-my @off = $graph->toggle_node( 'node_24' );
-$expected_nodes[ 15 ] = [ "node_24", 1 ];
-splice( @expected_nodes, 15, 1, ( [ "node_26", 0 ], [ "node_24", 1 ] ) );
+my @off = $graph->toggle_node( '24' );
+$expected_nodes[ 15 ] = [ "24", 1 ];
+splice( @expected_nodes, 15, 1, ( [ "26", 0 ], [ "24", 1 ] ) );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on node for new location' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit the ... of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
  
 # Test the toggling effects of same-column
-@off = $graph->toggle_node( 'node_26' );
-splice( @expected_nodes, 15, 2, ( [ "node_24", 0 ], [ "node_26", 1 ] ) );
+@off = $graph->toggle_node( '26' );
+splice( @expected_nodes, 15, 2, ( [ "24", 0 ], [ "26", 1 ] ) );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on other node in that location' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit the ... of ... has pierced ... the rood #';
@@ -104,11 +104,11 @@ is( make_text( @active_nodes ), $string, "Got the right text" );
 
 # Test the toggling effects of transposition
 
-@off = $graph->toggle_node( 'node_14' );
+@off = $graph->toggle_node( '14' );
 # Add the turned on node
-splice( @expected_nodes, 8, 1, ( [ "node_15", 0 ], [ "node_14", 1 ] ) );
+splice( @expected_nodes, 8, 1, ( [ "15", 0 ], [ "14", 1 ] ) );
 # Add the off transposition node
-splice( @expected_nodes, 11, 1, [ "node_18", undef ] );
+splice( @expected_nodes, 11, 1, [ "18", undef ] );
 # Remove the explicit turning off of the earlier node
 splice( @expected_nodes, 16, 1 );
 @active_nodes = $graph->active_nodes( @off );
@@ -116,32 +116,32 @@ subtest 'Turned on transposition node' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit the drought of ... has pierced ... the rood #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( 'node_18' );
-splice( @expected_nodes, 8, 2, [ "node_14", undef ] );
-splice( @expected_nodes, 10, 1, ( [ "node_17", 0 ], [ "node_18", 1 ] ) );
+@off = $graph->toggle_node( '18' );
+splice( @expected_nodes, 8, 2, [ "14", undef ] );
+splice( @expected_nodes, 10, 1, ( [ "17", 0 ], [ "18", 1 ] ) );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on that node\'s partner' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit the ... of drought has pierced ... the rood #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( 'node_14' );
-splice( @expected_nodes, 8, 1, [ "node_15", 0 ], [ "node_14", 1 ] );
-splice( @expected_nodes, 11, 2, ( [ "node_18", undef ] ) );
+@off = $graph->toggle_node( '14' );
+splice( @expected_nodes, 8, 1, [ "15", 0 ], [ "14", 1 ] );
+splice( @expected_nodes, 11, 2, ( [ "18", undef ] ) );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on the original node' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit the drought of ... has pierced ... the rood #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( 'node_3' );
-splice( @expected_nodes, 3, 1, [ "node_3", 1 ] );
+@off = $graph->toggle_node( '3' );
+splice( @expected_nodes, 3, 1, [ "3", 1 ] );
 splice( @expected_nodes, 8, 1 );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on a singleton node' => \&compare_active;
 $string = '# when ... with his showers sweet with ... fruit the drought of ... has pierced ... the rood #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( 'node_3' );
-splice( @expected_nodes, 3, 1, [ "node_3", 0 ] );
+@off = $graph->toggle_node( '3' );
+splice( @expected_nodes, 3, 1, [ "3", 0 ] );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned off a singleton node' => \&compare_active;
 $string = '# when ... showers sweet with ... fruit the drought of ... has pierced ... the rood #';
