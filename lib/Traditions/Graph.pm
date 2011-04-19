@@ -119,9 +119,13 @@ sub edge {
     return $self->{'graph'}->edge( @_ );
 }
 
+# Not only adds the node, but also initializes internal data
+# about the node.
 sub add_node {
     my $self = shift;
-    return $self->{'graph'}->add_node( @_ );
+    my $node = $self->{'graph'}->add_node( @_ );
+    $self->{'identical_nodes'}->{ $node->name() } = [ $node->name() ];
+    return $node;
 }
 
 sub add_edge {
@@ -131,6 +135,26 @@ sub add_edge {
 
 sub del_node {
     my $self = shift;
+    my $node = $_[0];
+
+    # Delete this node out of any relevant transposition pool.
+    if( ref $node eq 'Graph::Easy::Node' ) {
+	$node = $node->name();
+    }
+    my @ident = $self->identical_nodes( $node );
+    if( @ident ) {
+	# Get the pool.
+	my $pool = $self->{'identical_nodes'}->{ $ident[0] };
+	foreach my $i ( 0 .. scalar(@$pool)-1 ) {
+	    if( $pool->[$i] eq $node ) {
+		splice( @$pool, $i, 1 );
+		last;
+	    }
+	}
+    }
+    delete $self->{'identical_nodes'}->{ $node };
+
+    # Now delete the node.
     return $self->{'graph'}->del_node( @_ );
 }
 
@@ -161,14 +185,37 @@ sub start {
     my $self = shift;
     my( $new_start ) = @_;
     if( $new_start ) {
+	# Fix the node transposition data
+	delete $self->{'identical_nodes'}->{ $new_start->name() };
+	$self->{'identical_nodes'}->{'#START#'} = [ '#START#' ];
 	$self->{'graph'}->rename_node( $new_start, '#START#' );
     }
     return $self->{'graph'}->node('#START#');
 }
 
-sub set_identical_nodes {
-    my( $self, $node_hash ) = @_;
-    $self->{'identical_nodes'} = $node_hash;
+# Record that nodes A and B are really the same (transposed) node.
+# We do this by maintaining some pools of transposed nodes, and
+# we have a lookup hash so that each member of that 
+sub set_identical_node {
+    my( $self, $node, $same_node ) = @_;
+    my $pool = $self->{'identical_nodes'}->{ $node };
+    my $same_pool = $self->{'identical_nodes'}->{ $same_node };
+    my %poolhash;
+    foreach ( @$pool ) {
+	$poolhash{$_} = 1;
+    }
+    foreach( @$same_pool ) {
+	push( @$pool, $_ ) unless $poolhash{$_};
+    }
+
+    $self->{'identical_nodes'}->{ $same_node } = $pool;
+}
+
+sub identical_nodes {
+    my( $self, $node ) = @_;
+    my @others = grep { $_ !~ /^$node$/ } 
+        @{$self->{'identical_nodes'}->{ $node }};
+    return @others;
 }
 
 sub next_word {
@@ -418,13 +465,6 @@ sub toggle_node {
 sub colocated_nodes {
     my $self = shift;
     return $self->{'positions'}->colocated_nodes( @_ );
-}
-
-sub identical_nodes {
-    my( $self, $node ) = @_;
-    return undef unless exists $self->{'identical_nodes'} &&
-	exists $self->{'identical_nodes'}->{$node};
-    return $self->{'identical_nodes'}->{$node};
 }
 
 sub text_of_node {

@@ -77,16 +77,15 @@ sub parse {
     my %node_id = reverse %node_name;
 
     ## Record the nodes that are marked as transposed.
-    my $id_xpath = '//g:node[g:data[@key="' . $nodedata{'identity'} . '"]]';
-    my $transposed_nodes = $xpc->find( $id_xpath );
-    my $identical_nodes;
-    foreach my $tn ( @$transposed_nodes ) {
-        $identical_nodes->{ $node_name{ $tn->getAttribute('id') }} = 
-            $node_name{ $xpc->findvalue( './g:data[@key="' 
-					 . $nodedata{'identity'} 
-					 . '"]/text()', $tn ) };
+    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata{'identity'} . '"]]';
+    my $transposition_nodes = $xpc->find( $tr_xpath );
+    foreach my $tn ( @$transposition_nodes ) {
+	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
+				$nodedata{'identity'} );
+	$graph->set_identical_node( $node_name{ $tn->getAttribute( 'id' ) },
+				    $node_name{ $xpc->findvalue( $id_xpath, 
+								 $tn ) } );
     }
-    $graph->set_identical_nodes( $identical_nodes );
 
 
     # Find the beginning and end nodes of the graph.  The beginning node

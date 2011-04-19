@@ -76,13 +76,18 @@ is( $graph->text_for_witness( "B" ), $wit_b, "Correct path for witness B" );
 is( $graph->text_for_witness( "C" ), $wit_c, "Correct path for witness C" );
 
 # Test the transposition identifiers
-my $transposed_nodes = { 2 => 9,
-			 9 => 2,
-			 14 => 18,
-			 15 => 17,
-			 17 => 15,
-			 18 => 14
+my $transposition_pools = [ [ 2, 9 ], [ 14, 18 ], [ 15, 17 ] ];
+my $transposed_nodes = { 2 => $transposition_pools->[0],
+			 9 => $transposition_pools->[0],
+			 14 => $transposition_pools->[1],
+			 15 => $transposition_pools->[2],
+			 17 => $transposition_pools->[2],
+			 18 => $transposition_pools->[1],
 };
+foreach my $n ( $graph->nodes() ) {
+    $transposed_nodes->{ $n->name() } = [ $n->name() ]
+	unless exists $transposed_nodes->{ $n->name() };
+}
 is_deeply( $graph->{'identical_nodes'}, $transposed_nodes, "Found the right transpositions" );
 
 # Test turning on a node
