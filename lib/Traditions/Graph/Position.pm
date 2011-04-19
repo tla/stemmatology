@@ -78,9 +78,20 @@ sub new {
 	    }
 	}
     }
+
     # Now we have a hash of node positions keyed on node.
     $self->{'node_positions'} = $node_pos;
+    # We should also save our witness paths, as long as we have them.
+    # Right now each path is a list of nodes; we may want to make it
+    # a list of position refs.
     $self->{'witness_paths'} = $witness_paths;
+
+    # We are also going to want to keep track of whether a position has
+    # been explicitly emptied, for our lemmatization.
+    my $position_state = {};
+    map { $position_state->{ $_ } = undef } values %$node_pos;
+    $self->{'position_state'} = $position_state;
+
 
     bless( $self, $proto );
     return $self;
@@ -119,10 +130,31 @@ sub colocated_nodes {
     return @cn;
 }
 
+# Returns an ordered list of positions in this graph
 sub all {
     my( $self ) = @_;
     my $pos = $self->calc_positions;
     return sort by_position keys( %$pos );
+}
+
+# Returns undef if no decision has been taken on this position, the
+# node name if there is a lemma for it, and 0 if there is no lemma for
+# it.
+sub state {
+    my( $self, $pos ) = @_;
+    return $self->{'position_state'}->{ $pos };
+}
+
+sub set_state {
+    my( $self, $pos, $state ) = @_;
+    $self->{'position_state'}->{ $pos } = $state;
+}
+
+sub init_lemmatizer {
+    my( $self, @nodes ) = @_;
+    foreach my $n ( @nodes ) {
+	$self->set_state( $self->node_position( $n ), $n );
+    }
 }
 
 sub witness_path {

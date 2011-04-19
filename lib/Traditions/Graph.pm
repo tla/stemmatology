@@ -272,17 +272,14 @@ sub as_svg {
 sub init_lemmatizer {
     my $self = shift;
     # Initialize the 'lemma' hash, going through all the nodes and seeing
-    # which ones are common nodes.  This should only be called once.
+    # which ones are common nodes.  This should only be run once.
 
-    return if exists $self->{'lemma'};
+    return if( $self->{'lemmatizer_initialized'} );
+    my @active_names = map { $_->name } grep { $self->is_common( $_ ) }
+        $self->nodes();
+    $self->{'positions'}->init_lemmatizer( @active_names );
+    $self->{'lemmatizer_initialized'} = 1;
 
-    my $lemma = {};
-    foreach my $node ( $self->nodes() ) {
-	my $state = $node->get_attribute('class') eq 'common' ? 1 : 0;
-	$lemma->{ $node->name() } = $state;
-    }
-
-    $self->{'lemma'} = $lemma;
 }
 
 sub make_positions {
@@ -314,42 +311,34 @@ sub active_nodes {
     # have to see if a node has been turned off.
     my @answer;
     foreach my $pos ( $self->{'positions'}->all() ) {
-	my @nodes = $self->{'positions'}->nodes_at_position( $pos );
+	# Find the state of this position.  If there is an active node,
+	# its name will be the state; otherwise the state will be 0 
+	# (nothing at this position) or undef (ellipsis at this position)
+	my $active = $self->{'positions'}->state( $pos );
 	
-	# See if there is an active node for this position.
-	my @active_nodes = grep { $self->{'lemma'}->{$_} == 1 } @nodes;
-	warn "More than one active node at position $pos!"
-	    unless scalar( @active_nodes ) < 2;
-	my $active;
-	if( scalar( @active_nodes ) ) {
-	    $active = $active_nodes[0] ;
-	}
-
 	# Is there a formerly active node that was toggled off?
 	if( exists( $positions_off->{$pos} ) ) {
 	    my $off_node = $positions_off->{$pos};
-	    if( $active ) {
+	    if( $active && $active ne $off_node) {
 		push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
-	    } elsif ( scalar @nodes == 1 ) {
-		# This was the only node at its position. No ellipsis.
-		push( @answer, [ $off_node, 0 ] );
 	    } else {
-		# More than one node at this position, none now active.
-		# Restore the ellipsis.
-		push( @answer, [ $off_node, undef ] );
+		push( @answer, [ $off_node, $active ] );
 	    }
+
 	# No formerly active node, so we just see if there is a currently
 	# active one.
 	} elsif( $active ) {
 	    # Push the active node, whatever it is.
 	    push( @answer, [ $active, 1 ] );
 	} else {
-	    # There is no change here; we need an ellipsis. Use
-	    # the first node in the list, arbitrarily.
-	    push( @answer, [ $nodes[0] , undef ] );
+	    # Push the state that is there. Arbitrarily use the first node
+	    # at that position.
+	    my @pos_nodes = $self->{'positions'}->nodes_at_position( $pos );
+	    push( @answer, 
+		  [ $pos_nodes[0], $self->{'positions'}->state( $pos ) ] );
 	}
     }
-
+    
     return @answer;
 }
 
@@ -383,25 +372,47 @@ sub toggle_node {
 	# Do nothing, it's a common node.
 	return;
     } 
-
+    
+    my $pos = $self->{'positions'}->node_position( $node );
+    my $old_state = $self->{'positions'}->state( $pos );
     my @nodes_off;
-    # If we are about to turn on a node...
-    if( !$self->{'lemma'}->{ $node } ) {
+    if( $old_state && $old_state eq $node ) {
+	# Turn off the node. We turn on no others by default.
+	push( @nodes_off, $node );
+    } else {
 	# Turn on the node.
-	$self->{'lemma'}->{ $node } = 1;
-	# Turn off any other 'on' nodes in the same position.
+	$self->{'positions'}->set_state( $pos, $node );
+	# Any other 'on' nodes in the same position should be off.
 	push( @nodes_off, $self->colocated_nodes( $node ) );
-	# Turn off any node that is an identical transposed one.
+	# Any node that is an identical transposed one should be off.
 	push( @nodes_off, $self->identical_nodes( $node ) )
 	    if $self->identical_nodes( $node );
-    } else {
-	push( @nodes_off, $node );
     }
     @nodes_off = unique_list( @nodes_off );
 
     # Turn off the nodes that need to be turned off.
-    map { $self->{'lemma'}->{$_} = 0 } @nodes_off;
-    return @nodes_off;
+    my @nodes_turned_off;
+    foreach my $n ( @nodes_off ) {
+	my $npos = $self->{'positions'}->node_position( $n );
+	my $state = $self->{'positions'}->state( $npos );
+	if( $state && $state eq $n ) { 
+	    # this node is still on
+	    push( @nodes_turned_off, $n );
+	    my $new_state = undef;
+	    if( $n eq $node ) {
+		# This is the node that was clicked, so if there are no
+		# other nodes there, turn off the position.  In all other
+		# cases, restore the ellipsis.
+		my @all_n = $self->{'positions'}->nodes_at_position( $pos );
+		$new_state = 0 if scalar( @all_n ) == 1;
+	    }
+	    $self->{'positions'}->set_state( $npos, $new_state );
+	} elsif( $old_state && $old_state eq $n ) { 
+	    # another node has already been turned on here
+	    push( @nodes_turned_off, $n );
+	} # else some other node was on anyway, so pass.
+    }
+    return @nodes_turned_off;
 }
 
 sub colocated_nodes {
