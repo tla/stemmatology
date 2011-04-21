@@ -5,8 +5,29 @@ use warnings;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
+=head1 NAME
 
-# Takes a GraphML string; returns a Graph::Easy object.
+Text::Tradition::Parser::GraphML
+
+=head1 DESCRIPTION
+
+Parser module for Text::Tradition, given a GraphML file that describes
+a collation graph.  For further information on the GraphML format for
+text collation, see http://gregor.middell.net/collatex/
+
+=head1 METHODS
+
+=over
+
+=item B<parse>
+
+parse( $graph, $graphml_string );
+
+Takes an initialized Text::Tradition::Graph object and a string
+containing the GraphML; creates the appropriate nodes and edges on the
+graph.
+
+=cut
 
 sub parse {
     my( $graph, $graphml_str ) = @_;
@@ -166,4 +187,18 @@ sub parse {
 
 }
     
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews, aurum@cpan.org
+
+=cut
+
 1;

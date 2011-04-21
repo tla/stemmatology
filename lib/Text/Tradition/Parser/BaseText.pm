@@ -6,6 +6,57 @@ use Exporter 'import';
 use vars qw( @EXPORT_OK );
 @EXPORT_OK = qw( merge_base );
 
+=head1 NAME
+
+Text::Tradition::Parser::BaseText
+
+=head1 SYNOPSIS
+
+use Text::Tradition::Parser::BaseText qw( merge_base );
+merge_base( $graph, 'reference.txt', @apparatus_entries )
+
+=head1 DESCRIPTION
+
+For an overview of the package, see the documentation for the
+Text::Tradition::Graph module.
+
+This module is meant for use with certain of the other Parser classes
+- whenever a list of variants is given with reference to a base text,
+these must be joined into a single collation.  The parser should
+therefore make a list of variants and their locations, and BaseText
+will join those listed variants onto the reference text.  
+
+=head1 SUBROUTINES
+
+=over
+
+=item B<merge_base>
+
+merge_base( $graph, 'reference.txt', @apparatus_entries )
+
+Takes three arguments: a newly-initialized Text::Tradition::Graph
+object, a text file containing the reference text, and a list of
+variants (apparatus entries).  Adds the base text to the graph, and
+joins the variants to that.
+
+The list of variants is an array of hash references; each hash takes
+the form
+ { '_id' => line reference,
+   'rdg_0' => lemma reading,
+   'rdg_1' => first variant,
+   ...  # and so on until all distinct readings are listed
+   'WitnessA' => 'rdg_0',
+   'WitnessB' => 'rdg_1',
+   ...  # and so on until all witnesses are listed with their readings
+ }
+
+Any hash key that is not of the form /^rdg_\d+$/ and that does not
+begin with an underscore is assumed to be a witness name.  Any 'meta'
+information to be passed must be passed in a key with a leading
+underscore in its name.
+
+=cut
+
 sub merge_base {
     my( $graph, $base_file, @app_entries ) = @_;
     my @base_line_starts = read_base( $base_file, $graph );
@@ -14,7 +65,8 @@ sub merge_base {
 	my( $line, $num ) = split( /\./, $app->{_id} );
 	# DEBUG with a short graph
 	# last if $line > 2;
-	my $scrutinize = "21.8";
+	# DEBUG for problematic entries
+	# my $scrutinize = "21.8";
 	my $first_line_node = $base_line_starts[ $line ];
 	my $too_far = $base_line_starts[ $line+1 ];
 	
@@ -146,11 +198,17 @@ sub merge_base {
     }
 }
 
-# read_base: Takes a text file and a (presumed empty) graph object,
-# adds the words as simple linear nodes to the graph, and returns a
-# list of nodes that represent the beginning of lines. This graph is
-# now the starting point for application of apparatus entries in
-# merge_base, e.g. from a CSV file or a CTE file.
+=item B<read_base>
+
+my @line_beginnings = read_base( 'reference.txt', $graph );
+
+Takes a text file and a (presumed empty) graph object, adds the words
+as simple linear nodes to the graph, and returns a list of nodes that
+represent the beginning of lines. This graph is now the starting point
+for application of apparatus entries in merge_base, e.g. from a CSV
+file or a Classical Text Editor file.
+
+=cut
 
 sub read_base {
     my( $base_file, $graph ) = @_;
@@ -193,8 +251,18 @@ sub read_base {
     return( @$lineref_array );
 }
 
+=item B<collate_variant>
 
-## Helper methods for merge_base
+collate_variant( $graph, $lemma_start, $lemma_end, $var_start, $var_end );
+
+Given a lemma and a variant as start- and endpoints on the graph,
+walks through each to identify those nodes that are identical.  The
+graph is a Text::Tradition::Graph object; the other arguments are
+Graph::Easy::Node objects that appear on the graph.
+
+TODO: Handle collapsed and non-collapsed transpositions.
+
+=cut
 
 sub collate_variant {
     my( $graph, $lemma_start, $lemma_end, $var_start, $var_end ) = @_;
@@ -246,6 +314,15 @@ sub collate_variant {
     }
 }
 
+=item B<remove_duplicate_edges>
+
+remove_duplicate_edges( $graph, $from, $to );
+
+Given two nodes, reduce the number of edges between those nodes to
+one.  If neither edge represents a base text, combine their labels.
+
+=cut
+
 sub remove_duplicate_edges {
     my( $graph, $from, $to ) = @_;
     my @edges = $from->edges_to( $to );
@@ -269,7 +346,12 @@ sub remove_duplicate_edges {
     }
 }
 
-# TODO need to make this configurable!
+=item B<cmp_str>
+
+Pretend you never saw this method.  Really it needs to not be hardcoded.
+
+=cut
+
 sub cmp_str {
     my( $node ) = @_;
     my $word = $node->label();
@@ -282,5 +364,19 @@ sub cmp_str {
     $word =~ s/ioannes/iohannes/g;
     return $word;
 }
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews, aurum@cpan.org
+
+=cut
 
 1;

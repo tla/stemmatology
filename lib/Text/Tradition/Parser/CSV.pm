@@ -5,13 +5,34 @@ use warnings;
 use Text::CSV::Simple;
 use Text::Tradition::Parser::BaseText qw( merge_base );
 
-# Takes a CSV file and a base text; returns a GraphML object.
+=head1 NAME
+
+Text::Tradition::Parser::CSV
+
+=head1 DESCRIPTION
+
+Parser module for Text::Tradition, given a list of variants as a CSV
+file and a reference text as a plaintext file with appropriate line
+breaks.
+
+=head1 METHODS
+
+=over
+
+=item B<parse>
+
+parse( $graph, 'variants.csv', 'reference.txt' );
+
+Takes an initialized Text::Tradition::Graph object and the relevant
+data files; puts the text and its variants onto the graph.
+
+=cut
 
 sub parse {
     my( $graph, $csv_file, $base_text ) = @_;
 
     # Parse the CSV file into a list of apparatus entries.
-    my @app_list = read_csv( $csv_file );
+    my @app_list = _read_csv( $csv_file );
     # Now put the base text onto the graph, and merge in the 
     # apparatus entries.
     merge_base( $graph, $base_text, @app_list );
@@ -20,7 +41,7 @@ sub parse {
 # Takes a CSV file; returns a data structure of apparatus entries to
 # be merged with a base text.
 
-sub read_csv {
+sub _read_csv {
     my( $csv_file ) = @_;
     my $parser = Text::CSV::Simple->new();
     my @fields = qw/ reference text variant type context non_corr non_indep 
@@ -92,6 +113,20 @@ sub read_csv {
     push( @app_list, $apparatus );
     return @app_list;
 }
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews, aurum@cpan.org
+
+=cut
 
 1;
 

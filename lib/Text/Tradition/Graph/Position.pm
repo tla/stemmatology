@@ -10,7 +10,9 @@ Text::Tradition::Graph::Position
 =head1 SUMMARY
 
 An object to go with a text graph that keeps track of relative
-positions of the nodes.
+positions of the nodes on that graph.  This is useful for keeping
+track of which readings are variants of each other, which is expensive
+to calculate every time from the graph itself.
 
 =head1 METHODS
 
@@ -24,6 +26,8 @@ node based on this.
 
 =cut
 
+# TODO Why not just hand over the graph and calculate the common nodes
+# and witness paths here?
 sub new {
     my $proto = shift;
     my( $common_nodes, $witness_paths ) = @_;
@@ -97,6 +101,14 @@ sub new {
     return $self;
 }
 
+=item B<node_position>
+
+my $pos = $positions->node_position( $node );
+
+Returns the position identifier for a given node in the graph.
+
+=cut
+
 sub node_position {
     my( $self, $node ) = @_;
     $node = _name( $node );
@@ -109,16 +121,33 @@ sub node_position {
     return $self->{'node_positions'}->{ $node };
 }
 
+=item B<nodes_at_position>
+
+my @nodes = $positions->nodes_at_position( $pos );
+
+Returns the names of all the nodes in the graph at a given position.
+
+=cut
+
 sub nodes_at_position {
     my( $self, $pos ) = @_;
 
-    my $positions = $self->calc_positions();
+    my $positions = $self->_calc_positions();
     unless( exists $positions->{ $pos } ) {
 	warn "No position $pos in the graph";
 	return;
     }
     return @{ $positions->{ $pos }};
 }
+
+=item B<colocated_nodes>
+
+my @nodes = $positions->colocated_nodes( $node );
+
+Returns the names of all the nodes in the graph at the same position
+as the node given, apart from that node itself.
+
+=cut
 
 sub colocated_nodes {
     my( $self, $node ) = @_;
@@ -130,31 +159,18 @@ sub colocated_nodes {
     return @cn;
 }
 
-# Returns an ordered list of positions in this graph
+=item B<all>
+
+my @position_list = $positions->all()
+
+Returns an ordered list of positions in the graph.
+
+=cut
+
 sub all {
     my( $self ) = @_;
-    my $pos = $self->calc_positions;
+    my $pos = $self->_calc_positions;
     return sort by_position keys( %$pos );
-}
-
-# Returns undef if no decision has been taken on this position, the
-# node name if there is a lemma for it, and 0 if there is no lemma for
-# it.
-sub state {
-    my( $self, $pos ) = @_;
-    return $self->{'position_state'}->{ $pos };
-}
-
-sub set_state {
-    my( $self, $pos, $state ) = @_;
-    $self->{'position_state'}->{ $pos } = $state;
-}
-
-sub init_lemmatizer {
-    my( $self, @nodes ) = @_;
-    foreach my $n ( @nodes ) {
-	$self->set_state( $self->node_position( $n ), $n );
-    }
 }
 
 sub witness_path {
@@ -162,25 +178,79 @@ sub witness_path {
     return @{$self->{'witness_paths'}->{ $wit }};
 }
 
-# At some point I may find myself using scalar references for the node
-# positions, in order to keep them easily in sync.  Just in case, I will
-# calculate this every time I need it.
-sub calc_positions {
-    my $self = shift;
-    return _invert_hash( $self->{'node_positions'} )
-}
+=back
 
-# Helper for dealing with node refs
-sub _name {
-    my( $node ) = @_;
-    # We work with node names in this library
-    if( ref( $node ) && ref( $node ) eq 'Graph::Easy::Node' ) {
-	$node = $node->name();
+=head2 Lemmatization functions
+
+For some traditions, each position will have at least one node that is
+the 'lemma text', that is, the text that an editor has chosen to stand
+as authoritative for the tradition.  The following methods keep
+track of what lemma, if any, should stand at each position.
+
+=over
+
+=item B<init_lemmatizer>
+
+$positions->init_lemmatizer( @nodelist )
+
+Sets up the necessary logic for keeping track of lemmas.  It should be
+called once, with the initial list of lemmas.
+
+=cut
+
+# TODO We can initialize this without the argument, based on the passed
+# list of common nodes.
+sub init_lemmatizer {
+    my( $self, @nodes ) = @_;
+    foreach my $n ( @nodes ) {
+	$self->set_state( $self->node_position( $n ), $n );
     }
-    return $node;
 }
 
-### Comparison functions
+=item B<state>
+
+my $answer = $positions->state( $position_id )
+
+For the given position ID, returns the node (if any) that stands at
+the lemma.  If no node should stand as lemma at this position, returns
+0; if no decision has been made for this position, returns undef.
+
+=cut
+
+sub state {
+    my( $self, $pos ) = @_;
+    return $self->{'position_state'}->{ $pos };
+}
+
+=item B<set_state>
+
+$positions->set_state( $position_id, $state )
+
+For the given position ID, sets the lemma (if any).  State can be the
+name of a node, 0 (for cases when no lemma should stand), or undef
+(for cases when no decision has been made).
+
+=cut
+
+sub set_state {
+    my( $self, $pos, $state ) = @_;
+    $self->{'position_state'}->{ $pos } = $state;
+}
+
+=back
+
+=head2 Comparison function
+
+=over
+
+=item B<by_position>
+
+my @nodelist = sort $positions->by_position @nodelist;
+
+For use in the 'sort' function.  Returns a comparison value based on
+the position of the given nodes.
+
+=cut
 
 # Compares two nodes according to their positions in the witness 
 # index hash.
@@ -199,6 +269,27 @@ sub _cmp_position {
     return $big_cmp if $big_cmp;
     # else 
     return $pos_a[1] <=> $pos_b[1];
+}
+
+
+#### HELPER FUNCTIONS ####
+
+# At some point I may find myself using scalar references for the node
+# positions, in order to keep them easily in sync.  Just in case, I will
+# calculate this every time I need it.
+sub _calc_positions {
+    my $self = shift;
+    return _invert_hash( $self->{'node_positions'} )
+}
+
+# Helper for dealing with node refs
+sub _name {
+    my( $node ) = @_;
+    # We work with node names in this library
+    if( ref( $node ) && ref( $node ) eq 'Graph::Easy::Node' ) {
+	$node = $node->name();
+    }
+    return $node;
 }
 
 # Useful helper.  Will be especially useful if I find myself using
@@ -223,5 +314,19 @@ sub _invert_hash {
     }
     return \%new_hash;
 }
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews, aurum@cpan.org
+
+=cut
 
 1;

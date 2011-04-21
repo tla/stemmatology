@@ -13,19 +13,19 @@ Text::Tradition::Graph
 
 =head1 SYNOPSIS
 
-use Text::Tradition::Graph;
+ use Text::Tradition::Graph;
 
-my $text = Text::Tradition::Graph->new( 'GraphML' => '/my/graphml/file.xml' );
-my $text = Text::Tradition::Graph->new( 'TEI' => '/my/tei/file.xml' );
-my $text = Text::Tradition::Graph->new( 'CSV' => '/my/csv/file.csv',
-                                   'base' => '/my/basefile.txt' );
-my $text = Text::Tradition::Graph->new( 'CTE' => '/my/cte/file.txt',
-                                   'base' => '/my/basefile.txt' );
+ my $text = Text::Tradition::Graph->new( 'GraphML' => '/my/graphml/file.xml' );
+ my $text = Text::Tradition::Graph->new( 'TEI' => '/my/tei/file.xml' );
+ my $text = Text::Tradition::Graph->new( 'CSV' => '/my/csv/file.csv',
+                                         'base' => '/my/basefile.txt' );
+ my $text = Text::Tradition::Graph->new( 'CTE' => '/my/cte/file.txt',
+                                         'base' => '/my/basefile.txt' );
 
-my $svg_string = $text->as_svg();
+ my $svg_string = $text->as_svg();
 
-my $lemma_nodes = $text->active_nodes();
-$text->toggle_node( 'some_word' );
+ my $lemma_nodes = $text->active_nodes();
+ $text->toggle_node( 'some_word' );
 
 =head1 DESCRIPTION
 
@@ -58,10 +58,13 @@ others.
 
 Constructor.  Takes a source collation file from which to construct
 the initial graph.  This file can be TEI (parallel segmentation) XML,
-CSV in a format yet to be documented, GraphML as documented (someday)
-by CollateX, or a Classical Text Editor apparatus.  For CSV and
-Classical Text Editor files, the user must also supply a base text to
-which the line numbering in the collation file refers.
+CSV in a format yet to be documented, GraphML as documented by the
+CollateX tool (L<http://gregor.middell.net/collatex/>), or a Classical
+Text Editor apparatus.  For CSV and Classical Text Editor files, the
+user must also supply a base text to which the line numbering in the
+collation file refers.
+
+20/04/2011 Currently only CSV and GraphML are really supported.
 
 =cut
 
@@ -107,20 +110,55 @@ sub new {
     return $self;
 }
 
+=item B<make_positions>
 
-### Graph::Easy object accessor methods
+$graph->make_positions( $common_nodes, $paths )
+
+Create an associated Graph::Positions object that records the position
+of each node in the graph.  This method call is probably in the wrong
+place and will move.
+
+=cut
+
+sub make_positions {
+    my( $self, $common_nodes, $paths ) = @_;
+    my $positions = Text::Tradition::Graph::Position->new( $common_nodes, $paths );
+    $self->{'positions'} = $positions;
+}
+
+=back
+
+=head2 Graph::Easy object accessor methods
+
+See the Graph::Easy documentation for descriptions of these functions.
+
+=over
+
+=item B<node>
+
+=cut
+
 sub node {
     my $self = shift;
     return $self->{'graph'}->node( @_ );
 }
+
+=item B<edge>
+
+=cut
 
 sub edge {
     my $self = shift;
     return $self->{'graph'}->edge( @_ );
 }
 
+=item B<add_node>
+
+=cut
+
 # Not only adds the node, but also initializes internal data
 # about the node.
+
 sub add_node {
     my $self = shift;
     my $node = $self->{'graph'}->add_node( @_ );
@@ -128,10 +166,18 @@ sub add_node {
     return $node;
 }
 
+=item B<add_edge>
+
+=cut
+
 sub add_edge {
     my $self = shift;
     return $self->{'graph'}->add_edge( @_ );
 }
+
+=item B<del_node>
+
+=cut
 
 sub del_node {
     my $self = shift;
@@ -158,20 +204,36 @@ sub del_node {
     return $self->{'graph'}->del_node( @_ );
 }
 
+=item B<del_edge>
+
+=cut
+
 sub del_edge {
     my $self = shift;
     return $self->{'graph'}->del_edge( @_ );
 }
+
+=item B<nodes>
+
+=cut
 
 sub nodes {
     my $self = shift;
     return $self->{'graph'}->nodes( @_ );
 }
 
+=item B<edges>
+
+=cut
+
 sub edges {
     my $self = shift;
     return $self->{'graph'}->edges( @_ );
 }
+
+=item B<merge_nodes>
+
+=cut
 
 sub merge_nodes {
     my $self = shift;
@@ -179,6 +241,20 @@ sub merge_nodes {
 }
 
 ### Helper methods for navigating the tree
+
+=back
+
+=head2 Graph navigation methods
+
+=over
+
+=item B<start>
+
+my $node = $graph->start();
+
+Returns the beginning node of the graph.
+
+=cut
 
 sub start {
     # Return the beginning node of the graph.
@@ -193,30 +269,14 @@ sub start {
     return $self->{'graph'}->node('#START#');
 }
 
-# Record that nodes A and B are really the same (transposed) node.
-# We do this by maintaining some pools of transposed nodes, and
-# we have a lookup hash so that each member of that 
-sub set_identical_node {
-    my( $self, $node, $same_node ) = @_;
-    my $pool = $self->{'identical_nodes'}->{ $node };
-    my $same_pool = $self->{'identical_nodes'}->{ $same_node };
-    my %poolhash;
-    foreach ( @$pool ) {
-	$poolhash{$_} = 1;
-    }
-    foreach( @$same_pool ) {
-	push( @$pool, $_ ) unless $poolhash{$_};
-    }
+=item B<next_word>
 
-    $self->{'identical_nodes'}->{ $same_node } = $pool;
-}
+my $next_node = $graph->next_word( $node, $path );
 
-sub identical_nodes {
-    my( $self, $node ) = @_;
-    my @others = grep { $_ !~ /^$node$/ } 
-        @{$self->{'identical_nodes'}->{ $node }};
-    return @others;
-}
+Returns the node that follows the given node along the given witness
+path.  TODO These are badly named.
+
+=cut
 
 sub next_word {
     # Return the successor via the corresponding edge.
@@ -234,6 +294,15 @@ sub next_word {
     return undef;
 }
 
+=item B<prior_word>
+
+my $prior_node = $graph->prior_word( $node, $path );
+
+Returns the node that precedes the given node along the given witness
+path.  TODO These are badly named.
+
+=cut
+
 sub prior_word {
     # Return the predecessor via the corresponding edge.
     my( $self, $node, $edge ) = @_;
@@ -249,6 +318,15 @@ sub prior_word {
     warn "Could not find node connected from edge $edge";
     return undef;
 }
+
+=item B<node_sequence>
+
+my @nodes = $graph->node_sequence( $first, $last, $path );
+
+Returns the ordered list of nodes, starting with $first and ending
+with $last, along the given witness path.
+
+=cut
 
 sub node_sequence {
     my( $self, $start, $end, $label ) = @_;
@@ -288,6 +366,15 @@ sub node_sequence {
     return @nodes;
 }
 
+=item B<string_lemma>
+
+my $text = $graph->string_lemma( $first, $last, $path );
+
+Returns the whitespace-separated text, starting with $first and ending
+with $last, represented in the graph along the given path.
+
+=cut
+
 sub string_lemma {
     my( $self, $start, $end, $label ) = @_;
 
@@ -296,8 +383,71 @@ sub string_lemma {
     return join( ' ', @words );
 }
 
-## Output.  We use GraphViz for the layout because it handles large
-## graphs better than Graph::Easy does natively.
+=back
+
+=head2 Transposition handling methods
+
+These should really move to their own module.  For use when the graph
+has split transposed nodes in order to avoid edges that travel
+backward.
+
+=over
+
+=item B<set_identical_node>
+
+$graph->set_identical_node( $node, $other_node )
+
+Tell the graph that these two nodes contain the same (transposed) reading.
+
+=cut
+
+sub set_identical_node {
+    my( $self, $node, $same_node ) = @_;
+    my $pool = $self->{'identical_nodes'}->{ $node };
+    my $same_pool = $self->{'identical_nodes'}->{ $same_node };
+    my %poolhash;
+    foreach ( @$pool ) {
+	$poolhash{$_} = 1;
+    }
+    foreach( @$same_pool ) {
+	push( @$pool, $_ ) unless $poolhash{$_};
+    }
+
+    $self->{'identical_nodes'}->{ $same_node } = $pool;
+}
+
+=item B<set_identical_node>
+
+my @nodes = $graph->identical_nodes( $node )
+
+Get a list of nodes that contain the same (transposed) reading as the
+given node.
+
+=cut
+
+sub identical_nodes {
+    my( $self, $node ) = @_;
+    my @others = grep { $_ !~ /^$node$/ } 
+        @{$self->{'identical_nodes'}->{ $node }};
+    return @others;
+}
+
+=back
+
+=head2 Output method(s)
+
+=over
+
+=item B<as_svg>
+
+print $graph->as_svg( $recalculate );
+
+Returns an SVG string that represents the graph.  Uses GraphViz to do
+this, because Graph::Easy doesn't cope well with long graphs. Unless
+$recalculate is passed (and is a true value), the method will return a
+cached copy of the SVG after the first call to the method.
+
+=cut
 
 sub as_svg {
     my( $self, $recalc ) = @_;
@@ -314,7 +464,15 @@ sub as_svg {
     return $svg;
 }
 
-## Methods for lemmatizing a text.
+=back
+
+=head2 Lemmatization methods
+
+=over
+
+=item B<init_lemmatizer>
+
+=cut
 
 sub init_lemmatizer {
     my $self = shift;
@@ -327,12 +485,6 @@ sub init_lemmatizer {
     $self->{'positions'}->init_lemmatizer( @active_names );
     $self->{'lemmatizer_initialized'} = 1;
 
-}
-
-sub make_positions {
-    my( $self, $common_nodes, $paths ) = @_;
-    my $positions = Text::Tradition::Graph::Position->new( $common_nodes, $paths );
-    $self->{'positions'} = $positions;
 }
 
 # Takes a list of nodes that have just been turned off, and returns a
@@ -487,6 +639,20 @@ sub unique_list {
     map { $h{$_} = 1 } @list;
     return keys( %h );
 }
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews, aurum@cpan.org
+
+=cut
 
 1;
 
