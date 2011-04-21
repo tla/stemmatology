@@ -1,4 +1,4 @@
-package Traditions::Parser::BaseText;
+package Text::Tradition::Parser::BaseText;
 
 use strict;
 use warnings;

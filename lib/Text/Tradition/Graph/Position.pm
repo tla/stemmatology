@@ -1,11 +1,11 @@
-package Traditions::Graph::Position;
+package Text::Tradition::Graph::Position;
 
 use strict;
 use warnings;
 
 =head1 NAME
 
-Traditions::Graph::Position
+Text::Tradition::Graph::Position
 
 =head1 SUMMARY
 

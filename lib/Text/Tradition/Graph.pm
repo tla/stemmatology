@@ -1,25 +1,25 @@
-package Traditions::Graph;
+package Text::Tradition::Graph;
 
 use strict;
 use warnings;
 use Graph::Easy;
 use IPC::Run qw( run binary );
 use Module::Load;
-use Traditions::Graph::Position;
+use Text::Tradition::Graph::Position;
 
 =head1 NAME
 
-(Text?)::Traditions::Graph
+Text::Tradition::Graph
 
 =head1 SYNOPSIS
 
-use Traditions::Graph;
+use Text::Tradition::Graph;
 
-my $text = Traditions::Graph->new( 'GraphML' => '/my/graphml/file.xml' );
-my $text = Traditions::Graph->new( 'TEI' => '/my/tei/file.xml' );
-my $text = Traditions::Graph->new( 'CSV' => '/my/csv/file.csv',
+my $text = Text::Tradition::Graph->new( 'GraphML' => '/my/graphml/file.xml' );
+my $text = Text::Tradition::Graph->new( 'TEI' => '/my/tei/file.xml' );
+my $text = Text::Tradition::Graph->new( 'CSV' => '/my/csv/file.csv',
                                    'base' => '/my/basefile.txt' );
-my $text = Traditions::Graph->new( 'CTE' => '/my/cte/file.txt',
+my $text = Text::Tradition::Graph->new( 'CTE' => '/my/cte/file.txt',
                                    'base' => '/my/basefile.txt' );
 
 my $svg_string = $text->as_svg();
@@ -96,7 +96,7 @@ sub new {
     bless( $self, $class );
 
     # Now do the parsing.
-    my $mod = "Traditions::Parser::$format";
+    my $mod = "Text::Tradition::Parser::$format";
     load( $mod );
     my @args = ( $opts{ $format } );
     if( $format =~ /^(CSV|CTE)$/ ) {
@@ -331,7 +331,7 @@ sub init_lemmatizer {
 
 sub make_positions {
     my( $self, $common_nodes, $paths ) = @_;
-    my $positions = Traditions::Graph::Position->new( $common_nodes, $paths );
+    my $positions = Text::Tradition::Graph::Position->new( $common_nodes, $paths );
     $self->{'positions'} = $positions;
 }
 

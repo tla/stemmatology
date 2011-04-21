@@ -1,9 +1,9 @@
-package Traditions::Parser::CSV;
+package Text::Tradition::Parser::CSV;
 
 use strict;
 use warnings;
 use Text::CSV::Simple;
-use Traditions::Parser::BaseText qw( merge_base );
+use Text::Tradition::Parser::BaseText qw( merge_base );
 
 # Takes a CSV file and a base text; returns a GraphML object.
 

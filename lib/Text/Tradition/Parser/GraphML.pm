@@ -1,8 +1,7 @@
-package Traditions::Parser::GraphML;
+package Text::Tradition::Parser::GraphML;
 
 use strict;
 use warnings;
-use Traditions::Graph;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
