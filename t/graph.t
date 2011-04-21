@@ -3,7 +3,7 @@
 use strict; use warnings;
 use Test::More;
 use lib 'lib';
-use Traditions::Graph;
+use Text::Tradition::Graph;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -12,7 +12,7 @@ my $datafile = 't/data/Collatex-16.xml';
 open( GRAPHFILE, $datafile ) or die "Could not open $datafile";
 my @lines = <GRAPHFILE>;
 close GRAPHFILE;
-my $graph = Traditions::Graph->new( 'GraphML' => join( '', @lines ) );
+my $graph = Text::Tradition::Graph->new( 'GraphML' => join( '', @lines ) );
 
 # Test the svg creation
 my $parser = XML::LibXML->new();
