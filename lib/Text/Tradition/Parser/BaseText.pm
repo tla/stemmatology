@@ -66,7 +66,7 @@ sub merge_base {
 	# DEBUG with a short graph
 	# last if $line > 2;
 	# DEBUG for problematic entries
-	# my $scrutinize = "21.8";
+	my $scrutinize = "";
 	my $first_line_node = $base_line_starts[ $line ];
 	my $too_far = $base_line_starts[ $line+1 ];
 	
@@ -138,6 +138,10 @@ sub merge_base {
 	
 	# Now we have our lemma nodes; we add the variant nodes to the graph.
 	
+	# Keep track of the start and end point of each reading for later
+	# node collapse.
+	my @readings = ( $lemma_start, $lemma_end );
+
 	# For each reading that is not rdg_0, we make a chain of nodes
 	# and connect them to the anchor.  Edges are named after the mss
 	# that are relevant.
@@ -172,11 +176,13 @@ sub merge_base {
 	    $graph->add_edge( $last_node, $graph->next_word( $lemma_end ),
 					$edge_name );
 	    
-	    # Now collate and collapse the identical nodes within the graph.
-	    collate_variant( $graph, $lemma_start, $lemma_end, 
-			     $var_start, $last_node );
-	    
+	    if( $var_start ) { # if it wasn't an empty reading
+		push( @readings, $var_start, $last_node );
+	    }
 	}
+
+	# Now collate and collapse the identical nodes within the graph.
+	collate_variants( $graph, @readings );
     }
 
     ## Now in theory I have a graph.  I want to make it a little easier to
@@ -237,7 +243,8 @@ sub read_base {
 		$started = 1;
 	    }
 	    if( $last_node ) {
-		$graph->add_edge( $last_node, $node, "base text" );
+		my $edge = $graph->add_edge( $last_node, $node, "base text" );
+		$edge->set_attribute( 'class', 'basetext' );
 		$last_node = $node;
 	    } # TODO there should be no else here...
 	}
@@ -251,66 +258,86 @@ sub read_base {
     return( @$lineref_array );
 }
 
-=item B<collate_variant>
+=item B<collate_variants>
 
-collate_variant( $graph, $lemma_start, $lemma_end, $var_start, $var_end );
+collate_variants( $graph, @readings )
 
-Given a lemma and a variant as start- and endpoints on the graph,
+Given a set of readings in the form 
+( lemma_start, lemma_end, rdg1_start, rdg1_end, ... )
 walks through each to identify those nodes that are identical.  The
-graph is a Text::Tradition::Graph object; the other arguments are
+graph is a Text::Tradition::Graph object; the elements of @readings are
 Graph::Easy::Node objects that appear on the graph.
 
 TODO: Handle collapsed and non-collapsed transpositions.
 
 =cut
 
-sub collate_variant {
-    my( $graph, $lemma_start, $lemma_end, $var_start, $var_end ) = @_;
-    # If var_start is undef, then the variant is an omission and
-    # there's nothing to collate. Return.
-    return unless $var_start;
+sub collate_variants {
+    my( $graph, @readings ) = @_;
+    my $lemma_start = shift @readings;
+    my $lemma_end = shift @readings;
+    my $detranspose = 1;
 
-    # I want to look at the nodes in the variant and lemma, and
-    # collapse nodes that are the same word.  This is mini-collation.
-    my %collapsed = ();
-    # There will only be one outgoing edge at first, so this is safe.
-    my @out = $var_start->outgoing();
-    my $var_label = $out[0]->label();
-
-    my @lemma_nodes;
+    # Start the list of distinct nodes with those nodes in the lemma.
+    my @distinct_nodes;
     while( $lemma_start ne $lemma_end ) {
-	push( @lemma_nodes, $lemma_start );
+	push( @distinct_nodes, [ $lemma_start, 'base text' ] );
 	$lemma_start = $graph->next_word( $lemma_start );
     } 
-    push( @lemma_nodes, $lemma_end );
+    push( @distinct_nodes, [ $lemma_end, 'base text' ] );
     
-    my @variant_nodes;
-    while( $var_start ne $var_end ) {
-	push( @variant_nodes, $var_start );
-	$var_start = $graph->next_word( $var_start, $var_label );
-    }
-    push( @variant_nodes, $var_end );
 
-    # Go through the variant nodes, and if we find a lemma node that
-    # hasn't yet been collapsed with a node, equate them.
+    while( scalar @readings ) {
+	my( $var_start, $var_end ) = splice( @readings, 0, 2 );
 
-    foreach my $w ( @variant_nodes ) {
-	my $word = $w->label();
-	foreach my $l ( @lemma_nodes ) {
-	    if( $word eq cmp_str( $l ) ) {
-		next if exists( $collapsed{ $l->label } )
-		    && $collapsed{ $l->label } eq $l;
-		# Collapse the nodes.
-		printf STDERR "Merging nodes %s/%s and %s/%s\n", 
-		    $l->name, $l->label, $w->name, $w->label;
-		$graph->merge_nodes( $l, $w );
-		$collapsed{ $l->label } = $l;
-		# Now collapse any multiple edges to and from the node.
-		# Rely on the presence of the 'base text' edge.
-		remove_duplicate_edges( $graph, $graph->prior_word( $l ), $l );
-		remove_duplicate_edges( $graph, $l, $graph->next_word( $l ) );
-	    }
+	# I want to look at the nodes in the variant and lemma, and
+	# collapse nodes that are the same word.  This is mini-collation.
+	# Each word in the 'main' list can only be collapsed once with a
+	# word from the current reading.
+	my %collapsed = ();
+
+	# Get the label. There will only be one outgoing edge to start
+	# with, so this is safe.
+	my @out = $var_start->outgoing();
+	my $var_label = $out[0]->label();
+
+	my @variant_nodes;
+	while( $var_start ne $var_end ) {
+	    push( @variant_nodes, $var_start );
+	    $var_start = $graph->next_word( $var_start, $var_label );
 	}
+	push( @variant_nodes, $var_end );
+
+	# Go through the variant nodes, and if we find a lemma node that
+	# hasn't yet been collapsed with a node, equate them.  If we do
+	# not, keep them to push onto the end of all_nodes.
+	my @remaining_nodes;
+	my $last_index = 0;
+	foreach my $w ( @variant_nodes ) {
+	    my $word = $w->label();
+	    my $matched = 0;
+	    foreach my $idx ( $last_index .. $#distinct_nodes ) {
+		my( $l, $edgelabel ) = @{$distinct_nodes[$idx]};
+		if( $word eq cmp_str( $l ) ) {
+		    next if exists( $collapsed{ $l->label } )
+			&& $collapsed{ $l->label } eq $l;
+		    $matched = 1;
+		    $last_index = $idx if $detranspose;
+		    # Collapse the nodes.
+		    printf STDERR "Merging nodes %s/%s and %s/%s\n", 
+		        $l->name, $l->label, $w->name, $w->label;
+		    $graph->merge_nodes( $l, $w );
+		    $collapsed{ $l->label } = $l;
+		    # Now collapse any multiple edges to and from the node.
+ 		    remove_duplicate_edges( $graph, 
+ 				    $graph->prior_word( $l, $edgelabel ), $l );
+ 		    remove_duplicate_edges( $graph, $l, 
+ 				    $graph->next_word( $l, $edgelabel ) );
+		}
+	    }
+	    push( @remaining_nodes, [ $w, $var_label ] ) unless $matched;
+	}
+	push( @distinct_nodes, @remaining_nodes) if scalar( @remaining_nodes );
     }
 }
 

@@ -280,18 +280,8 @@ path.  TODO These are badly named.
 
 sub next_word {
     # Return the successor via the corresponding edge.
-    my( $self, $node, $edge ) = @_;
-    $edge = "base text" unless $edge;
-    my @next_edges = $node->outgoing();
-    return undef unless scalar( @next_edges );
-    
-    foreach my $e ( @next_edges ) {
-	next unless $e->label() eq $edge;
-	return $e->to();
-    }
-
-    warn "Could not find node connected to edge $edge";
-    return undef;
+    my $self = shift;
+    return $self->_find_linked_word( 'next', @_ );
 }
 
 =item B<prior_word>
@@ -305,18 +295,40 @@ path.  TODO These are badly named.
 
 sub prior_word {
     # Return the predecessor via the corresponding edge.
-    my( $self, $node, $edge ) = @_;
-    $edge = "base text" unless $edge;
-    my @prior_edges = $node->incoming();
-    return undef unless scalar( @prior_edges );
-    
-    foreach my $e ( @prior_edges ) {
-	next unless $e->label() eq $edge;
-	return $e->from();
-    }
+    my $self = shift;
+    return $self->_find_linked_word( 'prior', @_ );
+}
 
-    warn "Could not find node connected from edge $edge";
+sub _find_linked_word {
+    my( $self, $direction, $node, $edge ) = @_;
+    $edge = 'base text' unless $edge;
+    my @linked_edges = $direction eq 'next' 
+	? $node->outgoing() : $node->incoming();
+    return undef unless scalar( @linked_edges );
+    
+    # We have to find the linked edge that contains all of the
+    # witnesses supplied in $edge.
+    my @edge_wits = split( /, /, $edge );
+    foreach my $le ( @linked_edges ) {
+	my @le_wits = split( /, /, $le->name() );
+	if( _is_within( \@edge_wits, \@le_wits ) ) {
+	    # This is the right edge.
+	    return $direction eq 'next' ? $le->to() : $le->from();
+	}
+    }
+    warn "Could not find $direction node from " . $node->label 
+	. " along edge $edge";
     return undef;
+}
+
+# Some set logic.
+sub _is_within {
+    my( $set1, $set2 ) = @_;
+    my $ret = 1;
+    foreach my $el ( @$set1 ) {
+	$ret = 0 unless grep { /^\Q$el\E$/ } @$set2;
+    }
+    return $ret;
 }
 
 =item B<node_sequence>
@@ -487,13 +499,95 @@ sub init_lemmatizer {
 
 }
 
-# Takes a list of nodes that have just been turned off, and returns a
-# set of tuples of the form ['node', 'state'] that indicates what
-# changes need to be made to the graph.
-# A state of 1 means 'turn on this node'
-# A state of 0 means 'turn off this node'
-# A state of undef means 'an ellipsis belongs in the text here because
-#   no decision has been made'
+=item B<toggle_node>
+
+my @nodes_turned_off = $graph->toggle_node( $node );
+
+Takes a node name, and either lemmatizes or de-lemmatizes it. Returns
+a list of all nodes that are de-lemmatized as a result of the toggle.
+
+=cut
+
+sub toggle_node {
+    my( $self, $node ) = @_;
+    
+    # In case this is being called for the first time.
+    $self->init_lemmatizer();
+
+    if( $self->is_common( $node ) ) {
+	# Do nothing, it's a common node.
+	return;
+    } 
+    
+    my $pos = $self->{'positions'}->node_position( $node );
+    my $old_state = $self->{'positions'}->state( $pos );
+    my @nodes_off;
+    if( $old_state && $old_state eq $node ) {
+	# Turn off the node. We turn on no others by default.
+	push( @nodes_off, $node );
+    } else {
+	# Turn on the node.
+	$self->{'positions'}->set_state( $pos, $node );
+	# Any other 'on' nodes in the same position should be off.
+	push( @nodes_off, $self->colocated_nodes( $node ) );
+	# Any node that is an identical transposed one should be off.
+	push( @nodes_off, $self->identical_nodes( $node ) )
+	    if $self->identical_nodes( $node );
+    }
+    @nodes_off = unique_list( @nodes_off );
+
+    # Turn off the nodes that need to be turned off.
+    my @nodes_turned_off;
+    foreach my $n ( @nodes_off ) {
+	my $npos = $self->{'positions'}->node_position( $n );
+	my $state = $self->{'positions'}->state( $npos );
+	if( $state && $state eq $n ) { 
+	    # this node is still on
+	    push( @nodes_turned_off, $n );
+	    my $new_state = undef;
+	    if( $n eq $node ) {
+		# This is the node that was clicked, so if there are no
+		# other nodes there, turn off the position.  In all other
+		# cases, restore the ellipsis.
+		my @all_n = $self->{'positions'}->nodes_at_position( $pos );
+		$new_state = 0 if scalar( @all_n ) == 1;
+	    }
+	    $self->{'positions'}->set_state( $npos, $new_state );
+	} elsif( $old_state && $old_state eq $n ) { 
+	    # another node has already been turned on here
+	    push( @nodes_turned_off, $n );
+	} # else some other node was on anyway, so pass.
+    }
+    return @nodes_turned_off;
+}
+
+=item B<active_nodes>
+
+my @state = $graph->active_nodes( @nodes_turned_off );
+
+Takes a list of nodes that have just been turned off, and returns a
+set of tuples of the form ['node', 'state'] that indicates what
+changes need to be made to the graph.
+
+=over
+
+=item * 
+
+A state of 1 means 'turn on this node'
+
+=item * 
+
+A state of 0 means 'turn off this node'
+
+=item * 
+
+A state of undef means 'an ellipsis belongs in the text here because
+no decision has been made'
+
+=back
+
+=cut
+
 sub active_nodes {
     my( $self, @toggled_off_nodes ) = @_;
 
@@ -556,62 +650,6 @@ sub _nodeobj {
 	$node = $self->node( $node );
     }
     return $node;
-}
-
-# toggle_node takes a node name, and either lemmatizes or de-lemmatizes it.
-# Returns a list of nodes that are de-lemmatized as a result of the toggle.
-
-sub toggle_node {
-    my( $self, $node ) = @_;
-    
-    # In case this is being called for the first time.
-    $self->init_lemmatizer();
-
-    if( $self->is_common( $node ) ) {
-	# Do nothing, it's a common node.
-	return;
-    } 
-    
-    my $pos = $self->{'positions'}->node_position( $node );
-    my $old_state = $self->{'positions'}->state( $pos );
-    my @nodes_off;
-    if( $old_state && $old_state eq $node ) {
-	# Turn off the node. We turn on no others by default.
-	push( @nodes_off, $node );
-    } else {
-	# Turn on the node.
-	$self->{'positions'}->set_state( $pos, $node );
-	# Any other 'on' nodes in the same position should be off.
-	push( @nodes_off, $self->colocated_nodes( $node ) );
-	# Any node that is an identical transposed one should be off.
-	push( @nodes_off, $self->identical_nodes( $node ) )
-	    if $self->identical_nodes( $node );
-    }
-    @nodes_off = unique_list( @nodes_off );
-
-    # Turn off the nodes that need to be turned off.
-    my @nodes_turned_off;
-    foreach my $n ( @nodes_off ) {
-	my $npos = $self->{'positions'}->node_position( $n );
-	my $state = $self->{'positions'}->state( $npos );
-	if( $state && $state eq $n ) { 
-	    # this node is still on
-	    push( @nodes_turned_off, $n );
-	    my $new_state = undef;
-	    if( $n eq $node ) {
-		# This is the node that was clicked, so if there are no
-		# other nodes there, turn off the position.  In all other
-		# cases, restore the ellipsis.
-		my @all_n = $self->{'positions'}->nodes_at_position( $pos );
-		$new_state = 0 if scalar( @all_n ) == 1;
-	    }
-	    $self->{'positions'}->set_state( $npos, $new_state );
-	} elsif( $old_state && $old_state eq $n ) { 
-	    # another node has already been turned on here
-	    push( @nodes_turned_off, $n );
-	} # else some other node was on anyway, so pass.
-    }
-    return @nodes_turned_off;
 }
 
 sub colocated_nodes {
