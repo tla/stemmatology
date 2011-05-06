@@ -3,7 +3,6 @@ package Text::Tradition::Parser::CSV;
 use strict;
 use warnings;
 use Text::CSV::Simple;
-use Text::Tradition::Parser::BaseText qw( merge_base );
 
 =head1 NAME
 
@@ -19,29 +18,16 @@ breaks.
 
 =over
 
-=item B<parse>
+=item B<read>
 
-parse( $graph, 'variants.csv', 'reference.txt' );
+my @apparatus = read( $csv_file );
 
-Takes an initialized Text::Tradition::Graph object and the relevant
-data files; puts the text and its variants onto the graph.
+Takes a CSV file; returns a data structure of apparatus entries to be
+merged with a base text.
 
 =cut
 
-sub parse {
-    my( $graph, $csv_file, $base_text ) = @_;
-
-    # Parse the CSV file into a list of apparatus entries.
-    my @app_list = _read_csv( $csv_file );
-    # Now put the base text onto the graph, and merge in the 
-    # apparatus entries.
-    merge_base( $graph, $base_text, @app_list );
-}
-
-# Takes a CSV file; returns a data structure of apparatus entries to
-# be merged with a base text.
-
-sub _read_csv {
+sub read {
     my( $csv_file ) = @_;
     my $parser = Text::CSV::Simple->new();
     my @fields = qw/ reference text variant type context non_corr non_indep 

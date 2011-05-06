@@ -2,9 +2,7 @@ package Text::Tradition::Parser::BaseText;
 
 use strict;
 use warnings;
-use Exporter 'import';
-use vars qw( @EXPORT_OK );
-@EXPORT_OK = qw( merge_base );
+use Module::Load;
 
 =head1 NAME
 
@@ -29,6 +27,26 @@ will join those listed variants onto the reference text.
 =head1 SUBROUTINES
 
 =over
+
+=item B<parse>
+
+parse( $graph, %opts );
+
+Takes an initialized graph and a set of options, which must include:
+- 'base' - the base text referenced by the variants
+- 'format' - the format of the variant list
+- 'data' - the variants, in the given format.
+
+=cut
+
+sub parse {
+    my( $graph, %opts ) = @_;
+
+    my $format_mod = 'Text::Tradition::Parser::' . $opts{'format'};
+    load( $format_mod );
+    my @apparatus_entries = $format_mod->can('read')->( $opts{'data'} );
+    merge_base( $graph, $opts{'base'}, @apparatus_entries );
+}
 
 =item B<merge_base>
 
@@ -61,6 +79,7 @@ sub merge_base {
     my( $graph, $base_file, @app_entries ) = @_;
     my @base_line_starts = read_base( $base_file, $graph );
 
+    my %all_witnesses;
     foreach my $app ( @app_entries ) {
 	my( $line, $num ) = split( /\./, $app->{_id} );
 	# DEBUG with a short graph
@@ -158,6 +177,7 @@ sub merge_base {
 	    
 	    # Determine the label name for the edges here.
 	    my $edge_name = join(', ', @mss );
+	    @all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
 	    
 	    # Make the variant into a set of nodes.
 	    my $ctr = 0;
@@ -189,19 +209,39 @@ sub merge_base {
     ## read.  So I collapse nodes that have only one edge in and one edge
     ## out, and I do this by looking at the edges.
     
-    foreach my $edge ( $graph->edges() ) {
-	my @out_edges = $edge->from()->outgoing();
-	my @in_edges = $edge->to()->incoming();
+#     foreach my $edge ( $graph->edges() ) {
+# 	my @out_edges = $edge->from()->outgoing();
+# 	my @in_edges = $edge->to()->incoming();
 	
-	next unless scalar( @out_edges ) == 1;
-	next unless scalar( @in_edges ) == 1;
-	next unless $out_edges[0] eq $in_edges[0];
-	# In theory if we've got this far, we're safe, but just to
-	# double-check...
-	next unless $out_edges[0] eq $edge;
+# 	next if $edge->from() eq $graph->start();
+# 	next if $edge->to()->name() eq '#END#';
+# 	next unless scalar( @out_edges ) == 1;
+# 	next unless scalar( @in_edges ) == 1;
+# 	next unless $out_edges[0] eq $in_edges[0];
+# 	# In theory if we've got this far, we're safe, but just to
+# 	# double-check...
+# 	next unless $out_edges[0] eq $edge;
 	
-	$graph->merge_nodes( $edge->from(), $edge->to(), ' ' );
+# 	$graph->merge_nodes( $edge->from(), $edge->to(), ' ' );
+#     }
+
+    # Now walk the path for each witness, so that we can do the
+    # position calculations.
+    my $paths = {};
+    foreach my $w ( keys %all_witnesses ) {
+	my $back = undef;
+	if( $w =~ /^(.*)\s*\(p\.\s*c\.\)/ ) {
+	    $back = $1;
+	}
+	my @wit_nodes = $graph->node_sequence( $graph->start, 
+					       $graph->node( '#END#' ), 
+					       $w, $back );
+	my @wn_names = map { $_->name() } @wit_nodes;
+	$paths->{$w} = \@wn_names;
     }
+    $DB::single = 1;
+    my @common_nodes = grep { $graph->is_common( $_ ) } $graph->nodes();
+    $graph->make_positions( \@common_nodes, $paths );
 }
 
 =item B<read_base>
@@ -276,7 +316,7 @@ sub collate_variants {
     my( $graph, @readings ) = @_;
     my $lemma_start = shift @readings;
     my $lemma_end = shift @readings;
-    my $detranspose = 1;
+    my $detranspose = 0;
 
     # Start the list of distinct nodes with those nodes in the lemma.
     my @distinct_nodes;
@@ -333,6 +373,7 @@ sub collate_variants {
  				    $graph->prior_word( $l, $edgelabel ), $l );
  		    remove_duplicate_edges( $graph, $l, 
  				    $graph->next_word( $l, $edgelabel ) );
+		    last if $matched;
 		}
 	    }
 	    push( @remaining_nodes, [ $w, $var_label ] ) unless $matched;

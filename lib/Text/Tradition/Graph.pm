@@ -81,8 +81,7 @@ sub new {
     my @formats = grep { /^(GraphML|CSV|CTE|TEI)$/ } keys( %opts );
     my $format = shift( @formats );
     unless( $format ) {
-	warn "No data given to create a graph: need GraphML, CSV, or TEI";
-	return;
+	warn "No data given to create a graph; will initialize an empty one";
     }
     if( $format =~ /^(CSV|CTE)$/ && !exists $opts{'base'} ) {
 	warn "Cannot make a graph from $format without a base text";
@@ -99,14 +98,20 @@ sub new {
     bless( $self, $class );
 
     # Now do the parsing.
-    my $mod = "Text::Tradition::Parser::$format";
-    load( $mod );
-    my @args = ( $opts{ $format } );
-    if( $format =~ /^(CSV|CTE)$/ ) {
-	push( @args, $opts{'base'} );
+    if( $format ) {
+	my @args;
+	if( $format =~ /^(CSV|CTE)$/ ) {
+	    @args = ( 'base' => $opts{'base'},
+		      'data' => $opts{$format},
+		      'format' => $format );
+	    $format = 'BaseText';
+	} else {
+	    @args = ( $opts{ $format } ); 
+	}
+	my $mod = "Text::Tradition::Parser::$format";
+	load( $mod );
+	$mod->can('parse')->( $self, @args );
     }
-    $mod->can('parse')->( $self, @args );
-
     return $self;
 }
 
@@ -341,14 +346,13 @@ with $last, along the given witness path.
 =cut
 
 sub node_sequence {
-    my( $self, $start, $end, $label ) = @_;
-    # TODO make label able to follow a single MS
+    my( $self, $start, $end, $witness, $backup ) = @_;
     unless( ref( $start ) eq 'Graph::Easy::Node'
 	&& ref( $end ) eq 'Graph::Easy::Node' ) {
 	warn "Called node_sequence without two nodes!";
 	return ();
     }
-    $label = 'base text' unless $label;
+    $witness = 'base text' unless $witness;
     my @nodes = ( $start );
     my %seen;
     my $n = $start;
@@ -360,11 +364,19 @@ sub node_sequence {
 	$seen{$n->name()} = 1;
 
 	my @edges = $n->outgoing();
-	my @relevant_edges = grep { $_->label =~ /^$label$/ } @edges;
-	warn "Did not find an edge $label from node " . $n->label
+	my @relevant_edges = grep { my @w = split( /, /, $_->label ); 
+				    grep { /^\Q$witness\E$/ } @w } @edges;
+	unless( @relevant_edges ) {
+	    @relevant_edges = grep { my @w = split( /, /, $_->label ); 
+				     grep { /^\Q$backup\E$/ } @w } @edges
+					 if $backup;
+	}
+	unless( @relevant_edges ) {
+	    @relevant_edges = grep { $_->label() eq 'base text' } @edges;
+	}
+
+	warn "Did not find an edge for $witness from node " . $n->label
 	    unless scalar @relevant_edges;
-	warn "Found more than one edge $label from node " . $n->label
-	    unless scalar @relevant_edges == 1;
 	my $next = $relevant_edges[0]->to();
 	push( @nodes, $next );
 	$n = $next;
@@ -372,7 +384,7 @@ sub node_sequence {
     # Check that the last node is our end node.
     my $last = $nodes[$#nodes];
     warn "Last node found from " . $start->label() . 
-	" via path $label is not the end!"
+	" for witness $witness is not the end!"
 	unless $last eq $end;
 
     return @nodes;
@@ -514,7 +526,7 @@ sub toggle_node {
     # In case this is being called for the first time.
     $self->init_lemmatizer();
 
-    if( $self->is_common( $node ) ) {
+    if( !$node || $self->is_common( $node ) ) {
 	# Do nothing, it's a common node.
 	return;
     } 
@@ -635,8 +647,7 @@ sub active_nodes {
     return @answer;
 }
 
-# A couple of helpers. TODO These should be gathered in the same place
-# eventually
+# A couple of helpers. 
 
 sub is_common {
     my( $self, $node ) = @_;
