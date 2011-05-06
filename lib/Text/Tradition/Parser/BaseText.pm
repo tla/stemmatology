@@ -318,13 +318,17 @@ sub collate_variants {
     my $lemma_end = shift @readings;
     my $detranspose = 0;
 
+    # We need to calculate positions at this point, which is where
+    # we are getting the implicit information from the apparatus.
+
     # Start the list of distinct nodes with those nodes in the lemma.
     my @distinct_nodes;
+    my $position = 0;
     while( $lemma_start ne $lemma_end ) {
-	push( @distinct_nodes, [ $lemma_start, 'base text' ] );
+	push( @distinct_nodes, [ $lemma_start, 'base text', $position++ ] );
 	$lemma_start = $graph->next_word( $lemma_start );
     } 
-    push( @distinct_nodes, [ $lemma_end, 'base text' ] );
+    push( @distinct_nodes, [ $lemma_end, 'base text', $position++ ] );
     
 
     while( scalar @readings ) {
@@ -353,11 +357,12 @@ sub collate_variants {
 	# not, keep them to push onto the end of all_nodes.
 	my @remaining_nodes;
 	my $last_index = 0;
+	my $curr_pos = 0;
 	foreach my $w ( @variant_nodes ) {
 	    my $word = $w->label();
 	    my $matched = 0;
 	    foreach my $idx ( $last_index .. $#distinct_nodes ) {
-		my( $l, $edgelabel ) = @{$distinct_nodes[$idx]};
+		my( $l, $edgelabel, $pos ) = @{$distinct_nodes[$idx]};
 		if( $word eq cmp_str( $l ) ) {
 		    next if exists( $collapsed{ $l->label } )
 			&& $collapsed{ $l->label } eq $l;
@@ -373,12 +378,20 @@ sub collate_variants {
  				    $graph->prior_word( $l, $edgelabel ), $l );
  		    remove_duplicate_edges( $graph, $l, 
  				    $graph->next_word( $l, $edgelabel ) );
-		    last if $matched;
+		    $curr_pos = $pos;
+		    last;
 		}
 	    }
-	    push( @remaining_nodes, [ $w, $var_label ] ) unless $matched;
+	    push( @remaining_nodes, [ $w, $var_label, $curr_pos++ ] ) unless $matched;
 	}
 	push( @distinct_nodes, @remaining_nodes) if scalar( @remaining_nodes );
+    }
+
+    # Now set the positions of all the nodes in this variation.
+    #$DB::single = 1;
+    print STDERR "Nodes and their positions are:\n";
+    foreach my $n ( @distinct_nodes ) {
+	printf STDERR "\t%s (position %s)\n", $n->[0]->label(), $n->[2];
     }
 }
 
