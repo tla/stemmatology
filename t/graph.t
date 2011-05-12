@@ -24,21 +24,22 @@ is( $svg->documentElement->nodeName(), 'svg', 'Got an svg document' );
 my $svg_xpc = XML::LibXML::XPathContext->new( $svg->documentElement() );
 $svg_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
 my @svg_nodes = $svg_xpc->findnodes( '//svg:g[@class="node"]' );
-is( scalar @svg_nodes, 21, "Correct number of nodes in the graph" );
+is( scalar @svg_nodes, 24, "Correct number of nodes in the graph" );
 
 # Test for the correct number of edges
 my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
-is( scalar @svg_edges, 27, "Correct number of edges in the graph" );
+is( scalar @svg_edges, 30, "Correct number of edges in the graph" );
 
 # Test for the correct common nodes
-my @expected_nodes = map { [ $_, 1 ] } qw/#START# 1 8 12 13 16 19 20 23 27/;
-foreach my $idx ( qw/2 3 5 8 10 13 15/ ) {
+my @expected_nodes = map { [ $_, 1 ] } qw/ #START# n1 n5 n6 n7 n12 n13
+                                            n16 n19 n20 n23 n27 /;
+foreach my $idx ( qw/2 3 4 8 11 13 16 18/ ) {
     splice( @expected_nodes, $idx, 0, [ "node_null", undef ] );
 }
 my @active_nodes = $graph->active_nodes();
 # is_deeply( \@active_nodes, \@expected_nodes, "Initial common points" );
 subtest 'Initial common points' => \&compare_active;
-my $string = '# when ... ... showers sweet with ... fruit the ... of ... has pierced ... the ... #';
+my $string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the ... #';
 is( make_text( @active_nodes ), $string, "Got the right starting text" );
 
 sub compare_active {
@@ -76,13 +77,14 @@ is( $graph->text_for_witness( "B" ), $wit_b, "Correct path for witness B" );
 is( $graph->text_for_witness( "C" ), $wit_c, "Correct path for witness C" );
 
 # Test the transposition identifiers
-my $transposition_pools = [ [ 2, 9 ], [ 14, 18 ], [ 15, 17 ] ];
-my $transposed_nodes = { 2 => $transposition_pools->[0],
-			 9 => $transposition_pools->[0],
-			 14 => $transposition_pools->[1],
-			 15 => $transposition_pools->[2],
-			 17 => $transposition_pools->[2],
-			 18 => $transposition_pools->[1],
+my $transposition_pools = [ [ 'n2', 'n11' ], [ 'n14', 'n18' ], 
+			    [ 'n17', 'n15' ] ];
+my $transposed_nodes = { 'n2' => $transposition_pools->[0],
+			 'n11' => $transposition_pools->[0],
+			 'n14' => $transposition_pools->[1],
+			 'n15' => $transposition_pools->[2],
+			 'n17' => $transposition_pools->[2],
+			 'n18' => $transposition_pools->[1],
 };
 foreach my $n ( $graph->nodes() ) {
     $transposed_nodes->{ $n->name() } = [ $n->name() ]
@@ -91,84 +93,84 @@ foreach my $n ( $graph->nodes() ) {
 is_deeply( $graph->{'identical_nodes'}, $transposed_nodes, "Found the right transpositions" );
 
 # Test turning on a node
-my @off = $graph->toggle_node( '24' );
-$expected_nodes[ 15 ] = [ "24", 1 ];
+my @off = $graph->toggle_node( 'n25' );
+$expected_nodes[ 18 ] = [ "n25", 1 ];
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on node for new location' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the ... of ... has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the rood #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
  
 # Test the toggling effects of same-column
-@off = $graph->toggle_node( '26' );
-splice( @expected_nodes, 15, 1, ( [ "24", 0 ], [ "26", 1 ] ) );
+@off = $graph->toggle_node( 'n26' );
+splice( @expected_nodes, 18, 1, ( [ "n25", 0 ], [ "n26", 1 ] ) );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on other node in that location' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the ... of ... has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 # Test the toggling effects of transposition
 
-@off = $graph->toggle_node( '14' );
+@off = $graph->toggle_node( 'n14' );
 # Add the turned on node
-$expected_nodes[ 8 ] = [ "14", 1 ];
+$expected_nodes[ 11 ] = [ "n14", 1 ];
 # Remove the 'off' for the previous node
-splice( @expected_nodes, 15, 1 );
+splice( @expected_nodes, 18, 1 );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on transposition node' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the drought of ... has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit the drought of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '18' );
+@off = $graph->toggle_node( 'n18' );
 # Toggle on the new node
-$expected_nodes[ 10 ] = [ "18", 1 ];
+$expected_nodes[ 13 ] = [ "n18", 1 ];
 # Toggle off the transposed node
-$expected_nodes[ 8 ] = [ "14", undef ];
+$expected_nodes[ 11 ] = [ "n14", undef ];
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on that node\'s partner' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the ... of drought has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit the ... of drought has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '14' );
+@off = $graph->toggle_node( 'n14' );
 # Toggle on the new node
-$expected_nodes[ 8 ] = [ "14", 1 ];
+$expected_nodes[ 11 ] = [ "n14", 1 ];
 # Toggle off the transposed node
-$expected_nodes[ 10 ] = [ "18", undef ];
+$expected_nodes[ 13 ] = [ "n18", undef ];
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on the original node' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the drought of ... has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit the drought of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '15' );
+@off = $graph->toggle_node( 'n15' );
 # Toggle on the new node, and off with the old
-splice( @expected_nodes, 8, 1, [ "14", 0 ], [ "15", 1 ] );
+splice( @expected_nodes, 11, 1, [ "n14", 0 ], [ "n15", 1 ] );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on the colocated node' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the march of ... has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit the march of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '3' );
+@off = $graph->toggle_node( 'n3' );
 # Toggle on the new node
-splice( @expected_nodes, 3, 1, [ "3", 1 ] );
+splice( @expected_nodes, 3, 1, [ "n3", 1 ] );
 # Remove the old toggle-off
-splice( @expected_nodes, 8, 1 );
+splice( @expected_nodes, 11, 1 );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on a singleton node' => \&compare_active;
-$string = '# when ... with his showers sweet with ... fruit the march of ... has pierced ... the rood #';
+$string = '# when ... with ... showers sweet with ... fruit the march of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '3' );
+@off = $graph->toggle_node( 'n3' );
 # Toggle off this node
-splice( @expected_nodes, 3, 1, [ "3", 0 ] );
+splice( @expected_nodes, 3, 1, [ "n3", 0 ] );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned off a singleton node' => \&compare_active;
-$string = '# when ... showers sweet with ... fruit the march of ... has pierced ... the rood #';
+$string = '# when ... ... showers sweet with ... fruit the march of ... has pierced ... the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
-@off = $graph->toggle_node( '21' );
-splice( @expected_nodes, 13, 1, [ "21", 1 ] );
+@off = $graph->toggle_node( 'n21' );
+splice( @expected_nodes, 16, 1, [ "n21", 1 ] );
 @active_nodes = $graph->active_nodes( @off );
 subtest 'Turned on a new node after singleton switchoff' => \&compare_active;
-$string = '# when ... showers sweet with ... fruit the march of ... has pierced unto the rood #';
+$string = '# when ... ... showers sweet with ... fruit the march of ... has pierced unto the root #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 done_testing();

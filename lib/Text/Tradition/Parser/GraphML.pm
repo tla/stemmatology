@@ -97,11 +97,11 @@ sub parse {
     my %node_id = reverse %node_name;
 
     ## Record the nodes that are marked as transposed.
-    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata{'identity'} . '"]]';
+    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata{'identical'} . '"]]';
     my $transposition_nodes = $xpc->find( $tr_xpath );
     foreach my $tn ( @$transposition_nodes ) {
 	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
-				$nodedata{'identity'} );
+				$nodedata{'identical'} );
 	$graph->set_identical_node( $node_name{ $tn->getAttribute( 'id' ) },
 				    $node_name{ $xpc->findvalue( $id_xpath, 
 								 $tn ) } );
@@ -124,8 +124,8 @@ sub parse {
 		unless scalar @bn;
 	    $begin_node = $bn[0];
 	    $graph->start( $gnode );
-	    $node_name{ 0 } = '#START#';
-	    $node_id{'#START#'} = 0;
+	    $node_name{ $begin_node->getAttribute( 'id' ) } = '#START#';
+	    $node_id{'#START#'} = $begin_node->getAttribute( 'id' );
 	}
 	unless( scalar @outgoing ) {
 	    warn "Already have an ending node" if $end_node;
@@ -149,13 +149,14 @@ sub parse {
 	my $node_id = $begin_node->getAttribute('id');
 	my @wit_path = ( $node_name{ $node_id } );
 	# TODO Detect loops at some point
-	while( $node_id != $end_node->getAttribute('id') ) {
+	while( $node_id ne $end_node->getAttribute('id') ) {
 	    # Find the node which is the target of the edge whose
 	    # source is $node_id and applies to this witness.
 	    my $xpath_expr = '//g:edge[child::g:data[@key="' 
 		. $wit . '"] and attribute::source="'
 		. $node_id . '"]';
 	    my $next_edge = $xpc->find( $xpath_expr, $graph_el )->[0];
+	    print STDERR " - at $wit / $node_id\n";
 	    $node_id = $next_edge->getAttribute('target');
 	    push( @wit_path, $node_name{ $node_id } );
 	}

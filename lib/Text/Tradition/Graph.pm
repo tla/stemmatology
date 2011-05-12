@@ -426,21 +426,35 @@ Tell the graph that these two nodes contain the same (transposed) reading.
 =cut
 
 sub set_identical_node {
-    my( $self, $node, $same_node ) = @_;
+    my( $self, $node, $main_node ) = @_;
+
+    # The identical_nodes hash contains a key per node, and a value
+    # that is an arrayref to a list of nodes.  Those nodes that are
+    # the same (transposed) node should be keys that point to the same
+    # arrayref.  Each arrayref should contain the name of each node
+    # that points to it.  So basically here we want to merge the
+    # arrays for the two nodes that are now identical.  The 'main'
+    # node should always be first in the array.
+
     my $pool = $self->{'identical_nodes'}->{ $node };
-    my $same_pool = $self->{'identical_nodes'}->{ $same_node };
+    my $main_pool = $self->{'identical_nodes'}->{ $main_node };
+
     my %poolhash;
-    foreach ( @$pool ) {
+    foreach ( @$main_pool ) {
+	# Note which nodes are already in the main pool so that we
+	# don't re-add them.
 	$poolhash{$_} = 1;
     }
-    foreach( @$same_pool ) {
-	push( @$pool, $_ ) unless $poolhash{$_};
-    }
 
-    $self->{'identical_nodes'}->{ $same_node } = $pool;
+    foreach( @$pool ) {
+	# Add the remaining nodes to the main pool...
+	push( @$main_pool, $_ ) unless $poolhash{$_};
+    }
+    # ...and set this node to point to the enlarged pool.
+    $self->{'identical_nodes'}->{ $node } = $main_pool;
 }
 
-=item B<set_identical_node>
+=item B<identical_nodes>
 
 my @nodes = $graph->identical_nodes( $node )
 
@@ -486,6 +500,110 @@ sub as_svg {
     run( \@cmd, \$in, ">", binary(), \$svg );
     $self->{'svg'} = $svg;
     return $svg;
+}
+
+=item B<as_graphml>
+
+print $graph->as_graphml( $recalculate )
+
+Returns a GraphML representation of the collation graph, with
+transposition information and position information. Unless
+$recalculate is passed (and is a true value), the method will return a
+cached copy of the SVG after the first call to the method.
+
+=cut
+
+sub as_graphml {
+    my( $self, $recalc ) = @_;
+    return $self->{'graphml'} if( exists $self->{'graphml'} && !$recalc );
+
+    # Some namespaces
+    my $graphml_ns = 'http://graphml.graphdrawing.org/xmlns';
+    my $xsi_ns = 'http://www.w3.org/2001/XMLSchema-instance';
+    my $graphml_schema = 'http://graphml.graphdrawing.org/xmlns ' .
+	'http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd';
+
+    # Create the document and root node
+    my $graphml = XML::LibXML->createDocument( "1.0", "UTF-8" );
+    my $root = $graphml->createElementNS( $graphml_ns, 'graphml' );
+    $graphml->setDocumentElement( $root );
+    $root->setNamespace( $xsi_ns, 'xsi', 0 );
+    $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
+
+    # Add the data keys for nodes
+    my @node_data = ( 'name', 'token', 'identical', 'position' );
+    foreach my $ndi ( 0 .. $#node_data ) {
+	my $key = $root->addNewChild( $graphml_ns, 'key' );
+	$key->setAttribute( 'attr.name', $node_data[$ndi] );
+	$key->setAttribute( 'attr.type', 'string' );
+	$key->setAttribute( 'for', 'node' );
+	$key->setAttribute( 'id', 'd'.$ndi );
+    }
+
+    # Add the data keys for edges
+    my %wit_hash;
+    my $wit_ctr = 0;
+    foreach my $wit ( $self->getWitnessList ) {
+	my $wit_key = 'w' . $wit_ctr++;
+	$wit_hash{$wit} = $wit_key;
+	my $key = $root->addNewChild( $graphml_ns, 'key' );
+	$key->setAttribute( 'attr.name', $wit );
+	$key->setAttribute( 'attr.type', 'string' );
+	$key->setAttribute( 'for', 'edge' );
+	$key->setAttribute( 'id', $wit_key );
+    }
+
+    # Add the graph, its nodes, and its edges
+    my $graph = $root->addNewChild( $graphml_ns, 'graph' );
+    $graph->setAttribute( 'edgedefault', 'directed' );
+    $graph->setAttribute( 'id', 'g0' ); # TODO make this meaningful
+    $graph->setAttribute( 'parse.edgeids', 'canonical' );
+    $graph->setAttribute( 'parse.edges', $self->edges() );
+    $graph->setAttribute( 'parse.nodeids', 'canonical' );
+    $graph->setAttribute( 'parse.nodes', $self->nodes() );
+    $graph->setAttribute( 'parse.order', 'nodesfirst' );
+
+    my $node_ctr = 0;
+    my %node_hash;
+    foreach my $n ( $self->nodes() ) {
+	my %this_node_data = ();
+	foreach my $ndi ( 0 .. $#node_data ) {
+	    my $value;
+	    $this_node_data{'d'.$ndi} = $n->name if $node_data[$ndi] eq 'name';
+	    $this_node_data{'d'.$ndi} = $n->label 
+		if $node_data[$ndi] eq 'token';
+	    $this_node_data{'d'.$ndi} = $self->primary_node( $n )
+		if $node_data[$ndi] eq 'name';
+	    $this_node_data{'d'.$ndi} = 
+		$self->{'positions'}->node_position( $n )
+		if $node_data[$ndi] eq 'position';
+	}
+	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
+	my $node_xmlid = 'n' . $node_ctr++;
+	$node_hash{ $n->name } = $node_xmlid;
+	$node_el->setAttribute( 'id', $node_xmlid );
+	    
+	foreach my $dk ( keys %this_node_data ) {
+	    my $d_el = $node_el->addNewChild( $graphml_ns, 'data' );
+	    $d_el->setAttribute( 'key', $dk );
+	    $d_el->appendTextChild( $this_node_data{$dk} );
+	}
+    }
+
+    foreach my $e ( $self->edges() ) {
+	my( $name, $from, $to ) = ( $e->name,
+				    $node_hash{ $e->from()->name() },
+				    $node_hash{ $e->to()->name() } );
+	my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
+	$edge_el->setAttribute( 'source', $from );
+	$edge_el->setAttribute( 'target', $to );
+	$edge_el->setAttribute( 'id', $name );
+	# TODO Got to add the witnesses
+    }
+
+    # Return the thing
+    $self->{'graphml'} = $graphml;
+    return $graphml;
 }
 
 =back
