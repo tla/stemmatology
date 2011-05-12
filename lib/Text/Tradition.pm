@@ -2,12 +2,13 @@
 
 package Text::Tradition;
 
+use Text::Tradition::Witness;
+use Text::Tradition::Collation;
 use Moose;
 
 has 'collation' => (
 		    is => 'ro',
 		    isa => 'Text::Tradition::Collation',
-		    init_arg => undef,
 		    );
 
 has 'witnesses' => (
@@ -22,6 +23,48 @@ has 'witnesses' => (
 			sorted_options => 'sort',
 		    },
 		    );
+
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
+
+    # Now @_ contains the original constructor args.  Make a
+    # collation argument and a witnesses argument.
+    my %init_args = @_;
+    my %member_objects = { 'collation' => undef,
+			   'witnesses' => [] };
+
+    if( exists $init_args{'witnesses'} ) {
+	# We got passed an uncollated list of witnesses.  Make a
+	# witness object for each witness, and then send them to the
+	# collator.
+	my $autosigil = 0;
+	foreach my $wit ( %{$init_args{'witnesses'}} ) {
+	    # Each item in the list is either a string or an arrayref.
+	    # If it's a string, it is a filename; if it's an arrayref,
+	    # it is a tuple of 'sigil, file'.  Handle either case.
+	    my $args;
+	    if( ref( $wit ) eq 'ARRAY' ) {
+		$args = { 'sigil' => $wit->[0],
+			  'file' => $wit->[1] };
+	    } else {
+		$args = { 'sigil' => chr( $autosigil+65 ),
+			  'file' => $wit };
+		$autosigil++;
+	    }
+	    push( @{$member_objects{'witnesses'}},
+		  Text::Tradition::Witness->new( $args ) );
+	    # Now how to collate these?
+	}
+    } else {
+	$member_objects{'collation'} = 
+	    Text::Tradition::Collation->new( %init_args );
+	@{$member_objects{'witnesses'}} = 
+	    $member_objects->{'collation'}->create_witnesses();
+    }
+
+    return $class->$orig( %member_objects );
+};
 
 # The user will usually be instantiating a Tradition object, and
 # examining its collation.  The information about the tradition can
