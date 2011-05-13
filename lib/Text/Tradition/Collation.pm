@@ -1,26 +1,21 @@
-#!/usr/bin/env perl
-
 package Text::Tradition::Collation;
 use Moose;
 
 has 'graph' => (
 		is => 'ro',
-		isa => 'Text::Tradition::Graph',
+		isa => 'Graph::Easy',
+		writer => '_init_graph',
+		handles => {
+		    add_node => 'add_reading',
+		    del_node => 'del_reading',
+		    add_edge => 'add_path',
+		    del_edge => 'del_path',
+		    nodes => 'readings',
+		    edges => 'paths',
 		);
+		
 
-# The graph is full of nodes, which have positions and equivalences.
-# These have to be stored externally to the graph itself.
-has 'positions' => (
-		    is => 'ro';
-		    isa => 'Text::Tradition::Graph::Position',
-		    );
-
-has 'equivalences' => (
-		       is => 'rw';
-		       isa => 'Text::Tradition::Graph::Equivalence',
-		       );
-
-# We need a way to access the parent object.
+# TODO do we not have a way to access the parent object?
 has 'tradition' => (
 		    is => 'ro',
 		    isa => 'Text::Tradition',
@@ -40,6 +35,19 @@ has 'tradition' => (
 # constructor should just make an empty equivalences object.  The
 # constructor will also need to make the witness objects, if we didn't
 # come through option 1.
+
+# TODO BUILDARGS
+
+# Wrappers around some methods
+
+sub merge_readings {
+    my $self = shift;
+    my $first_node = shift;
+    my $second_node = shift;
+    $first_node->merge_from( $second_node );
+    unshift( @_, $first_node, $second_node );
+    return $self->graph->merge_nodes( @_ );
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

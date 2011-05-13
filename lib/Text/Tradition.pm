@@ -1,5 +1,3 @@
-#!/usr/bin/env perl
-
 package Text::Tradition;
 
 use Text::Tradition::Witness;
