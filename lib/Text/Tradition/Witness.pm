@@ -3,29 +3,31 @@ use Moose;
 
 # Sigil. Required identifier for a witness.
 has 'sigil' => (
-		is => 'ro',
-		isa => 'Str',
-		);
+    is => 'ro',
+    isa => 'Str',
+    required => 1,
+    );
 
-# Text.  This might be an array of strings, but it might also be an
-# array of graph nodes.
+# Text.  This is an array of strings (i.e. word tokens).
+# TODO Think about how to handle this for the case of pre-prepared
+# collations, where the tokens are in the graph already.
 has 'text' => (
-	       is => 'rw',
-	       isa => 'Array',
-	       );
+    is => 'rw',
+    isa => 'ArrayRef[Str]',
+    );
 
-# File.  This is where we read in the witness, if not from a
-# pre-prepared collation.
-has 'file' => (
-	       is => 'ro',
-	       isa => 'Str',
-	       );
+# Source.  This is where we read in the witness, if not from a
+# pre-prepared collation.  It is probably a filename.
+has 'source' => (
+    is => 'ro',
+    isa => 'Str',
+    );
 
 sub BUILD {
     my $self = shift;
-    if( $self->has_file ) {
+    if( $self->has_source ) {
 	# Read the file and initialize the text.
-	open( WITNESS, $self->file ) or die "Could not open " 
+	open( WITNESS, $self->source ) or die "Could not open " 
 	    . $self->file . "for reading";
 	# TODO support TEI as well as plaintext, sometime
 	my @words;
@@ -34,7 +36,7 @@ sub BUILD {
 	    push( @words, split( /\s+/, $_ ) );
 	}
 	close WITNESS;
-	$self->text( @words );
+	$self->text( \@words );
     }
 }
 

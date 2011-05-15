@@ -29,8 +29,8 @@ around BUILDARGS => sub {
     # Now @_ contains the original constructor args.  Make a
     # collation argument and a witnesses argument.
     my %init_args = @_;
-    my %member_objects = { 'collation' => undef,
-			   'witnesses' => [] };
+    my %member_objects = ( 'collation' => undef,
+			   'witnesses' => [] );
 
     if( exists $init_args{'witnesses'} ) {
 	# We got passed an uncollated list of witnesses.  Make a
@@ -58,7 +58,7 @@ around BUILDARGS => sub {
 	$member_objects{'collation'} = 
 	    Text::Tradition::Collation->new( %init_args );
 	@{$member_objects{'witnesses'}} = 
-	    $member_objects->{'collation'}->create_witnesses();
+	    $member_objects{'collation'}->create_witnesses();
     }
 
     return $class->$orig( %member_objects );

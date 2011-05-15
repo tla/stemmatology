@@ -1,25 +1,27 @@
 package Text::Tradition::Collation;
+
+use Graph::Easy;
 use Moose;
 
 has 'graph' => (
-		is => 'ro',
-		isa => 'Graph::Easy',
-		writer => '_init_graph',
-		handles => {
-		    add_node => 'add_reading',
-		    del_node => 'del_reading',
-		    add_edge => 'add_path',
-		    del_edge => 'del_path',
-		    nodes => 'readings',
-		    edges => 'paths',
-		);
+    is => 'ro',
+    isa => 'Graph::Easy',
+    handles => {
+	add_node => 'add_reading',
+	del_node => 'del_reading',
+	add_edge => 'add_path',
+	del_edge => 'del_path',
+	nodes => 'readings',
+	edges => 'paths',
+    },
+    default => sub { Graph::Easy->new( undirected => 0 ) },
+    );
 		
 
-# TODO do we not have a way to access the parent object?
 has 'tradition' => (
-		    is => 'ro',
-		    isa => 'Text::Tradition',
-		    );
+    is => 'ro',
+    isa => 'Text::Tradition',
+    );
 
 # The collation can be created two ways:
 # 1. Collate a set of witnesses (with CollateX I guess) and process
@@ -36,7 +38,53 @@ has 'tradition' => (
 # constructor will also need to make the witness objects, if we didn't
 # come through option 1.
 
-# TODO BUILDARGS
+sub BUILD {
+    my( $self, $args ) = @_;
+
+    # Call the appropriate parser on the given data
+    my @formats = grep { /^(GraphML|CSV|CTE|TEI)$/ } keys( %$args );
+    my $format = shift( @formats );
+    unless( $format ) {
+	warn "No data given to create a graph; will initialize an empty one";
+    }
+    if( $format =~ /^(CSV|CTE)$/ && !exists $args->{'base'} ) {
+	warn "Cannot make a graph from $format without a base text";
+	return;
+    }
+
+    # Initialize our graph object.
+    $self->graph->set_attribute( 'node', 'shape', 'ellipse' );
+    # Starting point for all texts
+    my $last_node = $self->graph->add_node( '#START#' );
+
+    # Now do the parsing.
+    my @sigla;
+    if( $format ) {
+	my @parseargs;
+	if( $format =~ /^(CSV|CTE)$/ ) {
+	    @parseargs = ( 'base' => $args->{'base'},
+		      'data' => $args->{$format},
+		      'format' => $format );
+	    $format = 'BaseText';
+	} else {
+	    @parseargs = ( $args->{ $format } ); 
+	}
+	my $mod = "Text::Tradition::Parser::$format";
+	load( $mod );
+	# TODO parse needs to return witness IDs
+	@sigla = $mod->can('parse')->( $self->graph, @parseargs );
+    }
+
+    # Do we need to initialize the witnesses?
+    unless( $args->{'have_witnesses'} ) {
+	# initialize Witness objects for all our witnesses
+	my @witnesses;
+	foreach my $sigil ( @sigla ) {
+	    push( @witnesses, Text::Tradition::Witness->new( 'sigil' => $sigil ) );
+	}
+	$self->tradition->witnesses( \@witnesses );
+    }
+}
 
 # Wrappers around some methods
 
