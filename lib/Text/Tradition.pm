@@ -1,43 +1,39 @@
 package Text::Tradition;
 
-use Text::Tradition::Witness;
-use Text::Tradition::Collation;
 use Moose;
+use Text::Tradition::Collation;
+use Text::Tradition::Witness;
 
 has 'collation' => (
-		    is => 'ro',
-		    isa => 'Text::Tradition::Collation',
-		    );
+    is => 'ro',
+    isa => 'Text::Tradition::Collation',
+    writer => '_save_collation',
+    );
 
 has 'witnesses' => (
-		    traits => ['Array'],
-		    is => 'rw',
-		    isa => 'ArrayRef[Text::Tradition::Witness]',
-		    handles => {
-			all_options    => 'elements',
-			add_option     => 'push',
-			map_options    => 'map',
-			option_count   => 'count',
-			sorted_options => 'sort',
-		    },
-		    );
+    traits => ['Array'],
+    is => 'rw',
+    isa => 'ArrayRef[Text::Tradition::Witness]',
+    handles => {
+	all_options    => 'elements',
+	add_option     => 'push',
+	map_options    => 'map',
+	option_count   => 'count',
+	sorted_options => 'sort',
+    },
+    );
 
-around BUILDARGS => sub {
-    my $orig = shift;
-    my $class = shift;
+sub BUILD {
+    my( $self, $init_args ) = @_;
+    print STDERR "Calling tradition build\n";
 
-    # Now @_ contains the original constructor args.  Make a
-    # collation argument and a witnesses argument.
-    my %init_args = @_;
-    my %member_objects = ( 'collation' => undef,
-			   'witnesses' => [] );
-
-    if( exists $init_args{'witnesses'} ) {
+    $DB::single = 1;
+    if( exists $init_args->{'witnesses'} ) {
 	# We got passed an uncollated list of witnesses.  Make a
 	# witness object for each witness, and then send them to the
 	# collator.
 	my $autosigil = 0;
-	foreach my $wit ( %{$init_args{'witnesses'}} ) {
+	foreach my $wit ( %{$init_args->{'witnesses'}} ) {
 	    # Each item in the list is either a string or an arrayref.
 	    # If it's a string, it is a filename; if it's an arrayref,
 	    # it is a tuple of 'sigil, file'.  Handle either case.
@@ -50,19 +46,16 @@ around BUILDARGS => sub {
 			  'file' => $wit };
 		$autosigil++;
 	    }
-	    push( @{$member_objects{'witnesses'}},
-		  Text::Tradition::Witness->new( $args ) );
-	    # Now how to collate these?
+	    $self->witnesses->push( Text::Tradition::Witness->new( $args ) );
+	    # TODO Now how to collate these?
 	}
     } else {
-	$member_objects{'collation'} = 
-	    Text::Tradition::Collation->new( %init_args );
-	@{$member_objects{'witnesses'}} = 
-	    $member_objects{'collation'}->create_witnesses();
+	# Else we got passed args intended for the collator.
+	$init_args->{'tradition'} = $self;
+	$self->_save_collation( Text::Tradition::Collation->new( %$init_args ) );
+	$self->witnesses( $self->collation->create_witnesses() );
     }
-
-    return $class->$orig( %member_objects );
-};
+}
 
 # The user will usually be instantiating a Tradition object, and
 # examining its collation.  The information about the tradition can

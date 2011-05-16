@@ -30,12 +30,12 @@ graph.
 =cut
 
 sub parse {
-    my( $graph, $graphml_str ) = @_;
+    my( $collation, $graphml_str ) = @_;
 
     my $parser = XML::LibXML->new();
     my $doc = $parser->parse_string( $graphml_str );
-    my $collation = $doc->documentElement();
-    my $xpc = XML::LibXML::XPathContext->new( $collation );
+    my $graphml = $doc->documentElement();
+    my $xpc = XML::LibXML::XPathContext->new( $graphml );
     $xpc->registerNs( 'g', 'http://graphml.graphdrawing.org/xmlns' );
     
     # First get the ID keys, for witnesses and for collation data
@@ -56,7 +56,7 @@ sub parse {
 
     # Add the nodes to the graph.  First delete the start node, because
     # GraphML graphs will have their own start nodes.
-    $graph->del_node( $graph->start() );
+    $collation->del_reading( $collation->start() );
     # Map from XML IDs to node name/identity
     my %node_name;
     # Keep track of whatever extra info we're passed
@@ -66,7 +66,7 @@ sub parse {
 	my $lookup_xpath = './g:data[@key="%s"]/child::text()';
 	my $id = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{'number'} ), $n );
 	my $label = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{'token'} ), $n );
-	my $gnode = $graph->add_node( $id );
+	my $gnode = $collation->add_reading( $id );
 	$node_name{ $n->getAttribute('id') } = $id;
 	$gnode->set_attribute( 'label', $label );
 
@@ -90,7 +90,7 @@ sub parse {
 	my @wit_names = map { $witnesses{ $_->getValue() } } @wit_ids;
 	my $label = join( ', ', @wit_names );
 	    
-	$graph->add_edge( $from, $to, $label );
+	$collation->add_path( $from, $to, $label );
     }
 
     ## Reverse the node_name hash so that we have two-way lookup.
@@ -102,16 +102,16 @@ sub parse {
     foreach my $tn ( @$transposition_nodes ) {
 	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
 				$nodedata{'identical'} );
-	$graph->set_identical_node( $node_name{ $tn->getAttribute( 'id' ) },
-				    $node_name{ $xpc->findvalue( $id_xpath, 
-								 $tn ) } );
+	$collation->reading( $node_id{ $tn->getAttribute( 'id' ) } )->
+	    set_identical( $collation->reading( 
+			       $node_name{ $xpc->findvalue( $id_xpath, $tn ) } ) );
     }
 
 
     # Find the beginning and end nodes of the graph.  The beginning node
     # has no incoming edges; the end node has no outgoing edges.
     my( $begin_node, $end_node );
-    foreach my $gnode ( $graph->nodes() ) {
+    foreach my $gnode ( $collation->readings() ) {
 	print STDERR "Checking node " . $gnode->name . "\n";
 	my @outgoing = $gnode->outgoing();
 	my @incoming = $gnode->incoming();
@@ -123,7 +123,7 @@ sub parse {
 	    warn "XPath did not find a node for id $node_xml_id"
 		unless scalar @bn;
 	    $begin_node = $bn[0];
-	    $graph->start( $gnode );
+	    $collation->start( $gnode );
 	    $node_name{ $begin_node->getAttribute( 'id' ) } = '#START#';
 	    $node_id{'#START#'} = $begin_node->getAttribute( 'id' );
 	}
@@ -176,15 +176,15 @@ sub parse {
     # Mark all the nodes as either common or not.
     foreach my $cn ( @common_nodes ) {
 	print STDERR "Setting $cn as common node\n";
-	$graph->node( $cn )->set_attribute( 'class', 'common' );
+	$collation->reading( $cn )->set_attribute( 'class', 'common' );
     }
-    foreach my $n ( $graph->nodes() ) {
+    foreach my $n ( $collation->readings() ) {
 	$n->set_attribute( 'class', 'variant' )
 	    unless $n->get_attribute( 'class' ) eq 'common';
     }
 
     # Now calculate graph positions.
-    $graph->make_positions( \@common_nodes, $paths );
+    # $collation->make_positions( \@common_nodes, $paths );
 
 }
     

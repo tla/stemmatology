@@ -1,8 +1,8 @@
 package Text::Tradition::Collation::Reading;
 
+use Moose;
 use Moose::Util::TypeConstraints;
 use MooseX::NonMoose;
-use Moose;
 
 extends 'Graph::Easy::Node';
 
@@ -24,18 +24,31 @@ has 'same_as' => (
     isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
     );
 
-# This is a hash mapping of 'relationship => reading'.
-# TODO we should validate the relationships sometime.
+# # This is a hash mapping of 'relationship => reading'.
+# # TODO we should validate the relationships sometime.
 has 'relationships' => (
     is => 'ro',
     isa => 'HashRef[Text::Tradition::Collation::Reading]',
     default => sub { {} },
     );
 
+# Deal with the non-arg option for Graph::Easy's constructor.
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
+
+    my %args;
+    if( @_ == 1 && ref( $_[0] ) ne 'HASH' ) {
+	return $class->$orig( 'name' => $_[0] );
+    } else {
+	return $class->$orig( @_ );
+    }
+};
+
 # Initialize the identity pool. 
 sub BUILD {
     my( $self, $args ) = @_;
-#    $self->same_as( [ $self ] );
+    $self->same_as( [ $self ] );
 }
 
 sub merge_from {
@@ -68,7 +81,7 @@ sub set_identical {
 					   $other_node->same_as );
 
     # ...and set this node to point to the enlarged pool.
-    $self->set_same_as( $enlarged_pool );
+    $self->same_as( $enlarged_pool );
 }   
 
 sub _merge_array_pool {
@@ -85,6 +98,17 @@ sub _merge_array_pool {
 	push( @$main_pool, $_ ) unless $poolhash{$_->name};
     }
     return $main_pool;
+}
+
+sub has_primary {
+    my $self = shift;
+    my $pool = $self->same_as;
+    return $pool->[0]->name eq $self->name;
+}
+
+sub primary {
+    my $self = shift;
+    return $self->same_as->[0];
 }
 
 # Much easier to do this with a hash than with an array of Relationship objects,

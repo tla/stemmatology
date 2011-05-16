@@ -21,6 +21,7 @@ has 'text' => (
 has 'source' => (
     is => 'ro',
     isa => 'Str',
+    predicate => 'has_source',
     );
 
 sub BUILD {
