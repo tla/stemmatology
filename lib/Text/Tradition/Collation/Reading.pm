@@ -1,8 +1,8 @@
 package Text::Tradition::Collation::Reading;
 
-use Moose;
 use Moose::Util::TypeConstraints;
 use MooseX::NonMoose;
+use Moose;
 
 extends 'Graph::Easy::Node';
 
@@ -119,15 +119,28 @@ __PACKAGE__->meta->make_immutable;
 # when overriding nodes, we also need ::Anon
 
 package Text::Tradition::Collation::Reading::Anon;
+use Moose;
+use MooseX::NonMoose;
+extends 'Text::Tradition::Collation::Reading';
+extends 'Graph::Easy::Node::Anon';
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
-use base qw/Text::Tradition::Collation::Reading/;
-use base qw/Graph::Easy::Node::Anon/;
+1;
+# use base qw/Text::Tradition::Collation::Reading/;
+# use base qw/Graph::Easy::Node::Anon/;
 
 ######################################################
 # and :::Empty
 
 package Text::Tradition::Collation::Reading::Empty;
+use Moose;
+use MooseX::NonMoose;
+extends 'Graph::Easy::Node::Empty';
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
-use base qw/Text::Tradition::Collation::Reading/;
+1;
+# use base qw/Text::Tradition::Collation::Reading/;
 
 ######################################################
