@@ -31,16 +31,13 @@ is( scalar @svg_nodes, 24, "Correct number of nodes in the graph" );
 my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar @svg_edges, 30, "Correct number of edges in the graph" );
 
-__END__
-
 # Test for the correct common nodes
 my @expected_nodes = map { [ $_, 1 ] } qw/ #START# n1 n5 n6 n7 n12 n13
                                             n16 n19 n20 n23 n27 /;
 foreach my $idx ( qw/2 3 4 8 11 13 16 18/ ) {
     splice( @expected_nodes, $idx, 0, [ "node_null", undef ] );
 }
-my @active_nodes = $collation->active_nodes();
-# is_deeply( \@active_nodes, \@expected_nodes, "Initial common points" );
+my @active_nodes = $collation->lemma_readings();
 subtest 'Initial common points' => \&compare_active;
 my $string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the ... #';
 is( make_text( @active_nodes ), $string, "Got the right starting text" );
@@ -63,13 +60,15 @@ sub make_text {
     my @words;
     foreach my $n ( @_ ) {
 	if( $n->[1] ) {
-	    push( @words, $collation->text_of_node( $n->[0] ) );
+	    push( @words, $collation->reading( $n->[0] )->label );
 	} elsif ( !defined $n->[1] ) {
 	    push( @words, '...' );
 	}
     }
     return join( ' ', @words );
 }
+
+__END__
 
 # Test the manuscript paths
 my $wit_a = '# when april with his showers sweet with fruit the drought of march has pierced unto the root #';

@@ -26,7 +26,6 @@ sub BUILD {
     my( $self, $init_args ) = @_;
     print STDERR "Calling tradition build\n";
 
-    $DB::single = 1;
     if( exists $init_args->{'witnesses'} ) {
 	# We got passed an uncollated list of witnesses.  Make a
 	# witness object for each witness, and then send them to the

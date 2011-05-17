@@ -138,12 +138,11 @@ sub parse {
 	}
     }
 
-    $collation->walk_witness_paths( $end_node );
+    my @common_nodes = $collation->walk_witness_paths( $end_node );
     # Now we have added the witnesses and their paths, so have also
     # implicitly marked the common nodes. Now we can calculate their
     # explicit permissions.  This is separate because it won't always
     # be necessary with the GraphML parsing.
-    $collation->calculate_positions() unless $has_explicit_positions;
     if( $has_explicit_positions ) {
 	# Record the positions that came with each graph node.
 	# TODO we really need to translate these into our own style of
@@ -154,7 +153,7 @@ sub parse {
 	}
     } else {
 	# Calculate a position for each graph node.
-	$collation->calculate_positions();
+	$collation->calculate_positions( @common_nodes );
     }
 }
 

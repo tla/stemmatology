@@ -48,6 +48,14 @@ has 'graphml' => (
     predicate => 'has_graphml',
     );
 
+# Keeps track of the lemmas within the collation.  At most one lemma
+# per position in the graph.
+has 'lemmata' => (
+    is => 'ro',
+    isa => 'HashRef[Maybe[Str]]',
+    default => sub { {} },
+    );
+
 has 'wit_list_separator' => (
 			     is => 'rw',
 			     isa => 'Str',
@@ -315,7 +323,7 @@ sub walk_witness_paths {
     # TODO This method is going to fall down if we have a very gappy 
     # text in the collation.
     my $paths = {};
-    my @common_nodes;
+    my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $curr_reading = $self->start;
 	my @wit_path = ( $curr_reading );
@@ -334,26 +342,28 @@ sub walk_witness_paths {
 	    $curr_reading = $next_reading;
 	}
 	$wit->path( \@wit_path );
-	if( @common_nodes ) {
+	if( @common_readings ) {
 	    my @cn;
 	    foreach my $n ( @wit_path ) {
-		push( @cn, $n ) if grep { $_ eq $n } @common_nodes;
+		push( @cn, $n ) if grep { $_ eq $n } @common_readings;
 	    }
-	    @common_nodes = ();
-	    push( @common_nodes, @cn );
+	    @common_readings = ();
+	    push( @common_readings, @cn );
 	} else {
-	    push( @common_nodes, @wit_path );
+	    push( @common_readings, @wit_path );
 	}
     }
 
     # Mark all the nodes as either common or not.
-    foreach my $cn ( @common_nodes ) {
+    foreach my $cn ( @common_readings ) {
 	print STDERR "Setting " . $cn->name . " as common node\n";
 	$cn->make_common;
     }
     foreach my $n ( $self->readings() ) {
 	$n->make_variant unless $n->is_common;
     }
+    # Return an array of the common nodes in order.
+    return @common_readings;
 }
 
 sub common_readings {
@@ -365,14 +375,14 @@ sub common_readings {
 # Calculate the relative positions of nodes in the graph, if they
 # were not given to us.
 sub calculate_positions {
-    my $self = shift;
+    my( $self, @ordered_common ) = @_;
 
     # We have to calculate the position identifiers for each word,
     # keyed on the common nodes.  This will be 'fun'.  The end result
     # is a hash per witness, whose key is the word node and whose
     # value is its position in the text.  Common nodes are always N,1
     # so have identical positions in each text.
-    my @common = $self->common_readings();
+    $DB::single = 1;
 
     my $node_pos = {};
     foreach my $wit ( @{$self->tradition->witnesses} ) {
@@ -384,7 +394,7 @@ sub calculate_positions {
 	my $cn = 0;  # We should hit the common readings in order.
 	my $row = [];
 	foreach my $wn ( @{$wit->path} ) {
-	    if( $wn eq $common[$cn] ) {
+	    if( $wn eq $ordered_common[$cn] ) {
 		# Set up to look for the next common node, and
 		# start a new row of words.
 		$cn++;
@@ -416,6 +426,8 @@ sub calculate_positions {
 	    }
 	}
     }
+
+    $self->init_lemmata();
 }
 
 sub _cmp_position {
@@ -428,6 +440,105 @@ sub _cmp_position {
     # else 
     return $pos_a[1] <=> $pos_b[1];
 }
+
+sub all_positions {
+    my $self = shift;
+    my %positions = ();
+    map { $positions{$_->position} = 1 } $self->readings;
+    return keys( %positions );
+}
+
+sub readings_at_position {
+    my( $self, $pos ) = @_;
+    my @answer = grep { $_->position eq $pos } $self->readings;
+    return @answer;
+}
+
+## Lemmatizer functions
+
+sub init_lemmata {
+    my $self = shift;
+    
+    foreach my $position ( $self->all_positions ) {
+	$self->lemmata->{$position} = undef;
+    }
+
+    foreach my $cr ( $self->common_readings ) {
+	$self->lemmata->{$cr->position} = $cr->name;
+    }
+}
+    
+=item B<lemma_readings>
+
+my @state = $graph->lemma_readings( @readings_delemmatized );
+
+Takes a list of readings that have just been delemmatized, and returns
+a set of tuples of the form ['reading', 'state'] that indicates what
+changes need to be made to the graph.
+
+=over
+
+=item * 
+
+A state of 1 means 'lemmatize this reading'
+
+=item * 
+
+A state of 0 means 'delemmatize this reading'
+
+=item * 
+
+A state of undef means 'an ellipsis belongs in the text here because
+no decision has been made / an earlier decision was backed out'
+
+=back
+
+=cut
+
+sub lemma_readings {
+    my( $self, @toggled_off_nodes ) = @_;
+
+    # First get the positions of those nodes which have been
+    # toggled off.
+    my $positions_off = {};
+    map { $positions_off->{ $_->position } = $_->name } @toggled_off_nodes;
+ 
+    
+    # Now for each position, we have to see if a node is on, and we
+    # have to see if a node has been turned off.
+    my @answer;
+    foreach my $pos ( $self->all_positions() ) {
+	# Find the state of this position.  If there is an active node,
+	# its name will be the state; otherwise the state will be 0 
+	# (nothing at this position) or undef (ellipsis at this position)
+	my $active = $self->lemmata->{$pos};
+	
+	# Is there a formerly active node that was toggled off?
+	if( exists( $positions_off->{$pos} ) ) {
+	    my $off_node = $positions_off->{$pos};
+	    if( $active && $active ne $off_node) {
+		push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
+	    } else {
+		push( @answer, [ $off_node, $active ] );
+	    }
+
+	# No formerly active node, so we just see if there is a currently
+	# active one.
+	} elsif( $active ) {
+	    # Push the active node, whatever it is.
+	    push( @answer, [ $active, 1 ] );
+	} else {
+	    # Push the state that is there. Arbitrarily use the first node
+	    # at that position.
+	    my @pos_nodes = $self->readings_at_position( $pos );
+	    push( @answer, [ $pos_nodes[0], $self->lemmata->{$pos} ] );
+	}
+    }
+    
+    return @answer;
+}
+
+
  
 # Return the string that joins together a list of witnesses for
 # display on a single path.
