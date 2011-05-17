@@ -1,5 +1,6 @@
 package Text::Tradition;
 
+use Module::Load;
 use Moose;
 use Text::Tradition::Collation;
 use Text::Tradition::Witness;
@@ -15,12 +16,10 @@ has 'witnesses' => (
     is => 'rw',
     isa => 'ArrayRef[Text::Tradition::Witness]',
     handles => {
-	all_options    => 'elements',
-	add_option     => 'push',
-	map_options    => 'map',
-	option_count   => 'count',
-	sorted_options => 'sort',
+	all    => 'elements',
+	add    => 'push',
     },
+    default => sub { [] },
     );
 
 sub BUILD {
@@ -50,11 +49,49 @@ sub BUILD {
 	    # TODO Now how to collate these?
 	}
     } else {
-	# Else we got passed args intended for the collator.
-	$init_args->{'tradition'} = $self;
-	$self->_save_collation( Text::Tradition::Collation->new( %$init_args ) );
-	$self->witnesses( $self->collation->create_witnesses() );
+	# Else we need to parse some collation data.  Make a Collation object
+	my $collation = Text::Tradition::Collation->new( %$init_args,
+							'tradition' => $self );
+	$self->_save_collation( $collation );
+
+	# Call the appropriate parser on the given data
+	my @formats = grep { /^(GraphML|CSV|CTE|TEI)$/ } keys( %$init_args );
+	my $format = shift( @formats );
+	unless( $format ) {
+	    warn "No data given to create a collation; will initialize an empty one";
+	}
+	if( $format && $format =~ /^(CSV|CTE)$/ && 
+	    !exists $init_args->{'base'} ) {
+	    warn "Cannot make a collation from $format without a base text";
+	    return;
+	}
+
+	# Starting point for all texts
+	my $last_node = $collation->add_reading( '#START#' );
+
+	# Now do the parsing. 
+	my @sigla;
+	if( $format ) {
+	    my @parseargs;
+	    if( $format =~ /^(CSV|CTE)$/ ) {
+		@parseargs = ( 'base' => $init_args->{'base'},
+			       'data' => $init_args->{$format},
+			       'format' => $format );
+		$format = 'BaseText';
+	    } else {
+		@parseargs = ( $init_args->{ $format } ); 
+	    }
+	    my $mod = "Text::Tradition::Parser::$format";
+	    load( $mod );
+	    $mod->can('parse')->( $self, @parseargs );
+	}
     }
+}
+
+sub add_witness {
+    my $self = shift;
+    my $new_wit = Text::Tradition::Witness->new( @_ );
+    push( @{$self->witnesses}, $new_wit );
 }
 
 # The user will usually be instantiating a Tradition object, and

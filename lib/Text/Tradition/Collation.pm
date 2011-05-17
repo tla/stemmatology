@@ -2,7 +2,6 @@ package Text::Tradition::Collation;
 
 use Graph::Easy;
 use IPC::Run qw( run binary );
-use Module::Load;
 use Text::Tradition::Collation::Reading;
 use Moose;
 
@@ -49,6 +48,12 @@ has 'graphml' => (
     predicate => 'has_graphml',
     );
 
+has 'wit_list_separator' => (
+			     is => 'rw',
+			     isa => 'Str',
+			     default => ', ',
+			     );
+
 # The collation can be created two ways:
 # 1. Collate a set of witnesses (with CollateX I guess) and process
 #    the results as in 2.
@@ -66,51 +71,11 @@ has 'graphml' => (
 
 sub BUILD {
     my( $self, $args ) = @_;
-
-    # Call the appropriate parser on the given data
-    my @formats = grep { /^(GraphML|CSV|CTE|TEI)$/ } keys( %$args );
-    my $format = shift( @formats );
-    unless( $format ) {
-	warn "No data given to create a graph; will initialize an empty one";
-    }
-    if( $format && $format =~ /^(CSV|CTE)$/ && !exists $args->{'base'} ) {
-	warn "Cannot make a graph from $format without a base text";
-	return;
-    }
-
-    # Initialize our graph object.
     $self->graph->use_class('node', 'Text::Tradition::Collation::Reading');
-    $self->graph->set_attribute( 'node', 'shape', 'ellipse' );
-    # Starting point for all texts
-    my $last_node = $self->add_reading( '#START#' );
 
-    # Now do the parsing.
-    my @sigla;
-    if( $format ) {
-	my @parseargs;
-	if( $format =~ /^(CSV|CTE)$/ ) {
-	    @parseargs = ( 'base' => $args->{'base'},
-		      'data' => $args->{$format},
-		      'format' => $format );
-	    $format = 'BaseText';
-	} else {
-	    @parseargs = ( $args->{ $format } ); 
-	}
-	my $mod = "Text::Tradition::Parser::$format";
-	load( $mod );
-	# TODO parse needs to return witness IDs
-	@sigla = $mod->can('parse')->( $self, @parseargs );
-    }
-
-    # Do we need to initialize the witnesses?
-    unless( $args->{'have_witnesses'} ) {
-	# initialize Witness objects for all our witnesses
-	my @witnesses;
-	foreach my $sigil ( @sigla ) {
-	    push( @witnesses, Text::Tradition::Witness->new( 'sigil' => $sigil ) );
-	}
-	$self->tradition->witnesses( \@witnesses );
-    }
+    # Pass through any graph-specific options.
+    my $shape = exists( $args->{'shape'} ) ? $args->{'shape'} : 'ellipse';
+    $self->graph->set_attribute( 'node', 'shape', $shape );
 }
 
 # Wrappers around some methods
@@ -133,7 +98,7 @@ sub merge_readings {
 print $graph->as_svg( $recalculate );
 
 Returns an SVG string that represents the graph.  Uses GraphViz to do
-this, because Graph::Easy doesn't cope well with long graphs. Unless
+this, because Graph::Easy doesn\'t cope well with long graphs. Unless
 $recalculate is passed (and is a true value), the method will return a
 cached copy of the SVG after the first call to the method.
 
@@ -268,7 +233,7 @@ Returns the beginning of the collation, a meta-reading with label '#START#'.
 =cut
 
 sub start {
-    # Return the beginning node of the graph.
+    # Return the beginning reading of the graph.
     my $self = shift;
     my( $new_start ) = @_;
     if( $new_start ) {
@@ -278,37 +243,37 @@ sub start {
     return $self->reading('#START#');
 }
 
-=item B<next_word>
+=item B<next_reading>
 
-my $next_node = $graph->next_word( $node, $path );
+my $next_reading = $graph->next_reading( $reading, $witpath );
 
-Returns the node that follows the given node along the given witness
+Returns the reading that follows the given reading along the given witness
 path.  TODO These are badly named.
 
 =cut
 
-sub next_word {
+sub next_reading {
     # Return the successor via the corresponding edge.
     my $self = shift;
-    return $self->_find_linked_word( 'next', @_ );
+    return $self->_find_linked_reading( 'next', @_ );
 }
 
-=item B<prior_word>
+=item B<prior_reading>
 
-my $prior_node = $graph->prior_word( $node, $path );
+my $prior_reading = $graph->prior_reading( $reading, $witpath );
 
-Returns the node that precedes the given node along the given witness
+Returns the reading that precedes the given reading along the given witness
 path.  TODO These are badly named.
 
 =cut
 
-sub prior_word {
+sub prior_reading {
     # Return the predecessor via the corresponding edge.
     my $self = shift;
-    return $self->_find_linked_word( 'prior', @_ );
+    return $self->_find_linked_reading( 'prior', @_ );
 }
 
-sub _find_linked_word {
+sub _find_linked_reading {
     my( $self, $direction, $node, $edge ) = @_;
     $edge = 'base text' unless $edge;
     my @linked_edges = $direction eq 'next' 
@@ -317,9 +282,9 @@ sub _find_linked_word {
     
     # We have to find the linked edge that contains all of the
     # witnesses supplied in $edge.
-    my @edge_wits = split( /, /, $edge );
+    my @edge_wits = $self->witnesses_of_label( $edge );
     foreach my $le ( @linked_edges ) {
-	my @le_wits = split( /, /, $le->name() );
+	my @le_wits = $self->witnesses_of_label( $le->name );
 	if( _is_within( \@edge_wits, \@le_wits ) ) {
 	    # This is the right edge.
 	    return $direction eq 'next' ? $le->to() : $le->from();
@@ -330,11 +295,152 @@ sub _find_linked_word {
     return undef;
 }
 
-sub create_witnesses {
-    # TODO Given a new collation, make a bunch of Witness objects.
-
-    return [];
+# Some set logic.
+sub _is_within {
+    my( $set1, $set2 ) = @_;
+    my $ret = 1;
+    foreach my $el ( @$set1 ) {
+	$ret = 0 unless grep { /^\Q$el\E$/ } @$set2;
+    }
+    return $ret;
 }
+
+# Walk the paths for each witness in the graph, and return the nodes
+# that the graph has in common.
+
+sub walk_witness_paths {
+    my( $self, $end ) = @_;
+    # For each witness, walk the path through the graph.
+    # Then we need to find the common nodes.  
+    # TODO This method is going to fall down if we have a very gappy 
+    # text in the collation.
+    my $paths = {};
+    my @common_nodes;
+    foreach my $wit ( @{$self->tradition->witnesses} ) {
+	my $curr_reading = $self->start;
+	my @wit_path = ( $curr_reading );
+	my %seen_readings;
+	# TODO Detect loops at some point
+	while( $curr_reading->name ne $end->name ) {
+	    if( $seen_readings{$curr_reading->name} ) {
+		warn "Detected loop walking path for witness " . $wit->sigil
+		    . " at reading " . $curr_reading->name;
+		last;
+	    }
+	    my $next_reading = $self->next_reading( $curr_reading, 
+						    $wit->sigil );
+	    push( @wit_path, $next_reading );
+	    $seen_readings{$curr_reading->name} = 1;
+	    $curr_reading = $next_reading;
+	}
+	$wit->path( \@wit_path );
+	if( @common_nodes ) {
+	    my @cn;
+	    foreach my $n ( @wit_path ) {
+		push( @cn, $n ) if grep { $_ eq $n } @common_nodes;
+	    }
+	    @common_nodes = ();
+	    push( @common_nodes, @cn );
+	} else {
+	    push( @common_nodes, @wit_path );
+	}
+    }
+
+    # Mark all the nodes as either common or not.
+    foreach my $cn ( @common_nodes ) {
+	print STDERR "Setting " . $cn->name . " as common node\n";
+	$cn->make_common;
+    }
+    foreach my $n ( $self->readings() ) {
+	$n->make_variant unless $n->is_common;
+    }
+}
+
+sub common_readings {
+    my $self = shift;
+    my @common = grep { $_->is_common } $self->readings();
+    return @common;
+}
+
+# Calculate the relative positions of nodes in the graph, if they
+# were not given to us.
+sub calculate_positions {
+    my $self = shift;
+
+    # We have to calculate the position identifiers for each word,
+    # keyed on the common nodes.  This will be 'fun'.  The end result
+    # is a hash per witness, whose key is the word node and whose
+    # value is its position in the text.  Common nodes are always N,1
+    # so have identical positions in each text.
+    my @common = $self->common_readings();
+
+    my $node_pos = {};
+    foreach my $wit ( @{$self->tradition->witnesses} ) {
+	# First we walk each path, making a matrix for each witness that
+	# corresponds to its eventual position identifier.  Common nodes
+	# always start a new row, and are thus always in the first column.
+
+	my $wit_matrix = [];
+	my $cn = 0;  # We should hit the common readings in order.
+	my $row = [];
+	foreach my $wn ( @{$wit->path} ) {
+	    if( $wn eq $common[$cn] ) {
+		# Set up to look for the next common node, and
+		# start a new row of words.
+		$cn++;
+		push( @$wit_matrix, $row ) if scalar( @$row );
+		$row = [];
+	    }
+	    push( @$row, $wn );
+	}
+	push( @$wit_matrix, $row );  # Push the last row onto the matrix
+
+	# Now we have a matrix per witness, so that each row in the
+	# matrix begins with a common node, and continues with all the
+	# variant words that appear in the witness.  We turn this into
+	# real positions in row,cell format.  But we need some
+	# trickery in order to make sure that each node gets assigned
+	# to only one position.
+
+	foreach my $li ( 1..scalar(@$wit_matrix) ) {
+	    foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
+		my $reading = $wit_matrix->[$li-1]->[$di-1];
+		my $position = "$li,$di";
+		# If we have seen this node before, we need to compare
+		# its position with what went before.
+		unless( $reading->has_position &&
+			_cmp_position( $position, $reading->position ) < 1 ) {
+		    # The new position ID replaces the old one.
+		    $reading->position( $position );
+		} # otherwise, the old position needs to stay.
+	    }
+	}
+    }
+}
+
+sub _cmp_position {
+    my( $a, $b ) = @_;
+    my @pos_a = split(/,/, $a );
+    my @pos_b = split(/,/, $b );
+
+    my $big_cmp = $pos_a[0] <=> $pos_b[0];
+    return $big_cmp if $big_cmp;
+    # else 
+    return $pos_a[1] <=> $pos_b[1];
+}
+ 
+# Return the string that joins together a list of witnesses for
+# display on a single path.
+sub path_label {
+    my $self = shift;
+    return join( $self->wit_list_separator, @_ );
+}
+
+sub witnesses_of_label {
+    my $self = shift;
+    my $regex = $self->wit_list_separator;
+    return split( /^\Q$regex\E$/, @_ );
+}    
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

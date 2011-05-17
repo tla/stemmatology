@@ -14,6 +14,7 @@ subtype 'Position'
 has 'position' => (
     is => 'rw',
     isa => 'Position',
+    predicate => 'has_position',
     );
 
 # This contains an array of reading objects; the array is a pool,
@@ -130,6 +131,21 @@ sub get_relationship {
 sub set_relationship {
     my( $self, $rel, $value ) = @_;
     $self->relationships->{ $rel } = $value;
+}
+
+sub is_common {
+    my( $self ) = shift;
+    return $self->get_attribute( 'class' ) eq 'common';
+}
+
+sub make_common {
+    my( $self ) = shift;
+    $self->set_attribute( 'class', 'common' );
+}
+
+sub make_variant {
+    my( $self ) = shift;
+    $self->set_attribute( 'class', 'variant' );
 }
 
 no Moose;

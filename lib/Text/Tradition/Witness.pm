@@ -24,6 +24,11 @@ has 'source' => (
     predicate => 'has_source',
     );
 
+has 'path' => (
+    is => 'rw',
+    isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
+    );	       
+
 sub BUILD {
     my $self = shift;
     if( $self->has_source ) {

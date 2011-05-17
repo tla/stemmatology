@@ -29,27 +29,42 @@ graph.
 
 =cut
 
-sub parse {
-    my( $collation, $graphml_str ) = @_;
+use vars qw/ $xpc %nodedata /;
 
+sub parse {
+    my( $tradition, $graphml_str ) = @_;
+
+    my $collation = $tradition->collation;
     my $parser = XML::LibXML->new();
     my $doc = $parser->parse_string( $graphml_str );
     my $graphml = $doc->documentElement();
-    my $xpc = XML::LibXML::XPathContext->new( $graphml );
+    $xpc = XML::LibXML::XPathContext->new( $graphml );
     $xpc->registerNs( 'g', 'http://graphml.graphdrawing.org/xmlns' );
     
     # First get the ID keys, for witnesses and for collation data
-    my %nodedata;
     my %witnesses;
     foreach my $k ( $xpc->findnodes( '//g:key' ) ) {
 	# Each key has a 'for' attribute; the edge keys are witnesses, and
 	# the node keys contain an ID and string for each node.
 
 	if( $k->getAttribute( 'for' ) eq 'node' ) {
+	    # The node data keys we expect are:
+	    # 'number' -> unique node identifier
+	    # 'token' -> reading for the node
+	    # 'identical' -> the node of which this node is 
+	    #                a transposed version
+	    # 'position' -> a calculated position for the node
 	    $nodedata{ $k->getAttribute( 'attr.name' ) } = $k->getAttribute( 'id' );
 	} else {
 	    $witnesses{ $k->getAttribute( 'id' ) } = $k->getAttribute( 'attr.name' );
 	}
+    }
+
+    my $has_explicit_positions = defined $nodedata{'position'};
+
+    # Add the witnesses that we have found
+    foreach my $wit ( values %witnesses ) {
+	$tradition->add_witness( 'sigil' => $wit );
     }
 
     my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
@@ -63,19 +78,17 @@ sub parse {
     my $extra_data = {};
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
-	my $lookup_xpath = './g:data[@key="%s"]/child::text()';
-	my $id = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{'number'} ), $n );
-	my $label = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{'token'} ), $n );
+	my $id = _lookup_node_data( $n, 'number' );
+	my $label = _lookup_node_data( $n, 'token' );
 	my $gnode = $collation->add_reading( $id );
 	$node_name{ $n->getAttribute('id') } = $id;
 	$gnode->set_attribute( 'label', $label );
 
-	# Now get the rest of the data
+	# Now get the rest of the data, i.e. not the ID or label
 	my $extra = {};
-	my @keys = grep { $_ !~ /^(number|token)$/ } keys( %nodedata );
-	foreach my $k ( @keys ) {
-	    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{ $k } ), $n );
-	    $extra->{ $k } = $data;
+	foreach my $k ( keys %nodedata ) {
+	    next if $k =~ /^(number|token)$/;
+	    $extra->{ $k } = _lookup_node_data( $n, $k );
 	}
 	$extra_data->{ $id } = $extra;
     }
@@ -88,8 +101,7 @@ sub parse {
 	# Label according to the witnesses present.
 	my @wit_ids = $xpc->findnodes( './g:data/attribute::key', $e );
 	my @wit_names = map { $witnesses{ $_->getValue() } } @wit_ids;
-	my $label = join( ', ', @wit_names );
-	    
+	my $label = $collation->path_label( @wit_names );
 	$collation->add_path( $from, $to, $label );
     }
 
@@ -107,85 +119,51 @@ sub parse {
 			       $node_name{ $xpc->findvalue( $id_xpath, $tn ) } ) );
     }
 
-
     # Find the beginning and end nodes of the graph.  The beginning node
     # has no incoming edges; the end node has no outgoing edges.
     my( $begin_node, $end_node );
     foreach my $gnode ( $collation->readings() ) {
-	print STDERR "Checking node " . $gnode->name . "\n";
+	# print STDERR "Checking node " . $gnode->name . "\n";
 	my @outgoing = $gnode->outgoing();
 	my @incoming = $gnode->incoming();
 
 	unless( scalar @incoming ) {
 	    warn "Already have a beginning node" if $begin_node;
-	    my $node_xml_id = $node_id{ $gnode->name() };
-	    my @bn = $xpc->findnodes( '//g:node[@id="' . $node_xml_id . '"]' );
-	    warn "XPath did not find a node for id $node_xml_id"
-		unless scalar @bn;
-	    $begin_node = $bn[0];
+	    $begin_node = $gnode;
 	    $collation->start( $gnode );
-	    $node_name{ $begin_node->getAttribute( 'id' ) } = '#START#';
-	    $node_id{'#START#'} = $begin_node->getAttribute( 'id' );
 	}
 	unless( scalar @outgoing ) {
 	    warn "Already have an ending node" if $end_node;
-	    my $node_xml_id = $node_id{ $gnode->name() };
-	    my @bn = $xpc->findnodes( '//g:node[@id="' . $node_xml_id . '"]' );
-	    warn "XPath did not find a node for id $node_xml_id"
-		unless scalar @bn;
-	    $end_node = $bn[0];
+	    $end_node = $gnode;
 	}
     }
 
-    # Now for each witness, walk the path through the graph.
-    # Then we need to find the common nodes.  
-    # TODO This method is going to fall down if we have a very gappy 
-    # text in the collation.
-    # TODO think about whether it makes more sense to do this in the
-    # XML or in the graph. Right now it's the XML.
-    my $paths = {};
-    my @common_nodes;
-    foreach my $wit ( keys %witnesses ) {
-	my $node_id = $begin_node->getAttribute('id');
-	my @wit_path = ( $node_name{ $node_id } );
-	# TODO Detect loops at some point
-	while( $node_id ne $end_node->getAttribute('id') ) {
-	    # Find the node which is the target of the edge whose
-	    # source is $node_id and applies to this witness.
-	    my $xpath_expr = '//g:edge[child::g:data[@key="' 
-		. $wit . '"] and attribute::source="'
-		. $node_id . '"]';
-	    my $next_edge = $xpc->find( $xpath_expr, $graph_el )->[0];
-	    print STDERR " - at $wit / $node_id\n";
-	    $node_id = $next_edge->getAttribute('target');
-	    push( @wit_path, $node_name{ $node_id } );
+    $collation->walk_witness_paths( $end_node );
+    # Now we have added the witnesses and their paths, so have also
+    # implicitly marked the common nodes. Now we can calculate their
+    # explicit permissions.  This is separate because it won't always
+    # be necessary with the GraphML parsing.
+    $collation->calculate_positions() unless $has_explicit_positions;
+    if( $has_explicit_positions ) {
+	# Record the positions that came with each graph node.
+	# TODO we really need to translate these into our own style of
+	# position identifier.  That's why we defer this until now.
+	foreach my $node_id ( keys %$extra_data ) {
+	    my $pos = $extra_data->{$node_id}->{'position'};
+	    $collation->reading( $node_name{$node_id} )->position( $pos );
 	}
-	$paths->{ $witnesses{ $wit }} = \@wit_path;
-	if( @common_nodes ) {
-	    my @cn;
-	    foreach my $n ( @wit_path) {
-		push( @cn, $n ) if grep { $_ eq $n } @common_nodes;
-	    }
-	    @common_nodes = ();
-	    push( @common_nodes, @cn );
-	} else {
-	    push( @common_nodes, @wit_path );
-	}
+    } else {
+	# Calculate a position for each graph node.
+	$collation->calculate_positions();
     }
+}
 
-    # Mark all the nodes as either common or not.
-    foreach my $cn ( @common_nodes ) {
-	print STDERR "Setting $cn as common node\n";
-	$collation->reading( $cn )->set_attribute( 'class', 'common' );
-    }
-    foreach my $n ( $collation->readings() ) {
-	$n->set_attribute( 'class', 'variant' )
-	    unless $n->get_attribute( 'class' ) eq 'common';
-    }
-
-    # Now calculate graph positions.
-    # $collation->make_positions( \@common_nodes, $paths );
-
+sub _lookup_node_data {
+    my( $xmlnode, $key ) = @_;
+    my $lookup_xpath = './g:data[@key="%s"]/child::text()';
+    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{$key} ), 
+				$xmlnode );
+    return $data;
 }
     
 =back
