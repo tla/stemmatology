@@ -14,6 +14,7 @@ has 'sigil' => (
 has 'text' => (
     is => 'rw',
     isa => 'ArrayRef[Str]',
+    predicate => 'has_text',
     );
 
 # Source.  This is where we read in the witness, if not from a
@@ -27,6 +28,7 @@ has 'source' => (
 has 'path' => (
     is => 'rw',
     isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
+    predicate => 'has_path',
     );	       
 
 sub BUILD {
@@ -45,6 +47,20 @@ sub BUILD {
 	$self->text( \@words );
     }
 }
+
+# If the text is not present, and the path is, and this is a 'get'
+# request, generate text from path.
+around text => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    if( $self->has_path && !$self->has_text && !@_ ) {
+	my @words = map { $_->label } @{$self->path};
+	$self->$orig( \@words );
+    }
+    
+    $self->$orig( @_ );
+};
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

@@ -86,7 +86,7 @@ sub BUILD {
     $self->graph->set_attribute( 'node', 'shape', $shape );
 }
 
-# Wrappers around some methods
+# Wrappes around merge_nodes
 
 sub merge_readings {
     my $self = shift;
@@ -232,6 +232,10 @@ sub as_graphml {
 
 =back
 
+=head2 Navigation methods
+
+=over
+
 =item B<start>
 
 my $beginning = $collation->start();
@@ -313,6 +317,8 @@ sub _is_within {
     return $ret;
 }
 
+
+## INITIALIZATION METHODS - for use by parsers
 # Walk the paths for each witness in the graph, and return the nodes
 # that the graph has in common.
 
@@ -356,7 +362,7 @@ sub walk_witness_paths {
 
     # Mark all the nodes as either common or not.
     foreach my $cn ( @common_readings ) {
-	print STDERR "Setting " . $cn->name . " as common node\n";
+	print STDERR "Setting " . $cn->name . " / " . $cn->label . " as common node\n";
 	$cn->make_common;
     }
     foreach my $n ( $self->readings() ) {
@@ -369,7 +375,7 @@ sub walk_witness_paths {
 sub common_readings {
     my $self = shift;
     my @common = grep { $_->is_common } $self->readings();
-    return @common;
+    return sort { _cmp_position( $a->position, $b->position ) } @common;
 }
 
 # Calculate the relative positions of nodes in the graph, if they
@@ -382,7 +388,6 @@ sub calculate_positions {
     # is a hash per witness, whose key is the word node and whose
     # value is its position in the text.  Common nodes are always N,1
     # so have identical positions in each text.
-    $DB::single = 1;
 
     my $node_pos = {};
     foreach my $wit ( @{$self->tradition->witnesses} ) {
@@ -432,20 +437,28 @@ sub calculate_positions {
 
 sub _cmp_position {
     my( $a, $b ) = @_;
-    my @pos_a = split(/,/, $a );
-    my @pos_b = split(/,/, $b );
+    if ( $a && $b ) {
+	my @pos_a = split(/,/, $a );
+	my @pos_b = split(/,/, $b );
 
-    my $big_cmp = $pos_a[0] <=> $pos_b[0];
-    return $big_cmp if $big_cmp;
-    # else 
-    return $pos_a[1] <=> $pos_b[1];
+	my $big_cmp = $pos_a[0] <=> $pos_b[0];
+	return $big_cmp if $big_cmp;
+	# else 
+	return $pos_a[1] <=> $pos_b[1];
+    } elsif ( $b ) { # a is undefined
+	return -1;
+    } elsif ( $a ) { # b is undefined
+	return 1;
+    }
+    return 0; # they are both undefined
 }
 
 sub all_positions {
     my $self = shift;
     my %positions = ();
     map { $positions{$_->position} = 1 } $self->readings;
-    return keys( %positions );
+    my @answer = sort { _cmp_position( $a, $b ) } keys( %positions );
+    return @answer;
 }
 
 sub readings_at_position {
@@ -502,8 +515,7 @@ sub lemma_readings {
     # toggled off.
     my $positions_off = {};
     map { $positions_off->{ $_->position } = $_->name } @toggled_off_nodes;
- 
-    
+
     # Now for each position, we have to see if a node is on, and we
     # have to see if a node has been turned off.
     my @answer;
@@ -531,15 +543,80 @@ sub lemma_readings {
 	    # Push the state that is there. Arbitrarily use the first node
 	    # at that position.
 	    my @pos_nodes = $self->readings_at_position( $pos );
-	    push( @answer, [ $pos_nodes[0], $self->lemmata->{$pos} ] );
+	    push( @answer, [ $pos_nodes[0]->name, $self->lemmata->{$pos} ] );
 	}
     }
     
     return @answer;
 }
 
+=item B<toggle_reading>
 
- 
+my @readings_delemmatized = $graph->toggle_reading( $reading_name );
+
+Takes a reading node name, and either lemmatizes or de-lemmatizes
+it. Returns a list of all readings that are de-lemmatized as a result
+of the toggle.
+
+=cut
+
+sub toggle_reading {
+    my( $self, $rname ) = @_;
+    
+    return unless $rname;
+    my $reading = $self->reading( $rname );
+    if( !$reading || $reading->is_common() ) {
+	# Do nothing, it's a common node.
+	return;
+    } 
+    
+    my $pos = $reading->position;
+    my $old_state = $self->lemmata->{$pos};
+    my @readings_off;
+    if( $old_state && $old_state eq $rname ) {
+	# Turn off the node. We turn on no others by default.
+	push( @readings_off, $reading );
+    } else {
+	# Turn on the node.
+	$self->lemmata->{$pos} = $rname;
+	# Any other 'on' readings in the same position should be off.
+	push( @readings_off, $self->same_position_as( $reading ) );
+	# Any node that is an identical transposed one should be off.
+	push( @readings_off, $reading->identical_readings );
+    }
+    @readings_off = unique_list( @readings_off );
+
+    # Turn off the readings that need to be turned off.
+    my @readings_delemmatized;
+    foreach my $n ( @readings_off ) {
+	my $state = $self->lemmata->{$n->position};
+	if( $state && $state eq $n->name ) { 
+	    # this reading is still on, so turn it off
+	    push( @readings_delemmatized, $n );
+	    my $new_state = undef;
+	    if( $n eq $reading ) {
+		# This is the reading that was clicked, so if there are no
+		# other readings there, turn off the position.  In all other
+		# cases, restore the ellipsis.
+		my @other_n = $self->same_position_as( $n );
+		$new_state = 0 unless @other_n;
+	    }
+	    $self->lemmata->{$n->position} = $new_state;
+	} elsif( $old_state && $old_state eq $n->name ) { 
+	    # another reading has already been turned on here
+	    push( @readings_delemmatized, $n );
+	} # else some other reading was on anyway, so pass.
+    }
+    return @readings_delemmatized;
+}
+
+sub same_position_as {
+    my( $self, $reading ) = @_;
+    my $pos = $reading->position;
+    my @same = grep { $_ ne $reading } $self->readings_at_position( $reading->position );
+    return @same;
+}
+
 # Return the string that joins together a list of witnesses for
 # display on a single path.
 sub path_label {
@@ -548,10 +625,18 @@ sub path_label {
 }
 
 sub witnesses_of_label {
-    my $self = shift;
+    my( $self, $label ) = @_;
     my $regex = $self->wit_list_separator;
-    return split( /^\Q$regex\E$/, @_ );
+    my @answer = split( /\Q$regex\E/, $label );
+    return @answer;
 }    
+
+sub unique_list {
+    my( @list ) = @_;
+    my %h;
+    map { $h{$_->name} = $_ } @list;
+    return values( %h );
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

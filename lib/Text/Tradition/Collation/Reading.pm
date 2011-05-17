@@ -85,6 +85,12 @@ sub set_identical {
     $self->same_as( $enlarged_pool );
 }   
 
+sub identical_readings {
+    my $self = shift;
+    my @same = grep { $_ ne $self } @{$self->same_as};
+    return @same;
+}
+
 sub _merge_array_pool {
     my( $pool, $main_pool ) = @_;
     my %poolhash;

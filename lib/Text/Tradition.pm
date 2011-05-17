@@ -24,7 +24,6 @@ has 'witnesses' => (
 
 sub BUILD {
     my( $self, $init_args ) = @_;
-    print STDERR "Calling tradition build\n";
 
     if( exists $init_args->{'witnesses'} ) {
 	# We got passed an uncollated list of witnesses.  Make a
@@ -86,6 +85,17 @@ sub BUILD {
 	}
     }
 }
+
+sub witness {
+    my( $self, $sigil ) = @_;
+    my $requested_wit;
+    foreach my $wit ( @{$self->witnesses} ) {
+	$requested_wit = $wit if $wit->sigil eq $sigil;
+    }
+    warn "No such witness $sigil" unless $requested_wit;
+    return $requested_wit;
+}
+	
 
 sub add_witness {
     my $self = shift;
