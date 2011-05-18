@@ -57,10 +57,16 @@ has 'lemmata' => (
     );
 
 has 'wit_list_separator' => (
-			     is => 'rw',
-			     isa => 'Str',
-			     default => ', ',
-			     );
+    is => 'rw',
+    isa => 'Str',
+    default => ', ',
+    );
+
+has 'baselabel' => (
+    is => 'rw',
+    isa => 'Str',
+    default => 'base text',
+    );
 
 # The collation can be created two ways:
 # 1. Collate a set of witnesses (with CollateX I guess) and process
@@ -86,7 +92,33 @@ sub BUILD {
     $self->graph->set_attribute( 'node', 'shape', $shape );
 }
 
-# Wrappes around merge_nodes
+# Wrapper around add_path 
+
+around add_path => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    # Make sure there are three arguments
+    unless( @_ == 3 ) {
+	warn "Call add_path with args source, target, witness";
+	return;
+    }
+    # Make sure the proposed path does not yet exist
+    my( $source, $target, $wit ) = @_;
+    $source = $self->reading( $source )
+	unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
+    $target = $self->reading( $target )
+	unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
+    foreach my $path ( $source->edges_to( $target ) ) {
+	if( $path->label eq $wit ) {
+	    return;
+	}
+    }
+    # Do the deed
+    $self->$orig( @_ );
+};
+
+# Wrapper around merge_nodes
 
 sub merge_readings {
     my $self = shift;
@@ -367,7 +399,7 @@ sub _find_linked_reading {
 # Some set logic.
 sub _is_within {
     my( $set1, $set2 ) = @_;
-    my $ret = 1;
+    my $ret = @$set1; # will be 0, i.e. false, if set1 is empty
     foreach my $el ( @$set1 ) {
 	$ret = 0 unless grep { /^\Q$el\E$/ } @$set2;
     }
@@ -429,35 +461,73 @@ sub walk_and_expand_base {
     my( $self, $end ) = @_;
 
     foreach my $wit ( @{$self->tradition->witnesses} ) {
-	my $sig = $wit_sigil;
+	my $sig = $wit->sigil;
 	my $post_sig;
 	$post_sig = $wit->post_correctione 
 	    if $wit->has_post_correctione;
-	my @wit_path = ( $self->start );
-	my @wit_pc_path;
-	my $curr_rdg = $self->start;
-	my %seen;
-	while( $curr_rdg ne $end ) {
-	    if( $seen{$curr_reading->name} ) {
-		warn "Detected loop in walk_and_expand_base with witness "
-		    . "$sig on reading " . $curr_reading->name . "\n";
-		last;
-	    }
-	    my $next_rdg = $self->next_reading( $curr_reading, $sig );
-	    unless( $self->has_explicit_path( $curr_reading, 
-					      $next_reading, $sig ) ) {
-		$self->add_path( $curr_reading, $next_reading, $sig );
-	    }
-	    push( @wit_path, $next_reading );
-	    $seen{$curr_reading->name} = 1;
-	}
+	my @wit_path = $self->reading_sequence( $self->start, $end, $sig );
 	$wit->path( \@wit_path );
+	$self->connect_readings_for_witness( $wit );
 
-	# Now go through this path and look for p.c. divergences.
-	# TODO decide how to handle p.c. paths
-	# BIG TODO handle case where p.c. follows the base and a.c. doesn't!
-		
-	    
+	# If there is a post-correctio, get its path and compare.
+	# Add a correction range for each divergence.
+	if( $post_sig ) {
+	    # TODO this is looping
+	    my @corr_wit_path = $self->reading_sequence( $self->start, $end, 
+							 "$sig$post_sig", $sig );
+
+	    # Map ante-corr readings to their indices
+	    my %in_orig; 
+	    my $i = 0;
+	    map { $in_orig{$_->name} = $i++ } @wit_path;
+
+	    # Look for divergences
+	    my $diverged = 0;
+	    my $last_common;
+	    my @correction;
+	    foreach my $rdg ( @corr_wit_path ) {
+		if( exists( $in_orig{$rdg->name} ) && !$diverged ) {
+		    # We are reading the same here
+		    $last_common = $in_orig{$rdg->name};
+		    next;
+		} elsif ( exists( $in_orig{$rdg->name} ) ) {
+		    # We have been diverging but are reading the same again.
+		    # Add the correction to the witness.
+		    my $offset = $last_common;
+		    my $length = $in_orig{$rdg->name} - $last_common;
+		    $wit->add_correction( $offset, $length, \@correction );
+		    $diverged = 0;
+		    @correction = ();
+		    $last_common = $in_orig{$rdg->name};
+		} elsif( $diverged ) {
+		    # We are in the middle of a divergence.
+		    push( @correction, $rdg );
+		} else {
+		    # We have started to diverge.  Note it.
+		    $diverged = 1;
+		    push( @correction, $rdg );
+		}
+	    }
+	    # Add any divergence that is at the end of the line
+	    if( $diverged ) {
+		$wit->add_correction( $last_common, $#wit_path, \@correction );
+	    }
+	}
+    }
+
+    # Remove any 'base text' paths.
+    foreach my $path ( $self->paths ) {
+	$self->del_path( $path ) 
+	    if $path->label eq $self->baselabel;
+    }
+}
+
+sub connect_readings_for_witness {
+    my( $self, $wit ) = @_;
+    my @chain = @{$wit->path};
+    foreach my $idx ( 0 .. $#chain-1 ) {
+	$self->add_path( $chain[$idx], $chain[$idx+1], $wit->sigil );
+    }
 }
 
 sub common_readings {

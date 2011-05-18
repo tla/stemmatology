@@ -85,7 +85,7 @@ sub merge_base {
 	# DEBUG with a short graph
 	# last if $line > 2;
 	# DEBUG for problematic entries
-	my $scrutinize = "";
+	my $scrutinize = "7.3";
 	my $first_line_reading = $base_line_starts[ $line ];
 	my $too_far = $base_line_starts[ $line+1 ];
 	
@@ -168,9 +168,20 @@ sub merge_base {
 	# and connect them to the anchor.  Edges are named after the mss
 	# that are relevant.
 	foreach my $k ( grep { /^rdg/ } keys( %$app ) ) {
-	    next if $k eq 'rdg_0'; # that's the lemma.
-	    # TODO look at the lemma for any p.c. readings, and add
-	    # them explicitly!
+	    if( $k eq 'rdg_0' ) { # that's the lemma
+		# The lemma is already in the graph, but we need to look for
+		# any explicit post-correctione readings and add the
+		# relevant path.
+		my @mss = grep { $app->{$_} eq $k } keys( %$app );
+		foreach my $m ( @mss ) {
+		    my $base = _is_post_corr( $m );
+		    next unless $base;
+		    my @lem = $collation->reading_sequence( $lemma_start, $lemma_end );
+		    foreach my $i ( 0 .. $#lem-1 ) {
+			$collation->add_path( $lem[$i], $lem[$i++], $m );
+		    }
+		}
+	    }
 	    my @variant = split( /\s+/, $app->{$k} );
 	    @variant = () if $app->{$k} eq '/'; # This is an omission.
 	    my @mss = grep { $app->{$_} eq $k } keys( %$app );
@@ -201,7 +212,7 @@ sub merge_base {
 	    # Now hook it up at the end.
 	    foreach ( @mss ) {
 		$collation->add_path( $last_reading, 
-				      $collation->next_word( $lemma_end ),
+				      $collation->next_reading( $lemma_end ),
 				      $_ );
 	    }
 	    
@@ -221,11 +232,11 @@ sub merge_base {
 	    my $pctag = substr( $w, length( $base ) );
 	    my $existing_wit = $collation->tradition->witness( $base );
 	    unless( $existing_wit ) {
-		$existing_wit = $collation->tradition->add_witness( $base );
+		$existing_wit = $collation->tradition->add_witness( sigil => $base );
 	    }
 	    $existing_wit->post_correctione( $pctag );
 	} else {
-	    $collation->tradition->add_witness( $w )
+	    $collation->tradition->add_witness( sigil => $w )
 		unless $collation->tradition->witness( $w );
 	}
     }
@@ -312,19 +323,15 @@ sub collate_variants {
     my( $collation, @readings ) = @_;
     my $lemma_start = shift @readings;
     my $lemma_end = shift @readings;
-    my $detranspose = 0;
-
-    # We need to calculate positions at this point, which is where
-    # we are getting the implicit information from the apparatus.
+    my $detranspose = 1;
 
     # Start the list of distinct readings with those readings in the lemma.
     my @distinct_readings;
-    my $position = 0;
     while( $lemma_start ne $lemma_end ) {
-	push( @distinct_readings, [ $lemma_start, 'base text', $position++ ] );
-	$lemma_start = $collation->next_word( $lemma_start );
+	push( @distinct_readings, [ $lemma_start, 'base text' ] );
+	$lemma_start = $collation->next_reading( $lemma_start );
     } 
-    push( @distinct_readings, [ $lemma_end, 'base text', $position++ ] );
+    push( @distinct_readings, [ $lemma_end, 'base text' ] );
     
 
     while( scalar @readings ) {
@@ -336,21 +343,23 @@ sub collate_variants {
 	# word from the current reading.
 	my %collapsed = ();
 
-	# Get the label. There will only be one outgoing path to start
-	# with, so this is safe.
-	my @out = $var_start->outgoing();
-	my $var_label = $out[0]->label();
+	# Get the variant witnesses.  They will all be going along the
+	# same path, so just use the first one as representative for
+	# the purpose of following the path.
+	my @var_wits = map { $_->label } $var_start->outgoing();
+	my $rep_wit = $var_wits[0];
 
 	my @variant_readings;
 	while( $var_start ne $var_end ) {
 	    push( @variant_readings, $var_start );
-	    $var_start = $collation->next_word( $var_start, $var_label );
+	    $var_start = $collation->next_reading( $var_start, $rep_wit );
 	}
 	push( @variant_readings, $var_end );
 
 	# Go through the variant readings, and if we find a lemma reading that
 	# hasn't yet been collapsed with a reading, equate them.  If we do
 	# not, keep them to push onto the end of all_readings.
+	# TODO replace this with proper mini-collation
 	my @remaining_readings;
 	my $last_index = 0;
 	my $curr_pos = 0;
@@ -358,7 +367,7 @@ sub collate_variants {
 	    my $word = $w->label();
 	    my $matched = 0;
 	    foreach my $idx ( $last_index .. $#distinct_readings ) {
-		my( $l, $pathlabel, $pos ) = @{$distinct_readings[$idx]};
+		my( $l, $pathlabel ) = @{$distinct_readings[$idx]};
 		if( $word eq cmp_str( $l ) ) {
 		    next if exists( $collapsed{ $l->label } )
 			&& $collapsed{ $l->label } eq $l;
@@ -371,23 +380,15 @@ sub collate_variants {
 		    $collapsed{ $l->label } = $l;
 		    # Now collapse any multiple paths to and from the reading.
  		    remove_duplicate_paths( $collation, 
- 				    $collation->prior_word( $l, $pathlabel ), $l );
+ 				    $collation->prior_reading( $l, $rep_wit ), $l );
  		    remove_duplicate_paths( $collation, $l, 
- 				    $collation->next_word( $l, $pathlabel ) );
-		    $curr_pos = $pos;
+ 				    $collation->next_reading( $l, $rep_wit ) );
 		    last;
 		}
 	    }
-	    push( @remaining_readings, [ $w, $var_label, $curr_pos++ ] ) unless $matched;
+	    push( @remaining_readings, [ $w, $rep_wit ] ) unless $matched;
 	}
 	push( @distinct_readings, @remaining_readings) if scalar( @remaining_readings );
-    }
-
-    # Now set the positions of all the readings in this variation.
-    #$DB::single = 1;
-    print STDERR "Readings and their positions are:\n";
-    foreach my $n ( @distinct_readings ) {
-	printf STDERR "\t%s (position %s)\n", $n->[0]->label(), $n->[2];
     }
 }
 
@@ -396,29 +397,19 @@ sub collate_variants {
 remove_duplicate_paths( $collation, $from, $to );
 
 Given two readings, reduce the number of paths between those readings to
-one.  If neither path represents a base text, combine their labels.
+a set of unique paths.
 
 =cut
 
+# TODO wonder if this is necessary
 sub remove_duplicate_paths {
     my( $collation, $from, $to ) = @_;
-    my @paths = $from->paths_to( $to );
-    if( scalar @paths > 1 ) {
-	my @base = grep { $_->label eq 'base text' } @paths;
-	if ( scalar @base ) {
-	    # Remove the paths that are not base.
-	    foreach my $e ( @paths ) {
-		$collation->del_path( $e )
-		    unless $e eq $base[0];
-	    }
+    my %seen_paths;
+    foreach my $p ( $from->edges_to( $to ) ) {
+	if( exists $seen_paths{$p->name} ) {
+	    $collation->del_path( $p );
 	} else {
-	    # Combine the paths into one.
-	    my $new_path_name = join( ', ', map { $_->label() } @paths );
-	    my $new_path = shift @paths;
-	    $new_path->set_attribute( 'label', $new_path_name );
-	    foreach my $e ( @paths ) {
-		$collation->del_path( $e );
-	    }
+	    $seen_paths{$p->name} = 1;
 	}
     }
 }

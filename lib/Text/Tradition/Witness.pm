@@ -1,5 +1,6 @@
 package Text::Tradition::Witness;
 use Moose;
+use Moose::Util::TypeConstraints;
 
 # Sigil. Required identifier for a witness.
 has 'sigil' => (
@@ -36,6 +37,21 @@ has 'post_correctione' => (
     isa => 'Str',
     predicate => 'has_post_correctione',
     );
+
+subtype 'Correction',
+    as 'ArrayRef',
+    where { @{$_} == 3 &&
+	    $_->[0]->isa( 'Int' ) &&
+	    $_->[1]->isa( 'Int' ) &&
+	    $_->[2]->isa( 'ArrayRef[Text::Tradition::Collation::Reading]' );
+    },
+    message { 'Correction must be a tuple of [offset, length, list]' };
+
+has 'corrections' => (
+    is => 'ro',
+    isa => 'ArrayRef[Correction]',
+    default => sub { [] },
+    );
     
 
 sub BUILD {
@@ -68,6 +84,12 @@ around text => sub {
     
     $self->$orig( @_ );
 };
+
+sub add_correction {
+    my $self = shift;
+    # Rely on Moose for type checking of the remaining arguments
+    push( @{$self->corrections}, \@_ );
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
