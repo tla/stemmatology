@@ -92,7 +92,8 @@ sub witness {
     foreach my $wit ( @{$self->witnesses} ) {
 	$requested_wit = $wit if $wit->sigil eq $sigil;
     }
-    warn "No such witness $sigil" unless $requested_wit;
+    # We depend on an undef return value for no such witness.
+    # warn "No such witness $sigil" unless $requested_wit;
     return $requested_wit;
 }
 	
@@ -101,6 +102,7 @@ sub add_witness {
     my $self = shift;
     my $new_wit = Text::Tradition::Witness->new( @_ );
     push( @{$self->witnesses}, $new_wit );
+    return $new_wit;
 }
 
 # The user will usually be instantiating a Tradition object, and

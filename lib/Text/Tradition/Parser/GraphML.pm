@@ -79,10 +79,10 @@ sub parse {
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
 	my $id = _lookup_node_data( $n, 'number' );
-	my $label = _lookup_node_data( $n, 'token' );
+	my $token = _lookup_node_data( $n, 'token' );
 	my $gnode = $collation->add_reading( $id );
 	$node_name{ $n->getAttribute('id') } = $id;
-	$gnode->set_attribute( 'label', $label );
+	$gnode->text( $token );
 
 	# Now get the rest of the data, i.e. not the ID or label
 	my $extra = {};
@@ -101,8 +101,13 @@ sub parse {
 	# Label according to the witnesses present.
 	my @wit_ids = $xpc->findnodes( './g:data/attribute::key', $e );
 	my @wit_names = map { $witnesses{ $_->getValue() } } @wit_ids;
-	my $label = $collation->path_label( @wit_names );
-	$collation->add_path( $from, $to, $label );
+	# One path per witness
+	foreach( @wit_names ) {
+	    $collation->add_path( $from, $to, $_ );
+	}
+	# Only a single path between two readings
+	# my $label = $collation->path_label( @wit_names );
+	# $collation->add_path( $from, $to, $label );
     }
 
     ## Reverse the node_name hash so that we have two-way lookup.

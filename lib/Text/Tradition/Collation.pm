@@ -255,6 +255,45 @@ sub start {
     return $self->reading('#START#');
 }
 
+=item B<reading_sequence>
+
+my @readings = $graph->reading_sequence( $first, $last, $path[, $alt_path] );
+
+Returns the ordered list of readings, starting with $first and ending
+with $last, along the given witness path.  If no path is specified,
+assume that the path is that of the base text (if any.)
+
+=cut
+
+sub reading_sequence {
+    my( $self, $start, $end, $witness, $backup ) = @_;
+
+    $witness = 'base text' unless $witness;
+    my @readings = ( $start );
+    my %seen;
+    my $n = $start;
+    while( $n ne $end ) {
+	if( exists( $seen{$n->name()} ) ) {
+	    warn "Detected loop at " . $n->name();
+	    last;
+	}
+	$seen{$n->name()} = 1;
+	
+	my $next = $self->next_reading( $n, $witness, $backup );
+	warn "Did not find any path for $witness from reading " . $n->name
+	    unless $next;
+	push( @readings, $next );
+	$n = $next;
+    }
+    # Check that the last reading is our end reading.
+    my $last = $readings[$#readings];
+    warn "Last reading found from " . $start->label() .
+	" for witness $witness is not the end!"
+	unless $last eq $end;
+    
+    return @readings;
+}
+
 =item B<next_reading>
 
 my $next_reading = $graph->next_reading( $reading, $witpath );
@@ -265,7 +304,7 @@ path.  TODO These are badly named.
 =cut
 
 sub next_reading {
-    # Return the successor via the corresponding edge.
+    # Return the successor via the corresponding path.
     my $self = shift;
     return $self->_find_linked_reading( 'next', @_ );
 }
@@ -280,30 +319,48 @@ path.  TODO These are badly named.
 =cut
 
 sub prior_reading {
-    # Return the predecessor via the corresponding edge.
+    # Return the predecessor via the corresponding path.
     my $self = shift;
     return $self->_find_linked_reading( 'prior', @_ );
 }
 
 sub _find_linked_reading {
-    my( $self, $direction, $node, $edge ) = @_;
-    $edge = 'base text' unless $edge;
-    my @linked_edges = $direction eq 'next' 
+    my( $self, $direction, $node, $path, $alt_path ) = @_;
+    my @linked_paths = $direction eq 'next' 
 	? $node->outgoing() : $node->incoming();
-    return undef unless scalar( @linked_edges );
+    return undef unless scalar( @linked_paths );
     
-    # We have to find the linked edge that contains all of the
-    # witnesses supplied in $edge.
-    my @edge_wits = $self->witnesses_of_label( $edge );
-    foreach my $le ( @linked_edges ) {
-	my @le_wits = $self->witnesses_of_label( $le->name );
-	if( _is_within( \@edge_wits, \@le_wits ) ) {
-	    # This is the right edge.
-	    return $direction eq 'next' ? $le->to() : $le->from();
+    # We have to find the linked path that contains all of the
+    # witnesses supplied in $path.
+    my( @path_wits, @alt_path_wits );
+    @path_wits = $self->witnesses_of_label( $path ) if $path;
+    @alt_path_wits = $self->witnesses_of_label( $alt_path ) if $alt_path;
+    my $base_le;
+    my $alt_le;
+    foreach my $le ( @linked_paths ) {
+	if( $le->name eq 'base text' ) {
+	    $base_le = $le;
+	} else {
+	    my @le_wits = $self->witnesses_of_label( $le->name );
+	    if( _is_within( \@path_wits, \@le_wits ) ) {
+		# This is the right path.
+		return $direction eq 'next' ? $le->to() : $le->from();
+	    } elsif( _is_within( \@alt_path_wits, \@le_wits ) ) {
+		$alt_le = $le;
+	    }
 	}
     }
+    # Got this far? Return the alternate path if it exists.
+    return $direction eq 'next' ? $alt_le->to() : $alt_le->from()
+	if $alt_le;
+
+    # Got this far? Return the base path if it exists.
+    return $direction eq 'next' ? $base_le->to() : $base_le->from()
+	if $base_le;
+
+    # Got this far? We have no appropriate path.
     warn "Could not find $direction node from " . $node->label 
-	. " along edge $edge";
+	. " along path $path";
     return undef;
 }
 
@@ -320,7 +377,8 @@ sub _is_within {
 
 ## INITIALIZATION METHODS - for use by parsers
 # Walk the paths for each witness in the graph, and return the nodes
-# that the graph has in common.
+# that the graph has in common.  If $using_base is true, some 
+# different logic is needed.
 
 sub walk_witness_paths {
     my( $self, $end ) = @_;
@@ -332,22 +390,11 @@ sub walk_witness_paths {
     my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $curr_reading = $self->start;
-	my @wit_path = ( $curr_reading );
-	my %seen_readings;
-	# TODO Detect loops at some point
-	while( $curr_reading->name ne $end->name ) {
-	    if( $seen_readings{$curr_reading->name} ) {
-		warn "Detected loop walking path for witness " . $wit->sigil
-		    . " at reading " . $curr_reading->name;
-		last;
-	    }
-	    my $next_reading = $self->next_reading( $curr_reading, 
-						    $wit->sigil );
-	    push( @wit_path, $next_reading );
-	    $seen_readings{$curr_reading->name} = 1;
-	    $curr_reading = $next_reading;
-	}
+	my @wit_path = $self->reading_sequence( $self->start, $end, 
+						$wit->sigil );
 	$wit->path( \@wit_path );
+
+	# Detect the common readings.
 	if( @common_readings ) {
 	    my @cn;
 	    foreach my $n ( @wit_path ) {
@@ -362,7 +409,8 @@ sub walk_witness_paths {
 
     # Mark all the nodes as either common or not.
     foreach my $cn ( @common_readings ) {
-	print STDERR "Setting " . $cn->name . " / " . $cn->label . " as common node\n";
+	print STDERR "Setting " . $cn->name . " / " . $cn->label 
+	    . " as common node\n";
 	$cn->make_common;
     }
     foreach my $n ( $self->readings() ) {
@@ -370,6 +418,46 @@ sub walk_witness_paths {
     }
     # Return an array of the common nodes in order.
     return @common_readings;
+}
+
+# An alternative to walk_witness_paths, for use when a collation is
+# constructed from a base text and an apparatus.  Also modifies the
+# collation graph to remove all 'base text' paths and replace them
+# with real witness paths.
+
+sub walk_and_expand_base {
+    my( $self, $end ) = @_;
+
+    foreach my $wit ( @{$self->tradition->witnesses} ) {
+	my $sig = $wit_sigil;
+	my $post_sig;
+	$post_sig = $wit->post_correctione 
+	    if $wit->has_post_correctione;
+	my @wit_path = ( $self->start );
+	my @wit_pc_path;
+	my $curr_rdg = $self->start;
+	my %seen;
+	while( $curr_rdg ne $end ) {
+	    if( $seen{$curr_reading->name} ) {
+		warn "Detected loop in walk_and_expand_base with witness "
+		    . "$sig on reading " . $curr_reading->name . "\n";
+		last;
+	    }
+	    my $next_rdg = $self->next_reading( $curr_reading, $sig );
+	    unless( $self->has_explicit_path( $curr_reading, 
+					      $next_reading, $sig ) ) {
+		$self->add_path( $curr_reading, $next_reading, $sig );
+	    }
+	    push( @wit_path, $next_reading );
+	    $seen{$curr_reading->name} = 1;
+	}
+	$wit->path( \@wit_path );
+
+	# Now go through this path and look for p.c. divergences.
+	# TODO decide how to handle p.c. paths
+	# BIG TODO handle case where p.c. follows the base and a.c. doesn't!
+		
+	    
 }
 
 sub common_readings {

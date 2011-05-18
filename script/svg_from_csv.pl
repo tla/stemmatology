@@ -3,9 +3,9 @@
 use lib 'lib';
 use strict;
 use warnings;
-use Text::Tradition::Graph;
+use Text::Tradition;
 
-my $collation_graph = Text::Tradition::Graph->new( 
+my $collation_graph = Text::Tradition->new( 
 						   'CSV' => $ARGV[0],
 						   'base' => $ARGV[1],
 						   );

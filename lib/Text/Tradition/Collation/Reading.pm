@@ -52,6 +52,15 @@ sub BUILD {
     $self->same_as( [ $self ] );
 }
 
+sub text {
+    # Wrapper function around 'label' attribute.
+    my $self = shift;
+    if( @_ ) {
+	$self->set_attribute( 'label', $_[0] );
+    }
+    return $self->get_attribute( 'label' );
+}
+
 sub merge_from {
     my( $self, $merged_node ) = @_;
     # Adopt the identity pool of the other node.

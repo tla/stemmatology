@@ -31,6 +31,13 @@ has 'path' => (
     predicate => 'has_path',
     );	       
 
+has 'post_correctione' => (
+    is => 'rw',
+    isa => 'Str',
+    predicate => 'has_post_correctione',
+    );
+    
+
 sub BUILD {
     my $self = shift;
     if( $self->has_source ) {
