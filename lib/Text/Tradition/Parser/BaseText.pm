@@ -75,6 +75,8 @@ underscore in its name.
 
 =cut
 
+my $SHORT = 20;
+
 sub merge_base {
     my( $collation, $base_file, @app_entries ) = @_;
     my @base_line_starts = read_base( $base_file, $collation );
@@ -83,9 +85,9 @@ sub merge_base {
     foreach my $app ( @app_entries ) {
 	my( $line, $num ) = split( /\./, $app->{_id} );
 	# DEBUG with a short graph
-	# last if $line > 2;
+	last if $SHORT && $line > $SHORT;
 	# DEBUG for problematic entries
-	my $scrutinize = "7.3";
+	my $scrutinize = "";
 	my $first_line_reading = $base_line_starts[ $line ];
 	my $too_far = $base_line_starts[ $line+1 ];
 	
@@ -154,7 +156,7 @@ sub merge_base {
 	    # These are no longer common readings; unmark them as such.
 	    my @lemma_readings = $collation->reading_sequence( $lemma_start, 
 						     $lemma_end );
-	    map { $_->set_attribute( 'class', 'lemma' ) } @lemma_readings;
+	    map { $_->make_variant } @lemma_readings;
 	}
 	
 	# Now we have our lemma readings; we add the variant readings
@@ -173,14 +175,19 @@ sub merge_base {
 		# any explicit post-correctione readings and add the
 		# relevant path.
 		my @mss = grep { $app->{$_} eq $k } keys( %$app );
+		# Keep track of what witnesses we have seen.
+		@all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
 		foreach my $m ( @mss ) {
 		    my $base = _is_post_corr( $m );
 		    next unless $base;
 		    my @lem = $collation->reading_sequence( $lemma_start, $lemma_end );
+		    $collation->add_path( $collation->prior_reading( $lem[0] ), $lem[0], $m );
 		    foreach my $i ( 0 .. $#lem-1 ) {
-			$collation->add_path( $lem[$i], $lem[$i++], $m );
+			$collation->add_path( $lem[$i], $lem[++$i], $m );
 		    }
+		    $collation->add_path( $lem[-1], $collation->next_reading( $lem[-1] ), $m );
 		}
+		next;
 	    }
 	    my @variant = split( /\s+/, $app->{$k} );
 	    @variant = () if $app->{$k} eq '/'; # This is an omission.
@@ -278,6 +285,7 @@ sub read_base {
 	my $started = 0;
 	my $wordref = 0;
 	my $lineref = scalar @$lineref_array;
+	last if $SHORT && $lineref > $SHORT;
 	foreach my $w ( @words ) {
 	    my $readingref = join( ',', $lineref, ++$wordref );
 	    my $reading = $collation->add_reading( $readingref );
@@ -289,7 +297,7 @@ sub read_base {
 	    }
 	    if( $last_reading ) {
 		my $path = $collation->add_path( $last_reading, $reading, 
-						 "base text" );
+						 $collation->baselabel );
 		$path->set_attribute( 'class', 'basetext' );
 		$last_reading = $reading;
 	    } # TODO there should be no else here...
@@ -298,7 +306,7 @@ sub read_base {
     close BASE;
     # Ending point for all texts
     my $endpoint = $collation->add_reading( '#END#' );
-    $collation->add_path( $last_reading, $endpoint, "base text" );
+    $collation->add_path( $last_reading, $endpoint, $collation->baselabel );
     push( @$lineref_array, $endpoint );
 
     return( @$lineref_array );
@@ -328,10 +336,10 @@ sub collate_variants {
     # Start the list of distinct readings with those readings in the lemma.
     my @distinct_readings;
     while( $lemma_start ne $lemma_end ) {
-	push( @distinct_readings, [ $lemma_start, 'base text' ] );
+	push( @distinct_readings, [ $lemma_start, $collation->baselabel ] );
 	$lemma_start = $collation->next_reading( $lemma_start );
     } 
-    push( @distinct_readings, [ $lemma_end, 'base text' ] );
+    push( @distinct_readings, [ $lemma_end, $collation->baselabel ] );
     
 
     while( scalar @readings ) {
@@ -418,7 +426,7 @@ sub remove_duplicate_paths {
 # sigil,return the base witness.  If not, return a false value.
 sub _is_post_corr {
     my( $sigil ) = @_;
-    if( $sigil =~ /^(.*?)(\s*\(p\.\s*c\.\))$/ ) {
+    if( $sigil =~ /^(.*?)(\s*\(?p\.\s*c\.\)?)$/ ) {
 	return $1;
     }
     return undef;

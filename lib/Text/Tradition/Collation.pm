@@ -300,11 +300,11 @@ assume that the path is that of the base text (if any.)
 sub reading_sequence {
     my( $self, $start, $end, $witness, $backup ) = @_;
 
-    $witness = 'base text' unless $witness;
+    $witness = $self->baselabel unless $witness;
     my @readings = ( $start );
     my %seen;
     my $n = $start;
-    while( $n ne $end ) {
+    while( $n && $n ne $end ) {
 	if( exists( $seen{$n->name()} ) ) {
 	    warn "Detected loop at " . $n->name();
 	    last;
@@ -331,7 +331,7 @@ sub reading_sequence {
 my $next_reading = $graph->next_reading( $reading, $witpath );
 
 Returns the reading that follows the given reading along the given witness
-path.  TODO These are badly named.
+path.  
 
 =cut
 
@@ -346,7 +346,7 @@ sub next_reading {
 my $prior_reading = $graph->prior_reading( $reading, $witpath );
 
 Returns the reading that precedes the given reading along the given witness
-path.  TODO These are badly named.
+path.  
 
 =cut
 
@@ -370,7 +370,7 @@ sub _find_linked_reading {
     my $base_le;
     my $alt_le;
     foreach my $le ( @linked_paths ) {
-	if( $le->name eq 'base text' ) {
+	if( $le->name eq $self->baselabel ) {
 	    $base_le = $le;
 	} else {
 	    my @le_wits = $self->witnesses_of_label( $le->name );
@@ -427,16 +427,7 @@ sub walk_witness_paths {
 	$wit->path( \@wit_path );
 
 	# Detect the common readings.
-	if( @common_readings ) {
-	    my @cn;
-	    foreach my $n ( @wit_path ) {
-		push( @cn, $n ) if grep { $_ eq $n } @common_readings;
-	    }
-	    @common_readings = ();
-	    push( @common_readings, @cn );
-	} else {
-	    push( @common_readings, @wit_path );
-	}
+	@common_readings = _find_common( \@common_readings, \@wit_path );
     }
 
     # Mark all the nodes as either common or not.
@@ -452,6 +443,31 @@ sub walk_witness_paths {
     return @common_readings;
 }
 
+sub _find_common {
+    my( $common_readings, $new_path ) = @_;
+    my @cr;
+    if( @$common_readings ) {
+	foreach my $n ( @$new_path ) {
+	    push( @cr, $n ) if grep { $_ eq $n } @$common_readings;
+	}
+    } else {
+	push( @cr, @$new_path );
+    }
+    return @cr;
+}
+
+sub _remove_common {
+    my( $common_readings, $divergence ) = @_;
+    my @cr;
+    my %diverged;
+    map { $diverged{$_->name} = 1 } @$divergence;
+    foreach( @$common_readings ) {
+	push( @cr, $_ ) unless $diverged{$_->name};
+    }
+    return @cr;
+}
+
+
 # An alternative to walk_witness_paths, for use when a collation is
 # constructed from a base text and an apparatus.  Also modifies the
 # collation graph to remove all 'base text' paths and replace them
@@ -460,19 +476,22 @@ sub walk_witness_paths {
 sub walk_and_expand_base {
     my( $self, $end ) = @_;
 
+    my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $sig = $wit->sigil;
 	my $post_sig;
 	$post_sig = $wit->post_correctione 
 	    if $wit->has_post_correctione;
+	
+	# $DB::single = 1 if $wit->sigil eq 'Vb11';
 	my @wit_path = $self->reading_sequence( $self->start, $end, $sig );
 	$wit->path( \@wit_path );
 	$self->connect_readings_for_witness( $wit );
+	@common_readings = _find_common( \@common_readings, \@wit_path );
 
 	# If there is a post-correctio, get its path and compare.
 	# Add a correction range for each divergence.
 	if( $post_sig ) {
-	    # TODO this is looping
 	    my @corr_wit_path = $self->reading_sequence( $self->start, $end, 
 							 "$sig$post_sig", $sig );
 
@@ -485,18 +504,19 @@ sub walk_and_expand_base {
 	    my $diverged = 0;
 	    my $last_common;
 	    my @correction;
+	    $DB::single = 1 if $sig eq 'Vb12';
 	    foreach my $rdg ( @corr_wit_path ) {
 		if( exists( $in_orig{$rdg->name} ) && !$diverged ) {
 		    # We are reading the same here
 		    $last_common = $in_orig{$rdg->name};
-		    next;
 		} elsif ( exists( $in_orig{$rdg->name} ) ) {
 		    # We have been diverging but are reading the same again.
 		    # Add the correction to the witness.
-		    my $offset = $last_common;
-		    my $length = $in_orig{$rdg->name} - $last_common;
-		    $wit->add_correction( $offset, $length, \@correction );
+		    my $offset = $last_common + 1;
+		    my $length = $in_orig{$rdg->name} - $offset;
+		    $wit->add_correction( $offset, $length, @correction );
 		    $diverged = 0;
+		    @common_readings = _remove_common( \@common_readings, \@correction );
 		    @correction = ();
 		    $last_common = $in_orig{$rdg->name};
 		} elsif( $diverged ) {
@@ -508,9 +528,9 @@ sub walk_and_expand_base {
 		    push( @correction, $rdg );
 		}
 	    }
-	    # Add any divergence that is at the end of the line
+	    # Add any divergence that is at the end of the text
 	    if( $diverged ) {
-		$wit->add_correction( $last_common, $#wit_path, \@correction );
+		$wit->add_correction( $last_common+1, $#wit_path, \@correction );
 	    }
 	}
     }
@@ -549,48 +569,64 @@ sub calculate_positions {
 
     my $node_pos = {};
     foreach my $wit ( @{$self->tradition->witnesses} ) {
-	# First we walk each path, making a matrix for each witness that
-	# corresponds to its eventual position identifier.  Common nodes
-	# always start a new row, and are thus always in the first column.
-
-	my $wit_matrix = [];
-	my $cn = 0;  # We should hit the common readings in order.
-	my $row = [];
-	foreach my $wn ( @{$wit->path} ) {
-	    if( $wn eq $ordered_common[$cn] ) {
-		# Set up to look for the next common node, and
-		# start a new row of words.
-		$cn++;
-		push( @$wit_matrix, $row ) if scalar( @$row );
-		$row = [];
-	    }
-	    push( @$row, $wn );
-	}
-	push( @$wit_matrix, $row );  # Push the last row onto the matrix
-
-	# Now we have a matrix per witness, so that each row in the
-	# matrix begins with a common node, and continues with all the
-	# variant words that appear in the witness.  We turn this into
-	# real positions in row,cell format.  But we need some
-	# trickery in order to make sure that each node gets assigned
-	# to only one position.
-
-	foreach my $li ( 1..scalar(@$wit_matrix) ) {
-	    foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
-		my $reading = $wit_matrix->[$li-1]->[$di-1];
-		my $position = "$li,$di";
-		# If we have seen this node before, we need to compare
-		# its position with what went before.
-		unless( $reading->has_position &&
-			_cmp_position( $position, $reading->position ) < 1 ) {
-		    # The new position ID replaces the old one.
-		    $reading->position( $position );
-		} # otherwise, the old position needs to stay.
-	    }
-	}
+	print STDERR "Calculating positions in " . $wit->sigil . "\n";
+	_update_positions_from_path( $wit->path, @ordered_common );
+	_update_positions_from_path( $wit->corrected_path, @ordered_common )
+	    if $wit->has_post_correctione;
+    }
+    
+    # DEBUG
+    foreach my $r ( $self->readings() ) {
+	print STDERR "Reading " . $r->name . "/" . $r->label . " has no position\n"
+	    unless( $r->has_position );
     }
 
     $self->init_lemmata();
+}
+
+sub _update_positions_from_path {
+    my( $path, @ordered_common ) = @_;
+
+    # First we walk the given path, making a matrix for the witness
+    # that corresponds to its eventual position identifier.  Common
+    # nodes always start a new row, and are thus always in the first
+    # column.
+    
+    my $wit_matrix = [];
+    my $cn = 0;  # We should hit the common readings in order.
+    my $row = [];
+    foreach my $wn ( @{$path} ) {
+	if( $wn eq $ordered_common[$cn] ) {
+	    # Set up to look for the next common node, and
+	    # start a new row of words.
+	    $cn++;
+	    push( @$wit_matrix, $row ) if scalar( @$row );
+	    $row = [];
+	}
+	push( @$row, $wn );
+    }
+    push( @$wit_matrix, $row );  # Push the last row onto the matrix
+
+    # Now we have a matrix per witness, so that each row in the
+    # matrix begins with a common node, and continues with all the
+    # variant words that appear in the witness.  We turn this into
+    # real positions in row,cell format.  But we need some
+    # trickery in order to make sure that each node gets assigned
+    # to only one position.
+    
+    foreach my $li ( 1..scalar(@$wit_matrix) ) {
+	foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
+	    my $reading = $wit_matrix->[$li-1]->[$di-1];
+	    my $position = "$li,$di";
+	    # If we have seen this node before, we need to compare
+	    # its position with what went before.
+	    unless( $reading->has_position &&
+		    _cmp_position( $position, $reading->position ) < 1 ) {
+		# The new position ID replaces the old one.
+		$reading->position( $position );
+	    } # otherwise, the old position needs to stay.
+	}
+    }
 }
 
 sub _cmp_position {

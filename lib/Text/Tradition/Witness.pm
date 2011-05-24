@@ -86,10 +86,26 @@ around text => sub {
 };
 
 sub add_correction {
-    my $self = shift;
-    # Rely on Moose for type checking of the remaining arguments
-    push( @{$self->corrections}, \@_ );
+    my( $self, $offset, $length, @replacement ) = @_;
+    # Rely on Moose for type checking of the arguments
+    push( @{$self->corrections}, [ $offset, $length, \@replacement ] );
 }
+
+sub corrected_path {
+    my $self = shift;
+
+    my @new_path;
+    push( @new_path, @{$self->path} );
+    my $drift = 0;
+    foreach my $correction ( @{$self->corrections} ) {
+	my( $offset, $length, $items ) = @$correction;
+	my $realoffset = $offset + $drift;
+	splice( @new_path, $realoffset, $length, @$items );
+	$drift += @$items - $length;
+    }
+    return \@new_path;
+}
+    
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
