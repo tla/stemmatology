@@ -3,6 +3,7 @@ package Text::Tradition::Parser::BaseText;
 use strict;
 use warnings;
 use Module::Load;
+use Algorithm::Diff;
 
 =head1 NAME
 
@@ -75,7 +76,12 @@ underscore in its name.
 
 =cut
 
-    my $SHORT = 25;
+my $SHORT = undef;  # Debug var - set this to limit the number of lines parsed
+
+my %base_text_index;
+my $edits_required;
+
+# edits_required -> wit -> [ { start_idx, end_idx, items } ]
 
 sub merge_base {
     my( $collation, $base_file, @app_entries ) = @_;
@@ -87,7 +93,7 @@ sub merge_base {
 	# DEBUG with a short graph
 	last if $SHORT && $line > $SHORT;
 	# DEBUG for problematic entries
-	my $scrutinize = "";
+	my $scrutinize = '';
 	my $first_line_reading = $base_line_starts[ $line ];
 	my $too_far = $base_line_starts[ $line+1 ];
 	
@@ -152,105 +158,109 @@ sub merge_base {
 	unless( $lemma_end ) {
 	    warn "No match found for @lemma_words at $line.$num";
 	    next;
-	} else {
-	    # These are no longer common readings; unmark them as such.
-	    my @lemma_readings = $collation->reading_sequence( $lemma_start, 
-						     $lemma_end );
-	    map { $_->make_variant } @lemma_readings;
 	}
 	
-	# Now we have our lemma readings; we add the variant readings
-	# to the collation.
-	
-	# Keep track of the start and end point of each reading for later
-	# reading collapse.
-	my @readings = ( $lemma_start, $lemma_end );
+	# Now we have found the lemma; we will record an 'edit', in
+	# terms of a splice operation, for each subsequent reading.
+	# We also note which witnesses take the given edit.
 
-	# For each reading that is not rdg_0, we make a chain of readings
-	# and connect them to the anchor.  Edges are named after the mss
-	# that are relevant.
+	my @lemma_set = $collation->reading_sequence( $lemma_start, $lemma_end );
+	my @reading_sets = [ @lemma_set ];
+
+	# For each reading that is not rdg_0, we create the variant
+	# reading nodes, and store the range as an edit operation on
+	# the base text.
+	my $variant_objects;
+	my %pc_lemma; # Keep track of mss that have been corrected back to lemma
+	my %pc_variant; # Keep track of mss with other corrections
 	foreach my $k ( grep { /^rdg/ } keys( %$app ) ) {
-	    if( $k eq 'rdg_0' ) { # that's the lemma
-		# The lemma is already in the graph, but we need to look for
-		# any explicit post-correctione readings and add the
-		# relevant path.
-		my @mss = grep { $app->{$_} eq $k } keys( %$app );
-		# Keep track of what witnesses we have seen.
-		@all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
-		foreach my $m ( @mss ) {
-		    my $base = _is_post_corr( $m );
-		    next unless $base;
-		    my @lem = $collation->reading_sequence( $lemma_start, $lemma_end );
-		    $collation->add_path( $collation->prior_reading( $lem[0] ), $lem[0], $m );
-		    foreach my $i ( 0 .. $#lem-1 ) {
-			$collation->add_path( $lem[$i], $lem[++$i], $m );
-		    }
-		    $collation->add_path( $lem[-1], $collation->next_reading( $lem[-1] ), $m );
-		}
-		next;
-	    }
-	    my @variant = split( /\s+/, $app->{$k} );
-	    @variant = () if $app->{$k} eq '/'; # This is an omission.
 	    my @mss = grep { $app->{$_} eq $k } keys( %$app );
-	    
-	    unless( @mss ) {
-		print STDERR "Skipping '@variant' at $line.$num: no mss\n";
-		next;
-	    }
-	    
 	    # Keep track of what witnesses we have seen.
 	    @all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
+	    my $pc_hash = $k eq 'rdg_0' ? \%pc_lemma : \%pc_variant;
+
+	    # Keep track of which witnesses bear corrected readings here.
+	    foreach my $m ( @mss ) {
+		my $base = _is_post_corr( $m );
+		next unless $base;
+		$pc_hash->{$base} = 1;
+	    }
+	    next if $k eq 'rdg_0';
+
+	    # TODO don't hardcode the reading split operation
+	    my @variant = split( /\s+/, $app->{$k} );
+	    @variant = () if $app->{$k} eq '/'; # This is an omission.
 	    
 	    # Make the variant into a set of readings.
+	    my @variant_readings;
 	    my $ctr = 0;
-	    my $last_reading = $collation->prior_reading( $lemma_start );
-	    my $var_start;
 	    foreach my $vw ( @variant ) {
 		my $vwname = "$k/$line.$num.$ctr"; $ctr++;
 		my $vwreading = $collation->add_reading( $vwname );
 		$vwreading->text( $vw );
-		$vwreading->make_variant();
-		foreach ( @mss ) {
-		    $collation->add_path( $last_reading, $vwreading, $_ );
+		push( @variant_readings, $vwreading );
+	    }
+
+	    $variant_objects->{$k} = { 'mss' => \@mss,
+				       'reading' => \@variant_readings,
+	    };
+	    push( @reading_sets, \@variant_readings );
+	}
+
+	# Now collate and collapse the identical readings within the
+	# collated sets.  Modifies the reading sets that were passed.
+	collate_variants( $collation, @reading_sets );
+
+	# Now create the splice-edit objects that will be used
+	# to reconstruct each witness.
+
+	foreach my $rkey ( keys %$variant_objects ) {
+	    # Object is argument list for splice, so:
+	    # offset, length, replacements
+	    my $edit_object = [ $base_text_index{$lemma_start->name},
+				scalar( @lemma_set ),
+				$variant_objects->{$rkey}->{reading} ];
+	    foreach my $ms ( @{$variant_objects->{$rkey}->{mss}} ) {
+		# Is this a p.c. entry?
+		my $base = _is_post_corr( $ms );
+		if( $base ) { # this is a post-corr witness
+		    my $pc_key = $base . "_post";
+		    _add_hash_entry( $edits_required, $pc_key, $edit_object );
+		} else { # this is an ante-corr witness
+		    my $pc_key = $ms . "_post";
+		    _add_hash_entry( $edits_required, $_, $edit_object );
+		    unless( !$pc_lemma{$ms} && !$pc_variant{$ms} ) {
+			# If this witness carries no correction, add this same object
+			# to its post-corrected state.
+			# TODO combine these hashes?
+			_add_hash_entry( $edits_required, $pc_key, $edit_object );
+		    }
 		}
-		$var_start = $vwreading unless $var_start;
-		$last_reading = $vwreading;
-	    }
-	    # Now hook it up at the end.
-	    foreach ( @mss ) {
-		$collation->add_path( $last_reading, 
-				      $collation->next_reading( $lemma_end ),
-				      $_ );
-	    }
-	    
-	    if( $var_start ) { # if it wasn't an empty reading
-		push( @readings, $var_start, $last_reading );
 	    }
 	}
+    } # Finished going through the apparatus entries
 
-	# Now collate and collapse the identical readings within the collation.
-	collate_variants( $collation, @readings );
-    }
+    # Now make the witness objects, and create their text sequences
+    foreach my $w ( grep { $_ !~ /_base$/ } keys %$edits_required ) {
+	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
+	my @ante_corr_seq = apply_edits( $edits_required->{$w} );
+	my @post_corr_seq = apply_edits( $edits_required->{$w."_post"} )
+	    if exists( $edits_required->{$w."_post"} );
 
-    # Now make the witness objects
-    foreach my $w ( keys %all_witnesses ) {
-	my $base = _is_post_corr( $w );
-	if( $base ) {
-	    my $pctag = substr( $w, length( $base ) );
-	    my $existing_wit = $collation->tradition->witness( $base );
-	    unless( $existing_wit ) {
-		$existing_wit = $collation->tradition->add_witness( sigil => $base );
-	    }
-	    $existing_wit->post_correctione( $pctag );
+	# Now how to save these paths in my witness object?
+	if( @post_corr_seq ) {
+	    $witness_obj->add_path( @post_corr_seq );
+	    $witness_obj->add_uncorrected_path( @ante_corr_seq );
 	} else {
-	    $collation->tradition->add_witness( sigil => $w )
-		unless $collation->tradition->witness( $w );
+	    $witness_obj->add_path( @ante_corr_seq );
 	}
     }
+
+    # TODO Now remove all the 'base text' links.
 
     # Now walk paths and calculate positions.
     my @common_readings = 
-        $collation->walk_and_expand_base( $collation->reading( '#END#' ) );
+	$collation->walk_and_expand_base( $collation->reading( '#END#' ) );
     $collation->calculate_positions( @common_readings );
 }
 
@@ -275,6 +285,7 @@ sub read_base {
     my $lineref_array = [ $last_reading ]; # There is no line zero.
 
     open( BASE, $base_file ) or die "Could not open file $base_file: $!";
+    my $i = 0;
     while(<BASE>) {
 	# Make the readings, and connect them up for the base, but
 	# also save the first reading of each line in an array for the
@@ -290,17 +301,19 @@ sub read_base {
 	    my $readingref = join( ',', $lineref, ++$wordref );
 	    my $reading = $collation->add_reading( $readingref );
 	    $reading->text( $w );
-	    $reading->make_common();
 	    unless( $started ) {
 		push( @$lineref_array, $reading );
 		$started = 1;
 	    }
-	    if( $last_reading ) {
-		my $path = $collation->add_path( $last_reading, $reading, 
-						 $collation->baselabel );
-		$path->set_attribute( 'class', 'basetext' );
-		$last_reading = $reading;
-	    } # TODO there should be no else here...
+	    # Add edge paths in the graph, for easier tracking when
+	    # we start applying corrections.  These paths will be
+	    # removed when we're done.
+	    my $path = $collation->add_path( $last_reading, $reading, 
+					     $collation->baselabel );
+	    $last_reading = $reading;
+
+	    # Note an array index for the reading, for later correction splices.
+	    $base_text_index{$readingref} = $i++;
 	}
     }
     close BASE;
@@ -314,7 +327,7 @@ sub read_base {
 
 =item B<collate_variants>
 
-collate_variants( $collation, @readings )
+collate_variants( $collation, @reading_ranges )
 
 Given a set of readings in the form 
 ( lemma_start, lemma_end, rdg1_start, rdg1_end, ... )
@@ -328,99 +341,66 @@ TODO: Handle collapsed and non-collapsed transpositions.
 =cut
 
 sub collate_variants {
-    my( $collation, @readings ) = @_;
-    my $lemma_start = shift @readings;
-    my $lemma_end = shift @readings;
-    my $detranspose = 1;
+    my( $collation, @reading_sets ) = @_;
+    # my $detranspose = 1;  # TODO handle merging transposed nodes
 
-    # Start the list of distinct readings with those readings in the lemma.
-    my @distinct_readings;
-    while( $lemma_start ne $lemma_end ) {
-	push( @distinct_readings, [ $lemma_start, $collation->baselabel ] );
-	$lemma_start = $collation->next_reading( $lemma_start );
-    } 
-    push( @distinct_readings, [ $lemma_end, $collation->baselabel ] );
-    
+    # Merge the nodes across the sets so that there is only one node
+    # for any given reading.  Use diff to identify the 'same' nodes.
 
-    while( scalar @readings ) {
-	my( $var_start, $var_end ) = splice( @readings, 0, 2 );
+    my $lemma_set = shift @reading_sets;
 
-	# I want to look at the readings in the variant and lemma, and
-	# collapse readings that are the same word.  This is mini-collation.
-	# Each word in the 'main' list can only be collapsed once with a
-	# word from the current reading.
-	my %collapsed = ();
+    my @unique;
+    push( @unique, @$lemma_set );
 
-	# Get the variant witnesses.  They will all be going along the
-	# same path, so just use the first one as representative for
-	# the purpose of following the path.
-	my @var_wits = map { $_->label } $var_start->outgoing();
-	my $rep_wit = $var_wits[0];
-
-	my @variant_readings;
-	while( $var_start ne $var_end ) {
-	    push( @variant_readings, $var_start );
-	    $var_start = $collation->next_reading( $var_start, $rep_wit );
-	}
-	push( @variant_readings, $var_end );
-
-	# Go through the variant readings, and if we find a lemma reading that
-	# hasn't yet been collapsed with a reading, equate them.  If we do
-	# not, keep them to push onto the end of all_readings.
-	# TODO replace this with proper mini-collation
-	my @remaining_readings;
-	my $last_index = 0;
-	my $curr_pos = 0;
-	foreach my $w ( @variant_readings ) {
-	    my $word = $w->label();
-	    my $matched = 0;
-	    foreach my $idx ( $last_index .. $#distinct_readings ) {
-		my( $l, $pathlabel ) = @{$distinct_readings[$idx]};
-		if( $word eq cmp_str( $l ) ) {
-		    next if exists( $collapsed{ $l->label } )
-			&& $collapsed{ $l->label } eq $l;
-		    $matched = 1;
-		    $last_index = $idx if $detranspose;
-		    # Collapse the readings.
-		    printf STDERR "Merging readings %s/%s and %s/%s\n", 
-		        $l->name, $l->label, $w->name, $w->label;
-		    $collation->merge_readings( $l, $w );
-		    $collapsed{ $l->label } = $l;
-		    # Now collapse any multiple paths to and from the reading.
- 		    remove_duplicate_paths( $collation, 
- 				    $collation->prior_reading( $l, $rep_wit ), $l );
- 		    remove_duplicate_paths( $collation, $l, 
- 				    $collation->next_reading( $l, $rep_wit ) );
-		    last;
+    while( @reading_sets ) {
+	my $variant_set = shift @reading_sets;
+	my $diff = Algorithm::Diff->new( \@unique, $variant_set, \&_collation_hash );
+	my @new_unique;
+	push( @new_unique, @unique );
+	while( $diff->Next ) {
+	    if( $diff->Same ) {
+		# merge the nodes
+		my @l = $diff->Items( 1 );
+		my @v = $diff->Items( 2 );
+		foreach my $i ( 0 .. $#l ) {
+		    $collation->merge_readings( $l[$i], $v[$i] );
 		}
+		# splice the lemma nodes into the variant set
+		splice( @$variant_set, $diff->Get( 'min2' ), scalar( @l ), @l );
+		push( @new_unique, @l );
+	    } else {
+		# Keep the old unique readings
+		push( @new_unique, $diff->Items( 1 ) ) if $diff->Items( 1 );
+		# Add the new readings to the 'unique' list
+		push( @new_unique, $diff->Items( 2 ) ) if $diff->Items( 2 );
 	    }
-	    push( @remaining_readings, [ $w, $rep_wit ] ) unless $matched;
 	}
-	push( @distinct_readings, @remaining_readings) if scalar( @remaining_readings );
+	@unique = @new_unique;
     }
+
+    return;
 }
 
-=item B<remove_duplicate_paths>
-
-remove_duplicate_paths( $collation, $from, $to );
-
-Given two readings, reduce the number of paths between those readings to
-a set of unique paths.
-
-=cut
-
-# TODO wonder if this is necessary
-sub remove_duplicate_paths {
-    my( $collation, $from, $to ) = @_;
-    my %seen_paths;
-    foreach my $p ( $from->edges_to( $to ) ) {
-	if( exists $seen_paths{$p->name} ) {
-	    $collation->del_path( $p );
-	} else {
-	    $seen_paths{$p->name} = 1;
-	}
-    }
+    
+sub _collation_hash {
+    my $node = shift;
+    return _cmp_str( $node->label );
 }
+
+sub apply_edits {
+    my $edit_sequence = shift;
+    my @lemma_text = map { $base_text_index{$_} } sort( keys %base_text_index );
+
+    my $drift = 0;
+    foreach my $correction ( @$edit_sequence ) {
+	my( $offset, $length, $items ) = @$correction;
+	my $realoffset = $offset + $drift;
+	splice( @lemma_text, $realoffset, $length, @$items );
+	$drift += @$items - $length;
+    }
+    return \@lemma_text;
+}
+
 
 # Helper function. Given a witness sigil, if it is a post-correctione
 # sigil,return the base witness.  If not, return a false value.
