@@ -38,5 +38,3 @@ foreach my $i ( 0 .. $rows-1 ) {
     print "\t</tr>\n";
 }
 print "</table></body></html>\n";
-    
-

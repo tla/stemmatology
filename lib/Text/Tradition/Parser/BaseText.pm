@@ -75,7 +75,7 @@ underscore in its name.
 
 =cut
 
-my $SHORT = 20;
+    my $SHORT = 25;
 
 sub merge_base {
     my( $collation, $base_file, @app_entries ) = @_;
@@ -250,7 +250,7 @@ sub merge_base {
 
     # Now walk paths and calculate positions.
     my @common_readings = 
-	$collation->walk_and_expand_base( $collation->reading( '#END#' ) );
+        $collation->walk_and_expand_base( $collation->reading( '#END#' ) );
     $collation->calculate_positions( @common_readings );
 }
 

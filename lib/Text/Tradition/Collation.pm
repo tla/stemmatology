@@ -68,6 +68,12 @@ has 'baselabel' => (
     default => 'base text',
     );
 
+has 'collapsed' => (
+		    is => 'rw',
+		    isa => 'Bool',
+		    );
+
+
 # The collation can be created two ways:
 # 1. Collate a set of witnesses (with CollateX I guess) and process
 #    the results as in 2.
@@ -148,6 +154,7 @@ sub as_svg {
     my( $self, $recalc ) = @_;
     return $self->svg if $self->has_svg;
     
+    $self->collapse_graph_edges();
     $self->_save_graphviz( $self->graph->as_graphviz() )
 	unless( $self->has_graphviz && !$recalc );
     
@@ -156,6 +163,7 @@ sub as_svg {
     my $in = $self->graphviz;
     run( \@cmd, \$in, ">", binary(), \$svg );
     $self->{'svg'} = $svg;
+    $self->expand_graph_edges();
     return $svg;
 }
 
@@ -200,7 +208,7 @@ sub as_graphml {
     # Add the data keys for edges
     my %wit_hash;
     my $wit_ctr = 0;
-    foreach my $wit ( $self->getWitnessList ) {
+    foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $wit_key = 'w' . $wit_ctr++;
 	$wit_hash{$wit} = $wit_key;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
@@ -211,6 +219,7 @@ sub as_graphml {
     }
 
     # Add the graph, its nodes, and its edges
+    $self->collapse_graph_edges();
     my $graph = $root->addNewChild( $graphml_ns, 'graph' );
     $graph->setAttribute( 'edgedefault', 'directed' );
     $graph->setAttribute( 'id', 'g0' ); # TODO make this meaningful
@@ -246,7 +255,7 @@ sub as_graphml {
 	}
     }
 
-    foreach my $e ( $self->edges() ) {
+    foreach my $e ( $self->paths() ) {
 	my( $name, $from, $to ) = ( $e->name,
 				    $node_hash{ $e->from()->name() },
 				    $node_hash{ $e->to()->name() } );
@@ -259,7 +268,84 @@ sub as_graphml {
 
     # Return the thing
     $self->_save_graphml( $graphml );
+    $self->expand_graph_edges();
     return $graphml;
+}
+
+sub collapse_graph_edges {
+    my $self = shift;
+    # Our collation graph has an edge per witness.  This is great for
+    # calculation purposes, but terrible for display.  Thus we want to
+    # display only one edge between any two nodes.
+
+    return if $self->collapsed;
+
+    print STDERR "Collapsing path edges in graph...\n";
+
+    # Don't list out every witness if we have more than half to list.
+    my $majority = int( scalar( @{$self->tradition->witnesses} ) / 2 ) + 1;
+    foreach my $node( $self->readings ) {
+	my $newlabels = {};
+	# We will visit each node, so we only look ahead.
+	foreach my $edge ( $node->outgoing() ) {
+	    add_hash_entry( $newlabels, $edge->to->name, $edge->name );
+	    $self->del_path( $edge );
+	}
+
+	foreach my $newdest ( keys %$newlabels ) {
+	    my $label;
+	    my @compressed_wits = ();
+	    if( @{$newlabels->{$newdest}} < $majority ) {
+		$label = join( ', ', @{$newlabels->{$newdest}} );
+	    } else {
+		## TODO FIX THIS HACK
+		my @pclabels;
+		foreach my $wit ( @{$newlabels->{$newdest}} ) {
+		    if( $wit =~ /^(.*?)(\s*\(?p\.\s*c\.\)?)$/ ) {
+			push( @pclabels, $wit );
+		    } else {
+			push( @compressed_wits, $wit );
+		    }
+		}
+		$label = join( ', ', 'majority', @pclabels );
+	    }
+	    
+	    my $newedge = 
+		$self->add_path( $node, $self->reading( $newdest ), $label );
+	    if( @compressed_wits ) {
+		## TODO fix this hack too.
+		$newedge->set_attribute( 'class', 
+					 join( '|', @compressed_wits ) );
+	    }
+	}
+    }
+
+    $self->collapsed( 1 );
+}
+
+sub expand_graph_edges {
+    my $self = shift;
+    # Our collation graph has only one edge between any two nodes.
+    # This is great for display, but not so great for analysis.
+    # Expand this so that each witness has its own edge between any
+    # two reading nodes.
+    return unless $self->collapsed;
+    
+    print STDERR "Expanding path edges in graph...\n";
+
+    foreach my $edge( $self->paths ) {
+	my $from = $edge->from;
+	my $to = $edge->to;
+	my @wits = split( /, /, $edge->label );
+	if( grep { $_ eq 'majority' } @wits ) {
+	    push( @wits, split( /\|/, $edge->get_attribute( 'class' ) ) );
+	}
+	$self->del_path( $edge );
+	foreach ( @wits ) {
+	    $self->add_path( $from, $to, $_ );
+	}
+    }
+    $self->collapsed( 0 );
 }
 
 =back
@@ -479,11 +565,11 @@ sub walk_and_expand_base {
     my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $sig = $wit->sigil;
+	$DB::single = 1 if $sig eq 'Vb5';
 	my $post_sig;
 	$post_sig = $wit->post_correctione 
 	    if $wit->has_post_correctione;
 	
-	# $DB::single = 1 if $wit->sigil eq 'Vb11';
 	my @wit_path = $self->reading_sequence( $self->start, $end, $sig );
 	$wit->path( \@wit_path );
 	$self->connect_readings_for_witness( $wit );
@@ -504,7 +590,6 @@ sub walk_and_expand_base {
 	    my $diverged = 0;
 	    my $last_common;
 	    my @correction;
-	    $DB::single = 1 if $sig eq 'Vb12';
 	    foreach my $rdg ( @corr_wit_path ) {
 		if( exists( $in_orig{$rdg->name} ) && !$diverged ) {
 		    # We are reading the same here
@@ -830,6 +915,15 @@ sub unique_list {
     my %h;
     map { $h{$_->name} = $_ } @list;
     return values( %h );
+}
+
+sub add_hash_entry {
+    my( $hash, $key, $entry ) = @_;
+    if( exists $hash->{$key} ) {
+	push( @{$hash->{$key}}, $entry );
+    } else {
+	$hash->{$key} = [ $entry ];
+    }
 }
 
 no Moose;
