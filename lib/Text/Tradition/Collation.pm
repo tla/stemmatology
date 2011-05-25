@@ -299,15 +299,15 @@ sub collapse_graph_edges {
 		$label = join( ', ', @{$newlabels->{$newdest}} );
 	    } else {
 		## TODO FIX THIS HACK
-		my @pclabels;
+		my @aclabels;
 		foreach my $wit ( @{$newlabels->{$newdest}} ) {
-		    if( $wit =~ /^(.*?)(\s*\(?p\.\s*c\.\)?)$/ ) {
-			push( @pclabels, $wit );
+		    if( $wit =~ /^(.*?)(\s*\(?a\.\s*c\.\)?)$/ ) {
+			push( @aclabels, $wit );
 		    } else {
 			push( @compressed_wits, $wit );
 		    }
 		}
-		$label = join( ', ', 'majority', @pclabels );
+		$label = join( ', ', 'majority', @aclabels );
 	    }
 	    
 	    my $newedge = 
@@ -555,85 +555,59 @@ sub _remove_common {
 
 
 # An alternative to walk_witness_paths, for use when a collation is
-# constructed from a base text and an apparatus.  Also modifies the
-# collation graph to remove all 'base text' paths and replace them
-# with real witness paths.
+# constructed from a base text and an apparatus.  We have the
+# sequences of readings and just need to add path edges.
 
-sub walk_and_expand_base {
-    my( $self, $end ) = @_;
+sub make_witness_paths {
+    my( $self ) = @_;
 
     my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
-	my $sig = $wit->sigil;
-	$DB::single = 1 if $sig eq 'Vb5';
-	my $post_sig;
-	$post_sig = $wit->post_correctione 
-	    if $wit->has_post_correctione;
-	
-	my @wit_path = $self->reading_sequence( $self->start, $end, $sig );
-	$wit->path( \@wit_path );
-	$self->connect_readings_for_witness( $wit );
-	@common_readings = _find_common( \@common_readings, \@wit_path );
+	$self->make_witness_path( $wit );
+	@common_readings = _find_common( \@common_readings, $wit->path );
 
-	# If there is a post-correctio, get its path and compare.
-	# Add a correction range for each divergence.
-	if( $post_sig ) {
-	    my @corr_wit_path = $self->reading_sequence( $self->start, $end, 
-							 "$sig$post_sig", $sig );
-
-	    # Map ante-corr readings to their indices
-	    my %in_orig; 
-	    my $i = 0;
-	    map { $in_orig{$_->name} = $i++ } @wit_path;
-
-	    # Look for divergences
-	    my $diverged = 0;
-	    my $last_common;
-	    my @correction;
-	    foreach my $rdg ( @corr_wit_path ) {
-		if( exists( $in_orig{$rdg->name} ) && !$diverged ) {
-		    # We are reading the same here
-		    $last_common = $in_orig{$rdg->name};
-		} elsif ( exists( $in_orig{$rdg->name} ) ) {
-		    # We have been diverging but are reading the same again.
-		    # Add the correction to the witness.
-		    my $offset = $last_common + 1;
-		    my $length = $in_orig{$rdg->name} - $offset;
-		    $wit->add_correction( $offset, $length, @correction );
-		    $diverged = 0;
-		    @common_readings = _remove_common( \@common_readings, \@correction );
-		    @correction = ();
-		    $last_common = $in_orig{$rdg->name};
-		} elsif( $diverged ) {
-		    # We are in the middle of a divergence.
-		    push( @correction, $rdg );
-		} else {
-		    # We have started to diverge.  Note it.
-		    $diverged = 1;
-		    push( @correction, $rdg );
-		}
+	# If we have pre-corrected readings, we need to add paths
+	# for those as well.
+	if( $wit->has_ante_corr ) {
+	    my @path = @{$wit->path};
+	    foreach my $ac ( @{$wit->ante_corr} ) {
+		# my( $offset, $length, $items ) = @$ac;
+		# Figure out where the path needs to start and
+		# end its divergence.
+		my $start = $ac->[0] - 1;
+		my $end = $ac->[0] + $ac->[1];
+		my @chain;
+		push( @chain, $path[$start] );
+		push( @chain, @{$ac->[2]} );
+		push( @chain, $path[$end] );
+		$self->make_path_uncorrection( $wit->sigil, @chain );
 	    }
-	    # Add any divergence that is at the end of the text
-	    if( $diverged ) {
-		$wit->add_correction( $last_common+1, $#wit_path, \@correction );
-	    }
+	    @common_readings = _find_common( \@common_readings,
+					     $wit->uncorrected_path );
 	}
     }
+    return @common_readings;
+}
 
-    # Remove any 'base text' paths.
-    foreach my $path ( $self->paths ) {
-	$self->del_path( $path ) 
-	    if $path->label eq $self->baselabel;
-    }
+sub make_witness_path {
+    my( $self, $wit ) = @_;
+    my @chain = @{$wit->path};
+    $self->connect_readings_for_witness( $wit->sigil, @chain );
+}
+
+sub make_path_uncorrection {
+    my( $self, $sig, @chain ) = @_;
+    $sig .= ' (a.c.)';
+    $self->connect_readings_for_witness( $sig, @chain );
 }
 
 sub connect_readings_for_witness {
-    my( $self, $wit ) = @_;
-    my @chain = @{$wit->path};
+    my( $self, $sig, @chain ) = @_;
     foreach my $idx ( 0 .. $#chain-1 ) {
-	$self->add_path( $chain[$idx], $chain[$idx+1], $wit->sigil );
+	$self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
 }
+
 
 sub common_readings {
     my $self = shift;
@@ -656,8 +630,8 @@ sub calculate_positions {
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	print STDERR "Calculating positions in " . $wit->sigil . "\n";
 	_update_positions_from_path( $wit->path, @ordered_common );
-	_update_positions_from_path( $wit->corrected_path, @ordered_common )
-	    if $wit->has_post_correctione;
+	_update_positions_from_path( $wit->uncorrected_path, @ordered_common )
+	    if $wit->has_ante_corr;
     }
     
     # DEBUG
@@ -676,7 +650,6 @@ sub _update_positions_from_path {
     # that corresponds to its eventual position identifier.  Common
     # nodes always start a new row, and are thus always in the first
     # column.
-    
     my $wit_matrix = [];
     my $cn = 0;  # We should hit the common readings in order.
     my $row = [];
@@ -703,6 +676,8 @@ sub _update_positions_from_path {
 	foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
 	    my $reading = $wit_matrix->[$li-1]->[$di-1];
 	    my $position = "$li,$di";
+	    $DB::single = 1 unless ref( $reading ) eq 'Text::Tradition::Collation::Reading';
+
 	    # If we have seen this node before, we need to compare
 	    # its position with what went before.
 	    unless( $reading->has_position &&

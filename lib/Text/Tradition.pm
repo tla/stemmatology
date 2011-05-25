@@ -72,10 +72,10 @@ sub BUILD {
 	if( $format ) {
 	    my @parseargs;
 	    if( $format =~ /^(CSV|CTE)$/ ) {
-		@parseargs = ( 'base' => $init_args->{'base'},
-			       'data' => $init_args->{$format},
-			       'format' => $format );
+		$init_args->{'data'} = $init_args->{$format};
+		$init_args->{'format'} = $format;
 		$format = 'BaseText';
+		@parseargs = %$init_args;
 	    } else {
 		@parseargs = ( $init_args->{ $format } ); 
 	    }

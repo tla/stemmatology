@@ -11,6 +11,7 @@ use Text::Tradition;
 my $tradition = Text::Tradition->new(
     'CSV' => $ARGV[0],
     'base' => $ARGV[1],
+    'linear' => 1,
     );
 
 

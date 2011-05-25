@@ -40,12 +40,14 @@ Takes an initialized graph and a set of options, which must include:
 
 =cut
 
+my $DETRANSPOSE = 0;
 sub parse {
     my( $tradition, %opts ) = @_;
 
     my $format_mod = 'Text::Tradition::Parser::' . $opts{'format'};
     load( $format_mod );
     my @apparatus_entries = $format_mod->can('read')->( $opts{'data'} );
+    $DETRANSPOSE = 1 if $opts{'linear'};
     merge_base( $tradition->collation, $opts{'base'}, @apparatus_entries );
 }
 
@@ -76,10 +78,10 @@ underscore in its name.
 
 =cut
 
-my $SHORT = undef;  # Debug var - set this to limit the number of lines parsed
+my $SHORT = 25;  # Debug var - set this to limit the number of lines parsed
 
 my %base_text_index;
-my $edits_required;
+my $edits_required = {};
 
 # edits_required -> wit -> [ { start_idx, end_idx, items } ]
 
@@ -88,6 +90,7 @@ sub merge_base {
     my @base_line_starts = read_base( $base_file, $collation );
 
     my %all_witnesses;
+    my @unwitnessed_lemma_nodes;
     foreach my $app ( @app_entries ) {
 	my( $line, $num ) = split( /\./, $app->{_id} );
 	# DEBUG with a short graph
@@ -164,26 +167,27 @@ sub merge_base {
 	# terms of a splice operation, for each subsequent reading.
 	# We also note which witnesses take the given edit.
 
-	my @lemma_set = $collation->reading_sequence( $lemma_start, $lemma_end );
+	my @lemma_set = $collation->reading_sequence( $lemma_start, 
+						      $lemma_end );
 	my @reading_sets = [ @lemma_set ];
 
 	# For each reading that is not rdg_0, we create the variant
 	# reading nodes, and store the range as an edit operation on
 	# the base text.
 	my $variant_objects;
-	my %pc_lemma; # Keep track of mss that have been corrected back to lemma
-	my %pc_variant; # Keep track of mss with other corrections
+	my %pc_seen; # Keep track of mss with explicit post-corr data
 	foreach my $k ( grep { /^rdg/ } keys( %$app ) ) {
 	    my @mss = grep { $app->{$_} eq $k } keys( %$app );
+	    push( @unwitnessed_lemma_nodes, @lemma_set )
+		if !@mss && $k eq 'rdg_0';
+
 	    # Keep track of what witnesses we have seen.
 	    @all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
-	    my $pc_hash = $k eq 'rdg_0' ? \%pc_lemma : \%pc_variant;
-
 	    # Keep track of which witnesses bear corrected readings here.
 	    foreach my $m ( @mss ) {
 		my $base = _is_post_corr( $m );
 		next unless $base;
-		$pc_hash->{$base} = 1;
+		$pc_seen{$base} = 1;
 	    }
 	    next if $k eq 'rdg_0';
 
@@ -209,6 +213,7 @@ sub merge_base {
 
 	# Now collate and collapse the identical readings within the
 	# collated sets.  Modifies the reading sets that were passed.
+	$DB::single = 1 if "$line.$num" eq '16.2';
 	collate_variants( $collation, @reading_sets );
 
 	# Now create the splice-edit objects that will be used
@@ -228,12 +233,12 @@ sub merge_base {
 		    _add_hash_entry( $edits_required, $pc_key, $edit_object );
 		} else { # this is an ante-corr witness
 		    my $pc_key = $ms . "_post";
-		    _add_hash_entry( $edits_required, $_, $edit_object );
-		    unless( !$pc_lemma{$ms} && !$pc_variant{$ms} ) {
-			# If this witness carries no correction, add this same object
-			# to its post-corrected state.
-			# TODO combine these hashes?
-			_add_hash_entry( $edits_required, $pc_key, $edit_object );
+		    _add_hash_entry( $edits_required, $ms, $edit_object );
+		    unless( $pc_seen{$ms} ) {
+			# If this witness carries no correction, add this 
+			# same object to its post-corrected state.
+			_add_hash_entry( $edits_required, $pc_key, 
+					 $edit_object );
 		    }
 		}
 	    }
@@ -241,26 +246,36 @@ sub merge_base {
     } # Finished going through the apparatus entries
 
     # Now make the witness objects, and create their text sequences
-    foreach my $w ( grep { $_ !~ /_base$/ } keys %$edits_required ) {
+    foreach my $w ( grep { $_ !~ /_post$/ } keys %$edits_required ) {
 	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
-	my @ante_corr_seq = apply_edits( $edits_required->{$w} );
-	my @post_corr_seq = apply_edits( $edits_required->{$w."_post"} )
+	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w} );
+	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"} )
 	    if exists( $edits_required->{$w."_post"} );
 
-	# Now how to save these paths in my witness object?
+	# Now save these paths in my witness object
 	if( @post_corr_seq ) {
-	    $witness_obj->add_path( @post_corr_seq );
-	    $witness_obj->add_uncorrected_path( @ante_corr_seq );
+	    $witness_obj->path( \@post_corr_seq );
+	    my @ante_corr = make_witness_uncorrections( \@post_corr_seq,
+							\@ante_corr_seq );
+	    $witness_obj->ante_corr( \@ante_corr );
 	} else {
-	    $witness_obj->add_path( @ante_corr_seq );
+	    $witness_obj->path( \@ante_corr_seq );
 	}
     }
 
-    # TODO Now remove all the 'base text' links.
+    # Now remove our 'base text' edges, which is to say, the only
+    # ones we have created so far.  Also remove any nodes that didn't
+    # appear in any witnesses.
+    foreach ( $collation->paths() ) {
+	$collation->del_path( $_ );
+    }
+    foreach( @unwitnessed_lemma_nodes ) {
+	$collation->del_reading( $_ );
+    }
 
     # Now walk paths and calculate positions.
     my @common_readings = 
-	$collation->walk_and_expand_base( $collation->reading( '#END#' ) );
+	$collation->make_witness_paths();
     $collation->calculate_positions( @common_readings );
 }
 
@@ -282,10 +297,11 @@ sub read_base {
     # This array gives the first reading for each line.  We put the
     # common starting point in line zero.
     my $last_reading = $collation->start();
+    $base_text_index{$last_reading->name} = 0;
     my $lineref_array = [ $last_reading ]; # There is no line zero.
 
     open( BASE, $base_file ) or die "Could not open file $base_file: $!";
-    my $i = 0;
+    my $i = 1;
     while(<BASE>) {
 	# Make the readings, and connect them up for the base, but
 	# also save the first reading of each line in an array for the
@@ -321,6 +337,7 @@ sub read_base {
     my $endpoint = $collation->add_reading( '#END#' );
     $collation->add_path( $last_reading, $endpoint, $collation->baselabel );
     push( @$lineref_array, $endpoint );
+    $base_text_index{$endpoint->name} = $i;
 
     return( @$lineref_array );
 }
@@ -342,7 +359,6 @@ TODO: Handle collapsed and non-collapsed transpositions.
 
 sub collate_variants {
     my( $collation, @reading_sets ) = @_;
-    # my $detranspose = 1;  # TODO handle merging transposed nodes
 
     # Merge the nodes across the sets so that there is only one node
     # for any given reading.  Use diff to identify the 'same' nodes.
@@ -354,28 +370,47 @@ sub collate_variants {
 
     while( @reading_sets ) {
 	my $variant_set = shift @reading_sets;
-	my $diff = Algorithm::Diff->new( \@unique, $variant_set, \&_collation_hash );
-	my @new_unique;
-	push( @new_unique, @unique );
-	while( $diff->Next ) {
-	    if( $diff->Same ) {
-		# merge the nodes
-		my @l = $diff->Items( 1 );
-		my @v = $diff->Items( 2 );
-		foreach my $i ( 0 .. $#l ) {
-		    $collation->merge_readings( $l[$i], $v[$i] );
+	if( $DETRANSPOSE ) {
+	    # Use diff to do this job
+	    my $diff = Algorithm::Diff->new( \@unique, $variant_set, 
+					     {'keyGen' => \&_collation_hash} );
+	    my @new_unique;
+	    while( $diff->Next ) {
+		if( $diff->Same ) {
+		    # merge the nodes
+		    my @l = $diff->Items( 1 );
+		    my @v = $diff->Items( 2 );
+		    foreach my $i ( 0 .. $#l ) {
+			$collation->merge_readings( $l[$i], $v[$i] );
+		    }
+		    # splice the lemma nodes into the variant set
+		    my( $offset ) = $diff->Get( 'min2' );
+		    splice( @$variant_set, $offset, scalar( @l ), @l );
+		    push( @new_unique, @l );
+		} else {
+		    # Keep the old unique readings
+		    push( @new_unique, $diff->Items( 1 ) ) if $diff->Items( 1 );
+		    # Add the new readings to the 'unique' list
+		    push( @new_unique, $diff->Items( 2 ) ) if $diff->Items( 2 );
 		}
-		# splice the lemma nodes into the variant set
-		splice( @$variant_set, $diff->Get( 'min2' ), scalar( @l ), @l );
-		push( @new_unique, @l );
-	    } else {
-		# Keep the old unique readings
-		push( @new_unique, $diff->Items( 1 ) ) if $diff->Items( 1 );
-		# Add the new readings to the 'unique' list
-		push( @new_unique, $diff->Items( 2 ) ) if $diff->Items( 2 );
 	    }
+	    @unique = @new_unique;
+	} else {
+	    # It becomes a much simpler job
+	    $DB::single = 1;
+	    my @distinct;
+	    foreach my $idx ( 0 .. $#{$variant_set} ) {
+		my $vw = $variant_set->[$idx];
+		my @same = grep { cmp_str( $_ ) eq $vw->label } @unique;
+		if( @same ) {
+		    $collation->merge_readings( $same[0], $vw );
+		    $variant_set->[$idx] = $same[0];
+		} else {
+		    push( @distinct, $vw );
+		}
+	    }
+	    push( @unique, @distinct );
 	}
-	@unique = @new_unique;
     }
 
     return;
@@ -384,12 +419,14 @@ sub collate_variants {
     
 sub _collation_hash {
     my $node = shift;
-    return _cmp_str( $node->label );
+    return cmp_str( $node );
 }
 
 sub apply_edits {
-    my $edit_sequence = shift;
-    my @lemma_text = map { $base_text_index{$_} } sort( keys %base_text_index );
+    my( $collation, $edit_sequence ) = @_;
+    my @lemma_names = sort { $base_text_index{$a} <=> $base_text_index{$b} }
+        keys %base_text_index;
+    my @lemma_text = map { $collation->reading( $_ ) } @lemma_names;
 
     my $drift = 0;
     foreach my $correction ( @$edit_sequence ) {
@@ -398,9 +435,26 @@ sub apply_edits {
 	splice( @lemma_text, $realoffset, $length, @$items );
 	$drift += @$items - $length;
     }
-    return \@lemma_text;
+    return @lemma_text;
 }
 
+sub make_witness_uncorrections {
+    my( $path, $uncorr_path ) = @_;
+    my $diff = Algorithm::Diff->new( $path, $uncorr_path, 
+				     { 'keyGen' => \&_collation_hash } );
+    # We basically just want to make a bunch of splice arguments that
+    # will reconstruct the ante-corr text from the post-corr.
+    my @diff_list;
+    while( $diff->Next ) {
+	next if $diff->Same;
+	my( $offset ) = $diff->Get( 'min1' );
+	my $length = scalar( $diff->Items( 1 ) );
+	my $items = [];	push( @$items, $diff->Items( 2 ) );
+	push( @diff_list, [ $offset, $length, $items ] );
+    }
+    return @diff_list;
+}
+	
 
 # Helper function. Given a witness sigil, if it is a post-correctione
 # sigil,return the base witness.  If not, return a false value.
@@ -411,6 +465,16 @@ sub _is_post_corr {
     }
     return undef;
 }
+
+sub _add_hash_entry {
+    my( $hash, $key, $entry ) = @_;
+    if( exists $hash->{$key} ) {
+	push( @{$hash->{$key}}, $entry );
+    } else {
+	$hash->{$key} = [ $entry ];
+    }
+}
+
 
 =item B<cmp_str>
 
