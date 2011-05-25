@@ -32,18 +32,9 @@ has 'path' => (
     predicate => 'has_path',
     );	       
 
-subtype 'Correction',
-    as 'ArrayRef',
-    where { @{$_} == 3 &&
-	    find_type_constraint('Int')->check( $_->[0] ) &&
-	    find_type_constraint('Int')->check( $_->[1] ) &&
-	    find_type_constraint('ArrayRef[Text::Tradition::Collation::Reading]')->check( $_->[2] );
-    },
-    message { 'Correction must be a tuple of [offset, length, list]' };
-
-has 'ante_corr' => (
+has 'uncorrected_path' => (
     is => 'rw',
-    isa => 'ArrayRef[Correction]',
+    isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
     predicate => 'has_ante_corr',
     );
     
@@ -79,21 +70,6 @@ around text => sub {
     $self->$orig( @_ );
 };
 
-sub uncorrected_path {
-    my $self = shift;
-
-    my @new_path;
-    push( @new_path, @{$self->path} );
-    my $drift = 0;
-    foreach my $change ( @{$self->ante_corr} ) {
-	my( $offset, $length, $items ) = @$change;
-	my $realoffset = $offset + $drift;
-	splice( @new_path, $realoffset, $length, @$items );
-	$drift += @$items - $length;
-    }
-    return \@new_path;
-}
-    
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

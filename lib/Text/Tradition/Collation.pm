@@ -69,9 +69,15 @@ has 'baselabel' => (
     );
 
 has 'collapsed' => (
-		    is => 'rw',
-		    isa => 'Bool',
-		    );
+    is => 'rw',
+    isa => 'Bool',
+    );
+
+has 'linear' => (
+    is => 'rw',
+    isa => 'Bool',
+    default => 1,
+    );
 
 
 # The collation can be created two ways:
@@ -133,6 +139,14 @@ sub merge_readings {
     $first_node->merge_from( $second_node );
     unshift( @_, $first_node, $second_node );
     return $self->graph->merge_nodes( @_ );
+}
+
+# Extra graph-alike utility
+sub has_path {
+    my( $self, $source, $target, $label ) = @_;
+    my @paths = $source->edges_to( $target );
+    my @relevant = grep { $_->label eq $label } @paths;
+    return scalar @paths;
 }
 
 =head2 Output method(s)
@@ -563,28 +577,10 @@ sub make_witness_paths {
 
     my @common_readings;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
+	print STDERR "Making path for " . $wit->sigil . "\n";
 	$self->make_witness_path( $wit );
 	@common_readings = _find_common( \@common_readings, $wit->path );
-
-	# If we have pre-corrected readings, we need to add paths
-	# for those as well.
-	if( $wit->has_ante_corr ) {
-	    my @path = @{$wit->path};
-	    foreach my $ac ( @{$wit->ante_corr} ) {
-		# my( $offset, $length, $items ) = @$ac;
-		# Figure out where the path needs to start and
-		# end its divergence.
-		my $start = $ac->[0] - 1;
-		my $end = $ac->[0] + $ac->[1];
-		my @chain;
-		push( @chain, $path[$start] );
-		push( @chain, @{$ac->[2]} );
-		push( @chain, $path[$end] );
-		$self->make_path_uncorrection( $wit->sigil, @chain );
-	    }
-	    @common_readings = _find_common( \@common_readings,
-					     $wit->uncorrected_path );
-	}
+	@common_readings = _find_common( \@common_readings, $wit->uncorrected_path );
     }
     return @common_readings;
 }
@@ -592,22 +588,18 @@ sub make_witness_paths {
 sub make_witness_path {
     my( $self, $wit ) = @_;
     my @chain = @{$wit->path};
-    $self->connect_readings_for_witness( $wit->sigil, @chain );
-}
-
-sub make_path_uncorrection {
-    my( $self, $sig, @chain ) = @_;
-    $sig .= ' (a.c.)';
-    $self->connect_readings_for_witness( $sig, @chain );
-}
-
-sub connect_readings_for_witness {
-    my( $self, $sig, @chain ) = @_;
+    my $sig = $wit->sigil;
     foreach my $idx ( 0 .. $#chain-1 ) {
 	$self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
+    @chain = @{$wit->uncorrected_path};
+    foreach my $idx( 0 .. $#chain-1 ) {
+	my $source = $chain[$idx];
+	my $target = $chain[$idx+1];
+	$self->add_path( $source, $target, "$sig (a.c.)" )
+	    unless $self->has_path( $source, $target, $sig );
+    }
 }
-
 
 sub common_readings {
     my $self = shift;
@@ -676,7 +668,6 @@ sub _update_positions_from_path {
 	foreach my $di ( 1..scalar(@{$wit_matrix->[$li-1]}) ) {
 	    my $reading = $wit_matrix->[$li-1]->[$di-1];
 	    my $position = "$li,$di";
-	    $DB::single = 1 unless ref( $reading ) eq 'Text::Tradition::Collation::Reading';
 
 	    # If we have seen this node before, we need to compare
 	    # its position with what went before.

@@ -40,14 +40,12 @@ Takes an initialized graph and a set of options, which must include:
 
 =cut
 
-my $DETRANSPOSE = 0;
 sub parse {
     my( $tradition, %opts ) = @_;
 
     my $format_mod = 'Text::Tradition::Parser::' . $opts{'format'};
     load( $format_mod );
     my @apparatus_entries = $format_mod->can('read')->( $opts{'data'} );
-    $DETRANSPOSE = 1 if $opts{'linear'};
     merge_base( $tradition->collation, $opts{'base'}, @apparatus_entries );
 }
 
@@ -78,7 +76,7 @@ underscore in its name.
 
 =cut
 
-my $SHORT = 25;  # Debug var - set this to limit the number of lines parsed
+my $SHORTEND; # Debug var - set this to limit the number of lines parsed
 
 my %base_text_index;
 my $edits_required = {};
@@ -94,7 +92,7 @@ sub merge_base {
     foreach my $app ( @app_entries ) {
 	my( $line, $num ) = split( /\./, $app->{_id} );
 	# DEBUG with a short graph
-	last if $SHORT && $line > $SHORT;
+	last if $SHORTEND && $line > $SHORTEND;
 	# DEBUG for problematic entries
 	my $scrutinize = '';
 	my $first_line_reading = $base_line_starts[ $line ];
@@ -213,8 +211,11 @@ sub merge_base {
 
 	# Now collate and collapse the identical readings within the
 	# collated sets.  Modifies the reading sets that were passed.
-	$DB::single = 1 if "$line.$num" eq '16.2';
 	collate_variants( $collation, @reading_sets );
+
+	# TODO Here would be a very good place to set up relationships
+	# between the nodes and the lemma.
+	set_relationships( $app, \@lemma_set, $variant_objects );
 
 	# Now create the splice-edit objects that will be used
 	# to reconstruct each witness.
@@ -247,17 +248,23 @@ sub merge_base {
 
     # Now make the witness objects, and create their text sequences
     foreach my $w ( grep { $_ !~ /_post$/ } keys %$edits_required ) {
+	print STDERR "Creating witness $w\n";
 	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
 	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w} );
 	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"} )
 	    if exists( $edits_required->{$w."_post"} );
 
+	my @repeated = _check_for_repeated( @ante_corr_seq );
+	warn "Repeated elements @repeated in $w a.c."
+	    if @repeated;
+	@repeated = _check_for_repeated( @post_corr_seq );
+	warn "Repeated elements @repeated in $w p.c."
+	    if @repeated;
+
 	# Now save these paths in my witness object
 	if( @post_corr_seq ) {
 	    $witness_obj->path( \@post_corr_seq );
-	    my @ante_corr = make_witness_uncorrections( \@post_corr_seq,
-							\@ante_corr_seq );
-	    $witness_obj->ante_corr( \@ante_corr );
+	    $witness_obj->uncorrected_path( \@ante_corr_seq );
 	} else {
 	    $witness_obj->path( \@ante_corr_seq );
 	}
@@ -277,6 +284,20 @@ sub merge_base {
     my @common_readings = 
 	$collation->make_witness_paths();
     $collation->calculate_positions( @common_readings );
+}
+
+sub _check_for_repeated {
+    my @seq = @_;
+    my %unique;
+    my @repeated;
+    foreach ( @seq ) {
+	if( exists $unique{$_->name} ) {
+	    push( @repeated, $_->name );
+	} else {
+	    $unique{$_->name} = 1;
+	}
+    }
+    return @repeated;
 }
 
 =item B<read_base>
@@ -312,7 +333,7 @@ sub read_base {
 	my $started = 0;
 	my $wordref = 0;
 	my $lineref = scalar @$lineref_array;
-	last if $SHORT && $lineref > $SHORT;
+	last if $SHORTEND && $lineref > $SHORTEND;
 	foreach my $w ( @words ) {
 	    my $readingref = join( ',', $lineref, ++$wordref );
 	    my $reading = $collation->add_reading( $readingref );
@@ -370,18 +391,24 @@ sub collate_variants {
 
     while( @reading_sets ) {
 	my $variant_set = shift @reading_sets;
-	if( $DETRANSPOSE ) {
+	if( $collation->linear ) {
 	    # Use diff to do this job
 	    my $diff = Algorithm::Diff->new( \@unique, $variant_set, 
 					     {'keyGen' => \&_collation_hash} );
 	    my @new_unique;
+	    my %merged;
 	    while( $diff->Next ) {
 		if( $diff->Same ) {
 		    # merge the nodes
 		    my @l = $diff->Items( 1 );
 		    my @v = $diff->Items( 2 );
 		    foreach my $i ( 0 .. $#l ) {
-			$collation->merge_readings( $l[$i], $v[$i] );
+			if( !$merged{$l[$i]->name} ) {
+			    $collation->merge_readings( $l[$i], $v[$i] );
+			    $merged{$l[$i]->name} = 1;
+			} else {
+			    print STDERR "Would have double merged " . $l[$i]->name . "\n";
+			}
 		    }
 		    # splice the lemma nodes into the variant set
 		    my( $offset ) = $diff->Get( 'min2' );
@@ -399,13 +426,25 @@ sub collate_variants {
 	    # It becomes a much simpler job
 	    $DB::single = 1;
 	    my @distinct;
+	    my %merged;
 	    foreach my $idx ( 0 .. $#{$variant_set} ) {
 		my $vw = $variant_set->[$idx];
 		my @same = grep { cmp_str( $_ ) eq $vw->label } @unique;
+		my $matched;
 		if( @same ) {
-		    $collation->merge_readings( $same[0], $vw );
-		    $variant_set->[$idx] = $same[0];
-		} else {
+		    foreach my $i ( 0 .. $#same ) {
+			unless( $merged{$same[$i]->name} ) {
+			    print STDERR sprintf( "Merging %s into %s\n", 
+						  $vw->name,
+						  $same[$i]->name );
+			    $collation->merge_readings( $same[$i], $vw );
+			    $merged{$same[$i]->name} = 1;
+			    $matched = $i;
+			    $variant_set->[$idx] = $same[$i];
+			}
+		    }
+		}
+		unless( @same && defined($matched) ) {
 		    push( @distinct, $vw );
 		}
 	    }
@@ -422,6 +461,23 @@ sub _collation_hash {
     return cmp_str( $node );
 }
 
+sub set_relationships {
+    my( $app, $lemma, $variants ) = @_;
+    foreach my $rkey ( keys %$variants ) {
+	my $var = $variants->{$rkey}->{'reading'};
+	my $typekey = sprintf( "_%s_type", $rkey );
+	my $type = $app->{$typekey};
+	
+	# Transposition: look for nodes with the same label but different IDs
+	# and mark them as transposed-identical.
+
+	# Lexical / Grammatical / Spelling: look for non-identical nodes.
+	# Need to work out how to handle many-to-many mapping.
+    }
+}
+	
+
+
 sub apply_edits {
     my( $collation, $edit_sequence ) = @_;
     my @lemma_names = sort { $base_text_index{$a} <=> $base_text_index{$b} }
@@ -436,23 +492,6 @@ sub apply_edits {
 	$drift += @$items - $length;
     }
     return @lemma_text;
-}
-
-sub make_witness_uncorrections {
-    my( $path, $uncorr_path ) = @_;
-    my $diff = Algorithm::Diff->new( $path, $uncorr_path, 
-				     { 'keyGen' => \&_collation_hash } );
-    # We basically just want to make a bunch of splice arguments that
-    # will reconstruct the ante-corr text from the post-corr.
-    my @diff_list;
-    while( $diff->Next ) {
-	next if $diff->Same;
-	my( $offset ) = $diff->Get( 'min1' );
-	my $length = scalar( $diff->Items( 1 ) );
-	my $items = [];	push( @$items, $diff->Items( 2 ) );
-	push( @diff_list, [ $offset, $length, $items ] );
-    }
-    return @diff_list;
 }
 	
 
