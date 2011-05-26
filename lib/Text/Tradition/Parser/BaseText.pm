@@ -223,7 +223,7 @@ sub merge_base {
 	foreach my $rkey ( keys %$variant_objects ) {
 	    # Object is argument list for splice, so:
 	    # offset, length, replacements
-	    my $edit_object = [ $base_text_index{$lemma_start->name},
+	    my $edit_object = [ $lemma_start->name,
 				scalar( @lemma_set ),
 				$variant_objects->{$rkey}->{reading} ];
 	    foreach my $ms ( @{$variant_objects->{$rkey}->{mss}} ) {
@@ -250,8 +250,9 @@ sub merge_base {
     foreach my $w ( grep { $_ !~ /_post$/ } keys %$edits_required ) {
 	print STDERR "Creating witness $w\n";
 	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
-	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w} );
-	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"} )
+	my $debug = $w eq 'Vb10';
+	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w}, $debug );
+	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"}, $debug )
 	    if exists( $edits_required->{$w."_post"} );
 
 	my @repeated = _check_for_repeated( @ante_corr_seq );
@@ -381,79 +382,91 @@ TODO: Handle collapsed and non-collapsed transpositions.
 sub collate_variants {
     my( $collation, @reading_sets ) = @_;
 
-    # Merge the nodes across the sets so that there is only one node
-    # for any given reading.  Use diff to identify the 'same' nodes.
+    # Two different ways to do this, depending on whether we want
+    # transposed reading nodes to be merged into one (producing a
+    # nonlinear, bidirectional graph) or not (producing a relatively
+    # linear, unidirectional graph.)
+    return $collation->linear ? collate_linearly( @_ )
+	: collate_nonlinearly( @_ );
+}
 
-    my $lemma_set = shift @reading_sets;
+sub collate_linearly {
+    my( $collation, $lemma_set, @variant_sets ) = @_;
 
     my @unique;
     push( @unique, @$lemma_set );
-
-    while( @reading_sets ) {
-	my $variant_set = shift @reading_sets;
-	if( $collation->linear ) {
-	    # Use diff to do this job
-	    my $diff = Algorithm::Diff->new( \@unique, $variant_set, 
-					     {'keyGen' => \&_collation_hash} );
-	    my @new_unique;
-	    my %merged;
-	    while( $diff->Next ) {
-		if( $diff->Same ) {
-		    # merge the nodes
-		    my @l = $diff->Items( 1 );
-		    my @v = $diff->Items( 2 );
-		    foreach my $i ( 0 .. $#l ) {
-			if( !$merged{$l[$i]->name} ) {
-			    $collation->merge_readings( $l[$i], $v[$i] );
-			    $merged{$l[$i]->name} = 1;
-			} else {
-			    print STDERR "Would have double merged " . $l[$i]->name . "\n";
-			}
-		    }
-		    # splice the lemma nodes into the variant set
-		    my( $offset ) = $diff->Get( 'min2' );
-		    splice( @$variant_set, $offset, scalar( @l ), @l );
-		    push( @new_unique, @l );
-		} else {
-		    # Keep the old unique readings
-		    push( @new_unique, $diff->Items( 1 ) ) if $diff->Items( 1 );
-		    # Add the new readings to the 'unique' list
-		    push( @new_unique, $diff->Items( 2 ) ) if $diff->Items( 2 );
-		}
-	    }
-	    @unique = @new_unique;
-	} else {
-	    # It becomes a much simpler job
-	    $DB::single = 1;
-	    my @distinct;
-	    my %merged;
-	    foreach my $idx ( 0 .. $#{$variant_set} ) {
-		my $vw = $variant_set->[$idx];
-		my @same = grep { cmp_str( $_ ) eq $vw->label } @unique;
-		my $matched;
-		if( @same ) {
-		    foreach my $i ( 0 .. $#same ) {
-			unless( $merged{$same[$i]->name} ) {
-			    print STDERR sprintf( "Merging %s into %s\n", 
-						  $vw->name,
-						  $same[$i]->name );
-			    $collation->merge_readings( $same[$i], $vw );
-			    $merged{$same[$i]->name} = 1;
-			    $matched = $i;
-			    $variant_set->[$idx] = $same[$i];
-			}
+    while( @variant_sets ) {
+	my $variant_set = shift @variant_sets;
+	# Use diff to do this job
+	my $diff = Algorithm::Diff->new( \@unique, $variant_set, 
+					 {'keyGen' => \&_collation_hash} );
+	my @new_unique;
+	my %merged;
+	while( $diff->Next ) {
+	    if( $diff->Same ) {
+		# merge the nodes
+		my @l = $diff->Items( 1 );
+		my @v = $diff->Items( 2 );
+		foreach my $i ( 0 .. $#l ) {
+		    if( !$merged{$l[$i]->name} ) {
+			$collation->merge_readings( $l[$i], $v[$i] );
+			$merged{$l[$i]->name} = 1;
+		    } else {
+			print STDERR "Would have double merged " . $l[$i]->name . "\n";
 		    }
 		}
-		unless( @same && defined($matched) ) {
-		    push( @distinct, $vw );
-		}
+		# splice the lemma nodes into the variant set
+		my( $offset ) = $diff->Get( 'min2' );
+		splice( @$variant_set, $offset, scalar( @l ), @l );
+		push( @new_unique, @l );
+	    } else {
+		# Keep the old unique readings
+		push( @new_unique, $diff->Items( 1 ) ) if $diff->Items( 1 );
+		# Add the new readings to the 'unique' list
+		push( @new_unique, $diff->Items( 2 ) ) if $diff->Items( 2 );
 	    }
-	    push( @unique, @distinct );
 	}
+	@unique = @new_unique;
     }
-
-    return;
 }
+
+sub collate_nonlinearly {
+    my( $collation, $lemma_set, @variant_sets ) = @_;
+    
+    my @unique;
+    push( @unique, @$lemma_set );
+    while( @variant_sets ) {
+	my $variant_set = shift @variant_sets;
+	# Simply match the first reading that carries the same word, so
+	# long as that reading has not yet been used to match another
+	# word in this variant. That way lies loopy madness.
+	my @distinct;
+	my %merged;
+	foreach my $idx ( 0 .. $#{$variant_set} ) {
+	    my $vw = $variant_set->[$idx];
+	    my @same = grep { cmp_str( $_ ) eq $vw->label } @unique;
+	    my $matched;
+	    if( @same ) {
+		foreach my $i ( 0 .. $#same ) {
+		    unless( $merged{$same[$i]->name} ) {
+			print STDERR sprintf( "Merging %s into %s\n", 
+					      $vw->name,
+					      $same[$i]->name );
+			$collation->merge_readings( $same[$i], $vw );
+			$merged{$same[$i]->name} = 1;
+			$matched = $i;
+			$variant_set->[$idx] = $same[$i];
+		    }
+		}
+	    }
+	    unless( @same && defined($matched) ) {
+		push( @distinct, $vw );
+	    }
+	}
+	push( @unique, @distinct );
+    }
+}
+
 
     
 sub _collation_hash {
@@ -479,15 +492,47 @@ sub set_relationships {
 
 
 sub apply_edits {
-    my( $collation, $edit_sequence ) = @_;
-    my @lemma_names = sort { $base_text_index{$a} <=> $base_text_index{$b} }
-        keys %base_text_index;
-    my @lemma_text = map { $collation->reading( $_ ) } @lemma_names;
-
+    my( $collation, $edit_sequence, $debug ) = @_;
+    my @lemma_text = $collation->reading_sequence( $collation->start,
+					   $collation->reading( '#END#' ) );
     my $drift = 0;
     foreach my $correction ( @$edit_sequence ) {
-	my( $offset, $length, $items ) = @$correction;
+	my( $lemma_start, $length, $items ) = @$correction;
+	my $offset = $base_text_index{$lemma_start};
 	my $realoffset = $offset + $drift;
+	if( $debug ||
+	    $lemma_text[$realoffset]->name ne $lemma_start ) {
+	    my @this_phrase = @lemma_text[$realoffset..$realoffset+$length-1];
+	    my @base_phrase;
+	    my $i = $realoffset;
+	    my $l = $collation->reading( $lemma_start );
+	    while( $i < $realoffset+$length ) {
+		push( @base_phrase, $l );
+		$l = $collation->next_reading( $l );
+		$i++;
+	    }
+	    
+	    print STDERR sprintf( "Trying to replace %s (%s) starting at %d " .
+				  "with %s (%s) with drift %d\n",
+				  join( ' ', map {$_->label} @base_phrase ),
+				  join( ' ', map {$_->name} @base_phrase ),
+				  $realoffset,
+				  join( ' ', map {$_->label} @$items ),
+				  join( ' ', map {$_->name} @$items ),
+				  $drift,
+				  ) if $debug;
+				  
+	    warn( sprintf( "Should be replacing %s (%s) with %s (%s) " .
+			   "but %s (%s) is there instead", 
+			   join( ' ', map {$_->label} @base_phrase ),
+			   join( ' ', map {$_->name} @base_phrase ),
+			   join( ' ', map {$_->label} @$items ),
+			   join( ' ', map {$_->name} @$items ),
+			   join( ' ', map {$_->label} @this_phrase ),
+			   join( ' ', map {$_->name} @this_phrase ),
+			   ) )
+		if $lemma_text[$realoffset]->name ne $lemma_start;
+	}
 	splice( @lemma_text, $realoffset, $length, @$items );
 	$drift += @$items - $length;
     }
