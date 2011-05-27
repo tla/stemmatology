@@ -121,9 +121,13 @@ sub parse {
     foreach my $tn ( @$transposition_nodes ) {
 	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
 				$nodedata{'identical'} );
-	$collation->reading( $node_id{ $tn->getAttribute( 'id' ) } )->
-	    set_identical( $collation->reading( 
-			       $node_name{ $xpc->findvalue( $id_xpath, $tn ) } ) );
+	my $tn_reading = $collation->reading( $node_id{ $tn->getAttribute( 'id' ) } );
+	my $main_reading = $collation->reading( $node_name{ $xpc->findvalue( $id_xpath, $tn ) } );
+	if( $collation->linear ) {
+	    $tn_reading->set_identical( $main_reading );
+	} else {
+	    $collation->merge_readings( $main_reading, $tn_reading );
+	}
     }
 
     # Find the beginning and end nodes of the graph.  The beginning node

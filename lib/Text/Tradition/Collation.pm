@@ -407,6 +407,8 @@ sub collapse_graph_paths {
 
     # Don't list out every witness if we have more than half to list.
     my $majority = int( scalar( @{$self->tradition->witnesses} ) / 2 ) + 1;
+    # But don't compress if there are only a few witnesses.
+    $majority = 4 if $majority < 4;
     foreach my $node( $self->readings ) {
 	my $newlabels = {};
 	# We will visit each node, so we only look ahead.
@@ -420,7 +422,7 @@ sub collapse_graph_paths {
 	    my $label;
 	    my @compressed_wits = ();
 	    if( @{$newlabels->{$newdest}} < $majority ) {
-		$label = join( ', ', @{$newlabels->{$newdest}} );
+		$label = join( ', ', sort( @{$newlabels->{$newdest}} ) );
 	    } else {
 		## TODO FIX THIS HACK
 		my @aclabels;
@@ -431,7 +433,7 @@ sub collapse_graph_paths {
 			push( @compressed_wits, $wit );
 		    }
 		}
-		$label = join( ', ', 'majority', @aclabels );
+		$label = join( ', ', 'majority', sort( @aclabels ) );
 	    }
 	    
 	    my $newpath = 
