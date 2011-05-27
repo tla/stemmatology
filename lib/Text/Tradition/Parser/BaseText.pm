@@ -481,20 +481,28 @@ sub set_relationships {
 	my $typekey = sprintf( "_%s_type", $rkey );
 	my $type = $app->{$typekey};
 	
-	if( $type =~ /^(inv|tr)$/i ) {
-	    # Transposition: look for nodes with the same label but
-	    # different IDs and mark them as transposed-identical.
+	if( $type =~ /^(inv|tr|rep)$/i ) {
+	    # Transposition or repetition: look for nodes with the
+	    # same label but different IDs and mark them.
+	    $type = 'repetition' if $type =~ /^rep/i;
+	    $DB::single = 1 if $type eq 'repetition';
 	    my %labels;
 	    foreach my $r ( @$lemma ) {
-		$labels{$r->label} = $r;
+		$labels{cmp_str( $r )} = $r;
 	    }
 	    foreach my $r( @$var ) {
 		if( exists $labels{$r->label} &&
 		    $r->name ne $labels{$r->label}->name ) {
-		    $r->set_identical( $labels{$r->label} );
+		    if( $type eq 'repetition' ) {
+			# Repetition
+			$collation->add_relationship( $type, $r, $labels{$r->label} );
+		    } else {
+			# Transposition
+			$r->set_identical( $labels{$r->label} );
+		    }
 		}
 	    }
-	} elsif( $type =~ /^(gr|sp(el)?|rep)$/i ) {
+	} elsif( $type =~ /^(gr|sp(el)?)$/i ) {
 	    # Grammar/spelling: this can be a one-to-one or one-to-many
 	    # mapping.  We should think about merging readings if it is
 	    # one-to-many.
@@ -508,6 +516,8 @@ sub set_relationships {
 		}
 	    } elsif ( @$lemma > @$var && @$var == 1 ) {
 		# Merge the lemma readings into one
+		## TODO This is a bad solution. We need a real one-to-many
+		##  mapping.
 		my $ln1 = shift @$lemma;
 		foreach my $ln ( @$lemma ) {
 		    $collation->merge_readings( $ln1, $ln, ' ' );
