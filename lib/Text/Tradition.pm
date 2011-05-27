@@ -22,6 +22,12 @@ has 'witnesses' => (
     default => sub { [] },
     );
 
+has 'name' => (
+    is => 'rw',
+    isa => 'Str',
+    default => 'Tradition',
+    );
+
 sub BUILD {
     my( $self, $init_args ) = @_;
 

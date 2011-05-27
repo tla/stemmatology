@@ -4,6 +4,7 @@ use Graph::Easy;
 use IPC::Run qw( run binary );
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::Path;
+use XML::LibXML;
 use Moose;
 
 has 'graph' => (
@@ -18,6 +19,7 @@ has 'graph' => (
 	path => 'edge',
 	readings => 'nodes',
 	paths => 'edges',
+	relationships => 'edges',
     },
     default => sub { Graph::Easy->new( undirected => 0 ) },
     );
@@ -35,16 +37,9 @@ has 'svg' => (
     predicate => 'has_svg',
     );
 
-has 'graphviz' => (
-    is => 'ro',
-    isa => 'Str',
-    writer => '_save_graphviz',
-    predicate => 'has_graphviz',
-    );
-
 has 'graphml' => (
     is => 'ro',
-    isa => 'XML::LibXML::Document',
+    isa => 'Str',
     writer => '_save_graphml',
     predicate => 'has_graphml',
     );
@@ -137,7 +132,14 @@ around paths => sub {
     my $orig = shift;
     my $self = shift;
 
-    my @result = grep { $_->class eq 'path' } $self->$orig( @_ );
+    my @result = grep { $_->class eq 'edge.path' } $self->$orig( @_ );
+    return @result;
+};
+
+around relationships => sub {
+    my $orig = shift;
+    my $self = shift;
+    my @result = grep { $_->class eq 'edge.relationship' } $self->$orig( @_ );
     return @result;
 };
 
@@ -216,16 +218,52 @@ sub as_svg {
     return $self->svg if $self->has_svg;
     
     $self->collapse_graph_paths();
-    $self->_save_graphviz( $self->graph->as_graphviz() )
-	unless( $self->has_graphviz && !$recalc );
     
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
-    my $in = $self->graphviz;
+    my $in = $self->as_dot();
     run( \@cmd, \$in, ">", binary(), \$svg );
-    $self->{'svg'} = $svg;
+    $self->_save_svg( $svg );
     $self->expand_graph_paths();
     return $svg;
+}
+
+=item B<as_dot>
+
+print $graph->as_dot( $view, $recalculate );
+
+Returns a string that is the collation graph expressed in dot
+(i.e. GraphViz) format.  The 'view' argument determines what kind of
+graph is produced.
+    * 'path': a graph of witness paths through the collation (DEFAULT)
+    * 'relationship': a graph of how collation readings relate to 
+      each other
+
+=cut
+
+sub as_dot {
+    my( $self, $view ) = @_;
+    $view = 'path' unless $view;
+    # TODO consider making some of these things configurable
+    my $dot = sprintf( "digraph %s {\n", $self->tradition->name );
+    $dot .= "\tedge [ arrowhead=open ];\n";
+    $dot .= "\tgraph [ rankdir=LR ];\n";
+    $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
+		     11, "white", "filled", $self->graph->get_attribute( 'node', 'shape' ) );
+
+    foreach my $reading ( $self->readings ) {
+	next if $reading->name eq $reading->label;
+	$dot .= sprintf( "\t\"%s\" [ label=\"%s\" ]\n", $reading->name, $reading->label );
+    }
+
+    my @edges = $view eq 'relationship' ? $self->relationships : $self->paths;
+    foreach my $edge ( @edges ) {
+	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ color=\"%s\", fontcolor=\"%s\", label=\"%s\" ]\n",
+			 $edge->from->name, $edge->to->name, '#000000', '#000000', $edge->label );
+    }
+
+    $dot .= "}\n";
+    return $dot;
 }
 
 =item B<as_graphml>
@@ -257,7 +295,7 @@ sub as_graphml {
     $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
 
     # Add the data keys for nodes
-    my @node_data = ( 'name', 'token', 'identical', 'position' );
+    my @node_data = ( 'name', 'reading', 'identical', 'position' );
     foreach my $ndi ( 0 .. $#node_data ) {
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
 	$key->setAttribute( 'attr.name', $node_data[$ndi] );
@@ -266,28 +304,32 @@ sub as_graphml {
 	$key->setAttribute( 'id', 'd'.$ndi );
     }
 
-    # Add the data keys for edges
+    # Add the data keys for edges, i.e. witnesses
     my %wit_hash;
     my $wit_ctr = 0;
     foreach my $wit ( @{$self->tradition->witnesses} ) {
 	my $wit_key = 'w' . $wit_ctr++;
-	$wit_hash{$wit} = $wit_key;
+	$wit_hash{$wit->sigil} = $wit_key;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', $wit );
+	$key->setAttribute( 'attr.name', _make_xml_attr( $wit->sigil ) );
 	$key->setAttribute( 'attr.type', 'string' );
 	$key->setAttribute( 'for', 'edge' );
 	$key->setAttribute( 'id', $wit_key );
+	my $ackey = $root->addNewChild( $graphml_ns, 'key' );
+	$ackey->setAttribute( 'attr.name', _make_xml_attr( $wit->sigil ) . "_ante_corr" );
+	$ackey->setAttribute( 'attr.type', 'string' );
+	$ackey->setAttribute( 'for', 'edge' );
+	$ackey->setAttribute( 'id', $wit_key . "a" );
     }
 
     # Add the graph, its nodes, and its edges
-    $self->collapse_graph_edges();
     my $graph = $root->addNewChild( $graphml_ns, 'graph' );
     $graph->setAttribute( 'edgedefault', 'directed' );
     $graph->setAttribute( 'id', 'g0' ); # TODO make this meaningful
     $graph->setAttribute( 'parse.edgeids', 'canonical' );
-    $graph->setAttribute( 'parse.edges', $self->edges() );
+    $graph->setAttribute( 'parse.edges', scalar($self->paths) );
     $graph->setAttribute( 'parse.nodeids', 'canonical' );
-    $graph->setAttribute( 'parse.nodes', $self->nodes() );
+    $graph->setAttribute( 'parse.nodes', scalar($self->readings) );
     $graph->setAttribute( 'parse.order', 'nodesfirst' );
 
     my $node_ctr = 0;
@@ -295,14 +337,16 @@ sub as_graphml {
     foreach my $n ( $self->readings ) {
 	my %this_node_data = ();
 	foreach my $ndi ( 0 .. $#node_data ) {
-	    my $value;
-	    $this_node_data{'d'.$ndi} = $n->name if $node_data[$ndi] eq 'name';
-	    $this_node_data{'d'.$ndi} = $n->label 
-		if $node_data[$ndi] eq 'token';
-	    $this_node_data{'d'.$ndi} = $n->primary->name if $n->has_primary;
-	    $this_node_data{'d'.$ndi} = 
-		$self->{'positions'}->node_position( $n )
-		if $node_data[$ndi] eq 'position';
+	    my $key = $node_data[$ndi];
+	    if( $key eq 'name' ) {
+		$this_node_data{'d'.$ndi} = $n->name;
+	    } elsif( $key eq 'token' ) {
+		$this_node_data{'d'.$ndi} = $n->label;
+	    } elsif( $key eq 'identical' && $n->has_primary ) {
+		$this_node_data{'d'.$ndi} = $n->primary->name;
+	    } elsif( $key eq 'position' ) {
+		$this_node_data{'d'.$ndi} = $n->position;
+	    }
 	}
 	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
 	my $node_xmlid = 'n' . $node_ctr++;
@@ -312,25 +356,43 @@ sub as_graphml {
 	foreach my $dk ( keys %this_node_data ) {
 	    my $d_el = $node_el->addNewChild( $graphml_ns, 'data' );
 	    $d_el->setAttribute( 'key', $dk );
-	    $d_el->appendTextChild( $this_node_data{$dk} );
+	    $d_el->appendText( $this_node_data{$dk} );
 	}
     }
 
+    my $edge_ctr = 0;
     foreach my $e ( $self->paths() ) {
-	my( $name, $from, $to ) = ( $e->name,
+	my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
 				    $node_hash{ $e->from()->name() },
 				    $node_hash{ $e->to()->name() } );
 	my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
 	$edge_el->setAttribute( 'source', $from );
 	$edge_el->setAttribute( 'target', $to );
 	$edge_el->setAttribute( 'id', $name );
-	# TODO Got to add the witnesses
+	# Add the witness
+	my $base = $e->label;
+	my $ante_corr;
+	if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
+	    ( $base, $ante_corr ) = ( $1, $2 );
+	}
+	my $key = $wit_hash{$base};
+	$key .= "a" if $ante_corr;
+	my $wit_el = $edge_el->addNewChild( $graphml_ns, 'data' );
+	$wit_el->setAttribute( 'key', $key );
+	$wit_el->appendText( $e->label );
     }
 
     # Return the thing
-    $self->_save_graphml( $graphml );
-    $self->expand_graph_edges();
-    return $graphml;
+    $self->_save_graphml( $graphml->toString(1) );
+    return $graphml->toString(1);
+}
+
+sub _make_xml_attr {
+    my $str = shift;
+    $str =~ s/\s/_/g;
+    $str =~ s/\W//g;
+    $str =~ "a$str" if $str =~ /^\d/;
+    return $str;
 }
 
 sub collapse_graph_paths {
@@ -348,9 +410,10 @@ sub collapse_graph_paths {
     foreach my $node( $self->readings ) {
 	my $newlabels = {};
 	# We will visit each node, so we only look ahead.
-	foreach my $path ( $node->outgoing() ) {
-	    add_hash_entry( $newlabels, $path->to->name, $path->name );
-	    $self->del_path( $path );
+	foreach my $edge ( $node->outgoing() ) {
+	    next unless $edge->class eq 'edge.path';
+	    add_hash_entry( $newlabels, $edge->to->name, $edge->name );
+	    $self->del_path( $edge );
 	}
 
 	foreach my $newdest ( keys %$newlabels ) {
@@ -391,7 +454,6 @@ sub expand_graph_paths {
     return unless $self->collapsed;
     
     print STDERR "Expanding witness paths in graph...\n";
-    $DB::single = 1;
     foreach my $path( $self->paths ) {
 	my $from = $path->from;
 	my $to = $path->to;

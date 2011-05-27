@@ -49,8 +49,8 @@ sub parse {
 
 	if( $k->getAttribute( 'for' ) eq 'node' ) {
 	    # The node data keys we expect are:
-	    # 'number' -> unique node identifier
-	    # 'token' -> reading for the node
+	    # 'number|name' -> unique node identifier
+	    # 'token|reading' -> reading for the node
 	    # 'identical' -> the node of which this node is 
 	    #                a transposed version
 	    # 'position' -> a calculated position for the node
@@ -79,7 +79,9 @@ sub parse {
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
 	my $id = _lookup_node_data( $n, 'number' );
+	$id = _lookup_node_data( $n, 'name' ) unless $id;
 	my $token = _lookup_node_data( $n, 'token' );
+	$token = _lookup_node_data( $n, 'reading' ) unless $token;
 	my $gnode = $collation->add_reading( $id );
 	$node_name{ $n->getAttribute('id') } = $id;
 	$gnode->text( $token );
@@ -164,6 +166,7 @@ sub parse {
 
 sub _lookup_node_data {
     my( $xmlnode, $key ) = @_;
+    return undef unless exists $nodedata{$key};
     my $lookup_xpath = './g:data[@key="%s"]/child::text()';
     my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{$key} ), 
 				$xmlnode );

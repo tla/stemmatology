@@ -101,7 +101,7 @@ sub _merge_array_pool {
 sub has_primary {
     my $self = shift;
     my $pool = $self->same_as;
-    return $pool->[0]->name eq $self->name;
+    return $pool->[0]->name ne $self->name;
 }
 
 sub primary {
