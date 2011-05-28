@@ -25,21 +25,21 @@ is( $svg->documentElement->nodeName(), 'svg', 'Got an svg document' );
 my $svg_xpc = XML::LibXML::XPathContext->new( $svg->documentElement() );
 $svg_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
 my @svg_nodes = $svg_xpc->findnodes( '//svg:g[@class="node"]' );
-is( scalar @svg_nodes, 24, "Correct number of nodes in the graph" );
+is( scalar @svg_nodes, 26, "Correct number of nodes in the graph" );
 
 # Test for the correct number of edges
 my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
-is( scalar @svg_edges, 30, "Correct number of edges in the graph" );
+is( scalar @svg_edges, 32, "Correct number of edges in the graph" );
 
 # Test for the correct common nodes
-my @expected_nodes = map { [ $_, 1 ] } qw/ #START# n1 n5 n6 n7 n12 n13
-                                            n16 n19 n20 n23 n27 /;
-foreach my $idx ( qw/2 3 4 8 11 13 16 18/ ) {
+my @expected_nodes = map { [ $_, 1 ] } qw/ #START# n1 n5 n6 n7 n12 
+                                            n16 n19 n20 n27 /;
+foreach my $idx ( qw/2 3 4 8 10 11 13 16 17 18/ ) {
     splice( @expected_nodes, $idx, 0, [ "node_null", undef ] );
 }
 my @active_nodes = $collation->lemma_readings();
 subtest 'Initial common points' => \&compare_active;
-my $string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the ... #';
+my $string = '# when ... ... ... showers sweet with ... fruit ... ... of ... has pierced ... ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right starting text" );
 
 sub compare_active {
@@ -72,7 +72,7 @@ sub make_text {
 # Test the manuscript paths
 my $wit_a = '# when april with his showers sweet with fruit the drought of march has pierced unto the root #';
 my $wit_b = '# when showers sweet with april fruit the march of drought has pierced to the root #';
-my $wit_c = '# when showers sweet with april fruit the drought of march has pierced the rood #';
+my $wit_c = '# when showers sweet with april fruit teh drought of march has pierced teh rood #';
 is( join( ' ', @{$tradition->witness( "A" )->text} ), $wit_a, "Correct path for witness A" );
 is( join( ' ', @{$tradition->witness( "B" )->text} ), $wit_b, "Correct path for witness B" );
 is( join( ' ', @{$tradition->witness( "C" )->text} ), $wit_c, "Correct path for witness C" );
@@ -97,19 +97,19 @@ foreach my $r ( $collation->readings ) {
 is_deeply( $real_transposed_nodes, $transposed_nodes, "Found the right transpositions" );
 
 # Test turning on a node
-my @off = $collation->toggle_reading( 'n25' );
-$expected_nodes[ 18 ] = [ "n25", 1 ];
+my @off = $collation->toggle_reading( 'n21' );
+$expected_nodes[ 16 ] = [ "n21", 1 ];
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on node for new location' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the rood #';
+$string = '# when ... ... ... showers sweet with ... fruit ... ... of ... has pierced unto ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
  
 # Test the toggling effects of same-column
-@off = $collation->toggle_reading( 'n26' );
-splice( @expected_nodes, 18, 1, ( [ "n25", 0 ], [ "n26", 1 ] ) );
+@off = $collation->toggle_reading( 'n22' );
+splice( @expected_nodes, 16, 1, ( [ "n21", 0 ], [ "n22", 1 ] ) );
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on other node in that location' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the ... of ... has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit ... ... of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 # Test the toggling effects of transposition
@@ -118,10 +118,10 @@ is( make_text( @active_nodes ), $string, "Got the right text" );
 # Add the turned on node
 $expected_nodes[ 11 ] = [ "n14", 1 ];
 # Remove the 'off' for the previous node
-splice( @expected_nodes, 18, 1 );
+splice( @expected_nodes, 16, 1 );
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on transposition node' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the drought of ... has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit ... drought of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n18' );
@@ -131,7 +131,7 @@ $expected_nodes[ 13 ] = [ "n18", 1 ];
 $expected_nodes[ 11 ] = [ "n14", undef ];
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on that node\'s partner' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the ... of drought has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit ... ... of drought has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n14' );
@@ -141,7 +141,7 @@ $expected_nodes[ 11 ] = [ "n14", 1 ];
 $expected_nodes[ 13 ] = [ "n18", undef ];
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on the original node' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the drought of ... has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit ... drought of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n15' );
@@ -149,7 +149,7 @@ is( make_text( @active_nodes ), $string, "Got the right text" );
 splice( @expected_nodes, 11, 1, [ "n14", 0 ], [ "n15", 1 ] );
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on the colocated node' => \&compare_active;
-$string = '# when ... ... ... showers sweet with ... fruit the march of ... has pierced ... the root #';
+$string = '# when ... ... ... showers sweet with ... fruit ... march of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n3' );
@@ -159,7 +159,7 @@ splice( @expected_nodes, 3, 1, [ "n3", 1 ] );
 splice( @expected_nodes, 11, 1 );
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned on a singleton node' => \&compare_active;
-$string = '# when ... with ... showers sweet with ... fruit the march of ... has pierced ... the root #';
+$string = '# when ... with ... showers sweet with ... fruit ... march of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n3' );
@@ -167,14 +167,14 @@ is( make_text( @active_nodes ), $string, "Got the right text" );
 splice( @expected_nodes, 3, 1, [ "n3", 0 ] );
 @active_nodes = $collation->lemma_readings( @off );
 subtest 'Turned off a singleton node' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the march of ... has pierced ... the root #';
+$string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced to ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 @off = $collation->toggle_reading( 'n21' );
-splice( @expected_nodes, 16, 1, [ "n21", 1 ] );
+splice( @expected_nodes, 16, 1, ["n22", 0 ], [ "n21", 1 ] );
 @active_nodes = $collation->lemma_readings( @off );
-subtest 'Turned on a new node after singleton switchoff' => \&compare_active;
-$string = '# when ... ... showers sweet with ... fruit the march of ... has pierced unto the root #';
+subtest 'Turned on another node after singleton switchoff' => \&compare_active;
+$string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced unto ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 done_testing();

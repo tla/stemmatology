@@ -76,7 +76,7 @@ underscore in its name.
 
 =cut
 
-my $SHORTEND; # Debug var - set this to limit the number of lines parsed
+my $SHORTEND = 20; # Debug var - set this to limit the number of lines parsed
 
 my %base_text_index;
 my $edits_required = {};
@@ -215,7 +215,7 @@ sub merge_base {
 
 	# TODO Here would be a very good place to set up relationships
 	# between the nodes and the lemma.
-	set_relationships( $app, \@lemma_set, $variant_objects );
+	set_relationships( $collation, $app, \@lemma_set, $variant_objects );
 
 	# Now create the splice-edit objects that will be used
 	# to reconstruct each witness.
@@ -250,7 +250,7 @@ sub merge_base {
     foreach my $w ( grep { $_ !~ /_post$/ } keys %$edits_required ) {
 	print STDERR "Creating witness $w\n";
 	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
-	my $debug = $w eq 'Vb10';
+	my $debug = undef; # $w eq 'Vb10';
 	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w}, $debug );
 	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"}, $debug )
 	    if exists( $edits_required->{$w."_post"} );
@@ -475,17 +475,58 @@ sub _collation_hash {
 }
 
 sub set_relationships {
-    my( $app, $lemma, $variants ) = @_;
+    my( $collation, $app, $lemma, $variants ) = @_;
     foreach my $rkey ( keys %$variants ) {
 	my $var = $variants->{$rkey}->{'reading'};
 	my $typekey = sprintf( "_%s_type", $rkey );
 	my $type = $app->{$typekey};
 	
-	# Transposition: look for nodes with the same label but different IDs
-	# and mark them as transposed-identical.
-
-	# Lexical / Grammatical / Spelling: look for non-identical nodes.
-	# Need to work out how to handle many-to-many mapping.
+	if( $type =~ /^(inv|tr)$/i ) {
+	    # Transposition: look for nodes with the same label but
+	    # different IDs and mark them as transposed-identical.
+	    my %labels;
+	    foreach my $r ( @$lemma ) {
+		$labels{$r->label} = $r;
+	    }
+	    foreach my $r( @$var ) {
+		if( exists $labels{$r->label} &&
+		    $r->name ne $labels{$r->label}->name ) {
+		    $r->set_identical( $labels{$r->label} );
+		}
+	    }
+	} elsif( $type =~ /^(gr|sp(el)?|rep)$/i ) {
+	    # Grammar/spelling: this can be a one-to-one or one-to-many
+	    # mapping.  We should think about merging readings if it is
+	    # one-to-many.
+	    $type = 'grammatical' if $type =~ /gr/i;
+	    $type = 'spelling' if $type =~ /sp/i;
+	    $type = 'repetition' if $type =~ /rep/i;
+	    if( @$lemma == @$var ) {
+		foreach my $i ( 0 .. $#{$lemma} ) {
+		    $collation->add_relationship( $type, $var->[$i],
+						  $lemma->[$i] );
+		}
+	    } elsif ( @$lemma > @$var && @$var == 1 ) {
+		# Merge the lemma readings into one
+		my $ln1 = shift @$lemma;
+		foreach my $ln ( @$lemma ) {
+		    $collation->merge_readings( $ln1, $ln, ' ' );
+		}
+		$lemma = [ $ln1 ];
+		$collation->add_relationship( $type, $var->[0], $lemma->[0] );
+	    } elsif ( @$lemma < @$var && @$lemma == 1 ) {
+		my $vn1 = shift @$var;
+		foreach my $vn ( @$var ) {
+		    $collation->merge_readings( $vn1, $vn, ' ' );
+		}
+		$var = [ $vn1 ];
+		$collation->add_relationship( $type, $var->[0], $lemma->[0] );
+	    } else {
+		warn "Cannot set $type relationship on a many-to-many variant";
+	    }
+	} elsif( $type !~ /^(lex|add|om)$/i ) {
+	    warn "Unrecognized type $type";
+	}
     }
 }
 	

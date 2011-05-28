@@ -3,6 +3,7 @@ package Text::Tradition::Collation::Reading;
 use Moose;
 use Moose::Util::TypeConstraints;
 use MooseX::NonMoose;
+use Text::Tradition::Collation::Relationship;
 
 extends 'Graph::Easy::Node';
 
@@ -23,14 +24,6 @@ has 'position' => (
 has 'same_as' => (
     is => 'rw',
     isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
-    );
-
-# # This is a hash mapping of 'relationship => reading'.
-# # TODO we should validate the relationships sometime.
-has 'relationships' => (
-    is => 'ro',
-    isa => 'HashRef[Text::Tradition::Collation::Reading]',
-    default => sub { {} },
     );
 
 # Deal with the non-arg option for Graph::Easy's constructor.
@@ -68,22 +61,11 @@ sub merge_from {
     my $new_pool = _merge_array_pool( \@now_identical, $self->same_as )
 	if @now_identical;
 
-    # Adopt the relationship attributes of the other node.
-    my $now_rel = $merged_node->relationships;
-    foreach my $key ( %$now_rel ) {
-	if( $self->has_relationship( $key ) ) {
-	    my $related = $self->get_relationship( $key );
-	    if( $now_rel->{$key} ne $related ) {
-		warn( sprintf( "Merged reading %s has relationship %s to reading %s instead of %s; skipping",
-			       $merged_node->name, $key,
-			       $now_rel->{$key},
-			       $related) );
-	    } # else no action needed
-	} else {
-	    $self->set_relationship( $key, $now_rel->{$key} );
-	}
-    }
+    # TODO Adopt the relationship attributes of the other node.
 }
+
+## Dealing with transposed readings.  These methods are only really
+## applicable if we have a linear collation graph.
 
 sub set_identical {
     my( $self, $other_node ) = @_; 
@@ -127,26 +109,7 @@ sub primary {
     return $self->same_as->[0];
 }
 
-# Much easier to do this with a hash than with an array of Relationship objects,
-# which would be the proper OO method.
-
-sub has_relationship {
-    my( $self, $rel ) = @_;
-    return exists( $self->relationships->{ $rel } );
-}
-
-sub get_relationship {
-    my( $self, $rel ) = @_;
-    if( $self->has_relationship( $rel ) ) {
-	return $self->relationships->{ $rel };
-    }
-    return undef;
-}
-
-sub set_relationship {
-    my( $self, $rel, $value ) = @_;
-    $self->relationships->{ $rel } = $value;
-}
+## Keep track of which readings are unchanged across witnesses.
 
 sub is_common {
     my( $self ) = shift;

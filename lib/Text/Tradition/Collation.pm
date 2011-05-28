@@ -3,6 +3,7 @@ package Text::Tradition::Collation;
 use Graph::Easy;
 use IPC::Run qw( run binary );
 use Text::Tradition::Collation::Reading;
+use Text::Tradition::Collation::Path;
 use Moose;
 
 has 'graph' => (
@@ -98,6 +99,7 @@ has 'linear' => (
 sub BUILD {
     my( $self, $args ) = @_;
     $self->graph->use_class('node', 'Text::Tradition::Collation::Reading');
+    $self->graph->use_class('edge', 'Text::Tradition::Collation::Path');
 
     # Pass through any graph-specific options.
     my $shape = exists( $args->{'shape'} ) ? $args->{'shape'} : 'ellipse';
@@ -130,6 +132,15 @@ around add_path => sub {
     $self->$orig( @_ );
 };
 
+# Wrapper around paths
+around paths => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    my @result = grep { $_->class eq 'path' } $self->$orig( @_ );
+    return @result;
+};
+
 # Wrapper around merge_nodes
 
 sub merge_readings {
@@ -147,6 +158,42 @@ sub has_path {
     my @paths = $source->edges_to( $target );
     my @relevant = grep { $_->label eq $label } @paths;
     return scalar @paths;
+}
+
+## Dealing with relationships between readings.  This is a different
+## sort of graph edge.
+
+sub add_relationship {
+    my( $self, $type, $source, $target, $global ) = @_;
+    my $rel = Text::Tradition::Collation::Relationship->new(
+	    'sort' => $type,
+	    'global' => $global,
+	    'orig_relation' => [ $source, $target ],
+    );
+    print STDERR sprintf( "Setting relationship %s between readings %s (%s)"
+			  . " and %s (%s)\n", $type, 
+			  $source->label, $source->name,
+			  $target->label, $target->name );
+    $self->graph->add_edge( $source, $target, $rel );
+    if( $global ) {
+	# Look for all readings with the source label, and if there are
+	# colocated readings with the target label, join them too.
+	foreach my $r ( $self->readings() ) {
+	    next unless $r->label eq $source->label;
+	    my @colocated = grep { $_->label eq $target->label }
+	        $self->same_position_as( $r );
+	    if( @colocated ) {
+		warn "Multiple readings with same label at same position!"
+		    if @colocated > 1;
+		my $dup_rel = Text::Tradition::Collation::Relationship->new(
+		    'sort' => $type,
+		    'global' => $global,
+		    'orig_relation' => [ $source, $target ],
+		    );
+		$self->graph->add_edge( $r, $colocated[0], $dup_rel );
+	    }
+	}
+    }
 }
 
 =head2 Output method(s)
@@ -168,7 +215,7 @@ sub as_svg {
     my( $self, $recalc ) = @_;
     return $self->svg if $self->has_svg;
     
-    $self->collapse_graph_edges();
+    $self->collapse_graph_paths();
     $self->_save_graphviz( $self->graph->as_graphviz() )
 	unless( $self->has_graphviz && !$recalc );
     
@@ -177,7 +224,7 @@ sub as_svg {
     my $in = $self->graphviz;
     run( \@cmd, \$in, ">", binary(), \$svg );
     $self->{'svg'} = $svg;
-    $self->expand_graph_edges();
+    $self->expand_graph_paths();
     return $svg;
 }
 
@@ -286,24 +333,24 @@ sub as_graphml {
     return $graphml;
 }
 
-sub collapse_graph_edges {
+sub collapse_graph_paths {
     my $self = shift;
-    # Our collation graph has an edge per witness.  This is great for
+    # Our collation graph has an path per witness.  This is great for
     # calculation purposes, but terrible for display.  Thus we want to
-    # display only one edge between any two nodes.
+    # display only one path between any two nodes.
 
     return if $self->collapsed;
 
-    print STDERR "Collapsing path edges in graph...\n";
+    print STDERR "Collapsing witness paths in graph...\n";
 
     # Don't list out every witness if we have more than half to list.
     my $majority = int( scalar( @{$self->tradition->witnesses} ) / 2 ) + 1;
     foreach my $node( $self->readings ) {
 	my $newlabels = {};
 	# We will visit each node, so we only look ahead.
-	foreach my $edge ( $node->outgoing() ) {
-	    add_hash_entry( $newlabels, $edge->to->name, $edge->name );
-	    $self->del_path( $edge );
+	foreach my $path ( $node->outgoing() ) {
+	    add_hash_entry( $newlabels, $path->to->name, $path->name );
+	    $self->del_path( $path );
 	}
 
 	foreach my $newdest ( keys %$newlabels ) {
@@ -324,12 +371,10 @@ sub collapse_graph_edges {
 		$label = join( ', ', 'majority', @aclabels );
 	    }
 	    
-	    my $newedge = 
+	    my $newpath = 
 		$self->add_path( $node, $self->reading( $newdest ), $label );
 	    if( @compressed_wits ) {
-		## TODO fix this hack too.
-		$newedge->set_attribute( 'class', 
-					 join( '|', @compressed_wits ) );
+		$newpath->hidden_witnesses( \@compressed_wits );
 	    }
 	}
     }
@@ -337,24 +382,24 @@ sub collapse_graph_edges {
     $self->collapsed( 1 );
 }
 
-sub expand_graph_edges {
+sub expand_graph_paths {
     my $self = shift;
-    # Our collation graph has only one edge between any two nodes.
+    # Our collation graph has only one path between any two nodes.
     # This is great for display, but not so great for analysis.
-    # Expand this so that each witness has its own edge between any
+    # Expand this so that each witness has its own path between any
     # two reading nodes.
     return unless $self->collapsed;
     
-    print STDERR "Expanding path edges in graph...\n";
-
-    foreach my $edge( $self->paths ) {
-	my $from = $edge->from;
-	my $to = $edge->to;
-	my @wits = split( /, /, $edge->label );
-	if( grep { $_ eq 'majority' } @wits ) {
-	    push( @wits, split( /\|/, $edge->get_attribute( 'class' ) ) );
+    print STDERR "Expanding witness paths in graph...\n";
+    $DB::single = 1;
+    foreach my $path( $self->paths ) {
+	my $from = $path->from;
+	my $to = $path->to;
+	my @wits = split( /, /, $path->label );
+	if( $path->has_hidden_witnesses ) {
+	    push( @wits, @{$path->hidden_witnesses} );
 	}
-	$self->del_path( $edge );
+	$self->del_path( $path );
 	foreach ( @wits ) {
 	    $self->add_path( $from, $to, $_ );
 	}
