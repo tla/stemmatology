@@ -305,21 +305,13 @@ sub as_graphml {
     }
 
     # Add the data keys for edges, i.e. witnesses
-    my %wit_hash;
     my $wit_ctr = 0;
-    foreach my $wit ( @{$self->tradition->witnesses} ) {
-	my $wit_key = 'w' . $wit_ctr++;
-	$wit_hash{$wit->sigil} = $wit_key;
+    foreach my $wit_key( qw/ main ante_corr / ) {
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', _make_xml_attr( $wit->sigil ) );
+	$key->setAttribute( 'attr.name', "witness_$wit_key" );
 	$key->setAttribute( 'attr.type', 'string' );
 	$key->setAttribute( 'for', 'edge' );
-	$key->setAttribute( 'id', $wit_key );
-	my $ackey = $root->addNewChild( $graphml_ns, 'key' );
-	$ackey->setAttribute( 'attr.name', _make_xml_attr( $wit->sigil ) . "_ante_corr" );
-	$ackey->setAttribute( 'attr.type', 'string' );
-	$ackey->setAttribute( 'for', 'edge' );
-	$ackey->setAttribute( 'id', $wit_key . "a" );
+	$key->setAttribute( 'id', 'w'.$wit_ctr++ );
     }
 
     # Add the graph, its nodes, and its edges
@@ -334,7 +326,7 @@ sub as_graphml {
 
     my $node_ctr = 0;
     my %node_hash;
-    foreach my $n ( $self->readings ) {
+    foreach my $n ( sort { $a->name cmp $b->name } $self->readings ) {
 	my %this_node_data = ();
 	foreach my $ndi ( 0 .. $#node_data ) {
 	    my $key = $node_data[$ndi];
@@ -361,25 +353,25 @@ sub as_graphml {
     }
 
     my $edge_ctr = 0;
-    foreach my $e ( $self->paths() ) {
+    foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->paths() ) {
 	my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
-				    $node_hash{ $e->from()->name() },
-				    $node_hash{ $e->to()->name() } );
+				    $node_hash{ $e->from->name() },
+				    $node_hash{ $e->to->name() } );
 	my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
 	$edge_el->setAttribute( 'source', $from );
 	$edge_el->setAttribute( 'target', $to );
 	$edge_el->setAttribute( 'id', $name );
 	# Add the witness
 	my $base = $e->label;
-	my $ante_corr;
+	my $key = 'w0';
+	# TODO kind of hacky
 	if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
-	    ( $base, $ante_corr ) = ( $1, $2 );
+	    $base = $1;
+	    $key = 'w1';
 	}
-	my $key = $wit_hash{$base};
-	$key .= "a" if $ante_corr;
 	my $wit_el = $edge_el->addNewChild( $graphml_ns, 'data' );
 	$wit_el->setAttribute( 'key', $key );
-	$wit_el->appendText( $e->label );
+	$wit_el->appendText( $base );
     }
 
     # Return the thing

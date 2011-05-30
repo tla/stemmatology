@@ -29,10 +29,14 @@ graph.
 
 =cut
 
-use vars qw/ $xpc %nodedata /;
+use vars qw/ $xpc $nodedata /;
+
+map { $nodedata->{'CollateX'}->{$_} = undef } qw/ number token identical ranking /;
+map { $nodedata->{'Text::Tradition'}->{$_} = undef } qw/ name reading identical position /;
 
 sub parse {
-    my( $tradition, $graphml_str ) = @_;
+    my( $tradition, $graphml_str, $generator ) = @_;
+    $generator = 'CollateX' unless $generator;
 
     my $collation = $tradition->collation;
     my $parser = XML::LibXML->new();
@@ -46,6 +50,8 @@ sub parse {
     foreach my $k ( $xpc->findnodes( '//g:key' ) ) {
 	# Each key has a 'for' attribute; the edge keys are witnesses, and
 	# the node keys contain an ID and string for each node.
+	my $keyid = $k->getAttribute( 'id' );
+	my $keyname = $k->getAttribute( 'attr.name' );
 
 	if( $k->getAttribute( 'for' ) eq 'node' ) {
 	    # The node data keys we expect are:
@@ -54,13 +60,15 @@ sub parse {
 	    # 'identical' -> the node of which this node is 
 	    #                a transposed version
 	    # 'position' -> a calculated position for the node
-	    $nodedata{ $k->getAttribute( 'attr.name' ) } = $k->getAttribute( 'id' );
+	    warn( "No data key $keyname defined for $generator GraphML" )
+		unless exists( $nodedata->{$generator}->{$keyname} );
+	    $nodedata->{$generator}->{$keyname} = $keyid;
 	} else {
-	    $witnesses{ $k->getAttribute( 'id' ) } = $k->getAttribute( 'attr.name' );
+	    $witnesses{ $keyid } = $keyname;
 	}
     }
 
-    my $has_explicit_positions = defined $nodedata{'position'};
+    my $has_explicit_positions = defined $nodedata->{$generator}->{'position'};
 
     # Add the witnesses that we have found
     foreach my $wit ( values %witnesses ) {
@@ -78,19 +86,21 @@ sub parse {
     my $extra_data = {};
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
-	my $id = _lookup_node_data( $n, 'number' );
-	$id = _lookup_node_data( $n, 'name' ) unless $id;
-	my $token = _lookup_node_data( $n, 'token' );
-	$token = _lookup_node_data( $n, 'reading' ) unless $token;
+	# Could use a better way of registering these
+	my $nodeid_key = $generator eq 'CollateX' ? 'number' : 'name';
+	my $reading_key = $generator eq 'CollateX' ? 'token' : 'reading';
+	my $id = _lookup_node_data( $n, $nodeid_key, $generator );
+	my $token = _lookup_node_data( $n, $reading_key, $generator );
 	my $gnode = $collation->add_reading( $id );
 	$node_name{ $n->getAttribute('id') } = $id;
 	$gnode->text( $token );
 
 	# Now get the rest of the data, i.e. not the ID or label
 	my $extra = {};
-	foreach my $k ( keys %nodedata ) {
-	    next if $k =~ /^(number|token)$/;
-	    $extra->{ $k } = _lookup_node_data( $n, $k );
+	foreach my $k ( keys %{$nodedata->{$generator}} ) {
+	    next if $k eq $nodeid_key || $k eq $reading_key;
+	    next unless $nodedata->{$generator}->{$k};
+	    $extra->{ $k } = _lookup_node_data( $n, $k, $generator );
 	}
 	$extra_data->{ $id } = $extra;
     }
@@ -116,11 +126,11 @@ sub parse {
     my %node_id = reverse %node_name;
 
     ## Record the nodes that are marked as transposed.
-    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata{'identical'} . '"]]';
+    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata->{$generator}->{'identical'} . '"]]';
     my $transposition_nodes = $xpc->find( $tr_xpath );
     foreach my $tn ( @$transposition_nodes ) {
 	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
-				$nodedata{'identical'} );
+				$nodedata->{$generator}->{'identical'} );
 	my $tn_reading = $collation->reading( $node_id{ $tn->getAttribute( 'id' ) } );
 	my $main_reading = $collation->reading( $node_name{ $xpc->findvalue( $id_xpath, $tn ) } );
 	if( $collation->linear ) {
@@ -169,10 +179,10 @@ sub parse {
 }
 
 sub _lookup_node_data {
-    my( $xmlnode, $key ) = @_;
-    return undef unless exists $nodedata{$key};
+    my( $xmlnode, $key, $generator ) = @_;
+    return undef unless exists $nodedata->{$generator}->{$key};
     my $lookup_xpath = './g:data[@key="%s"]/child::text()';
-    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata{$key} ), 
+    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata->{$generator}->{$key} ), 
 				$xmlnode );
     return $data;
 }
