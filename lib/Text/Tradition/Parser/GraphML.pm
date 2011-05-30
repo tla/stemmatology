@@ -12,8 +12,10 @@ Text::Tradition::Parser::GraphML
 =head1 DESCRIPTION
 
 Parser module for Text::Tradition, given a GraphML file that describes
-a collation graph.  For further information on the GraphML format for
-text collation, see http://gregor.middell.net/collatex/
+a collation graph.  Returns the information about the graph that has
+been parsed out from the GraphML.  This module is meant to be used
+with a module (e.g. CollateX or Self) that interprets the specific
+GraphML conventions of the source program.
 
 =head1 METHODS
 
@@ -21,24 +23,24 @@ text collation, see http://gregor.middell.net/collatex/
 
 =item B<parse>
 
-parse( $graph, $graphml_string );
+parse( $graphml_string );
 
-Takes an initialized Text::Tradition::Graph object and a string
-containing the GraphML; creates the appropriate nodes and edges on the
-graph.
+Takes a string containing the GraphML; returns a list of nodes, edges,
+and their associated data.
 
 =cut
 
-use vars qw/ $xpc $nodedata /;
+use vars qw/ $xpc $nodedata $witnesses /;
 
-map { $nodedata->{'CollateX'}->{$_} = undef } qw/ number token identical ranking /;
-map { $nodedata->{'Text::Tradition'}->{$_} = undef } qw/ name reading identical position /;
+# Return graph -> nodeid -> { key1/val1, key2/val2, key3/val3 ... }
+#              -> edgeid -> { source, target, wit1/val1, wit2/val2 ...}
 
 sub parse {
-    my( $tradition, $graphml_str, $generator ) = @_;
-    $generator = 'CollateX' unless $generator;
+    my( $graphml_str ) = @_;
 
-    my $collation = $tradition->collation;
+    my $graph_hash = { 'nodes' => [],
+		       'edges' => [] };
+
     my $parser = XML::LibXML->new();
     my $doc = $parser->parse_string( $graphml_str );
     my $graphml = $doc->documentElement();
@@ -46,7 +48,6 @@ sub parse {
     $xpc->registerNs( 'g', 'http://graphml.graphdrawing.org/xmlns' );
     
     # First get the ID keys, for witnesses and for collation data
-    my %witnesses;
     foreach my $k ( $xpc->findnodes( '//g:key' ) ) {
 	# Each key has a 'for' attribute; the edge keys are witnesses, and
 	# the node keys contain an ID and string for each node.
@@ -54,136 +55,60 @@ sub parse {
 	my $keyname = $k->getAttribute( 'attr.name' );
 
 	if( $k->getAttribute( 'for' ) eq 'node' ) {
-	    # The node data keys we expect are:
-	    # 'number|name' -> unique node identifier
-	    # 'token|reading' -> reading for the node
-	    # 'identical' -> the node of which this node is 
-	    #                a transposed version
-	    # 'position' -> a calculated position for the node
-	    warn( "No data key $keyname defined for $generator GraphML" )
-		unless exists( $nodedata->{$generator}->{$keyname} );
-	    $nodedata->{$generator}->{$keyname} = $keyid;
+	    # Keep track of the XML identifiers for the data carried
+	    # in each node element.
+	    $nodedata->{$keyid} = $keyname
 	} else {
-	    $witnesses{ $keyid } = $keyname;
+	    $witnesses->{$keyid} = $keyname;
 	}
-    }
-
-    my $has_explicit_positions = defined $nodedata->{$generator}->{'position'};
-
-    # Add the witnesses that we have found
-    foreach my $wit ( values %witnesses ) {
-	$tradition->add_witness( 'sigil' => $wit );
     }
 
     my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
 
-    # Add the nodes to the graph.  First delete the start node, because
-    # GraphML graphs will have their own start nodes.
-    $collation->del_reading( $collation->start() );
-    # Map from XML IDs to node name/identity
-    my %node_name;
-    # Keep track of whatever extra info we're passed
-    my $extra_data = {};
+    my $node_reg = {};
+
+    # Add the nodes to the graph hash. 
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
 	# Could use a better way of registering these
-	my $nodeid_key = $generator eq 'CollateX' ? 'number' : 'name';
-	my $reading_key = $generator eq 'CollateX' ? 'token' : 'reading';
-	my $id = _lookup_node_data( $n, $nodeid_key, $generator );
-	my $token = _lookup_node_data( $n, $reading_key, $generator );
-	my $gnode = $collation->add_reading( $id );
-	$node_name{ $n->getAttribute('id') } = $id;
-	$gnode->text( $token );
-
-	# Now get the rest of the data, i.e. not the ID or label
-	my $extra = {};
-	foreach my $k ( keys %{$nodedata->{$generator}} ) {
-	    next if $k eq $nodeid_key || $k eq $reading_key;
-	    next unless $nodedata->{$generator}->{$k};
-	    $extra->{ $k } = _lookup_node_data( $n, $k, $generator );
+	my $node_hash = {};
+	foreach my $dkey ( keys %$nodedata ) {
+	    my $keyname = $nodedata->{$dkey};
+	    my $keyvalue = _lookup_node_data( $n, $dkey );
+	    $node_hash->{$keyname} = $keyvalue if $keyvalue;
 	}
-	$extra_data->{ $id } = $extra;
+	$node_reg->{$n->getAttribute( 'id' )} = $node_hash;
+	push( @{$graph_hash->{'nodes'}}, $node_hash );
     }
 	
-    # Now add the edges.
+    # Now add the edges, and cross-ref with the node objects.
     my @edges = $xpc->findnodes( '//g:edge' );
     foreach my $e ( @edges ) {
-	my $from = $node_name{ $e->getAttribute('source') };
-	my $to = $node_name{ $e->getAttribute('target') };
-	# Label according to the witnesses present.
-	my @wit_ids = $xpc->findnodes( './g:data/attribute::key', $e );
-	my @wit_names = map { $witnesses{ $_->getValue() } } @wit_ids;
-	# One path per witness
-	foreach( @wit_names ) {
-	    $collation->add_path( $from, $to, $_ );
+	my $from = $e->getAttribute('source');
+	my $to = $e->getAttribute('target');
+
+	# We don't know whether the edge data is one per witness
+	# or one per witness type, or something else.  So we just
+	# save it and let our calling parser decide.
+	my $edge_hash = {
+	    'source' => $node_reg->{$from},
+	    'target' => $node_reg->{$to},
+	};
+	foreach my $wkey( keys %$witnesses ) {
+	    my $wname = $witnesses->{$wkey};
+	    my $wlabel = _lookup_node_data( $e, $wkey );
+	    $edge_hash->{$wname} = $wlabel if $wlabel;
 	}
-	# Only a single path between two readings
-	# my $label = $collation->path_label( @wit_names );
-	# $collation->add_path( $from, $to, $label );
+	push( @{$graph_hash->{'edges'}}, $edge_hash );
     }
-
-    ## Reverse the node_name hash so that we have two-way lookup.
-    my %node_id = reverse %node_name;
-
-    ## Record the nodes that are marked as transposed.
-    my $tr_xpath = '//g:node[g:data[@key="' . $nodedata->{$generator}->{'identical'} . '"]]';
-    my $transposition_nodes = $xpc->find( $tr_xpath );
-    foreach my $tn ( @$transposition_nodes ) {
-	my $id_xpath = sprintf( './g:data[@key="%s"]/text()', 
-				$nodedata->{$generator}->{'identical'} );
-	my $tn_reading = $collation->reading( $node_id{ $tn->getAttribute( 'id' ) } );
-	my $main_reading = $collation->reading( $node_name{ $xpc->findvalue( $id_xpath, $tn ) } );
-	if( $collation->linear ) {
-	    $tn_reading->set_identical( $main_reading );
-	} else {
-	    $collation->merge_readings( $main_reading, $tn_reading );
-	}
-    }
-
-    # Find the beginning and end nodes of the graph.  The beginning node
-    # has no incoming edges; the end node has no outgoing edges.
-    my( $begin_node, $end_node );
-    foreach my $gnode ( $collation->readings() ) {
-	# print STDERR "Checking node " . $gnode->name . "\n";
-	my @outgoing = $gnode->outgoing();
-	my @incoming = $gnode->incoming();
-
-	unless( scalar @incoming ) {
-	    warn "Already have a beginning node" if $begin_node;
-	    $begin_node = $gnode;
-	    $collation->start( $gnode );
-	}
-	unless( scalar @outgoing ) {
-	    warn "Already have an ending node" if $end_node;
-	    $end_node = $gnode;
-	}
-    }
-
-    my @common_nodes = $collation->walk_witness_paths( $end_node );
-    # Now we have added the witnesses and their paths, so have also
-    # implicitly marked the common nodes. Now we can calculate their
-    # explicit permissions.  This is separate because it won't always
-    # be necessary with the GraphML parsing.
-    if( $has_explicit_positions ) {
-	# Record the positions that came with each graph node.
-	# TODO we really need to translate these into our own style of
-	# position identifier.  That's why we defer this until now.
-	foreach my $node_id ( keys %$extra_data ) {
-	    my $pos = $extra_data->{$node_id}->{'position'};
-	    $collation->reading( $node_name{$node_id} )->position( $pos );
-	}
-    } else {
-	# Calculate a position for each graph node.
-	$collation->calculate_positions( @common_nodes );
-    }
+    $DB::single = 1;
+    return $graph_hash;
 }
 
 sub _lookup_node_data {
-    my( $xmlnode, $key, $generator ) = @_;
-    return undef unless exists $nodedata->{$generator}->{$key};
+    my( $xmlnode, $key ) = @_;
     my $lookup_xpath = './g:data[@key="%s"]/child::text()';
-    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $nodedata->{$generator}->{$key} ), 
-				$xmlnode );
+    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $key ), $xmlnode );
     return $data;
 }
     

@@ -12,7 +12,7 @@ my $datafile = 't/data/Collatex-16.xml';
 open( GRAPHFILE, $datafile ) or die "Could not open $datafile";
 my @lines = <GRAPHFILE>;
 close GRAPHFILE;
-my $tradition = Text::Tradition->new( 'GraphML' => join( '', @lines ) );
+my $tradition = Text::Tradition->new( 'CollateX' => join( '', @lines ) );
 my $collation = $tradition->collation;
 
 # Test the svg creation
