@@ -75,6 +75,12 @@ has 'linear' => (
     default => 1,
     );
 
+has 'ac_label' => (
+    is => 'rw',
+    isa => 'Str',
+    default => ' (a.c.)',
+    );
+
 
 # The collation can be created two ways:
 # 1. Collate a set of witnesses (with CollateX I guess) and process
@@ -119,7 +125,7 @@ around add_path => sub {
     $target = $self->reading( $target )
 	unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
     foreach my $path ( $source->edges_to( $target ) ) {
-	if( $path->label eq $wit ) {
+	if( $path->label eq $wit && $path->class eq 'edge.path' ) {
 	    return;
 	}
     }
@@ -167,6 +173,19 @@ sub has_path {
 
 sub add_relationship {
     my( $self, $type, $source, $target, $global ) = @_;
+
+    # Make sure there is not another relationship between these two
+    # readings already
+    $source = $self->reading( $source )
+	unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
+    $target = $self->reading( $target )
+	unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
+    foreach my $rel ( $source->edges_to( $target ) ) {
+	if( $rel->label eq $type && $rel->class eq 'edge.relationship' ) {
+	    return;
+	}
+    }
+
     my $rel = Text::Tradition::Collation::Relationship->new(
 	    'sort' => $type,
 	    'global' => $global,
@@ -296,24 +315,30 @@ sub as_graphml {
 
     # Add the data keys for nodes
     my @node_data = ( 'name', 'reading', 'identical', 'position' );
-    foreach my $ndi ( 0 .. $#node_data ) {
+    # HACKY HACKY HACK Relationship data
+    my %node_data_keys;
+    my $ndi = 0;
+    foreach my $datum ( @node_data ) {
+	$node_data_keys{$datum} = 'dn'.$ndi++;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', $node_data[$ndi] );
+	$key->setAttribute( 'attr.name', $datum );
 	$key->setAttribute( 'attr.type', 'string' );
 	$key->setAttribute( 'for', 'node' );
-	$key->setAttribute( 'id', 'd'.$ndi );
+	$key->setAttribute( 'id', $node_data_keys{$datum} );
     }
 
     # Add the data keys for edges, i.e. witnesses
-    my $wit_ctr = 0;
-    foreach my $wit_key( qw/ main ante_corr / ) {
+    my $edi = 0;
+    my %edge_data_keys;
+    foreach my $edge_key( qw/ witness_main witness_ante_corr relationship / ) {
+	$edge_data_keys{$edge_key} = 'de'.$edi++;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', "witness_$wit_key" );
+	$key->setAttribute( 'attr.name', $edge_key );
 	$key->setAttribute( 'attr.type', 'string' );
 	$key->setAttribute( 'for', 'edge' );
-	$key->setAttribute( 'id', 'w'.$wit_ctr++ );
+	$key->setAttribute( 'id', $edge_data_keys{$edge_key} );
     }
-
+    
     # Add the graph, its nodes, and its edges
     my $graph = $root->addNewChild( $graphml_ns, 'graph' );
     $graph->setAttribute( 'edgedefault', 'directed' );
@@ -328,16 +353,16 @@ sub as_graphml {
     my %node_hash;
     foreach my $n ( sort { $a->name cmp $b->name } $self->readings ) {
 	my %this_node_data = ();
-	foreach my $ndi ( 0 .. $#node_data ) {
-	    my $key = $node_data[$ndi];
-	    if( $key eq 'name' ) {
-		$this_node_data{'d'.$ndi} = $n->name;
-	    } elsif( $key eq 'token' ) {
-		$this_node_data{'d'.$ndi} = $n->label;
-	    } elsif( $key eq 'identical' && $n->has_primary ) {
-		$this_node_data{'d'.$ndi} = $n->primary->name;
-	    } elsif( $key eq 'position' ) {
-		$this_node_data{'d'.$ndi} = $n->position;
+	foreach my $datum ( @node_data ) {
+	    my $key = $node_data_keys{$datum};
+	    if( $datum eq 'name' ) {
+		$this_node_data{$key} = $n->name;
+	    } elsif( $datum eq 'reading' ) {
+		$this_node_data{$key} = $n->label;
+	    } elsif( $datum eq 'identical' && $n->has_primary ) {
+		$this_node_data{$key} = $n->primary->name;
+	    } elsif( $datum eq 'position' ) {
+		$this_node_data{$key} = $n->position;
 	    }
 	}
 	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
@@ -352,8 +377,9 @@ sub as_graphml {
 	}
     }
 
+    # Add the path edges
     my $edge_ctr = 0;
-    foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->paths() ) {
+    foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->graph->edges() ) {
 	my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
 				    $node_hash{ $e->from->name() },
 				    $node_hash{ $e->to->name() } );
@@ -361,17 +387,24 @@ sub as_graphml {
 	$edge_el->setAttribute( 'source', $from );
 	$edge_el->setAttribute( 'target', $to );
 	$edge_el->setAttribute( 'id', $name );
-	# Add the witness
-	my $base = $e->label;
-	my $key = 'w0';
-	# TODO kind of hacky
-	if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
-	    $base = $1;
-	    $key = 'w1';
+	if( $e->class() eq 'edge.path' ) {
+	    # It's a witness path, so add the witness
+	    my $base = $e->label;
+	    my $key = $edge_data_keys{'witness_main'};
+	    # TODO kind of hacky
+	    if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
+		$base = $1;
+		$key = $edge_data_keys{'witness_ante_corr'};
+	    }
+	    my $wit_el = $edge_el->addNewChild( $graphml_ns, 'data' );
+	    $wit_el->setAttribute( 'key', $key );
+	    $wit_el->appendText( $base );
+	} else {
+	    # It's a relationship
+	    my $rel_el = $edge_el->addNewChild( $graphml_ns, 'data' );
+	    $rel_el->setAttribute( 'key', $edge_data_keys{'relationship'} );
+	    $rel_el->appendText( $e->label() );
 	}
-	my $wit_el = $edge_el->addNewChild( $graphml_ns, 'data' );
-	$wit_el->setAttribute( 'key', $key );
-	$wit_el->appendText( $base );
     }
 
     # Return the thing
