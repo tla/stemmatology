@@ -101,7 +101,6 @@ sub parse {
 	}
 	push( @{$graph_hash->{'edges'}}, $edge_hash );
     }
-    $DB::single = 1;
     return $graph_hash;
 }
 

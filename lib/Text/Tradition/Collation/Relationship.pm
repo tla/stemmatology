@@ -10,7 +10,7 @@ use MooseX::NonMoose;
 
 extends 'Graph::Easy::Edge';
 
-enum 'RelationshipType' => qw( spelling orthographic grammatical repetition );
+enum 'RelationshipType' => qw( spelling orthographic grammatical repetition lexical );
 
 subtype 'RelationshipVector',
     => as 'ArrayRef',
