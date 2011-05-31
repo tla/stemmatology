@@ -2,6 +2,7 @@ package Text::Tradition::Parser::CSV;
 
 use strict;
 use warnings;
+use Storable qw /dclone/;
 use Text::CSV::Simple;
 
 =head1 NAME
@@ -55,33 +56,43 @@ sub read {
 	# apparatus to the list, and clear it out, if we have started a
 	# new reading.
 	if( $new_lemma ) {
-	    push( @app_list, $apparatus ) if keys %$apparatus;
-	    $apparatus = { _id => $linehash{reference},
-	    };
+	    # Was it a doubled-up apparatus entry e.g 'non (1/2)'?
+	    if( keys %$apparatus &&
+		$apparatus->{'rdg_0'} =~ /(.*?)\s+\(?([\d\/]+)\)?\s*$/ ) {
+		my( $reading, $istr ) = ( $1, $2 );
+		my @instances = split( /\//, $istr );
+		foreach my $i ( @instances ) {
+		    my $app = dclone( $apparatus );
+		    $app->{'rdg_0'} = $reading . "_$i";
+		    $app->{'_id'} .= chr(97+$i);
+		    push( @app_list, $app );
+		}
+	    } elsif( keys %$apparatus ) {
+		push( @app_list, $apparatus );
+	    }
+	    $apparatus = { _id => $linehash{reference} };
 	    $rdg_ctr = 0;
 	}
 	# The apparatus has multiple readings, and multiple witnesses per
 	# reading.  So it's a hashref whose values are listrefs.
-	$apparatus->{ 'rdg_0' } = $linehash{ 'text' } 
-        if $linehash{ 'text' };
-	$apparatus->{ 'rdg_' . ++$rdg_ctr } = $linehash{ 'variant' };
+	$apparatus->{'rdg_0'} = $linehash{'text'} if $linehash{'text'};
+	$apparatus->{'rdg_' . ++$rdg_ctr} = $linehash{'variant'};
 	foreach my $attr ( @fields[3..8] ) {
-	    $apparatus->{"_rdg_${rdg_ctr}_$attr"} = $linehash{ $attr }
-	    if $linehash{ $attr };
+	    $apparatus->{"_rdg_${rdg_ctr}_$attr"} = $linehash{$attr} if $linehash{$attr};
 	}
 	
 	foreach my $k ( @fields[10..$#fields] ) {
 	    my $variant_rdg = $linehash{$k};
 	    $k =~ s/\s+\(a\.c\.\)//;
 	    if( $variant_rdg =~ /^0/ ) {
-		$apparatus->{ $k } = 'rdg_0'
-		    unless exists $apparatus->{ $k };
+		$apparatus->{$k} = 'rdg_0'
+		    unless exists $apparatus->{$k};
 	    } elsif ( $variant_rdg =~ /^1/ ) {
-		$apparatus->{ $k } = 'rdg_' . $rdg_ctr;
+		$apparatus->{$k} = 'rdg_' . $rdg_ctr;
 	    } else { # else for $, we don't list the MS
 		warn "Unparsed variant indicator $variant_rdg for $k in " .
 		    $apparatus->{'_id'}
-	        unless ( !$variant_rdg or $variant_rdg =~ /^\$$/ );
+	            unless ( !$variant_rdg or $variant_rdg =~ /^\$$/ );
 	    }
 	}
 	# See if we have at least one reading for each variant.
