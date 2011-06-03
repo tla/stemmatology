@@ -2,6 +2,19 @@ package Text::Tradition::Witness;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+subtype 'Correction',
+    => as 'ArrayRef',
+    => where { return 0 unless @$_ == 3;
+	       return 0 unless $_->[0] =~ /^\d+$/;
+	       return 0 unless $_->[1] =~ /^\d+$/;
+	       foreach my $x ( @{$_->[2]} ) {
+		   return $0 unless $x->isa( 'Text::Tradition::Collation::Reading' );
+	       }
+	       return 1;
+	   },
+    => message { "Correction must be ref of [ offset, length, replacement_list ]" };
+
+		
 # Sigil. Required identifier for a witness.
 has 'sigil' => (
     is => 'ro',
@@ -26,16 +39,20 @@ has 'source' => (
     predicate => 'has_source',
     );
 
+# Path.  This is an array of Reading nodes that should mirror the
+# text above.
 has 'path' => (
     is => 'rw',
     isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
     predicate => 'has_path',
     );	       
 
-has 'uncorrected_path' => (
+# Uncorrection.  This is an array of sets of reading nodes that show
+# where the witness was corrected.
+has 'uncorrected' => (
     is => 'rw',
-    isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
-    predicate => 'has_ante_corr',
+    isa => 'ArrayRef[Correction]',
+    predicate => 'has_uncorrected',
     );
     
 
@@ -70,6 +87,15 @@ around text => sub {
     $self->$orig( @_ );
 };
 
+sub uncorrected_path {
+    my $self = shift;
+    my @path;
+    push( @path, @{$self->path} );
+    foreach my $corr ( @{$self->uncorrected} ) {
+	splice( @path, $corr->[0], $corr->[1], @{$corr->[2]} );
+    }
+    return \@path;
+}	
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

@@ -176,6 +176,9 @@ sub merge_base {
 	my %pc_seen; # Keep track of mss with explicit post-corr data
 	foreach my $k ( grep { /^rdg/ } keys( %$app ) ) {
 	    my @mss = grep { $app->{$_} eq $k } keys( %$app );
+
+	    # Keep track of lemma nodes that don't actually appear in
+	    # any MSS; we will want to remove them from the collation.
 	    push( @unwitnessed_lemma_nodes, @lemma_set )
 		if !@mss && $k eq 'rdg_0';
 
@@ -189,11 +192,11 @@ sub merge_base {
 	    }
 	    next if $k eq 'rdg_0';
 
+	    # Parse the variant into reading tokens.
 	    # TODO don't hardcode the reading split operation
 	    my @variant = split( /\s+/, $app->{$k} );
 	    @variant = () if $app->{$k} eq '/'; # This is an omission.
 	    
-	    # Make the variant into a set of readings.
 	    my @variant_readings;
 	    my $ctr = 0;
 	    foreach my $vw ( @variant ) {
@@ -213,8 +216,7 @@ sub merge_base {
 	# collated sets.  Modifies the reading sets that were passed.
 	collate_variants( $collation, @reading_sets );
 
-	# TODO Here would be a very good place to set up relationships
-	# between the nodes and the lemma.
+	# Record any stated relationships between the nodes and the lemma.
 	set_relationships( $collation, $app, \@lemma_set, $variant_objects );
 
 	# Now create the splice-edit objects that will be used
@@ -251,29 +253,24 @@ sub merge_base {
 	print STDERR "Creating witness $w\n";
 	my $witness_obj = $collation->tradition->add_witness( sigil => $w );
 	my $debug = undef; # $w eq 'Vb10';
-	my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w}, $debug );
-	my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"}, $debug )
-	    if exists( $edits_required->{$w."_post"} );
+	my ( $text_seq, $ac ) = apply_edits( $collation, 
+					     $edits_required->{$w},
+					     $edits_required->{$w."_post"}, 
+					     $debug );
 
-	my @repeated = _check_for_repeated( @ante_corr_seq );
-	warn "Repeated elements @repeated in $w a.c."
+	my @repeated = _check_for_repeated( @$text_seq );
+	warn "Repeated elements @repeated in $w"
 	    if @repeated;
-	@repeated = _check_for_repeated( @post_corr_seq );
-	warn "Repeated elements @repeated in $w p.c."
-	    if @repeated;
-
 	# Now save these paths in my witness object
-	if( @post_corr_seq ) {
-	    $witness_obj->path( \@post_corr_seq );
-	    $witness_obj->uncorrected_path( \@ante_corr_seq );
-	} else {
-	    $witness_obj->path( \@ante_corr_seq );
+	$witness_obj->path( $text_seq );
+	if( $ac ) {
+	    $witness_obj->uncorrected( $ac );
 	}
     }
 
     # Now remove our 'base text' edges, which is to say, the only
-    # ones we have created so far.  Also remove any nodes that didn't
-    # appear in any witnesses.
+    # ones we have created so far.  Also remove any unwitnessed
+    # lemma nodes (TODO unless we are treating base as witness)
     foreach ( $collation->paths() ) {
 	$collation->del_path( $_ );
     }
@@ -485,7 +482,6 @@ sub set_relationships {
 	    # Transposition or repetition: look for nodes with the
 	    # same label but different IDs and mark them.
 	    $type = 'repetition' if $type =~ /^rep/i;
-	    $DB::single = 1 if $type eq 'repetition';
 	    my %labels;
 	    foreach my $r ( @$lemma ) {
 		$labels{cmp_str( $r )} = $r;
@@ -543,53 +539,62 @@ sub set_relationships {
 
 
 sub apply_edits {
-    my( $collation, $edit_sequence, $debug ) = @_;
+    my( $collation, $edit_sequence, $corrected_edit_sequence, $debug ) = @_;
+
+    # Index the ante- and post-correctione edits that we have, so that
+    # for each spot in the text we can apply the original witness
+    # state and then apply its corrected state, if applicable.
+    my $all_edits = {};
+    foreach my $c ( @$edit_sequence ) {
+	my $lemma_index = $base_text_index{$c->[0]};
+	$all_edits->{$lemma_index}->{'ac'} = $c;
+	# If the text carries no corrections, pc == ac.
+	$all_edits->{$lemma_index}->{'pc'} = $c
+	    unless $corrected_edit_sequence;
+    }
+    foreach my $c ( @$corrected_edit_sequence ) {
+	my $lemma_index = $base_text_index{$c->[0]};
+	$all_edits->{$lemma_index}->{'pc'} = $c;
+    }
+
     my @lemma_text = $collation->reading_sequence( $collation->start,
 					   $collation->reading( '#END#' ) );
     my $drift = 0;
-    foreach my $correction ( @$edit_sequence ) {
-	my( $lemma_start, $length, $items ) = @$correction;
-	my $offset = $base_text_index{$lemma_start};
-	my $realoffset = $offset + $drift;
-	if( $debug ||
-	    $lemma_text[$realoffset]->name ne $lemma_start ) {
-	    my @this_phrase = @lemma_text[$realoffset..$realoffset+$length-1];
-	    my @base_phrase;
-	    my $i = $realoffset;
-	    my $l = $collation->reading( $lemma_start );
-	    while( $i < $realoffset+$length ) {
-		push( @base_phrase, $l );
-		$l = $collation->next_reading( $l );
-		$i++;
-	    }
-	    
-	    print STDERR sprintf( "Trying to replace %s (%s) starting at %d " .
-				  "with %s (%s) with drift %d\n",
-				  join( ' ', map {$_->label} @base_phrase ),
-				  join( ' ', map {$_->name} @base_phrase ),
-				  $realoffset,
-				  join( ' ', map {$_->label} @$items ),
-				  join( ' ', map {$_->name} @$items ),
-				  $drift,
-				  ) if $debug;
-				  
-	    warn( sprintf( "Should be replacing %s (%s) with %s (%s) " .
-			   "but %s (%s) is there instead", 
-			   join( ' ', map {$_->label} @base_phrase ),
-			   join( ' ', map {$_->name} @base_phrase ),
-			   join( ' ', map {$_->label} @$items ),
-			   join( ' ', map {$_->name} @$items ),
-			   join( ' ', map {$_->label} @this_phrase ),
-			   join( ' ', map {$_->name} @this_phrase ),
-			   ) )
-		if $lemma_text[$realoffset]->name ne $lemma_start;
+    my @ac_sequence;
+    foreach my $lemma_index ( sort keys %$all_edits ) {
+	my $ac = $all_edits->{$lemma_index}->{'ac'};
+	my $pc = $all_edits->{$lemma_index}->{'pc'};
+	my $realoffset = $lemma_index + $drift;
+	if( $ac && $pc && $ac eq $pc ) {
+	    # No correction, just apply the edit
+	    my( $lemma_start, $length, $items ) = @$pc;
+	    splice( @lemma_text, $realoffset, $length, @$items );
+	    $drift += @$items + $length;
+	} elsif ( !$pc ) {
+	    # Lemma text is unaltered, save a.c. as an 'uncorrection'
+	    my( $lemma_start, $length, $items ) = @$ac;
+	    push( @ac_sequence, [ $realoffset, $length, $items ] );
+	} elsif ( !$ac ) {
+	    # Apply the edit, save lemma text as an 'uncorrection'
+	    my( $lemma_start, $length, $items ) = @$pc;
+	    my @old = splice( @lemma_text, $realoffset, $length, @$items );
+	    $drift += @$items + $length;
+	    push( @ac_sequence, [ $realoffset, scalar( @$items ), \@old ] );
+	} else {
+	    # Apply the p.c. edit, then save the a.c. edit as an
+	    # 'uncorrection' on the p.c. text
+	    my( $lemma_start, $length, $items ) = @$pc;
+	    my @old = splice( @lemma_text, $realoffset, $length, @$items );
+	    $drift += @$items + $length;
+	    push( @ac_sequence, [ $realoffset, scalar( @$items ), \@old ] );
 	}
-	splice( @lemma_text, $realoffset, $length, @$items );
-	$drift += @$items - $length;
     }
-    return @lemma_text;
+    return( \@lemma_text, \@ac_sequence );
 }
-	
+
+# sub _apply_sequence_splice {
+#     my( $collation, $sequence, $correction
+
 
 # Helper function. Given a witness sigil, if it is a post-correctione
 # sigil,return the base witness.  If not, return a false value.

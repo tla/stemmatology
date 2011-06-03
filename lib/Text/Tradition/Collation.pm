@@ -757,7 +757,7 @@ sub calculate_positions {
 	print STDERR "Calculating positions in " . $wit->sigil . "\n";
 	_update_positions_from_path( $wit->path, @ordered_common );
 	_update_positions_from_path( $wit->uncorrected_path, @ordered_common )
-	    if $wit->has_ante_corr;
+	    if $wit->has_uncorrected;
     }
     
     # DEBUG
