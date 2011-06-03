@@ -78,7 +78,7 @@ sub read {
 	$apparatus->{'rdg_0'} = $linehash{'text'} if $linehash{'text'};
 	$apparatus->{'rdg_' . ++$rdg_ctr} = $linehash{'variant'};
 	foreach my $attr ( @fields[3..8] ) {
-	    $apparatus->{"_rdg_${rdg_ctr}_$attr"} = $linehash{$attr} if $linehash{$attr};
+	    $apparatus->{"_rdg_${rdg_ctr}_$attr"} = $linehash{$attr} if defined $linehash{$attr};
 	}
 	
 	foreach my $k ( @fields[10..$#fields] ) {
@@ -88,6 +88,9 @@ sub read {
 		$apparatus->{$k} = 'rdg_0'
 		    unless exists $apparatus->{$k};
 	    } elsif ( $variant_rdg =~ /^1/ ) {
+		warn sprintf( "Already found variant reading %s for %s at %s!",
+			      $apparatus->{$k}, $k, $apparatus->{_id} )
+		    if exists $apparatus->{$k} && $apparatus->{$k} ne 'rdg_0';
 		$apparatus->{$k} = 'rdg_' . $rdg_ctr;
 	    } else { # else for $, we don't list the MS
 		warn "Unparsed variant indicator $variant_rdg for $k in " .

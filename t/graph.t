@@ -32,8 +32,9 @@ my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar @svg_edges, 32, "Correct number of edges in the graph" );
 
 # Test for the correct common nodes
-my @expected_nodes = map { [ $_, 1 ] } qw/ #START# n1 n5 n6 n7 n12 
-                                            n16 n19 n20 n27 /;
+my @common_nodes = ( '#START#' );
+push( @common_nodes, qw/ n1 n5 n6 n7 n12 n16 n19 n20 n27 / );
+my @expected_nodes = map { [ $_, 1 ] } @common_nodes;
 foreach my $idx ( qw/2 3 4 8 10 11 13 16 17 18/ ) {
     splice( @expected_nodes, $idx, 0, [ "node_null", undef ] );
 }
@@ -67,6 +68,11 @@ sub make_text {
 	}
     }
     return join( ' ', @words );
+}
+
+# Test that the common nodes are marked common
+foreach my $cn ( @common_nodes ) {
+    ok( $collation->reading( $cn )->is_common, "Node $cn is marked common" );
 }
 
 # Test the manuscript paths
@@ -176,5 +182,46 @@ splice( @expected_nodes, 16, 1, ["n22", 0 ], [ "n21", 1 ] );
 subtest 'Turned on another node after singleton switchoff' => \&compare_active;
 $string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced unto ... ... #';
 is( make_text( @active_nodes ), $string, "Got the right text" );
+
+# Now start testing some position identifiers
+# 2. 'april with his' have no colocated
+# 3. 'april' 2 has no colocated
+# 4. 'teh' and 'the'
+# 5. 'drought' & 'march'
+# 6. 'march' & 'drought'
+# 7. 'unto' 'the' 'root'...
+#    'unto can match 'to' or 'teh'
+#    'the' can match 'teh' or 'rood'
+#    'root' can mach 'rood'
+
+foreach my $cn ( @common_nodes ) {
+    my $cnr = $collation->reading( $cn );
+    is( scalar( $collation->same_position_as( $cnr ) ), 0, "Node $cn has no colocations" );
+}
+
+my %expected_colocations = (
+    'n2' => [],     # april
+    'n3' => [],     # with
+    'n4' => [],     # his
+    'n11' => [],    # april
+    'n8' => [ 'n13' ],  # teh -> the
+    'n13' => [ 'n8' ],  # the -> teh
+    'n14' => [ 'n15' ], # drought -> march
+    'n18' => [ 'n17' ], # drought -> march
+    'n17' => [ 'n18' ], # march -> drought
+    'n15' => [ 'n14' ], # march -> drought
+    'n21' => [ 'n9', 'n22' ], # unto -> to, teh
+    'n22' => [ 'n9', 'n21' ], # to -> unto, teh
+    'n9' => [ 'n21', 'n22', 'n23' ], # teh -> unto, to, the
+    'n23' => [ 'n9', 'n25' ], # the -> teh, rood
+    'n25' => [ 'n9', 'n26' ], # rood -> the, root
+    'n26' => [ 'n25' ], # root -> rood
+);
+
+foreach my $n ( keys %expected_colocations ) {
+    my $nr = $collation->reading( $n );
+    my @colocated = sort( map { $_->name } $collation->same_position_as( $nr ) );
+    is_deeply( \@colocated, $expected_colocations{$n}, "Colocated nodes for $n correct" );
+}
 
 done_testing();

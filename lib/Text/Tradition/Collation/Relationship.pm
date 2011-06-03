@@ -15,8 +15,8 @@ enum 'RelationshipType' => qw( spelling orthographic grammatical repetition lexi
 subtype 'RelationshipVector',
     => as 'ArrayRef',
     => where { @$_ == 2
-	       && $_->[0]->isa( 'Text::Tradition::Collation::Reading' )
-	       && $_->[1]->isa( 'Text::Tradition::Collation::Reading' )
+	       && $_->[0]->isa( 'Graph::Easy::Node' )
+	       && $_->[1]->isa( 'Graph::Easy::Node' )
 	     },
     message { 'Argument should be [ SourceReading, TargetReading ]' };
 
@@ -49,6 +49,16 @@ has 'global' => (
     isa => 'Bool',
     default => 0,
 );
+
+has 'non_correctable' => (
+    is => 'rw',
+    isa => 'Bool',
+    );
+
+has 'non_independent' => (
+    is => 'rw',
+    isa => 'Bool',
+    );
 
 sub FOREIGNBUILDARGS {
     my $class = shift;

@@ -2,8 +2,10 @@ package Text::Tradition::Collation;
 
 use Graph::Easy;
 use IPC::Run qw( run binary );
-use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::Path;
+use Text::Tradition::Collation::Reading;
+use Text::Tradition::Collation::Relationship;
+use Text::Tradition::Collation::Segment;
 use XML::LibXML;
 use Moose;
 
@@ -18,6 +20,7 @@ has 'graph' => (
 	reading => 'node',
 	path => 'edge',
 	readings => 'nodes',
+	segments => 'nodes',
 	paths => 'edges',
 	relationships => 'edges',
     },
@@ -119,6 +122,7 @@ around add_path => sub {
 	return;
     }
     # Make sure the proposed path does not yet exist
+    # NOTE 'reading' will currently return readings and segments
     my( $source, $target, $wit ) = @_;
     $source = $self->reading( $source )
 	unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
@@ -138,14 +142,28 @@ around paths => sub {
     my $orig = shift;
     my $self = shift;
 
-    my @result = grep { $_->class eq 'edge.path' } $self->$orig( @_ );
+    my @result = grep { $_->sub_class eq 'path' } $self->$orig( @_ );
     return @result;
 };
 
 around relationships => sub {
     my $orig = shift;
     my $self = shift;
-    my @result = grep { $_->class eq 'edge.relationship' } $self->$orig( @_ );
+    my @result = grep { $_->sub_class eq 'relationship' } $self->$orig( @_ );
+    return @result;
+};
+
+around readings => sub {
+    my $orig = shift;
+    my $self = shift;
+    my @result = grep { $_->sub_class ne 'segment' } $self->$orig( @_ );
+    return @result;
+};
+
+around segments => sub {
+    my $orig = shift;
+    my $self = shift;
+    my @result = grep { $_->sub_class eq 'segment' } $self->$orig( @_ );
     return @result;
 };
 
@@ -165,38 +183,39 @@ sub has_path {
     my( $self, $source, $target, $label ) = @_;
     my @paths = $source->edges_to( $target );
     my @relevant = grep { $_->label eq $label } @paths;
-    return scalar @paths;
+    return scalar @relevant;
+}
+
+## Dealing with groups of readings, i.e. segments.
+
+sub add_segment {
+    my( $self, @items ) = @_;
+    my $segment = Text::Tradition::Collation::Segment->new( 'members' => \@items );
+    return $segment;
 }
 
 ## Dealing with relationships between readings.  This is a different
 ## sort of graph edge.
 
 sub add_relationship {
-    my( $self, $type, $source, $target, $global ) = @_;
+    my( $self, $source, $target, $options ) = @_;
 
     # Make sure there is not another relationship between these two
-    # readings already
+    # readings or segments already
     $source = $self->reading( $source )
-	unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
+	unless ref( $source ) && $source->isa( 'Graph::Easy::Node' );
     $target = $self->reading( $target )
-	unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
+	unless ref( $target ) && $target->isa( 'Graph::Easy::Node' );
     foreach my $rel ( $source->edges_to( $target ) ) {
-	if( $rel->label eq $type && $rel->class eq 'edge.relationship' ) {
+	if( $rel->label eq $options->{'type'} && $rel->class eq 'edge.relationship' ) {
 	    return;
 	}
     }
+    $options->{'orig_relation'} = [ $source, $target ];
 
-    my $rel = Text::Tradition::Collation::Relationship->new(
-	    'sort' => $type,
-	    'global' => $global,
-	    'orig_relation' => [ $source, $target ],
-    );
-    print STDERR sprintf( "Setting relationship %s between readings %s (%s)"
-			  . " and %s (%s)\n", $type, 
-			  $source->label, $source->name,
-			  $target->label, $target->name );
+    my $rel = Text::Tradition::Collation::Relationship->new( %$options );
     $self->graph->add_edge( $source, $target, $rel );
-    if( $global ) {
+    if( $options->{'global'} ) {
 	# Look for all readings with the source label, and if there are
 	# colocated readings with the target label, join them too.
 	foreach my $r ( $self->readings() ) {
@@ -206,11 +225,7 @@ sub add_relationship {
 	    if( @colocated ) {
 		warn "Multiple readings with same label at same position!"
 		    if @colocated > 1;
-		my $dup_rel = Text::Tradition::Collation::Relationship->new(
-		    'sort' => $type,
-		    'global' => $global,
-		    'orig_relation' => [ $source, $target ],
-		    );
+		my $dup_rel = Text::Tradition::Collation::Relationship->new( %$options );
 		$self->graph->add_edge( $r, $colocated[0], $dup_rel );
 	    }
 	}
@@ -271,7 +286,10 @@ sub as_dot {
 		     11, "white", "filled", $self->graph->get_attribute( 'node', 'shape' ) );
 
     foreach my $reading ( $self->readings ) {
+	# Need not output nodes without separate labels
 	next if $reading->name eq $reading->label;
+	# TODO output readings or segments, but not both
+	next if $reading->class eq 'node.segment';
 	$dot .= sprintf( "\t\"%s\" [ label=\"%s\" ]\n", $reading->name, $reading->label );
     }
 
@@ -314,11 +332,9 @@ sub as_graphml {
     $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
 
     # Add the data keys for nodes
-    my @node_data = ( 'name', 'reading', 'identical', 'position' );
-    # HACKY HACKY HACK Relationship data
     my %node_data_keys;
     my $ndi = 0;
-    foreach my $datum ( @node_data ) {
+    foreach my $datum ( qw/ name reading identical position class / ) {
 	$node_data_keys{$datum} = 'dn'.$ndi++;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
 	$key->setAttribute( 'attr.name', $datum );
@@ -330,7 +346,7 @@ sub as_graphml {
     # Add the data keys for edges, i.e. witnesses
     my $edi = 0;
     my %edge_data_keys;
-    foreach my $edge_key( qw/ witness_main witness_ante_corr relationship / ) {
+    foreach my $edge_key( qw/ witness_main witness_ante_corr relationship class / ) {
 	$edge_data_keys{$edge_key} = 'de'.$edi++;
 	my $key = $root->addNewChild( $graphml_ns, 'key' );
 	$key->setAttribute( 'attr.name', $edge_key );
@@ -351,33 +367,31 @@ sub as_graphml {
 
     my $node_ctr = 0;
     my %node_hash;
+    # Add our readings to the graph
     foreach my $n ( sort { $a->name cmp $b->name } $self->readings ) {
-	my %this_node_data = ();
-	foreach my $datum ( @node_data ) {
-	    my $key = $node_data_keys{$datum};
-	    if( $datum eq 'name' ) {
-		$this_node_data{$key} = $n->name;
-	    } elsif( $datum eq 'reading' ) {
-		$this_node_data{$key} = $n->label;
-	    } elsif( $datum eq 'identical' && $n->has_primary ) {
-		$this_node_data{$key} = $n->primary->name;
-	    } elsif( $datum eq 'position' ) {
-		$this_node_data{$key} = $n->position;
-	    }
-	}
 	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
 	my $node_xmlid = 'n' . $node_ctr++;
 	$node_hash{ $n->name } = $node_xmlid;
 	$node_el->setAttribute( 'id', $node_xmlid );
-	    
-	foreach my $dk ( keys %this_node_data ) {
-	    my $d_el = $node_el->addNewChild( $graphml_ns, 'data' );
-	    $d_el->setAttribute( 'key', $dk );
-	    $d_el->appendText( $this_node_data{$dk} );
-	}
+	_add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
+	_add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->label );
+	_add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position );
+	_add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
+	_add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
+	    if $n->has_primary;
     }
 
-    # Add the path edges
+    # Add any segments we have
+    foreach my $n ( sort { $a->name cmp $b->name } $self->segments ) {
+	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
+	my $node_xmlid = 'n' . $node_ctr++;
+	$node_hash{ $n->name } = $node_xmlid;
+	$node_el->setAttribute( 'id', $node_xmlid );
+	_add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
+	_add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
+    }
+
+    # Add the path, relationship, and segment edges
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->graph->edges() ) {
 	my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
@@ -387,7 +401,9 @@ sub as_graphml {
 	$edge_el->setAttribute( 'source', $from );
 	$edge_el->setAttribute( 'target', $to );
 	$edge_el->setAttribute( 'id', $name );
-	if( $e->class() eq 'edge.path' ) {
+	# Add the edge class
+	_add_graphml_data( $edge_el, $edge_data_keys{'class'}, $e->sub_class );
+	if( $e->sub_class eq 'path' ) {
 	    # It's a witness path, so add the witness
 	    my $base = $e->label;
 	    my $key = $edge_data_keys{'witness_main'};
@@ -396,15 +412,11 @@ sub as_graphml {
 		$base = $1;
 		$key = $edge_data_keys{'witness_ante_corr'};
 	    }
-	    my $wit_el = $edge_el->addNewChild( $graphml_ns, 'data' );
-	    $wit_el->setAttribute( 'key', $key );
-	    $wit_el->appendText( $base );
-	} else {
+	    _add_graphml_data( $edge_el, $key, $base );
+	} elsif( $e->sub_class eq 'relationship' ) {
 	    # It's a relationship
-	    my $rel_el = $edge_el->addNewChild( $graphml_ns, 'data' );
-	    $rel_el->setAttribute( 'key', $edge_data_keys{'relationship'} );
-	    $rel_el->appendText( $e->label() );
-	}
+	    _add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $e->label );
+	} # else a segment, nothing to record but source, target, class
     }
 
     # Return the thing
@@ -412,12 +424,12 @@ sub as_graphml {
     return $graphml->toString(1);
 }
 
-sub _make_xml_attr {
-    my $str = shift;
-    $str =~ s/\s/_/g;
-    $str =~ s/\W//g;
-    $str =~ "a$str" if $str =~ /^\d/;
-    return $str;
+sub _add_graphml_data {
+    my( $el, $key, $value ) = @_;
+    my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
+    return unless defined $value;
+    $data_el->setAttribute( 'key', $key );
+    $data_el->appendText( $value );
 }
 
 sub collapse_graph_paths {
@@ -434,7 +446,7 @@ sub collapse_graph_paths {
     my $majority = int( scalar( @{$self->tradition->witnesses} ) / 2 ) + 1;
     # But don't compress if there are only a few witnesses.
     $majority = 4 if $majority < 4;
-    foreach my $node( $self->readings ) {
+    foreach my $node ( $self->readings ) {
 	my $newlabels = {};
 	# We will visit each node, so we only look ahead.
 	foreach my $edge ( $node->outgoing() ) {
@@ -716,6 +728,7 @@ sub make_witness_paths {
 	@common_readings = _find_common( \@common_readings, $wit->path );
 	@common_readings = _find_common( \@common_readings, $wit->uncorrected_path );
     }
+    map { $_->make_common } @common_readings;
     return @common_readings;
 }
 
@@ -730,7 +743,7 @@ sub make_witness_path {
     foreach my $idx( 0 .. $#chain-1 ) {
 	my $source = $chain[$idx];
 	my $target = $chain[$idx+1];
-	$self->add_path( $source, $target, "$sig (a.c.)" )
+	$self->add_path( $source, $target, $sig.$self->ac_label )
 	    unless $self->has_path( $source, $target, $sig );
     }
 }
@@ -757,7 +770,7 @@ sub calculate_positions {
 	print STDERR "Calculating positions in " . $wit->sigil . "\n";
 	_update_positions_from_path( $wit->path, @ordered_common );
 	_update_positions_from_path( $wit->uncorrected_path, @ordered_common )
-	    if $wit->has_uncorrected;
+	    if $wit->has_ante_corr;
     }
     
     # DEBUG
