@@ -119,7 +119,6 @@ $string = '# when ... ... ... showers sweet with ... fruit ... ... of ... has pi
 is( make_text( @active_nodes ), $string, "Got the right text" );
 
 # Test the toggling effects of transposition
-
 @off = $collation->toggle_reading( 'n14' );
 # Add the turned on node
 $expected_nodes[ 11 ] = [ "n14", 1 ];
@@ -210,11 +209,11 @@ my %expected_colocations = (
     'n18' => [ 'n17' ], # drought -> march
     'n17' => [ 'n18' ], # march -> drought
     'n15' => [ 'n14' ], # march -> drought
-    'n21' => [ 'n9', 'n22' ], # unto -> to, teh
-    'n22' => [ 'n9', 'n21' ], # to -> unto, teh
+    'n21' => [ 'n22', 'n9' ], # unto -> to, teh
+    'n22' => [ 'n21', 'n9' ], # to -> unto, teh
     'n9' => [ 'n21', 'n22', 'n23' ], # teh -> unto, to, the
-    'n23' => [ 'n9', 'n25' ], # the -> teh, rood
-    'n25' => [ 'n9', 'n26' ], # rood -> the, root
+    'n23' => [ 'n25', 'n9' ], # the -> teh, rood
+    'n25' => [ 'n23', 'n26' ], # rood -> the, root
     'n26' => [ 'n25' ], # root -> rood
 );
 
@@ -223,5 +222,81 @@ foreach my $n ( keys %expected_colocations ) {
     my @colocated = sort( map { $_->name } $collation->same_position_as( $nr ) );
     is_deeply( \@colocated, $expected_colocations{$n}, "Colocated nodes for $n correct" );
 }
+
+# Test strict colocations
+$expected_colocations{'n9'} = [];
+$expected_colocations{'n21'} = ['n22'];
+$expected_colocations{'n22'} = ['n21'];
+$expected_colocations{'n23'} = [];
+$expected_colocations{'n25'} = [];
+$expected_colocations{'n26'} = [];
+
+foreach my $n ( keys %expected_colocations ) {
+    my $nr = $collation->reading( $n );
+    my @colocated = sort( map { $_->name } $collation->same_position_as( $nr, 1 ) );
+    is_deeply( \@colocated, $expected_colocations{$n}, "Strictly colocated nodes for $n correct" );
+}
+
+# Test turning on, then off, an annoyingly overlapping node
+
+@off = $collation->toggle_reading( 'n9' );
+# Remove the old toggle-off
+splice( @expected_nodes, 16, 1 );
+splice( @expected_nodes, 17, 0, [ "n9", 1 ] );
+@active_nodes = $collation->lemma_readings( @off );
+subtest 'Turned on a node without fixed position' => \&compare_active;
+$string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced unto teh ... ... #';
+is( make_text( @active_nodes ), $string, "Got the right text" );
+
+@off = $collation->toggle_reading( 'n23' );
+splice( @expected_nodes, 18, 1, [ "n23", 1 ] );
+@active_nodes = $collation->lemma_readings( @off );
+subtest 'Turned on a node colocated to one without fixed position' => \&compare_active;
+$string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced unto teh the ... #';
+is( make_text( @active_nodes ), $string, "Got the right text" );
+
+@off = $collation->toggle_reading( 'n9' );
+splice( @expected_nodes, 17, 1, [ "n9", 0 ] );
+@active_nodes = $collation->lemma_readings( @off );
+subtest 'Turned on a node colocated to one without fixed position' => \&compare_active;
+$string = '# when ... ... showers sweet with ... fruit ... march of ... has pierced unto the ... #';
+is( make_text( @active_nodes ), $string, "Got the right text" );
+
+### Now test relationship madness.
+
+my( $result, @relations ) = $collation->add_relationship( 'n25', 'n23', {'type' => 'lexical'} ); # rood -> the
+ok( $result, "Added relationship between nodes" );
+is( scalar @relations, 1, "Returned only the one collapse" );
+is_deeply( $relations[0], [ 'n25', 'n23' ], "Returned the correct collapse" );
+is( $collation->reading( 'n25' )->position->reference, '9,3', "Harmonized position for n25 correct" );
+is( $collation->reading( 'n23' )->position->reference, '9,3', "Harmonized position for n23 correct" );
+is( $collation->reading( 'n9' )->position->reference, '9,2', "Adjusted position for n9 correct" );
+
+# Do some yucky hardcoded cleanup to undo this relationship.
+$collation->reading('n25')->position->max( 4 );
+$collation->reading('n9')->position->max( 3 );
+$collation->graph->del_edge( $collation->reading('n25')->edges_to( $collation->reading('n23')) );
+
+( $result, @relations ) = $collation->add_relationship( 'n26', 'n25', {'type' => 'spelling'} ); # root -> rood
+ok( $result, "Added relationship between nodes" );
+is( scalar @relations, 1, "Returned only the one collapse" );
+is_deeply( $relations[0], [ 'n26', 'n25' ], "Returned the correct collapse" );
+is( $collation->reading( 'n26' )->position->reference, '9,4', "Harmonized position for n26 correct" );
+is( $collation->reading( 'n25' )->position->reference, '9,4', "Harmonized position for n25 correct" );
+is( $collation->reading( 'n9' )->position->reference, '9,2-3', "Adjusted position for n9 correct" );
+
+( $result, @relations ) = $collation->add_relationship( 'n15', 'n9', {'type' => 'lexical'} ); # bogus march -> teh
+ok( !$result, "Refused to add skewed relationship: " . $relations[0] );
+
+( $result, @relations ) = $collation->add_relationship( 'n25', 'n26', {'type' => 'spelling'} ); # root -> rood
+ok( !$result, "Refused to add dupe relationship: " . $relations[0] );
+
+( $result, @relations ) = $collation->add_relationship( 'n8', 'n13', {'type' => 'spelling', 'global' => 1 } ); # teh -> the
+ok( $result, "Added global relationship between nodes" );
+is( scalar @relations, 2, "Returned two relationship creations" );
+is_deeply( $relations[0], [ 'n8', 'n13' ], "Returned the original collapse" );
+is_deeply( $relations[1], [ 'n9', 'n23' ], "Returned the other collapse" );
+is( $collation->reading( 'n8' )->position->reference, '6,2', "Harmonized position for n8 correct" );
+is( $collation->reading( 'n9' )->position->reference, '9,3', "Harmonized position for n9 correct" );
 
 done_testing();

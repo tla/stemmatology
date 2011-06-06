@@ -285,28 +285,38 @@ sub merge_base {
 
     ### HACKY HACKY Do some one-off path corrections here.
     if( $collation->linear ) {
-	# What?
+	my $c = $collation;
+	my $end = $SHORTEND ? $SHORTEND : 155;
+	my $path = $c->tradition->witness('Vb11')->path;
+	if( $end > 16 ) {
+	    $c->merge_readings( $c->reading('rdg_1/16.3.0'), $c->reading('rdg_1/16.2.1') );
+	    splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( 'rdg_1/16.2.2' ) );
+	}
+	# What else?
     } else {
 	my $c = $collation;
+	my $end = $SHORTEND ? $SHORTEND : 155;
 	# Vb5:
 	my $path = $c->tradition->witness('Vb5')->path;
-	splice( @$path, 1436, 0, $c->reading('106,14') );
+	splice( @$path, 1436, 0, $c->reading('106,14') ) if $end > 106;
 	# Vb11: 
 	$path = $c->tradition->witness('Vb11')->path;
-	$c->merge_readings( $c->reading('rdg_1/16.3.0'), $c->reading('rdg_1/16.2.1') );
-	splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( '16,1' ) );
+	if( $end > 16 ) {
+	    $c->merge_readings( $c->reading('rdg_1/16.3.0'), $c->reading('rdg_1/16.2.1') );
+	    splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( '16,1' ) );
+	}
 	# Vb12 a.c.:
 	$path = $c->tradition->witness('Vb12')->uncorrected_path;
-	splice( @$path, 1828, 1, $c->reading('rdg_2/137.5.0') );
+	splice( @$path, 1828, 1, $c->reading('rdg_2/137.5.0') ) if $end > 137;
 	# Vb13:
 	$path = $c->tradition->witness('Vb13')->path;
-	splice( @$path, 782, 0, $c->reading( '58,5' ) );
+	splice( @$path, 782, 0, $c->reading( '58,5' ) ) if $end > 58;
 	# Vb20 a.c.: 
 	$path = $c->tradition->witness('Vb20')->uncorrected_path;
-	splice( @$path, 1251, 1, $c->reading( '94,6' ) );
+	splice( @$path, 1251, 1, $c->reading( '94,6' ) ) if $end > 94;
 	# Vb26: 
 	$path = $c->tradition->witness('Vb26')->path;
-	splice( @$path, 618, 0, $c->reading('46,2') )
+	splice( @$path, 618, 0, $c->reading('46,2') ) if $end > 46;
     }
 
     # Now walk paths and calculate positions.
@@ -518,7 +528,7 @@ sub set_relationships {
 	    # Transposition or repetition: look for nodes with the
 	    # same label but different IDs and mark them.
 	    $type = 'repetition' if $type =~ /^rep/i;
-	    $rel_options{'sort'} = $type;
+	    $rel_options{'type'} = $type;
 	    my %labels;
 	    foreach my $r ( @$lemma ) {
 		$labels{cmp_str( $r )} = $r;
@@ -545,7 +555,7 @@ sub set_relationships {
 	    $type = 'spelling' if $type =~ /sp/i;
 	    $type = 'repetition' if $type =~ /rep/i;
 	    $type = 'lexical' if $type =~ /lex/i;
-	    $rel_options{'sort'} = $type;
+	    $rel_options{'type'} = $type;
 	    if( @$lemma == @$var ) {
 		foreach my $i ( 0 .. $#{$lemma} ) {
 		    $collation->add_relationship( $var->[$i], $lemma->[$i],

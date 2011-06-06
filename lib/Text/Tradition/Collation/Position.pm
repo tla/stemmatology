@@ -20,6 +20,13 @@ has 'max' => (
     required => 1,
     );
 
+# This gets set if we are tracking a more specifically-positioned
+# reading.
+has 'matched' => (
+    is => 'rw',
+    isa => 'Bool',
+    );
+
 around BUILDARGS => sub {
     my $orig = shift;
     my $class = shift;

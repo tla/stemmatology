@@ -1,20 +1,14 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
-use Moose::Util::TypeConstraints;
 use MooseX::NonMoose;
-use Text::Tradition::Collation::Relationship;
+use Text::Tradition::Collation::Position;
 
 extends 'Graph::Easy::Node';
 
-subtype 'Position'
-    => as 'Str',
-    => where { $_ =~ /^\d+\,\d+$/ },
-    message { 'Position must be of the form x,y' };
-
 has 'position' => (
     is => 'rw',
-    isa => 'Position',
+    isa => 'Text::Tradition::Collation::Position',
     predicate => 'has_position',
     );
 
@@ -37,6 +31,20 @@ around BUILDARGS => sub {
     } else {
 	return $class->$orig( @_ );
     }
+};
+
+# Take constructor args as well as a Position argument.
+around position => sub {
+    my $orig = shift;
+    my $self = shift;
+    return $self->$orig() unless @_;
+
+    my @args = @_;
+    unless( @_ == 1 && ref( $_[0] ) eq 'Text::Tradition::Collation::Position' ) {
+	# We have constructor arguments; pass them to Position.
+	@args = ( Text::Tradition::Collation::Position->new( @_ ) );
+    }
+    $self->$orig( @args );
 };
 
 # Initialize the identity pool. 
@@ -107,6 +115,94 @@ sub has_primary {
 sub primary {
     my $self = shift;
     return $self->same_as->[0];
+}
+
+sub is_at_position {
+    my $self = shift;
+    return undef unless $self->has_position;
+    return $self->position->is_colocated( @_ );
+}
+
+# Returns all readings that adjoin this one on any path.
+sub neighbor_readings {
+    my( $self, $direction ) = @_;
+    $direction = 'both' unless $direction;
+    my @paths = grep { $_->isa( 'Text::Tradition::Collation::Path' ) } $self->edges;
+    my %connected;
+    foreach my $p ( @paths ) {
+	if( $p->to eq $self ) {
+	    next if $direction eq 'forward';
+	    $connected{$p->from->name} = $p->from;
+	} else { # $p->from eq $self
+	    next if $direction =~ /^back/;
+	    $connected{$p->to->name} = $p->to;
+	}
+    }
+    return values( %connected );
+}
+
+sub adjust_neighbor_position {
+    my $self = shift;
+    return unless $self->position->fixed;
+
+    # TODO This is a naive and repetitive implementation and
+    # I don't like it.
+    foreach my $neighbor ( $self->neighbor_readings('forward') ) {
+	next unless !$neighbor->is_common &&
+	    $neighbor->position->common == $self->position->common;
+	if( $neighbor->position->fixed &&
+	    $neighbor->position->min == $self->position->min ) {
+	    warn sprintf( "Readings %s and %s are at the same position!",
+			  $neighbor->name, $self->name );
+	}
+	next if $neighbor->position->fixed || $neighbor->position->matched;
+	$neighbor->position->min( $self->position->min + 1 );
+	# Recurse if necessary.
+	$neighbor->adjust_neighbor_position() 
+	    unless $neighbor->position->fixed;
+    }
+    foreach my $neighbor ( $self->neighbor_readings('back') ) {
+	next unless !$neighbor->is_common &&
+	    $neighbor->position->common == $self->position->common;
+	if( $neighbor->position->fixed &&
+	    $neighbor->position->min == $self->position->min ) {
+	    warn sprintf( "Readings %s and %s are at the same position!",
+			  $neighbor->name, $self->name );
+	}
+	next if $neighbor->position->fixed || $neighbor->position->matched;
+	$neighbor->position->max( $self->position->max - 1 );
+	# Recurse if necessary.
+	$neighbor->adjust_neighbor_position() 
+	    unless $neighbor->position->fixed;
+    }
+    return;
+}
+    
+sub match_position {
+    my( $self, $other ) = @_;
+    $DB::single = 1;
+    # Adjust the position of both these nodes to be as restrictive as possible.
+    unless( $self->position->is_colocated( $other->position ) ) {
+	warn "Cannot match positions of non-colocated readings";
+	return;
+    }
+    my $sp = $self->position;
+    my $op = $other->position;
+    my $newmin = $sp->min > $op->min ? $sp->min : $op->min;
+    my $newmax = $sp->max < $op->max ? $sp->max : $op->max;
+    my $newpos = Text::Tradition::Collation::Position->new( 
+	'common' => $sp->common,
+	'min' => $newmin,
+	'max' => $newmax,
+	'matched' => 1,
+	);
+    # We are setting the positions to be the same object.  I don't
+    # think that actually matters.  We may eventually want unique
+    # objects for each position.
+    $self->position( $newpos );
+    $other->position( $newpos );
+    $self->adjust_neighbor_position();
+    $other->adjust_neighbor_position();
 }
 
 ## Keep track of which readings are unchanged across witnesses.
