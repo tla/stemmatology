@@ -14,7 +14,8 @@ close GRAPH;
 my $graphml_str = join( '', @lines );
 
 my $tradition = Text::Tradition->new(
-    'GraphML' => $graphml_str,
+    'CollateX' => $graphml_str,
+    'linear' => 1,
     );
 
 print $tradition->collation->as_svg();

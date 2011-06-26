@@ -59,7 +59,7 @@ sub text {
     if( @_ ) {
 	$self->set_attribute( 'label', $_[0] );
     }
-    return $self->get_attribute( 'label' );
+    return $self->label;
 }
 
 sub merge_from {
@@ -180,7 +180,6 @@ sub adjust_neighbor_position {
     
 sub match_position {
     my( $self, $other ) = @_;
-    $DB::single = 1;
     # Adjust the position of both these nodes to be as restrictive as possible.
     unless( $self->position->is_colocated( $other->position ) ) {
 	warn "Cannot match positions of non-colocated readings";
