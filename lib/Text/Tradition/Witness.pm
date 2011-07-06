@@ -39,6 +39,18 @@ has 'uncorrected_path' => (
     isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
     predicate => 'has_ante_corr',
     );
+
+# Manuscript name or similar
+has 'identifier' => (
+    is => 'ro',
+    isa => 'Str',
+    );
+
+# Any other info we have
+has 'other_info' => (
+    is => 'ro',
+    isa => 'Str',
+    );
     
 
 sub BUILD {

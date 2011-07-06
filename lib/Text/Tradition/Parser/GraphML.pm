@@ -75,7 +75,7 @@ sub parse {
 	foreach my $dkey ( keys %$nodedata ) {
 	    my $keyname = $nodedata->{$dkey};
 	    my $keyvalue = _lookup_node_data( $n, $dkey );
-	    $node_hash->{$keyname} = $keyvalue if $keyvalue;
+	    $node_hash->{$keyname} = $keyvalue if defined $keyvalue;
 	}
 	$node_reg->{$n->getAttribute( 'id' )} = $node_hash;
 	push( @{$graph_hash->{'nodes'}}, $node_hash );

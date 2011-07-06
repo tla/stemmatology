@@ -33,10 +33,12 @@ sub make_character_matrix {
     foreach my $wit ( @{$self->collation->tradition->witnesses} ) {
 	# First implementation: make dumb alignment table, caring about
 	# nothing except which reading is in which position.
-	push( @$table, [ $wit->sigil, make_witness_row( $characters, $wit->path, 
+	my $sigilfield = sprintf( "%-10s", $wit->sigil );
+	push( @$table, [ $sigilfield, make_witness_row( $characters, $wit->path, 
 							\@all_pos ) ] );
 	if( $wit->has_ante_corr ) {
-	    push( @$table, [ $wit->sigil . "_ac", 
+	    $sigilfield = sprintf( "%-10s", $wit->sigil . "_ac" );
+	    push( @$table, [ $sigilfield, 
 			     make_witness_row( $characters, $wit->uncorrected_path, 
 					       \@all_pos ) ] );
 	}	    
@@ -46,17 +48,12 @@ sub make_character_matrix {
 
 sub make_witness_row {
     my( $characters, $path, $positions ) = @_;
-    my @row;
-    my $pathdrift = 0;
-    foreach my $i( 0 .. $#{$positions} ) {
-	if( $path->[$i-$pathdrift]->position->minref eq $positions->[$i] ) {
-	    push( @row, get_character( $path->[$i-$pathdrift], $characters ) );
-	} else {
-	    push( @row, 'X' );
-	    $pathdrift++;
-	}
-	$i++;
+    my %char_hash;
+    map { $char_hash{$_} = 'X' } @$positions;
+    foreach my $rdg( @$path ) {
+	$char_hash{$rdg->position->minref} = get_character( $rdg, $characters );
     }
+    my @row = map { $char_hash{$_} } @$positions;
     return @row;
 }
     
@@ -81,24 +78,28 @@ sub get_character {
     return $this_pos->{$text};
 }
 
-sub run_pars {
+sub pars_input {
     my $self = shift;
     $self->make_character_matrix unless $self->has_character_matrix;
+    my $matrix = '';
+    my $rows = scalar @{$self->character_matrix};
+    my $columns = scalar @{$self->character_matrix->[0]} - 1;
+    $matrix .= "\t$rows\t$columns\n";
+    foreach my $row ( @{$self->character_matrix} ) {
+	$matrix .= join( '', @$row ) . "\n";
+    }
+    return $matrix;
+}
+
+sub run_pars {
+    my $self = shift;
 
     # Set up a temporary directory for all the default Phylip files.
     my $phylip_dir = File::Temp->newdir();
-
-    # We need an infile, and we need a command input file.
     $DB::single = 1;
+    # We need an infile, and we need a command input file.
     open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
-    my $rows = scalar @{$self->character_matrix};
-    my $columns = scalar @{$self->character_matrix->[0]} - 1;
-    print MATRIX "\t$rows\t$columns\n";
-    foreach my $row ( @{$self->character_matrix} ) {
-	my $wit = shift @$row;
-	my $chars = join( '', @$row );
-	print MATRIX sprintf( "%-10s%s\n", $wit, $chars );
-    }
+    print MATRIX $self->pars_input();
     close MATRIX;
 
     open( CMD, ">$phylip_dir/cmdfile" ) or die "Could not write $phylip_dir/cmdfile";
@@ -151,8 +152,8 @@ sub run_pars {
     return( 1, join( '', @outtree ) ) if @outtree;
 
     my @error;
-    if( -f "$phylip_dir/output" ) {
-	open( OUTPUT, "$phylip_dir/output" ) or die "Could not open output for read";
+    if( -f "$phylip_dir/outfile" ) {
+	open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";
 	@error = <OUTPUT>;
 	close OUTPUT;
     } else {

@@ -29,7 +29,7 @@ has 'graph' => (
     );
 		
 
-has 'tradition' => (
+has 'tradition' => (  # TODO should this not be ro?
     is => 'rw',
     isa => 'Text::Tradition',
     );
@@ -225,7 +225,11 @@ sub add_relationship {
     my @joined = ( [ $source->name, $target->name ] );  # Keep track of the nodes we join.
     
     $options->{'this_relation'} = [ $source, $target ];
-    my $rel = Text::Tradition::Collation::Relationship->new( %$options );
+    my $rel;
+    eval { $rel = Text::Tradition::Collation::Relationship->new( %$options ) };
+    if( $@ ) {
+       return ( undef, $@ );
+    }
     $self->graph->add_edge( $source, $target, $rel );
     if( $options->{'global'} ) {
 	# Look for all readings with the source label, and if there are
@@ -313,10 +317,14 @@ sub as_dot {
 
     my @edges = $view eq 'relationship' ? $self->relationships : $self->paths;
     foreach my $edge ( @edges ) {
-	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ color=\"%s\", fontcolor=\"%s\", label=\"%s\" ]\n",
-			 $edge->from->name, $edge->to->name, '#000000', '#000000', $edge->label );
+	my %variables = ( 'color' => '#000000',
+			  'fontcolor' => '#000000',
+			  'label' => $edge->label,
+	    );
+	my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ]\n",
+			 $edge->from->name, $edge->to->name, $varopts );
     }
-
     $dot .= "}\n";
     return $dot;
 }
@@ -348,6 +356,8 @@ sub as_graphml {
     $graphml->setDocumentElement( $root );
     $root->setNamespace( $xsi_ns, 'xsi', 0 );
     $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
+
+    # TODO Add some global graph data
 
     # Add the data keys for nodes
     my %node_data_keys;
@@ -393,7 +403,8 @@ sub as_graphml {
 	$node_el->setAttribute( 'id', $node_xmlid );
 	_add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
 	_add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->label );
-	_add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position );
+	_add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position->reference )
+	    if $n->has_position;
 	_add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
 	_add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
 	    if $n->has_primary;
@@ -805,27 +816,87 @@ sub calculate_positions {
 	    }
 	    
 	    # Transform the path values from unique strings to arrays.
+	    my @all_paths;
 	    foreach my $k ( keys %paths ) {
-		my @v = split( /\s+/, $paths{$k} );
-		$paths{$k} = \@v;
+		my @v = split( /\s+/, $k );
+		push( @all_paths, \@v );
 	    }
+	    @all_paths = sort { scalar @$b <=> scalar @$a } @all_paths;
 	    
 	    # Now %paths has all the unique paths, and we know how long the
 	    # longest of these is.  Assign positions, starting with the
 	    # longest.  All non-common positions start at 2.
-	    foreach my $path ( sort { scalar @$b <=> scalar @$a } values %paths  ) {
+	    foreach my $path ( @all_paths  ) {
+		# Initially each element has a minimum position of 2
+		# plus its position in the array (1 is the common
+		# node), and a max position of the longest array
+		# length minus its position in the array.
 		my $range = $longest - scalar @$path;
+		my $min = 2;
 		foreach my $i ( 0 .. $#{$path} ) {
-		    my $min = $i+2;
 		    my $rdg = $self->reading( $path->[$i] );
-		    unless( $rdg->has_position ) {
+		    if( $rdg->has_position ) {
+			# This reading has already had a more specific
+			# position set, so we need to take that into
+			# account when calculating the min and max for
+			# the next reading.
+			my $rangeminus = $rdg->position->min - $min;
+			$min = $rdg->position->min + 1; 
+			$range = $range - $rangeminus;
+			if( $range < 0 ) {
+			    print STDERR "Negative range for position! " . $rdg->name . "\n"; # May remove this warning
+			    $range = 0;
+			}
+		    } else {
 			$rdg->position( $first->position->common, $min, $min+$range );
+			$min++;
+			$longest = $min+$range-2 unless $longest+2 > $min+$range;  # min starts at 2 but longest assumes 0 start
 		    }
 		}
 	    }
+	    # Now go through again and make sure the positions are
+	    # monotonic.  Do this until they are.
+	    my $monotonic = 0;
+	    my $counter = 0;
+	    until( $monotonic ) {
+		$monotonic = 1;
+		$counter++;
+		foreach my $path ( @all_paths ) {
+		    foreach my $i ( 0 .. $#{$path} ) { 
+			my $rdg = $self->reading( $path->[$i] );
+			my $prior = $self->reading( $path->[$i-1] ) if $i > 0;
+			my $next = $self->reading( $path->[$i+1] ) if $i < $#{$path};
+			if( $prior && $rdg->position->min <= $prior->position->min ) {
+			    $monotonic = 0; 
+			    $rdg->position->min( $prior->position->min + 1 );
+			}
+			if( $next && $rdg->position->max >= $next->position->max ) {
+			    $monotonic = 0; 
+			    if( $next->position->max - 1 >= $rdg->position->min ) {
+				# If moving rdg/max down would not send it below 
+				# rdg/min, do that.  
+				$rdg->position->max( $next->position->max - 1 );
+			    } else {
+				# Otherwise increase next/max.
+				$next->position->max( $rdg->position->max + 1 );
+				# ...min will be fixed on the next pass.
+			    }
+			}
+		    }
+		}
+		if( $counter > $#all_paths + 1 && !$monotonic ) {
+		    # We risk an infinite loop.  Get out of here.
+		    warn "Still not monotonic after $counter passes at common point "
+			. $first->position->common;
+		    last;
+		}
+	    }
+	    print STDERR "Took $counter passes for monotonicity at " . $first->position->common. "\n" 
+		if $counter > 1;
 	    
 	    $first = $next;
 	}
+
     } else {
 
 	# Non-linear positions are pretty much impossible to pin down.
@@ -833,7 +904,6 @@ sub calculate_positions {
 	# can do positions where there aren't transpositions...
 
     }
-		
     $self->init_lemmata();
 }
 
@@ -846,7 +916,7 @@ sub _track_paths {
     # Top and tail the array
     shift @path;
     pop @path;
-    $track_hash->{$_[2]} = join( ' ', map { $_->name } @path )
+    $track_hash->{join( ' ', map { $_->name } @path )} = $_[2]
 	if @path;
     return @path;
 }

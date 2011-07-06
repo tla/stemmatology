@@ -50,7 +50,8 @@ sub parse {
 	my %node_data = %$n;
 	my $nodeid = delete $node_data{$IDKEY};
 	my $token = delete $node_data{$CONTENTKEY};
-	unless( $nodeid && $token ) {
+	unless( defined $nodeid && defined $token ) {
+	    $DB::single = 1;
 	    warn "Did not find an ID or token for graph node, can't add it";
 	    next;
 	}
