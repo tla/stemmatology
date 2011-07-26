@@ -312,7 +312,7 @@ sub as_dot {
 	next if $reading->name eq $reading->label;
 	# TODO output readings or segments, but not both
 	next if $reading->class eq 'node.segment';
-	$dot .= sprintf( "\t\"%s\" [ label=\"%s\" ]\n", $reading->name, $reading->label );
+	$dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->name, $reading->label );
     }
 
     my @edges = $view eq 'relationship' ? $self->relationships : $self->paths;
@@ -322,7 +322,7 @@ sub as_dot {
 			  'label' => $edge->label,
 	    );
 	my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ]\n",
+	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
 			 $edge->from->name, $edge->to->name, $varopts );
     }
     $dot .= "}\n";

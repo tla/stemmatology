@@ -57,16 +57,19 @@ sub BUILD {
     my $self = shift;
     if( $self->has_source ) {
 	# Read the file and initialize the text.
-	open( WITNESS, $self->source ) or die "Could not open " 
-	    . $self->file . "for reading";
-	# TODO support TEI as well as plaintext, sometime
-	my @words;
-	while(<WITNESS>) {
-	    chomp;
-	    push( @words, split( /\s+/, $_ ) );
-	}
-	close WITNESS;
-	$self->text( \@words );
+	my $rc;
+	eval { no warnings; $rc = open( WITNESS, $self->source ); };
+	# If we didn't open a file, assume it is a string.
+	if( $rc ) {
+	    my @words;
+	    while(<WITNESS>) {
+		chomp;
+		push( @words, split( /\s+/, $_ ) );
+	    }
+	    close WITNESS;
+	    $self->text( \@words );
+	} # else the text is in the source string, probably
+	  # XML, and we are doing nothing with it.
     }
 }
 
