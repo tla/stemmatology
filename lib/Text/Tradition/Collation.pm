@@ -799,9 +799,10 @@ sub _is_within {
 # Walk the paths for each witness in the graph, and return the nodes
 # that the graph has in common.  If $using_base is true, some 
 # different logic is needed.
+# NOTE This does not create paths; it merely finds common readings.
 
 sub walk_witness_paths {
-    my( $self, $end ) = @_;
+    my( $self ) = @_;
     # For each witness, walk the path through the graph.
     # Then we need to find the common nodes.  
     # TODO This method is going to fall down if we have a very gappy 
@@ -810,7 +811,7 @@ sub walk_witness_paths {
     my @common_readings;
     foreach my $wit ( $self->tradition->witnesses ) {
         my $curr_reading = $self->start;
-        my @wit_path = $self->reading_sequence( $self->start, $end, 
+        my @wit_path = $self->reading_sequence( $self->start, $self->end, 
                                                 $wit->sigil );
         $wit->path( \@wit_path );
 
@@ -856,22 +857,15 @@ sub _remove_common {
 }
 
 
-# An alternative to walk_witness_paths, for use when a collation is
-# constructed from a base text and an apparatus.  We have the
-# sequences of readings and just need to add path edges.
+# For use when a collation is constructed from a base text and an apparatus.
+# We have the sequences of readings and just need to add path edges.
 
 sub make_witness_paths {
     my( $self ) = @_;
-
-    my @common_readings;
     foreach my $wit ( $self->tradition->witnesses ) {
         print STDERR "Making path for " . $wit->sigil . "\n";
         $self->make_witness_path( $wit );
-        @common_readings = _find_common( \@common_readings, $wit->path );
-        @common_readings = _find_common( \@common_readings, $wit->uncorrected_path );
     }
-    map { $_->make_common } @common_readings;
-    return @common_readings;
 }
 
 sub make_witness_path {
@@ -888,12 +882,6 @@ sub make_witness_path {
         $self->add_path( $source, $target, $sig.$self->ac_label )
             unless $self->has_path( $source, $target, $sig );
     }
-}
-
-sub common_readings {
-    my $self = shift;
-    my @common = grep { $_->is_common } $self->readings();
-    return sort { $a->position->cmp_with( $b->position ) } @common;
 }
 
 sub calculate_ranks {
@@ -1010,6 +998,12 @@ sub init_lemmata {
     foreach my $cr ( $self->common_readings ) {
         $self->lemmata->{$cr->position->maxref} = $cr->name;
     }
+}
+
+sub common_readings {
+    my $self = shift;
+    my @common = grep { $_->is_common } $self->readings();
+    return sort { $a->position->cmp_with( $b->position ) } @common;
 }
     
 =item B<lemma_readings>

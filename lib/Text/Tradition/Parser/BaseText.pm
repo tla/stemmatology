@@ -343,7 +343,7 @@ sub merge_base {
     }
 
     # Now walk paths and calculate positional rank.
-    my @common_readings = $collation->make_witness_paths();
+    $collation->make_witness_paths();
     # Have to check relationship validity at this point, because before that
     # we had no paths.
 #     foreach my $rel ( $collation->relationships ) {

@@ -30,7 +30,6 @@ the appropriate witness objects.
 =cut
 
 my $text = {}; # Hash of arrays, one per eventual witness we find.
-my @common_readings;
 my $substitutions = {}; # Keep track of merged readings
 my $app_anchors = {};   # Track apparatus references
 my $app_ac = {};        # Save a.c. readings
@@ -135,7 +134,7 @@ sub parse {
     foreach ( keys %$substitutions ) {
         $tradition->collation->del_reading( $tradition->collation->reading( $_ ) );
     }
-    $tradition->collation->calculate_positions( @common_readings );
+    $tradition->collation->calculate_ranks();
 }
 
 sub _clean_sequence {
@@ -222,7 +221,6 @@ sub _return_rdg {
                 my $rdg = make_reading( $tradition->collation, $w );
                 push( @new_readings, $rdg );
                 unless( $in_var ) {
-                    push( @common_readings, $rdg );
                     $rdg->make_common;
                 }
                 foreach ( @cur_wits ) {
@@ -243,7 +241,6 @@ sub _return_rdg {
             my $rdg = make_reading( $tradition->collation, $xn->textContent, $xml_id );
             push( @new_readings, $rdg );
             unless( $in_var ) {
-                push( @common_readings, $rdg );
                 $rdg->make_common;
             }
             foreach( @cur_wits ) {

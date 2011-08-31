@@ -120,14 +120,10 @@ sub parse {
         }
     }
 
-    # Record for each witness its sequence of readings, and determine
-    # the common nodes.
-    my @common_nodes = $collation->walk_witness_paths( $end_node );
-
-    # Now we have added the witnesses and their paths, so have also
-    # implicitly marked the common nodes. Now we can calculate their
-    # explicit positions.
-    $collation->calculate_positions( @common_nodes );
+    # Now we have added the witnesses and their paths, so we can 
+    # calculate their explicit positions.
+    # TODO CollateX does this, and we should just have it exported there.
+    $collation->calculate_positions();
 }
     
 =back
