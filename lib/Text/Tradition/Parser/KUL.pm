@@ -1,4 +1,4 @@
-package Text::Tradition::Parser::CSV;
+package Text::Tradition::Parser::KUL;
 
 use strict;
 use warnings;

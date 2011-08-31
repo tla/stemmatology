@@ -11,6 +11,12 @@ has 'position' => (
     isa => 'Text::Tradition::Collation::Position',
     predicate => 'has_position',
     );
+    
+has 'rank' => (
+    is => 'rw',
+    isa => 'Int',
+    predicate => 'has_rank',
+    );
 
 # This contains an array of reading objects; the array is a pool,
 # shared by the reading objects inside the pool.  When a reading is
@@ -62,6 +68,33 @@ sub text {
     return $self->label;
 }
 
+sub witnessed_by {
+    my( $self, $sigil, $backup ) = @_;
+    my @wits = $self->witnesses;
+    return 1 if grep { $_ eq $sigil } @wits;
+    if( $backup ) {
+        return 1 if grep { $_ eq $backup } @wits;
+    }
+    return 0;
+}
+    
+sub witnesses {
+    my( $self ) = @_;
+    my @paths = grep { $_->get_attribute( 'class' ) eq 'path' } $self->outgoing;
+    push( @paths, grep { $_->get_attribute( 'class' ) eq 'path' } $self->incoming );
+    my %wits;
+    foreach my $p ( @paths ) {
+        if( $p->has_hidden_witnesses ) {
+            foreach ( @{$p->hidden_witnesses} ) {
+                $wits{$_} = 1;
+            }
+        } else {
+            $wits{$p->label} = 1;
+        }
+    }
+    return keys %wits;
+}
+
 sub merge_from {
     my( $self, $merged_node ) = @_;
     # Adopt the identity pool of the other node.
@@ -69,7 +102,7 @@ sub merge_from {
     my $new_pool = _merge_array_pool( \@now_identical, $self->same_as )
 	if @now_identical;
 
-    # TODO Adopt the relationship attributes of the other node.
+    # TODO Adopt the relationship attributes and segment memberships of the other node.
 }
 
 ## Dealing with transposed readings.  These methods are only really
@@ -141,71 +174,19 @@ sub neighbor_readings {
     return values( %connected );
 }
 
-sub adjust_neighbor_position {
-    my $self = shift;
-    return unless $self->position->fixed;
-
-    # TODO This is a naive and repetitive implementation and
-    # I don't like it.
-    foreach my $neighbor ( $self->neighbor_readings('forward') ) {
-	next unless !$neighbor->is_common &&
-	    $neighbor->position->common == $self->position->common;
-	if( $neighbor->position->fixed &&
-	    $neighbor->position->min == $self->position->min ) {
-	    warn sprintf( "Readings %s and %s are at the same position!",
-			  $neighbor->name, $self->name );
-	}
-	next if $neighbor->position->fixed || $neighbor->position->matched;
-	$neighbor->position->min( $self->position->min + 1 );
-	# Recurse if necessary.
-	$neighbor->adjust_neighbor_position() 
-	    unless $neighbor->position->fixed;
+# Returns all readings related to the one we've got.
+sub related_readings {
+    my( $self, $colocated ) = @_;
+    my @related;
+    foreach my $e ( $self->edges ) {
+        next unless $e->isa( 'Text::Tradition::Collation::Relationship' );
+        next if $colocated && $e->type eq 'repetition';
+        push( @related, $e->from eq $self ? $e->to : $e->from );
     }
-    foreach my $neighbor ( $self->neighbor_readings('back') ) {
-	next unless !$neighbor->is_common &&
-	    $neighbor->position->common == $self->position->common;
-	if( $neighbor->position->fixed &&
-	    $neighbor->position->min == $self->position->min ) {
-	    warn sprintf( "Readings %s and %s are at the same position!",
-			  $neighbor->name, $self->name );
-	}
-	next if $neighbor->position->fixed || $neighbor->position->matched;
-	$neighbor->position->max( $self->position->max - 1 );
-	# Recurse if necessary.
-	$neighbor->adjust_neighbor_position() 
-	    unless $neighbor->position->fixed;
-    }
-    return;
-}
-    
-sub match_position {
-    my( $self, $other ) = @_;
-    # Adjust the position of both these nodes to be as restrictive as possible.
-    unless( $self->position->is_colocated( $other->position ) ) {
-	warn "Cannot match positions of non-colocated readings";
-	return;
-    }
-    my $sp = $self->position;
-    my $op = $other->position;
-    my $newmin = $sp->min > $op->min ? $sp->min : $op->min;
-    my $newmax = $sp->max < $op->max ? $sp->max : $op->max;
-    my $newpos = Text::Tradition::Collation::Position->new( 
-	'common' => $sp->common,
-	'min' => $newmin,
-	'max' => $newmax,
-	'matched' => 1,
-	);
-    # We are setting the positions to be the same object.  I don't
-    # think that actually matters.  We may eventually want unique
-    # objects for each position.
-    $self->position( $newpos );
-    $other->position( $newpos );
-    $self->adjust_neighbor_position();
-    $other->adjust_neighbor_position();
+    return @related;
 }
 
 ## Keep track of which readings are unchanged across witnesses.
-
 sub is_common {
     my( $self ) = shift;
     return $self->get_attribute( 'class' ) eq 'common';

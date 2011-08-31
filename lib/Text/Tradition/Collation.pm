@@ -1,7 +1,10 @@
 package Text::Tradition::Collation;
 
+use Encode qw( decode_utf8 );
+use File::Temp;
 use Graph::Easy;
 use IPC::Run qw( run binary );
+use Text::CSV_XS;
 use Text::Tradition::Collation::Path;
 use Text::Tradition::Collation::Position;
 use Text::Tradition::Collation::Reading;
@@ -14,20 +17,21 @@ has 'graph' => (
     is => 'ro',
     isa => 'Graph::Easy',
     handles => {
-	add_reading => 'add_node',
-	del_reading => 'del_node',
-	add_path => 'add_edge',
-	del_path => 'del_edge',
-	reading => 'node',
-	path => 'edge',
-	readings => 'nodes',
-	segments => 'nodes',
-	paths => 'edges',
-	relationships => 'edges',
+        add_reading => 'add_node',
+        del_reading => 'del_node',
+        del_segment => 'del_node',
+        add_path => 'add_edge',
+        del_path => 'del_edge',
+        reading => 'node',
+        path => 'edge',
+        readings => 'nodes',
+        segments => 'nodes',
+        paths => 'edges',
+        relationships => 'edges',
     },
     default => sub { Graph::Easy->new( undirected => 0 ) },
     );
-		
+                
 
 has 'tradition' => (  # TODO should this not be ro?
     is => 'rw',
@@ -46,6 +50,13 @@ has 'graphml' => (
     isa => 'Str',
     writer => '_save_graphml',
     predicate => 'has_graphml',
+    );
+
+has 'csv' => (
+    is => 'ro',
+    isa => 'Str',
+    writer => '_save_csv',
+    predicate => 'has_csv',
     );
 
 # Keeps track of the lemmas within the collation.  At most one lemma
@@ -119,20 +130,20 @@ around add_path => sub {
 
     # Make sure there are three arguments
     unless( @_ == 3 ) {
-	warn "Call add_path with args source, target, witness";
-	return;
+        warn "Call add_path with args source, target, witness";
+        return;
     }
     # Make sure the proposed path does not yet exist
     # NOTE 'reading' will currently return readings and segments
     my( $source, $target, $wit ) = @_;
     $source = $self->reading( $source )
-	unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
+        unless ref( $source ) eq 'Text::Tradition::Collation::Reading';
     $target = $self->reading( $target )
-	unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
+        unless ref( $target ) eq 'Text::Tradition::Collation::Reading';
     foreach my $path ( $source->edges_to( $target ) ) {
-	if( $path->label eq $wit && $path->class eq 'edge.path' ) {
-	    return;
-	}
+        if( $path->label eq $wit && $path->class eq 'edge.path' ) {
+            return;
+        }
     }
     # Do the deed
     $self->$orig( @_ );
@@ -205,23 +216,21 @@ sub add_relationship {
     # Make sure there is not another relationship between these two
     # readings or segments already
     $source = $self->reading( $source )
-	unless ref( $source ) && $source->isa( 'Graph::Easy::Node' );
+        unless ref( $source ) && $source->isa( 'Graph::Easy::Node' );
     $target = $self->reading( $target )
-	unless ref( $target ) && $target->isa( 'Graph::Easy::Node' );
+        unless ref( $target ) && $target->isa( 'Graph::Easy::Node' );
     foreach my $rel ( $source->edges_to( $target ), $target->edges_to( $source ) ) {
-	if( $rel->class eq 'edge.relationship' ) {
-	    return ( undef, "Relationship already exists between these readings" );
-	} else {
-	    return ( undef, "There is a witness path between these readings" );
-	}
+        if( $rel->class eq 'edge.relationship' ) {
+            return ( undef, "Relationship already exists between these readings" );
+        }
+    }
+    if( $options->{'equal_rank'} && !relationship_valid( $source, $target ) ) {
+        return ( undef, 'Relationship creates witness loop' );
     }
 
-    if( $source->has_position && $target->has_position ) {
-	unless( grep { $_ eq $target } $self->same_position_as( $source ) ) {
-	    return( undef, "Cannot set relationship at different positions" );
-	}
-    }
-
+    # TODO Think about positional hilarity if relationships are added after positions
+    # are assigned.
+    
     my @joined = ( [ $source->name, $target->name ] );  # Keep track of the nodes we join.
     
     $options->{'this_relation'} = [ $source, $target ];
@@ -231,27 +240,36 @@ sub add_relationship {
        return ( undef, $@ );
     }
     $self->graph->add_edge( $source, $target, $rel );
-    if( $options->{'global'} ) {
-	# Look for all readings with the source label, and if there are
-	# colocated readings with the target label, join them too.
-	foreach my $r ( grep { $_->label eq $source->label } $self->readings() ) {
-	    next if $r->name eq $source->name;
-	    my @colocated = grep { $_->label eq $target->label }
-	        $self->same_position_as( $r );
-	    if( @colocated ) {
-		warn "Multiple readings with same label at same position!"
-		    if @colocated > 1;
-		my $colo = $colocated[0];
-		next if $colo->edges_to( $r ) || $r->edges_to( $colo );
-		$options->{'primary_relation'} = $options->{'this_relation'};
-		$options->{'this_relation'} = [ $r, $colocated[0] ];
-		my $dup_rel = Text::Tradition::Collation::Relationship->new( %$options );
-		$self->graph->add_edge( $r, $colocated[0], $dup_rel );
-		push( @joined, [ $r->name, $colocated[0]->name ] );
-	    }
-	}
-    }
+    
+    # TODO Handle global relationship setting
+
     return( 1, @joined );
+}
+
+sub relationship_valid {
+    my( $source, $target ) = @_;
+    # Check that linking the source and target in a relationship won't lead
+    # to a path loop for any witness.
+    my @proposed_related = ( $source, $target );
+    push( @proposed_related, $source->related_readings );
+    push( @proposed_related, $target->related_readings );
+    my %pr_ids;
+    map { $pr_ids{ $_->name } = 1 } @proposed_related;
+    # The lists of 'in' and 'out' should not have any element that appears
+    # in 'proposed_related'.
+    foreach my $pr ( @proposed_related ) {
+        foreach my $e ( $pr->incoming ) {
+            if( exists $pr_ids{ $e->from->name } ) {
+                return 0;
+            }
+        }
+        foreach my $e ( $pr->outgoing ) {
+            if( exists $pr_ids{ $e->to->name } ) {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 =head2 Output method(s)
@@ -277,8 +295,12 @@ sub as_svg {
     
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
-    my $in = $self->as_dot();
-    run( \@cmd, \$in, ">", binary(), \$svg );
+    my $dotfile = File::Temp->new();
+    binmode $dotfile, ':utf8';
+    print $dotfile $self->as_dot();
+    push( @cmd, $dotfile->filename );
+    run( \@cmd, ">", binary(), \$svg );
+    $svg = decode_utf8( $svg );
     $self->_save_svg( $svg );
     $self->expand_graph_paths();
     return $svg;
@@ -305,25 +327,25 @@ sub as_dot {
     $dot .= "\tedge [ arrowhead=open ];\n";
     $dot .= "\tgraph [ rankdir=LR ];\n";
     $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
-		     11, "white", "filled", $self->graph->get_attribute( 'node', 'shape' ) );
+                     11, "white", "filled", $self->graph->get_attribute( 'node', 'shape' ) );
 
     foreach my $reading ( $self->readings ) {
-	# Need not output nodes without separate labels
-	next if $reading->name eq $reading->label;
-	# TODO output readings or segments, but not both
-	next if $reading->class eq 'node.segment';
-	$dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->name, $reading->label );
+        # Need not output nodes without separate labels
+        next if $reading->name eq $reading->label;
+        # TODO output readings or segments, but not both
+        next if $reading->class eq 'node.segment';
+        $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->name, $reading->label );
     }
 
     my @edges = $view eq 'relationship' ? $self->relationships : $self->paths;
     foreach my $edge ( @edges ) {
-	my %variables = ( 'color' => '#000000',
-			  'fontcolor' => '#000000',
-			  'label' => $edge->label,
-	    );
-	my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-	$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
-			 $edge->from->name, $edge->to->name, $varopts );
+        my %variables = ( 'color' => '#000000',
+                          'fontcolor' => '#000000',
+                          'label' => $edge->label,
+            );
+        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+        $dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
+                         $edge->from->name, $edge->to->name, $varopts );
     }
     $dot .= "}\n";
     return $dot;
@@ -348,7 +370,7 @@ sub as_graphml {
     my $graphml_ns = 'http://graphml.graphdrawing.org/xmlns';
     my $xsi_ns = 'http://www.w3.org/2001/XMLSchema-instance';
     my $graphml_schema = 'http://graphml.graphdrawing.org/xmlns ' .
-	'http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd';
+        'http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd';
 
     # Create the document and root node
     my $graphml = XML::LibXML->createDocument( "1.0", "UTF-8" );
@@ -363,24 +385,24 @@ sub as_graphml {
     my %node_data_keys;
     my $ndi = 0;
     foreach my $datum ( qw/ name reading identical position class / ) {
-	$node_data_keys{$datum} = 'dn'.$ndi++;
-	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', $datum );
-	$key->setAttribute( 'attr.type', 'string' );
-	$key->setAttribute( 'for', 'node' );
-	$key->setAttribute( 'id', $node_data_keys{$datum} );
+        $node_data_keys{$datum} = 'dn'.$ndi++;
+        my $key = $root->addNewChild( $graphml_ns, 'key' );
+        $key->setAttribute( 'attr.name', $datum );
+        $key->setAttribute( 'attr.type', 'string' );
+        $key->setAttribute( 'for', 'node' );
+        $key->setAttribute( 'id', $node_data_keys{$datum} );
     }
 
     # Add the data keys for edges, i.e. witnesses
     my $edi = 0;
     my %edge_data_keys;
     foreach my $edge_key( qw/ witness_main witness_ante_corr relationship class / ) {
-	$edge_data_keys{$edge_key} = 'de'.$edi++;
-	my $key = $root->addNewChild( $graphml_ns, 'key' );
-	$key->setAttribute( 'attr.name', $edge_key );
-	$key->setAttribute( 'attr.type', 'string' );
-	$key->setAttribute( 'for', 'edge' );
-	$key->setAttribute( 'id', $edge_data_keys{$edge_key} );
+        $edge_data_keys{$edge_key} = 'de'.$edi++;
+        my $key = $root->addNewChild( $graphml_ns, 'key' );
+        $key->setAttribute( 'attr.name', $edge_key );
+        $key->setAttribute( 'attr.type', 'string' );
+        $key->setAttribute( 'for', 'edge' );
+        $key->setAttribute( 'id', $edge_data_keys{$edge_key} );
     }
     
     # Add the graph, its nodes, and its edges
@@ -397,55 +419,55 @@ sub as_graphml {
     my %node_hash;
     # Add our readings to the graph
     foreach my $n ( sort { $a->name cmp $b->name } $self->readings ) {
-	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
-	my $node_xmlid = 'n' . $node_ctr++;
-	$node_hash{ $n->name } = $node_xmlid;
-	$node_el->setAttribute( 'id', $node_xmlid );
-	_add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
-	_add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->label );
-	_add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position->reference )
-	    if $n->has_position;
-	_add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
-	_add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
-	    if $n->has_primary;
+        my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
+        my $node_xmlid = 'n' . $node_ctr++;
+        $node_hash{ $n->name } = $node_xmlid;
+        $node_el->setAttribute( 'id', $node_xmlid );
+        _add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
+        _add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->label );
+        _add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position->reference )
+            if $n->has_position;
+        _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
+        _add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
+            if $n->has_primary;
     }
 
     # Add any segments we have
     foreach my $n ( sort { $a->name cmp $b->name } $self->segments ) {
-	my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
-	my $node_xmlid = 'n' . $node_ctr++;
-	$node_hash{ $n->name } = $node_xmlid;
-	$node_el->setAttribute( 'id', $node_xmlid );
-	_add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
-	_add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
+        my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
+        my $node_xmlid = 'n' . $node_ctr++;
+        $node_hash{ $n->name } = $node_xmlid;
+        $node_el->setAttribute( 'id', $node_xmlid );
+        _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
+        _add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
     }
 
     # Add the path, relationship, and segment edges
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->graph->edges() ) {
-	my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
-				    $node_hash{ $e->from->name() },
-				    $node_hash{ $e->to->name() } );
-	my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
-	$edge_el->setAttribute( 'source', $from );
-	$edge_el->setAttribute( 'target', $to );
-	$edge_el->setAttribute( 'id', $name );
-	# Add the edge class
-	_add_graphml_data( $edge_el, $edge_data_keys{'class'}, $e->sub_class );
-	if( $e->sub_class eq 'path' ) {
-	    # It's a witness path, so add the witness
-	    my $base = $e->label;
-	    my $key = $edge_data_keys{'witness_main'};
-	    # TODO kind of hacky
-	    if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
-		$base = $1;
-		$key = $edge_data_keys{'witness_ante_corr'};
-	    }
-	    _add_graphml_data( $edge_el, $key, $base );
-	} elsif( $e->sub_class eq 'relationship' ) {
-	    # It's a relationship
-	    _add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $e->label );
-	} # else a segment, nothing to record but source, target, class
+        my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
+                                    $node_hash{ $e->from->name() },
+                                    $node_hash{ $e->to->name() } );
+        my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
+        $edge_el->setAttribute( 'source', $from );
+        $edge_el->setAttribute( 'target', $to );
+        $edge_el->setAttribute( 'id', $name );
+        # Add the edge class
+        _add_graphml_data( $edge_el, $edge_data_keys{'class'}, $e->sub_class );
+        if( $e->sub_class eq 'path' ) {
+            # It's a witness path, so add the witness
+            my $base = $e->label;
+            my $key = $edge_data_keys{'witness_main'};
+            # TODO kind of hacky
+            if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
+                $base = $1;
+                $key = $edge_data_keys{'witness_ante_corr'};
+            }
+            _add_graphml_data( $edge_el, $key, $base );
+        } elsif( $e->sub_class eq 'relationship' ) {
+            # It's a relationship
+            _add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $e->label );
+        } # else a segment, nothing to record but source, target, class
     }
 
     # Return the thing
@@ -461,6 +483,81 @@ sub _add_graphml_data {
     $data_el->appendText( $value );
 }
 
+=item B<as_csv>
+
+print $graph->as_csv( $recalculate )
+
+Returns a CSV alignment table representation of the collation graph, one
+row per witness (or witness uncorrected.) Unless $recalculate is passed
+(and is a true value), the method will return a cached copy of the CSV
+after the first call to the method.
+
+=cut
+
+sub as_csv {
+    my( $self, $recalc ) = @_;
+    return $self->csv if $self->has_csv;
+    my $table = $self->make_alignment_table;
+    my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );    
+    my @result;
+    foreach my $row ( @$table ) {
+        $csv->combine( @$row );
+        push( @result, decode_utf8( $csv->string ) );
+    }
+    $self->_save_csv( join( "\n", @result ) );
+    return $self->csv;
+}
+
+sub make_alignment_table {
+    my $self = shift;
+    unless( $self->linear ) {
+        warn "Need a linear graph in order to make an alignment table";
+        return;
+    }
+    my $table;
+    my @all_pos = sort { $a <=> $b } $self->possible_positions;
+    foreach my $wit ( $self->tradition->witnesses ) {
+        my @row = _make_witness_row( $wit->path, \@all_pos );
+        unshift( @row, $wit->sigil );
+        push( @$table, \@row );
+        if( $wit->has_ante_corr ) {
+            my @ac_row = _make_witness_row( $wit->uncorrected_path, \@all_pos );
+            unshift( @ac_row, $wit->sigil . $self->ac_label );
+            push( @$table, \@ac_row );
+        }           
+    }
+    # Return a table where the witnesses read in columns rather than rows.
+    my $turned = _turn_table( $table );
+    return $turned;
+}
+
+sub _make_witness_row {
+    my( $path, $positions ) = @_;
+    my %char_hash;
+    map { $char_hash{$_} = undef } @$positions;
+    foreach my $rdg ( @$path ) {
+        $char_hash{$rdg->rank} = $rdg->text;
+    }
+    my @row = map { $char_hash{$_} } @$positions;
+    return @row;
+}
+
+# Helper to turn the witnesses along columns rather than rows.  Assumes
+# equal-sized rows.
+sub _turn_table {
+    my( $table ) = @_;
+    my $result = [];
+    return $result unless scalar @$table;
+    my $nrows = scalar @{$table->[0]};
+    foreach my $idx ( 0 .. $nrows - 1 ) {
+        foreach my $wit ( 0 .. $#{$table} ) {
+            $result->[$idx]->[$wit] = $table->[$wit]->[$idx];
+        }
+    }
+    return $result;        
+}
+
+
 sub collapse_graph_paths {
     my $self = shift;
     # Our collation graph has an path per witness.  This is great for
@@ -472,42 +569,35 @@ sub collapse_graph_paths {
     print STDERR "Collapsing witness paths in graph...\n";
 
     # Don't list out every witness if we have more than half to list.
-    my $majority = int( scalar( @{$self->tradition->witnesses} ) / 2 ) + 1;
+    my $majority = int( scalar( $self->tradition->witnesses ) / 2 ) + 1;
     # But don't compress if there are only a few witnesses.
     $majority = 4 if $majority < 4;
     foreach my $node ( $self->readings ) {
-	my $newlabels = {};
-	# We will visit each node, so we only look ahead.
-	foreach my $edge ( $node->outgoing() ) {
-	    next unless $edge->class eq 'edge.path';
-	    add_hash_entry( $newlabels, $edge->to->name, $edge->name );
-	    $self->del_path( $edge );
-	}
+        my $newlabels = {};
+        # We will visit each node, so we only look ahead.
+        foreach my $edge ( $node->outgoing() ) {
+            next unless $edge->class eq 'edge.path';
+            add_hash_entry( $newlabels, $edge->to->name, $edge->name );
+            $self->del_path( $edge );
+        }
 
-	foreach my $newdest ( keys %$newlabels ) {
-	    my $label;
-	    my @compressed_wits = ();
-	    if( @{$newlabels->{$newdest}} < $majority ) {
-		$label = join( ', ', sort( @{$newlabels->{$newdest}} ) );
-	    } else {
-		## TODO FIX THIS HACK
-		my @aclabels;
-		foreach my $wit ( @{$newlabels->{$newdest}} ) {
-		    if( $wit =~ /^(.*?)(\s*\(?a\.\s*c\.\)?)$/ ) {
-			push( @aclabels, $wit );
-		    } else {
-			push( @compressed_wits, $wit );
-		    }
-		}
-		$label = join( ', ', 'majority', sort( @aclabels ) );
-	    }
-	    
-	    my $newpath = 
-		$self->add_path( $node, $self->reading( $newdest ), $label );
-	    if( @compressed_wits ) {
-		$newpath->hidden_witnesses( \@compressed_wits );
-	    }
-	}
+        foreach my $newdest ( keys %$newlabels ) {
+            my $label;
+            my @compressed_wits = @{$newlabels->{$newdest}};
+            if( @compressed_wits < $majority ) {
+                $label = join( ', ', sort( @{$newlabels->{$newdest}} ) );
+            } else {
+                ## TODO FIX THIS HACK
+                my @aclabels;
+                foreach my $wit ( @compressed_wits ) {
+                    push( @aclabels, $wit ) if( $wit =~ /^(.*?)(\s*\(?a\.\s*c\.\)?)$/ );
+                }
+                $label = join( ', ', 'majority', sort( @aclabels ) );
+            }
+            
+            my $newpath = $self->add_path( $node, $self->reading( $newdest ), $label );
+            $newpath->hidden_witnesses( \@compressed_wits );
+        }
     }
 
     $self->collapsed( 1 );
@@ -523,16 +613,15 @@ sub expand_graph_paths {
     
     print STDERR "Expanding witness paths in graph...\n";
     foreach my $path( $self->paths ) {
-	my $from = $path->from;
-	my $to = $path->to;
-	my @wits = split( /, /, $path->label );
-	if( $path->has_hidden_witnesses ) {
-	    push( @wits, @{$path->hidden_witnesses} );
-	}
-	$self->del_path( $path );
-	foreach ( @wits ) {
-	    $self->add_path( $from, $to, $_ );
-	}
+        my $from = $path->from;
+        my $to = $path->to;
+        warn sprintf( "No hidden witnesses on %s -> %s ?", $from->name, $to->name )
+            unless $path->has_hidden_witnesses;
+        my @wits = @{$path->hidden_witnesses};
+        $self->del_path( $path );
+        foreach ( @wits ) {
+            $self->add_path( $from, $to, $_ );
+        }
     }
     $self->collapsed( 0 );
 }
@@ -556,10 +645,32 @@ sub start {
     my $self = shift;
     my( $new_start ) = @_;
     if( $new_start ) {
-	$self->del_reading( '#START#' );
-	$self->graph->rename_node( $new_start, '#START#' );
+        $self->del_reading( '#START#' );
+        $self->graph->rename_node( $new_start, '#START#' );
+    }
+    # Make sure the start node has a start position.
+    unless( $self->reading( '#START#' )->has_position ) {
+        $self->reading( '#START#' )->position( '0,0' );
     }
     return $self->reading('#START#');
+}
+
+=item B<end>
+
+my $end = $collation->end();
+
+Returns the end of the collation, a meta-reading with label '#END#'.
+
+=cut
+
+sub end {
+    my $self = shift;
+    my( $new_end ) = @_;
+    if( $new_end ) {
+        $self->del_reading( '#END#' );
+        $self->graph->rename_node( $new_end, '#END#' );
+    }
+    return $self->reading('#END#');
 }
 
 =item B<reading_sequence>
@@ -572,6 +683,8 @@ assume that the path is that of the base text (if any.)
 
 =cut
 
+# TODO Think about returning some lazy-eval iterator.
+
 sub reading_sequence {
     my( $self, $start, $end, $witness, $backup ) = @_;
 
@@ -580,23 +693,23 @@ sub reading_sequence {
     my %seen;
     my $n = $start;
     while( $n && $n ne $end ) {
-	if( exists( $seen{$n->name()} ) ) {
-	    warn "Detected loop at " . $n->name();
-	    last;
-	}
-	$seen{$n->name()} = 1;
-	
-	my $next = $self->next_reading( $n, $witness, $backup );
-	warn "Did not find any path for $witness from reading " . $n->name
-	    unless $next;
-	push( @readings, $next );
-	$n = $next;
+        if( exists( $seen{$n->name()} ) ) {
+            warn "Detected loop at " . $n->name();
+            last;
+        }
+        $seen{$n->name()} = 1;
+        
+        my $next = $self->next_reading( $n, $witness, $backup );
+        warn "Did not find any path for $witness from reading " . $n->name
+            unless $next;
+        push( @readings, $next );
+        $n = $next;
     }
     # Check that the last reading is our end reading.
     my $last = $readings[$#readings];
     warn "Last reading found from " . $start->label() .
-	" for witness $witness is not the end!"
-	unless $last eq $end;
+        " for witness $witness is not the end!"
+        unless $last eq $end;
     
     return @readings;
 }
@@ -634,7 +747,7 @@ sub prior_reading {
 sub _find_linked_reading {
     my( $self, $direction, $node, $path, $alt_path ) = @_;
     my @linked_paths = $direction eq 'next' 
-	? $node->outgoing() : $node->incoming();
+        ? $node->outgoing() : $node->incoming();
     return undef unless scalar( @linked_paths );
     
     # We have to find the linked path that contains all of the
@@ -645,29 +758,29 @@ sub _find_linked_reading {
     my $base_le;
     my $alt_le;
     foreach my $le ( @linked_paths ) {
-	if( $le->name eq $self->baselabel ) {
-	    $base_le = $le;
-	} else {
-	    my @le_wits = $self->witnesses_of_label( $le->name );
-	    if( _is_within( \@path_wits, \@le_wits ) ) {
-		# This is the right path.
-		return $direction eq 'next' ? $le->to() : $le->from();
-	    } elsif( _is_within( \@alt_path_wits, \@le_wits ) ) {
-		$alt_le = $le;
-	    }
-	}
+        if( $le->name eq $self->baselabel ) {
+            $base_le = $le;
+        } else {
+            my @le_wits = $self->witnesses_of_label( $le->name );
+            if( _is_within( \@path_wits, \@le_wits ) ) {
+                # This is the right path.
+                return $direction eq 'next' ? $le->to() : $le->from();
+            } elsif( _is_within( \@alt_path_wits, \@le_wits ) ) {
+                $alt_le = $le;
+            }
+        }
     }
     # Got this far? Return the alternate path if it exists.
     return $direction eq 'next' ? $alt_le->to() : $alt_le->from()
-	if $alt_le;
+        if $alt_le;
 
     # Got this far? Return the base path if it exists.
     return $direction eq 'next' ? $base_le->to() : $base_le->from()
-	if $base_le;
+        if $base_le;
 
     # Got this far? We have no appropriate path.
     warn "Could not find $direction node from " . $node->label 
-	. " along path $path";
+        . " along path $path";
     return undef;
 }
 
@@ -676,7 +789,7 @@ sub _is_within {
     my( $set1, $set2 ) = @_;
     my $ret = @$set1; # will be 0, i.e. false, if set1 is empty
     foreach my $el ( @$set1 ) {
-	$ret = 0 unless grep { /^\Q$el\E$/ } @$set2;
+        $ret = 0 unless grep { /^\Q$el\E$/ } @$set2;
     }
     return $ret;
 }
@@ -695,24 +808,24 @@ sub walk_witness_paths {
     # text in the collation.
     my $paths = {};
     my @common_readings;
-    foreach my $wit ( @{$self->tradition->witnesses} ) {
-	my $curr_reading = $self->start;
-	my @wit_path = $self->reading_sequence( $self->start, $end, 
-						$wit->sigil );
-	$wit->path( \@wit_path );
+    foreach my $wit ( $self->tradition->witnesses ) {
+        my $curr_reading = $self->start;
+        my @wit_path = $self->reading_sequence( $self->start, $end, 
+                                                $wit->sigil );
+        $wit->path( \@wit_path );
 
-	# Detect the common readings.
-	@common_readings = _find_common( \@common_readings, \@wit_path );
+        # Detect the common readings.
+        @common_readings = _find_common( \@common_readings, \@wit_path );
     }
 
     # Mark all the nodes as either common or not.
     foreach my $cn ( @common_readings ) {
-	print STDERR "Setting " . $cn->name . " / " . $cn->label 
-	    . " as common node\n";
-	$cn->make_common;
+        print STDERR "Setting " . $cn->name . " / " . $cn->label 
+            . " as common node\n";
+        $cn->make_common;
     }
     foreach my $n ( $self->readings() ) {
-	$n->make_variant unless $n->is_common;
+        $n->make_variant unless $n->is_common;
     }
     # Return an array of the common nodes in order.
     return @common_readings;
@@ -722,11 +835,11 @@ sub _find_common {
     my( $common_readings, $new_path ) = @_;
     my @cr;
     if( @$common_readings ) {
-	foreach my $n ( @$new_path ) {
-	    push( @cr, $n ) if grep { $_ eq $n } @$common_readings;
-	}
+        foreach my $n ( @$new_path ) {
+            push( @cr, $n ) if grep { $_ eq $n } @$common_readings;
+        }
     } else {
-	push( @cr, @$new_path );
+        push( @cr, @$new_path );
     }
     return @cr;
 }
@@ -737,7 +850,7 @@ sub _remove_common {
     my %diverged;
     map { $diverged{$_->name} = 1 } @$divergence;
     foreach( @$common_readings ) {
-	push( @cr, $_ ) unless $diverged{$_->name};
+        push( @cr, $_ ) unless $diverged{$_->name};
     }
     return @cr;
 }
@@ -751,11 +864,11 @@ sub make_witness_paths {
     my( $self ) = @_;
 
     my @common_readings;
-    foreach my $wit ( @{$self->tradition->witnesses} ) {
-	print STDERR "Making path for " . $wit->sigil . "\n";
-	$self->make_witness_path( $wit );
-	@common_readings = _find_common( \@common_readings, $wit->path );
-	@common_readings = _find_common( \@common_readings, $wit->uncorrected_path );
+    foreach my $wit ( $self->tradition->witnesses ) {
+        print STDERR "Making path for " . $wit->sigil . "\n";
+        $self->make_witness_path( $wit );
+        @common_readings = _find_common( \@common_readings, $wit->path );
+        @common_readings = _find_common( \@common_readings, $wit->uncorrected_path );
     }
     map { $_->make_common } @common_readings;
     return @common_readings;
@@ -766,14 +879,14 @@ sub make_witness_path {
     my @chain = @{$wit->path};
     my $sig = $wit->sigil;
     foreach my $idx ( 0 .. $#chain-1 ) {
-	$self->add_path( $chain[$idx], $chain[$idx+1], $sig );
+        $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
     @chain = @{$wit->uncorrected_path};
     foreach my $idx( 0 .. $#chain-1 ) {
-	my $source = $chain[$idx];
-	my $target = $chain[$idx+1];
-	$self->add_path( $source, $target, $sig.$self->ac_label )
-	    unless $self->has_path( $source, $target, $sig );
+        my $source = $chain[$idx];
+        my $target = $chain[$idx+1];
+        $self->add_path( $source, $target, $sig.$self->ac_label )
+            unless $self->has_path( $source, $target, $sig );
     }
 }
 
@@ -783,165 +896,104 @@ sub common_readings {
     return sort { $a->position->cmp_with( $b->position ) } @common;
 }
 
-# Calculate the relative positions of nodes in the graph, if they
-# were not given to us.
-sub calculate_positions {
-    my( $self, @ordered_common ) = @_;
-
-    # First assign positions to all the common nodes.
-    my $l = 1;
-    foreach my $oc ( @ordered_common ) {
-	$oc->position( $l++, 1 );
-    }
-
-    if( $self->linear ) {
-	# For the space between each common node, we have to find all the chains
-	# from all the witnesses.  The longest chain gives us our max, and the
-	# others get min/max ranges to fit.
-	my $first = shift @ordered_common;
-	while( @ordered_common ) {
-	    my %paths;
-	    my $next = shift @ordered_common;
-	    my $longest = 0;
-	    foreach my $wit ( @{$self->tradition->witnesses} ) {
-		# Key to the path is not important; we just have to get
-		# all unique paths.
-		my $length = $self->_track_paths( \%paths, $first, $next, $wit->sigil );
-		$longest = $length unless $longest > $length;
-		if( $wit->has_ante_corr ) {
-		    my $length = $self->_track_paths( \%paths, $first, $next, 
-						      $wit->sigil.$self->ac_label, $wit->sigil );
-		    $longest = $length unless $longest > $length;
-		}
-	    }
-	    
-	    # Transform the path values from unique strings to arrays.
-	    my @all_paths;
-	    foreach my $k ( keys %paths ) {
-		my @v = split( /\s+/, $k );
-		push( @all_paths, \@v );
-	    }
-	    @all_paths = sort { scalar @$b <=> scalar @$a } @all_paths;
-	    
-	    # Now %paths has all the unique paths, and we know how long the
-	    # longest of these is.  Assign positions, starting with the
-	    # longest.  All non-common positions start at 2.
-	    foreach my $path ( @all_paths  ) {
-		# Initially each element has a minimum position of 2
-		# plus its position in the array (1 is the common
-		# node), and a max position of the longest array
-		# length minus its position in the array.
-		my $range = $longest - scalar @$path;
-		my $min = 2;
-		foreach my $i ( 0 .. $#{$path} ) {
-		    my $rdg = $self->reading( $path->[$i] );
-		    if( $rdg->has_position ) {
-			# This reading has already had a more specific
-			# position set, so we need to take that into
-			# account when calculating the min and max for
-			# the next reading.
-			my $rangeminus = $rdg->position->min - $min;
-			$min = $rdg->position->min + 1; 
-			$range = $range - $rangeminus;
-			if( $range < 0 ) {
-			    print STDERR "Negative range for position! " . $rdg->name . "\n"; # May remove this warning
-			    $range = 0;
-			}
-		    } else {
-			$rdg->position( $first->position->common, $min, $min+$range );
-			$min++;
-			$longest = $min+$range-2 unless $longest+2 > $min+$range;  # min starts at 2 but longest assumes 0 start
-		    }
-		}
-	    }
-	    # Now go through again and make sure the positions are
-	    # monotonic.  Do this until they are.
-	    my $monotonic = 0;
-	    my $counter = 0;
-	    until( $monotonic ) {
-		$monotonic = 1;
-		$counter++;
-		foreach my $path ( @all_paths ) {
-		    foreach my $i ( 0 .. $#{$path} ) { 
-			my $rdg = $self->reading( $path->[$i] );
-			my $prior = $self->reading( $path->[$i-1] ) if $i > 0;
-			my $next = $self->reading( $path->[$i+1] ) if $i < $#{$path};
-			if( $prior && $rdg->position->min <= $prior->position->min ) {
-			    $monotonic = 0; 
-			    $rdg->position->min( $prior->position->min + 1 );
-			}
-			if( $next && $rdg->position->max >= $next->position->max ) {
-			    $monotonic = 0; 
-			    if( $next->position->max - 1 >= $rdg->position->min ) {
-				# If moving rdg/max down would not send it below 
-				# rdg/min, do that.  
-				$rdg->position->max( $next->position->max - 1 );
-			    } else {
-				# Otherwise increase next/max.
-				$next->position->max( $rdg->position->max + 1 );
-				# ...min will be fixed on the next pass.
-			    }
-			}
-		    }
-		}
-		if( $counter > $#all_paths + 1 && !$monotonic ) {
-		    # We risk an infinite loop.  Get out of here.
-		    warn "Still not monotonic after $counter passes at common point "
-			. $first->position->common;
-		    last;
-		}
-	    }
-	    print STDERR "Took $counter passes for monotonicity at " . $first->position->common. "\n" 
-		if $counter > 1;
-	    
-	    $first = $next;
-	}
-
-    } else {
-
-	# Non-linear positions are pretty much impossible to pin down.
-	# Any reading might appear anywhere in the graph.  I guess we
-	# can do positions where there aren't transpositions...
-
-    }
-    $self->init_lemmata();
-}
-
-# Helper function for the guts of calculate_positions.
-sub _track_paths {
+sub calculate_ranks {
     my $self = shift;
-    my $track_hash = shift;
-    # Args are first, last, wit, backup
-    my @path = $self->reading_sequence( @_ );
-    # Top and tail the array
-    shift @path;
-    pop @path;
-    $track_hash->{join( ' ', map { $_->name } @path )} = $_[2]
-	if @path;
-    return @path;
+    # Walk a version of the graph where every node linked by a relationship 
+    # edge is fundamentally the same node, and do a topological ranking on
+    # the nodes in this graph.
+    my $topo_graph = Graph::Easy->new();
+    my %rel_containers;
+    my $rel_ctr = 0;
+    # Add the nodes
+    foreach my $r ( $self->readings ) {
+        next if exists $rel_containers{$r->name};
+        my @rels = $r->related_readings( 'colocated' );
+        if( @rels ) {
+            # Make a relationship container.
+            push( @rels, $r );
+            my $rn = $topo_graph->add_node( 'rel_container_' . $rel_ctr++ );
+            foreach( @rels ) {
+                $rel_containers{$_->name} = $rn;
+            }
+        } else {
+            # Add a new node to mirror the old node.
+            $rel_containers{$r->name} = $topo_graph->add_node( $r->name );
+        }
+    }
+
+    # Add the edges. Need only one edge between any pair of nodes.
+    foreach my $r ( $self->readings ) {
+        foreach my $n ( $r->neighbor_readings( 'forward' ) ) {
+            $topo_graph->add_edge_once( $rel_containers{$r->name}, 
+                                        $rel_containers{$n->name} );
+        }
+    }
+    
+    # Now do the rankings, starting with the start node.
+    my $topo_start = $rel_containers{$self->start->name};
+    my $node_ranks = { $topo_start->name => 0 };
+    my @curr_origin = ( $topo_start );
+    # A little iterative function.
+    while( @curr_origin ) {
+        @curr_origin = _assign_rank( $node_ranks, @curr_origin );
+    }
+    # Transfer our rankings from the topological graph to the real one.
+    foreach my $r ( $self->readings ) {
+        $r->rank( $node_ranks->{$rel_containers{$r->name}->name} );
+    }
 }
- 
+
+sub _assign_rank {
+    my( $node_ranks, @current_nodes ) = @_;
+    # Look at each of the children of @current_nodes.  If all the child's 
+    # parents have a rank, assign it the highest rank + 1 and add it to 
+    # @next_nodes.  Otherwise skip it.
+    my @next_nodes;
+    foreach my $c ( @current_nodes ) {
+        warn "Current reading " . $c->name . "has no rank!"
+            unless exists $node_ranks->{$c->name};
+        # print STDERR "Looking at child of node " . $c->name . ", rank " 
+        #     . $node_ranks->{$c->name} . "\n";
+        my @children = map { $_->to } $c->outgoing;
+        foreach my $child ( @children ) {
+            next if exists $node_ranks->{$child->name};
+            my $highest_rank = -1;
+            my $skip = 0;
+            my @parents = map { $_->from } $child->incoming;
+            foreach my $parent ( @parents ) {
+                if( exists $node_ranks->{$parent->name} ) {
+                    $highest_rank = $node_ranks->{$parent->name} 
+                        if $highest_rank <= $node_ranks->{$parent->name};
+                } else {
+                    $skip = 1;
+                    last;
+                }
+            }
+            next if $skip;
+            # print STDERR "Assigning rank " . ( $highest_rank + 1 ) . " to node " . $child->name . "\n";
+            $node_ranks->{$child->name} = $highest_rank + 1;
+            push( @next_nodes, $child );
+        }
+    }
+    return @next_nodes;
+}
+
 sub possible_positions {
     my $self = shift;
-    my @answer;
-    my %positions = ();
-    foreach my $r ( $self->readings ) {
-	next unless $r->has_position;
-	$positions{$r->position->maxref} = 1;
-    }
-    @answer = keys %positions;
-    return @answer;
+    my %all_pos;
+    map { $all_pos{ $_->rank } = 1 } $self->readings;
+    return keys %all_pos;
 }
 
 # TODO think about indexing this.
 sub readings_at_position {
     my( $self, $position, $strict ) = @_;
     unless( ref( $position ) eq 'Text::Tradition::Collation::Position' ) {
-	$position = Text::Tradition::Collation::Position->new( $position );
+        $position = Text::Tradition::Collation::Position->new( $position );
     }
     my @answer;
     foreach my $r ( $self->readings ) {
-	push( @answer, $r ) if $r->is_at_position( $position, $strict );
+        push( @answer, $r ) if $r->is_at_position( $position, $strict );
     }
     return @answer;
 }
@@ -952,11 +1004,11 @@ sub init_lemmata {
     my $self = shift;
 
     foreach my $position ( $self->possible_positions ) {
-	$self->lemmata->{$position} = undef;
+        $self->lemmata->{$position} = undef;
     }
 
     foreach my $cr ( $self->common_readings ) {
-	$self->lemmata->{$cr->position->maxref} = $cr->name;
+        $self->lemmata->{$cr->position->maxref} = $cr->name;
     }
 }
     
@@ -1007,37 +1059,37 @@ sub lemma_readings {
     map { $fixed_positions{$_} = 0 } keys %{$positions_off};
     map { $fixed_positions{$_} = 1 } $self->possible_positions;
     foreach my $pos ( sort { Text::Tradition::Collation::Position::str_cmp( $a, $b ) } keys %fixed_positions ) {
-	# Find the state of this position.  If there is an active node,
-	# its name will be the state; otherwise the state will be 0 
-	# (nothing at this position) or undef (ellipsis at this position)
-	my $active = undef;
-	$active = $self->lemmata->{$pos} if exists $self->lemmata->{$pos};
-	
-	# Is there a formerly active node that was toggled off?
-	if( exists( $positions_off->{$pos} ) ) {
-	    my $off_node = $positions_off->{$pos};
-	    if( $active && $active ne $off_node) {
-		push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
-	    } else {
-		unless( $fixed_positions{$pos} ) {
-		    $active = 0;
-		    delete $self->lemmata->{$pos};
-		}
-		push( @answer, [ $off_node, $active ] );
-	    }
+        # Find the state of this position.  If there is an active node,
+        # its name will be the state; otherwise the state will be 0 
+        # (nothing at this position) or undef (ellipsis at this position)
+        my $active = undef;
+        $active = $self->lemmata->{$pos} if exists $self->lemmata->{$pos};
+        
+        # Is there a formerly active node that was toggled off?
+        if( exists( $positions_off->{$pos} ) ) {
+            my $off_node = $positions_off->{$pos};
+            if( $active && $active ne $off_node) {
+                push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
+            } else {
+                unless( $fixed_positions{$pos} ) {
+                    $active = 0;
+                    delete $self->lemmata->{$pos};
+                }
+                push( @answer, [ $off_node, $active ] );
+            }
 
-	# No formerly active node, so we just see if there is a currently
-	# active one.
-	} elsif( $active ) {
-	    # Push the active node, whatever it is.
-	    push( @answer, [ $active, 1 ] );
-	} else {
-	    # Push the state that is there. Arbitrarily use the first node
-	    # at that position.
-	    my @pos_nodes = $self->readings_at_position( $pos );
-	    push( @answer, [ $pos_nodes[0]->name, $self->lemmata->{$pos} ] );
-	    delete $self->lemmata->{$pos} unless $fixed_positions{$pos};
-	}
+        # No formerly active node, so we just see if there is a currently
+        # active one.
+        } elsif( $active ) {
+            # Push the active node, whatever it is.
+            push( @answer, [ $active, 1 ] );
+        } else {
+            # Push the state that is there. Arbitrarily use the first node
+            # at that position.
+            my @pos_nodes = $self->readings_at_position( $pos );
+            push( @answer, [ $pos_nodes[0]->name, $self->lemmata->{$pos} ] );
+            delete $self->lemmata->{$pos} unless $fixed_positions{$pos};
+        }
     }
 
     return @answer;
@@ -1059,8 +1111,8 @@ sub toggle_reading {
     return unless $rname;
     my $reading = $self->reading( $rname );
     if( !$reading || $reading->is_common() ) {
-	# Do nothing, it's a common node.
-	return;
+        # Do nothing, it's a common node.
+        return;
     } 
     
     my $pos = $reading->position;
@@ -1069,43 +1121,43 @@ sub toggle_reading {
 
     my @readings_off;
     if( $old_state && $old_state eq $rname ) {
-	# Turn off the node. We turn on no others by default.
-	push( @readings_off, $reading );
+        # Turn off the node. We turn on no others by default.
+        push( @readings_off, $reading );
     } else {
-	# Turn on the node.
-	$self->lemmata->{$pos->reference} = $rname;
-	# Any other 'on' readings in the same position should be off
-	# if we have a fixed position.
-	push( @readings_off, $self->same_position_as( $reading, 1 ) )
-	    if $pos->fixed;
-	# Any node that is an identical transposed one should be off.
-	push( @readings_off, $reading->identical_readings );
+        # Turn on the node.
+        $self->lemmata->{$pos->reference} = $rname;
+        # Any other 'on' readings in the same position should be off
+        # if we have a fixed position.
+        push( @readings_off, $self->same_position_as( $reading, 1 ) )
+            if $pos->fixed;
+        # Any node that is an identical transposed one should be off.
+        push( @readings_off, $reading->identical_readings );
     }
     @readings_off = unique_list( @readings_off );
-	
+        
     # Turn off the readings that need to be turned off.
     my @readings_delemmatized;
     foreach my $n ( @readings_off ) {
-	my $npos = $n->position;
-	my $state = undef;
-	$state = $self->lemmata->{$npos->reference}
-	    if defined $self->lemmata->{$npos->reference};
-	if( $state && $state eq $n->name ) { 
-	    # this reading is still on, so turn it off
-	    push( @readings_delemmatized, $n );
-	    my $new_state = undef;
-	    if( $npos->fixed && $n eq $reading ) {
-		# This is the reading that was clicked, so if there are no
-		# other readings there and this is a fixed position, turn off 
-		# the position.  In all other cases, restore the ellipsis.
-		my @other_n = $self->same_position_as( $n ); # TODO do we need strict?
-		$new_state = 0 unless @other_n;
-	    }
-	    $self->lemmata->{$npos->reference} = $new_state;
-	} elsif( $old_state && $old_state eq $n->name ) { 
-	    # another reading has already been turned on here
-	    push( @readings_delemmatized, $n );
-	} # else some other reading was on anyway, so pass.
+        my $npos = $n->position;
+        my $state = undef;
+        $state = $self->lemmata->{$npos->reference}
+            if defined $self->lemmata->{$npos->reference};
+        if( $state && $state eq $n->name ) { 
+            # this reading is still on, so turn it off
+            push( @readings_delemmatized, $n );
+            my $new_state = undef;
+            if( $npos->fixed && $n eq $reading ) {
+                # This is the reading that was clicked, so if there are no
+                # other readings there and this is a fixed position, turn off 
+                # the position.  In all other cases, restore the ellipsis.
+                my @other_n = $self->same_position_as( $n ); # TODO do we need strict?
+                $new_state = 0 unless @other_n;
+            }
+            $self->lemmata->{$npos->reference} = $new_state;
+        } elsif( $old_state && $old_state eq $n->name ) { 
+            # another reading has already been turned on here
+            push( @readings_delemmatized, $n );
+        } # else some other reading was on anyway, so pass.
     }
     return @readings_delemmatized;
 }
@@ -1147,9 +1199,9 @@ sub unique_list {
 sub add_hash_entry {
     my( $hash, $key, $entry ) = @_;
     if( exists $hash->{$key} ) {
-	push( @{$hash->{$key}}, $entry );
+        push( @{$hash->{$key}}, $entry );
     } else {
-	$hash->{$key} = [ $entry ];
+        $hash->{$key} = [ $entry ];
     }
 }
 

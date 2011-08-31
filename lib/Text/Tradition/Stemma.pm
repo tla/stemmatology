@@ -22,60 +22,51 @@ has character_matrix => (
 sub make_character_matrix {
     my $self = shift;
     unless( $self->collation->linear ) {
-	warn "Need a linear graph in order to make an alignment table";
-	return;
+        warn "Need a linear graph in order to make an alignment table";
+        return;
     }
-    my @all_pos = sort { Text::Tradition::Collation::Position::str_cmp( $a, $b ) } 
-        $self->collation->possible_positions;
-    my $table = [];
-    my $characters = {};
-    map { $characters->{$_} = {} } @all_pos;
-    foreach my $wit ( @{$self->collation->tradition->witnesses} ) {
-	# First implementation: make dumb alignment table, caring about
-	# nothing except which reading is in which position.
-	my $sigilfield = sprintf( "%-10s", $wit->sigil );
-	push( @$table, [ $sigilfield, make_witness_row( $characters, $wit->path, 
-							\@all_pos ) ] );
-	if( $wit->has_ante_corr ) {
-	    $sigilfield = sprintf( "%-10s", $wit->sigil . "_ac" );
-	    push( @$table, [ $sigilfield, 
-			     make_witness_row( $characters, $wit->uncorrected_path, 
-					       \@all_pos ) ] );
-	}	    
+    my $table = $self->collation->make_alignment_table;
+    # Push the names of the witnesses to initialize the rows of the matrix.
+    my @matrix = map { [ $self->_normalize_ac( $_ ) ] } @{$table->[0]};
+    $DB::single = 1;
+    foreach my $token_index ( 1 .. $#{$table} ) {
+        # First implementation: make dumb alignment table, caring about
+        # nothing except which reading is in which position.
+        my @chars = convert_characters( $table->[$token_index] );
+        foreach my $idx ( 0 .. $#matrix ) {
+            push( @{$matrix[$idx]}, $chars[$idx] );
+        }
     }
-    $self->_save_character_matrix( $table );
+    $self->_save_character_matrix( \@matrix );
+} 
+
+sub _normalize_ac {
+    my( $self, $witname ) = @_;
+    my $ac = $self->collation->ac_label;
+    if( $witname =~ /(.*)\Q$ac\E$/ ) {
+        $witname = $1 . '_ac';
+    }
+    return sprintf( "%-10s", $witname );
 }
 
-sub make_witness_row {
-    my( $characters, $path, $positions ) = @_;
-    my %char_hash;
-    map { $char_hash{$_} = 'X' } @$positions;
-    foreach my $rdg( @$path ) {
-	$char_hash{$rdg->position->minref} = get_character( $rdg, $characters );
-    }
-    my @row = map { $char_hash{$_} } @$positions;
-    return @row;
-}
-    
-
-sub get_character {
-    my( $reading, $characters ) = @_;
-    my $this_pos = $characters->{$reading->position->minref};
+sub convert_characters {
+    my $row = shift;
     # This is a simple algorithm that treats every reading as different.
     # Eventually we will want to be able to specify how relationships
     # affect the character matrix.
-    my $text = $reading->text;
-    unless( exists $this_pos->{$text} ) {
-	# We need to find what the next character is here, and record it.
-	my @all_chr = sort { $a <=> $b } values( %$this_pos );
-	if( @all_chr == 8 ) {
-	    warn "Already have eight variants at position " 
-		. $reading->position->minref . "; not adding " . $reading->text;
-	    return '?';
-	}
-	$this_pos->{$text} = scalar @all_chr;
+    my %unique = ( '__UNDEF__' => 'X' );
+    my $ctr = 0;
+    foreach my $word ( @$row ) {
+        if( $word && !exists $unique{$word} ) {
+            $unique{$word} = chr( 65 + $ctr );
+            $ctr++;
+        }
     }
-    return $this_pos->{$text};
+    if( scalar( keys %unique ) > 8 ) {
+        warn "Have more than 8 variants on this location; pars will break";
+    }
+    my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
+    return @chars;
 }
 
 sub pars_input {
@@ -86,7 +77,7 @@ sub pars_input {
     my $columns = scalar @{$self->character_matrix->[0]} - 1;
     $matrix .= "\t$rows\t$columns\n";
     foreach my $row ( @{$self->character_matrix} ) {
-	$matrix .= join( '', @$row ) . "\n";
+        $matrix .= join( '', @$row ) . "\n";
     }
     return $matrix;
 }
@@ -96,7 +87,6 @@ sub run_pars {
 
     # Set up a temporary directory for all the default Phylip files.
     my $phylip_dir = File::Temp->newdir();
-    $DB::single = 1;
     # We need an infile, and we need a command input file.
     open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
     print MATRIX $self->pars_input();
@@ -128,36 +118,36 @@ sub run_pars {
     my $PHYLIP_PATH = '/Users/tla/Projects/phylip-3.69/exe';
     my $program = "pars";
     if( $^O eq 'darwin' ) {
-	$program = "$PHYLIP_PATH/$program.app/Contents/MacOS/$program";
+        $program = "$PHYLIP_PATH/$program.app/Contents/MacOS/$program";
     } else {
-	$program = "$PHYLIP_PATH/$program";
+        $program = "$PHYLIP_PATH/$program";
     }
 
     {
-	# We need to run it in our temporary directory where we have created
-	# all the expected files.
-	local $CWD = $phylip_dir;
-	my @cmd = ( $program );
-	run \@cmd, '<', 'cmdfile', '>', '/dev/null';
+        # We need to run it in our temporary directory where we have created
+        # all the expected files.
+        local $CWD = $phylip_dir;
+        my @cmd = ( $program );
+        run \@cmd, '<', 'cmdfile', '>', '/dev/null';
     }
     # Now our output should be in 'outfile' and our tree in 'outtree',
     # both in the temp directory.
 
     my @outtree;
     if( -f "$phylip_dir/outtree" ) {
-	open( TREE, "$phylip_dir/outtree" ) or die "Could not open outtree for read";
-	@outtree = <TREE>;
-	close TREE;
+        open( TREE, "$phylip_dir/outtree" ) or die "Could not open outtree for read";
+        @outtree = <TREE>;
+        close TREE;
     }
     return( 1, join( '', @outtree ) ) if @outtree;
 
     my @error;
     if( -f "$phylip_dir/outfile" ) {
-	open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";
-	@error = <OUTPUT>;
-	close OUTPUT;
+        open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";
+        @error = <OUTPUT>;
+        close OUTPUT;
     } else {
-	push( @error, "Neither outtree nor output file was produced!" );
+        push( @error, "Neither outtree nor output file was produced!" );
     }
     return( undef, join( '', @error ) );
 }

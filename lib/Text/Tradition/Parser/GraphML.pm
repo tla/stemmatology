@@ -39,7 +39,7 @@ sub parse {
     my( $graphml_str ) = @_;
 
     my $graph_hash = { 'nodes' => [],
-		       'edges' => [] };
+                       'edges' => [] };
 
     my $parser = XML::LibXML->new();
     my $doc = $parser->parse_string( $graphml_str );
@@ -49,18 +49,18 @@ sub parse {
     
     # First get the ID keys, for witnesses and for collation data
     foreach my $k ( $xpc->findnodes( '//g:key' ) ) {
-	# Each key has a 'for' attribute; the edge keys are witnesses, and
-	# the node keys contain an ID and string for each node.
-	my $keyid = $k->getAttribute( 'id' );
-	my $keyname = $k->getAttribute( 'attr.name' );
+        # Each key has a 'for' attribute; the edge keys are witnesses, and
+        # the node keys contain an ID and string for each node.
+        my $keyid = $k->getAttribute( 'id' );
+        my $keyname = $k->getAttribute( 'attr.name' );
 
-	if( $k->getAttribute( 'for' ) eq 'node' ) {
-	    # Keep track of the XML identifiers for the data carried
-	    # in each node element.
-	    $nodedata->{$keyid} = $keyname
-	} else {
-	    $witnesses->{$keyid} = $keyname;
-	}
+        if( $k->getAttribute( 'for' ) eq 'node' ) {
+            # Keep track of the XML identifiers for the data carried
+            # in each node element.
+            $nodedata->{$keyid} = $keyname
+        } else {
+            $witnesses->{$keyid} = $keyname;
+        }
     }
 
     my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
@@ -70,36 +70,36 @@ sub parse {
     # Add the nodes to the graph hash. 
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
-	# Could use a better way of registering these
-	my $node_hash = {};
-	foreach my $dkey ( keys %$nodedata ) {
-	    my $keyname = $nodedata->{$dkey};
-	    my $keyvalue = _lookup_node_data( $n, $dkey );
-	    $node_hash->{$keyname} = $keyvalue if defined $keyvalue;
-	}
-	$node_reg->{$n->getAttribute( 'id' )} = $node_hash;
-	push( @{$graph_hash->{'nodes'}}, $node_hash );
+        # Could use a better way of registering these
+        my $node_hash = {};
+        foreach my $dkey ( keys %$nodedata ) {
+            my $keyname = $nodedata->{$dkey};
+            my $keyvalue = _lookup_node_data( $n, $dkey );
+            $node_hash->{$keyname} = $keyvalue if defined $keyvalue;
+        }
+        $node_reg->{$n->getAttribute( 'id' )} = $node_hash;
+        push( @{$graph_hash->{'nodes'}}, $node_hash );
     }
-	
+        
     # Now add the edges, and cross-ref with the node objects.
     my @edges = $xpc->findnodes( '//g:edge' );
     foreach my $e ( @edges ) {
-	my $from = $e->getAttribute('source');
-	my $to = $e->getAttribute('target');
+        my $from = $e->getAttribute('source');
+        my $to = $e->getAttribute('target');
 
-	# We don't know whether the edge data is one per witness
-	# or one per witness type, or something else.  So we just
-	# save it and let our calling parser decide.
-	my $edge_hash = {
-	    'source' => $node_reg->{$from},
-	    'target' => $node_reg->{$to},
-	};
-	foreach my $wkey( keys %$witnesses ) {
-	    my $wname = $witnesses->{$wkey};
-	    my $wlabel = _lookup_node_data( $e, $wkey );
-	    $edge_hash->{$wname} = $wlabel if $wlabel;
-	}
-	push( @{$graph_hash->{'edges'}}, $edge_hash );
+        # We don't know whether the edge data is one per witness
+        # or one per witness type, or something else.  So we just
+        # save it and let our calling parser decide.
+        my $edge_hash = {
+            'source' => $node_reg->{$from},
+            'target' => $node_reg->{$to},
+        };
+        foreach my $wkey( keys %$witnesses ) {
+            my $wname = $witnesses->{$wkey};
+            my $wlabel = _lookup_node_data( $e, $wkey );
+            $edge_hash->{$wname} = $wlabel if $wlabel;
+        }
+        push( @{$graph_hash->{'edges'}}, $edge_hash );
     }
     return $graph_hash;
 }

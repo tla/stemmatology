@@ -13,11 +13,10 @@ has 'collation' => (
 
 has 'witnesses' => (
     traits => ['Array'],
-    is => 'rw',
     isa => 'ArrayRef[Text::Tradition::Witness]',
     handles => {
-	all    => 'elements',
-	add    => 'push',
+        witnesses    => 'elements',
+        add_witness  => 'push',
     },
     default => sub { [] },
     );
@@ -27,89 +26,93 @@ has 'name' => (
     isa => 'Str',
     default => 'Tradition',
     );
+    
+around 'add_witness' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $new_wit = Text::Tradition::Witness->new( @_ );
+    $self->$orig( $new_wit );
+    return $new_wit;
+};
+    
 
 sub BUILD {
     my( $self, $init_args ) = @_;
 
     if( exists $init_args->{'witnesses'} ) {
-	# We got passed an uncollated list of witnesses.  Make a
-	# witness object for each witness, and then send them to the
-	# collator.
-	my $autosigil = 0;
-	foreach my $wit ( %{$init_args->{'witnesses'}} ) {
-	    # Each item in the list is either a string or an arrayref.
-	    # If it's a string, it is a filename; if it's an arrayref,
-	    # it is a tuple of 'sigil, file'.  Handle either case.
-	    my $args;
-	    if( ref( $wit ) eq 'ARRAY' ) {
-		$args = { 'sigil' => $wit->[0],
-			  'file' => $wit->[1] };
-	    } else {
-		$args = { 'sigil' => chr( $autosigil+65 ),
-			  'file' => $wit };
-		$autosigil++;
-	    }
-	    $self->witnesses->push( Text::Tradition::Witness->new( $args ) );
-	    # TODO Now how to collate these?
-	}
+        # We got passed an uncollated list of witnesses.  Make a
+        # witness object for each witness, and then send them to the
+        # collator.
+        my $autosigil = 0;
+        foreach my $wit ( %{$init_args->{'witnesses'}} ) {
+            # Each item in the list is either a string or an arrayref.
+            # If it's a string, it is a filename; if it's an arrayref,
+            # it is a tuple of 'sigil, file'.  Handle either case.
+            my $args;
+            if( ref( $wit ) eq 'ARRAY' ) {
+                $args = { 'sigil' => $wit->[0],
+                          'file' => $wit->[1] };
+            } else {
+                $args = { 'sigil' => chr( $autosigil+65 ),
+                          'file' => $wit };
+                $autosigil++;
+            }
+            $self->witnesses->add_witness( $args );
+            # TODO Now how to collate these?
+        }
     } else {
-	# Else we need to parse some collation data.  Make a Collation object
-	my $collation = Text::Tradition::Collation->new( %$init_args,
-							'tradition' => $self );
-	$self->_save_collation( $collation );
+        # Else we need to parse some collation data.  Make a Collation object
+        my $collation = Text::Tradition::Collation->new( %$init_args,
+                                                        'tradition' => $self );
+        $self->_save_collation( $collation );
 
-	# Call the appropriate parser on the given data
-	my @formats = grep { /^(Self|CollateX|CSV|CTE|TEI)$/ } keys( %$init_args );
-	my $format = shift( @formats );
-	unless( $format ) {
-	    warn "No data given to create a collation; will initialize an empty one";
-	}
-	if( $format && $format =~ /^(CSV|CTE)$/ && 
-	    !exists $init_args->{'base'} ) {
-	    warn "Cannot make a collation from $format without a base text";
-	    return;
-	}
+        # Call the appropriate parser on the given data
+        my @formats = grep { /^(Self|CollateX|CSV|CTE|KUL|TEI)$/ } keys( %$init_args );
+        my $format = shift( @formats );
+        unless( $format ) {
+            warn "No data given to create a collation; will initialize an empty one";
+        }
+        if( $format && $format =~ /^(KUL|CTE)$/ && 
+            !exists $init_args->{'base'} ) {
+            warn "Cannot make a collation from $format without a base text";
+            return;
+        }
 
-	# Starting point for all texts
-	my $last_node = $collation->add_reading( '#START#' );
+        # Start and end points for all texts
+        $collation->add_reading( '#START#' );
+        $collation->add_reading( '#END#' );
+        
 
-	# Now do the parsing. 
-	my @sigla;
-	if( $format ) {
-	    my @parseargs;
-	    if( $format =~ /^(CSV|CTE)$/ ) {
-		$init_args->{'data'} = $init_args->{$format};
-		$init_args->{'format'} = $format;
-		$format = 'BaseText';
-		@parseargs = %$init_args;
-	    } else {
-		@parseargs = ( $init_args->{ $format } ); 
-	    }
-	    my $mod = "Text::Tradition::Parser::$format";
-	    load( $mod );
-	    $mod->can('parse')->( $self, @parseargs );
-	}
+        # Now do the parsing. 
+        my @sigla;
+        if( $format ) {
+            my @parseargs;
+            if( $format =~ /^(KUL|CTE)$/ ) {
+                $init_args->{'data'} = $init_args->{$format};
+                $init_args->{'format'} = $format;
+                $format = 'BaseText';
+                @parseargs = %$init_args;
+            } else {
+                @parseargs = ( $init_args->{ $format } ); 
+            }
+            my $mod = "Text::Tradition::Parser::$format";
+            load( $mod );
+            $mod->can('parse')->( $self, @parseargs );
+        }
     }
 }
 
 sub witness {
     my( $self, $sigil ) = @_;
     my $requested_wit;
-    foreach my $wit ( @{$self->witnesses} ) {
-	$requested_wit = $wit if $wit->sigil eq $sigil;
+    foreach my $wit ( $self->witnesses ) {
+        $requested_wit = $wit if $wit->sigil eq $sigil;
     }
     # We depend on an undef return value for no such witness.
     # warn "No such witness $sigil" unless $requested_wit;
     return $requested_wit;
 }
-	
-
-sub add_witness {
-    my $self = shift;
-    my $new_wit = Text::Tradition::Witness->new( @_ );
-    push( @{$self->witnesses}, $new_wit );
-    return $new_wit;
-}
+        
 
 # The user will usually be instantiating a Tradition object, and
 # examining its collation.  The information about the tradition can

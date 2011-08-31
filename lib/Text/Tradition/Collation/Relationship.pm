@@ -59,6 +59,11 @@ has 'non_independent' => (
     is => 'rw',
     isa => 'Bool',
     );
+    
+has 'equal_rank' => (
+    is => 'rw',
+    isa => 'Bool',
+    );
 
 sub FOREIGNBUILDARGS {
     my $class = shift;

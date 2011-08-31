@@ -35,18 +35,18 @@ around BUILDARGS => sub {
     # single argument to be parsed out into a position.
     my %args;
     if( @_ == 1 ) {
-	my( $common, $min, $max ) = parse_reference( $_[0] );
-	%args = ( 'common' => $common,
-		  'min' => $min,
-		  'max' => $max );
+        my( $common, $min, $max ) = parse_reference( $_[0] );
+        %args = ( 'common' => $common,
+                  'min' => $min,
+                  'max' => $max );
     } elsif ( 2 <= @_ && @_ <= 3 ) {
-	my( $common, $min, $max ) = @_;
-	$max = $min unless $max;
-	%args = ( 'common' => $common,
-		  'min' => $min,
-		  'max' => $max );
+        my( $common, $min, $max ) = @_;
+        $max = $min unless $max;
+        %args = ( 'common' => $common,
+                  'min' => $min,
+                  'max' => $max );
     } else {
-	%args = @_;
+        %args = @_;
     }
 
     return $class->$orig( %args );
@@ -55,19 +55,19 @@ around BUILDARGS => sub {
 sub BUILD {
     my $self = shift;
     if( $self->min > $self->max ) {
-	die "Position minimum cannot be higher than maximum";
+        die "Position minimum cannot be higher than maximum";
     }
 }
 
 sub parse_reference {
     my( $ref ) = @_;
     if( $ref =~ /^(\d+),(\d+)(\-(\d+))?$/ ) {
-	my( $common, $min, $max ) = ( $1, $2, $4 );
-	$max = $min unless defined $max;
-	return( $common, $min, $max );
+        my( $common, $min, $max ) = ( $1, $2, $4 );
+        $max = $min unless defined $max;
+        return( $common, $min, $max );
     } else {
-	warn "Bad argument $ref passed to Position constructor";
-	return undef;
+        warn "Bad argument $ref passed to Position constructor";
+        return undef;
     }
 }
 
@@ -75,7 +75,7 @@ sub parse_reference {
 sub cmp_with {
     my( $self, $other ) = @_;
     return _cmp_bits( [ $self->common, $self->min, $self->max ],
-		      [ $other->common, $other->min, $other->max ] );
+                      [ $other->common, $other->min, $other->max ] );
 }
 
 # Class method
@@ -89,9 +89,9 @@ sub str_cmp {
 sub _cmp_bits {
     my( $a, $b ) = @_;
     return $a->[0] <=> $b->[0]
-	unless $a->[0] == $b->[0];
+        unless $a->[0] == $b->[0];
     return $a->[1] <=> $b->[1]
-	unless $a->[1] == $b->[1];
+        unless $a->[1] == $b->[1];
     return $a->[2] <=> $b->[2];
 }
 
@@ -120,13 +120,13 @@ sub fixed {
 sub is_colocated {
     my( $self, $other, $strict ) = @_;
     if( $strict ) {
-	return $self->common == $other->common
-	    && $self->min == $other->min
-	    && $self->max == $other->max;
+        return $self->common == $other->common
+            && $self->min == $other->min
+            && $self->max == $other->max;
     } else {
-	return $self->common == $other->common 
-	    && $self->min <= $other->max
-	    && $self->max >= $other->min;
+        return $self->common == $other->common 
+            && $self->min <= $other->max
+            && $self->max >= $other->min;
     }
 }
 
