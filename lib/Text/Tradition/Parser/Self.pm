@@ -27,8 +27,8 @@ graph.
 
 =cut
 
-my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $POSITION_KEY, $CLASS_KEY ) 
-    = qw/ name reading identical position class /;
+my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY, $CLASS_KEY ) 
+    = qw/ name reading identical rank class /;
 
 sub parse {
     my( $tradition, $graphml_str ) = @_;
@@ -114,21 +114,15 @@ sub parse {
                 # We evidently have a linear graph.
                 $linear = 1;
                 $this_reading->set_identical( $other_reading );
-            } elsif ( $edkey eq $POSITION_KEY ) {
-                $this_reading->position( $extra_data->{$nkey}->{$edkey} );
+            } elsif ( $edkey eq $RANK_KEY ) {
+                $this_reading->rank( $extra_data->{$nkey}->{$edkey} );
             } else {
                 warn "Unfamiliar reading node data $edkey for $nkey";
             }
         }
     }
     $collation->linear( $linear );
-
-    # We know what the beginning and ending nodes are, no need to
-    # search or reset.
-    my $end_node = $collation->reading( '#END#' );
-    # Walk the paths and make reading sequences for our witnesses.
-    # No need to calculate positions as we have them already.
-    $collation->walk_witness_paths( $end_node );
+    # TODO We probably need to set the $witness->path arrays for each wit.
 }
 
 =back

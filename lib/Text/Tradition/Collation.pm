@@ -6,7 +6,6 @@ use Graph::Easy;
 use IPC::Run qw( run binary );
 use Text::CSV_XS;
 use Text::Tradition::Collation::Path;
-use Text::Tradition::Collation::Position;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::Relationship;
 use Text::Tradition::Collation::Segment;
@@ -296,6 +295,8 @@ sub as_svg {
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
+    ## TODO REMOVE
+    $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $self->as_dot();
     push( @cmd, $dotfile->filename );
@@ -384,7 +385,7 @@ sub as_graphml {
     # Add the data keys for nodes
     my %node_data_keys;
     my $ndi = 0;
-    foreach my $datum ( qw/ name reading identical position class / ) {
+    foreach my $datum ( qw/ name reading identical rank class / ) {
         $node_data_keys{$datum} = 'dn'.$ndi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $datum );
@@ -425,8 +426,8 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         _add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
         _add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->label );
-        _add_graphml_data( $node_el, $node_data_keys{'position'}, $n->position->reference )
-            if $n->has_position;
+        _add_graphml_data( $node_el, $node_data_keys{'rank'}, $n->rank )
+            if $n->has_rank;
         _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
         _add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
             if $n->has_primary;
@@ -649,8 +650,8 @@ sub start {
         $self->graph->rename_node( $new_start, '#START#' );
     }
     # Make sure the start node has a start position.
-    unless( $self->reading( '#START#' )->has_position ) {
-        $self->reading( '#START#' )->position( '0,0' );
+    unless( $self->reading( '#START#' )->has_rank ) {
+        $self->reading( '#START#' )->rank( '0' );
     }
     return $self->reading('#START#');
 }
@@ -875,12 +876,14 @@ sub make_witness_path {
     foreach my $idx ( 0 .. $#chain-1 ) {
         $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
-    @chain = @{$wit->uncorrected_path};
-    foreach my $idx( 0 .. $#chain-1 ) {
-        my $source = $chain[$idx];
-        my $target = $chain[$idx+1];
-        $self->add_path( $source, $target, $sig.$self->ac_label )
-            unless $self->has_path( $source, $target, $sig );
+    if( $wit->has_ante_corr ) {
+        @chain = @{$wit->uncorrected_path};
+        foreach my $idx( 0 .. $#chain-1 ) {
+            my $source = $chain[$idx];
+            my $target = $chain[$idx+1];
+            $self->add_path( $source, $target, $sig.$self->ac_label )
+                unless $self->has_path( $source, $target, $sig );
+        }
     }
 }
 
@@ -976,9 +979,6 @@ sub possible_positions {
 # TODO think about indexing this.
 sub readings_at_position {
     my( $self, $position, $strict ) = @_;
-    unless( ref( $position ) eq 'Text::Tradition::Collation::Position' ) {
-        $position = Text::Tradition::Collation::Position->new( $position );
-    }
     my @answer;
     foreach my $r ( $self->readings ) {
         push( @answer, $r ) if $r->is_at_position( $position, $strict );
@@ -1003,7 +1003,7 @@ sub init_lemmata {
 sub common_readings {
     my $self = shift;
     my @common = grep { $_->is_common } $self->readings();
-    return sort { $a->position->cmp_with( $b->position ) } @common;
+    return sort { $a->rank <=> $b->rank } @common;
 }
     
 =item B<lemma_readings>

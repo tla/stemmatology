@@ -119,11 +119,13 @@ sub parse {
             $collation->end( $gnode );
         }
     }
+    
+    # TODO Need to populate $wit->path / uncorrected_path
 
     # Now we have added the witnesses and their paths, so we can 
     # calculate their explicit positions.
     # TODO CollateX does this, and we should just have it exported there.
-    $collation->calculate_positions();
+    $collation->calculate_ranks();
 }
     
 =back

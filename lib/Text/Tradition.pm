@@ -67,7 +67,7 @@ sub BUILD {
         $self->_save_collation( $collation );
 
         # Call the appropriate parser on the given data
-        my @formats = grep { /^(Self|CollateX|CSV|CTE|KUL|TEI)$/ } keys( %$init_args );
+        my @formats = grep { /^(Self|CollateX|CSV|CTE|KUL|TEI|Tabular)$/ } keys( %$init_args );
         my $format = shift( @formats );
         unless( $format ) {
             warn "No data given to create a collation; will initialize an empty one";

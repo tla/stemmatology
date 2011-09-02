@@ -26,7 +26,7 @@ if( $help ) {
     help();
 }
 
-unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX)$/i ) {
+unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)$/i ) {
     help( "Input format must be one of CollateX, CSV, CTE, Self, TEI" );
 }
 $informat = 'CollateX' if $informat =~ /^c(ollate)?x$/i;
@@ -34,6 +34,7 @@ $informat = 'KUL' if $informat =~ /^kul$/i;
 $informat = 'CTE' if $informat =~ /^cte$/i;
 $informat = 'Self' if $informat =~ /^self$/i;
 $informat = 'TEI' if $informat =~ /^tei$/i;
+$informat = 'Tabular' if $informat =~ /^tab$/i;
 
 unless( $outformat =~ /^(graphml|svg|dot|stemma|csv)$/ ) {
     help( "Output format must be one of graphml, svg, csv, stemma, or dot" );
@@ -49,6 +50,7 @@ my $input = $ARGV[0];
 unless( $informat eq 'KUL' || $informat eq 'CSV' ) {
     my @lines;
     open( INFILE, "$input" ) or die "Could not read $input";
+    binmode INFILE, ':utf8';
     @lines = <INFILE>;
     close INFILE;
     $input = join( '', @lines );
