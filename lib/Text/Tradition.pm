@@ -72,7 +72,7 @@ sub BUILD {
         unless( $format ) {
             warn "No data given to create a collation; will initialize an empty one";
         }
-        if( $format && $format =~ /^(KUL|CTE)$/ && 
+        if( $format && $format =~ /^(KUL)$/ && 
             !exists $init_args->{'base'} ) {
             warn "Cannot make a collation from $format without a base text";
             return;
@@ -87,7 +87,7 @@ sub BUILD {
         my @sigla;
         if( $format ) {
             my @parseargs;
-            if( $format =~ /^(KUL|CTE)$/ ) {
+            if( $format =~ /^(KUL)$/ ) {
                 $init_args->{'data'} = $init_args->{$format};
                 $init_args->{'format'} = $format;
                 $format = 'BaseText';

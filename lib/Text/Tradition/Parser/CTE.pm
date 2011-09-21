@@ -2,6 +2,7 @@ package Text::Tradition::Parser::CTE;
 
 use strict;
 use warnings;
+use Text::Tradition::Parser::Util qw/ collate_variants /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -23,220 +24,282 @@ Classical Text Editor.
 my @apparatus = read( $xml_file );
 
 Takes a Tradition object and a TEI file exported from Classical Text
-Editor; initializes the Tradition from the file.
+Editor using double-endpoint-attachment critical apparatus encoding; 
+initializes the Tradition from the file.
 
 =cut
 
-my %seg_readings;  # Save the XML IDs for apparatus anchors.
-my %sigil_for;     # Save the XML IDs for witnesses.
-my %note_start;    # Save the readings where an apparatus entry is attached.
+my %sigil_for;  # Save the XML IDs for witnesses.
+my %apps;       # Save the apparatus XML for a given ID.    
 
 sub parse {
-    my( $tradition, $xml_str ) = @_;
-    my $c = $tradition->collation;  # Some shorthand
-    
-    # First, parse the XML.
-    my $parser = XML::LibXML->new();
-    my $doc = $parser->parse_string( $xml_str );
-    my $tei = $doc->documentElement();
-    my $xpc = XML::LibXML::XPathContext->new( $tei );
+	my( $tradition, $xml_str ) = @_;
+	my $c = $tradition->collation;	# Some shorthand
+	
+	# First, parse the XML.
+	my $parser = XML::LibXML->new();
+	my $doc = $parser->parse_string( $xml_str );
+	my $tei = $doc->documentElement();
+	my $xpc = XML::LibXML::XPathContext->new( $tei );
 
-    # CTE uses a DTD rather than any xmlns-based parsing.  Thus we
-    # need no namespace foo.
+	# CTE uses a DTD rather than any xmlns-based parsing.  Thus we
+	# need no namespace handling.
 
-    # Get the witnesses and create the witness objects.
-    foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
-	# The witness xml:id is used internally, and is *not* the sigil name.
-	my $id= $wit_el->getAttribute( 'xml:id' );
-	$id =~ s/^M/sig/;  # Stupid but there you go.
-	my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
-	my $sig = join( '', grep { /\w/ } @sig_parts );
-	$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
-	$sigil_for{$id} = $sig;
-    }
-
-    # Now go through the text and find the base tokens.  Tokens are
-    # either plain text to be split on whitespace, or they are wrapped
-    # in <hi/> or <seg/> elements.
-    my @base_text;
-    my $ctr = 1;
-    foreach my $pg_el ( $xpc->findnodes( '/TEI/text/p' ) ) {
-	foreach my $xn ( $pg_el->childNodes ) {
-	    push( @base_text, _get_readings( $tradition, $xn ) );
+	# Get the witnesses and create the witness objects.
+	foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
+		# The witness xml:id is used internally, and is *not* the sigil name.
+		my $id= $wit_el->getAttribute( 'xml:id' );
+		my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
+		my $sig = _stringify_sigil( @sig_parts );
+		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
+		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
-    }
 
-    # String together the base.
-    my $source = $c->start;
-    foreach my $b ( @base_text ) {
-	$c->add_path( $source, $b, $c->baselabel );
-	$source = $b;
+	# Now go through the text and find the base tokens, apparatus tags, and
+	# anchors.  Make a giant array of all of these things in sequence.
+	# TODO consider combining this with creation of graph below
+	my @base_text;
+	foreach my $pg_el ( $xpc->findnodes( '/TEI/text/body/p' ) ) {
+		foreach my $xn ( $pg_el->childNodes ) {
+			push( @base_text, _get_base( $xn ) );
+		}
+	}
+	
+	# We now have to work through this array applying the alternate 
+	# apparatus readings to the base text.  Essentially we will put 
+	# everything on the graph, from which we will delete the apps and
+	# anchors when we are done.
+	my $counter = 0;
+	my $last = $c->start;
+	foreach my $item ( @base_text ) {
+	    my $r;
+        if( $item->{'type'} eq 'token' ) {
+            $r = $c->add_reading( 'n'.$counter++ );
+            $r->text( $item->{'content'} );
+        } elsif ( $item->{'type'} eq 'anchor' ) {
+            $r = $c->add_reading( '#ANCHOR_' . $item->{'content'} . '#' );
+        } elsif ( $item->{'type'} eq 'app' ) {
+            my $tag = '#APP_' . $counter++ . '#';
+            $r = $c->add_reading( $tag );
+            $apps{$tag} = $item->{'content'};
+        }
+        $c->add_path( $last, $r, 'BASE' );
+        $last = $r;
     }
-    $c->add_path( $source, $c->add_reading('#END#'), $c->baselabel );
-		
-    # Now go through the text and find all the apparatus notes, and parse them.
-    foreach my $note_el( $xpc->findnodes( '//note[attribute::type = "a1"]' ) ) {
-	my $app_start = $note_start{$note_el};
-	my $apparatus = _parse_note( $note_el, $c, $app_start );
+    $c->add_path( $last, $c->end, 'BASE' );
+    
+    # Now we can parse the apparatus entries, and add the variant readings 
+    # to the graph.
+    
+    foreach my $app_id ( keys %apps ) {
+        _add_readings( $c, $app_id );
+    }
+    
+    # With the variant readings added, we now have to walk the graph for
+    # each witness and add an explicit path wherever there is not a divergence
+    # from BASE.  Thus we will also construct $wit->path.
+	$DB::single = 1;
+    foreach my $wit ( $tradition->witnesses ) {
+        my $sig = $wit->sigil;
+        my @wit_path = $c->reading_sequence( $c->start, $c->end, $sig, 'BASE' );
+        my $cur = $c->start;
+        foreach my $n ( @wit_path ) {
+            next if $cur eq $c->start;
+            my @paths = $cur->edges_to( $n );
+            unless( grep { $_->name eq $sig } @paths ) {
+                $c->add_path( $cur, $n, $sig );
+            }
+        }
+        $wit->path( \@wit_path );
+    }       
+    
+    # Collated readings are now on the graph, so now we get to remove
+    # all BASE edges and all app/anchor nodes.
+    foreach my $p ( $c->paths ) {
+        $c->del_path( $p ) if $p->name eq 'BASE';
+    }
+    foreach my $n ( $c->readings ) {
+        if( $n->name =~ /^\#A(PP|NCHOR)/ ) {
+            # Pair up incoming / outgoing edges with the same label
+            my( %incoming, %outgoing );
+            foreach my $e ( $n->incoming ) {
+                $incoming{$e->name} = $e->from;
+                $c->del_path( $e );
+            }
+            foreach my $e ( $n->outgoing ) {
+                $outgoing{$e->name} = $e->to;
+                $c->del_path( $e );
+            }
+            foreach my $w ( keys %incoming ) {
+                my $from = $incoming{$w};
+                my $to = delete $outgoing{$w};
+                warn "No outgoing edge on ".$n->name." for wit $w" unless $to;
+                $c->add_path( $from, $to, $w );
+            }
+            foreach my $w ( keys %outgoing ) {
+                warn "Found no incoming edge on ".$n->name." for wit $w";
+            }
+            $c->del_reading( $n );
+        }
     }
 }
 
+sub _stringify_sigil {
+    my( @nodes ) = @_;
+    my @parts = grep { /\w/ } map { $_->data } @nodes;
+    return join( '', @parts );
+}
 
 ## Recursive little helper function to help us navigate through nested
-## XML, picking out the text.
+## XML, picking out the words, the apparatus, and the anchors.
 
-sub _get_readings {
-    my( $tradition, $xn ) = @_;
-    my @readings;
-    if( $xn->nodeType == XML_TEXT_NODE ) {
-	my $str = $xn->data;
-	$str =~ s/^\s+//;
-	foreach my $w ( split( /\s+/, $str ) ) {
-	    my $rdg = $tradition->collation->add_reading( 'n'.$ctr++ );
-	    $rdg->text( $w );
-	    push( @readings, $rdg );
-	}
-    } elsif( $xn->nodeName eq 'hi' ) {
-	foreach( $xn->childNodes ) {
-	    # Recurse as if the hi weren't there.
-	    push( @readings, _get_readings( $tradition, $_ ) );
-	}
-    } elsif( $xn->nodeName eq 'seg' ) {
-	# Read the reading, but also add the word in question as an anchor.
-	my $seg_id = $xn->getAttribute( 'xml:id' );
-	my @r;
-	foreach( $xn->childNodes ) {
-	    push( @r, _get_readings( $tradition, $_ ) );
-	}
-	warn "More than one reading found in seg $seg_id" unless @r == 1;
-	$seg_readings{'#'.$seg_id} = $r[0];
-	push( @readings, @r );
-    } elsif( $xn->nodeName eq 'note' ) {
-	# Save where we found this note.
-	$note_start{$xn} = $readings[-1];
-    }
-    return @readings;
-}
-
-## Helper function to parse apparatus entries.  This could get nasty, I mean fun.
-sub _parse_note {
-    my( $xn, $c, $app_start ) = @_;
-    my $app_end = $seg_readings{$xn->getAttribute( 'targetEnd' )};
-    my $lemma = join( ' ', map { $_->text } $c->reading_sequence( $app_start, $app_end ) );
-
-    my %seen_wits;
-    # TODO A list of active witnesses should be passed really.
-    map { $seen_wits{$_} = 0 } vals( %sigil_for );
-
-    # The note has a <p/> tag, then <mentioned/>, then 0-1 text nodes,
-    # then an assortment of <hi/> or <abbr/> elements.  If the hi
-    # contains an abbr, then it goes before, otherwise it probably
-    # goes after.
-    my @p = $xn->getChildrenByTagName( 'p' );
-    warn "More than one pg in note" unless @p == 1;
-
-    # Strip the <hi/> elements.
-    my @childnodes;
-    foreach ( $p[0]->childNodes ) {
-	if( $_->nodeName eq 'hi' ) {
-	    push( @childnodes, $_->childNodes );
-	} else {
-	    push( @childnodes, $_ );
-	}
-    }
-	
-    # Go through and try to parse the sucker.
-    my $apparatus;
-    my $curr_rdg = '';
-    my $reading_sigla = 0;
-    my @curr_wits;
-    foreach my $pxn ( $p[0]->childNodes ) {
-	next if $pxn->nodeName eq 'mentioned';  # Redundant for us.
-	if( $pxn->nodeType == XML_TEXT_NODE ) {
-	    my $pxn_str = $pxn->data;
-	    $pxn_str =~ s/^\s+//;
-	    $pxn_str =~ s/\s+$//;
-	    my @parts = split( /,\s*/, $pxn_str );
-	    if( @parts > 1 ) {
-		# Comma separation means that we are starting a new reading.
-		my $last = shift @parts;
-		if( $last =~ /^\s*a\.\s*c\.\s*$/ ) {
-		    my $sig = pop @curr_wits;
-		    $sig .= '_ac';
-		    push( @curr_wits, $sig );
+sub _get_base {
+	my( $xn ) = @_;
+	my @readings;
+	if( $xn->nodeType == XML_TEXT_NODE ) {
+	    # Base text, just split the words on whitespace and add them 
+	    # to our sequence.
+		my $str = $xn->data;
+		$str =~ s/^\s+//;
+		foreach my $w ( split( /\s+/, $str ) ) {
+			push( @readings, { 'type' => 'token', 'content' => $w } );
 		}
-		$pxn_str = join( ', ', @parts );
-		# Trigger a reading interpretation.
-		$reading_sigla = 1;
-	    }
-	    if( $reading_sigla ) {
-		my @wits = keys %curr_wits;
-		$apparatus->{ interpret( $curr_rdg, $lemma ) } = \@wits;
-		$curr_rdg = '';
-		$reading_sigla = 0;
-		@curr_wits = ();
-	    }
-
-	    if( $pxn_str =~ /^\s*a\.\s*c\.\s*$/ ) {
-		my $sig = pop @curr_wits;
-		$sig .= '_ac';
-		push( @curr_wits, $sig );
-	    } else {
-		$curr_rdg .= $pxn_str;
-	    }
-	} elsif( $pxn->nodeName eq 'abbr' ) {
-	    # It is a witness, stick it in @curr_wits
-	    my $wit = $sigil_for{$pxn->getAttribute( 'n' )}
-	    push( @curr_wits, $wit ) unless $curr_wits[-1] eq $wit;
-	    $seen_wits{$wit} += 1;  # Keep track of a 'seen' count in case there is an a.c.
-	    $reading_sigla = 1;
+	} elsif( $xn->nodeName eq 'hi' ) {
+		# Recurse as if the hi weren't there.
+		foreach( $xn->childNodes ) {
+			push( @readings, _get_base( $_ ) );
+		}
+	} elsif( $xn->nodeName eq 'app' ) {
+		# Apparatus, just save the entire XML node.
+		push( @readings, { 'type' => 'app', 'content' => $xn } );
+	} elsif( $xn->nodeName eq 'anchor' ) {
+		# Anchor to mark the end of some apparatus; save its ID.
+		push( @readings, { 'type' => 'anchor', 
+		    'content' => $xn->getAttribute( 'xml:id' ) } );
+	} elsif ( $xn->nodeName ne 'note' ) {  # Any tag we don't know to disregard
+	    print STDERR "Unrecognized tag " . $xn->nodeName . "\n";
 	}
-    }
-    $apparatus->{ interpret( $curr_rdg, $lemma ) } = \@wits if $curr_rdg;
-    $apparatus->{ $lemma } = grep { $seen_wits{$_} == 0 } keys %seen_wits;
-
-    return $apparatus;
+	return @readings;
 }
 
+sub _add_readings {
+    my( $c, $app_id ) = @_;
+    my $xn = $apps{$app_id};
+    my $anchor = _anchor_name( $xn->getAttribute( 'to' ) );
+    # Get the lemma, which is all the readings between app and anchor,
+    # excluding other apps or anchors.
+    my @lemma = _return_lemma( $c, $app_id, $anchor );
+    my $lemma_str = join( ' ', grep { $_ !~ /^\#/ } map { $_->text } @lemma );
+    
+    # For each reading, send its text to 'interpret' along with the lemma,
+    # and then save the list of witnesses that these tokens belong to.
+    my %wit_rdgs;
+    my $ctr = 0;
+    my $tag = $app_id;
+    $tag =~ s/^\#APP_(.*)\#$/$1/;
+    foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
+        my @text;
+        my $wits = $rdg->getAttribute( 'wit' );
+        foreach ( $rdg->childNodes ) {
+            push( @text, _get_base( $_ ) );
+        }
+        my $interpreted = @text 
+            ? interpret( join( ' ', map { $_->{'content'} } @text ), $lemma_str ) 
+            : '';
+        my @rdg_nodes;
+        foreach my $w ( split( /\s+/, $interpreted ) ) {
+            my $r = $c->add_reading( $tag . "/" . $ctr++ );
+            $r->text( $w );
+            push( @rdg_nodes, $r );
+        }
+        $wit_rdgs{$wits} = \@rdg_nodes;
+    }
+    
+    # Now collate the variant readings, since it is not done for us.
+    collate_variants( $c, \@lemma, values %wit_rdgs );
+    
+    # Now add the witness paths for each reading.
+    foreach my $wit_str ( keys %wit_rdgs ) {
+        my @wits = get_sigla( $wit_str );
+        my $rdg_list = $wit_rdgs{$wit_str};
+        _add_wit_path( $c, $rdg_list, $app_id, $anchor, @wits );
+    }
+}
+
+sub _anchor_name {
+    my $xmlid = shift;
+    $xmlid =~ s/^\#//;
+    return sprintf( "#ANCHOR_%s#", $xmlid );
+}
+
+sub _return_lemma {
+    my( $c, $app, $anchor ) = @_;
+    my $app_node = $c->graph->node( $app );
+    my $anchor_node = $c->graph->node( $anchor );
+    my @nodes = grep { $_->name !~ /^\#A(PP|NCHOR)$/ } 
+        $c->reading_sequence( $app_node, $anchor_node, 'BASE' );
+    return @nodes;
+}
 
 sub interpret {
-    # A utility function to change apparatus-ese into a full variant.
-    my( $reading, $lemma ) = @_;
-    return $reading if $reading eq $lemma;
-    my $oldreading = $reading;
-    $lemma =~ s/\s+[[:punct:]]+$//;
-    $reading =~ s/\s*\(?sic([\s\w.]+)?\)?$//;
-    my @words = split( /\s+/, $lemma );
-    if( $reading =~ /^(.*) praem.$/ ) {
-	$reading = "$1 $lemma";
-    } elsif( $reading =~ /^(.*) add.$/ ) {
-        $reading = "$lemma $1";
-    } elsif( $reading eq 'om.' ) {
-	$reading = '';
-    } elsif( $reading eq 'inv.' ) {
-        # Hope it is two words.
-        print STDERR "WARNING: want to invert a lemma that is not two words\n" 
-            unless scalar( @words ) == 2;
-        $reading = join( ' ', reverse( @words ) );
-    } elsif( $reading eq 'iter.' ) {
-        # Repeat the lemma
-	$reading = "$lemma $lemma";
-     } elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
-        # The first and last N words captured should replace the first and
-        # last N words of the lemma.
-	my @begin = split( /\s+/, $1 );
-	my @end = split( /\s+/, $2 );
-	if( scalar( @begin ) + scalar ( @end ) > scalar( @words ) ) {
-            # Something is wrong and we can't do the splice.
-	    print STDERR "ERROR: $lemma is too short to accommodate $oldreading\n";
-	} else {
-	    splice( @words, 0, scalar @begin, @begin );
-	    splice( @words, -(scalar @end), scalar @end, @end );
-	    $reading = join( ' ', @words );
+	# A utility function to change apparatus-ese into a full variant.
+	my( $reading, $lemma ) = @_;
+	return $reading if $reading eq $lemma;
+	my $oldreading = $reading;
+	# $lemma =~ s/\s+[[:punct:]]+$//;
+	# $reading =~ s/\s*\(?sic([\s\w.]+)?\)?$//;
+	my @words = split( /\s+/, $lemma );
+	if( $reading =~ /^(.*) praem.$/ ) {
+		$reading = "$1 $lemma";
+	} elsif( $reading =~ /^(.*) add.$/ ) {
+		$reading = "$lemma $1";
+	} elsif( $reading eq 'om.' ) {
+		$reading = '';
+	} elsif( $reading eq 'inv.' ) {
+		# Hope it is two words.
+		print STDERR "WARNING: want to invert a lemma that is not two words\n" 
+			unless scalar( @words ) == 2;
+		$reading = join( ' ', reverse( @words ) );
+	} elsif( $reading eq 'iter.' ) {
+		# Repeat the lemma
+		$reading = "$lemma $lemma";
+	 } elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
+		# The first and last N words captured should replace the first and
+		# last N words of the lemma.
+		my @begin = split( /\s+/, $1 );
+		my @end = split( /\s+/, $2 );
+		if( scalar( @begin ) + scalar ( @end ) > scalar( @words ) ) {
+			# Something is wrong and we can't do the splice.
+			print STDERR "ERROR: $lemma is too short to accommodate $oldreading\n";
+		} else {
+			splice( @words, 0, scalar @begin, @begin );
+			splice( @words, -(scalar @end), scalar @end, @end );
+			$reading = join( ' ', @words );
+		}
 	}
+	print STDERR "Interpreted $oldreading as $reading given $lemma\n";
+	return $reading;
+}
+
+sub get_sigla {
+    my $witstr = shift;
+    my @xml_ids = split( /\s+/, $witstr );
+    my @sigs = map { $sigil_for{$_} } @xml_ids;
+    return @sigs;
+}
+
+sub _add_wit_path {
+    my( $c, $rdg, $app, $anchor, @wits ) = @_;
+    my @nodes = @$rdg;
+    push( @nodes, $c->graph->node( $anchor ) );
+    
+    my $cur = $c->graph->node( $app );
+    foreach my $n ( @nodes ) {
+        foreach my $w ( @wits ) {
+            $c->add_path( $cur, $n, $w );
+        }
+        $cur = $n;
     }
-    print STDERR "Interpreted $oldreading as $reading given $lemma\n";
-    return $reading;
 }
 
 =back
