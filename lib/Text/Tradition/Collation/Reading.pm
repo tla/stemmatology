@@ -17,6 +17,11 @@ has 'rank' => (
     isa => 'Int',
     predicate => 'has_rank',
     );
+    
+has 'is_lacuna' => (
+    is => 'rw',
+    isa => 'Bool',
+    );
 
 # This contains an array of reading objects; the array is a pool,
 # shared by the reading objects inside the pool.  When a reading is
@@ -63,7 +68,11 @@ sub text {
     # Wrapper function around 'label' attribute.
     my $self = shift;
     if( @_ ) {
-	$self->set_attribute( 'label', $_[0] );
+        if( defined $_[0] ) {
+        	$self->set_attribute( 'label', $_[0] );
+        } else {
+            $self->del_attribute( 'label' );
+        }
     }
     return $self->label;
 }

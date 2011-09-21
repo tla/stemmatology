@@ -30,7 +30,8 @@ sub parse {
     my( $tradition, $tab_str ) = @_;
     # TODO Allow setting of sep_char
     my $c = $tradition->collation; # shorthand
-    my $csv = Text::CSV_XS->new( { binary => 1 } ); # binary for UTF-8
+    my $csv = Text::CSV_XS->new( { binary => 1, # binary for UTF-8
+        sep_char => "\t" } );
     my @lines = split( "\n", $tab_str );
     # Conveniently, we are basically receiving exactly the sort of alignment table
     # we might want to produce later.  May as well save it.
@@ -69,10 +70,32 @@ sub parse {
         }
     }
     
-    # Push the end node onto all paths.
+    
+    # Collapse our lacunae into a single node and
+    # push the end node onto all paths.
     $c->end->rank( scalar @$alignment_table );
     foreach my $wit ( @witnesses ) {
-        push( @{$wit->path}, $c->end );
+        my $p = $wit->path;
+        my $last_rdg = shift @$p;
+        my $new_p = [ $last_rdg ];
+        foreach my $rdg ( @$p ) {
+            if( $rdg->text eq '#LACUNA#' ) {
+                # If we are in a lacuna already, drop this node.
+                # Otherwise make a lacuna node and drop this node.
+                unless( $last_rdg->is_lacuna ) {
+                    my $l = $c->add_lacuna( $rdg->name );
+                    $l->rank( $rdg->rank );
+                    push( @$new_p, $l );
+                    $last_rdg = $l;
+                }
+                $c->del_reading( $rdg );
+            } else {
+                # No lacuna, save the reading.
+                push( @$new_p, $rdg );
+            }
+        }
+        push( @$new_p, $c->end );
+        $wit->path( $new_p );
     }
     
     # Join up the paths.

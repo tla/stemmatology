@@ -33,6 +33,7 @@ my $text = {}; # Hash of arrays, one per eventual witness we find.
 my $substitutions = {}; # Keep track of merged readings
 my $app_anchors = {};   # Track apparatus references
 my $app_ac = {};        # Save a.c. readings
+my $app_count;          # Keep track of how many apps we have
 
 # Create the package variables for tag names.
 
@@ -76,11 +77,15 @@ sub parse {
         my $source = $wit_el->toString();
         $tradition->add_witness( sigil => $sig, source => $source );
     }
-
     map { $text->{$_->sigil} = [] } $tradition->witnesses;
+
     # Look for all word/seg node IDs and note their pre-existence.
     my @attrs = $xpc->findnodes( "//$W|$SEG/attribute::xml:id" );
     save_preexisting_nodeids( @attrs );
+
+    # Count up how many apps we have.
+    my @apps = $xpc->findnodes( "//$APP" );
+    $app_count = scalar( @apps );
 
     # Now go through the children of the text element and pull out the
     # actual text.
@@ -197,6 +202,7 @@ sub _return_rdg {
 {
     my @active_wits;
     my $current_app;
+    my $seen_apps;
 
     sub _get_readings {
         my( $tradition, $xn, $in_var, $ac, @cur_wits ) = @_;
@@ -249,6 +255,7 @@ sub _return_rdg {
                 push( @{$text->{$_}}, $rdg ) unless $ac;
             }
         } elsif ( $xn->nodeName eq 'app' ) {
+            $seen_apps++;
             $current_app = $xn->getAttribute( 'xml:id' );
             # print STDERR "Handling app $current_app\n";
             # Keep the reading sets in this app.
@@ -310,6 +317,14 @@ sub _return_rdg {
             #print STDERR "Handling witEnd\n";
             my $regexp = '^(' . join( '|', @cur_wits ) . ')$';
             @active_wits = grep { $_ !~ /$regexp/ } @active_wits;
+            # Record a lacuna, unless this is the last app.
+            unless( $seen_apps == $app_count ) {
+                foreach my $i ( 0 .. $#cur_wits ) {
+                    my $w = $cur_wits[$i];
+                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    push( @{$text->{$w}}, $l );
+                }
+            }
         } elsif( $xn->nodeName eq 'witDetail' ) {
             # Ignore these for now.
             return;

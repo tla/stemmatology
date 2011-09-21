@@ -17,6 +17,7 @@ has 'graph' => (
     isa => 'Graph::Easy',
     handles => {
         add_reading => 'add_node',
+        add_lacuna => 'add_node',
         del_reading => 'del_node',
         del_segment => 'del_node',
         add_path => 'add_edge',
@@ -120,6 +121,15 @@ sub BUILD {
     my $shape = exists( $args->{'shape'} ) ? $args->{'shape'} : 'ellipse';
     $self->graph->set_attribute( 'node', 'shape', $shape );
 }
+
+around add_lacuna => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $id = shift @_;
+    my $l = $self->$orig( '#LACUNA_' . $id . '#' );
+    $l->is_lacuna( 1 );
+    return $l;
+};
 
 # Wrapper around add_path 
 
@@ -296,7 +306,7 @@ sub as_svg {
     my( $svg, $err );
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
-    $dotfile->unlink_on_destroy(0);
+    # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $self->as_dot();
     push( @cmd, $dotfile->filename );
@@ -518,6 +528,7 @@ sub make_alignment_table {
     my $table;
     my @all_pos = sort { $a <=> $b } $self->possible_positions;
     foreach my $wit ( $self->tradition->witnesses ) {
+        # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @row = _make_witness_row( $wit->path, \@all_pos );
         unshift( @row, $wit->sigil );
         push( @$table, \@row );
@@ -537,10 +548,22 @@ sub _make_witness_row {
     my %char_hash;
     map { $char_hash{$_} = undef } @$positions;
     foreach my $rdg ( @$path ) {
-        $char_hash{$rdg->rank} = $rdg->text;
+        my $rtext = $rdg->text;
+        $rtext = '#LACUNA#' if $rdg->is_lacuna;
+        $char_hash{$rdg->rank} = $rtext;
     }
     my @row = map { $char_hash{$_} } @$positions;
-    return @row;
+    # Fill in lacuna markers for undef spots in the row
+    my $last_el = shift @row;
+    my @filled_row = ( $last_el );
+    foreach my $el ( @row ) {
+        if( $last_el && $last_el eq '#LACUNA#' && !defined $el ) {
+            $el = '#LACUNA#';
+        }
+        push( @filled_row, $el );
+        $last_el = $el;
+    }
+    return @filled_row;
 }
 
 # Helper to turn the witnesses along columns rather than rows.  Assumes

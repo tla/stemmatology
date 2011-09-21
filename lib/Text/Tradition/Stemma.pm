@@ -54,7 +54,9 @@ sub convert_characters {
     # This is a simple algorithm that treats every reading as different.
     # Eventually we will want to be able to specify how relationships
     # affect the character matrix.
-    my %unique = ( '__UNDEF__' => 'X' );
+    my %unique = ( '__UNDEF__' => 'X',
+                   '#LACUNA#'  => '?',
+                 );
     my $ctr = 0;
     foreach my $word ( @$row ) {
         if( $word && !exists $unique{$word} ) {
@@ -87,6 +89,8 @@ sub run_pars {
 
     # Set up a temporary directory for all the default Phylip files.
     my $phylip_dir = File::Temp->newdir();
+    print STDERR $phylip_dir . "\n";
+    # $phylip_dir->unlink_on_destroy(0);
     # We need an infile, and we need a command input file.
     open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
     print MATRIX $self->pars_input();
