@@ -131,6 +131,7 @@ sub parse {
                 }
                 $source = $rdg;
             }
+            print STDERR "Adding a.c. version for witness $sig\n";
             $tradition->witness( $sig )->uncorrected_path( \@uncorrected );
         }
     }
@@ -149,7 +150,8 @@ sub _clean_sequence {
         if( $rdg =~ /^PH-(.*)$/ ) {
             # It is a placeholder.  Keep it only if we need it.
             my $app_id = $1;
-            if( exists $app_ac->{$wit}->{$app_id} ) {
+            if( exists $app_ac->{$wit} &&
+                exists $app_ac->{$wit}->{$app_id} ) {
                 print STDERR "Retaining empty placeholder for $app_id\n";
                 push( @clean_sequence, $rdg );
             }
