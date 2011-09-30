@@ -519,8 +519,13 @@ sub as_csv {
     return $self->csv;
 }
 
+# TODO Make an alignment table at the end of initialization to check for 
+# duplicate nodes from mis-collation.
+
+
+
 sub make_alignment_table {
-    my $self = shift;
+    my( $self, $in_rows ) = shift;
     unless( $self->linear ) {
         warn "Need a linear graph in order to make an alignment table";
         return;
@@ -538,6 +543,8 @@ sub make_alignment_table {
             push( @$table, \@ac_row );
         }           
     }
+    return $table if $in_rows;
+    
     # Return a table where the witnesses read in columns rather than rows.
     my $turned = _turn_table( $table );
     return $turned;
