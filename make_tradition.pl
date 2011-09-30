@@ -81,7 +81,7 @@ if( $HACK ) {
 if( $outformat eq 'stemma' ) {
     my $stemma = Text::Tradition::Stemma->new( 
         'collation' => $tradition->collation );
-    my( $result, $tree ) = $stemma->run_pars();
+    my( $result, $tree ) = $stemma->run_phylip_pars();
     if( $result ) {
         print $tree;
     } else {

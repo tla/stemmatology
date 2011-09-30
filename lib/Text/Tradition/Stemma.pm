@@ -1,12 +1,13 @@
 package Text::Tradition::Stemma;
 
+use Bio::Phylo::IO;
 use File::chdir;
 use File::Temp;
-use IPC::Run qw/ run /;
-use Moose;
-use Text::Tradition::Collation::Position;
 use Graph;
 use Graph::Reader::Dot;
+use IPC::Run qw/ run /;
+use Moose;
+use Text::Balanced qw/ extract_bracketed /;
 
 has collation => (
     is => 'ro',
@@ -30,6 +31,13 @@ has graph => (
 has apsp => (
     is => 'rw',
     isa => 'Graph',
+    );
+    
+has distance_trees => (
+    is => 'ro',
+    isa => 'ArrayRef[Graph]',
+    writer => '_save_distance_trees',
+    predicate => 'has_distance_trees',
     );
         
 sub BUILD {
@@ -62,7 +70,21 @@ sub BUILD {
         $self->apsp( $undirected->APSP_Floyd_Warshall() );
     }
 }
-        
+
+before 'distance_trees' => sub {
+    my $self = shift;
+    my %args = @_;
+    # TODO allow specification of method for calculating distance tree
+    if( $args{'recalc'} || !$self->has_distance_trees ) {
+        # We need to make a tree before we can return it.
+        my( $ok, $result ) = $self->run_phylip_pars();
+        if( $ok ) {
+            $self->_save_distance_trees( _parse_newick( $result ) );
+        } else {
+            warn "Failed to calculate distance tree: $result";
+        }
+    }
+};
         
 sub make_character_matrix {
     my $self = shift;
@@ -110,13 +132,13 @@ sub convert_characters {
         }
     }
     if( scalar( keys %unique ) > 8 ) {
-        warn "Have more than 8 variants on this location; pars will break";
+        warn "Have more than 8 variants on this location; phylip will break";
     }
     my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
     return @chars;
 }
 
-sub pars_input {
+sub phylip_pars_input {
     my $self = shift;
     $self->make_character_matrix unless $self->has_character_matrix;
     my $matrix = '';
@@ -129,16 +151,15 @@ sub pars_input {
     return $matrix;
 }
 
-sub run_pars {
+sub run_phylip_pars {
     my $self = shift;
 
     # Set up a temporary directory for all the default Phylip files.
     my $phylip_dir = File::Temp->newdir();
-    print STDERR $phylip_dir . "\n";
     # $phylip_dir->unlink_on_destroy(0);
     # We need an infile, and we need a command input file.
     open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
-    print MATRIX $self->pars_input();
+    print MATRIX $self->phylip_pars_input();
     close MATRIX;
 
     open( CMD, ">$phylip_dir/cmdfile" ) or die "Could not write $phylip_dir/cmdfile";
@@ -199,6 +220,46 @@ sub run_pars {
         push( @error, "Neither outtree nor output file was produced!" );
     }
     return( undef, join( '', @error ) );
+}
+
+sub _parse_newick {
+    my $newick = shift;
+    my @trees;
+    # Parse the result into a tree
+    my $forest = Bio::Phylo::IO->parse( 
+        -format => 'newick',
+        -string => $newick,
+        );
+    # Turn the tree into a graph, starting with the root node
+    foreach my $tree ( @{$forest->get_entities} ) {
+        push( @trees, _graph_from_bio( $tree ) );
+    }
+    return \@trees;
+}
+
+sub _graph_from_bio {
+    my $tree = shift;
+    my $graph = Graph->new( 'undirected' => 1 );
+    # Give all the intermediate anonymous nodes a name.
+    my $i = 0;
+    foreach my $n ( @{$tree->get_entities} ) {
+        next if $n->get_name;
+        $n->set_name( $i++ );
+    }
+    my $root = $tree->get_root->get_name;
+    $graph->add_vertex( $root );
+    _add_tree_children( $graph, $root, $tree->get_root->get_children() );
+    return $graph;
+}
+
+sub _add_tree_children {
+    my( $graph, $parent, $tree_children ) = @_;
+    foreach my $c ( @$tree_children ) {
+        my $child = $c->get_name;
+        $graph->add_vertex( $child );
+        $graph->add_path( $parent, $child );
+        _add_tree_children( $graph, $child, $c->get_children() );
+    }
 }
 
 no Moose;

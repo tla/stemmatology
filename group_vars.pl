@@ -48,7 +48,7 @@ my $col_wits = shift @$all_wits_table;
     
 # For each column in the table, group the readings by witness.
 
-my $useful_vars = 0;
+my $used_vars = 0;
 foreach my $i ( 0 .. $#$all_wits_table ) {
     my $rdg_wits = {};
     my $col_rdgs = shift @$all_wits_table;
@@ -65,34 +65,61 @@ foreach my $i ( 0 .. $#$all_wits_table ) {
     my( $groups, $readings ) = useful_variant( $rdg_wits );
     next unless $groups && $readings;        
     
-    # For all the groups with more than one member, make a group that contains
-    # all contiguous vertices to connect them.
-    # TODO Need to do pairwise comparison of groups - a variant location can
-    # have both coincidental and genealogical variants!
+    # We can look up witnesses for a reading; we also want to look up readings
+    # for a given witness.
+    my $group_readings = {};
+    foreach my $x ( 0 .. $#$groups ) {
+        $group_readings->{wit_stringify( $groups->[$x] )} = $readings->[$x];
+    }
+    
+    # For all the groups with more than one member, collect the list of all
+    # contiguous vertices needed to connect them.
+    # TODO: deal with a.c. reading logic
+    my $conflict = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
+    print wit_stringify( $groups ) . ' - ' . join( " / ", @$readings ) . "\n";
+    foreach my $rdg ( keys %$conflict ) {
+        my $var = $conflict->{$rdg};
+        print "\tReadings '$rdg' and '$var' are not genealogical\n";
+    }
+    
+    # Now run the same analysis given a distance tree.
+    my $distance_apsp = $stemma->distance_trees->[0]->APSP_Floyd_Warshall();
+    $conflict = analyze_variant_location( $group_readings, $groups, $distance_apsp );
+    foreach my $rdg ( keys %$conflict ) {
+        my $var = $conflict->{$rdg};
+        print "\tReadings '$rdg' and '$var' disregarded by parsimony\n";
+    }
+
+    # Record that we used this variant in an analysis
+    $used_vars++;
+    
+}
+print "Found $used_vars useful variants in this analysis\n";
+
+sub analyze_variant_location {
+    my( $group_readings, $groups, $apsp ) = @_;
     my %contig;
-    my $conflict;
-    foreach my $g ( @$groups ) {
-        my @members = split( /,/, $g );
+    my $conflict = {};
+    foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
+        my @members = @$g;
+        my $gst = wit_stringify( $g );
+        map { $contig{$_} = $gst } @members; # The witnesses need themselves to be 
+                                             # in their collection.
         next unless @members > 1;
-        map { $contig{$_} = $g } @members;
         my $curr = pop @members;
         foreach my $m ( @members ) {
-            foreach my $v ( $stemma->apsp->path_vertices( $curr, $m ) ) {
-                $contig{$v} = $g unless exists $contig{$v};
-                next if $contig{$v} eq $g;
-                # print STDERR "Conflict at $v between group $g and group " 
+            foreach my $v ( $apsp->path_vertices( $curr, $m ) ) {
+                $contig{$v} = $gst unless exists $contig{$v};
+                next if $contig{$v} eq $gst;
+                # print STDERR "Conflict at $v between group $gst and group " 
                 #     . $contig{$v} . "\n";
-                $conflict = 1;
+                # Record what is conflicting.
+                $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$v}};
             }
         }
     }
-    print join( " / ", @$groups ) . ' - ' . join( " / ", @$readings ) . ' - ';
-    print $conflict ? "coincidental" : "genealogical";
-    print "\n";
-    $useful_vars++;
-    
+    return $conflict;
 }
-print "Found $useful_vars useful variants\n";
 
 # Add the variant, subject to a.c. representation logic.
 # This assumes that we will see the 'main' version before the a.c. version.
@@ -118,8 +145,27 @@ sub useful_variant {
     return( undef, undef ) if $total <= 1;
     my( $groups, $text );
     foreach my $var ( keys %$readings ) {
-        push( @$groups, join( ',', @{$readings->{$var}} ) );
+        push( @$groups, $readings->{$var} );
         push( @$text, $var );
     }
     return( $groups, $text );
 }
+
+# Take an array of witness groupings and produce a string like
+# A,B / C,D,E / F
+
+sub wit_stringify {
+    my $groups = shift;
+    my @gst;
+    # If we were passed an array of witnesses instead of an array of 
+    # groupings, then "group" the witnesses first.
+    unless( ref( $groups->[0] ) ) {
+        my $mkgrp = [ $groups ];
+        $groups = $mkgrp;
+    }
+    foreach my $g ( @$groups ) {
+        push( @gst, join( ',', @$g ) );
+    }
+    return join( ' / ', @gst );
+}
+    
