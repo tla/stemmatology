@@ -5,6 +5,8 @@ use File::Temp;
 use IPC::Run qw/ run /;
 use Moose;
 use Text::Tradition::Collation::Position;
+use Graph;
+use Graph::Reader::Dot;
 
 has collation => (
     is => 'ro',
@@ -18,7 +20,50 @@ has character_matrix => (
     writer => '_save_character_matrix',
     predicate => 'has_character_matrix',
     );
-
+    
+has graph => (
+    is => 'rw',
+    isa => 'Graph',
+    predicate => 'has_graph',
+    );
+    
+has apsp => (
+    is => 'rw',
+    isa => 'Graph',
+    );
+        
+sub BUILD {
+    my( $self, $args ) = @_;
+    # If we have been handed a dotfile, initialize it into a graph.
+    if( exists $args->{'dot'} ) {
+        my $reader = Graph::Reader::Dot->new();
+        my $graph = $reader->read_graph( $args->{'dot'} );
+        $graph 
+            ? $self->graph( $graph ) 
+            : warn "Failed to parse dot file " . $args->{'dot'};
+    }
+    
+    # If we have a graph, calculate all the shortest paths between nodes,
+    # disregarding direction.
+    if( $self->has_graph ) {
+        my $undirected;
+        if( $self->graph->is_directed ) {
+            # Make an undirected version.
+            $undirected = Graph->new( 'undirected' => 1 );
+            foreach my $v ( $self->graph->vertices ) {
+                $undirected->add_vertex( $v );
+            }
+            foreach my $e ( $self->graph->edges ) {
+                $undirected->add_edge( @$e );
+            }
+        } else {
+            $undirected = $self->graph;
+        }
+        $self->apsp( $undirected->APSP_Floyd_Warshall() );
+    }
+}
+        
+        
 sub make_character_matrix {
     my $self = shift;
     unless( $self->collation->linear ) {
