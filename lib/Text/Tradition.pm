@@ -106,12 +106,16 @@ sub witness {
     my( $self, $sigil ) = @_;
     my $requested_wit;
     foreach my $wit ( $self->witnesses ) {
-        $requested_wit = $wit if $wit->sigil eq $sigil;
+        if( $wit->sigil eq $sigil ) {
+            $requested_wit = $wit;
+            last;
+        }
     }
     # We depend on an undef return value for no such witness.
     # warn "No such witness $sigil" unless $requested_wit;
     return $requested_wit;
 }
+
         
 
 # The user will usually be instantiating a Tradition object, and
