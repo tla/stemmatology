@@ -1,11 +1,13 @@
 package Text::Tradition::Stemma;
 
 use Bio::Phylo::IO;
+use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
 use Graph;
+use Graph::Convert;
 use Graph::Reader::Dot;
-use IPC::Run qw/ run /;
+use IPC::Run qw/ run binary /;
 use Moose;
 use Text::Balanced qw/ extract_bracketed /;
 
@@ -44,8 +46,12 @@ sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
+        # Open the file, assume UTF-8
+        open( my $dot, $args->{'dot'} ) or warn "Failed to read dot file";
+        # TODO don't bother if we haven't opened
+        binmode $dot, ":utf8";
         my $reader = Graph::Reader::Dot->new();
-        my $graph = $reader->read_graph( $args->{'dot'} );
+        my $graph = $reader->read_graph( $dot );
         $graph 
             ? $self->graph( $graph ) 
             : warn "Failed to parse dot file " . $args->{'dot'};
@@ -70,6 +76,38 @@ sub BUILD {
         $self->apsp( $undirected->APSP_Floyd_Warshall() );
     }
 }
+
+# Render the stemma as SVG.
+sub as_svg {
+    my $self = shift;
+    # TODO add options for display, someday
+    my $dgraph = Graph::Convert->as_graph_easy( $self->graph );
+    # Set some class display attributes for 'hypothetical' and 'extant' nodes
+    $dgraph->set_attribute( 'flow', 'south' );
+    foreach my $n ( $dgraph->nodes ) {
+        if( $n->attribute( 'class' ) eq 'hypothetical' ) {
+            $n->set_attribute( 'shape', 'point' );
+            $n->set_attribute( 'pointshape', 'diamond' );
+        } else {
+            $n->set_attribute( 'shape', 'ellipse' );
+        }
+    }
+    
+    # Render to svg via graphviz
+    my @cmd = qw/dot -Tsvg/;
+    my( $svg, $err );
+    my $dotfile = File::Temp->new();
+    ## TODO REMOVE
+    # $dotfile->unlink_on_destroy(0);
+    binmode $dotfile, ':utf8';
+    print $dotfile $dgraph->as_graphviz();
+    push( @cmd, $dotfile->filename );
+    run( \@cmd, ">", binary(), \$svg );
+    $svg = decode_utf8( $svg );
+    return $svg;
+}
+
+#### Methods for calculating phylogenetic trees ####
 
 before 'distance_trees' => sub {
     my $self = shift;

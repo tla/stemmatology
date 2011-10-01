@@ -27,7 +27,7 @@ $input = join( '', @lines );
 my %args = ( $informat => $input,
              'linear' => $linear );
 $args{'base'} = $inbase if $inbase;
- my $tradition = Text::Tradition->new( %args );
+my $tradition = Text::Tradition->new( %args );
 
 # Parse the stemma hypothesis
 my $stemma = Text::Tradition::Stemma->new( 
@@ -95,6 +95,11 @@ foreach my $i ( 0 .. $#$all_wits_table ) {
     
 }
 print "Found $used_vars useful variants in this analysis\n";
+# Save the stemma picture
+open( STEMMA, ">stemma_graph.svg" ) or die "Could not open stemma graph to write";
+binmode STEMMA, ":utf8";
+print STEMMA $stemma->as_svg;
+close STEMMA;
 
 sub analyze_variant_location {
     my( $group_readings, $groups, $apsp ) = @_;
