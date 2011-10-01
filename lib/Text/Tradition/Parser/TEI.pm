@@ -141,6 +141,10 @@ sub parse {
         $tradition->collation->del_reading( $tradition->collation->reading( $_ ) );
     }
     $tradition->collation->calculate_ranks();
+    
+    # Now that we have ranks, see if we have distinct nodes with identical
+    # text and identical rank that can be merged.
+    $tradition->collation->flatten_ranks();
 }
 
 sub _clean_sequence {

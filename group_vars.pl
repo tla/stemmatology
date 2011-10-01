@@ -36,37 +36,49 @@ my $stemma = Text::Tradition::Stemma->new(
     );
 
 # We have the collation, so get the alignment table with witnesses in rows.
+# Also return the reading objects in the table, rather than just the words.
 
-my $all_wits_table = $tradition->collation->make_alignment_table( 1 );
+my $all_wits_table = $tradition->collation->make_alignment_table( 'refs' );
 
 # For each column in the alignment table, we want to see if the existing
-# groupings of witnesses match our stemma hypothesis.  First let's just go 
-# through the groupings.
+# groupings of witnesses match our stemma hypothesis. We also want, at the
+# end, to produce an HTML table with all the variants.
+my $html_columns = 0;
+my $html_data = [];
+my $total = 0; # Keep track of the total number of variant locations
 
 # Strip the list of sigla and save it for correlation to the readings.
 my $col_wits = shift @$all_wits_table;
     
-# For each column in the table, group the readings by witness.
-
-my $used_vars = 0;
 foreach my $i ( 0 .. $#$all_wits_table ) {
+    # For each column in the table, group the readings by witness.
     my $rdg_wits = {};
     my $col_rdgs = shift @$all_wits_table;
+    my $rank;
     foreach my $j ( 0 .. $#{$col_rdgs} ) {
         my $rdg = $col_rdgs->[$j];
-        $rdg = '' unless $rdg;   # We care about empty readings
-        $rdg = undef if $rdg eq '#LACUNA#'; # ... unless they're lacunas
+        $rank = $rdg->rank if $rdg;  # Save the rank for later display
+        my $rdg_text = '(omitted)';  # Initialize in case of empty reading
         if( $rdg ) {
-            $rdg_wits->{$rdg} = [] unless $rdg_wits->{$rdg};
-            add_variant_wit( $rdg_wits->{$rdg}, $col_wits->[$j] );
+            $rdg_text = $rdg->is_lacuna ? undef : $rdg->text; # Don't count lacunae
+        }
+        if( defined $rdg_text ) {
+            # Initialize the witness array if we haven't got one yet
+            $rdg_wits->{$rdg_text} = [] unless $rdg_wits->{$rdg_text};
+            # Add the relevant witness, subject to a.c. logic
+            add_variant_wit( $rdg_wits->{$rdg_text}, $col_wits->[$j] );
         }
     }
     
+    # See if this column has any potentially genealogical variants.
+    # If not, skip to the next.
+    $total++ unless scalar keys %$rdg_wits == 1;
     my( $groups, $readings ) = useful_variant( $rdg_wits );
-    next unless $groups && $readings;        
+    next unless $groups && $readings;  
+    $html_columns = scalar @$groups if scalar @$groups > $html_columns;
     
-    # We can look up witnesses for a reading; we also want to look up readings
-    # for a given witness.
+    # We can already look up witnesses for a reading; we also want to look
+    # up readings for a given witness.
     my $group_readings = {};
     foreach my $x ( 0 .. $#$groups ) {
         $group_readings->{wit_stringify( $groups->[$x] )} = $readings->[$x];
@@ -75,31 +87,58 @@ foreach my $i ( 0 .. $#$all_wits_table ) {
     # For all the groups with more than one member, collect the list of all
     # contiguous vertices needed to connect them.
     # TODO: deal with a.c. reading logic
-    my $conflict = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
+    my $sc = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
     print wit_stringify( $groups ) . ' - ' . join( " / ", @$readings ) . "\n";
-    foreach my $rdg ( keys %$conflict ) {
-        my $var = $conflict->{$rdg};
+    foreach my $rdg ( keys %$sc ) {
+        my $var = $sc->{$rdg};
         print "\tReadings '$rdg' and '$var' are not genealogical\n";
     }
     
-    # Now run the same analysis given a distance tree.
-    my $distance_apsp = $stemma->distance_trees->[0]->APSP_Floyd_Warshall();
-    $conflict = analyze_variant_location( $group_readings, $groups, $distance_apsp );
-    foreach my $rdg ( keys %$conflict ) {
-        my $var = $conflict->{$rdg};
-        print "\tReadings '$rdg' and '$var' disregarded by parsimony\n";
+    # Now run the same analysis given the calculated distance tree(s).
+    foreach my $tree ( 0 .. $#{$stemma->distance_trees} ) {
+        my $dc = analyze_variant_location( $group_readings, $groups,    
+                                           $stemma->distance_apsps->[$tree] );
+        foreach my $rdg ( keys %$dc ) {
+            my $var = $dc->{$rdg};
+            print "\tReadings '$rdg' and '$var' disregarded by parsimony on tree $tree\n";
+        }
     }
 
     # Record that we used this variant in an analysis
-    $used_vars++;
-    
+    push( @$html_data, [ $rank, $readings, $sc ] );
 }
-print "Found $used_vars useful variants in this analysis\n";
+
 # Save the stemma picture
 open( STEMMA, ">stemma_graph.svg" ) or die "Could not open stemma graph to write";
 binmode STEMMA, ":utf8";
 print STEMMA $stemma->as_svg;
 close STEMMA;
+
+# Save the used variants as an HTML table
+open( TABLE, ">variant_table.html" ) or die "Could not save variant table";
+binmode TABLE, ":utf8";
+print TABLE "<table>\n";
+foreach my $row ( @$html_data ) {
+    my( $rank, $readings, $sc ) = @$row;
+    # Do we have a stemma conflict or a distance-tree conflict?
+    my $class = scalar keys %$sc ? 'coincidental' : 'genealogical';
+    print TABLE sprintf( "\t<tr id=\"%s\" class=\"%s\">\n", "variant-$rank", $class );
+    # Table row header should be the graph rank.
+    print TABLE "\t\t<th>$rank</th>\n";
+    my $ctr = 0;
+    foreach my $rdg ( @$readings ) {
+        print TABLE sprintf( "\t\t<td id=\"%s\">%s</td>\n", "item-$rank-$ctr", $rdg );
+        $ctr++;
+    }
+    # Pad out the table - is this necessary I wonder?
+    while( $ctr++ < $html_columns ) {
+        print TABLE "\t\t<td/>\n";
+    }
+    print TABLE "\t</tr>\n";
+}
+print TABLE "</table>\n";
+
+printf( "Ran analysis on %d / %d variant locations\n", scalar @$html_data, $total );
 
 sub analyze_variant_location {
     my( $group_readings, $groups, $apsp ) = @_;

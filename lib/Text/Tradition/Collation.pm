@@ -519,13 +519,11 @@ sub as_csv {
     return $self->csv;
 }
 
-# TODO Make an alignment table at the end of initialization to check for 
-# duplicate nodes from mis-collation.
-
-
+# Make an alignment table - $noderefs controls whether the objects
+# in the table are the nodes or simply their readings.
 
 sub make_alignment_table {
-    my( $self, $in_rows ) = shift;
+    my( $self, $noderefs ) = @_;
     unless( $self->linear ) {
         warn "Need a linear graph in order to make an alignment table";
         return;
@@ -534,43 +532,53 @@ sub make_alignment_table {
     my @all_pos = sort { $a <=> $b } $self->possible_positions;
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
-        my @row = _make_witness_row( $wit->path, \@all_pos );
+        my @row = _make_witness_row( $wit->path, \@all_pos, $noderefs );
         unshift( @row, $wit->sigil );
         push( @$table, \@row );
         if( $wit->has_ante_corr ) {
-            my @ac_row = _make_witness_row( $wit->uncorrected_path, \@all_pos );
+            my @ac_row = _make_witness_row( $wit->uncorrected_path, \@all_pos, $noderefs );
             unshift( @ac_row, $wit->sigil . $self->ac_label );
             push( @$table, \@ac_row );
         }           
     }
-    return $table if $in_rows;
-    
+
     # Return a table where the witnesses read in columns rather than rows.
     my $turned = _turn_table( $table );
     return $turned;
 }
 
 sub _make_witness_row {
-    my( $path, $positions ) = @_;
+    my( $path, $positions, $noderefs ) = @_;
     my %char_hash;
     map { $char_hash{$_} = undef } @$positions;
     foreach my $rdg ( @$path ) {
         my $rtext = $rdg->text;
         $rtext = '#LACUNA#' if $rdg->is_lacuna;
-        $char_hash{$rdg->rank} = $rtext;
+        $char_hash{$rdg->rank} = $noderefs ? $rdg : $rtext;
     }
     my @row = map { $char_hash{$_} } @$positions;
     # Fill in lacuna markers for undef spots in the row
     my $last_el = shift @row;
     my @filled_row = ( $last_el );
     foreach my $el ( @row ) {
-        if( $last_el && $last_el eq '#LACUNA#' && !defined $el ) {
-            $el = '#LACUNA#';
+        # If we are using node reference, make the lacuna node appear many times
+        # in the table.  If not, use the lacuna tag.
+        if( $last_el && _el_is_lacuna( $last_el ) && !defined $el ) {
+            $el = $noderefs ? $last_el : '#LACUNA#';
         }
         push( @filled_row, $el );
         $last_el = $el;
     }
     return @filled_row;
+}
+
+# Tiny utility function to say if a table element is a lacuna
+sub _el_is_lacuna {
+    my $el = shift;
+    return 1 if $el eq '#LACUNA#';
+    return 1 if ref( $el ) eq 'Text::Tradition::Collation::Reading'
+        && $el->is_lacuna;
+    return 0;
 }
 
 # Helper to turn the witnesses along columns rather than rows.  Assumes
@@ -998,6 +1006,25 @@ sub _assign_rank {
     }
     return @next_nodes;
 }
+
+# Another method to make up for rough collation methods.  If the same reading
+# appears multiple times at the same rank, collapse the nodes.
+sub flatten_ranks {
+    my $self = shift;
+    my %unique_rank_rdg;
+    foreach my $rdg ( $self->readings ) {
+        next unless $rdg->has_rank;
+        my $key = $rdg->rank . "||" . $rdg->text;
+        if( exists $unique_rank_rdg{$key} ) {
+            # Combine!
+            print STDERR "Combining readings at same rank: $key\n";
+            $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
+        } else {
+            $unique_rank_rdg{$key} = $rdg;
+        }
+    }
+}
+
 
 sub possible_positions {
     my $self = shift;
