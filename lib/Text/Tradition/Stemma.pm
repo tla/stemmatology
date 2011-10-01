@@ -17,13 +17,7 @@ has collation => (
     required => 1,
     );  
 
-has character_matrix => (
-    is => 'ro',
-    isa => 'ArrayRef[ArrayRef[Str]]',
-    writer => '_save_character_matrix',
-    predicate => 'has_character_matrix',
-    );
-    
+# TODO Think about making a new class for the graphs, which has apsp as a property.
 has graph => (
     is => 'rw',
     isa => 'Graph',
@@ -31,8 +25,9 @@ has graph => (
     );
     
 has apsp => (
-    is => 'rw',
+    is => 'ro',
     isa => 'Graph',
+    writer => '_save_apsp',
     );
     
 has distance_trees => (
@@ -40,6 +35,12 @@ has distance_trees => (
     isa => 'ArrayRef[Graph]',
     writer => '_save_distance_trees',
     predicate => 'has_distance_trees',
+    );
+    
+has distance_apsps => (
+    is => 'ro',
+    isa => 'ArrayRef[Graph]',
+    writer => '_save_distance_apsps',
     );
         
 sub BUILD {
@@ -56,10 +57,13 @@ sub BUILD {
             ? $self->graph( $graph ) 
             : warn "Failed to parse dot file " . $args->{'dot'};
     }
-    
-    # If we have a graph, calculate all the shortest paths between nodes,
-    # disregarding direction.
-    if( $self->has_graph ) {
+}
+
+# If we are saving a new graph, calculate its apsp values.
+after 'graph' => sub {
+    my( $self, $args ) = @_;
+    if( $args ) {
+        # We had a new graph.
         my $undirected;
         if( $self->graph->is_directed ) {
             # Make an undirected version.
@@ -73,9 +77,9 @@ sub BUILD {
         } else {
             $undirected = $self->graph;
         }
-        $self->apsp( $undirected->APSP_Floyd_Warshall() );
-    }
-}
+        $self->_save_apsp( $undirected->APSP_Floyd_Warshall() );
+    }       
+};
 
 # Render the stemma as SVG.
 sub as_svg {
@@ -117,9 +121,17 @@ before 'distance_trees' => sub {
         # We need to make a tree before we can return it.
         my( $ok, $result ) = $self->run_phylip_pars();
         if( $ok ) {
-            $self->_save_distance_trees( _parse_newick( $result ) );
+            # Save the resulting trees
+            my $trees = _parse_newick( $result );
+            $self->_save_distance_trees( $trees );
+            # and calculate their APSP values.
+            my @apsps;
+            foreach my $t ( @$trees ) {
+                push( @apsps, $t->APSP_Floyd_Warshall() );
+            }
+            $self->_save_distance_apsps( \@apsps );
         } else {
-            warn "Failed to calculate distance tree: $result";
+            warn "Failed to calculate distance trees: $result";
         }
     }
 };
@@ -133,7 +145,6 @@ sub make_character_matrix {
     my $table = $self->collation->make_alignment_table;
     # Push the names of the witnesses to initialize the rows of the matrix.
     my @matrix = map { [ $self->_normalize_ac( $_ ) ] } @{$table->[0]};
-    $DB::single = 1;
     foreach my $token_index ( 1 .. $#{$table} ) {
         # First implementation: make dumb alignment table, caring about
         # nothing except which reading is in which position.
@@ -142,7 +153,7 @@ sub make_character_matrix {
             push( @{$matrix[$idx]}, $chars[$idx] );
         }
     }
-    $self->_save_character_matrix( \@matrix );
+    return \@matrix;
 } 
 
 sub _normalize_ac {
@@ -178,15 +189,15 @@ sub convert_characters {
 
 sub phylip_pars_input {
     my $self = shift;
-    $self->make_character_matrix unless $self->has_character_matrix;
-    my $matrix = '';
-    my $rows = scalar @{$self->character_matrix};
-    my $columns = scalar @{$self->character_matrix->[0]} - 1;
-    $matrix .= "\t$rows\t$columns\n";
-    foreach my $row ( @{$self->character_matrix} ) {
-        $matrix .= join( '', @$row ) . "\n";
+    my $character_matrix = $self->make_character_matrix;
+    my $input = '';
+    my $rows = scalar @{$character_matrix};
+    my $columns = scalar @{$character_matrix->[0]} - 1;
+    $input .= "\t$rows\t$columns\n";
+    foreach my $row ( @{$character_matrix} ) {
+        $input .= join( '', @$row ) . "\n";
     }
-    return $matrix;
+    return $input;
 }
 
 sub run_phylip_pars {
