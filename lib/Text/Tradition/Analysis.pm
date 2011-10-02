@@ -67,10 +67,11 @@ sub run_analysis {
 		my $rank;
 		foreach my $j ( 0 .. $#{$col_rdgs} ) {
 			my $rdg = $col_rdgs->[$j];
-			$rank = $rdg->rank if $rdg && !$rank;  # Make a note of our rank
 			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
 			if( $rdg ) {
 				$rdg_text = $rdg->is_lacuna ? undef : $rdg->text; # Don't count lacunae
+				# Get the rank from any real reading; they should be identical.
+				$rank = $rdg->rank unless $rank || $rdg->is_lacuna;
 			}
 			if( defined $rdg_text ) {
 				# Initialize the witness array if we haven't got one yet
