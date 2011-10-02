@@ -193,7 +193,8 @@ sub _add_readings {
     
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
-    my %wit_rdgs;
+    my %wit_rdgs;  # Maps from witnesses to the variant text
+    my %wit_details; # Maps from witnesses to the witness detail e.g. a.c.
     my $ctr = 0;
     my $tag = $app_id;
     $tag =~ s/^\#APP_(.*)\#$/$1/;
@@ -213,7 +214,16 @@ sub _add_readings {
             push( @rdg_nodes, $r );
         }
         $wit_rdgs{$wits} = \@rdg_nodes;
+        # Does the reading have an ID? If so it probably has a witDetail
+        # attached, and that may be something we need to know.  For now,
+        # save the reading ID.
+        if( $rdg->hasAttribute( 'xml:id' ) ) {
+        	$wit_details{$wits} = $rdg->getAttribute( 'xml:id' );
+        }
     }
+    # Now go through the available witDetails and, er, do something
+    # foreach my $d ( $xn->getChildrenByTagName( 'witDetail' ) ) {
+    	# my $referent = 
     
     # Now collate the variant readings, since it is not done for us.
     collate_variants( $c, \@lemma, values %wit_rdgs );
