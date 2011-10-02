@@ -2,6 +2,7 @@ package Text::Tradition::Collation;
 
 use Encode qw( decode_utf8 );
 use File::Temp;
+use Graph;
 use Graph::Easy;
 use IPC::Run qw( run binary );
 use Text::CSV_XS;
@@ -383,11 +384,21 @@ sub as_graphml {
     # Add the data keys for edges, i.e. witnesses
     my $edi = 0;
     my %edge_data_keys;
-    foreach my $edge_key( qw/ witness extra relationship class / ) {
+    my @string_keys = qw/ class witness relationship /;
+    my @bool_keys = qw/ extra equal_rank non_correctable non_independent /;
+    foreach my $edge_key( @string_keys ) {
         $edge_data_keys{$edge_key} = 'de'.$edi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $edge_key );
-        $key->setAttribute( 'attr.type', $edge_key eq 'extra' ? 'boolean' : 'string' );
+        $key->setAttribute( 'attr.type', 'string' );
+        $key->setAttribute( 'for', 'edge' );
+        $key->setAttribute( 'id', $edge_data_keys{$edge_key} );
+    }
+    foreach my $edge_key( @bool_keys ) {
+        $edge_data_keys{$edge_key} = 'de'.$edi++;
+        my $key = $root->addNewChild( $graphml_ns, 'key' );
+        $key->setAttribute( 'attr.name', $edge_key );
+        $key->setAttribute( 'attr.type', 'boolean' );
         $key->setAttribute( 'for', 'edge' );
         $key->setAttribute( 'id', $edge_data_keys{$edge_key} );
     }
@@ -447,8 +458,11 @@ sub as_graphml {
             }
             _add_graphml_data( $edge_el, $edge_data_keys{'witness'}, $base );
         } elsif( $e->sub_class eq 'relationship' ) {
-            # It's a relationship, so save the relationship type
+            # It's a relationship, so save the relationship data
             _add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $e->label );
+            _add_graphml_data( $edge_el, $edge_data_keys{'equal_rank'}, $e->equal_rank );
+            _add_graphml_data( $edge_el, $edge_data_keys{'non_correctable'}, $e->non_correctable );
+            _add_graphml_data( $edge_el, $edge_data_keys{'non_independent'}, $e->non_independent );
         } 
     }
 
@@ -460,8 +474,8 @@ sub as_graphml {
 
 sub _add_graphml_data {
     my( $el, $key, $value ) = @_;
-    my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
     return unless defined $value;
+    my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
     $data_el->setAttribute( 'key', $key );
     $data_el->appendText( $value );
 }
@@ -916,7 +930,7 @@ sub calculate_ranks {
     # Walk a version of the graph where every node linked by a relationship 
     # edge is fundamentally the same node, and do a topological ranking on
     # the nodes in this graph.
-    my $topo_graph = Graph::Easy->new();
+    my $topo_graph = Graph->new();
     my %rel_containers;
     my $rel_ctr = 0;
     # Add the nodes
@@ -926,67 +940,71 @@ sub calculate_ranks {
         if( @rels ) {
             # Make a relationship container.
             push( @rels, $r );
-            my $rn = $topo_graph->add_node( 'rel_container_' . $rel_ctr++ );
+            my $rn = 'rel_container_' . $rel_ctr++;
+            $topo_graph->add_vertex( $rn );
             foreach( @rels ) {
                 $rel_containers{$_->name} = $rn;
             }
         } else {
             # Add a new node to mirror the old node.
-            $rel_containers{$r->name} = $topo_graph->add_node( $r->name );
+            $rel_containers{$r->name} = $r->name;
+            $topo_graph->add_vertex( $r->name );
         }
     }
 
     # Add the edges. Need only one edge between any pair of nodes.
     foreach my $r ( $self->readings ) {
         foreach my $n ( $r->neighbor_readings( 'forward' ) ) {
-            $topo_graph->add_edge_once( $rel_containers{$r->name}, 
-                                        $rel_containers{$n->name} );
+        	my( $tfrom, $tto ) = ( $rel_containers{$r->name},
+        		$rel_containers{$n->name} );
+            $topo_graph->add_edge( $tfrom, $tto )
+            	unless $topo_graph->has_edge( $tfrom, $tto );
         }
     }
     
     # Now do the rankings, starting with the start node.
     my $topo_start = $rel_containers{$self->start->name};
-    my $node_ranks = { $topo_start->name => 0 };
+    my $node_ranks = { $topo_start => 0 };
     my @curr_origin = ( $topo_start );
     # A little iterative function.
     while( @curr_origin ) {
-        @curr_origin = _assign_rank( $node_ranks, @curr_origin );
+        @curr_origin = _assign_rank( $topo_graph, $node_ranks, @curr_origin );
     }
     # Transfer our rankings from the topological graph to the real one.
     foreach my $r ( $self->readings ) {
-        $r->rank( $node_ranks->{$rel_containers{$r->name}->name} );
+        $r->rank( $node_ranks->{$rel_containers{$r->name}} );
     }
 }
 
 sub _assign_rank {
-    my( $node_ranks, @current_nodes ) = @_;
+    my( $graph, $node_ranks, @current_nodes ) = @_;
     # Look at each of the children of @current_nodes.  If all the child's 
     # parents have a rank, assign it the highest rank + 1 and add it to 
-    # @next_nodes.  Otherwise skip it.
+    # @next_nodes.  Otherwise skip it; we will return when the highest-ranked
+    # parent gets a rank.
     my @next_nodes;
     foreach my $c ( @current_nodes ) {
-        warn "Current reading " . $c->name . "has no rank!"
-            unless exists $node_ranks->{$c->name};
-        # print STDERR "Looking at child of node " . $c->name . ", rank " 
-        #     . $node_ranks->{$c->name} . "\n";
-        my @children = map { $_->to } $c->outgoing;
-        foreach my $child ( @children ) {
-            next if exists $node_ranks->{$child->name};
+        warn "Current reading $c has no rank!"
+            unless exists $node_ranks->{$c};
+        # print STDERR "Looking at child of node $c, rank " 
+        #     . $node_ranks->{$c} . "\n";
+        foreach my $child ( $graph->successors( $c ) ) {
+            next if exists $node_ranks->{$child};
             my $highest_rank = -1;
             my $skip = 0;
-            my @parents = map { $_->from } $child->incoming;
-            foreach my $parent ( @parents ) {
-                if( exists $node_ranks->{$parent->name} ) {
-                    $highest_rank = $node_ranks->{$parent->name} 
-                        if $highest_rank <= $node_ranks->{$parent->name};
+            foreach my $parent ( $graph->predecessors( $child ) ) {
+                if( exists $node_ranks->{$parent} ) {
+                    $highest_rank = $node_ranks->{$parent} 
+                        if $highest_rank <= $node_ranks->{$parent};
                 } else {
                     $skip = 1;
                     last;
                 }
             }
             next if $skip;
-            # print STDERR "Assigning rank " . ( $highest_rank + 1 ) . " to node " . $child->name . "\n";
-            $node_ranks->{$child->name} = $highest_rank + 1;
+            my $c_rank = $highest_rank + 1;
+            # print STDERR "Assigning rank $c_rank to node $child \n";
+            $node_ranks->{$child} = $c_rank;
             push( @next_nodes, $child );
         }
     }

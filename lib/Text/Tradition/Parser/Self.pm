@@ -74,7 +74,6 @@ sub parse {
         
     # Now add the edges.
     print STDERR "Adding graph edges\n";
-    $DB::single = 1;
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
@@ -94,10 +93,16 @@ sub parse {
 				$witnesses{$wit} = 1;
 			}
         } elsif( $class eq 'relationship' ) {
-        	# We need the relationship type.
-        	my $rel = $e->{$RELATIONSHIP_KEY};
-        	warn "No relationship type for relationship edge!" unless $rel;
-        	$collation->add_relationship( $rel, $from->{$IDKEY}, $to->{$IDKEY} );
+        	# We need the metadata about the relationship.
+        	my $opts = { 'type' => $e->{$RELATIONSHIP_KEY} };
+        	$opts->{'equal_rank'} = $e->{'equal_rank'} 
+        		if exists $e->{'equal_rank'};
+        	$opts->{'non_correctable'} = $e->{'non_correctable'} 
+        		if exists $e->{'non_correctable'};
+        	$opts->{'non_independent'} = $e->{'non_independent'} 
+        		if exists $e->{'non_independent'};
+        	warn "No relationship type for relationship edge!" unless $opts->{'type'};
+        	$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
         } 
     }
 
@@ -109,7 +114,6 @@ sub parse {
         foreach my $edkey ( keys %{$extra_data->{$nkey}} ) {
             my $this_reading = $collation->reading( $nkey );
             if( $edkey eq $TRANSPOS_KEY ) {
-            	$DB::single = 1;
                 my $other_reading = $collation->reading( $extra_data->{$nkey}->{$edkey} );
                 # We evidently have a linear graph.
                 $linear = 1;

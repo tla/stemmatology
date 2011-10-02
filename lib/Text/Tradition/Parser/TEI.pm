@@ -61,6 +61,7 @@ sub parse {
     
     # First, parse the XML.
     my $parser = XML::LibXML->new();
+    # TODO Try as a string, then try as a filename.
     my $doc = $parser->parse_string( $xml_str );
     my $tei = $doc->documentElement();
     my $xpc = XML::LibXML::XPathContext->new( $tei );
@@ -140,10 +141,9 @@ sub parse {
     foreach ( keys %$substitutions ) {
         $tradition->collation->del_reading( $tradition->collation->reading( $_ ) );
     }
-    $tradition->collation->calculate_ranks();
     
-    # Now that we have ranks, see if we have distinct nodes with identical
-    # text and identical rank that can be merged.
+    # Calculate the ranks and flatten the graph based on the results.
+    $tradition->collation->calculate_ranks();
     $tradition->collation->flatten_ranks();
 }
 
