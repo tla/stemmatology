@@ -67,11 +67,14 @@ sub parse {
         my $rank = delete $node_data{$RANK_KEY};
         
         # Create the node.  Current valid classes are common and meta. 
-        # Everything else is a normal reading.  
+        # Everything else is a normal reading.
+        ## TODO RATIONALIZE THESE CLASSES
         my $gnode = $collation->add_reading( $nodeid );
         $gnode->text( $reading );
         $gnode->make_common if $class eq 'common';
         $gnode->is_meta( 1 ) if $class eq 'meta';
+        # This is a horrible hack.
+        $gnode->is_lacuna( $reading =~ /^\#LACUNA/ );
         $gnode->rank( $rank ) if defined $rank;
 
         # Now save the data that we need for post-processing,

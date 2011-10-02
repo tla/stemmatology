@@ -532,7 +532,6 @@ sub make_alignment_table {
     }
     my $table;
     my @all_pos = sort { $a <=> $b } $self->possible_positions;
-    $DB::single = 1;
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @row = _make_witness_row( $wit->path, \@all_pos, $noderefs );
