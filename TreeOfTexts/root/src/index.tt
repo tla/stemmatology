@@ -11,23 +11,25 @@
       [% svg %]
     </div>
     <div style="float:left;width:450px;height:600px;border:1px blue solid;overflow:auto;">
-    	<table>
-		[% FOREACH row IN variants -%]
-			[% INCLUDE variantrow %]
-		[% END -%]
+      <table>
+[% FOREACH row IN variants -%]
+[% INCLUDE variantrow %]
+[% END -%]
       	</table>
      </div>
   </body>
 </html>
 
-[% BLOCK variantrow %]
-<tr>
-	<th>[% row.id %]</th>
-	[% FOREACH reading IN row.readings -%]
-	<td><span onclick="color_nodes([% reading.group %]);">[% reading.text %]</span></td>
-	[% END -%]
-	[% FILTER repeat( row.empty ) -%]
-	<td/>
-	[% END -%]
-</tr>
-[% END %]
+[% BLOCK variantrow -%]
+[% SET rowclass = 'class="genealogical"' IF row.genealogical -%]
+[% SET rowclass = 'class="coincidental"' UNLESS row.genealogical -%]
+        <tr [% rowclass %]>
+          <th><span class="rowid">[% row.id %]</span></th>
+[% FOREACH reading IN row.readings -%]
+          <td class="clickable"><span onclick="color_nodes([% reading.group %]);">[% reading.text %]</span></td>
+[% END -%]
+[% FILTER repeat( row.empty ) -%]
+          <td/>
+[% END -%]
+        </tr>
+[% END -%]
