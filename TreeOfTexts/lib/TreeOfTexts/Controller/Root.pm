@@ -30,11 +30,9 @@ The root page (/)
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $file = $c->path_to( 't', 'data', 'florilegium.xml' );
-    my $stemma = $c->path_to( 't', 'data', 'stemma_a.dot' );
-    my( $svg, $variant_data ) = run_analysis( $file, $stemma );
-	$c->stash->{svg} = $svg;
-	$c->stash->{variants} = $variant_data;
+    my $m = $c->model('Analysis');
+	$c->stash->{svg} = $m->{'svg'};
+	$c->stash->{variants} = $m->{'variants'};
 	$c->stash->{template} = 'index.tt'; 
 }
 
