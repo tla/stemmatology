@@ -58,6 +58,14 @@ around position => sub {
     $self->$orig( @args );
 };
 
+# A lacuna node is also a meta node.
+before is_lacuna => sub {
+	my( $self, $arg ) = @_;
+	if( $arg ) {
+		$self->is_meta( 1 );
+	}
+};
+
 # Initialize the identity pool. 
 sub BUILD {
     my( $self, $args ) = @_;
@@ -165,6 +173,20 @@ sub is_at_position {
     return $self->position->is_colocated( @_ );
 }
 
+# Looks from the outside like an accessor for a Boolean, but really 
+# sets the node's class.  Should apply to start, end, and lacunae.
+
+sub is_meta {
+	my $self = shift;
+	my $arg = shift;
+	if( defined $arg && $arg ) {
+		$self->set_attribute( 'class', 'meta' );
+	} elsif ( defined $arg ) {
+		$self->del_attribute( 'class' );
+	}
+	return $self->sub_class eq 'meta';	
+}
+
 # Returns all readings that adjoin this one on any path.
 sub neighbor_readings {
     my( $self, $direction ) = @_;
@@ -201,6 +223,7 @@ sub is_common {
     return $self->get_attribute( 'class' ) eq 'common';
 }
 
+## TODO Rationalize make_common, is_meta, etc.
 sub make_common {
     my( $self ) = shift;
     $self->set_attribute( 'class', 'common' );

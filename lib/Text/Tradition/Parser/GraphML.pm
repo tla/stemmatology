@@ -67,7 +67,8 @@ sub parse {
 
     my $node_reg = {};
 
-    # Add the nodes to the graph hash. 
+    # Add the nodes to the graph hash.
+    print STDERR "Reading graphml nodes\n"; 
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
         # Could use a better way of registering these
@@ -82,6 +83,7 @@ sub parse {
     }
         
     # Now add the edges, and cross-ref with the node objects.
+    print STDERR "Reading graphml edges\n";
     my @edges = $xpc->findnodes( '//g:edge' );
     foreach my $e ( @edges ) {
         my $from = $e->getAttribute('source');
@@ -107,7 +109,13 @@ sub parse {
 sub _lookup_node_data {
     my( $xmlnode, $key ) = @_;
     my $lookup_xpath = './g:data[@key="%s"]/child::text()';
-    my $data = $xpc->findvalue( sprintf( $lookup_xpath, $key ), $xmlnode );
+    my $data = $xpc->find( sprintf( $lookup_xpath, $key ), $xmlnode );
+    # If we get back an empty nodelist, we return undef.
+    if( ref( $data ) ) {
+    	return undef unless $data->size;
+    	return $data->to_literal->value;
+    }
+    # Otherwise we got back a value. Return it.
     return $data;
 }
     

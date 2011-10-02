@@ -78,11 +78,6 @@ sub BUILD {
             return;
         }
 
-        # Start and end points for all texts
-        $collation->add_reading( '#START#' );
-        $collation->add_reading( '#END#' );
-        
-
         # Now do the parsing. 
         my @sigla;
         if( $format ) {

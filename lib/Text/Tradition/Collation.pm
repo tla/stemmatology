@@ -8,7 +8,6 @@ use Text::CSV_XS;
 use Text::Tradition::Collation::Path;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::Relationship;
-use Text::Tradition::Collation::Segment;
 use XML::LibXML;
 use Moose;
 
@@ -19,13 +18,11 @@ has 'graph' => (
         add_reading => 'add_node',
         add_lacuna => 'add_node',
         del_reading => 'del_node',
-        del_segment => 'del_node',
         add_path => 'add_edge',
         del_path => 'del_edge',
         reading => 'node',
         path => 'edge',
         readings => 'nodes',
-        segments => 'nodes',
         paths => 'edges',
         relationships => 'edges',
     },
@@ -120,6 +117,10 @@ sub BUILD {
     # Pass through any graph-specific options.
     my $shape = exists( $args->{'shape'} ) ? $args->{'shape'} : 'ellipse';
     $self->graph->set_attribute( 'node', 'shape', $shape );
+    
+	# Start and end points for all texts
+	$self->start( 'INIT' );
+	$self->end( 'INIT' );
 }
 
 around add_lacuna => sub {
@@ -174,22 +175,7 @@ around relationships => sub {
     return @result;
 };
 
-around readings => sub {
-    my $orig = shift;
-    my $self = shift;
-    my @result = grep { $_->sub_class ne 'segment' } $self->$orig( @_ );
-    return @result;
-};
-
-around segments => sub {
-    my $orig = shift;
-    my $self = shift;
-    my @result = grep { $_->sub_class eq 'segment' } $self->$orig( @_ );
-    return @result;
-};
-
 # Wrapper around merge_nodes
-
 sub merge_readings {
     my $self = shift;
     my $first_node = shift;
@@ -207,14 +193,6 @@ sub has_path {
     return scalar @relevant;
 }
 
-## Dealing with groups of readings, i.e. segments.
-
-sub add_segment {
-    my( $self, @items ) = @_;
-    my $segment = Text::Tradition::Collation::Segment->new( 'members' => \@items );
-    return $segment;
-}
-
 ## Dealing with relationships between readings.  This is a different
 ## sort of graph edge.  Return a success/failure value and a list of
 ## node pairs that have been linked.
@@ -223,7 +201,7 @@ sub add_relationship {
     my( $self, $source, $target, $options ) = @_;
 
     # Make sure there is not another relationship between these two
-    # readings or segments already
+    # readings already
     $source = $self->reading( $source )
         unless ref( $source ) && $source->isa( 'Graph::Easy::Node' );
     $target = $self->reading( $target )
@@ -343,8 +321,6 @@ sub as_dot {
     foreach my $reading ( $self->readings ) {
         # Need not output nodes without separate labels
         next if $reading->name eq $reading->label;
-        # TODO output readings or segments, but not both
-        next if $reading->class eq 'node.segment';
         $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->name, $reading->label );
     }
 
@@ -407,11 +383,11 @@ sub as_graphml {
     # Add the data keys for edges, i.e. witnesses
     my $edi = 0;
     my %edge_data_keys;
-    foreach my $edge_key( qw/ witness_main witness_ante_corr relationship class / ) {
+    foreach my $edge_key( qw/ witness extra relationship class / ) {
         $edge_data_keys{$edge_key} = 'de'.$edi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $edge_key );
-        $key->setAttribute( 'attr.type', 'string' );
+        $key->setAttribute( 'attr.type', $edge_key eq 'extra' ? 'boolean' : 'string' );
         $key->setAttribute( 'for', 'edge' );
         $key->setAttribute( 'id', $edge_data_keys{$edge_key} );
     }
@@ -419,7 +395,7 @@ sub as_graphml {
     # Add the graph, its nodes, and its edges
     my $graph = $root->addNewChild( $graphml_ns, 'graph' );
     $graph->setAttribute( 'edgedefault', 'directed' );
-    $graph->setAttribute( 'id', 'g0' ); # TODO make this meaningful
+    $graph->setAttribute( 'id', $self->tradition->name );
     $graph->setAttribute( 'parse.edgeids', 'canonical' );
     $graph->setAttribute( 'parse.edges', scalar($self->paths) );
     $graph->setAttribute( 'parse.nodeids', 'canonical' );
@@ -440,20 +416,10 @@ sub as_graphml {
             if $n->has_rank;
         _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
         _add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
-            if $n->has_primary;
+            if $n->has_primary && $n->primary ne $n;
     }
 
-    # Add any segments we have
-    foreach my $n ( sort { $a->name cmp $b->name } $self->segments ) {
-        my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
-        my $node_xmlid = 'n' . $node_ctr++;
-        $node_hash{ $n->name } = $node_xmlid;
-        $node_el->setAttribute( 'id', $node_xmlid );
-        _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
-        _add_graphml_data( $node_el, $node_data_keys{'name'}, $n->name );
-    }
-
-    # Add the path, relationship, and segment edges
+    # Add the path and relationship edges
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->from->name cmp $b->from->name } $self->graph->edges() ) {
         my( $name, $from, $to ) = ( 'e'.$edge_ctr++,
@@ -465,25 +431,31 @@ sub as_graphml {
         $edge_el->setAttribute( 'id', $name );
         # Add the edge class
         _add_graphml_data( $edge_el, $edge_data_keys{'class'}, $e->sub_class );
+        
+        # For some classes we have extra information to save.
         if( $e->sub_class eq 'path' ) {
             # It's a witness path, so add the witness
             my $base = $e->label;
             my $key = $edge_data_keys{'witness_main'};
-            # TODO kind of hacky
-            if( $e->label =~ /^(.*?)\s+(\(a\.c\.\))$/ ) {
+            # Is this an ante-corr witness?
+            my $aclabel = $self->ac_label;
+            if( $e->label =~ /^(.*)\Q$aclabel\E$/ ) {
+            	# Keep the base witness
                 $base = $1;
-                $key = $edge_data_keys{'witness_ante_corr'};
+                # ...and record that this is an 'extra' reading path
+                _add_graphml_data( $edge_el, $edge_data_keys{'extra'}, 'true' );
             }
-            _add_graphml_data( $edge_el, $key, $base );
+            _add_graphml_data( $edge_el, $edge_data_keys{'witness'}, $base );
         } elsif( $e->sub_class eq 'relationship' ) {
-            # It's a relationship
+            # It's a relationship, so save the relationship type
             _add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $e->label );
-        } # else a segment, nothing to record but source, target, class
+        } 
     }
 
-    # Return the thing
-    $self->_save_graphml( $graphml->toString(1) );
-    return $graphml->toString(1);
+    # Save and return the thing
+    my $result = decode_utf8( $graphml->toString(1) );
+    $self->_save_graphml( $result );
+    return $result;
 }
 
 sub _add_graphml_data {
@@ -681,17 +653,24 @@ Returns the beginning of the collation, a meta-reading with label '#START#'.
 
 sub start {
     # Return the beginning reading of the graph.
-    my $self = shift;
-    my( $new_start ) = @_;
-    if( $new_start ) {
+    my( $self, $new_start ) = @_;
+    my $start = $self->reading( '#START#' );
+    if( ref( $new_start ) eq 'Text::Tradition::Collation::Reading' ) {
+    	# Replace the existing start node.
         $self->del_reading( '#START#' );
         $self->graph->rename_node( $new_start, '#START#' );
+        $start = $new_start;
+    } elsif ( $new_start && $new_start eq 'INIT' ) {
+    	# Make a new start node.
+    	$start = $self->add_reading( '#START#' );
     }
+    # Make sure the start node is a meta node
+    $start->is_meta( 1 );
     # Make sure the start node has a start position.
-    unless( $self->reading( '#START#' )->has_rank ) {
-        $self->reading( '#START#' )->rank( '0' );
+    unless( $start->has_rank ) {
+        $start->rank( '0' );
     }
-    return $self->reading('#START#');
+    return $start;
 }
 
 =item B<end>
@@ -705,11 +684,18 @@ Returns the end of the collation, a meta-reading with label '#END#'.
 sub end {
     my $self = shift;
     my( $new_end ) = @_;
-    if( $new_end ) {
+    my $end = $self->reading( '#END#' );
+    if( ref( $new_end ) eq 'Text::Tradition::Collation::Reading' ) {
         $self->del_reading( '#END#' );
         $self->graph->rename_node( $new_end, '#END#' );
+        $end = $new_end
+    } elsif ( $new_end && $new_end eq 'INIT' ) {
+    	# Make a new start node.
+    	$end = $self->add_reading( '#END#' );
     }
-    return $self->reading('#END#');
+    # Make sure the start node is a meta node
+    $end->is_meta( 1 );
+    return $end;
 }
 
 =item B<reading_sequence>
