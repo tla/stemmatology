@@ -33,8 +33,6 @@ sub parse {
     my $csv = Text::CSV_XS->new( { binary => 1, # binary for UTF-8
         sep_char => "\t" } );
     my @lines = split( "\n", $tab_str );
-    # Conveniently, we are basically receiving exactly the sort of alignment table
-    # we might want to produce later.  May as well save it.
     my $alignment_table;
     foreach my $l ( @lines ) {
         my $status = $csv->parse( $l );
@@ -55,7 +53,6 @@ sub parse {
     
     # Now for the next rows, make nodes as necessary, assign their ranks, and 
     # add them to the witness paths.
-    $DB::single = 1;
     foreach my $idx ( 1 .. $#{$alignment_table} ) {
         my $row = $alignment_table->[$idx];
         my $nodes = make_nodes( $c, $row, $idx );
@@ -100,11 +97,6 @@ sub parse {
     
     # Join up the paths.
     $c->make_witness_paths;
-    
-    # Save the alignment table that was so handily provided to us.
-    # TODO if we support other delimiters, we will have to re-export this
-    # rather than saving the original string.
-    $c->_save_csv( $tab_str );
 }
 
 sub make_nodes {

@@ -367,7 +367,18 @@ sub as_graphml {
     $root->setNamespace( $xsi_ns, 'xsi', 0 );
     $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
 
-    # TODO Add some global graph data
+    # Add the data keys for the graph
+    my %graph_data_keys;
+    my $gdi = 0;
+    my @graph_attributes = qw/ wit_list_separator baselabel linear ac_label /;
+    foreach my $datum ( @graph_attributes ) {
+    	$graph_data_keys{$datum} = 'dg'.$gdi++;
+        my $key = $root->addNewChild( $graphml_ns, 'key' );
+        $key->setAttribute( 'attr.name', $datum );
+        $key->setAttribute( 'attr.type', $key eq 'linear' ? 'boolean' : 'string' );
+        $key->setAttribute( 'for', 'graph' );
+        $key->setAttribute( 'id', $graph_data_keys{$datum} );    	
+    }
 
     # Add the data keys for nodes
     my %node_data_keys;
@@ -412,6 +423,11 @@ sub as_graphml {
     $graph->setAttribute( 'parse.nodeids', 'canonical' );
     $graph->setAttribute( 'parse.nodes', scalar($self->readings) );
     $graph->setAttribute( 'parse.order', 'nodesfirst' );
+    
+    # Collation attribute data
+    foreach my $datum ( @graph_attributes ) {
+		_add_graphml_data( $graph, $graph_data_keys{$datum}, $self->$datum );
+	}
 
     my $node_ctr = 0;
     my %node_hash;
@@ -516,6 +532,7 @@ sub make_alignment_table {
     }
     my $table;
     my @all_pos = sort { $a <=> $b } $self->possible_positions;
+    $DB::single = 1;
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @row = _make_witness_row( $wit->path, \@all_pos, $noderefs );

@@ -41,7 +41,16 @@ sub parse {
 
     my $collation = $tradition->collation;
     my %witnesses;
-
+    
+    # Set up the graph-global attributes.  They will appear in the
+    # hash under their accessor names.
+    # TODO Consider simplifying this for nodes & edges as well.
+    print STDERR "Setting graph globals\n";
+    foreach my $gkey ( keys %{$graph_data->{'attr'}} ) {
+		my $val = $graph_data->{'attr'}->{$gkey};
+		$collation->$gkey( $val );
+	}
+		
     # Add the nodes to the graph. 
     # TODO Are we adding extra start/end nodes?
 
@@ -92,6 +101,7 @@ sub parse {
 				$tradition->add_witness( sigil => $wit );
 				$witnesses{$wit} = 1;
 			}
+			$witnesses{$wit} = 2 if $extra;
         } elsif( $class eq 'relationship' ) {
         	# We need the metadata about the relationship.
         	my $opts = { 'type' => $e->{$RELATIONSHIP_KEY} };
@@ -109,22 +119,31 @@ sub parse {
     ## Deal with node information (transposition, relationships, etc.) that
     ## needs to be processed after all the nodes are created.
     print STDERR "Adding second-pass node data\n";
-    my $linear = undef;
     foreach my $nkey ( keys %$extra_data ) {
         foreach my $edkey ( keys %{$extra_data->{$nkey}} ) {
             my $this_reading = $collation->reading( $nkey );
             if( $edkey eq $TRANSPOS_KEY ) {
                 my $other_reading = $collation->reading( $extra_data->{$nkey}->{$edkey} );
-                # We evidently have a linear graph.
-                $linear = 1;
                 $this_reading->set_identical( $other_reading );
             } else {
                 warn "Unfamiliar reading node data $edkey for $nkey";
             }
         }
     }
-    $collation->linear( $linear );
-    # TODO We probably need to set the $witness->path arrays for each wit.
+    
+    # Set the $witness->path arrays for each wit.
+    print STDERR "Walking paths for witnesses\n";
+    foreach my $wit ( $tradition->witnesses ) {
+    	my @path = $collation->reading_sequence( $collation->start, $collation->end, 
+    		$wit->sigil );
+    	$wit->path( \@path );
+    	if( $witnesses{$wit->sigil} == 2 ) {
+    		# Get the uncorrected path too
+    		my @uc = $collation->reading_sequence( $collation->start, $collation->end, 
+    			$wit->sigil . $collation->ac_label, $wit->sigil );
+    		$wit->uncorrected_path( \@uc );
+    	}
+    }
 }
 
 =back

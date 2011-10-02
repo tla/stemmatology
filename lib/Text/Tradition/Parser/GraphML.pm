@@ -30,7 +30,7 @@ and their associated data.
 
 =cut
 
-use vars qw/ $xpc $nodedata $witnesses /;
+use vars qw/ $xpc $graphattr $nodedata $witnesses /;
 
 # Return graph -> nodeid -> { key1/val1, key2/val2, key3/val3 ... }
 #              -> edgeid -> { source, target, wit1/val1, wit2/val2 ...}
@@ -54,10 +54,13 @@ sub parse {
         my $keyid = $k->getAttribute( 'id' );
         my $keyname = $k->getAttribute( 'attr.name' );
 
-        if( $k->getAttribute( 'for' ) eq 'node' ) {
-            # Keep track of the XML identifiers for the data carried
-            # in each node element.
-            $nodedata->{$keyid} = $keyname
+		# Keep track of the XML identifiers for the data carried
+		# in each node element.
+		my $dtype = $k->getAttribute( 'for' );
+		if( $dtype eq 'graph' ) {
+			$graphattr->{$keyid} = $keyname;
+        } elsif( $dtype eq 'node' ) {
+            $nodedata->{$keyid} = $keyname;
         } else {
             $witnesses->{$keyid} = $keyname;
         }
@@ -66,6 +69,14 @@ sub parse {
     my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
 
     my $node_reg = {};
+    
+    # Read in graph globals (if any).
+    print STDERR "Reading graphml global data\n";
+    foreach my $dkey ( keys %$graphattr ) {
+    	my $keyname = $graphattr->{$dkey};
+    	my $keyvalue = _lookup_node_data( $graph_el, $dkey );
+    	$graph_hash->{'global'}->{$keyname} = $keyvalue;
+    }
 
     # Add the nodes to the graph hash.
     print STDERR "Reading graphml nodes\n"; 
