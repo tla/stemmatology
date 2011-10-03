@@ -157,10 +157,20 @@ Witness objects.
 Return the Text::Tradition::Witness objects associated with this tradition,
 as an array.
 
+=head2 B<witness>( $sigil )
+
+Returns the Text::Tradition::Witness object whose sigil is $sigil, or undef
+if there is no such object within the tradition.
+
 =head2 B<add_witness>( %opts )
 
 Instantiate a new witness with the given options (see documentation for
 Text::Tradition::Witness) and add it to the tradition.
+
+=head2 B<del_witness>( $sigil )
+
+Delete the witness with the given sigil from the tradition.  Returns the
+witness object for the deleted witness.
 
 =begin testing
 
@@ -181,13 +191,21 @@ is( ref( $s ), 'Text::Tradition', "initialized a Tradition object" );
 is( $s->name, 'inline', "object has the right name" );
 is( scalar $s->witnesses, 3, "object has three witnesses" );
 
-my $w = $s->add_witness( 'sigil' => 'D' );
-is( ref( $w ), 'Text::Tradition::Witness', "new witness created" );
-is( $w->sigil, 'D', "witness has correct sigil" );
+my $wit_a = $s->witness('A');
+is( ref( $wit_a ), 'Text::Tradition::Witness', "Found a witness A" );
+if( $wit_a ) {
+    is( $wit_a->sigil, 'A', "Witness A has the right sigil" );
+}
+is( $s->witness('X'), undef, "There is no witness X" );
+ok( !exists $s->{'witnesses'}->{'X'}, "Witness key X not created" );
+
+my $wit_d = $s->add_witness( 'sigil' => 'D' );
+is( ref( $wit_d ), 'Text::Tradition::Witness', "new witness created" );
+is( $wit_d->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );
 
 my $del = $s->del_witness( 'D' );
-is( $del, $w, "Deleted correct witness" );
+is( $del, $wit_d, "Deleted correct witness" );
 is( scalar $s->witnesses, 3, "object has three witnesses again" );
 
 # TODO test initialization by witness list when we have it
@@ -257,32 +275,6 @@ sub BUILD {
         }
     }
 }
-
-=head2 B<witness>( $sigil )
-
-Returns the Text::Tradition::Witness object whose sigil is $sigil, or undef
-if there is no such object within the tradition.
-
-=begin testing
-
-use Text::Tradition;
-
-my $simple = 't/data/simple.txt';
-my $s = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'Tabular',
-    'file'  => $simple,
-    );
-my $wit_a = $s->witness('A');
-is( ref( $wit_a ), 'Text::Tradition::Witness', "Found a witness A" );
-if( $wit_a ) {
-    is( $wit_a->sigil, 'A', "Witness A has the right sigil" );
-}
-is( $s->witness('X'), undef, "There is no witness X" );
-
-=end testing
-
-=cut
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
