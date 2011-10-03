@@ -60,13 +60,19 @@ sub run_analysis {
 		my $rdg_wits = {};
 		my $col_rdgs = shift @$all_wits_table;
 		my $rank;
+		my $lacunose = [];
 		foreach my $j ( 0 .. $#{$col_rdgs} ) {
 			my $rdg = $col_rdgs->[$j];
 			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
 			if( $rdg ) {
-				$rdg_text = $rdg->is_lacuna ? undef : $rdg->text; # Don't count lacunae
-				# Get the rank from any real reading; they should be identical.
-				$rank = $rdg->rank unless $rank || $rdg->is_lacuna;
+			    if( $rdg->is_lacuna ) {
+			        $rdg_text = undef;   # Don't count lacunae
+			        push( @$lacunose, $col_wits->[$j] );
+			    } else {
+    				$rdg_text = $rdg->text; 
+				    # Get the rank from any real reading; they should be identical.
+				    $rank = $rdg->rank;
+				}
 			}
 			if( defined $rdg_text ) {
 				# Initialize the witness array if we haven't got one yet
@@ -102,7 +108,9 @@ sub run_analysis {
 		$variant_row->{'genealogical'} = keys %$sc ? 1 : undef;
 		foreach my $grp ( sort keys %$group_readings ) {
 			my $rdg = $group_readings->{$grp};
-			push( @{$variant_row->{'readings'}}, { 'text' => $rdg, 'group' => $grp } );
+			push( @{$variant_row->{'readings'}}, 
+			      { 'text' => $rdg, 'group' => $grp,
+			        'missing' => wit_stringify( $lacunose ) } );
 		}
 		
 		# Now run the same analysis given the calculated distance tree(s).
