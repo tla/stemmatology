@@ -5,12 +5,15 @@
     <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.10.custom.min.js"></script>
     <script type="text/javascript" src="js/interaction.js"></script>
+    <link type="text/css" href="[% c.uri_for('css/cupertino/jquery-ui-1.8.13.custom.css') %]" rel="stylesheet" />
+    [% INCLUDE style.tt2 %]
   </head>
   <body>
-    <div style="float:left;width:450px;height:600px;border:1px blue solid">
+    <h1>Stexaminer</h1>
+    <div id="svg_graph">
       [% svg %]
     </div>
-    <div style="float:left;width:450px;height:600px;border:1px blue solid;overflow:auto;overflow-x: hidden;">
+    <div id="variants_table">
       <table>
 [% FOREACH row IN variants -%]
 [% INCLUDE variantrow %]

@@ -10,7 +10,7 @@ $(document).ready(function() {
 })
 function color_nodes( column_index, arr_node_ids, arr_greynode_ids ) {
   if( !row_triggered ) { 
-    $('ellipse').attr( {stroke:'black', fill:'#eee'} ) 
+    $('ellipse').attr( {stroke:'black', fill:'#fff'} ) 
   }; 
   jQuery.each( arr_greynode_ids, function(index,value) {
     $('.node').children('title').filter( function(index) {
