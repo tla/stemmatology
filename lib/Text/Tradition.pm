@@ -67,32 +67,35 @@ sub BUILD {
         $self->_save_collation( $collation );
 
         # Call the appropriate parser on the given data
-        my @formats = grep { /^(Self|CollateX|CSV|CTE|KUL|TEI|Tabular)$/ } keys( %$init_args );
-        my $format = shift( @formats );
+        my @format_standalone = qw/ Self CollateX CSV CTE TEI Tabular /;
+        my @format_basetext = qw/ KUL /;
+        my $use_base;
+        my $format = $init_args->{'input'};
         unless( $format ) {
             warn "No data given to create a collation; will initialize an empty one";
         }
-        if( $format && $format =~ /^(KUL)$/ && 
-            !exists $init_args->{'base'} ) {
-            warn "Cannot make a collation from $format without a base text";
+        if( $format && !( grep { $_ eq $format } @format_standalone )
+            && !( grep { $_ eq $format } @format_basetext ) ) {
+            warn "Unrecognized input format $format; not parsing";
             return;
+        }
+        if( $format && grep { $_ eq $format } @format_basetext ) {
+            $use_base = 1;
+            if( !exists $init_args->{'base'} ) {
+                warn "Cannot make a collation from $format without a base text";
+                return;
+            }
         }
 
         # Now do the parsing. 
-        my @sigla;
         if( $format ) {
-            my @parseargs;
-            if( $format =~ /^(KUL)$/ ) {
-                $init_args->{'data'} = $init_args->{$format};
-                $init_args->{'format'} = $format;
-                $format = 'BaseText';
-                @parseargs = %$init_args;
-            } else {
-                @parseargs = ( $init_args->{ $format } ); 
+            if( $use_base ) { 
+                $format = 'BaseText';   # Use the BaseText module for parsing,
+                                        # but retain the original input arg.
             }
             my $mod = "Text::Tradition::Parser::$format";
             load( $mod );
-            $mod->can('parse')->( $self, @parseargs );
+            $mod->can('parse')->( $self, $init_args );
         }
     }
 }

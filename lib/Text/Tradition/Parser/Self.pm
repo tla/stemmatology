@@ -34,10 +34,10 @@ my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY, $CLASS_KEY,
     	  source target witness extra relationship/;
 
 sub parse {
-    my( $tradition, $graphml_str ) = @_;
+    my( $tradition, $opts ) = @_;
+    my $graph_data = Text::Tradition::Parser::GraphML::parse( $opts );
     
     # TODO this is begging for stream parsing instead of multiple loops.
-    my $graph_data = Text::Tradition::Parser::GraphML::parse( $graphml_str );
 
     my $collation = $tradition->collation;
     my %witnesses;

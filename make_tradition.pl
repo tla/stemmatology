@@ -45,20 +45,12 @@ if( $informat eq 'KUL' && !$inbase ) {
     help( "$informat input needs a base text" );
 }
 
-# CSV parsing requires a filename; XML parsing requires a string.
 my $input = $ARGV[0];
-unless( $informat eq 'KUL' || $informat eq 'CSV' ) {
-    my @lines;
-    open( INFILE, "$input" ) or die "Could not read $input";
-    binmode INFILE, ':utf8';
-    @lines = <INFILE>;
-    close INFILE;
-    $input = join( '', @lines );
-}
 
 # First: read the base. Make a graph, but also note which
 # nodes represent line beginnings.
-my %args = ( $informat => $input,
+my %args = ( 'input' => $informat,
+             'file' => $input,
              'linear' => $linear );
 $args{'base'} = $inbase if $inbase;
 my $tradition = Text::Tradition->new( %args );

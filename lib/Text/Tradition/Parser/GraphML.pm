@@ -23,9 +23,10 @@ GraphML conventions of the source program.
 
 =item B<parse>
 
-parse( $graphml_string );
+parse( $init_opts );
 
-Takes a string containing the GraphML; returns a list of nodes, edges,
+Takes a set of Tradition initialization options, among which should be either
+'file' or 'string'; parses that file or string and returns a list of nodes, edges,
 and their associated data.
 
 =cut
@@ -36,13 +37,22 @@ use vars qw/ $xpc $graphattr $nodedata $witnesses /;
 #              -> edgeid -> { source, target, wit1/val1, wit2/val2 ...}
 
 sub parse {
-    my( $graphml_str ) = @_;
+    my( $opts ) = @_;
 
     my $graph_hash = { 'nodes' => [],
                        'edges' => [] };
 
     my $parser = XML::LibXML->new();
-    my $doc = $parser->parse_string( $graphml_str );
+    my $doc;
+    if( exists $opts->{'string'} ) {
+        $doc = $parser->parse_string( $opts->{'string'} );
+    } elsif ( exists $opts->{'file'} ) {
+        $doc = $parser->parse_file( $opts->{'file'} );
+    } else {
+        warn "Could not find string or file option to parse";
+        return;
+    }
+    
     my $graphml = $doc->documentElement();
     $xpc = XML::LibXML::XPathContext->new( $graphml );
     $xpc->registerNs( 'g', 'http://graphml.graphdrawing.org/xmlns' );

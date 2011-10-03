@@ -3,7 +3,7 @@ package Text::Tradition::Parser::KUL;
 use strict;
 use warnings;
 use Storable qw /dclone/;
-use Text::CSV::Simple;
+use Text::CSV::Simple;  # TODO convert to CSV_XS
 
 =head1 NAME
 
@@ -29,11 +29,11 @@ merged with a base text.
 =cut
 
 sub read {
-    my( $csv_file ) = @_;
+    my( $opts ) = @_;
     my $parser = Text::CSV::Simple->new();
     my @fields = qw/ reference text variant type context non_corr non_indep 
                      length total origin /;
-    my @lines = $parser->read_file( $ARGV[0] );
+    my @lines = $parser->read_file( $opts->{'file'} );
     my @labels = @{shift( @lines )};
     push( @fields, @labels[10..$#labels] );
 

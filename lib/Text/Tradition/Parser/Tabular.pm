@@ -27,22 +27,36 @@ graph.
 =cut
 
 sub parse {
-    my( $tradition, $tab_str ) = @_;
-    # TODO Allow setting of sep_char
+    my( $tradition, $opts ) = @_;
     my $c = $tradition->collation; # shorthand
-    my $csv = Text::CSV_XS->new( { binary => 1, # binary for UTF-8
-        sep_char => "\t" } );
-    my @lines = split( "\n", $tab_str );
-    my $alignment_table;
-    foreach my $l ( @lines ) {
-        my $status = $csv->parse( $l );
-        if( $status ) {
-            push( @$alignment_table, [ $csv->fields ] );
-        } else {
-            warn "Could not parse line $l: " . $csv->error_input;
-        }
-    }
+    my $csv = Text::CSV_XS->new( { 
+        binary => 1, # binary for UTF-8
+        sep_char => exists $opts->{'sep_char'} ? $opts->{'sep_char'} : "\t" } 
+        );
+    # TODO Handle being given a file
     
+    my $alignment_table;
+    if( exists $opts->{'string' } ) {
+        my @lines = split( "\n", $opts->{'string'} );
+        foreach my $l ( @lines ) {
+            my $status = $csv->parse( $l );
+            if( $status ) {
+                push( @$alignment_table, [ $csv->fields ] );
+            } else {
+                warn "Could not parse line $l: " . $csv->error_input;
+            }
+        }
+    } elsif( exists $opts->{'file'} ) {
+        open( my $fh, $opts->{'file'} ) or die "Could not open input file " . $opts->{'file'};
+        while( my $row = $csv->getline( $fh ) ) {
+            push( @$alignment_table, $row );
+        }
+        close $fh;
+    } else {
+        warn "Could not find string or file option to parse";
+        return;
+    }
+
     # Set up the witnesses we find in the first line
     my @witnesses;
     foreach my $sigil ( @{$alignment_table->[0]} ) {

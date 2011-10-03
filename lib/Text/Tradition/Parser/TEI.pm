@@ -57,11 +57,19 @@ sub make_tagnames {
 
 # Parse the TEI file.
 sub parse {
-    my( $tradition, $xml_str ) = @_;
+    my( $tradition, $opts ) = @_;
     
     # First, parse the XML.
     my $parser = XML::LibXML->new();
-    my $doc = $parser->parse_string( $xml_str );
+    my $doc;
+    if( exists $opts->{'string'} ) {
+        $doc = $parser->parse_string( $opts->{'string'} );
+    } elsif ( exists $opts->{'file'} ) {
+        $doc = $parser->parse_file( $opts->{'file'} );
+    } else {
+        warn "Could not find string or file option to parse";
+        return;
+    }
     my $tei = $doc->documentElement();
     my $xpc = XML::LibXML::XPathContext->new( $tei );
     my $ns;

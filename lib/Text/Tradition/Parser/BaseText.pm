@@ -41,12 +41,12 @@ Takes an initialized graph and a set of options, which must include:
 =cut
 
 sub parse {
-    my( $tradition, %opts ) = @_;
+    my( $tradition, $opts ) = @_;
 
-    my $format_mod = 'Text::Tradition::Parser::' . $opts{'format'};
+    my $format_mod = 'Text::Tradition::Parser::' . $opts->{'input'};
     load( $format_mod );
-    my @apparatus_entries = $format_mod->can('read')->( $opts{'data'} );
-    merge_base( $tradition->collation, $opts{'base'}, @apparatus_entries );
+    my @apparatus_entries = $format_mod->can('read')->( $opts->{'file'} );
+    merge_base( $tradition->collation, $opts->{'base'}, @apparatus_entries );
 }
 
 =item B<merge_base>

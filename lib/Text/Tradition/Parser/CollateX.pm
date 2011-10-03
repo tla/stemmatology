@@ -21,11 +21,11 @@ http://gregor.middell.net/collatex/
 
 =item B<parse>
 
-parse( $graph, $graphml_string );
+parse( $tradition, $init_options );
 
-Takes an initialized Text::Tradition::Graph object and a string
-containing the GraphML; creates the appropriate nodes and edges on the
-graph.
+Takes an initialized Text::Tradition::Graph object and its initialization
+options, including the data source; creates the appropriate nodes and edges 
+on the graph.
 
 =cut
 
@@ -34,8 +34,8 @@ my $CONTENTKEY = 'token';
 my $TRANSKEY = 'identical';
 
 sub parse {
-    my( $tradition, $graphml_str ) = @_;
-    my $graph_data = Text::Tradition::Parser::GraphML::parse( $graphml_str );
+    my( $tradition, $opts ) = @_;
+    my $graph_data = Text::Tradition::Parser::GraphML::parse( $opts );
     my $collation = $tradition->collation;
     my %witnesses; # Keep track of the witnesses we encounter as we
                    # run through the graph data.
