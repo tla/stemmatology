@@ -7,9 +7,18 @@ use Exporter 'import';
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ add_hash_entry check_for_repeated cmp_str collate_variants is_monotonic /;
 
-=item B<collate_variants>
+=head1 NAME
 
-collate_variants( $collation, @reading_ranges )
+Text::Tradition::Parser::Util
+
+=head1 DESCRIPTION
+
+A collection of utilities used by multiple Text::Tradition parsers.  
+Probably not of external interest.
+
+=head1 METHODS
+
+=head2 B<collate_variants>( $collation, @reading_ranges )
 
 Given a set of readings in the form 
 ( lemma_start, lemma_end, rdg1_start, rdg1_end, ... )
@@ -124,12 +133,6 @@ sub _collation_hash {
     return cmp_str( $node );
 }
 
-=item B<cmp_str>
-
-Pretend you never saw this method.  Really it needs to not be hardcoded.
-
-=cut
-
 sub cmp_str {
     my( $reading ) = @_;
     my $word = $reading->label();
@@ -143,9 +146,7 @@ sub cmp_str {
     return $word;
 }
 
-=item B<collate_variants>
-
-my @rep = check_for_repeated( @readings )
+=head2 B<check_for_repeated>( @readings )
 
 Given an array of items, returns any items that appear in the array more
 than once.
@@ -192,3 +193,23 @@ sub is_monotonic {
     }
     return 1;
 }
+
+1;
+
+=head1 BUGS / TODO
+
+=over
+
+=item * Get rid of abomination that is cmp_str.
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
