@@ -5,7 +5,7 @@ $(document).ready(function() {
     row_triggered = true;
     $('ellipse').attr( {stroke:'black', fill:'#fff'} );
     $(this).parent().nextAll('.clickable').children('span').click();
-    $('tr.active_variant_row').find('span').removeClass( 'active_variant_cell' );
+    $('tr.active_variant_row').find('td').removeClass( 'active_variant_cell' );
     row_triggered = false;
   });
 })
