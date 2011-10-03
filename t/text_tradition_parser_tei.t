@@ -31,13 +31,6 @@ if( $t ) {
 
 # =begin testing
 {
-## TODO test specific sorts of nodes of the parallel-seg XML.
-}
-
-
-
-# =begin testing
-{
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use Text::Tradition::Parser::TEI;

@@ -2,11 +2,27 @@ package Text::Tradition::Parser::CollateX;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
 
 =head1 NAME
 
 Text::Tradition::Parser::CollateX
+
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  
+  my $t_from_file = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'CollateX',
+    'file' => '/path/to/collation.xml'
+    );
+    
+  my $t_from_string = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'CollateX',
+    'string' => $collation_xml,
+    );
 
 =head1 DESCRIPTION
 
@@ -17,15 +33,42 @@ http://gregor.middell.net/collatex/
 
 =head1 METHODS
 
-=over
-
-=item B<parse>
+=head2 B<parse>
 
 parse( $tradition, $init_options );
 
-Takes an initialized Text::Tradition::Graph object and its initialization
-options, including the data source; creates the appropriate nodes and edges 
-on the graph.
+Takes an initialized Text::Tradition object and a set of options; creates
+the appropriate nodes and edges on the graph.  The options hash should
+include either a 'file' argument or a 'string' argument, depending on the
+source of the XML to be parsed.
+
+=begin testing
+
+use Text::Tradition;
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+eval { no warnings; binmode $DB::OUT, ":utf8"; };
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+
+is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
+if( $t ) {
+    is( scalar $t->collation->readings, 26, "Collation has all readings" );
+    is( scalar $t->collation->paths, 49, "Collation has all paths" );
+    is( scalar $t->witnesses, 3, "Collation has all witnesses" );
+    
+    # Check an 'identical' node
+    my $transposed = $t->collation->reading( 'n15' );
+    ok( $transposed->has_primary, "Reading links to transposed primary" );
+    is( $transposed->primary->name, 'n17', "Correct transposition link" );
+}
+
+=end testing
 
 =cut
 
@@ -35,7 +78,7 @@ my $TRANSKEY = 'identical';
 
 sub parse {
     my( $tradition, $opts ) = @_;
-    my $graph_data = Text::Tradition::Parser::GraphML::parse( $opts );
+    my $graph_data = graphml_parse( $opts );
     my $collation = $tradition->collation;
     my %witnesses; # Keep track of the witnesses we encounter as we
                    # run through the graph data.
@@ -120,14 +163,21 @@ sub parse {
         }
     }
     
-    # TODO Need to populate $wit->path / uncorrected_path
+    # Set the $witness->path arrays for each wit.
+    populate_witness_path( $tradition );
 
-    # Now we have added the witnesses and their paths, so we can 
-    # calculate their explicit positions.
-    # TODO CollateX does this, and we should just have it exported there.
+    # Rank the readings.
     $collation->calculate_ranks();
 }
     
+=head1 BUGS / TODO
+
+=over
+
+=item * Make this into a stream parser with GraphML
+
+=item * Use CollateX-calculated ranks instead of recalculating our own
+
 =back
 
 =head1 LICENSE

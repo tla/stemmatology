@@ -1278,3 +1278,13 @@ sub add_hash_entry {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+=head1 BUGS / TODO
+
+=over
+
+=item * Rationalize edge classes
+
+=item * Port the internal graph from Graph::Easy to Graph
+
+=back

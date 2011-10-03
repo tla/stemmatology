@@ -7,19 +7,18 @@ use Text::CSV::Simple;  # TODO convert to CSV_XS
 
 =head1 NAME
 
-Text::Tradition::Parser::CSV
+Text::Tradition::Parser::KUL
 
 =head1 DESCRIPTION
 
 Parser module for Text::Tradition, given a list of variants as a CSV
 file and a reference text as a plaintext file with appropriate line
-breaks.
+breaks.  The CSV file is a specialized format developed at KU Leuven,
+and other formats are vastly preferred.
 
 =head1 METHODS
 
-=over
-
-=item B<read>
+=head2 B<read>
 
 my @apparatus = read( $csv_file );
 
@@ -113,8 +112,6 @@ sub read {
     push( @app_list, $apparatus );
     return @app_list;
 }
-
-=back
 
 =head1 LICENSE
 

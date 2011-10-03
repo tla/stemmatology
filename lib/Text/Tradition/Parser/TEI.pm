@@ -39,9 +39,7 @@ appears in the text body (including <head/> elements therein.)
 
 =head1 METHODS
 
-=over
-
-=item B<parse>( $tradition, $option_hash )
+=head2 B<parse>( $tradition, $option_hash )
 
 Takes an initialized tradition and a set of options; creates the
 appropriate nodes and edges on the graph, as well as the appropriate
@@ -245,11 +243,7 @@ sub _return_rdg {
     return $real;
 }
 
-=begin testing
-
 ## TODO test specific sorts of nodes of the parallel-seg XML.
-
-=end testing
 
 ## Recursive helper function to help us navigate through nested XML,
 ## picking out the text.  $tradition is the tradition, needed for
@@ -491,6 +485,10 @@ sub _get_sigla {
 =over
 
 =item * More unit testing
+
+=item * Handle special designations apart from a.c.
+
+=item * Mark common nodes within collated variants
 
 =back
 

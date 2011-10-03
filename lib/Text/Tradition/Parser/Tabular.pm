@@ -32,9 +32,7 @@ Parser module for Text::Tradition to read an alignment table format, such as CSV
 
 =head1 METHODS
 
-=over
-
-=item B<parse>( $tradition, $option_hash )
+=head2 B<parse>( $tradition, $option_hash )
 
 Takes an initialized tradition and a set of options; creates the
 appropriate nodes and edges on the graph, as well as the appropriate

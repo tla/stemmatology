@@ -27,8 +27,6 @@ collation is a Text::Tradition::Collation object; the elements of
 @readings are Text::Tradition::Collation::Reading objects that appear
 on the collation graph.
 
-TODO: Handle collapsed and non-collapsed transpositions.
-
 =cut
 
 sub collate_variants {

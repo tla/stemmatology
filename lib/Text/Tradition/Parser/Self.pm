@@ -2,32 +2,121 @@ package Text::Tradition::Parser::Self;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
 
 =head1 NAME
 
 Text::Tradition::Parser::GraphML
 
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  
+  my $t_from_file = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'Self',
+    'file' => '/path/to/tradition.xml'
+    );
+    
+  my $t_from_string = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'Self',
+    'string' => $tradition_xml,
+    );
+
 =head1 DESCRIPTION
 
 Parser module for Text::Tradition to read in its own GraphML output format.
-TODO document what this format is.
+GraphML is a relatively simple graph description language; a 'graph' element
+can have 'node' and 'edge' elements, and each of these can have simple 'data'
+elements for attributes to be saved.
 
-=head1 METHODS
+The graph itself has attributes as in the Collation object:
 
 =over
 
-=item B<parse>
+=item * linear 
 
-parse( $graph, $graphml_string );
+=item * ac_label
 
-Takes an initialized Text::Tradition::Graph object and a string
-containing the GraphML; creates the appropriate nodes and edges on the
-graph.
+=item * baselabel
+
+=item * wit_list_separator
+
+=back
+
+The node objects have the following attributes:
+
+=over
+
+=item * name
+
+=item * reading
+
+=item * identical
+
+=item * rank
+
+=item * class
+
+=back
+
+The edge objects have the following attributes:
+
+=over
+
+=item * class
+
+=item * witness (for 'path' class edges)
+
+=item * extra   (for 'path' class edges)
+
+=item * relationship    (for 'relationship' class edges)
+
+=item * equal_rank      (for 'relationship' class edges)
+
+=item * non_correctable (for 'relationship' class edges)
+
+=item * non_independent (for 'relationship' class edges)
+
+=back
+
+=head1 METHODS
+
+=head2 B<parse>
+
+parse( $graph, $opts );
+
+Takes an initialized Text::Tradition object and a set of options; creates
+the appropriate nodes and edges on the graph.  The options hash should
+include either a 'file' argument or a 'string' argument, depending on the
+source of the XML to be parsed.
+
+=begin testing
+
+use Text::Tradition;
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+eval { no warnings; binmode $DB::OUT, ":utf8"; };
+
+my $tradition = 't/data/florilegium_graphml.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Self',
+    'file'  => $tradition,
+    );
+
+is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
+if( $t ) {
+    is( scalar $t->collation->readings, 319, "Collation has all readings" );
+    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+    is( scalar $t->witnesses, 13, "Collation has all witnesses" );
+}
+
+=end testing
 
 =cut
 
-# TODO share these with Collation.pm somehow
 my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY, $CLASS_KEY,
 	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY ) 
     = qw/ name reading identical rank class 
@@ -35,16 +124,13 @@ my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY, $CLASS_KEY,
 
 sub parse {
     my( $tradition, $opts ) = @_;
-    my $graph_data = Text::Tradition::Parser::GraphML::parse( $opts );
+    my $graph_data = graphml_parse( $opts );
     
-    # TODO this is begging for stream parsing instead of multiple loops.
-
     my $collation = $tradition->collation;
     my %witnesses;
     
     # Set up the graph-global attributes.  They will appear in the
     # hash under their accessor names.
-    # TODO Consider simplifying this for nodes & edges as well.
     print STDERR "Setting graph globals\n";
     foreach my $gkey ( keys %{$graph_data->{'attr'}} ) {
 		my $val = $graph_data->{'attr'}->{$gkey};
@@ -52,7 +138,6 @@ sub parse {
 	}
 		
     # Add the nodes to the graph. 
-    # TODO Are we adding extra start/end nodes?
 
     my $extra_data = {}; # Keep track of data that needs to be processed
                          # after the nodes & edges are created.
@@ -68,7 +153,6 @@ sub parse {
         
         # Create the node.  Current valid classes are common and meta. 
         # Everything else is a normal reading.
-        ## TODO RATIONALIZE THESE CLASSES
         my $gnode = $collation->add_reading( $nodeid );
         $gnode->text( $reading );
         $gnode->make_common if $class eq 'common';
@@ -86,6 +170,7 @@ sub parse {
         
     # Now add the edges.
     print STDERR "Adding graph edges\n";
+    my $has_ante_corr = {};
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
@@ -104,7 +189,7 @@ sub parse {
 				$tradition->add_witness( sigil => $wit );
 				$witnesses{$wit} = 1;
 			}
-			$witnesses{$wit} = 2 if $extra;
+			$has_ante_corr->{$wit} = 1 if $extra;
         } elsif( $class eq 'relationship' ) {
         	# We need the metadata about the relationship.
         	my $opts = { 'type' => $e->{$RELATIONSHIP_KEY} };
@@ -135,19 +220,20 @@ sub parse {
     }
     
     # Set the $witness->path arrays for each wit.
-    print STDERR "Walking paths for witnesses\n";
-    foreach my $wit ( $tradition->witnesses ) {
-    	my @path = $collation->reading_sequence( $collation->start, $collation->end, 
-    		$wit->sigil );
-    	$wit->path( \@path );
-    	if( $witnesses{$wit->sigil} == 2 ) {
-    		# Get the uncorrected path too
-    		my @uc = $collation->reading_sequence( $collation->start, $collation->end, 
-    			$wit->sigil . $collation->ac_label, $wit->sigil );
-    		$wit->uncorrected_path( \@uc );
-    	}
-    }
+    populate_witness_path( $tradition, $has_ante_corr );
 }
+
+1;
+
+=head1 BUGS / TODO
+
+=over
+
+=item * Make this into a stream parser with GraphML
+
+=item * Simply field -> attribute correspondence for nodes and edges
+
+=item * Share key name constants with Collation.pm
 
 =back
 
@@ -159,8 +245,4 @@ the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Tara L Andrews, aurum@cpan.org
-
-=cut
-
-1;
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
