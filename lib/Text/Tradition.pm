@@ -5,6 +5,9 @@ use Moose;
 use Text::Tradition::Collation;
 use Text::Tradition::Witness;
 
+use vars qw( $VERSION );
+$VERSION = "0.1";
+
 has 'collation' => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
@@ -30,10 +33,141 @@ has 'name' => (
 around 'add_witness' => sub {
     my $orig = shift;
     my $self = shift;
+    # TODO allow add of a Witness object?
     my $new_wit = Text::Tradition::Witness->new( @_ );
     $self->$orig( $new_wit );
     return $new_wit;
 };
+
+=head1 NAME
+
+Text::Tradition - a software model for a set of collated texts
+
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  my $t = Text::Tradition->new( 
+    'name' => 'this is a text',
+    'input' => 'TEI',
+    'file' => '/path/to/tei_parallel_seg_file.xml' );
+
+  my @text_wits = $t->witnesses();
+  my $manuscript_a = $t->witness( 'A' );
+  my $new_ms = $t->add_witness( 'sigil' => 'B' );
+  
+  my $text_path_svg = $t->collation->as_svg();
+  ## See Text::Tradition::Collation for more on text collation itself
+    
+=head1 DESCRIPTION
+
+Text::Tradition is a library for representation and analysis of collated
+texts, particularly medieval ones.  A 'tradition' refers to the aggregation
+of surviving versions of a text, generally preserved in multiple
+manuscripts (or 'witnesses').  A Tradition object thus has one more more
+Witnesses, as well as a Collation that represents the unity of all versions
+of the text.
+
+=head1 METHODS
+
+=head2 new
+
+Creates and returns a new text tradition object.  The following options are
+accepted.
+
+General options:
+
+=over 4
+
+=item B<name> - The name of the text.
+
+=back
+
+Initialization based on a collation file:
+
+=over 4
+
+=item B<input> - The input format of the collation file.  Can be one of the
+following:
+
+=over 4
+
+=item * Self - a GraphML format produced by this module
+
+=item * CollateX - a GraphML format produced by CollateX
+
+=item * CTE - a TEI XML format produced by Classical Text Editor
+
+=item * KUL - a specific CSV format for variants, not documented here
+
+=item * TEI - a TEI parallel segmentation format file
+
+=item * Tabular - a comma- or tab-separated collation.  Takes an additional
+option, 'sep_char', which defaults to the tab character.
+
+=back
+
+=item B<file> - The name of the file that contains the data.  One of 'file'
+or 'string' should be specified.
+
+=item B<string> - A text string that contains the data.  One of 'file' or
+'string' should be specified.
+
+=item B<base> - The name of a text file that contains the base text, to be
+used with input formats that require it (currently only KUL).
+
+=back
+
+Initialization based on a list of witnesses [NOT YET IMPLEMENTED]:
+
+=over 4
+
+=item B<witnesses> - A reference to an array of Text::Tradition::Witness
+objects that carry the text to be collated.
+
+=item B<collator> - A reference to a collation program that will accept
+Witness objects.
+
+=back
+
+=head2 B<witnesses>
+
+Return the Text::Tradition::Witness objects associated with this tradition,
+as an array.
+
+=head2 B<add_witness>( %opts )
+
+Instantiate a new witness with the given options (see documentation for
+Text::Tradition::Witness) and add it to the tradition.
+
+=begin testing
+
+use_ok( 'Text::Tradition', "can use module" );
+
+my $t = Text::Tradition->new( 'name' => 'empty' );
+is( ref( $t ), 'Text::Tradition', "initialized an empty Tradition object" );
+is( $t->name, 'empty', "object has the right name" );
+is( scalar $t->witnesses, 0, "object has no witnesses" );
+
+my $simple = 't/data/simple.txt';
+my $s = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Tabular',
+    'file'  => $simple,
+    );
+is( ref( $s ), 'Text::Tradition', "initialized a Tradition object" );
+is( $s->name, 'inline', "object has the right name" );
+is( scalar $s->witnesses, 3, "object has three witnesses" );
+
+my $w = $s->add_witness( 'sigil' => 'D' );
+is( ref( $w ), 'Text::Tradition::Witness', "new witness created" );
+is( $w->sigil, 'D', "witness has correct sigil" );
+is( scalar $s->witnesses, 4, "object now has four witnesses" );
+
+# TODO test initialization by witness list when we have it
+
+=end testing
+
+=cut
     
 
 sub BUILD {
@@ -67,13 +201,10 @@ sub BUILD {
         $self->_save_collation( $collation );
 
         # Call the appropriate parser on the given data
-        my @format_standalone = qw/ Self CollateX CSV CTE TEI Tabular /;
+        my @format_standalone = qw/ Self CollateX CTE TEI Tabular /;
         my @format_basetext = qw/ KUL /;
         my $use_base;
         my $format = $init_args->{'input'};
-        unless( $format ) {
-            warn "No data given to create a collation; will initialize an empty one";
-        }
         if( $format && !( grep { $_ eq $format } @format_standalone )
             && !( grep { $_ eq $format } @format_basetext ) ) {
             warn "Unrecognized input format $format; not parsing";
@@ -100,6 +231,32 @@ sub BUILD {
     }
 }
 
+=head2 B<witness>( $sigil )
+
+Returns the Text::Tradition::Witness object whose sigil is $sigil, or undef
+if there is no such object within the tradition.
+
+=begin testing
+
+use Text::Tradition;
+
+my $simple = 't/data/simple.txt';
+my $s = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Tabular',
+    'file'  => $simple,
+    );
+my $wit_a = $s->witness('A');
+is( ref( $wit_a ), 'Text::Tradition::Witness', "Found a witness A" );
+if( $wit_a ) {
+    is( $wit_a->sigil, 'A', "Witness A has the right sigil" );
+}
+is( $s->witness('X'), undef, "There is no witness X" );
+
+=end testing
+
+=cut
+
 sub witness {
     my( $self, $sigil ) = @_;
     my $requested_wit;
@@ -114,24 +271,24 @@ sub witness {
     return $requested_wit;
 }
 
-        
-
-# The user will usually be instantiating a Tradition object, and
-# examining its collation.  The information about the tradition can
-# come via several routes:
-# - graphML from CollateX or elsewhere, standalone
-# - TEI parallel segmentation
-# - Leuven-style spreadsheet of variants, converted to CSV, plus base text
-# - apparatus pulled from CTE, plus base text
-# From this we should be able to get basic witness information.
-# 
-# Alternatively the user can just give us the uncollated texts.  Then
-# instead of passing a collation, s/he is passing a set of witnesses
-# from which we will generate a collation.  Those witnesses can be in
-# plaintext or in TEI with certain constraints adopted.
-
-# So the constructor for a tradition needs to take one of these infosets,
-# and construct the collation and the witness objects.
-
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+
+=head1 BUGS / TODO
+
+=over
+
+=item * Allow tradition to be initialized via passing to a collator.
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
