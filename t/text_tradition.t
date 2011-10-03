@@ -30,6 +30,10 @@ is( ref( $w ), 'Text::Tradition::Witness', "new witness created" );
 is( $w->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );
 
+my $del = $s->del_witness( 'D' );
+is( $del, $w, "Deleted correct witness" );
+is( scalar $s->witnesses, 3, "object has three witnesses again" );
+
 # TODO test initialization by witness list when we have it
 }
 

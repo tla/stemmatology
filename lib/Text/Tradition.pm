@@ -14,14 +14,17 @@ has 'collation' => (
     writer => '_save_collation',
     );
 
-has 'witnesses' => (
-    traits => ['Array'],
-    isa => 'ArrayRef[Text::Tradition::Witness]',
+has 'witness_hash' => (
+    traits => ['Hash'],
+    isa => 'HashRef[Text::Tradition::Witness]',
     handles => {
-        witnesses    => 'elements',
-        add_witness  => 'push',
+        witness     => 'get',
+        add_witness => 'set',
+        del_witness => 'delete',
+        has_witness => 'exists',
+        witnesses   => 'values',
     },
-    default => sub { [] },
+    default => sub { {} },
     );
 
 has 'name' => (
@@ -29,14 +32,34 @@ has 'name' => (
     isa => 'Str',
     default => 'Tradition',
     );
-    
+  
+# Create the witness before trying to add it
 around 'add_witness' => sub {
     my $orig = shift;
     my $self = shift;
     # TODO allow add of a Witness object?
     my $new_wit = Text::Tradition::Witness->new( @_ );
-    $self->$orig( $new_wit );
+    $self->$orig( $new_wit->sigil => $new_wit );
     return $new_wit;
+};
+
+# Allow deletion of witness by object as well as by sigil
+around 'del_witness' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my @key_args;
+    foreach my $arg ( @_ ) {
+        push( @key_args, 
+              ref( $arg ) eq 'Text::Tradition::Witness' ? $arg->sigil : $arg );
+    }
+    return $self->$orig( @key_args );
+};
+
+# Don't allow an empty hash value
+around 'witness' => sub {
+    my( $orig, $self, $arg ) = @_;
+    return unless $self->has_witness( $arg );
+    return $self->$orig( $arg );
 };
 
 =head1 NAME
@@ -163,6 +186,10 @@ is( ref( $w ), 'Text::Tradition::Witness', "new witness created" );
 is( $w->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );
 
+my $del = $s->del_witness( 'D' );
+is( $del, $w, "Deleted correct witness" );
+is( scalar $s->witnesses, 3, "object has three witnesses again" );
+
 # TODO test initialization by witness list when we have it
 
 =end testing
@@ -256,20 +283,6 @@ is( $s->witness('X'), undef, "There is no witness X" );
 =end testing
 
 =cut
-
-sub witness {
-    my( $self, $sigil ) = @_;
-    my $requested_wit;
-    foreach my $wit ( $self->witnesses ) {
-        if( $wit->sigil eq $sigil ) {
-            $requested_wit = $wit;
-            last;
-        }
-    }
-    # We depend on an undef return value for no such witness.
-    # warn "No such witness $sigil" unless $requested_wit;
-    return $requested_wit;
-}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

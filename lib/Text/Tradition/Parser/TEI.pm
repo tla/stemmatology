@@ -10,22 +10,65 @@ use XML::LibXML::XPathContext;
 
 Text::Tradition::Parser::TEI
 
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  
+  my $t_from_file = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'TEI',
+    'file' => '/path/to/parallel_seg_file.xml'
+    );
+    
+  my $t_from_string = Text::Tradition->new( 
+    'name' => 'my text',
+    'input' => 'TEI',
+    'string' => $parallel_seg_xml,
+    );
+
+
 =head1 DESCRIPTION
 
-Parser module for Text::Tradition, given a TEI parallel-segmentation
-file that describes a text and its variants.
+Parser module for Text::Tradition, given a TEI parallel-segmentation file
+that describes a text and its variants.  Normally called upon
+initialization of Text::Tradition.
+
+The witnesses for the tradition are taken from the <listWit/> element
+within the TEI header; the readings are taken from any <p/> element that
+appears in the text body (including <head/> elements therein.)
 
 =head1 METHODS
 
 =over
 
-=item B<parse>
+=item B<parse>( $tradition, $option_hash )
 
-parse( $tei_string );
+Takes an initialized tradition and a set of options; creates the
+appropriate nodes and edges on the graph, as well as the appropriate
+witness objects.  The $option_hash must contain either a 'file' or a
+'string' argument with the XML to be parsed.
 
-Takes an initialized tradition and a string containing the TEI;
-creates the appropriate nodes and edges on the graph, as well as
-the appropriate witness objects.
+=begin testing
+
+use Text::Tradition;
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+eval { no warnings; binmode $DB::OUT, ":utf8"; };
+
+my $par_seg = 't/data/florilegium_tei_ps.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'TEI',
+    'file'  => $par_seg,
+    );
+
+is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
+if( $t ) {
+    is( scalar $t->collation->readings, 319, "Collation has all readings" );
+    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+}
+
+=end testing
 
 =cut
 
@@ -41,7 +84,7 @@ my $app_count;          # Keep track of how many apps we have
 # is considered a bad idea.  The long way round then.
 my( $LISTWIT, $WITNESS, $TEXT, $W, $SEG, $APP, $RDG, $LEM ) 
     = ( 'listWit', 'witness', 'text', 'w', 'seg', 'app', 'rdg', 'lem' );
-sub make_tagnames {
+sub _make_tagnames {
     my( $ns ) = @_;
     if( $ns ) {
         $LISTWIT = "$ns:$LISTWIT";
@@ -77,7 +120,7 @@ sub parse {
         $ns = 'tei';
         $xpc->registerNs( $ns, $tei->namespaceURI );
     }
-    make_tagnames( $ns );
+    _make_tagnames( $ns );
 
     # Then get the witnesses and create the witness objects.
     foreach my $wit_el ( $xpc->findnodes( "//$LISTWIT/$WITNESS" ) ) {
@@ -89,7 +132,7 @@ sub parse {
 
     # Look for all word/seg node IDs and note their pre-existence.
     my @attrs = $xpc->findnodes( "//$W|$SEG/attribute::xml:id" );
-    save_preexisting_nodeids( @attrs );
+    _save_preexisting_nodeids( @attrs );
 
     # Count up how many apps we have.
     my @apps = $xpc->findnodes( "//$APP" );
@@ -143,11 +186,8 @@ sub parse {
             $tradition->witness( $sig )->uncorrected_path( \@uncorrected );
         }
     }
-    # Delete readings that are no longer part of the graph.
-    # TODO think this is useless actually
-    foreach ( keys %$substitutions ) {
-        $tradition->collation->del_reading( $tradition->collation->reading( $_ ) );
-    }
+    
+    # Calculate the ranks for the nodes.
     $tradition->collation->calculate_ranks();
     
     # Now that we have ranks, see if we have distinct nodes with identical
@@ -205,6 +245,12 @@ sub _return_rdg {
     return $real;
 }
 
+=begin testing
+
+## TODO test specific sorts of nodes of the parallel-seg XML.
+
+=end testing
+
 ## Recursive helper function to help us navigate through nested XML,
 ## picking out the text.  $tradition is the tradition, needed for
 ## making readings; $xn is the XML node currently being looked at,
@@ -237,7 +283,7 @@ sub _return_rdg {
             foreach my $w ( split( /\s+/, $str ) ) {
                 # For now, skip punctuation.
                 next if $w !~ /[[:alnum:]]/;
-                my $rdg = make_reading( $tradition->collation, $w );
+                my $rdg = _make_reading( $tradition->collation, $w );
                 push( @new_readings, $rdg );
                 unless( $in_var ) {
                     $rdg->make_common;
@@ -256,7 +302,7 @@ sub _return_rdg {
                 warn "$c is not among active wits" unless $active_wits{$c};
             }
             my $xml_id = $xn->getAttribute( 'xml:id' );
-            my $rdg = make_reading( $tradition->collation, $xn->textContent, $xml_id );
+            my $rdg = _make_reading( $tradition->collation, $xn->textContent, $xml_id );
             push( @new_readings, $rdg );
             unless( $in_var ) {
                 $rdg->make_common;
@@ -294,7 +340,7 @@ sub _return_rdg {
             #print STDERR "Handling reading for " . $xn->getAttribute( 'wit' ) . "\n";
             # TODO handle p.c. and s.l. designations too
             $ac = $xn->getAttribute( 'type' ) && $xn->getAttribute( 'type' ) eq 'a.c.';
-            my @rdg_wits = get_sigla( $xn );
+            my @rdg_wits = _get_sigla( $xn );
             @rdg_wits = ( 'base' ) unless @rdg_wits;  # Allow for editorially-supplied readings
             my @words;
             foreach ( $xn->childNodes ) {
@@ -363,8 +409,26 @@ sub _return_rdg {
 
 }
 
+=begin testing
+
+use XML::LibXML;
+use XML::LibXML::XPathContext;
+use Text::Tradition::Parser::TEI;
+
+my $xml_str = '<tei><rdg wit="#A #B #C #D">some text</rdg></tei>';
+my $el = XML::LibXML->new()->parse_string( $xml_str )->documentElement;
+my $xpc = XML::LibXML::XPathContext->new( $el );
+my $obj = $xpc->find( '//rdg' );
+
+my @wits = Text::Tradition::Parser::TEI::_get_sigla( $obj );
+is( join( ' ', @wits) , "A B C D", "correctly parsed reading wit string" );
+
+=end testing
+
+=cut
+
 # Helper to extract a list of witness sigla from a reading element.
-sub get_sigla {
+sub _get_sigla {
     my( $rdg ) = @_;
     # Cope if we have been handed a NodeList.  There is only
     # one reading here.
@@ -388,13 +452,13 @@ sub get_sigla {
     my $word_ctr = 0;
     my %used_nodeids;
 
-    sub save_preexisting_nodeids {
+    sub _save_preexisting_nodeids {
         foreach( @_ ) {
             $used_nodeids{$_->getValue()} = 1;
         }
     }
 
-    sub make_reading {
+    sub _make_reading {
         my( $graph, $word, $xml_id ) = @_;
         if( $xml_id ) {
             if( exists $used_nodeids{$xml_id} ) {
@@ -421,3 +485,21 @@ sub get_sigla {
 }
 
 1;
+
+=head1 BUGS / TODO
+
+=over
+
+=item * More unit testing
+
+=back
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
