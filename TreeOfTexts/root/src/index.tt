@@ -10,7 +10,7 @@
     <div style="float:left;width:450px;height:600px;border:1px blue solid">
       [% svg %]
     </div>
-    <div style="float:left;width:450px;height:600px;border:1px blue solid;overflow:auto;">
+    <div style="float:left;width:450px;height:600px;border:1px blue solid;overflow:auto;overflow-x: hidden;">
       <table>
 [% FOREACH row IN variants -%]
 [% INCLUDE variantrow %]

@@ -3,13 +3,22 @@ var row_triggered = false;
 $(document).ready(function() {
   $('.rowid').click( function() {
     row_triggered = true;
-    $('ellipse').attr( {stroke:'black', fill:'#eee'} );
+    $('ellipse').attr( {stroke:'black', fill:'#fff'} );
     $(this).parent().nextAll('.clickable').children('span').click();
     row_triggered = false;
   });
 })
-function color_nodes( column_index, arr_node_ids ) {
-  if( !row_triggered ) { $('ellipse').attr( {stroke:'black', fill:'#eee'} ) }; 
+function color_nodes( column_index, arr_node_ids, arr_greynode_ids ) {
+  if( !row_triggered ) { 
+    $('ellipse').attr( {stroke:'black', fill:'#eee'} ) 
+  }; 
+  jQuery.each( arr_greynode_ids, function(index,value) {
+    $('.node').children('title').filter( function(index) {
+      return $(this).text() == value;
+    }).siblings('ellipse').each( function( index ) {
+        $(this).attr( {stroke:'black', fill:'#eee'} );
+      });
+  });
   jQuery.each( arr_node_ids, function(index,value) {
     $('.node').children('title').filter( function(index) {
       return $(this).text() == value;
