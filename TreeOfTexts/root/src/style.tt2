@@ -19,7 +19,6 @@ body {
     border-right: 1px #c6dcf1 solid;
     margin-left: 20px;
     overflow: auto;
-    overflow-x: hidden;
 }
 h1 {
     border-bottom: 1px solid #488dd2;
@@ -38,5 +37,8 @@ h1 {
 }
 .active_variant_row {
     background: #c6dcf1;
+}
+.active_variant_cell {
+    background: #e8f1fe;
 }
 </style>

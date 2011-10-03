@@ -1,10 +1,11 @@
-var colors = ['#ffeeaa','#afc6e9','#d5fff6','#e5d5ff','#ffaaaa','#e5ff80','#ffccaa','#ffd5e5'];
+var colors = ['#ffeeaa','#afc6e9','#d5fff6','#ffccaa','#ffaaaa','#e5ff80','#e5d5ff','#ffd5e5'];
 var row_triggered = false;
 $(document).ready(function() {
   $('.rowid').click( function() {
     row_triggered = true;
     $('ellipse').attr( {stroke:'black', fill:'#fff'} );
     $(this).parent().nextAll('.clickable').children('span').click();
+    $('tr.active_variant_row').find('span').removeClass( 'active_variant_cell' );
     row_triggered = false;
   });
 })
