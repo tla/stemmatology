@@ -6,9 +6,44 @@
 	<array>
 		<string>BA45EE3F-4E79-4734-A808-E988ECE32C18</string>
 		<string>E5B4FCC5-00C7-4E1D-963F-D72E7027869A</string>
+		<string>8752D0C9-D9C0-484A-ADD9-3243A186536F</string>
 	</array>
 	<key>ProjectItems</key>
 	<dict>
+		<key>8752D0C9-D9C0-484A-ADD9-3243A186536F</key>
+		<dict>
+			<key>ItemData</key>
+			<dict>
+				<key>AliasData</key>
+				<data>
+				AAAAAAFkAAIAAQxNYWNpbnRvc2ggSEQAAAAAAAAAAAAA
+				AAAAAADKPI0jSCsAAAAILogBdAAAAAAAAAAAAAAAAAAA
+				AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				AAAAAAAAAAAAAAAAAAAAAAgx4sose4kAAAAAAAAAAP//
+				//8AAAkgAAAAAAAAAAAAAAAAAAAADHN0ZW1tYXRvbG9n
+				eQAQAAgAAMo8cQMAAAARAAgAAMosX2kAAAABABAACC6I
+				AAckkwAFBAYAAL8xAAIAMk1hY2ludG9zaCBIRDpVc2Vy
+				czoAdGxhOgBQcm9qZWN0czoAc3RlbW1hdG9sb2d5OgB0
+				AA4ABAABAHQADwAaAAwATQBhAGMAaQBuAHQAbwBzAGgA
+				IABIAEQAEgAhVXNlcnMvdGxhL1Byb2plY3RzL3N0ZW1t
+				YXRvbG9neS90AAATAAEvAAAVAAIACv//AAA=
+				</data>
+				<key>FileURL</key>
+				<string>file://localhost/Users/tla/Projects/stemmatology/t/</string>
+				<key>RelativePath</key>
+				<string>./t</string>
+				<key>TypeID</key>
+				<string>_CFileLocator</string>
+				<key>Version</key>
+				<integer>1</integer>
+			</dict>
+			<key>ItemName</key>
+			<string>t</string>
+			<key>ItemType</key>
+			<string>FolderReference</string>
+			<key>UserOverrideItemName</key>
+			<true/>
+		</dict>
 		<key>BA45EE3F-4E79-4734-A808-E988ECE32C18</key>
 		<dict>
 			<key>ItemData</key>

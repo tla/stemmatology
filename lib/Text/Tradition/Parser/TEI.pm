@@ -61,7 +61,6 @@ sub parse {
     
     # First, parse the XML.
     my $parser = XML::LibXML->new();
-    # TODO Try as a string, then try as a filename.
     my $doc = $parser->parse_string( $xml_str );
     my $tei = $doc->documentElement();
     my $xpc = XML::LibXML::XPathContext->new( $tei );
@@ -141,9 +140,10 @@ sub parse {
     foreach ( keys %$substitutions ) {
         $tradition->collation->del_reading( $tradition->collation->reading( $_ ) );
     }
-    
-    # Calculate the ranks and flatten the graph based on the results.
     $tradition->collation->calculate_ranks();
+    
+    # Now that we have ranks, see if we have distinct nodes with identical
+    # text and identical rank that can be merged.
     $tradition->collation->flatten_ranks();
 }
 
@@ -206,13 +206,13 @@ sub _return_rdg {
 ## Returns the list of readings, if any, created on the run.
 
 {
-    my @active_wits;
+    my %active_wits;
     my $current_app;
     my $seen_apps;
 
     sub _get_readings {
         my( $tradition, $xn, $in_var, $ac, @cur_wits ) = @_;
-        @cur_wits = @active_wits unless $in_var;
+        @cur_wits = grep { $active_wits{$_} } keys %active_wits unless $in_var;
 
         my @new_readings;
         if( $xn->nodeType == XML_TEXT_NODE ) {
@@ -222,8 +222,7 @@ sub _return_rdg {
             #print STDERR "Handling text node " . $str . "\n";
             # Check that all the witnesses we have are active.
             foreach my $c ( @cur_wits ) {
-                warn "Could not find $c in active wits"
-                    unless grep { $c eq $_ } @active_wits;
+                warn "$c is not among active wits" unless $active_wits{$c};
             }
             $str =~ s/^\s+//;
             my $final = $str =~ s/\s+$//;
@@ -246,8 +245,7 @@ sub _return_rdg {
             #print STDERR "Handling word " . $xn->toString . "\n";
             # Check that all the witnesses we have are active.
             foreach my $c ( @cur_wits ) {
-                warn "Could not find $c in active wits"
-                    unless grep { $c eq $_ } @active_wits;
+                warn "$c is not among active wits" unless $active_wits{$c};
             }
             my $xml_id = $xn->getAttribute( 'xml:id' );
             my $rdg = make_reading( $tradition->collation, $xn->textContent, $xml_id );
@@ -286,6 +284,7 @@ sub _return_rdg {
         } elsif ( $xn->nodeName eq 'lem' || $xn->nodeName eq 'rdg' ) {
             # Alter the current witnesses and recurse.
             #print STDERR "Handling reading for " . $xn->getAttribute( 'wit' ) . "\n";
+            # TODO handle p.c. and s.l. designations too
             $ac = $xn->getAttribute( 'type' ) && $xn->getAttribute( 'type' ) eq 'a.c.';
             my @rdg_wits = get_sigla( $xn );
             @rdg_wits = ( 'base' ) unless @rdg_wits;  # Allow for editorially-supplied readings
@@ -317,12 +316,22 @@ sub _return_rdg {
         } elsif( $xn->nodeName eq 'witStart' ) {
             # Add the relevant wit(s) to the active list.
             #print STDERR "Handling witStart\n";
-            push( @active_wits, @cur_wits );
+            map { $active_wits{$_} = 1 } @cur_wits;
+            # Record a lacuna in all non-active witnesses if this is
+            # the first app. Get the full list from $text.
+            if( $seen_apps == 1 ) {
+                my $i = 0;
+                foreach my $sig ( keys %$text ) {
+                    next if $active_wits{$sig};
+                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    $i++;
+                    push( @{$text->{$sig}}, $l );
+                }
+            }
         } elsif( $xn->nodeName eq 'witEnd' ) {
             # Take the relevant wit(s) out of the list.
             #print STDERR "Handling witEnd\n";
-            my $regexp = '^(' . join( '|', @cur_wits ) . ')$';
-            @active_wits = grep { $_ !~ /$regexp/ } @active_wits;
+            map { $active_wits{$_} = undef } @cur_wits;
             # Record a lacuna, unless this is the last app.
             unless( $seen_apps == $app_count ) {
                 foreach my $i ( 0 .. $#cur_wits ) {
