@@ -23,15 +23,10 @@ sub run_analysis {
 	my $svg;
 	my $variants = [];
 	
-	# Read in the file and stemma
-	my @lines;
-	open( INFILE, "$file" ) or die "Could not read $file";
-	binmode INFILE, ':utf8';
-	@lines = <INFILE>;
-	close INFILE;
-	
+	# Read in the file and stemma	
 	my $tradition = Text::Tradition->new( 
-		'Self' => join( '', @lines ),
+		'input'  => 'Self',
+		'file'   => $file,
 		'linear' => 1,
 		);
 	my $stemma = Text::Tradition::Stemma->new(
