@@ -8,18 +8,13 @@ use Text::Tradition::Stemma;
 sub new {
 	my( $class, $args ) = @_;
 	my $self = {};
-	# Our object needs to have a stemma graph and a variant table.
-	my( $title, $svg, $variants ) = run_analysis( $args->{'file'}, $args->{'stemmadot'} );
-	$self->{'svg'} = $svg;
-	$self->{'title'} = $title;
-	$self->{'variants'} = $variants;
-	
 	bless( $self, $class );	
+	$self->run_analysis( $args->{'file'}, $args->{'stemmadot'} );
 	return $self;
 }
 
 sub run_analysis {
-	my( $file, $stemmadot ) = @_;
+	my( $self, $file, $stemmadot ) = @_;
 	# What we will return
 	my $svg;
 	my $variants = [];
@@ -30,6 +25,8 @@ sub run_analysis {
 		'file'   => $file,
 		'linear' => 1,
 		);
+	$self->{'title'} = $tradition->name;
+	
 	my $stemma = Text::Tradition::Stemma->new(
 		'collation' => $tradition->collation,
 		'dot' => $stemmadot,
@@ -38,6 +35,7 @@ sub run_analysis {
 	$svg = $stemma->as_svg;
 	### DIRTY HACK
 	$svg =~ s/transform=\"scale\(1 1\)/transform=\"scale\(0.7 0.7\)/;
+	$self->{'svg'} = $svg;
 	
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.
@@ -48,8 +46,7 @@ sub run_analysis {
 	# groupings of witnesses match our stemma hypothesis. We also want, at the
 	# end, to produce an HTML table with all the variants.
 	my $html_columns = 0;
-	my $html_data = [];
-	my $total = 0; # Keep track of the total number of variant locations
+	my ( $total, $genealogical, $conflicts ) = ( 0, 0, 0 );
 	
 	# Strip the list of sigla and save it for correlation to the readings.
 	my $col_wits = shift @$all_wits_table;
@@ -90,8 +87,6 @@ sub run_analysis {
 		my( $groups, $readings ) = useful_variant( $rdg_wits );
 		next unless $groups && $readings;  
 		
-		# Initialize the data structure for the row that we will return
-		my $variant_row = {'id' => $rank, 'readings' => [] };
 		# Keep track of our widest row
 		$html_columns = scalar @$groups if scalar @$groups > $html_columns;
 		
@@ -105,61 +100,83 @@ sub run_analysis {
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
 		# TODO: deal with a.c. reading logic
-		my $conflict = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
-		$variant_row->{'genealogical'} = keys %$conflict ? undef : 1;
-		foreach my $grp ( sort keys %$group_readings ) {
-			my $rdg = $group_readings->{$grp};
-			my $in_conflict = exists $conflict->{$rdg};
-			push( @{$variant_row->{'readings'}}, 
-			      { 'text' => $rdg, 'group' => $grp, 'conflict' => $in_conflict,
-			        'missing' => wit_stringify( $lacunose ) } );
-		}
-		
+		my $variant_row = analyze_variant_location( $group_readings, $groups, 
+		    $stemma->apsp, $lacunose );
+		$variant_row->{'id'} = $rank;
+		$genealogical++ if $variant_row->{'genealogical'};
+		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
+
 		# Now run the same analysis given the calculated distance tree(s).
-# 		foreach my $tree ( 0 .. $#{$stemma->distance_trees} ) {
-# 			my $dc = analyze_variant_location( $group_readings, $groups,    
-# 											   $stemma->distance_apsps->[$tree] );
-# 			foreach my $rdg ( keys %$dc ) {
-# 				my $var = $dc->{$rdg};
-# 			}
-# 		}
-	
+# 		my @trees = @{$stemma->distance_trees};
+# 		if( @trees ) {
+#             foreach my $tree ( 0 .. $#trees ) {
+#                 my $dc = analyze_variant_location( $group_readings, $groups,    
+#                                                    $stemma->distance_apsps->[$tree] );
+#                 foreach my $rdg ( keys %$dc ) {
+#                     my $var = $dc->{$rdg};
+#                     # TODO Do something with this
+#                 }
+#             }
+# 	    }
+
 		# Record that we used this variant in an analysis
 		push( @$variants, $variant_row );
 	}
 	
-	# Go through our variant rows and add the number of empty columns we need.
+	# Go through our variant rows, after we have seen all of them once,
+	# and add the number of empty columns needed by each.
 	foreach my $row ( @$variants ) {
 		my $empty = $html_columns - scalar @{$row->{'readings'}};
 		$row->{'empty'} = $empty;
 	}
 	
-	return( $tradition->name, $svg, $variants );
+	# Populate self with our analysis data.
+	$self->{'variants'} = $variants;
+	$self->{'variant_count'} = $total;
+	$self->{'conflict_count'} = $conflicts;
+	$self->{'genealogical_count'} = $genealogical;
 }
 
+# variant_row -> genealogical
+#             -> readings [ { text, group, conflict, missing } ]
+
 sub analyze_variant_location {
-    my( $group_readings, $groups, $apsp ) = @_;
+    my( $group_readings, $groups, $apsp, $lacunose ) = @_;
     my %contig;
     my $conflict = {};
+    my %missing;
+    map { $missing{$_} = 1 } @$lacunose;
+    my $variant_row = { 'readings' => [] };
     foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
         my @members = @$g;
-        my $gst = wit_stringify( $g );
-        map { $contig{$_} = $gst } @members; # The witnesses need themselves to be 
-                                             # in their collection.
-        next unless @members > 1;
-        my $curr = pop @members;
-        foreach my $m ( @members ) {
-            foreach my $v ( $apsp->path_vertices( $curr, $m ) ) {
-                $contig{$v} = $gst unless exists $contig{$v};
-                next if $contig{$v} eq $gst;
-                # print STDERR "Conflict at $v between group $gst and group " 
-                #     . $contig{$v} . "\n";
-                # Record what is conflicting.
-                $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$v}};
+        my $gst = wit_stringify( $g ); # $gst is now the name of this group.
+        map { $contig{$_} = $gst } @members; # All members are in this group.
+        while( @members ) {
+            # Gather the list of vertices that are needed to join all members.
+            my $curr = pop @members;
+            foreach my $m ( @members ) {
+                foreach my $v ( $apsp->path_vertices( $curr, $m ) ) {
+                    $contig{$v} = $gst unless exists $contig{$v};
+                    next if $contig{$v} eq $gst;
+                    # Record what is conflicting. TODO do we use this?
+                    $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$v}};
+                }
             }
         }
+        # Write the reading.
+        my $reading = { 'text' => $group_readings->{$gst},
+                        'missing' => wit_stringify( $lacunose ),
+                        'conflict' => exists( $conflict->{$group_readings->{$gst}} ) };
+        if( $reading->{'conflict'} ) {
+            $reading->{'group'} = $gst;
+        } else {
+            my @all_vertices = grep { $contig{$_} eq $gst && !$missing{$_} } keys %contig;
+            $reading->{'group'} = wit_stringify( \@all_vertices );
+        }
+        push( @{$variant_row->{'readings'}}, $reading );
     }
-    return $conflict;
+    $variant_row->{'genealogical'} = keys %$conflict ? undef : 1;
+    return $variant_row;
 }
 
 # Add the variant, subject to a.c. representation logic.

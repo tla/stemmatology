@@ -34,6 +34,9 @@ sub index :Path :Args(0) {
 	$c->stash->{svg} = $m->{'svg'};
 	$c->stash->{variants} = $m->{'variants'};
 	$c->stash->{text_title} = $m->{'title'};
+	$c->stash->{total} = $m->{'variant_count'};
+	$c->stash->{genealogical} = $m->{'genealogical_count'};
+	$c->stash->{conflict} = $m->{'conflict_count'};
 	$c->stash->{template} = 'index.tt'; 
 }
 

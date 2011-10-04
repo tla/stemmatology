@@ -20,6 +20,11 @@ body {
     margin-left: 20px;
     overflow: auto;
 }
+#statistics {
+    font-style: italic;
+    position: absolute;
+    bottom: 5px;
+}
 h1 {
     border-bottom: 1px solid #488dd2;
     color: #488dd2;
@@ -34,6 +39,9 @@ h1 {
 }
 .coincidental {
     background: #fff;
+}
+.conflict {
+    background: #ffeeee;
 }
 .active_variant_row {
     background: #c6dcf1;
