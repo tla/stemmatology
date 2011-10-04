@@ -97,7 +97,9 @@ sub parse {
             }
         }
     } elsif( exists $opts->{'file'} ) {
-        open( my $fh, $opts->{'file'} ) or die "Could not open input file " . $opts->{'file'};
+        open( my $fh, $opts->{'file'} ) 
+            or warn "Could not open input file " . $opts->{'file'};
+        binmode( $fh, ':utf8' );
         while( my $row = $csv->getline( $fh ) ) {
             push( @$alignment_table, $row );
         }
