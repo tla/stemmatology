@@ -33,6 +33,7 @@ sub index :Path :Args(0) {
     my $m = $c->model('Analysis');
 	$c->stash->{svg} = $m->{'svg'};
 	$c->stash->{variants} = $m->{'variants'};
+	$c->stash->{text_title} = $m->{'title'};
 	$c->stash->{template} = 'index.tt'; 
 }
 

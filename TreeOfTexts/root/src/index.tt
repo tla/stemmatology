@@ -10,6 +10,7 @@
   </head>
   <body>
     <h1>Stexaminer</h1>
+    <h2>[% text_title %]</h2>
     <div id="svg_graph">
       [% svg %]
     </div>
@@ -30,7 +31,7 @@
           <th><span class="rowid">[% row.id %]</span></th>
 [% FOREACH reading IN row.readings -%]
 [% SET cellclass = 'clickable conflict' IF reading.conflict -%]
-[% SET cellclass = 'clickable' IF reading.conflict -%]
+[% SET cellclass = 'clickable' IF !reading.conflict -%]
           <td class="[% cellclass %]"><span onclick="$('td.active_variant_cell').removeClass('active_variant_cell');$(this).parent().addClass('active_variant_cell');$('tr.active_variant_row').removeClass('active_variant_row');$(this).parents('tr').addClass('active_variant_row');color_nodes($(this).parent().index(), [% reading.group %], [% reading.missing %]);">[% reading.text %]</span></td>
 [% END -%]
 [% FILTER repeat( row.empty ) -%]

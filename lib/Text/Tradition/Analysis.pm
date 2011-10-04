@@ -9,8 +9,9 @@ sub new {
 	my( $class, $args ) = @_;
 	my $self = {};
 	# Our object needs to have a stemma graph and a variant table.
-	my( $svg, $variants ) = run_analysis( $args->{'file'}, $args->{'stemmadot'} );
+	my( $title, $svg, $variants ) = run_analysis( $args->{'file'}, $args->{'stemmadot'} );
 	$self->{'svg'} = $svg;
+	$self->{'title'} = $title;
 	$self->{'variants'} = $variants;
 	
 	bless( $self, $class );	
@@ -104,12 +105,11 @@ sub run_analysis {
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
 		# TODO: deal with a.c. reading logic
-		my $conflict = analyze_variant_location( 
-		    $group_readings, $groups, $stemma->apsp );
+		my $conflict = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
 		$variant_row->{'genealogical'} = keys %$conflict ? undef : 1;
 		foreach my $grp ( sort keys %$group_readings ) {
 			my $rdg = $group_readings->{$grp};
-			my $in_conflict = exists $conflict->{$grp};
+			my $in_conflict = exists $conflict->{$rdg};
 			push( @{$variant_row->{'readings'}}, 
 			      { 'text' => $rdg, 'group' => $grp, 'conflict' => $in_conflict,
 			        'missing' => wit_stringify( $lacunose ) } );
@@ -134,7 +134,7 @@ sub run_analysis {
 		$row->{'empty'} = $empty;
 	}
 	
-	return( $svg, $variants );
+	return( $tradition->name, $svg, $variants );
 }
 
 sub analyze_variant_location {

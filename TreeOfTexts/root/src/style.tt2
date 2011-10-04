@@ -30,7 +30,7 @@ h1 {
     width: 280px;
 }    
 .genealogical {
-    background: #eafff5;
+    background: #88ffaa;
 }
 .coincidental {
     background: #fff;

@@ -17,7 +17,7 @@ function color_nodes( column_index, arr_node_ids, arr_greynode_ids ) {
     $('.node').children('title').filter( function(index) {
       return $(this).text() == value;
     }).siblings('ellipse').each( function( index ) {
-        $(this).attr( {stroke:'black', fill:'#eee'} );
+        $(this).attr( {stroke:'black', fill:'#444'} );
       });
   });
   jQuery.each( arr_node_ids, function(index,value) {
