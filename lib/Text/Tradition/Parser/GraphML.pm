@@ -79,6 +79,7 @@ sub graphml_parse {
     }
 
     my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
+    $graph_hash->{'name'} = $graph_el->getAttribute( 'id' );
 
     my $node_reg = {};
     

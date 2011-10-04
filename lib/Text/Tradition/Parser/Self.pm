@@ -132,6 +132,7 @@ sub parse {
     # Set up the graph-global attributes.  They will appear in the
     # hash under their accessor names.
     print STDERR "Setting graph globals\n";
+    $tradition->name( $graph_data->{'name'} );
     foreach my $gkey ( keys %{$graph_data->{'attr'}} ) {
 		my $val = $graph_data->{'attr'}->{$gkey};
 		$collation->$gkey( $val );
