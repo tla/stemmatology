@@ -104,12 +104,14 @@ sub run_analysis {
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
 		# TODO: deal with a.c. reading logic
-		my $sc = analyze_variant_location( $group_readings, $groups, $stemma->apsp );
-		$variant_row->{'genealogical'} = keys %$sc ? 1 : undef;
+		my $conflict = analyze_variant_location( 
+		    $group_readings, $groups, $stemma->apsp );
+		$variant_row->{'genealogical'} = keys %$conflict ? undef : 1;
 		foreach my $grp ( sort keys %$group_readings ) {
 			my $rdg = $group_readings->{$grp};
+			my $in_conflict = exists $conflict->{$grp};
 			push( @{$variant_row->{'readings'}}, 
-			      { 'text' => $rdg, 'group' => $grp,
+			      { 'text' => $rdg, 'group' => $grp, 'conflict' => $in_conflict,
 			        'missing' => wit_stringify( $lacunose ) } );
 		}
 		

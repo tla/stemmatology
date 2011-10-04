@@ -1,2 +1,7 @@
 *~
 tla.bbprojectsettings
+data
+!/t/data
+Makefile
+Makefile.old
+blib
