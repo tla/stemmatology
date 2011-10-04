@@ -10,23 +10,11 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my $informat = 'TEI';
-my $inbase;
-my $linear = 1;
-
 # Parse the tradition data
+my $informat = 'Self';
 
-my $input = $ARGV[0];
-my @lines;
-open( INFILE, "$input" ) or die "Could not read $input";
-binmode INFILE, ':utf8';
-@lines = <INFILE>;
-close INFILE;
-$input = join( '', @lines );
-
-my %args = ( $informat => $input,
-             'linear' => $linear );
-$args{'base'} = $inbase if $inbase;
+my %args = ( 'input' => $informat,
+             'file'  => $ARGV[0] );
 my $tradition = Text::Tradition->new( %args );
 
 # Parse the stemma hypothesis
@@ -113,30 +101,6 @@ open( STEMMA, ">stemma_graph.svg" ) or die "Could not open stemma graph to write
 binmode STEMMA, ":utf8";
 print STEMMA $stemma->as_svg;
 close STEMMA;
-
-# Save the used variants as an HTML table
-open( TABLE, ">variant_table.html" ) or die "Could not save variant table";
-binmode TABLE, ":utf8";
-print TABLE "<table>\n";
-foreach my $row ( @$html_data ) {
-    my( $rank, $readings, $sc ) = @$row;
-    # Do we have a stemma conflict or a distance-tree conflict?
-    my $class = scalar keys %$sc ? 'coincidental' : 'genealogical';
-    print TABLE sprintf( "\t<tr id=\"%s\" class=\"%s\">\n", "variant-$rank", $class );
-    # Table row header should be the graph rank.
-    print TABLE "\t\t<th>$rank</th>\n";
-    my $ctr = 0;
-    foreach my $rdg ( @$readings ) {
-        print TABLE sprintf( "\t\t<td id=\"%s\">%s</td>\n", "item-$rank-$ctr", $rdg );
-        $ctr++;
-    }
-    # Pad out the table - is this necessary I wonder?
-    while( $ctr++ < $html_columns ) {
-        print TABLE "\t\t<td/>\n";
-    }
-    print TABLE "\t</tr>\n";
-}
-print TABLE "</table>\n";
 
 printf( "Ran analysis on %d / %d variant locations\n", scalar @$html_data, $total );
 
