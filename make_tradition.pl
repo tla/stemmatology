@@ -11,15 +11,16 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $HACK ) 
+my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK ) 
     = ( '', '', '', '', 1, 0 );
 
-GetOptions( 'i|in=s'   => \$informat,
-            'b|base=s' => \$inbase,
-            'o|out=s'  => \$outformat,
+GetOptions( 'i|in=s'    => \$informat,
+            'b|base=s'  => \$inbase,
+            'o|out=s'   => \$outformat,
             'l|linear!' => \$linear,
-            'h|help' => \$help,
-            'hack' => \$HACK,
+            'n|name'    => \$name,
+            'h|help'    => \$help,
+            'hack'      => \$HACK,
     );
 
 if( $help ) {
@@ -53,6 +54,7 @@ my %args = ( 'input' => $informat,
              'file' => $input,
              'linear' => $linear );
 $args{'base'} = $inbase if $inbase;
+$args{'name'} = $name if $name;
 my $tradition = Text::Tradition->new( %args );
 
 ### Custom hacking

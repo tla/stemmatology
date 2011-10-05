@@ -17,7 +17,7 @@ merge_base( $graph, 'reference.txt', @apparatus_entries )
 =head1 DESCRIPTION
 
 For an overview of the package, see the documentation for the
-Text::Tradition::Graph module.
+Text::Tradition module.
 
 This module is meant for use with certain of the other Parser classes
 - whenever a list of variants is given with reference to a base text,
@@ -31,9 +31,9 @@ will join those listed variants onto the reference text.
 
 =item B<parse>
 
-parse( $graph, %opts );
+parse( $graph, $opts );
 
-Takes an initialized graph and a set of options, which must include:
+Takes an initialized graph and a hashref of options, which must include:
 - 'base' - the base text referenced by the variants
 - 'format' - the format of the variant list
 - 'data' - the variants, in the given format.
@@ -45,7 +45,8 @@ sub parse {
 
     my $format_mod = 'Text::Tradition::Parser::' . $opts->{'input'};
     load( $format_mod );
-    my @apparatus_entries = $format_mod->can('read')->( $opts->{'file'} );
+    # TODO Handle a string someday if we ever have a format other than KUL
+    my @apparatus_entries = $format_mod->can('read')->( $opts );
     merge_base( $tradition->collation, $opts->{'base'}, @apparatus_entries );
 }
 
@@ -285,65 +286,12 @@ sub merge_base {
     }
 
     ### HACKY HACKY Do some one-off path corrections here.
-    if( $collation->linear ) {
-       my $c = $collation;
-       my $end = $SHORTEND ? $SHORTEND : 155;
-       # Vb11
-       my $path;
-       if( $end > 16 ) {
-           $c->merge_readings( $c->reading('rdg_1/16.3.0'), $c->reading('rdg_1/16.2.1') );
-           $path = $c->tradition->witness('Vb11')->path;
-           splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( 'rdg_1/16.2.2' ) );
-           $path = $c->tradition->witness('Vb11')->uncorrected_path;
-           splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( 'rdg_1/16.2.2' ) );
-       }
-       # What else?
-       # Vb26:
-       $path = $c->tradition->witness('Vb26')->path;
-       splice( @$path, 618, 0, $c->reading('rdg_1/46.1.1') ) if $end > 46;
-       # Vb13:
-       $path = $c->tradition->witness('Vb13')->path;
-       splice( @$path, 782, 0, $c->reading( '58,5' ) ) if $end > 58;
-       $path = $c->tradition->witness('Vb13')->uncorrected_path;
-       splice( @$path, 758, 0, $c->reading( '58,5' ) ) if $end > 58;
-       # Vb20 a.c.: 
-       $path = $c->tradition->witness('Vb20')->uncorrected_path;
-       splice( @$path, 1251, 1, $c->reading( '94,4' ) ) if $end > 94;
-       # Vb5:
-       $path = $c->tradition->witness('Vb5')->path;
-       splice( @$path, 1436, 0, $c->reading('rdg_1/106.5.1') ) if $end > 106;
-       # extraneous:
-       $c->del_reading( 'rdg_2/147.6.13' );
-       $c->del_reading( 'rdg_2/147.6.14' );
-       $c->del_reading( 'rdg_2/147.6.15' );
-       
-    } else {
-       my $c = $collation;
-       my $end = $SHORTEND ? $SHORTEND : 155;
-       # Vb5:
-       my $path = $c->tradition->witness('Vb5')->path;
-       splice( @$path, 1436, 0, $c->reading('106,14') ) if $end > 106;
-       # Vb11: 
-       $path = $c->tradition->witness('Vb11')->path;
-       if( $end > 16 ) {
-           $c->merge_readings( $c->reading('rdg_1/16.3.0'), $c->reading('rdg_1/16.2.1') );
-           splice( @$path, 209, 2, $c->reading( 'rdg_1/16.3.0' ), $c->reading( '16,1' ) );
-       }
-       # Vb13:
-       $path = $c->tradition->witness('Vb13')->path;
-       splice( @$path, 782, 0, $c->reading( '58,5' ) ) if $end > 58;
-       $path = $c->tradition->witness('Vb13')->uncorrected_path;
-       splice( @$path, 758, 0, $c->reading( '58,5' ) ) if $end > 58;
-       # Vb20 a.c.: 
-       $path = $c->tradition->witness('Vb20')->uncorrected_path;
-       splice( @$path, 1251, 1, $c->reading( '94,4' ) ) if $end > 94;
-       # Vb26: 
-       $path = $c->tradition->witness('Vb26')->path;
-       splice( @$path, 618, 0, $c->reading('46,2') ) if $end > 46;
-    }
+    require( 'data/boodts/s158.HACK' );
+    KUL::HACK::pre_path_hack( $collation );
 
     # Now walk paths and calculate positional rank.
     $collation->make_witness_paths();
+    KUL::HACK::post_path_hack( $collation );
     # Have to check relationship validity at this point, because before that
     # we had no paths.
 #     foreach my $rel ( $collation->relationships ) {
