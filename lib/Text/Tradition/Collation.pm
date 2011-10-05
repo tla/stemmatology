@@ -313,7 +313,10 @@ sub as_dot {
     my( $self, $view ) = @_;
     $view = 'path' unless $view;
     # TODO consider making some of these things configurable
-    my $dot = sprintf( "digraph %s {\n", $self->tradition->name );
+    my $graph_name = $self->tradition->name;
+    $graph_name =~ s/[^\w\s]//g;
+    $graph_name = join( '_', split( /\s+/, $graph_name ) );
+    my $dot = sprintf( "digraph %s {\n", $graph_name );
     $dot .= "\tedge [ arrowhead=open ];\n";
     $dot .= "\tgraph [ rankdir=LR ];\n";
     $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
@@ -556,6 +559,7 @@ sub _make_witness_row {
     foreach my $rdg ( @$path ) {
         my $rtext = $rdg->text;
         $rtext = '#LACUNA#' if $rdg->is_lacuna;
+        # print STDERR "No rank for " . $rdg->name . "\n" unless defined $rdg->rank;
         $char_hash{$rdg->rank} = $noderefs ? $rdg : $rtext;
     }
     my @row = map { $char_hash{$_} } @$positions;
@@ -988,7 +992,13 @@ sub calculate_ranks {
     }
     # Transfer our rankings from the topological graph to the real one.
     foreach my $r ( $self->readings ) {
-        $r->rank( $node_ranks->{$rel_containers{$r->name}} );
+        if( defined $node_ranks->{$rel_containers{$r->name}} ) {
+            $r->rank( $node_ranks->{$rel_containers{$r->name}} );
+        } else {
+            $DB::single = 1;
+            die "No rank calculated for node " . $r->name 
+                . " - do you have a cycle in the graph?";
+        }
     }
 }
 
