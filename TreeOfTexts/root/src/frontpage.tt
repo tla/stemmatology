@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" href="[% c.uri_for('css/cupertino/jquery-ui-1.8.13.custom.css') %]" rel="stylesheet" />
+    [% INCLUDE style.tt2 %]
+  </head>
+  <body>
+    <h1>Stexaminer</h1>
+    <h2>Choose a text to examine</h2>
+    <div id="text_list">
+      <ul>
+[% SET i = 0 -%]
+[% FOREACH t IN texts -%]
+        <li><a href="view_text?textid=[% i %]">[% t %]</a></li>
+[% i = i + 1 -%]
+[% END -%]
+     </table>
+    </div>
+  </body>
+</html>

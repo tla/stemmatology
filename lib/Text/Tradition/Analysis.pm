@@ -9,7 +9,10 @@ sub new {
 	my( $class, $args ) = @_;
 	my $self = {};
 	bless( $self, $class );	
-	$self->run_analysis( $args->{'file'}, $args->{'stemmadot'} );
+	$self->{'data'} = [];
+	foreach my $t ( @{$args->{'traditions'}} ) {
+	    $self->run_analysis( $t->{'file'}, $t->{'stemmadot'} );
+	}
 	return $self;
 }
 
@@ -18,6 +21,7 @@ sub run_analysis {
 	# What we will return
 	my $svg;
 	my $variants = [];
+	my $data = {};
 	
 	# Read in the file and stemma	
 	my $tradition = Text::Tradition->new( 
@@ -25,17 +29,15 @@ sub run_analysis {
 		'file'   => $file,
 		'linear' => 1,
 		);
-	$self->{'title'} = $tradition->name;
+	$data->{'title'} = $tradition->name;
 	
 	my $stemma = Text::Tradition::Stemma->new(
 		'collation' => $tradition->collation,
 		'dot' => $stemmadot,
 		);
 	# We will return the stemma picture
-	$svg = $stemma->as_svg;
-	### DIRTY HACK
-	$svg =~ s/transform=\"scale\(1 1\)/transform=\"scale\(0.7 0.7\)/;
-	$self->{'svg'} = $svg;
+	$svg = $stemma->as_svg( { size => "8,7.5" } );;
+	$data->{'svg'} = $svg;
 	
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.
@@ -131,10 +133,11 @@ sub run_analysis {
 	}
 	
 	# Populate self with our analysis data.
-	$self->{'variants'} = $variants;
-	$self->{'variant_count'} = $total;
-	$self->{'conflict_count'} = $conflicts;
-	$self->{'genealogical_count'} = $genealogical;
+	$data->{'variants'} = $variants;
+	$data->{'variant_count'} = $total;
+	$data->{'conflict_count'} = $conflicts;
+	$data->{'genealogical_count'} = $genealogical;
+	push( @{$self->{'data'}}, $data );
 }
 
 # variant_row -> genealogical

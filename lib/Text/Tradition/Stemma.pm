@@ -83,7 +83,7 @@ after 'graph' => sub {
 
 # Render the stemma as SVG.
 sub as_svg {
-    my $self = shift;
+    my( $self, $opts ) = @_;
     # TODO add options for display, someday
     my $dgraph = Graph::Convert->as_graph_easy( $self->graph );
     # Set some class display attributes for 'hypothetical' and 'extant' nodes
@@ -98,13 +98,19 @@ sub as_svg {
     }
     
     # Render to svg via graphviz
+    my @lines = split( /\n/, $dgraph->as_graphviz() );
+    # Add the size attribute
+    if( $opts->{'size'} ) {
+        my $sizeline = "  graph [ size=\"" . $opts->{'size'} . "\" ]";
+        splice( @lines, 1, 0, $sizeline );
+    }
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
-    print $dotfile $dgraph->as_graphviz();
+    print $dotfile join( "\n", @lines );
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     $svg = decode_utf8( $svg );

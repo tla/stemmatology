@@ -8,8 +8,8 @@ body {
 }
 #svg_graph {
     float: left;
-    width: 450px;
-    height: 550px;
+    width: 600pt;
+    height: 550pt;
     border-right: 1px #c6dcf1 solid;
 }
 #variants_table {

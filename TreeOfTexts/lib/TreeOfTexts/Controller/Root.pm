@@ -31,15 +31,24 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
     my $m = $c->model('Analysis');
-	$c->stash->{svg} = $m->{'svg'};
-	$c->stash->{variants} = $m->{'variants'};
-	$c->stash->{text_title} = $m->{'title'};
-	$c->stash->{total} = $m->{'variant_count'};
-	$c->stash->{genealogical} = $m->{'genealogical_count'};
-	$c->stash->{conflict} = $m->{'conflict_count'};
-	$c->stash->{template} = 'index.tt'; 
+    my $i = 0;
+    my @all_texts = map { $_->{'title'} } @{$m->{'data'}};
+    $c->stash->{texts} = \@all_texts;
+    $c->stash->{template} = 'frontpage.tt';
 }
 
+sub view_text :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model('Analysis');
+    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
+	$c->stash->{svg} = $t->{'svg'};
+	$c->stash->{variants} = $t->{'variants'};
+	$c->stash->{text_title} = $t->{'title'};
+	$c->stash->{total} = $t->{'variant_count'};
+	$c->stash->{genealogical} = $t->{'genealogical_count'};
+	$c->stash->{conflict} = $t->{'conflict_count'};
+	$c->stash->{template} = 'index.tt'; 
+}
 =head2 default
 
 Standard 404 error page
