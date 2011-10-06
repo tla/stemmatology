@@ -32,7 +32,7 @@ function color_nodes( column_index, arr_node_ids, arr_greynode_ids ) {
   jQuery.each( arr_node_ids, function(index,value) {
     $('.node').children('title').filter( function(index) {
       return $(this).text() == value;
-    }).siblings('ellipse, polygon').each( function( index ) {
+    }).siblings('ellipse').each( function( index ) {
         $(this).attr( {stroke:'black', fill:colors[column_index-1]} );
       });
   });

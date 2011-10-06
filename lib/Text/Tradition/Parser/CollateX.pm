@@ -167,7 +167,7 @@ sub parse {
     populate_witness_path( $tradition );
 
     # Rank the readings.
-    $collation->calculate_ranks();
+    $collation->calculate_ranks() if $collation->linear;
 }
     
 =head1 BUGS / TODO

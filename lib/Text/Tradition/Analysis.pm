@@ -102,6 +102,7 @@ sub run_analysis {
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
 		# TODO: deal with a.c. reading logic
+		$DB::single = 1 if $rank == 25;
 		my $variant_row = analyze_variant_location( $group_readings, $groups, 
 		    $stemma->apsp, $lacunose );
 		$variant_row->{'id'} = $rank;
@@ -150,10 +151,14 @@ sub analyze_variant_location {
     my %missing;
     map { $missing{$_} = 1 } @$lacunose;
     my $variant_row = { 'readings' => [] };
+    # Mark each ms as in its own group, first.
+    foreach my $g ( @$groups ) {
+        my $gst = wit_stringify( $g );
+        map { $contig{$_} = $gst } @$g;
+    }
     foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
         my @members = @$g;
         my $gst = wit_stringify( $g ); # $gst is now the name of this group.
-        map { $contig{$_} = $gst } @members; # All members are in this group.
         while( @members ) {
             # Gather the list of vertices that are needed to join all members.
             my $curr = pop @members;

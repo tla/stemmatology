@@ -12,7 +12,7 @@ binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
 my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK ) 
-    = ( '', '', '', '', 1, 0 );
+    = ( '', '', '', '', 0, 0 );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
