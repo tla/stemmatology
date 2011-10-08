@@ -23,6 +23,8 @@ TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
 
 =head1 METHODS
 
+=cut
+
 sub get_graph :Local {
 	my( $self, $c ) = @_;
 	# If called interactively, we have params 'display', 'output', 'witnesses'
