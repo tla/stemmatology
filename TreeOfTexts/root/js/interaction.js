@@ -11,6 +11,7 @@ $(document).ready(function() {
     $('td.active_variant_cell').removeClass('active_variant_cell');
     row_triggered = false;
   });
+  $('svg').width('485px');
 })
 function color_nodes( column_index, arr_node_ids, arr_greynode_ids ) {
   if( !row_triggered ) {
