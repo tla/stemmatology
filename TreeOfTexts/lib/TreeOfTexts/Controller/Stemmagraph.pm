@@ -1,6 +1,7 @@
 package TreeOfTexts::Controller::Stemmagraph;
 use Moose;
 use namespace::autoclean;
+use File::Temp;
 use Text::Tradition::Collation;
 use Text::Tradition::Stemma;
 
@@ -39,12 +40,24 @@ sub get_graph :Local {
 	# If called non-interactively, we look at headers and content.
 	# The body is actually a File::Temp object; this is undocumented but 
 	# so it seems to be.
-	my $dot_fh = $c->request->body;
+	my $dotfile;
+	$DB::single = 1;
+	my $must_unlink = 0;
+	if( $c->request->params->{'dot'} ) {
+	    # Make a File::Temp object.
+	    my $tmpfile = File::Temp->new( UNLINK => 0 );
+	    print $tmpfile $c->request->params->{'dot'};
+	    $dotfile = $tmpfile->filename;
+	    $must_unlink = 1;
+	} else {
+	    $dotfile = $c->request->body;
+	}
 	my $format = 'svg';
 
     # Render the dot in the given format.
     my $collation = Text::Tradition::Collation->new();
-    my $stemma = Text::Tradition::Stemma->new( 'collation' => $collation, 'dot' => $dot_fh );
+    my $stemma = Text::Tradition::Stemma->new( 'collation' => $collation, 'dot' => $dotfile );
+    unlink( $dotfile ) if $must_unlink;
     $c->stash->{result} = $stemma->as_svg;
     $c->forward( "View::SVG" );
 }
