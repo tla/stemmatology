@@ -8,8 +8,8 @@ body {
 }
 #svg_graph {
     float: left;
-    width: 600pt;
-    height: 550pt;
+    width: 500px;
+    height: 450px;
     border-right: 1px #c6dcf1 solid;
 }
 #variants_table {
@@ -48,10 +48,11 @@ h2 {
     background: #ff6666;
 }
 .active_variant_row {
-    background: #c6dcf1;
+    #background: #c6dcf1;
+    font-style: italic;
 }
 .active_variant_cell {
-    background: #e8f1fe;
+    #background: #e8f1fe;
 }
 .cellb0 {
     border-right: 20px solid #ffeeaa;

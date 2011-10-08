@@ -22,17 +22,6 @@ TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
 
 =head1 METHODS
 
-=head2 index
-
-The root page (/)
-
-=cut
-
-sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
-    $c->stash->{template} = 'dotinput.tt2';  
-}
-
 sub get_graph :Local {
 	my( $self, $c ) = @_;
 	# If called interactively, we have params 'display', 'output', 'witnesses'
