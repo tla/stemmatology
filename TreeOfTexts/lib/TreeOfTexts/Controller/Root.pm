@@ -62,8 +62,8 @@ sub view_svg :Local {
     my( $self, $c ) = @_;
     my $m = $c->model( 'Analysis' );
     my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
-    $c->stash->{result} = $t->{'svg'};
-    $c->forward( "View::SVG" );
+   	$c->stash->{svg} = $t->{'svg'};
+    $c->stash->{template} = 'stemma_gadget.tt';
 }
 
 
