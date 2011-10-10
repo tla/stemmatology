@@ -49,6 +49,24 @@ sub view_text :Local {
 	$c->stash->{conflict} = $t->{'conflict_count'};
 	$c->stash->{template} = 'index.tt'; 
 }
+
+sub view_table :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model( 'Analysis' );
+    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
+   	$c->stash->{variants} = $t->{'variants'};
+    $c->stash->{template} = 'table_gadget.tt';
+}
+
+sub view_svg :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model( 'Analysis' );
+    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
+    $c->stash->{result} = $t->{'svg'};
+    $c->forward( "View::SVG" );
+}
+
+
 =head2 default
 
 Standard 404 error page
