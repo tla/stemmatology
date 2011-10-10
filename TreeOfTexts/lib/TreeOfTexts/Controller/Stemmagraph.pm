@@ -53,18 +53,6 @@ sub get_graph :Local {
     $c->forward( "View::SVG" );
 }
 
-=head2 default
-
-Standard 404 error page
-
-=cut
-
-sub default :Path {
-    my ( $self, $c ) = @_;
-    $c->response->body( 'Page not found' );
-    $c->response->status(404);
-}
-
 =head2 end
 
 Attempt to render a view, if needed.
