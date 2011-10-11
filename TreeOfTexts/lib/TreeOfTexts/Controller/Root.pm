@@ -31,7 +31,6 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
     my $m = $c->model('Analysis');
-    my $i = 0;
     my @all_texts = map { $_->{'title'} } @{$m->{'data'}};
     $c->stash->{texts} = \@all_texts;
     $c->stash->{template} = 'frontpage.tt';
@@ -50,20 +49,40 @@ sub view_text :Local {
 	$c->stash->{template} = 'index.tt'; 
 }
 
+## OpenSocial gadget URL calls
+
+sub os_index :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model('Analysis');
+    my @all_texts = map { $_->{'title'} } @{$m->{'data'}};
+    $c->stash->{texts} = \@all_texts;
+    $c->stash->{template} = 'index_gadget.tt';    
+}
+
 sub view_table :Local {
+    my( $self, $c ) = @_;
+    $c->stash->{template} = 'table_gadget.tt';
+}
+
+sub view_stemma :Local {
+    my( $self, $c ) = @_;
+    $c->stash->{template} = 'stemma_gadget.tt';
+}
+
+sub table_service :Local {
     my( $self, $c ) = @_;
     my $m = $c->model( 'Analysis' );
     my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
    	$c->stash->{variants} = $t->{'variants'};
-    $c->stash->{template} = 'table_gadget.tt';
+    $c->stash->{template} = 'table_service.tt';
 }
 
-sub view_svg :Local {
+sub svg_service :Local {
     my( $self, $c ) = @_;
     my $m = $c->model( 'Analysis' );
     my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
    	$c->stash->{svg} = $t->{'svg'};
-    $c->stash->{template} = 'stemma_gadget.tt';
+    $c->stash->{template} = 'svg_service.tt';
 }
 
 

@@ -1,16 +1,121 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.8.10.custom.min.js"></script>
-    <script type="text/javascript" src="js/interaction.js"></script>
-    <link type="text/css" href="[% c.uri_for('css/cupertino/jquery-ui-1.8.13.custom.css') %]" rel="stylesheet" />
-    [% INCLUDE style.tt2 %]
-  </head>
-  <body>
-    <div id="svg_graph">
-      [% svg %]
-    </div>
-  </body>
-</html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+	title="SVG Viewer"
+	author_email="taralee@alum.mit.edu"
+	author="Tara Andrews"
+	description="SVG Viewer"
+	screenshot="http://crosswire.org/images/crosswire.gif"
+	thumbnail="http://crosswire.org/images/crosswire.gif"
+	scrolling="true"
+   >
+  <Optional feature="dynamic-height"/>
+  <Optional feature="pubsub-2">
+  <Param name="topics">
+    <![CDATA[ 
+    <Topic title="Load with DOT data" name="interedition.svg.dot.selected"
+            description="A DOT file was selected by the user" type="string" subscribe="true"/>
+    ]]>
+  </Param>
+</Optional>
+</ModulePrefs>
+<Content type="html">
+
+<![CDATA[
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript" src="js/svg_interaction.js"></script>
+<script type="text/javascript">
+var zoom = 100;
+
+function zoomSVG(zoomLevel) {
+	$('svg').width(zoomLevel+'%');
+	$('svg').height(zoomLevel+'%');
+}
+$(document).ready(function() {
+
+	$('#doZoomOut').click(function() {
+		zoom -= 10;
+		zoomSVG(zoom);
+		return false;
+	});
+
+	$('#doZoomIn').click(function() {
+		zoom += 10;
+		zoomSVG(zoom);
+		return false;
+	});
+
+});
+
+function displaySVG(svgData) {
+	$('#svg_graph').html(svgData);
+	zoom = 100;
+	zoomSVG(zoom);
+}
+
+function processDOT(dotData) {
+
+	// say we're loading...
+	$('#svg_graph').html($('#loading').html());
+
+/*
+	// New cool way to call our service..
+	// but nothing seems to support it,
+	// or we're ignorant,
+	// or both.
+	var params = {
+		href   : "http://eccentricity.org:3000/get_graph",
+		headers: { 'Content-Type' : ['text/plain'],
+				 'Accept'       : ['image/svg+xml']
+			    },
+		body   : dotData
+	};
+	var httpCall = osapi.http.post(params);
+	httpCall.execute(function(result) { displaySVG(result.content); });
+*/
+	// Old way to call our service, posting a param
+	// yeah, sometimes old is good.
+
+	var params = {};
+	var postData = {};
+
+	postData.dot = dotData;
+
+	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+	params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+	var url = "http://eccentricity.org:3000/get_graph";
+
+	gadgets.io.makeRequest(url,
+		function (o) {
+			displaySVG(o.text);
+		}, params);
+}
+
+
+
+function dot_selected_callback(topic, data, subscriberData) {
+	processDOT(data);
+}
+
+</script>
+
+
+<style type="text/css" media="screen">
+</style>
+</head>
+<body>
+<button id="doZoomIn"><span> + </span></button>
+<button id="doZoomOut"><span> - </span></button>
+    <div id="svg_graph"/>
+</body>
+
+<div style="display:none;">
+<div id="loading" style="display:none;"><center><img src="loading.gif"/></center><br/><center><h1>Loading.  Please wait...</h1></center>
+</div>
+</div>
+]]>
+</Content>
+</Module>
+
+
