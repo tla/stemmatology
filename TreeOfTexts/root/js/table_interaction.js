@@ -36,6 +36,15 @@ function load_tradition_table( topic, data, subscriberData ) {
 	gadgets.io.makeRequest(url,
 		function (o) {
 			$('#variants_table').html(o.text);
+            $('.rowid').click( function() {
+            row_triggered = true;
+            de_color_nodes();
+            $('tr.active_variant_row').children('td').removeClass('cellb0 cellb1 cellb2 cellb3 cellb4 cellb5 cellb6 cellb7'); 
+            $(this).parent().nextAll('.clickable').children('span').click();
+            $('td.active_variant_cell').removeClass('active_variant_cell');
+            row_triggered = false;
+      });
+
 		}, params);
 	
 }

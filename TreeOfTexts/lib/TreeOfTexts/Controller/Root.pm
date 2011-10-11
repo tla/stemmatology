@@ -51,6 +51,7 @@ sub view_text :Local {
 
 ## OpenSocial gadget URL calls
 
+# Render the template for the text index gadget.
 sub os_index :Local {
     my( $self, $c ) = @_;
     my $m = $c->model('Analysis');
@@ -59,16 +60,19 @@ sub os_index :Local {
     $c->stash->{template} = 'index_gadget.tt';    
 }
 
+# Render the template for the Table gadget.
 sub view_table :Local {
     my( $self, $c ) = @_;
     $c->stash->{template} = 'table_gadget.tt';
 }
 
+# Render the template for the SVG viewer gadget.
 sub view_stemma :Local {
     my( $self, $c ) = @_;
     $c->stash->{template} = 'stemma_gadget.tt';
 }
 
+# Return the table for the given text ID.
 sub table_service :Local {
     my( $self, $c ) = @_;
     my $m = $c->model( 'Analysis' );
@@ -77,12 +81,13 @@ sub table_service :Local {
     $c->stash->{template} = 'table_service.tt';
 }
 
+# Return the stemma SVG for the given text ID.
 sub svg_service :Local {
     my( $self, $c ) = @_;
     my $m = $c->model( 'Analysis' );
     my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
-   	$c->stash->{svg} = $t->{'svg'};
-    $c->stash->{template} = 'svg_service.tt';
+    $c->stash->{result} = $t->{'svg'};
+    $c->forward( "View::SVG" );
 }
 
 
