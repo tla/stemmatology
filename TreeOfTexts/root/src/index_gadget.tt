@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+	title="Tradition Chooser"
+	author_email="taralee@alum.mit.edu"
+	author="Tara Andrews"
+	description="Tradition Chooser"
+	screenshot="http://crosswire.org/images/crosswire.gif"
+	thumbnail="http://crosswire.org/images/crosswire.gif"
+	scrolling="true"
+   >
+  <Optional feature="dynamic-height"/>
+  <Optional feature="pubsub-2">
+  <Param name="topics">
+    <![CDATA[ 
+    <Topic title="Load with DOT data" name="interedition.tradition.selected"
+            description="A tradition was selected by the user" type="string" subscribe="true"/>
+    ]]>
+  </Param>
+</Optional>
+</ModulePrefs>
+<Content type="html">
+
+<![CDATA[
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" href="[% c.uri_for('css/cupertino/jquery-ui-1.8.13.custom.css') %]" rel="stylesheet" />
+    [% INCLUDE style.tt2 %]
+  </head>
+  <body>
+    <h1>Stexaminer</h1>
+    <h2>Choose a text to examine</h2>
+    <div id="text_list">
+      <ul>
+[% SET i = 0 -%]
+[% FOREACH t IN texts -%]
+        <li><a onclick="gadgets.Hub.publish('interedition.tradition.selected', '[% i %]'); return false;" href="#null">[% t %]</a></li>
+[% i = i + 1 -%]
+[% END -%]
+     </table>
+    </div>
+  </body>
+
+]]>
+</Content>
+</Module>
+

@@ -1,0 +1,21 @@
+      <table>
+[% FOREACH row IN variants -%]
+[% INCLUDE variantrow %]
+[% END -%]
+     </table>
+
+[% BLOCK variantrow -%]
+[% SET rowclass = 'class="genealogical"' IF row.genealogical -%]
+[% SET rowclass = 'class="coincidental"' UNLESS row.genealogical -%]
+        <tr [% rowclass %]>
+          <th><span class="rowid">[% row.id %]</span></th>
+[% FOREACH reading IN row.readings -%]
+[% SET cellclass = 'clickable conflict' IF reading.conflict -%]
+[% SET cellclass = 'clickable' IF !reading.conflict -%]
+          <td class="[% cellclass %]"><span onclick="color_nodes($(this).parent().index(), [% reading.group %], [% reading.missing %]);$(this).parents('tr').addClass('active_variant_row');$(this).parent().addClass('active_variant_cell cellb'+($(this).parent().index()-1))">[% reading.text %]</span></td>
+[% END -%]
+[% FILTER repeat( row.empty ) -%]
+          <td/>
+[% END -%]
+        </tr>
+[% END -%]
