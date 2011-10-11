@@ -13,8 +13,8 @@
   <Optional feature="pubsub-2">
   <Param name="topics">
     <![CDATA[ 
-    <Topic title="Load with DOT data" name="interedition.svg.dot.selected"
-            description="A DOT file was selected by the user" type="string" subscribe="true"/>
+    <Topic title="Load SVG stemma" name="interedition.svg.dot.selected"
+            description="A stemma file was selected by the user" type="string" subscribe="true"/>
     ]]>
   </Param>
 </Optional>
