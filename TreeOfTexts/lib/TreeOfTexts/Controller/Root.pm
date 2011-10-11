@@ -60,18 +60,6 @@ sub os_index :Local {
     $c->stash->{template} = 'index_gadget.tt';    
 }
 
-# Render the template for the Table gadget.
-sub view_table :Local {
-    my( $self, $c ) = @_;
-    $c->stash->{template} = 'table_gadget.tt';
-}
-
-# Render the template for the SVG viewer gadget.
-sub view_stemma :Local {
-    my( $self, $c ) = @_;
-    $c->stash->{template} = 'stemma_gadget.tt';
-}
-
 # Return the table for the given text ID.
 sub table_service :Local {
     my( $self, $c ) = @_;

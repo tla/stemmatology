@@ -40,7 +40,7 @@ __PACKAGE__->config(
     name => 'TreeOfTexts',
     static => {
         include_path => [
-            '/static',
+            TreeOfTexts->config->{root} . "/static",
             TreeOfTexts->config->{root} ]
             },
     # Disable deprecated behavior needed by old applications
