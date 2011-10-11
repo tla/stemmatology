@@ -23,10 +23,12 @@
 
 <![CDATA[
 <head>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.xmlns.js"></script>
 <script type="text/javascript" src="js/svg_interaction.js"></script>
 <script type="text/javascript">
 var zoom = 100;
+$.xmlns["svg"] = "http://www.w3.org/2000/svg"
 
 function zoomSVG(zoomLevel) {
 	$('svg').width(zoomLevel+'%');
@@ -96,6 +98,31 @@ function processDOT(dotData) {
 
 function dot_selected_callback(topic, data, subscriberData) {
 	processDOT(data);
+}
+
+function de_color_nodes() {
+    $('ellipse').attr( {stroke:'black', fill:'#fff'} );
+    $('.node').children('polygon').attr( {stroke:'#fff', fill:'#fff'} );
+    $('.node').children('text').attr( {stroke:'none', fill:'#000'} );
+}
+
+function do_color_nodes( topic, data, subscriberData ) {
+ // data = {column_index, arr_node_ids, arr_greynode_ids}
+    jQuery.each( data.arr_greynode_ids, function(index,value) {
+      nodes = $('.node').children("svg|title").filter( function(index) {
+        return $(this).text() == value;
+      })
+      nodes.siblings('svg|ellipse, svg|polygon, svg|text').each( function( index ) {
+          $(this).attr( {stroke:'#ddd', fill:'#f8f8f8'} );
+        });
+    });
+    jQuery.each( data.arr_node_ids, function(index,value) {
+      $('.node').children('svg|title').filter( function(index) {
+        return $(this).text() == value;
+      }).siblings('svg|ellipse').each( function( index ) {
+          $(this).attr( {stroke:'black', fill:colors[data.column_index-1]} );
+        });
+    });
 }
 
 </script>
