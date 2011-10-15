@@ -14,7 +14,7 @@ function load_stemma_svg( topic, data, subscriberData ) {
 
 	params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
 	params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
-	var url = "http://localhost:3000/svg_service";
+	var url = "http://eccentricity.org:3000/svg_service";
 
 	gadgets.io.makeRequest(url,
 		function (o) {
