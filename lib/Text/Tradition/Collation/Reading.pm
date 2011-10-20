@@ -207,13 +207,24 @@ sub neighbor_readings {
 
 # Returns all readings related to the one we've got.
 sub related_readings {
-    my( $self, $colocated ) = @_;
+    my( $self, $colocated, $queried ) = @_;
+    $queried = { $self->name => 1 } unless $queried;
     my @related;
+    # Get the nodes directly related to this one
     foreach my $e ( $self->edges ) {
         next unless $e->isa( 'Text::Tradition::Collation::Relationship' );
         next if $colocated && $e->type eq 'repetition';
-        push( @related, $e->from eq $self ? $e->to : $e->from );
+        my $n = $e->from eq $self ? $e->to : $e->from;
+        next if $queried->{$n->name};
+        push( @related, $n );
     }
+    # Now query those nodes for their relations, recursively
+    map { $queried->{$_->name} = 1 } @related;
+    my @also_related;
+    foreach ( @related ) {
+        push( @also_related, $_->related_readings( $colocated, $queried ) );
+    }
+    push( @related, @also_related );
     return @related;
 }
 
