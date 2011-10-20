@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stexaminer mark II</title>
+<!-- default container look and feel -->
+<link rel="stylesheet" href="http://eccentricity.org:8080/container/gadgets.css">
+<link type="text/css" href="/css/cupertino/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+<link type="text/css" href="/css/style.css" rel="stylesheet" />
+<script type="text/javascript" src="http://eccentricity.org:8080/gadgets/js/shindig-container:pubsub-2.js?c=1&debug=1"></script>
+<script type="text/javascript">
+var my = {};
+
+my.gadgetSpecUrls = [
+  '[% c.uri_for( "os_index" ) %]',
+  '[% c.uri_for( "view_table.xml" ) %]',
+  '[% c.uri_for( "view_stemma.xml" ) %]',
+];
+
+my.LayoutManager = function() {
+  shindig.LayoutManager.call(this);
+};
+
+my.LayoutManager.inherits(shindig.LayoutManager);
+
+my.LayoutManager.prototype.getGadgetChrome = function(gadget) {
+  var chromeId = 'gadget-chrome-' + gadget.id;
+  return document.getElementById(chromeId);
+};
+
+my.init = function() {
+  gadgets.pubsub2router.init(
+    {
+      onSubscribe: function(topic, container) {
+        return true;
+      },
+      onUnsubscribe: function(topic, container) {
+      },
+      onPublish: function(topic, data, pcont, scont) {
+        return true;
+      }
+    });
+  shindig.container.layoutManager = new my.LayoutManager();
+};
+
+my.renderGadgets = function() {
+  for (var i = 0; i < my.gadgetSpecUrls.length; ++i) {
+    var gadget = shindig.container.createGadget(
+        {specUrl: my.gadgetSpecUrls[i], debug: true});
+    shindig.container.addGadget(gadget);
+    shindig.container.renderGadget(gadget);
+  }
+};
+
+</script>
+</head>
+<body onLoad="my.init();my.renderGadgets();">
+  <h1>Stexaminer</h1>
+  <h2>Choose a text to examine</h2>
+  <div id="gadget-chrome-0" class="gadgets-gadget-chrome"></div>
+  <div id="gadget-chrome-1" class="gadgets-gadget-chrome"></div>
+  <div id="gadget-chrome-2" class="gadgets-gadget-chrome"></div>
+</body>
+</html>
