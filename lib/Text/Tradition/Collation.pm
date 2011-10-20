@@ -246,12 +246,12 @@ sub relationship_valid {
     # The lists of 'in' and 'out' should not have any element that appears
     # in 'proposed_related'.
     foreach my $pr ( @proposed_related ) {
-        foreach my $e ( $pr->incoming ) {
+        foreach my $e ( grep { $_->sub_class eq 'path' } $pr->incoming ) {
             if( exists $pr_ids{ $e->from->name } ) {
                 return 0;
             }
         }
-        foreach my $e ( $pr->outgoing ) {
+        foreach my $e ( grep { $_->sub_class eq 'path' } $pr->outgoing ) {
             if( exists $pr_ids{ $e->to->name } ) {
                 return 0;
             }
