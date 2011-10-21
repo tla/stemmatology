@@ -53,6 +53,11 @@ sub run_analysis {
 	
 	# Strip the list of sigla and save it for correlation to the readings.
 	my $col_wits = shift @$all_wits_table;
+	# Any witness in the stemma that has no row should be noted.
+    foreach ( @$col_wits ) {
+        $wits->{$_}++;
+    }
+    my @not_collated = grep { $wits->{$_} == 1 } keys %$wits;	
 	
 	# We will return a data structure, an array for each row that looks like:
 	# { id = X, genealogical = Y, readings = [ text = X, group = Y], empty = N }
@@ -61,7 +66,7 @@ sub run_analysis {
 		my $rdg_wits = {};
 		my $col_rdgs = shift @$all_wits_table;
 		my $rank;
-		my $lacunose = [];
+		my $lacunose = [ @not_collated ];
 		foreach my $j ( 0 .. $#{$col_rdgs} ) {
 			my $rdg = $col_rdgs->[$j];
 			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
