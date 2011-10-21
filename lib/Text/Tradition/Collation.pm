@@ -528,7 +528,7 @@ sub as_csv {
 # in the table are the nodes or simply their readings.
 
 sub make_alignment_table {
-    my( $self, $noderefs ) = @_;
+    my( $self, $noderefs, $include ) = @_;
     unless( $self->linear ) {
         warn "Need a linear graph in order to make an alignment table";
         return;
@@ -547,8 +547,19 @@ sub make_alignment_table {
         }           
     }
 
+    if( $include ) {
+        my $winnowed = [];
+        # Winnow out the rows for any witness not included.
+        foreach my $row ( @$table ) {
+            next unless $include->{$row->[0]};
+            push( @$winnowed, $row );
+        }
+        $table = $winnowed;
+    }
+
     # Return a table where the witnesses read in columns rather than rows.
     my $turned = _turn_table( $table );
+    # TODO We should really go through and delete empty rows.
     return $turned;
 }
 

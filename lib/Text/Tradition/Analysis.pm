@@ -41,8 +41,9 @@ sub run_analysis {
 	
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.
-	
-	my $all_wits_table = $tradition->collation->make_alignment_table( 'refs' );
+	my $wits = {};
+	map { $wits->{$_} = 1 } $stemma->witnesses;
+	my $all_wits_table = $tradition->collation->make_alignment_table( 'refs', $wits );
 	
 	# For each column in the alignment table, we want to see if the existing
 	# groupings of witnesses match our stemma hypothesis. We also want, at the
@@ -104,7 +105,7 @@ sub run_analysis {
 		# TODO: deal with a.c. reading logic
 		$DB::single = 1 if $rank == 25;
 		my $variant_row = analyze_variant_location( $group_readings, $groups, 
-		    $stemma->apsp, $lacunose );
+		    $stemma->graph, $lacunose );
 		$variant_row->{'id'} = $rank;
 		$genealogical++ if $variant_row->{'genealogical'};
 		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
@@ -113,8 +114,7 @@ sub run_analysis {
 # 		my @trees = @{$stemma->distance_trees};
 # 		if( @trees ) {
 #             foreach my $tree ( 0 .. $#trees ) {
-#                 my $dc = analyze_variant_location( $group_readings, $groups,    
-#                                                    $stemma->distance_apsps->[$tree] );
+#                 my $dc = analyze_variant_location( $group_readings, $groups, $tree );
 #                 foreach my $rdg ( keys %$dc ) {
 #                     my $var = $dc->{$rdg};
 #                     # TODO Do something with this
@@ -145,7 +145,7 @@ sub run_analysis {
 #             -> readings [ { text, group, conflict, missing } ]
 
 sub analyze_variant_location {
-    my( $group_readings, $groups, $apsp, $lacunose ) = @_;
+    my( $group_readings, $groups, $graph, $lacunose ) = @_;
     my %contig;
     my $conflict = {};
     my %missing;
@@ -157,20 +157,32 @@ sub analyze_variant_location {
         map { $contig{$_} = $gst } @$g;
     }
     foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
-        my @members = @$g;
-        my $gst = wit_stringify( $g ); # $gst is now the name of this group.
-        while( @members ) {
-            # Gather the list of vertices that are needed to join all members.
-            my $curr = pop @members;
-            foreach my $m ( @members ) {
-                foreach my $v ( $apsp->path_vertices( $curr, $m ) ) {
-                    $contig{$v} = $gst unless exists $contig{$v};
-                    next if $contig{$v} eq $gst;
-                    # Record what is conflicting. TODO do we use this?
-                    $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$v}};
-                }
+        my $gst = wit_stringify( $g );
+        # Copy the graph, and delete all non-members from the new graph.
+        my $part = $graph->undirected_copy;
+        map { $part->delete_vertex( $_ ) 
+                if $contig{$_} && $contig{$_} ne $gst } $graph->vertices;
+        # Now all the members of the group should still be reachable 
+        # from the first member. 
+        my %reachable = ( $g->[0] => 1 );       
+        map { $reachable{$_} = 1 } $part->all_reachable( $g->[0] );
+
+        # ...and none of these nodes should be marked as being in another 
+        # group.
+        foreach ( keys %reachable ) {
+            if( $contig{$_} && $contig{$_} ne $gst ) {
+                $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$_}};
+            } else {
+                $contig{$_} = $gst;
             }
         }
+        # None of the unreachable nodes should be in our group either.
+        foreach ( $part->vertices ) {
+            next if $reachable{$_};
+            $conflict->{$group_readings->{$gst}} = $group_readings->{$gst}
+                if $contig{$_} && $contig{$_} eq $gst;
+        }
+        
         # Write the reading.
         my $reading = { 'text' => $group_readings->{$gst},
                         'missing' => wit_stringify( $lacunose ),
@@ -178,12 +190,12 @@ sub analyze_variant_location {
         if( $reading->{'conflict'} ) {
             $reading->{'group'} = $gst;
         } else {
-            my @all_vertices = grep { $contig{$_} eq $gst && !$missing{$_} } keys %contig;
+            my @all_vertices = grep { !$missing{$_} } keys %reachable;
             $reading->{'group'} = wit_stringify( \@all_vertices );
         }
         push( @{$variant_row->{'readings'}}, $reading );
     }
-    $variant_row->{'genealogical'} = keys %$conflict ? undef : 1;
+    $variant_row->{'genealogical'} = !( keys %$conflict );
     return $variant_row;
 }
 

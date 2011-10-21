@@ -17,17 +17,10 @@ has collation => (
     required => 1,
     );  
 
-# TODO Think about making a new class for the graphs, which has apsp as a property.
 has graph => (
     is => 'rw',
     isa => 'Graph',
     predicate => 'has_graph',
-    );
-    
-has apsp => (
-    is => 'ro',
-    isa => 'Graph',
-    writer => '_save_apsp',
     );
     
 has distance_trees => (
@@ -37,12 +30,6 @@ has distance_trees => (
     predicate => 'has_distance_trees',
     );
     
-has distance_apsps => (
-    is => 'ro',
-    isa => 'ArrayRef[Graph]',
-    writer => '_save_distance_apsps',
-    );
-        
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
@@ -58,28 +45,6 @@ sub BUILD {
             : warn "Failed to parse dot file " . $args->{'dot'};
     }
 }
-
-# If we are saving a new graph, calculate its apsp values.
-after 'graph' => sub {
-    my( $self, $args ) = @_;
-    if( $args ) {
-        # We had a new graph.
-        my $undirected;
-        if( $self->graph->is_directed ) {
-            # Make an undirected version.
-            $undirected = Graph->new( 'undirected' => 1 );
-            foreach my $v ( $self->graph->vertices ) {
-                $undirected->add_vertex( $v );
-            }
-            foreach my $e ( $self->graph->edges ) {
-                $undirected->add_edge( @$e );
-            }
-        } else {
-            $undirected = $self->graph;
-        }
-        $self->_save_apsp( $undirected->APSP_Floyd_Warshall() );
-    }       
-};
 
 # Render the stemma as SVG.
 sub as_svg {
@@ -117,6 +82,13 @@ sub as_svg {
     return $svg;
 }
 
+sub witnesses {
+    my $self = shift;
+    my @wits = grep { $self->graph->get_vertex_attribute( $_, 'class' ) eq 'extant' }
+        $self->graph->vertices;
+    return @wits;
+}
+
 #### Methods for calculating phylogenetic trees ####
 
 before 'distance_trees' => sub {
@@ -130,12 +102,6 @@ before 'distance_trees' => sub {
             # Save the resulting trees
             my $trees = _parse_newick( $result );
             $self->_save_distance_trees( $trees );
-            # and calculate their APSP values.
-            my @apsps;
-            foreach my $t ( @$trees ) {
-                push( @apsps, $t->APSP_Floyd_Warshall() );
-            }
-            $self->_save_distance_apsps( \@apsps );
         } else {
             warn "Failed to calculate distance trees: $result";
         }
