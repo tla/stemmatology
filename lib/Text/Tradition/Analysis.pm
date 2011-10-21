@@ -102,8 +102,7 @@ sub run_analysis {
 		
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
-		# TODO: deal with a.c. reading logic
-		$DB::single = 1 if $rank == 25;
+		$DB::single = 1 if $rank == 733;
 		my $variant_row = analyze_variant_location( $group_readings, $groups, 
 		    $stemma->graph, $lacunose );
 		$variant_row->{'id'} = $rank;
@@ -114,7 +113,7 @@ sub run_analysis {
 # 		my @trees = @{$stemma->distance_trees};
 # 		if( @trees ) {
 #             foreach my $tree ( 0 .. $#trees ) {
-#                 my $dc = analyze_variant_location( $group_readings, $groups, $tree );
+#                 my $dc = analyze_variant_location( $group_readings, $groups, $tree, $lacunose, 'undirected' );
 #                 foreach my $rdg ( keys %$dc ) {
 #                     my $var = $dc->{$rdg};
 #                     # TODO Do something with this
@@ -145,8 +144,10 @@ sub run_analysis {
 #             -> readings [ { text, group, conflict, missing } ]
 
 sub analyze_variant_location {
-    my( $group_readings, $groups, $graph, $lacunose ) = @_;
+    my( $group_readings, $groups, $graph, $lacunose, $undirected ) = @_;
     my %contig;
+    my %subgraph;
+    my $is_conflicted;
     my $conflict = {};
     my %missing;
     map { $missing{$_} = 1 } @$lacunose;
@@ -156,45 +157,171 @@ sub analyze_variant_location {
         my $gst = wit_stringify( $g );
         map { $contig{$_} = $gst } @$g;
     }
+    # Now for each unmarked node in the graph, initialize an array
+    # for possible group memberships.  We will use this later to
+    # resolve potential conflicts.
+    map { $contig{$_} = [] unless $contig{$_} } $graph->vertices;
     foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
-        my $gst = wit_stringify( $g );
+        my $gst = wit_stringify( $g );  # This is the group name
+        my $reachable = { $g->[0] => 1 };
         # Copy the graph, and delete all non-members from the new graph.
-        my $part = $graph->undirected_copy;
-        map { $part->delete_vertex( $_ ) 
-                if $contig{$_} && $contig{$_} ne $gst } $graph->vertices;
-        # Now all the members of the group should still be reachable 
-        # from the first member. 
-        my %reachable = ( $g->[0] => 1 );       
-        map { $reachable{$_} = 1 } $part->all_reachable( $g->[0] );
-
-        # ...and none of these nodes should be marked as being in another 
-        # group.
-        foreach ( keys %reachable ) {
-            if( $contig{$_} && $contig{$_} ne $gst ) {
+        my $part = $graph->copy;
+        my $group_root;
+        $part->delete_vertices( 
+            grep { !ref( $contig{$_} ) && $contig{$_} ne $gst } $graph->vertices );
+                
+        # Now look to see if our group is connected.
+        if( $undirected ) { # For use with distance trees etc.
+            # Find all vertices reachable from the first (arbitrary) group
+            # member.  If we are genealogical this should include them all. 
+            map { $reachable->{$_} = 1 } $part->all_reachable( $g->[0] );
+            # TODO This is a terrible way to do distance trees, since all
+            # non-leaf nodes are included in every graph part now. We may
+            # have to go back to SPDP.
+        } else {
+            if( @$g > 1 ) {
+                # Dispense with the trivial case of one reading.
+                # We have to take directionality into account.
+                # How many root nodes do we have?
+                my @roots = grep { ref( $contig{$_} ) || $contig{$_} eq $gst } 
+                    $part->source_vertices;
+                # Assuming that @$g > 1, find the first root node that has at
+                # least one successor belonging to our group. If this reading
+                # is genealogical, there should be only one, but we will check
+                # that implicitly later.
+                my $nodes_in_subtree = 0;
+                foreach my $root ( @roots ) {
+                    # Prune the tree down to the first root that either is extant
+                    # or has more than one successor.
+                    while( $part->successors( $root ) == 1 && ref $contig{$root} ) {
+                        my @nextroot = $part->successors( $root );
+                        $part->delete_vertex( $root );
+                        $root = $nextroot[0];
+                    }
+                    # Get all the successor nodes of our root.
+                    my $tmp_reach = { $root => 1 };
+                    map { $tmp_reach->{$_} = 1 } $part->all_successors( $root );
+                    # Skip this root if none of our successors are in our group
+                    # (e.g. isolated 'hypothetical' witnesses with no group)
+                    next unless grep { $contig{$_} } keys %$tmp_reach;
+                    if( keys %$tmp_reach > $nodes_in_subtree ) {
+                        $nodes_in_subtree = keys %$tmp_reach;
+                        $reachable = $tmp_reach;
+                        $group_root = $root;
+                    }
+                }
+            } # else it is a single-node group, nothing to calculate.
+        }
+        
+        # None of the 'reachable' nodes should be marked as being in another 
+        # group.  Paint the 'hypotheticals' with our group while we are at it,
+        # unless there is a conflict present.
+        foreach ( keys %$reachable ) {
+            if( ref $contig{$_} ) {
+                push( @{$contig{$_}}, $gst );
+            } elsif( $contig{$_} ne $gst ) {
                 $conflict->{$group_readings->{$gst}} = $group_readings->{$contig{$_}};
-            } else {
-                $contig{$_} = $gst;
-            }
+            } # else it is an 'extant' node marked with our group already.
         }
         # None of the unreachable nodes should be in our group either.
         foreach ( $part->vertices ) {
-            next if $reachable{$_};
-            $conflict->{$group_readings->{$gst}} = $group_readings->{$gst}
-                if $contig{$_} && $contig{$_} eq $gst;
+            next if $reachable->{$_};
+            if( $contig{$_} eq $gst ) {
+                $conflict->{$group_readings->{$gst}} = $group_readings->{$gst};
+                last;
+            }
         }
+        
+        # Now, if we have a conflict, we can write the reading in full.  If not, 
+        # we have to save the subgraph so that we can resolve possible conflicts 
+        # on hypothetical nodes.
+        $is_conflicted = 1 if exists $conflict->{$group_readings->{$gst}};
         
         # Write the reading.
         my $reading = { 'text' => $group_readings->{$gst},
                         'missing' => wit_stringify( $lacunose ),
-                        'conflict' => exists( $conflict->{$group_readings->{$gst}} ) };
-        if( $reading->{'conflict'} ) {
-            $reading->{'group'} = $gst;
+                        'group' => $gst };  # This will change if we find no conflict
+        if( $is_conflicted ) {
+            $reading->{'conflict'} = $conflict->{$group_readings->{$gst}}
         } else {
-            my @all_vertices = grep { !$missing{$_} } keys %reachable;
-            $reading->{'group'} = wit_stringify( \@all_vertices );
+            # Save the relevant subgraph.
+            $subgraph{$gst} = { 'graph' => $part,
+                                'root' => $group_root,
+                                'reachable' => $reachable };
         }
         push( @{$variant_row->{'readings'}}, $reading );
     }
+    
+    # Now that we have gone through all the rows, check the hypothetical
+    # readings for conflict if we haven't found one yet.
+    if( keys %subgraph && !keys %$conflict ) {
+        my @resolve;
+        foreach ( keys %contig ) {
+            next unless ref $contig{$_};
+            if( scalar @{$contig{$_}} > 1 ) {
+                push( @resolve, $_ );
+            } else {
+                $contig{$_} = scalar @{$contig{$_}} ? $contig{$_}->[0] : '';
+            }
+        }
+        # Do we still have a possible conflict?
+        my %still_contig;
+        foreach my $h ( @resolve ) {
+            # For each of the hypothetical readings with more than one possibility,
+            # try deleting it from each of its member subgraphs in turn, and see
+            # if that breaks the contiguous grouping.
+            # TODO This can still break in a corner case where group A can use 
+            # either vertex 1 or 2, and group B can use either vertex 2 or 1.
+            # Revisit this if necessary; it could get brute-force nasty.
+            foreach my $gst ( @{$contig{$h}} ) {
+                my $gpart = $subgraph{$gst}->{'graph'}->copy;
+                my $reachable = $subgraph{$gst}->{'reachable'};
+                $gpart->delete_vertex( $h );
+                # Is everything else still reachable from the root?
+                # TODO If $h was the root, see if we still have a single root.
+                my %still_reachable = ( $subgraph{$gst}->{'root'} => 1 );
+                map { $still_reachable{$_} = 1 }
+                    $gpart->all_successors( $subgraph{$gst}->{'root'} );
+                foreach my $v ( keys %$reachable ) {
+                    next if $v eq $h;
+                    if( !$still_reachable{$v}
+                        && ( $contig{$v} eq $gst 
+                             || ( exists $still_contig{$v} 
+                                  && $still_contig{$v} eq $gst ) ) ) {
+                        # We need $h.
+                        if( exists $still_contig{$h} ) {
+                            # Conflict!
+                            $conflict->{$group_readings->{$gst}} = 
+                                $group_readings->{$still_contig{$h}};
+                        } else {
+                            $still_contig{$h} = $gst;
+                        }
+                        last;
+                    } # else we don't need $h in this group.
+                }
+            }
+        }
+        
+        # Now, assuming no conflict, we have some hypothetical vertices in
+        # $still_contig that are the "real" group memberships.  Replace these
+        # in $contig.
+        unless ( keys %$conflict ) {
+            foreach my $v ( keys %contig ) {
+                next unless ref $contig{$v};
+                $contig{$v} = $still_contig{$v};
+            }
+        }
+    }
+            
+    # Now write the group and conflict information into the respective rows.
+    foreach my $rdg ( @{$variant_row->{'readings'}} ) {
+        $rdg->{'conflict'} = $conflict->{$rdg->{'text'}};
+        next if $rdg->{'conflict'};
+        my @members = grep { $contig{$_} eq $rdg->{'group'} && !$missing{$_} } 
+            keys %contig;
+        $rdg->{'group'} = wit_stringify( \@members );
+    }
+    
     $variant_row->{'genealogical'} = !( keys %$conflict );
     return $variant_row;
 }
