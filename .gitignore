@@ -1,5 +1,5 @@
 *~
-tla.bbprojectsettings
+*.bbprojectd/
 data
 !/t/data
 Makefile
