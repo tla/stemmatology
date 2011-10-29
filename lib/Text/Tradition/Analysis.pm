@@ -55,7 +55,7 @@ sub run_analysis {
 	my $col_wits = shift @$all_wits_table;
 	# Any witness in the stemma that has no row should be noted.
     foreach ( @$col_wits ) {
-        $wits->{$_}++;
+        $wits->{$_}++; # Witnesses present in table and stemma now have value 2.
     }
     my @not_collated = grep { $wits->{$_} == 1 } keys %$wits;	
 	

@@ -246,7 +246,7 @@ sub BUILD {
         $self->_save_collation( $collation );
 
         # Call the appropriate parser on the given data
-        my @format_standalone = qw/ Self CollateX CTE TEI Tabular /;
+        my @format_standalone = qw/ Self CollateText CollateX CTE TEI Tabular /;
         my @format_basetext = qw/ KUL /;
         my $use_base;
         my $format = $init_args->{'input'};

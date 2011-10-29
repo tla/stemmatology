@@ -534,7 +534,7 @@ sub make_alignment_table {
         return;
     }
     my $table;
-    my @all_pos = sort { $a <=> $b } $self->possible_positions;
+    my @all_pos = ( 0 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @row = _make_witness_row( $wit->path, \@all_pos, $noderefs );
@@ -1067,206 +1067,8 @@ sub flatten_ranks {
 }
 
 
-sub possible_positions {
-    my $self = shift;
-    my %all_pos;
-    map { $all_pos{ $_->rank } = 1 } $self->readings;
-    return keys %all_pos;
-}
-
-# TODO think about indexing this.
-sub readings_at_position {
-    my( $self, $position, $strict ) = @_;
-    my @answer;
-    foreach my $r ( $self->readings ) {
-        push( @answer, $r ) if $r->is_at_position( $position, $strict );
-    }
-    return @answer;
-}
-
-## Lemmatizer functions
-
-sub init_lemmata {
-    my $self = shift;
-
-    foreach my $position ( $self->possible_positions ) {
-        $self->lemmata->{$position} = undef;
-    }
-
-    foreach my $cr ( $self->common_readings ) {
-        $self->lemmata->{$cr->position->maxref} = $cr->name;
-    }
-}
-
-sub common_readings {
-    my $self = shift;
-    my @common = grep { $_->is_common } $self->readings();
-    return sort { $a->rank <=> $b->rank } @common;
-}
+## Utility functions
     
-=item B<lemma_readings>
-
-my @state = $graph->lemma_readings( @readings_delemmatized );
-
-Takes a list of readings that have just been delemmatized, and returns
-a set of tuples of the form ['reading', 'state'] that indicates what
-changes need to be made to the graph.
-
-=over
-
-=item * 
-
-A state of 1 means 'lemmatize this reading'
-
-=item * 
-
-A state of 0 means 'delemmatize this reading'
-
-=item * 
-
-A state of undef means 'an ellipsis belongs in the text here because
-no decision has been made / an earlier decision was backed out'
-
-=back
-
-=cut
-
-sub lemma_readings {
-    my( $self, @toggled_off_nodes ) = @_;
-
-    # First get the positions of those nodes which have been
-    # toggled off.
-    my $positions_off = {};
-    map { $positions_off->{ $_->position->reference } = $_->name } 
-        @toggled_off_nodes;
-
-    # Now for each position, we have to see if a node is on, and we
-    # have to see if a node has been turned off.  The lemmata hash
-    # should contain fixed positions, range positions whose node was
-    # just turned off, and range positions whose node is on.
-    my @answer;
-    my %fixed_positions;
-    # TODO One of these is probably redundant.
-    map { $fixed_positions{$_} = 0 } keys %{$self->lemmata};
-    map { $fixed_positions{$_} = 0 } keys %{$positions_off};
-    map { $fixed_positions{$_} = 1 } $self->possible_positions;
-    foreach my $pos ( sort { Text::Tradition::Collation::Position::str_cmp( $a, $b ) } keys %fixed_positions ) {
-        # Find the state of this position.  If there is an active node,
-        # its name will be the state; otherwise the state will be 0 
-        # (nothing at this position) or undef (ellipsis at this position)
-        my $active = undef;
-        $active = $self->lemmata->{$pos} if exists $self->lemmata->{$pos};
-        
-        # Is there a formerly active node that was toggled off?
-        if( exists( $positions_off->{$pos} ) ) {
-            my $off_node = $positions_off->{$pos};
-            if( $active && $active ne $off_node) {
-                push( @answer, [ $off_node, 0 ], [ $active, 1 ] );
-            } else {
-                unless( $fixed_positions{$pos} ) {
-                    $active = 0;
-                    delete $self->lemmata->{$pos};
-                }
-                push( @answer, [ $off_node, $active ] );
-            }
-
-        # No formerly active node, so we just see if there is a currently
-        # active one.
-        } elsif( $active ) {
-            # Push the active node, whatever it is.
-            push( @answer, [ $active, 1 ] );
-        } else {
-            # Push the state that is there. Arbitrarily use the first node
-            # at that position.
-            my @pos_nodes = $self->readings_at_position( $pos );
-            push( @answer, [ $pos_nodes[0]->name, $self->lemmata->{$pos} ] );
-            delete $self->lemmata->{$pos} unless $fixed_positions{$pos};
-        }
-    }
-
-    return @answer;
-}
-
-=item B<toggle_reading>
-
-my @readings_delemmatized = $graph->toggle_reading( $reading_name );
-
-Takes a reading node name, and either lemmatizes or de-lemmatizes
-it. Returns a list of all readings that are de-lemmatized as a result
-of the toggle.
-
-=cut
-
-sub toggle_reading {
-    my( $self, $rname ) = @_;
-    
-    return unless $rname;
-    my $reading = $self->reading( $rname );
-    if( !$reading || $reading->is_common() ) {
-        # Do nothing, it's a common node.
-        return;
-    } 
-    
-    my $pos = $reading->position;
-    my $fixed = $reading->position->fixed;
-    my $old_state = $self->lemmata->{$pos->reference};
-
-    my @readings_off;
-    if( $old_state && $old_state eq $rname ) {
-        # Turn off the node. We turn on no others by default.
-        push( @readings_off, $reading );
-    } else {
-        # Turn on the node.
-        $self->lemmata->{$pos->reference} = $rname;
-        # Any other 'on' readings in the same position should be off
-        # if we have a fixed position.
-        push( @readings_off, $self->same_position_as( $reading, 1 ) )
-            if $pos->fixed;
-        # Any node that is an identical transposed one should be off.
-        push( @readings_off, $reading->identical_readings );
-    }
-    @readings_off = unique_list( @readings_off );
-        
-    # Turn off the readings that need to be turned off.
-    my @readings_delemmatized;
-    foreach my $n ( @readings_off ) {
-        my $npos = $n->position;
-        my $state = undef;
-        $state = $self->lemmata->{$npos->reference}
-            if defined $self->lemmata->{$npos->reference};
-        if( $state && $state eq $n->name ) { 
-            # this reading is still on, so turn it off
-            push( @readings_delemmatized, $n );
-            my $new_state = undef;
-            if( $npos->fixed && $n eq $reading ) {
-                # This is the reading that was clicked, so if there are no
-                # other readings there and this is a fixed position, turn off 
-                # the position.  In all other cases, restore the ellipsis.
-                my @other_n = $self->same_position_as( $n ); # TODO do we need strict?
-                $new_state = 0 unless @other_n;
-            }
-            $self->lemmata->{$npos->reference} = $new_state;
-        } elsif( $old_state && $old_state eq $n->name ) { 
-            # another reading has already been turned on here
-            push( @readings_delemmatized, $n );
-        } # else some other reading was on anyway, so pass.
-    }
-    return @readings_delemmatized;
-}
-
-sub same_position_as {
-    my( $self, $reading, $strict ) = @_;
-    my $pos = $reading->position;
-    my %onpath = ( $reading->name => 1 );
-    # TODO This might not always be sufficient.  We really want to
-    # exclude all readings on this one's path between its two
-    # common points.
-    map { $onpath{$_->name} = 1 } $reading->neighbor_readings;
-    my @same = grep { !$onpath{$_->name} } 
-        $self->readings_at_position( $reading->position, $strict );
-    return @same;
-}
-
 # Return the string that joins together a list of witnesses for
 # display on a single path.
 sub path_label {
@@ -1280,13 +1082,6 @@ sub witnesses_of_label {
     my @answer = split( /\Q$regex\E/, $label );
     return @answer;
 }    
-
-sub unique_list {
-    my( @list ) = @_;
-    my %h;
-    map { $h{$_->name} = $_ } @list;
-    return values( %h );
-}
 
 sub add_hash_entry {
     my( $hash, $key, $entry ) = @_;
