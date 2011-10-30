@@ -2,16 +2,9 @@ package Text::Tradition::Collation::Reading;
 
 use Moose;
 use MooseX::NonMoose;
-use Text::Tradition::Collation::Position;
 
 extends 'Graph::Easy::Node';
 
-has 'position' => (
-    is => 'rw',
-    isa => 'Text::Tradition::Collation::Position',
-    predicate => 'has_position',
-    );
-    
 has 'rank' => (
     is => 'rw',
     isa => 'Int',
@@ -42,20 +35,6 @@ around BUILDARGS => sub {
     } else {
 	return $class->$orig( @_ );
     }
-};
-
-# Take constructor args as well as a Position argument.
-around position => sub {
-    my $orig = shift;
-    my $self = shift;
-    return $self->$orig() unless @_;
-
-    my @args = @_;
-    unless( @_ == 1 && ref( $_[0] ) eq 'Text::Tradition::Collation::Position' ) {
-	# We have constructor arguments; pass them to Position.
-	@args = ( Text::Tradition::Collation::Position->new( @_ ) );
-    }
-    $self->$orig( @args );
 };
 
 # A lacuna node is also a meta node.
@@ -165,12 +144,6 @@ sub has_primary {
 sub primary {
     my $self = shift;
     return $self->same_as->[0];
-}
-
-sub is_at_position {
-    my $self = shift;
-    return undef unless $self->has_position;
-    return $self->position->is_colocated( @_ );
 }
 
 # Looks from the outside like an accessor for a Boolean, but really 
