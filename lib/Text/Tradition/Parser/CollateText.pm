@@ -42,7 +42,7 @@ sub parse {
         $tradition->add_witness( 'sigil' => $sigil );
     }
     # Now merge on the apparatus entries.
-    merge_stone_apparatus( $tradition->collation, $lineref_hash, $opts->{'input'} );
+    merge_stone_apparatus( $tradition->collation, $lineref_hash, $opts->{'file'} );
 }
 
 =item B<read_stone_base>
@@ -72,6 +72,7 @@ sub read_stone_base {
 
     my $curr_text;
     open( BASE, $base_file ) or die "Could not open file $base_file: $!";
+    binmode BASE, ':utf8';
     my $i = 1;
     while(<BASE>) {
         # Make the readings, and connect them up for the base, but
@@ -135,9 +136,10 @@ sub merge_stone_apparatus {
     my $text_apps = {};    
     my $current_text;
     open( APP, $file ) or die "Could not read apparatus file $file";
+    binmode APP, ':utf8';
     while( <APP> ) {
         chomp;
-        next if /^\s+$/;
+        next if /^\s*$/;
         if( /^TESTAMENT/ ) {
             $current_text = $lineref_hash->{$_};
             next;
@@ -146,7 +148,7 @@ sub merge_stone_apparatus {
         # Otherwise, the first word of the line is the base text line reference.
         my $i = 0;
         my $lineref;
-        if( s/^(\S+)// ) {
+        if( s/^(\S+)\s+// ) {
             $lineref = $1;
         } else {
             warn "Unrecognized line $_";
@@ -157,13 +159,18 @@ sub merge_stone_apparatus {
             
         # Now look at the apparatus entries for this line. They are
         # split with |.
-        my @apps = split( '|' );
-        foreach my $app ( @apps ) {
-            my( $lemma, $rest ) = split( ']', $app );
-            
+        my @apps = split( /\s+\|\s+/ );
+        my $rdg_ctr = 0;
+        foreach my $app ( @apps ) { 
+            my( $lemma, $rest ) = split( /\s+\]\s+/, $app );
+            next unless $rest; # Skip lines e.g. 'Chapter 2'
             # Find the lemma reading.
             my( $lemma_start, $lemma_end ) = 
                 _find_reading_on_line( $c, $lemma, $baseline );
+            unless( $lemma_start && $lemma_end ) {
+                print STDERR "Lemma $lemma not found; skipping readings $rest\n";
+                next;
+            }
             my @lemma_chain = $c->reading_sequence( $lemma_start, $lemma_end );
             
             # Splice in "start" and "end" placeholders on either
@@ -172,24 +179,38 @@ sub merge_stone_apparatus {
                 _add_reading_placeholders( $c, $lemma_start, $lemma_end );
                 
             # For each reading, attach it to the lemma.
-            my @indiv = split( '  ', $rest );
+            my @indiv = split( /   /, $rest );
+            my $has_rel = 0;
+            my %seen_sigla;
+            map { $seen_sigla{$_} = 0 } keys %ALL_SIGLA;
             foreach my $rdg ( @indiv ) {
                 # Parse the string.
                 my( $words, $sigla, $recurse ) = parse_app_entry( $rdg );
+                
+                # Do something really very dodgy indeed.
+                if( exists $sigla->{'__REL__'} && !$has_rel ) {
+                    # Handling this has to be deferred until the end, so push it
+                    # back onto @indiv and note that we've done so.
+                    $has_rel = 1;
+                    push( @indiv, $rdg );
+                    next;
+                }
+                
                 my @readings;
-                foreach my $i ( 0 .. $#$words ) {
-                    next if $i == 0 && $words->[$i] =~ /^__/;
-                    my $reading_id = $rdg_start->text . '_' . $rdg_end->text . '/' . $i;
+                foreach my $rdg_word ( @$words ) {
+                    next if $rdg_word =~ /^__/;
+                    my $reading_id = $lemma_start->name . '_' . $lemma_end->name 
+                        . '/' . $rdg_ctr++;
                     my $reading = $c->add_reading( $reading_id );
-                    $reading->text( $words->[$i] );
+                    $reading->text( $rdg_word );
                     push( @readings, $reading );
                 }
                 
                 # Deal with any specials.
                 my $lemma_sequence;
-                if( $words->[0] eq '__LEMMA__' ) {
+                if( @$words && $words->[0] eq '__LEMMA__' ) {
                     $lemma_sequence = [ $lemma_end, $rdg_end ];
-                } elsif ( $rdg->[0] eq '__TRANSPOSE__' ) {
+                } elsif ( @$words && $words->[0] eq '__TRANSPOSE__' ) {
                     # Hope it is only two or three words in the lemma.
                     # TODO figure out how we really want to handle this
                     @readings = reverse @lemma_chain;
@@ -197,34 +218,46 @@ sub merge_stone_apparatus {
                 $lemma_sequence = [ $rdg_start, @lemma_chain, $rdg_end ]
                     unless $lemma_sequence;
                 
+                # Note which sigla we are actually dealing with.
+                if( $sigla->{'__REL__'} ) {
+                    delete $sigla->{'__REL__'};
+                    map { $sigla->{$_} = 1 } 
+                        grep { $seen_sigla{$_} == 0 } keys %seen_sigla;
+                } else {
+                    map { $seen_sigla{$_} = 1 } keys %$sigla;
+                }
+
                 # Now hook up the paths.
-                unshift( @readings, $rdg_start );
-                push( @readings, $rdg_end );
+                unshift( @readings, $lemma_sequence->[0] );
+                push( @readings, $lemma_sequence->[-1] );
                 foreach my $i ( 1 .. $#readings ) {
                     if( $recurse->{$i} ) {
                         my( $rwords, $rsig ) = parse_app_entry( $recurse->{$i} );
                         # Get the local "lemma" sequence
                         my $llseq = [ $readings[$i], $readings[$i+1] ];
                         if( $rwords->[0] ne '__LEMMA__' ) {
-                            # Treat it as an addition to the last word
                             unshift( @$llseq, $readings[$i-1] );
-                        } 
+                        } # Otherwise treat it as an addition to the last word
                         # Create the reading nodes in $rwords
                         # TODO Hope we don't meet ~ in a recursion
                         my $local_rdg = [];
+                        $DB::single = 1;
                         foreach my $i ( 0 .. $#$rwords ) {
                             next if $i == 0 && $rwords->[$i] =~ /^__/;
                             my $reading_id = $llseq->[0]->text . '_' . 
                                 $llseq->[-1]->text . '/' . $i;
+                            $DB::single = 1 if $reading_id =~ /ATTACH/;
                             my $reading = $c->add_reading( $reading_id );
-                            $reading->text( $words->[$i] );
+                            $reading->text( $rwords->[$i] );
                             push( @$local_rdg, $reading );
                         }
+                        unshift( @$local_rdg, $llseq->[0] );
+                        push( @$local_rdg, $llseq->[-1] );
                         # Add the path(s) necessary
-                        _add_sigil_path( $c, $rsig, $local_rdg, $llseq );
+                        _add_sigil_path( $c, $rsig, $llseq, $local_rdg );
                     }
                 }
-                _add_sigil_path( $c, $sigla, \@readings, $lemma_sequence );
+                _add_sigil_path( $c, $sigla, $lemma_sequence, \@readings );
             } # end processing of $app
         } # end foreach my $app in line
     } # end while <line>
@@ -238,16 +271,21 @@ sub merge_stone_apparatus {
 }
 
 sub _find_reading_on_line {
-    my( $c, $lemma, $baseline ) = @_;
+    my( $c, $lemma, $baseline, $prior ) = @_;
+    
+    # We might want the whole line.
+    if( $lemma eq 'totum' ) {
+        return( $baseline->{'start'}, $baseline->{'end'} );
+    }
     
     my $lemma_start = $baseline->{'start'};
     my $lemma_end;
-    my $too_far = $baseline->{'end'}->next_reading;
+    my $too_far = $c->next_reading( $baseline->{'end'} );
     my @lemma_words = split( /\s+/, $lemma );
     
     my %seen;
     my $scrutinize = '';   # DEBUG variable
-    my $seq = 1;
+    my ( $lw, $seq ) = _get_seq( $lemma_words[0] );
     while( $lemma_start ne $too_far ) {
         # Loop detection
         if( $seen{ $lemma_start->name() } ) {
@@ -260,36 +298,42 @@ sub _find_reading_on_line {
         # TODO move next/prior reading methods into the reading classes,
         # to make this more self-contained and not need to pass $c.
         my $unmatch = 0;
-        my ( $lw, $seq ) = _get_seq( $lemma_words[0] );
-        print STDERR "Matching $lemma_start against $lw...\n" 
+        print STDERR "Matching ".$lemma_start->text." against $lw...\n" 
             if $scrutinize;
-        if( $lemma_start->text eq $lw ) {
+        if( _norm( $lemma_start->text ) eq _norm( $lw ) ) {
             # Skip it if we need a match that is not the first.
             if( --$seq < 1 ) {
                 # Now we have to compare the rest of the words here.
                 if( scalar( @lemma_words ) > 1 ) {
-                    my $next_reading = 
-                        $c->next_reading( $lemma_start );
+                    my $next_reading = next_real_reading( $c, $lemma_start );
                     my $wildcard = 0;
                     foreach my $w ( @lemma_words[1..$#lemma_words] ) {
                         if( $w eq '---' ) {
-                            # We match everything to the next word.
                             $wildcard = 1;
                             next;
-                        } else {
-                            $wildcard = 0;
                         }
-                        ( $lw, $seq ) = _get_seq( $w );
+                        if( $wildcard ) {
+                            # This should be the word after a --- now, and the
+                            # last lemma word.
+                            my( $wst, $wend ) = _find_reading_on_line( $c, $w, 
+                                $baseline, $lemma_start );
+                            warn "Something unexpected" unless $wst eq $wend;
+                            $lemma_end = $wend;
+                            next;
+                        }
+                        
+                        # If we got this far, there is no wildcard.  We must
+                        # match each word in sequence.
+                        my( $nlw, $nseq ) = _get_seq( $w );
                         printf STDERR "Now matching %s against %s\n", 
-                                $next_reading->text, $lw
+                                $next_reading->text, $nlw
                             if $scrutinize;
-                        if( !$wildcard && $w ne $next_reading->text) {
+                        if( _norm( $nlw ) eq _norm( $next_reading->text ) ) {
+                            $lemma_end = $next_reading;
+                            $next_reading = $c->next_reading( $lemma_end );
+                        } else {
                             $unmatch = 1;
                             last;
-                        } else {
-                            $lemma_end = $next_reading;
-                            $next_reading = 
-                                $c->next_reading( $lemma_end );
                         }
                     }
                 } else { # single-word match, easy.
@@ -298,6 +342,7 @@ sub _find_reading_on_line {
             } else { # we need the Nth match and aren't there yet
                 $unmatch = 1;
             }
+            $unmatch = 1 if $prior && !$seen{$prior->name};
         }
         last unless ( $unmatch || !defined( $lemma_end ) );
         $lemma_end = undef;
@@ -315,33 +360,33 @@ sub _add_reading_placeholders {
     my( $collation, $lemma_start, $lemma_end ) = @_;
     # We will splice in a 'begin' and 'end' marker on either side of the 
     # lemma, as sort of a double-endpoint attachment in the graph.
-
-    my $attachlabel = "ATTACH";
-    my( $start_node, $end_node );
-    my @start_id = grep { $_->label eq $attachlabel } $lemma_start->incoming;
-    if( @start_id ) {
-        # There already exists an app-begin node. Use that.
-        $start_node = $start_id[0]->from;
-    } else {
-        $start_node = $collation->add_reading( $app_info->{_id} );
-        $collation->add_path( 
-            $collation->prior_reading( $lemma_start, $collation->baselabel ),    
-            $start_node, $attachlabel );
-        $collation->add_path( $start_node, $lemma_start, $attachlabel );
+    # Note that all of this assumes we have a linear base graph at this
+    # point, and no diverging readings on the lemmas.
+    
+    my $start_node = $collation->prior_reading( $lemma_start );
+    unless( $start_node->name =~ /ATTACH/ ) {
+        my $sn_id = '#ATTACH_' . $lemma_start->name . '_START#';
+        my $prior = $start_node;
+        $start_node = $collation->add_reading( $sn_id );
+        $start_node->is_meta( 1 );
+        $collation->graph->del_edge( $collation->graph->edge( $prior, $lemma_start ) );
+        $collation->add_path( $prior, $start_node, $collation->baselabel );
+        $collation->add_path( $start_node, $lemma_start, $collation->baselabel );
     }
+    
     # Now the converse for the end.
-    my @end_id = grep { $_->label eq $attachlabel } $lemma_end->outgoing;
-    if( @end_id ) {
-        # There already exists an app-begin node. Use that.
-        $end_node = $end_id[0]->to;
-    } else {
-        $end_node = $collation->add_reading( $app_info->{_id} . "E" );
-        $collation->add_path( $lemma_end, $end_node, $attachlabel );
-        $collation->add_path( $end_node, 
-            $collation->next_reading( $lemma_end, $collation->baselabel ),
-            $attachlabel );
+    my $end_node = $collation->next_reading( $lemma_end );
+    unless( $end_node->name =~ /ATTACH/ ) {
+        my $en_id = '#ATTACH_' . $lemma_end->name . '_END#';
+        my $next = $end_node;
+        $end_node = $collation->add_reading( $en_id );
+        $end_node->is_meta( 1 );
+        $collation->graph->del_edge( $collation->graph->edge( $lemma_end, $next ) );
+        $collation->add_path( $lemma_end, $end_node, $collation->baselabel );
+        $collation->add_path( $end_node, $next, $collation->baselabel );
     }
-    return( $start_node, $end_node ); 
+    
+    return( $start_node, $end_node );
 }
 
 # Function to parse an apparatus reading string, with reference to no other
@@ -361,10 +406,12 @@ sub parse_app_entry {
     my $is_add;
     my $is_omission;
     my $is_transposition;
+    my $is_base;
+    my $skip;
     my @reading;
-    my %reading_sigla;
+    my $reading_sigla = {};
     my $recursed;
-    my $sig_regex = join( '|', keys %ALL_SIGLA );
+    my $sig_regex = join( '|', sort { length $b <=> length $a } keys %ALL_SIGLA );
     while( @words ) {
         my $bit = shift @words;
         if( $bit eq '+' ) {
@@ -379,46 +426,61 @@ sub parse_app_entry {
         } elsif( $bit eq ':' ) {
             # Stop processing.
             last;
-        } elsif( $bit =~ /^\($/ ) { 
+        } elsif( $bit =~ /^\(/ ) { 
             # It's a recursive reading within a reading. Lemmatize what we
             # have so far and grab the extra.
-            my @new = ( $1 );
+            my @new = ( $bit );
             until( $new[-1] =~ /\)$/ ) {
                 push( @new, shift @words );
             }
             my $recursed_reading = join( ' ', @new );
-            $recursed_reading =~ s/^\((.*)\)//;
+            $recursed_reading =~ s/^\((.*)\)/$1/;
             # This recursive entry refers to the last reading word(s) we
             # saw.  Push its index+1.  We will have to come back to parse
             # it when we are dealing with the main reading.
             # TODO handle () as first element
             # TODO handle - as suffix to add, i.e. make new word
             $recursed->{@reading} = $recursed_reading;
-        } elsif( $bit =~ /^(\Q$sig_regex\E)(.*)$/ {
+        } elsif( $bit =~ /^($sig_regex)(.*)$/ ) {
             # It must be a sigil.
             my( $sigil, $mod ) = ( $1, $2 );
             if( $mod eq "\x{80}" ) {
-                $reading_sigla->{$sig} = '_PC_';
-                $ALL_SIGLA{$sig} = 2;  # a pre- and post-corr version exists
+                $reading_sigla->{$sigil} = '_PC_';
+                $ALL_SIGLA{$sigil} = 2;  # a pre- and post-corr version exists
             } elsif( $mod eq '*' ) {
-                $reading_sigla->{$sig} = '_AC_';
-                $ALL_SIGLA{$sig} = 2;  # a pre- and post-corr version exists
+                $reading_sigla->{$sigil} = '_AC_';
+                $ALL_SIGLA{$sigil} = 2;  # a pre- and post-corr version exists
             } else {
-                $reading_sigla->{$sig} = 1 unless $mod; # skip secondhand corrections
+                $reading_sigla->{$sigil} = 1 unless $mod; # skip secondhand corrections
             }
+        } elsif( $bit eq 'rel' ) {
+            # The anti-reading. All sigla except those cited.
+            $reading_sigla->{'__REL__'} = 1;
+        } elsif( $bit eq 'ed' ) {
+            # An emendation. TODO make sure all other sigla appear in readings?
+            $skip = 1;
+            last;
         } elsif( $bit =~ /transpos/ ) {
             # There are some transpositions not coded rigorously; skip them.
             warn "Found hard transposition in $rdg; fix manually";
             last;
         } else {
             warn "Not sure what to do with bit $bit in $rdg";
+            $skip = 1;
+            last;
         }
     }
-
+    
+    return( [], {}, {} ) if $skip;
     # Transmogrify the reading if necessary.
     unshift( @reading, '__LEMMA__' ) if $is_add;
     unshift( @reading, '__TRANSPOSE__' ) if $is_transposition;
     @reading = () if $is_omission;
+    unless( @reading || $is_omission ) {
+        # It was just sigla on a line, meaning the base changed. Thus
+        # the reading is the lemma.
+        unshift( @reading, '__LEMMA__' );
+    }
    
     return( \@reading, $reading_sigla, $recursed );  
 }
@@ -434,27 +496,29 @@ sub _add_sigil_path {
     my %skip;
     foreach my $sig ( keys %$sigla ) {
         my $use_sig = $sigla->{$sig} eq '_AC_' ? $sig.$c->ac_label : $sig;
-        foreach my $i ( 0 .. $#$reading_sequence-1 ) {
+        foreach my $i ( 0 .. $#{$reading_sequence}-1 ) {
             if( $skip{$use_sig} ) {
-                next if !_has_prior_reading( $reading_sequence[$i], $use_sig );
+                next if !_has_prior_reading( $reading_sequence->[$i], $use_sig );
                 $skip{$use_sig} = 0;
-            if( _has_next_reading( $reading_sequence[$i], $use_sig ) ) {
+            }
+            if( _has_next_reading( $reading_sequence->[$i], $use_sig ) ) {
                 $skip{$use_sig} = 1;
                 next;
             }
-            $c->add_path( $reading_sequence[$i], $reading_sequence[$i+1], $use_sig);
+            $c->add_path( $reading_sequence->[$i], $reading_sequence->[$i+1], $use_sig );
         }
         if( $sigla->{$sig} eq '_PC_') {
-            $use_sig = $sig.$c->ac_label
-            foreach my $i ( 0 .. @$base_sequence ) {
+            $use_sig = $sig.$c->ac_label;
+            foreach my $i ( 0 .. $#{$base_sequence}-1 ) {
                 if( $skip{$use_sig} ) {
-                    next if !_has_prior_reading( $reading_sequence[$i], $use_sig );
+                    next if !_has_prior_reading( $reading_sequence->[$i], $use_sig );
                     $skip{$use_sig} = 0;
-                if( _has_next_reading( $reading_sequence[$i], $use_sig ) ) {
+                }
+                if( _has_next_reading( $reading_sequence->[$i], $use_sig ) ) {
                     $skip{$use_sig} = 1;
                     next;
                 }
-                $c->add_path( $base_sequence[$i], $base_sequence[$i+1], $use_sig );
+                $c->add_path( $base_sequence->[$i], $base_sequence->[$i+1], $use_sig );
             }
         }
     }
@@ -485,26 +549,26 @@ sub expand_all_paths {
                 $to = $outgoing{$1};
             }
             $to = $outgoing{$c->baselabel} unless $to;
+            $DB::single = 1 unless $to;
             warn "Have no outbound base link on " . $anchor->name . "!"
                 unless $to;
             $c->add_path( $from, $to, $edge );
+            delete $outgoing{$edge} unless $edge eq $c->baselabel;
         }
-        # TODO Think about deleting outgoing/edge as we use them to make this faster.
         foreach my $edge ( keys %outgoing ) {
             my $to = $outgoing{$edge};
-            my $from = incoming{$edge};
+            my $from = $incoming{$edge};
             if( !$from && $edge =~ /^(.*)\Q$aclabel\E$/ ) {
                 $from = $incoming{$1};
             }
-            $from = $incoming{$c->baselabel} unless $to;
+            $from = $incoming{$c->baselabel} unless $from;
             warn "Have no inbound base link on " . $anchor->name . "!"
                 unless $from;
-            $c->add_path( $from, $to, $edge )
-                unless _has_prior_reading( $to, $edge );
-            }
+            $c->add_path( $from, $to, $edge );
         }
     }
     
+    $DB::single = 1;
     # Walk the collation and add paths if necessary
     foreach my $sig ( keys %ALL_SIGLA ) {
         my $wit = $c->tradition->witness( $sig );
@@ -516,12 +580,17 @@ sub expand_all_paths {
             $wit->uncorrected_path( \@path );
             # a.c. paths are already there by default.
         }
-        foreach my $i ( 1 .. $#$path ) {
+        foreach my $i ( 1 .. $#path ) {
             # If there is no explicit path for this sigil between n-1 and n,
             # add it.
-            unless( grep { $_->label eq $sig } $path[$i]->edges_from( $path[$i-1] ) ) {
-                $c->add_path( $path[$i-1], $path[$i], $sig );
+            my @sigedges = grep { $_->label eq $sig } $path[$i]->incoming;
+            if( @sigedges ) {
+                warn "Found more than one path already for $sig" if @sigedges > 1;
+                warn "Would add second path for $sig" 
+                    unless $sigedges[0]->from eq $path[$i-1];
+                next;
             }
+            $c->add_path( $path[$i-1], $path[$i], $sig );
         }
     }
     
@@ -538,10 +607,17 @@ sub _get_seq {
     my( $str ) = @_;
     my $seq = 1;
     my $lw = $str;
-    if( $str =~ /^(.*)(\d)\x{80}$/ ) {
+    if( $str =~ /^(.*)(\d)\x{b0}$/ ) {
         ( $lw, $seq) = ( $1, $2 );
     }
     return( $lw, $seq );
+}
+
+# Normalize to lowercase, no punct
+sub _norm {
+    my( $str ) = @_;
+    $str =~ s/[^[:alnum:]]//g;
+    return lc( $str );
 }
 
 sub _has_next_reading {
@@ -552,3 +628,22 @@ sub _has_prior_reading {
     my( $rdg, $sigil ) = @_;
     return grep { $_->label eq $sigil } $rdg->incoming();
 }
+sub next_real_reading {
+    my( $c, $rdg ) = @_;
+    while( my $r = $c->next_reading( $rdg ) ) {
+        return $r unless $r->is_meta;
+        return $r if $r eq $c->end;
+        $rdg = $r;
+    }
+}
+# For debugging
+sub rstr {
+    my @l = @_;
+    if( ref( $_[0] ) eq 'ARRAY' ) {
+        @l = @$_[0];
+    }
+    my $str = join( ' ', map { $_->text } @l );
+    return $str;
+}
+
+1;
