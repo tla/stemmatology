@@ -2,8 +2,12 @@ package Text::Tradition::Analysis;
 
 use strict;
 use warnings;
+use Exporter 'import';
 use Text::Tradition;
 use Text::Tradition::Stemma;
+
+use vars qw/ @EXPORT_OK /;
+@EXPORT_OK = qw/ run_analysis group_variants wit_stringify /;
 
 sub new {
 	my( $class, $args ) = @_;
@@ -107,7 +111,6 @@ sub run_analysis {
 		
 		# For all the groups with more than one member, collect the list of all
 		# contiguous vertices needed to connect them.
-		$DB::single = 1;
 		my $variant_row = analyze_variant_location( $group_readings, $groups, 
 		    $stemma->graph, $lacunose );
 		$variant_row->{'id'} = $rank;
@@ -143,6 +146,56 @@ sub run_analysis {
 	$data->{'conflict_count'} = $conflicts;
 	$data->{'genealogical_count'} = $genealogical;
 	push( @{$self->{'data'}}, $data );
+}
+
+sub group_variants {
+	my( $c, $wits ) = @_;
+	my $variant_groups = [];
+	
+	my $all_wits_table = $c->make_alignment_table( 'refs', $wits );
+	# Strip the list of sigla and save it for correlation to the readings.
+	my $col_wits = shift @$all_wits_table;
+	# Any witness in the stemma that has no row should be noted.
+    foreach ( @$col_wits ) {
+        $wits->{$_}++; # Witnesses present in table and stemma now have value 2.
+    }
+    my @not_collated = grep { $wits->{$_} == 1 } keys %$wits;	
+	foreach my $i ( 0 .. $#$all_wits_table ) {
+		# For each column in the table, group the readings by witness.
+		my $rdg_wits = {};
+		my $col_rdgs = shift @$all_wits_table;
+		my $rank;
+		my $lacunose = [ @not_collated ];
+		foreach my $j ( 0 .. $#{$col_rdgs} ) {
+			my $rdg = $col_rdgs->[$j];
+			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
+			if( $rdg ) {
+			    if( $rdg->is_lacuna ) {
+			        $rdg_text = undef;   # Don't count lacunae
+			        push( @$lacunose, $col_wits->[$j] );
+			    } else {
+    				$rdg_text = $rdg->text; 
+				    # Get the rank from any real reading; they should be identical.
+				    $rank = $rdg->rank;
+				}
+			}
+			if( defined $rdg_text ) {
+				# Initialize the witness array if we haven't got one yet
+				$rdg_wits->{$rdg_text} = [] unless $rdg_wits->{$rdg_text};
+				# Add the relevant witness, subject to a.c. logic
+				add_variant_wit( $rdg_wits->{$rdg_text}, $col_wits->[$j],
+					$c->ac_label );
+			}
+		}
+		
+		# See if this column has any potentially genealogical variants.
+		# If not, skip to the next.
+		my( $groups, $readings ) = useful_variant( $rdg_wits );
+		next unless $groups && $readings;  
+
+		push( @$variant_groups, $groups );
+	}
+	return $variant_groups;
 }
 
 # variant_row -> genealogical
