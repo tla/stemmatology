@@ -2,6 +2,7 @@ package Text::Tradition::Analysis;
 
 use strict;
 use warnings;
+use Benchmark;
 use Exporter 'import';
 use Text::Tradition;
 use Text::Tradition::Stemma;
@@ -65,11 +66,13 @@ sub run_analysis {
 	
 	# We will return a data structure, an array for each row that looks like:
 	# { id = X, genealogical = Y, readings = [ text = X, group = Y], empty = N }
+	my $rank = 0;
+    my $t0 = Benchmark->new();
 	foreach my $i ( 0 .. $#$all_wits_table ) {
 		# For each column in the table, group the readings by witness.
 		my $rdg_wits = {};
 		my $col_rdgs = shift @$all_wits_table;
-		my $rank;
+		# my $rank;
 		my $lacunose = [ @not_collated ];
 		foreach my $j ( 0 .. $#{$col_rdgs} ) {
 			my $rdg = $col_rdgs->[$j];
@@ -81,7 +84,7 @@ sub run_analysis {
 			    } else {
     				$rdg_text = $rdg->text; 
 				    # Get the rank from any real reading; they should be identical.
-				    $rank = $rdg->rank;
+				    # $rank = $rdg->rank;
 				}
 			}
 			if( defined $rdg_text ) {
@@ -98,6 +101,7 @@ sub run_analysis {
 		$total++ unless scalar keys %$rdg_wits == 1;
 		my( $groups, $readings ) = useful_variant( $rdg_wits );
 		next unless $groups && $readings;  
+		$rank++;
 		
 		# Keep track of our widest row
 		$html_columns = scalar @$groups if scalar @$groups > $html_columns;
@@ -132,6 +136,9 @@ sub run_analysis {
 		# Record that we used this variant in an analysis
 		push( @$variants, $variant_row );
 	}
+    my $t1 = Benchmark->new();
+    print STDERR "Analysis of graph for " . $tradition->name . " took " 
+        . timestr( timediff( $t1, $t0 ) ) . "seconds\n";
 	
 	# Go through our variant rows, after we have seen all of them once,
 	# and add the number of empty columns needed by each.
