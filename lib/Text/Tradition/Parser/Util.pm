@@ -60,6 +60,7 @@ sub collate_linearly {
                 my @v = $diff->Items( 2 );
                 foreach my $i ( 0 .. $#l ) {
                     if( !$merged{$l[$i]->name} ) {
+                        next if $v[$i] eq $l[$i];
                         print STDERR sprintf( "Merging %s into %s\n", 
                                              $v[$i]->name,
                                              $l[$i]->name );

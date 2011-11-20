@@ -31,6 +31,7 @@ initializes the Tradition from the file.
 
 my %sigil_for;  # Save the XML IDs for witnesses.
 my %apps;       # Save the apparatus XML for a given ID.    
+my %has_ac;     # Keep track of witnesses that have corrections.
 
 sub parse {
 	my( $tradition, $opts ) = @_;
@@ -77,6 +78,8 @@ sub parse {
 	# apparatus readings to the base text.  Essentially we will put 
 	# everything on the graph, from which we will delete the apps and
 	# anchors when we are done.
+	
+	# First, put the base tokens, apps, and anchors in the graph.
 	my $counter = 0;
 	my $last = $c->start;
 	foreach my $item ( @base_text ) {
@@ -86,15 +89,17 @@ sub parse {
             $r->text( $item->{'content'} );
         } elsif ( $item->{'type'} eq 'anchor' ) {
             $r = $c->add_reading( '#ANCHOR_' . $item->{'content'} . '#' );
+            $r->is_meta(1);
         } elsif ( $item->{'type'} eq 'app' ) {
             my $tag = '#APP_' . $counter++ . '#';
             $r = $c->add_reading( $tag );
+            $r->is_meta(1);
             $apps{$tag} = $item->{'content'};
         }
-        $c->add_path( $last, $r, 'BASE' );
+        $c->add_path( $last, $r, $c->baselabel );
         $last = $r;
     }
-    $c->add_path( $last, $c->end, 'BASE' );
+    $c->add_path( $last, $c->end, $c->baselabel );
     
     # Now we can parse the apparatus entries, and add the variant readings 
     # to the graph.
@@ -103,53 +108,9 @@ sub parse {
         _add_readings( $c, $app_id );
     }
     
-    # With the variant readings added, we now have to walk the graph for
-    # each witness and add an explicit path wherever there is not a divergence
-    # from BASE.  Thus we will also construct $wit->path.
-	$DB::single = 1;
-    foreach my $wit ( $tradition->witnesses ) {
-        my $sig = $wit->sigil;
-        my @wit_path = $c->reading_sequence( $c->start, $c->end, $sig, 'BASE' );
-        my $cur = $c->start;
-        foreach my $n ( @wit_path ) {
-            next if $cur eq $c->start;
-            my @paths = $cur->edges_to( $n );
-            unless( grep { $_->name eq $sig } @paths ) {
-                $c->add_path( $cur, $n, $sig );
-            }
-        }
-        $wit->path( \@wit_path );
-    }       
-    
-    # Collated readings are now on the graph, so now we get to remove
-    # all BASE edges and all app/anchor nodes.
-    foreach my $p ( $c->paths ) {
-        $c->del_path( $p ) if $p->name eq 'BASE';
-    }
-    foreach my $n ( $c->readings ) {
-        if( $n->name =~ /^\#A(PP|NCHOR)/ ) {
-            # Pair up incoming / outgoing edges with the same label
-            my( %incoming, %outgoing );
-            foreach my $e ( $n->incoming ) {
-                $incoming{$e->name} = $e->from;
-                $c->del_path( $e );
-            }
-            foreach my $e ( $n->outgoing ) {
-                $outgoing{$e->name} = $e->to;
-                $c->del_path( $e );
-            }
-            foreach my $w ( keys %incoming ) {
-                my $from = $incoming{$w};
-                my $to = delete $outgoing{$w};
-                warn "No outgoing edge on ".$n->name." for wit $w" unless $to;
-                $c->add_path( $from, $to, $w );
-            }
-            foreach my $w ( keys %outgoing ) {
-                warn "Found no incoming edge on ".$n->name." for wit $w";
-            }
-            $c->del_reading( $n );
-        }
-    }
+    # Finally, add explicit witness paths, remove the base paths, and remove
+    # the app/anchor tags.
+    expand_all_paths( $c );
 }
 
 sub _stringify_sigil {
@@ -167,9 +128,12 @@ sub _get_base {
 	if( $xn->nodeType == XML_TEXT_NODE ) {
 	    # Base text, just split the words on whitespace and add them 
 	    # to our sequence.
+	    # TODO consider that XML markup might appear mid-token.
 		my $str = $xn->data;
 		$str =~ s/^\s+//;
 		foreach my $w ( split( /\s+/, $str ) ) {
+		    # HACK to cope with mismatched doublequotes
+		    $w =~ s/\"//g;
 			push( @readings, { 'type' => 'token', 'content' => $w } );
 		}
 	} elsif( $xn->nodeName eq 'hi' ) {
@@ -202,13 +166,12 @@ sub _add_readings {
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
     my %wit_rdgs;  # Maps from witnesses to the variant text
-    my %wit_details; # Maps from witnesses to the witness detail e.g. a.c.
     my $ctr = 0;
     my $tag = $app_id;
     $tag =~ s/^\#APP_(.*)\#$/$1/;
+    $DB::single = 1 if $tag < 2;
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
         my @text;
-        my $wits = $rdg->getAttribute( 'wit' );
         foreach ( $rdg->childNodes ) {
             push( @text, _get_base( $_ ) );
         }
@@ -221,26 +184,31 @@ sub _add_readings {
             $r->text( $w );
             push( @rdg_nodes, $r );
         }
-        $wit_rdgs{$wits} = \@rdg_nodes;
-        # Does the reading have an ID? If so it probably has a witDetail
-        # attached, and that may be something we need to know.  For now,
-        # save the reading ID.
-        if( $rdg->hasAttribute( 'xml:id' ) ) {
-        	$wit_details{$wits} = $rdg->getAttribute( 'xml:id' );
+        
+        # For each listed wit, save the reading.
+        foreach my $wit ( split( /\s+/, $rdg->getAttribute( 'wit' ) ) ) {
+            $wit_rdgs{$wit} = \@rdg_nodes;
         }
-    }
-    # Now go through the available witDetails and, er, do something
-    # foreach my $d ( $xn->getChildrenByTagName( 'witDetail' ) ) {
-    	# my $referent = 
-    
+        # Does the reading have an ID? If so it probably has a witDetail
+        # attached, and we need to read it.
+        if( $rdg->hasAttribute( 'xml:id' ) ) {
+            my $rid = $rdg->getAttribute( 'xml:id' );
+            my $xpc = XML::LibXML::XPathContext->new( $xn );
+            my @details = $xpc->findnodes( './witDetail[@target="'.$rid.'"]' );
+            foreach my $d ( @details ) {
+                _parse_wit_detail( $d, \%wit_rdgs, \@lemma );
+            }
+        }
+    }       
+        
     # Now collate the variant readings, since it is not done for us.
-    collate_variants( $c, \@lemma, values %wit_rdgs );
+    collate_variants( $c, \@lemma, values %wit_rdgs );    
     
     # Now add the witness paths for each reading.
-    foreach my $wit_str ( keys %wit_rdgs ) {
-        my @wits = get_sigla( $wit_str );
-        my $rdg_list = $wit_rdgs{$wit_str};
-        _add_wit_path( $c, $rdg_list, $app_id, $anchor, @wits );
+    foreach my $wit_id ( keys %wit_rdgs ) {
+        my $witstr = get_sigil( $wit_id, $c );
+        my $rdg_list = $wit_rdgs{$wit_id};
+        _add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
     }
 }
 
@@ -254,8 +222,8 @@ sub _return_lemma {
     my( $c, $app, $anchor ) = @_;
     my $app_node = $c->graph->node( $app );
     my $anchor_node = $c->graph->node( $anchor );
-    my @nodes = grep { $_->name !~ /^\#A(PP|NCHOR)$/ } 
-        $c->reading_sequence( $app_node, $anchor_node, 'BASE' );
+    my @nodes = grep { $_->name !~ /^\#A(PP|NCHOR)/ } 
+        $c->reading_sequence( $app_node, $anchor_node, $c->baselabel );
     return @nodes;
 }
 
@@ -271,7 +239,11 @@ sub interpret {
 		$reading = "$1 $lemma";
 	} elsif( $reading =~ /^(.*) add.$/ ) {
 		$reading = "$lemma $1";
-	} elsif( $reading eq 'om.' ) {
+	} elsif( $reading eq 'om.' 
+	    || $reading =~ /locus [uv]acuus/
+	    || $reading =~ /inscriptionem compegi e/ # TODO huh?
+	    || $reading eq 'def.' # TODO huh?
+	    ) {
 		$reading = '';
 	} elsif( $reading eq 'inv.' ) {
 		# Hope it is two words.
@@ -299,23 +271,69 @@ sub interpret {
 	return $reading;
 }
 
-sub get_sigla {
-    my $witstr = shift;
-    my @xml_ids = split( /\s+/, $witstr );
-    my @sigs = map { $sigil_for{$_} } @xml_ids;
-    return @sigs;
+sub _parse_wit_detail {
+    my( $detail, $readings, $lemma ) = @_;
+    my $wit = $detail->getAttribute( 'wit' );
+    my $content = $detail->textContent;
+    if( $content =~ /a\.\s*c\./ ) {
+        # Replace the key in the $readings hash
+        my $rdg = delete $readings->{$wit};
+        $readings->{$wit.'_ac'} = $rdg;
+        $has_ac{$sigil_for{$wit}} = 1;
+    } elsif( $content =~ /p\.\s*c\./ ) {
+        # If no key for the wit a.c. exists, add one pointing to the lemma
+        unless( exists $readings->{$wit.'_ac'} ) {
+            $readings->{$wit.'_ac'} = $lemma;
+        }
+        $has_ac{$sigil_for{$wit}} = 1;
+    } # else don't bother just yet
+}
+
+sub get_sigil {
+    my( $xml_id, $c ) = @_;
+    if( $xml_id =~ /^(.*)_ac$/ ) {
+        my $real_id = $1;
+        return $sigil_for{$real_id} . $c->ac_label;
+    } else {
+        return $sigil_for{$xml_id};
+    }
+}
+
+sub expand_all_paths { 
+    my( $c ) = @_;
+    
+    # Walk the collation and fish out the paths for each witness
+    foreach my $wit ( $c->tradition->witnesses ) {
+        my $sig = $wit->sigil;
+        my @path = grep { $_->name !~ /(APP|ANCHOR)/ } 
+            $c->reading_sequence( $c->start, $c->end, $sig );
+        $wit->path( \@path );
+        if( $has_ac{$sig} ) {
+            my @ac_path = grep { $_->name !~ /(APP|ANCHOR)/ } 
+                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label, $sig );
+            $wit->uncorrected_path( \@ac_path );
+        }
+    }   
+    
+    # Delete the anchors
+    foreach my $anchor ( grep { $_->name =~ /(APP|ANCHOR)/ } $c->readings ) {
+        $c->del_reading( $anchor );
+    }
+    # Delete all edges
+    map { $c->del_path( $_ ) } $c->paths;
+    
+    # Make the path edges
+    $c->make_witness_paths();
 }
 
 sub _add_wit_path {
-    my( $c, $rdg, $app, $anchor, @wits ) = @_;
+    my( $c, $rdg, $app, $anchor, $wit ) = @_;
     my @nodes = @$rdg;
-    push( @nodes, $c->graph->node( $anchor ) );
+    push( @nodes, $c->reading( $anchor ) );
     
-    my $cur = $c->graph->node( $app );
+    my $cur = $c->reading( $app );
     foreach my $n ( @nodes ) {
-        foreach my $w ( @wits ) {
-            $c->add_path( $cur, $n, $w );
-        }
+        $c->add_path( $cur, $n, $wit );
         $cur = $n;
     }
 }
