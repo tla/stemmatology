@@ -171,13 +171,19 @@ sub merge_stone_apparatus {
                 print STDERR "Lemma $lemma not found; skipping readings $rest\n";
                 next;
             }
-            my @lemma_chain = $c->reading_sequence( $lemma_start, $lemma_end );
-            
-            # Splice in "start" and "end" placeholders on either
-            # side of the lemma.
-            my ( $rdg_start, $rdg_end ) =
-                _add_reading_placeholders( $c, $lemma_start, $lemma_end );
-                
+            my( $rdg_start, $rdg_end, @lemma_chain );
+            if( $lemma_start eq '__PRIOR__' ) {
+                # Deal with 'inc' readings: lemma chain should be empty, rdg_start
+                # is a placeholder, rdg_end is $lemma_end.
+                $rdg_start = _add_reading_placeholders( $c, $lemma_end );
+                $rdg_end = $lemma_end;
+            } else {           
+                @lemma_chain = $c->reading_sequence( $lemma_start, $lemma_end );
+                # Splice in "start" and "end" placeholders on either
+                # side of the lemma.
+                ( $rdg_start, $rdg_end ) =
+                    _add_reading_placeholders( $c, $lemma_start, $lemma_end );
+            }
             # For each reading, attach it to the lemma.
             my @indiv = split( /   /, $rest );
             my $has_rel = 0;
@@ -199,8 +205,9 @@ sub merge_stone_apparatus {
                 my @readings;
                 foreach my $rdg_word ( @$words ) {
                     next if $rdg_word =~ /^__/;
-                    my $reading_id = $lemma_start->name . '_' . $lemma_end->name 
-                        . '/' . $rdg_ctr++;
+                    my $reading_id = ref( $lemma_start ) 
+                        ? $lemma_start->name : $lemma_start;
+                    $reading_id .= '_' . $lemma_end->name . '/' . $rdg_ctr++;
                     my $reading = $c->add_reading( $reading_id );
                     $reading->text( $rdg_word );
                     push( @readings, $reading );
@@ -208,7 +215,10 @@ sub merge_stone_apparatus {
                 
                 # Deal with any specials.
                 my $lemma_sequence;
-                if( @$words && $words->[0] eq '__LEMMA__' ) {
+                if( @$words && $words->[0] eq '__LEMMA__' 
+                    && $lemma_end ne $rdg_end ) {
+                    # It's an addition (unless lemma_end eq rdg_end, in which case
+                    # it's an 'inc'.) Start from lemma rather than from placeholder.
                     $lemma_sequence = [ $lemma_end, $rdg_end ];
                 } elsif ( @$words && $words->[0] eq '__TRANSPOSE__' ) {
                     # Hope it is only two or three words in the lemma.
@@ -241,12 +251,11 @@ sub merge_stone_apparatus {
                         # Create the reading nodes in $rwords
                         # TODO Hope we don't meet ~ in a recursion
                         my $local_rdg = [];
-                        $DB::single = 1;
                         foreach my $i ( 0 .. $#$rwords ) {
                             next if $i == 0 && $rwords->[$i] =~ /^__/;
-                            my $reading_id = $llseq->[0]->text . '_' . 
-                                $llseq->[-1]->text . '/' . $i;
-                            $DB::single = 1 if $reading_id =~ /ATTACH/;
+                            my $reading_id = $llseq->[0]->name . '_' . 
+                                $llseq->[-1]->name . '/' . $i;
+                            $reading_id =~ s/ATTACH//g;
                             my $reading = $c->add_reading( $reading_id );
                             $reading->text( $rwords->[$i] );
                             push( @$local_rdg, $reading );
@@ -261,21 +270,25 @@ sub merge_stone_apparatus {
             } # end processing of $app
         } # end foreach my $app in line
     } # end while <line>
+    $DB::single = 1;
     
     # Now reconcile all the paths in the collation, and delete our
     # temporary anchor nodes.
     expand_all_paths( $c );    
     
     # Finally, calculate the ranks we've got.
-    $c->calculate_ranks;
+    # $c->calculate_ranks;
 }
 
 sub _find_reading_on_line {
     my( $c, $lemma, $baseline, $prior ) = @_;
     
-    # We might want the whole line.
     if( $lemma eq 'totum' ) {
+        # We want the whole line.
         return( $baseline->{'start'}, $baseline->{'end'} );
+    } elsif( $lemma eq 'inc' ) {
+        # We want to shove things in before the line begins.
+        return( '__PRIOR__', $baseline->{'start'} );
     }
     
     my $lemma_start = $baseline->{'start'};
@@ -373,7 +386,8 @@ sub _add_reading_placeholders {
         $collation->add_path( $prior, $start_node, $collation->baselabel );
         $collation->add_path( $start_node, $lemma_start, $collation->baselabel );
     }
-    
+    return $start_node unless $lemma_end;
+
     # Now the converse for the end.
     my $end_node = $collation->next_reading( $lemma_end );
     unless( $end_node->name =~ /ATTACH/ ) {
@@ -524,83 +538,34 @@ sub _add_sigil_path {
     }
 }
 
-# Remove all ATTACH* nodes, linking the readings on either side of them.
-# Then walk the collation for all witness paths, and make sure those paths
-# explicitly exist.  Then delete all the 'base' paths.
+# Walk the collation for all witness paths, delete the ATTACH anchor nodes,
+# and then nuke and re-draw all edges (thus getting rid of the base).
 
 sub expand_all_paths { 
     my( $c ) = @_;
     
-    # Delete the anchors
-    foreach my $anchor ( grep { $_->name =~ /ATTACH/ } $c->readings ) {
-        # Map each path to its incoming/outgoing node.
-        my %incoming;
-        map { $incoming{$_->label} = $_->from } $anchor->incoming();
-        my %outgoing;
-        map { $outgoing{$_->label} = $_->to } $anchor->outgoing();
-        $c->del_reading( $anchor );
-        
-        # Connect in and out.
-        my $aclabel = $c->ac_label;
-        foreach my $edge ( keys %incoming ) {
-            my $from = $incoming{$edge};
-            my $to = $outgoing{$edge};
-            if( !$to && $edge =~ /^(.*)\Q$aclabel\E$/ ) {
-                $to = $outgoing{$1};
-            }
-            $to = $outgoing{$c->baselabel} unless $to;
-            $DB::single = 1 unless $to;
-            warn "Have no outbound base link on " . $anchor->name . "!"
-                unless $to;
-            $c->add_path( $from, $to, $edge );
-            delete $outgoing{$edge} unless $edge eq $c->baselabel;
-        }
-        foreach my $edge ( keys %outgoing ) {
-            my $to = $outgoing{$edge};
-            my $from = $incoming{$edge};
-            if( !$from && $edge =~ /^(.*)\Q$aclabel\E$/ ) {
-                $from = $incoming{$1};
-            }
-            $from = $incoming{$c->baselabel} unless $from;
-            warn "Have no inbound base link on " . $anchor->name . "!"
-                unless $from;
-            $c->add_path( $from, $to, $edge );
-        }
-    }
-    
-    $DB::single = 1;
-    # Walk the collation and add paths if necessary
+    # Walk the collation and fish out the paths for each witness
     foreach my $sig ( keys %ALL_SIGLA ) {
         my $wit = $c->tradition->witness( $sig );
-        my @path = $c->reading_sequence( $c->start, $c->end, $sig );
+        my @path = grep { $_->name !~ /ATTACH/ } 
+            $c->reading_sequence( $c->start, $c->end, $sig );
         $wit->path( \@path );
         if( $ALL_SIGLA{$sig} > 1 ) {
-            my @ac_path = $c->reading_sequence( $c->start, $c->end, 
-                                                $sig.$c->ac_label, $sig );
-            $wit->uncorrected_path( \@path );
-            # a.c. paths are already there by default.
+            my @ac_path = grep { $_->name !~ /ATTACH/ } 
+                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label, $sig );
+            $wit->uncorrected_path( \@ac_path );
         }
-        foreach my $i ( 1 .. $#path ) {
-            # If there is no explicit path for this sigil between n-1 and n,
-            # add it.
-            my @sigedges = grep { $_->label eq $sig } $path[$i]->incoming;
-            if( @sigedges ) {
-                warn "Found more than one path already for $sig" if @sigedges > 1;
-                warn "Would add second path for $sig" 
-                    unless $sigedges[0]->from eq $path[$i-1];
-                next;
-            }
-            $c->add_path( $path[$i-1], $path[$i], $sig );
-        }
-    }
+    }   
     
-    # Delete all baselabel edges
-    foreach my $edge ( grep { $_->label eq $c->baselabel } $c->paths ) {
-        $c->del_edge( $edge );
+    # Delete the anchors
+    foreach my $anchor ( grep { $_->name =~ /ATTACH/ } $c->readings ) {
+        $c->del_reading( $anchor );
     }
+    # Delete all edges
+    map { $c->del_path( $_ ) } $c->paths;
     
-    # Calculate ranks on graph nodes
-    $c->calculate_ranks();
+    # Make the path edges
+    $c->make_witness_paths();
 }
 
 sub _get_seq {
@@ -640,7 +605,7 @@ sub next_real_reading {
 sub rstr {
     my @l = @_;
     if( ref( $_[0] ) eq 'ARRAY' ) {
-        @l = @$_[0];
+        @l = @{$_[0]};
     }
     my $str = join( ' ', map { $_->text } @l );
     return $str;

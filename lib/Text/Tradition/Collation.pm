@@ -770,8 +770,10 @@ sub reading_sequence {
         $seen{$n->name()} = 1;
         
         my $next = $self->next_reading( $n, $witness, $backup );
-        warn "Did not find any path for $witness from reading " . $n->name
-            unless $next;
+        unless( $next ) {
+            warn "Did not find any path for $witness from reading " . $n->name;
+            last;
+        }
         push( @readings, $next );
         $n = $next;
     }
