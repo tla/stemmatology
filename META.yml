@@ -1,13 +1,14 @@
 ---
-abstract: ~
+abstract: 'a software model for a set of collated texts'
 author:
   - 'Tara L Andrews <aurum@cpan.org>'
 build_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.56
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.56
 distribution_type: module
-generated_by: 'Module::Install version 0.91'
+dynamic_config: 1
+generated_by: 'Module::Install version 1.00'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -35,7 +36,7 @@ requires:
   Text::CSV_XS: 0
   XML::LibXML: 0
   XML::LibXML::XPathContext: 0
-  perl: 5.010
+  perl: 5.12.0
 resources:
   license: http://dev.perl.org/licenses/
-version: undef
+version: 0.1

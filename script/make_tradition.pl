@@ -11,8 +11,8 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK ) 
-    = ( '', '', '', '', 1, 'Tradition', 0 );
+my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep ) 
+    = ( '', '', '', '', 1, 'Tradition', 0, ',' );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -20,6 +20,7 @@ GetOptions( 'i|in=s'    => \$informat,
             'l|linear!' => \$linear,
             'n|name'    => \$name,
             'h|help'    => \$help,
+            'sep=s'		=> \$sep,
             'hack'      => \$HACK,
     );
 
@@ -57,6 +58,7 @@ my %args = ( 'input' => $informat,
              'linear' => $linear );
 $args{'base'} = $inbase if $inbase;
 $args{'name'} = $name if $name;
+$args{'sep_char'} = $sep if $informat eq 'Tabular';
 ### Custom hacking for Stone
 if( $informat eq 'CollateText' ) {
     $args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];

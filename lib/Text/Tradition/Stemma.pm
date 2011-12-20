@@ -145,14 +145,25 @@ sub convert_characters {
     my %unique = ( '__UNDEF__' => 'X',
                    '#LACUNA#'  => '?',
                  );
+    my %count;
     my $ctr = 0;
     foreach my $word ( @$row ) {
         if( $word && !exists $unique{$word} ) {
             $unique{$word} = chr( 65 + $ctr );
             $ctr++;
         }
+        $count{$word}++ if $word;
     }
+    # Try to keep variants under 8 by lacunizing any singletons.
     if( scalar( keys %unique ) > 8 ) {
+		foreach my $word ( keys %count ) {
+			if( $count{$word} == 1 ) {
+				$unique{$word} = '?';
+			}
+		}
+    }
+    my %u = reverse %unique;
+    if( scalar( keys %u ) > 8 ) {
         warn "Have more than 8 variants on this location; phylip will break";
     }
     my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;

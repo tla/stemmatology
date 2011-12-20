@@ -129,7 +129,7 @@ sub parse {
     map { $text->{$_->sigil} = [] } $tradition->witnesses;
 
     # Look for all word/seg node IDs and note their pre-existence.
-    my @attrs = $xpc->findnodes( "//$W|$SEG/attribute::xml:id" );
+    my @attrs = $xpc->findnodes( "//$W/attribute::xml:id" );
     _save_preexisting_nodeids( @attrs );
 
     # Count up how many apps we have.
@@ -147,7 +147,6 @@ sub parse {
     # Join them up.
     my $c = $tradition->collation;
     foreach my $sig ( keys %$text ) {
-        next if $sig eq 'base';  # Skip base text readings with no witnesses.
         # Determine the list of readings for 
         my $sequence = $text->{$sig};
         my @real_sequence = ( $c->start );
@@ -186,7 +185,7 @@ sub parse {
     }
     
     # Calculate the ranks for the nodes.
-    $tradition->collation->calculate_ranks();
+	$tradition->collation->calculate_ranks();
     
     # Now that we have ranks, see if we have distinct nodes with identical
     # text and identical rank that can be merged.
@@ -335,7 +334,7 @@ sub _return_rdg {
             # TODO handle p.c. and s.l. designations too
             $ac = $xn->getAttribute( 'type' ) && $xn->getAttribute( 'type' ) eq 'a.c.';
             my @rdg_wits = _get_sigla( $xn );
-            @rdg_wits = ( 'base' ) unless @rdg_wits;  # Allow for editorially-supplied readings
+            return unless @rdg_wits;  # Skip readings that appear in no witnesses
             my @words;
             foreach ( $xn->childNodes ) {
                 my @rdg_set = _get_readings( $tradition, $_, 1, $ac, @rdg_wits );
@@ -388,7 +387,8 @@ sub _return_rdg {
                     push( @{$text->{$w}}, $l );
                 }
             }
-        } elsif( $xn->nodeName eq 'witDetail' ) {
+        } elsif( $xn->nodeName eq 'witDetail' 
+        		 || $xn->nodeName eq 'note' ) {
             # Ignore these for now.
             return;
         } else {
@@ -433,6 +433,7 @@ sub _get_sigla {
     my @wits;
     if( ref( $rdg ) eq 'XML::LibXML::Element' ) {
         my $witstr = $rdg->getAttribute( 'wit' );
+        return () unless $witstr;
         $witstr =~ s/^\s+//;
         $witstr =~ s/\s+$//;
         @wits = split( /\s+/, $witstr );
