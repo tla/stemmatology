@@ -82,11 +82,6 @@ sub BUILD {
 
     $self->set_attribute( 'class', 'relationship' );
 
-    my( $source, $target ) = @{$self->this_relation};
-    if( $source->has_position && $target->has_position ) {
-	# Harmonize the positions.
-	$source->match_position( $target );
-    }
     unless( $self->primary_relation ) {
 	$self->primary_relation( [ $self->this_relation->[0]->label,
 				   $self->this_relation->[1]->label ] );

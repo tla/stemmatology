@@ -201,7 +201,10 @@ sub parse {
         	$opts->{'non_independent'} = $e->{'non_independent'} 
         		if exists $e->{'non_independent'};
         	warn "No relationship type for relationship edge!" unless $opts->{'type'};
-        	$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
+        	my( $ok, @result ) = $collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
+        	unless( $ok ) {
+        		warn "Did not add relationship: @result";
+        	}
         } 
     }
 
