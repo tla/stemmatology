@@ -5,10 +5,9 @@
     <link type="text/css" href="[% c.uri_for('css/cupertino/jquery-ui-1.8.13.custom.css') %]" rel="stylesheet" />
     <link type="text/css" href="[% c.uri_for('css/style.css') %]" rel="stylesheet" />
     [% INCLUDE js %]
-    <title>Stexaminer</title>
+    <title>Text tradition tools</title>
   </head>
   <body>
-    <h1>Stexaminer</h1>
 [% content %]
   </body>
 </html>

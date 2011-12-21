@@ -1,7 +1,8 @@
 package TreeOfTexts::Controller::Root;
 use Moose;
 use namespace::autoclean;
-use TreeOfTexts::Model::Analysis qw/ run_analysis /;
+use Text::Tradition::Analysis qw/ run_analysis /;
+
 
 BEGIN { extends 'Catalyst::Controller' }
 
@@ -30,20 +31,39 @@ The root page (/)
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    my $m = $c->model('Analysis');
-    my $i = 0;
-    my @all_texts = map { $_->{'title'} } @{$m->{'data'}};
+    my $m = $c->model('Directory');
+    my @all_texts;
+    foreach my $id ( $m->traditions ) {
+    	my $data = { 
+    		'id' => $id,
+    		'name' => $m->tradition( $id )->name,
+    		'has_stemma' => defined $m->stemma( $id ),
+    	};
+    	push( @all_texts, $data );
+    }
+    
     $c->stash->{texts} = \@all_texts;
     $c->stash->{template} = 'frontpage.tt';
 }
 
-sub view_text :Local {
+sub relationships :Local {
+	my( $self, $c ) = @_;
+	my $m = $c->model('Directory');
+	my $tradition = $m->tradition( $c->request->params->{'textid'} );
+	$c->stash->{alignment} = $tradition->collation->make_alignment_table( 'refs' );
+	$c->stash->{template} = 'relationships.tt';	
+}
+
+sub stexaminer :Local {
     my( $self, $c ) = @_;
-    my $m = $c->model('Analysis');
-    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
-	$c->stash->{svg} = $t->{'svg'};
+    my $m = $c->model('Directory');
+	my $id = $c->request->params->{'textid'};
+	my $tradition = $m->tradition( $id );
+	my $stemma = $m->stemma( $id );
+	my $t = run_analysis( $tradition, $stemma );
+	$c->stash->{svg} = $stemma->as_svg;
 	$c->stash->{variants} = $t->{'variants'};
-	$c->stash->{text_title} = $t->{'title'};
+	$c->stash->{text_title} = $tradition->name;
 	$c->stash->{total} = $t->{'variant_count'};
 	$c->stash->{genealogical} = $t->{'genealogical_count'};
 	$c->stash->{conflict} = $t->{'conflict_count'};
@@ -52,20 +72,22 @@ sub view_text :Local {
 
 sub view_table :Local {
     my( $self, $c ) = @_;
-    my $m = $c->model( 'Analysis' );
-    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
+    my $m = $c->model('Directory');
+	my $id = $c->request->params->{'textid'};
+	my $t = run_analysis( $m->tradition( $id ), $m->stemma( $id ) );
    	$c->stash->{variants} = $t->{'variants'};
     $c->stash->{template} = 'table_gadget.tt';
 }
 
 sub view_svg :Local {
     my( $self, $c ) = @_;
-    my $m = $c->model( 'Analysis' );
-    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
-   	$c->stash->{svg} = $t->{'svg'};
+    my $m = $c->model('Directory');
+	my $stemma = $m->stemma( $c->request->params->{'textid'} );
+	if( $stemma ) {
+	   	$c->stash->{svg} = $stemma->as_svg;
+	}
     $c->stash->{template} = 'stemma_gadget.tt';
 }
-
 
 =head2 default
 

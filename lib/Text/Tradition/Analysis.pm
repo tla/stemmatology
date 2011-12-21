@@ -10,40 +10,12 @@ use Text::Tradition::Stemma;
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants wit_stringify /;
 
-sub new {
-	my( $class, $args ) = @_;
-	my $self = {};
-	bless( $self, $class );	
-	$self->{'data'} = [];
-	foreach my $t ( @{$args->{'traditions'}} ) {
-	    $self->run_analysis( $t->{'file'}, $t->{'stemmadot'} );
-	}
-	return $self;
-}
-
 sub run_analysis {
-	my( $self, $file, $stemmadot ) = @_;
+	my( $tradition, $stemma ) = @_;
 	# What we will return
-	my $svg;
 	my $variants = [];
 	my $data = {};
-	
-	# Read in the file and stemma	
-	my $tradition = Text::Tradition->new( 
-		'input'  => 'Self',
-		'file'   => $file,
-		'linear' => 1,
-		);
-	$data->{'title'} = $tradition->name;
-	
-	my $stemma = Text::Tradition::Stemma->new(
-		'collation' => $tradition->collation,
-		'dot' => $stemmadot,
-		);
-	# We will return the stemma picture
-	$svg = $stemma->as_svg( { size => "8,7.5" } );;
-	$data->{'svg'} = $svg;
-	
+		
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.
 	my $wits = {};
@@ -104,12 +76,11 @@ sub run_analysis {
 		$row->{'empty'} = $empty;
 	}
 	
-	# Populate self with our analysis data.
 	$data->{'variants'} = $variants;
 	$data->{'variant_count'} = $total;
 	$data->{'conflict_count'} = $conflicts;
 	$data->{'genealogical_count'} = $genealogical;
-	push( @{$self->{'data'}}, $data );
+	return $data;
 }
 
 sub group_variants {

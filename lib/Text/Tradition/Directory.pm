@@ -88,8 +88,6 @@ sub BUILD {
 			}
 		}
 	}
-	
-	return $self;
 }
 
 1;

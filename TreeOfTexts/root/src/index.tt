@@ -19,7 +19,7 @@
 [% END -%]
         </tr>
 [% END -%]
-
+    <h1>Stexaminer</h1>
     <h2>[% text_title %]</h2>
     <div id="statistics">
       <p>Analyzed [% total %] variant locations, of which [% genealogical %] entirely followed the stemma.  [% conflict %] readings conflicted with the stemma.</p>
