@@ -15,6 +15,7 @@ has collation => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
     required => 1,
+    weak_ref => 1,
     );  
 
 has graph => (
@@ -34,22 +35,25 @@ sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
-        # Open the file, assume UTF-8
-        open( my $dot, $args->{'dot'} ) or warn "Failed to read dot file";
-        # TODO don't bother if we haven't opened
-        binmode $dot, ":utf8";
-        my $reader = Graph::Reader::Dot->new();
-        my $graph = $reader->read_graph( $dot );
-        $graph 
-            ? $self->graph( $graph ) 
-            : warn "Failed to parse dot file " . $args->{'dot'};
+        $self->graph_from_dot( $args->{'dot'} );
     }
 }
 
-# Render the stemma as SVG.
-sub as_svg {
+sub graph_from_dot {
+	my( $self, $dotfh ) = @_;
+	# Assume utf-8
+	binmode( $dotfh, ':utf8' );
+ 	my $reader = Graph::Reader::Dot->new();
+	my $graph = $reader->read_graph( $dotfh );
+	$graph 
+		? $self->graph( $graph ) 
+		: warn "Failed to parse dot in $dotfh";
+}
+
+sub as_dot {
     my( $self, $opts ) = @_;
     # TODO add options for display, someday
+    # TODO see what happens with Graph::Writer::Dot someday
     my $dgraph = Graph::Convert->as_graph_easy( $self->graph );
     # Set some class display attributes for 'hypothetical' and 'extant' nodes
     $dgraph->set_attribute( 'flow', 'south' );
@@ -69,13 +73,21 @@ sub as_svg {
         my $sizeline = "  graph [ size=\"" . $opts->{'size'} . "\" ]";
         splice( @lines, 1, 0, $sizeline );
     }
+    return join( "\n", @lines );
+}
+	
+
+# Render the stemma as SVG.
+sub as_svg {
+    my( $self, $opts ) = @_;
+    my $dot = $self->as_dot( $opts );
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
-    print $dotfile join( "\n", @lines );
+    print $dotfile $dot;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     $svg = decode_utf8( $svg );

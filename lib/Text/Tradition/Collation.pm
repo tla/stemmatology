@@ -34,6 +34,7 @@ has 'graph' => (
 has 'tradition' => (  # TODO should this not be ro?
     is => 'rw',
     isa => 'Text::Tradition',
+    weak_ref => 1,
     );
 
 has 'svg' => (
@@ -55,14 +56,6 @@ has 'csv' => (
     isa => 'Str',
     writer => '_save_csv',
     predicate => 'has_csv',
-    );
-
-# Keeps track of the lemmas within the collation.  At most one lemma
-# per position in the graph.
-has 'lemmata' => (
-    is => 'ro',
-    isa => 'HashRef[Maybe[Str]]',
-    default => sub { {} },
     );
 
 has 'wit_list_separator' => (
