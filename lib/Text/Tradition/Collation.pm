@@ -438,6 +438,7 @@ sub as_graphml {
         _add_graphml_data( $node_el, $node_data_keys{'rank'}, $n->rank )
             if $n->has_rank;
         _add_graphml_data( $node_el, $node_data_keys{'class'}, $n->sub_class );
+        $DB::single = 1 if $n->has_primary && $n->primary ne $n;
         _add_graphml_data( $node_el, $node_data_keys{'identical'}, $n->primary->name )
             if $n->has_primary && $n->primary ne $n;
     }
@@ -530,11 +531,14 @@ sub make_alignment_table {
     my @all_pos = ( 0 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
-        my @row = _make_witness_row( $wit->path, \@all_pos, $noderefs );
+        my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
+        my @row = _make_witness_row( \@wit_path, \@all_pos, $noderefs );
         unshift( @row, $wit->sigil );
         push( @$table, \@row );
-        if( $wit->has_ante_corr ) {
-            my @ac_row = _make_witness_row( $wit->uncorrected_path, \@all_pos, $noderefs );
+        if( $wit->is_layered ) {
+        	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
+        		$wit->sigil.$self->ac_label, $wit->sigil );
+            my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos, $noderefs );
             unshift( @ac_row, $wit->sigil . $self->ac_label );
             push( @$table, \@ac_row );
         }           
@@ -861,69 +865,12 @@ sub _is_within {
 
 
 ## INITIALIZATION METHODS - for use by parsers
-# Walk the paths for each witness in the graph, and return the nodes
-# that the graph has in common.  If $using_base is true, some 
-# different logic is needed.
-# NOTE This does not create paths; it merely finds common readings.
-
-sub walk_witness_paths {
-    my( $self ) = @_;
-    # For each witness, walk the path through the graph.
-    # Then we need to find the common nodes.  
-    # TODO This method is going to fall down if we have a very gappy 
-    # text in the collation.
-    my $paths = {};
-    my @common_readings;
-    foreach my $wit ( $self->tradition->witnesses ) {
-        my $curr_reading = $self->start;
-        my @wit_path = $self->reading_sequence( $self->start, $self->end, 
-                                                $wit->sigil );
-        $wit->path( \@wit_path );
-
-        # Detect the common readings.
-        @common_readings = _find_common( \@common_readings, \@wit_path );
-    }
-
-    # Mark all the nodes as either common or not.
-    foreach my $cn ( @common_readings ) {
-        print STDERR "Setting " . $cn->name . " / " . $cn->label 
-            . " as common node\n";
-        $cn->make_common;
-    }
-    foreach my $n ( $self->readings() ) {
-        $n->make_variant unless $n->is_common;
-    }
-    # Return an array of the common nodes in order.
-    return @common_readings;
-}
-
-sub _find_common {
-    my( $common_readings, $new_path ) = @_;
-    my @cr;
-    if( @$common_readings ) {
-        foreach my $n ( @$new_path ) {
-            push( @cr, $n ) if grep { $_ eq $n } @$common_readings;
-        }
-    } else {
-        push( @cr, @$new_path );
-    }
-    return @cr;
-}
-
-sub _remove_common {
-    my( $common_readings, $divergence ) = @_;
-    my @cr;
-    my %diverged;
-    map { $diverged{$_->name} = 1 } @$divergence;
-    foreach( @$common_readings ) {
-        push( @cr, $_ ) unless $diverged{$_->name};
-    }
-    return @cr;
-}
-
 
 # For use when a collation is constructed from a base text and an apparatus.
 # We have the sequences of readings and just need to add path edges.
+# When we are done, clear out the witness path attributes, as they are no
+# longer needed.
+# TODO Find a way to replace the witness path attributes with encapsulated functions?
 
 sub make_witness_paths {
     my( $self ) = @_;
@@ -940,7 +887,7 @@ sub make_witness_path {
     foreach my $idx ( 0 .. $#chain-1 ) {
         $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
-    if( $wit->has_ante_corr ) {
+    if( $wit->is_layered ) {
         @chain = @{$wit->uncorrected_path};
         foreach my $idx( 0 .. $#chain-1 ) {
             my $source = $chain[$idx];
@@ -949,6 +896,8 @@ sub make_witness_path {
                 unless $self->has_path( $source, $target, $sig );
         }
     }
+    $wit->clear_path;
+    $wit->clear_uncorrected_path;
 }
 
 sub calculate_ranks {

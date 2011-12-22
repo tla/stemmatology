@@ -8,7 +8,7 @@ use vars qw/ @EXPORT_OK $xpc /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
-@EXPORT_OK = qw/ graphml_parse populate_witness_path /;
+@EXPORT_OK = qw/ graphml_parse /;
 
 =head1 NAME
 
@@ -130,28 +130,6 @@ sub graphml_parse {
     return $graph_hash;
 }
 
-=head2 B<populate_witness_path>( $tradition )
-
-Given a tradition, populate the 'path' and 'uncorrected_path' attributes
-of all of its witnesses.  Useful for all formats based on the graph itself.
-
-=cut
-
-sub populate_witness_path {
-    my ( $tradition, $ante_corr ) = @_;
-    my $c = $tradition->collation;
-    print STDERR "Walking paths for witnesses\n";
-    foreach my $wit ( $tradition->witnesses ) {
-    	my @path = $c->reading_sequence( $c->start, $c->end, $wit->sigil );
-    	$wit->path( \@path );
-    	if( $ante_corr->{$wit->sigil} ) {
-    		# Get the uncorrected path too
-    		my @uc = $c->reading_sequence( $c->start, $c->end, 
-    			$wit->sigil . $c->ac_label, $wit->sigil );
-    		$wit->uncorrected_path( \@uc );
-    	}
-    }
-}
 
 sub _lookup_node_data {
     my( $xmlnode, $key ) = @_;

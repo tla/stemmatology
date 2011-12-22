@@ -36,24 +36,27 @@ if( $dir ) {
 	opendir( DIR, $dir ) or die "Could not open directory $dir";
 	while( readdir DIR ) {
 		next unless /\.xml$/;
-		my $stemmafile = "$dir/" . $stemma_map{$_};	
+		print STDERR "Looking at $_\n";
 		my $tradition = Text::Tradition->new( 
 			'input' => 'Self',
 			'file' => "$dir/$_",
 			'linear' => 1,
 			);
-		open my $stemma_fh, '<', $stemmafile or die "Could not read stemma file $stemmafile";		
-		my $stemma = Text::Tradition::Stemma->new(
-			'collation' => $tradition->collation,
-			'dot' => $stemma_fh,
-			);
+		my $stemma;
+		if( exists $stemma_map{$_} ) {
+			my $stemmafile = "$dir/" . $stemma_map{$_};	
+			open my $stemma_fh, '<', $stemmafile or die "Could not read stemma file $stemmafile";		
+			$stemma = Text::Tradition::Stemma->new(
+				'collation' => $tradition->collation,
+				'dot' => $stemma_fh,
+				);
+		}
 			
 		my $scope = $kdb->new_scope;
 		my $tid = $kdb->store( $tradition );
-		my $sid = $kdb->store( $stemma );
-		
-		print STDERR "Stored tradition and stemma for " . $tradition->name 
-			. ", got $tid / $sid as the ref\n";
+		my $sid = $kdb->store( $stemma ) if $stemma;
+		print STDERR "Stored tradition for " . $tradition->name . " at $tid\n";
+		print STDERR "\tand stemma at $sid\n" if $stemma;
 	}
 }
 
