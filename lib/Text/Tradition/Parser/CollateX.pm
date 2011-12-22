@@ -2,7 +2,7 @@ package Text::Tradition::Parser::CollateX;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
 
 =head1 NAME
 
@@ -163,9 +163,6 @@ sub parse {
         }
     }
     
-    # Set the $witness->path arrays for each wit.
-    populate_witness_path( $tradition );
-
     # Rank the readings.
     $collation->calculate_ranks() if $collation->linear;
 }

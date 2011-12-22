@@ -158,7 +158,6 @@ sub parse {
             $c->add_path( $source, $rdg, $sig );
             $source = $rdg;
         }
-        $tradition->witness( $sig )->path( \@real_sequence );
         # See if we need to make an a.c. version of the witness.
         if( exists $app_ac->{$sig} ) {
             my @uncorrected;
@@ -180,7 +179,7 @@ sub parse {
                 $source = $rdg;
             }
             print STDERR "Adding a.c. version for witness $sig\n";
-            $tradition->witness( $sig )->uncorrected_path( \@uncorrected );
+            $tradition->witness( $sig )->is_layered( 1 );
         }
     }
     

@@ -2,7 +2,7 @@ package Text::Tradition::Parser::Self;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
 
 =head1 NAME
 
@@ -171,7 +171,6 @@ sub parse {
         
     # Now add the edges.
     print STDERR "Adding graph edges\n";
-    my $has_ante_corr = {};
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
@@ -190,7 +189,7 @@ sub parse {
 				$tradition->add_witness( sigil => $wit );
 				$witnesses{$wit} = 1;
 			}
-			$has_ante_corr->{$wit} = 1 if $extra;
+			$tradition->witness( $wit )->is_layered( 1 ) if $extra;
         } elsif( $class eq 'relationship' ) {
         	# We need the metadata about the relationship.
         	my $opts = { 'type' => $e->{$RELATIONSHIP_KEY} };
@@ -222,9 +221,6 @@ sub parse {
             }
         }
     }
-    
-    # Set the $witness->path arrays for each wit.
-    populate_witness_path( $tradition, $has_ante_corr );
 }
 
 1;

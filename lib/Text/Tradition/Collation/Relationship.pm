@@ -12,36 +12,12 @@ extends 'Graph::Easy::Edge';
 
 enum 'RelationshipType' => qw( spelling orthographic grammatical repetition lexical );
 
-subtype 'RelationshipVector',
-    => as 'ArrayRef',
-    => where { @$_ == 2
-	       && $_->[0]->isa( 'Graph::Easy::Node' )
-	       && $_->[1]->isa( 'Graph::Easy::Node' )
-	     },
-    message { 'Argument should be [ SourceReading, TargetReading ]' };
-
-subtype 'RelationshipTokenVector',
-    => as 'ArrayRef',
-    => where { @$_ == 2 },
-    message { 'Argument should be [ \'source\', \'target\' ]' };
-
 no Moose::Util::TypeConstraints;  ## see comment above
 		   
 has 'type' => (
     is => 'rw',
     isa => 'RelationshipType',
     required => 1,
-);
-
-has 'this_relation' => (
-    is => 'rw',
-    isa => 'RelationshipVector',
-    required => 1,
-);
-
-has 'primary_relation' => (
-    is => 'rw',
-    isa => 'RelationshipTokenVector',
 );
 
 has 'global' => (
@@ -82,10 +58,6 @@ sub BUILD {
 
     $self->set_attribute( 'class', 'relationship' );
 
-    unless( $self->primary_relation ) {
-	$self->primary_relation( [ $self->this_relation->[0]->label,
-				   $self->this_relation->[1]->label ] );
-    }
 }
 
 no Moose;
