@@ -118,7 +118,7 @@ around BUILDARGS => sub {
 	# If one of our special booleans is set, we change the text and the
 	# ID to match.
 	
-	if( exists $args->{'is_lacuna'} ) {
+	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
 		$args->{'text'} = sprintf( "#LACUNA_%s#", $args->{'id'} );
 	} elsif( exists $args->{'is_start'} ) {
 		$args->{'id'} = '#START#';  # Change the ID to ensure we have only one
@@ -149,6 +149,12 @@ sub is_meta {
 sub related_readings {
 	my $self = shift;
 	return $self->collation->related_readings( $self, @_ );
+}
+
+sub set_identical {
+	my( $self, $other ) = @_;
+	return $self->collation->add_relationship( $self, $other, 
+		{ 'type' => 'transposition' } );
 }
 
 sub _stringify {

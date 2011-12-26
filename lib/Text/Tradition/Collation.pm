@@ -275,7 +275,7 @@ sub add_relationship {
     if( $self->relations->has_edge( $source, $target ) ) {
 		return ( undef, "Relationship already exists between these readings" );
     }
-    if( $options->{'colocated'} && !$self->relationship_valid( $source, $target ) ) {
+    if( !$self->relationship_valid( $source, $target, $options->{'type'} ) ) {
         return ( undef, 'Relationship creates witness loop' );
     }
 
@@ -289,25 +289,49 @@ sub add_relationship {
 }
 
 sub relationship_valid {
-    my( $self, $source, $target ) = @_;
-    # Check that linking the source and target in a relationship won't lead
-    # to a path loop for any witness.  First make a lookup table of all the
-    # readings related to either the source or the target.
-    my @proposed_related = ( $source, $target );
-    push( @proposed_related, $source->related_readings( 'colocated' ) );
-    push( @proposed_related, $target->related_readings( 'colocated' ) );
-    my %pr_ids;
-    map { $pr_ids{ $_->id } = 1 } @proposed_related;
+    my( $self, $source, $target, $rel ) = @_;
+    if( $rel eq 'repetition' ) {
+    	return 1;
+	} elsif ( $rel eq 'transposition' ) {
+		# Check that the two readings do not appear in the same witness.
+		my %seen_wits;
+		map { $seen_wits{$_} = 1 } $self->reading_witnesses( $source );
+		foreach my $w ( $self->reading_witnesses( $target ) ) {
+			return 0 if $seen_wits{$w};
+		}
+		return 1;
+	} else {
+		# Check that linking the source and target in a relationship won't lead
+		# to a path loop for any witness.  First make a lookup table of all the
+		# readings related to either the source or the target.
+		my @proposed_related = ( $source, $target );
+		push( @proposed_related, $source->related_readings( 'colocated' ) );
+		push( @proposed_related, $target->related_readings( 'colocated' ) );
+		my %pr_ids;
+		map { $pr_ids{ $_->id } = 1 } @proposed_related;
+	
+		# None of these proposed related readings should have a neighbor that
+		# is also in proposed_related.
+		foreach my $pr ( keys %pr_ids ) {
+			foreach my $neighbor( $self->sequence->neighbors( $pr ) ) {
+				return 0 if exists $pr_ids{$neighbor};
+			}
+		}		
+		return 1;
+	}
+}
 
-	# None of these proposed related readings should have a neighbor that
-	# is also in proposed_related.
-    foreach my $pr ( keys %pr_ids ) {
-    	foreach my $neighbor( $self->sequence->neighbors( $pr ) ) {
-    		return 0 if exists $pr_ids{$neighbor};
-    	}
-    }
-    
-    return 1;
+# Return a list of the witnesses in which the reading appears.
+sub reading_witnesses {
+	my( $self, $reading ) = @_;
+	# We need only check either the incoming or the outgoing edges; I have
+	# arbitrarily chosen "incoming".
+	my %all_witnesses;
+	foreach my $e ( $self->sequence->edges_to( $reading ) ) {
+		my $wits = $self->sequence->get_edge_attributes( @$e );
+		@all_witnesses{ keys %$wits } = 1;
+	}
+	return keys %all_witnesses;
 }
 
 sub related_readings {
@@ -448,7 +472,7 @@ sub as_graphml {
     # Add the data keys for the graph
     my %graph_data_keys;
     my $gdi = 0;
-    my @graph_attributes = qw/ wit_list_separator baselabel linear ac_label /;
+    my @graph_attributes = qw/ version wit_list_separator baselabel linear ac_label /;
     foreach my $datum ( @graph_attributes ) {
     	$graph_data_keys{$datum} = 'dg'.$gdi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
@@ -511,7 +535,8 @@ sub as_graphml {
     
     # Collation attribute data
     foreach my $datum ( @graph_attributes ) {
-		_add_graphml_data( $graph, $graph_data_keys{$datum}, $self->$datum );
+    	my $value = $datum eq 'version' ? '2.0' : $self->$datum;
+		_add_graphml_data( $graph, $graph_data_keys{$datum}, $value );
 	}
 
     my $node_ctr = 0;

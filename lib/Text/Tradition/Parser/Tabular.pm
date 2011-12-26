@@ -68,8 +68,8 @@ is( ref( $t ), 'Text::Tradition', "Parsed florilegium CSV file" );
 
 ### TODO Check these figures
 if( $t ) {
-    is( scalar $t->collation->readings, 313, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2877, "Collation has all paths" );
+    is( scalar $t->collation->readings, 312, "Collation has all readings" );
+    is( scalar $t->collation->paths, 363, "Collation has all paths" );
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 
@@ -138,7 +138,6 @@ sub parse {
         }
     }
     
-    
     # Collapse our lacunae into a single node and
     # push the end node onto all paths.
     $c->end->rank( scalar @$alignment_table );
@@ -147,15 +146,22 @@ sub parse {
         my $last_rdg = shift @$p;
         my $new_p = [ $last_rdg ];
         foreach my $rdg ( @$p ) {
+        	$DB::single = 1 if $rdg->id eq '228,1';
             if( $rdg->text eq '#LACUNA#' ) {
                 # If we are in a lacuna already, drop this node.
                 # Otherwise make a lacuna node and drop this node.
                 unless( $last_rdg->is_lacuna ) {
-                    my $l = $c->add_reading( {
-                		'collation' => $c,
-                		'id' => $rdg->name,
-                		'is_lacuna' => 1,
-                		} );
+                	my $l_id = 'l' . $rdg->id;
+                	my $l;
+                	if( $c->has_reading( $l_id ) ) {
+                		$l = $c->reading( $l_id );
+                	} else {
+                    	$l = $c->add_reading( {
+							'collation' => $c,
+							'id' => $l_id,
+							'is_lacuna' => 1,
+							} );
+					}
                     push( @$new_p, $l );
                     $last_rdg = $l;
                 }

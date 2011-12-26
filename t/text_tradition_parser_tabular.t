@@ -25,8 +25,8 @@ is( ref( $t ), 'Text::Tradition', "Parsed florilegium CSV file" );
 
 ### TODO Check these figures
 if( $t ) {
-    is( scalar $t->collation->readings, 313, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2877, "Collation has all paths" );
+    is( scalar $t->collation->readings, 312, "Collation has all readings" );
+    is( scalar $t->collation->paths, 363, "Collation has all paths" );
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 }
