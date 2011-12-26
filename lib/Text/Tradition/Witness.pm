@@ -174,44 +174,6 @@ sub BUILD {
 	}
 }
 
-=begin testing
-
-use Text::Tradition;
-
-my $simple = 't/data/simple.txt';
-my $s = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'Tabular',
-    'file'  => $simple,
-    );
-my $wit_c = $s->witness( 'C' );
-is( ref( $wit_c ), 'Text::Tradition::Witness' ),;
-if( $wit_c ) {
-    ok( !$wit_c->has_text, "Text property not yet set" );
-    my $c_arr = $wit_c->text;
-    is( $c_arr->[0], 'Je', "Text constructed from path" );
-    ok( $wit_c->has_text, "Text property now set" );
-}
-
-=end testing
-
-=cut
-
-# If the text is not present, and the path is, and this is a 'get'
-# request, generate text from path.
-around text => sub {
-	my $orig = shift;
-	my $self = shift;
-
-	if( $self->has_path && !$self->has_text && !@_ ) {
-		my @words = map { $_->label } grep { !$_->is_meta } @{$self->path};
-		$self->$orig( \@words );
-	}
-	
-	$self->$orig( @_ );
-};
-
-
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

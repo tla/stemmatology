@@ -63,7 +63,7 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
     is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+    is( scalar $t->collation->paths, 374, "Collation has all paths" );
 }
 
 =end testing
@@ -170,10 +170,10 @@ sub parse {
             }
             my $source = $c->start;
             foreach my $rdg ( @uncorrected ) {
-                my $has_base = grep { $_->label eq $sig } $source->edges_to( $rdg );
+                my $has_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
                 if( $rdg ne $c->start && !$has_base ) {
                     print STDERR sprintf( "Adding path %s from %s -> %s\n",
-                        $sig.$c->ac_label, $source->name, $rdg->name );
+                        $sig.$c->ac_label, $source->id, $rdg->id );
                     $c->add_path( $source, $rdg, $sig.$c->ac_label );
                 }
                 $source = $rdg;
@@ -214,8 +214,8 @@ sub _replace_sequence {
     my( $arr, $start, $end, @new ) = @_;
     my( $start_idx, $end_idx );
     foreach my $i ( 0 .. $#{$arr} ) {
-        $start_idx = $i if( $arr->[$i]->name eq $start );
-        if( $arr->[$i]->name eq $end ) {
+        $start_idx = $i if( $arr->[$i]->id eq $start );
+        if( $arr->[$i]->id eq $end ) {
             $end_idx = $i;
             last;
         }
@@ -234,9 +234,9 @@ sub _return_rdg {
     # passed a reading object, return the object.
     my $wantobj = ref( $rdg ) eq 'Text::Tradition::Collation::Reading';
     my $real = $rdg;
-    if( exists $substitutions->{ $wantobj ? $rdg->name : $rdg } ) {
-        $real = $substitutions->{ $wantobj ? $rdg->name : $rdg };
-        $real = $real->name unless $wantobj;
+    if( exists $substitutions->{ $wantobj ? $rdg->id : $rdg } ) {
+        $real = $substitutions->{ $wantobj ? $rdg->id : $rdg };
+        $real = $real->id unless $wantobj;
     }
     return $real;
 }
@@ -277,9 +277,6 @@ sub _return_rdg {
                 next if $w !~ /[[:alnum:]]/;
                 my $rdg = _make_reading( $tradition->collation, $w );
                 push( @new_readings, $rdg );
-                unless( $in_var ) {
-                    $rdg->make_common;
-                }
                 foreach ( @cur_wits ) {
                     warn "Empty wit!" unless $_;
                     warn "Empty reading!" unless $rdg;
@@ -296,9 +293,6 @@ sub _return_rdg {
             my $xml_id = $xn->getAttribute( 'xml:id' );
             my $rdg = _make_reading( $tradition->collation, $xn->textContent, $xml_id );
             push( @new_readings, $rdg );
-            unless( $in_var ) {
-                $rdg->make_common;
-            }
             foreach( @cur_wits ) {
                 warn "Empty wit!" unless $_;
                 warn "Empty reading!" unless $rdg;
@@ -322,7 +316,7 @@ sub _return_rdg {
             # Return the entire set of unique readings.
             my %unique;
             foreach my $s ( @sets ) {
-                map { $unique{$_->name} = $_ } @$s;
+                map { $unique{$_->id} = $_ } @$s;
             }
             push( @new_readings, values( %unique ) );
             # Exit the current app.
@@ -351,8 +345,8 @@ sub _return_rdg {
                 # Add the reading set to the app anchors for each witness
                 # or put in placeholders for empty p.c. readings
                 foreach ( @rdg_wits ) {
-                    my $start = @words ? $words[0]->name : "PH-$current_app";
-                    my $end = @words ? $words[-1]->name : "PH-$current_app";
+                    my $start = @words ? $words[0]->id : "PH-$current_app";
+                    my $end = @words ? $words[-1]->id : "PH-$current_app";
                     $app_anchors->{$current_app}->{$_}->{'start'} = $start;
                     $app_anchors->{$current_app}->{$_}->{'end'} = $end;
                     push( @{$text->{$_}}, $start ) unless @words;
@@ -369,7 +363,10 @@ sub _return_rdg {
                 my $i = 0;
                 foreach my $sig ( keys %$text ) {
                     next if $active_wits{$sig};
-                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    my $l = $tradition->collation->add_reading( {
+                    	'collation' => $tradition->collation,
+                    	'id' => $current_app . "_$i",
+                    	'is_lacuna' => 1 } );
                     $i++;
                     push( @{$text->{$sig}}, $l );
                 }
@@ -382,7 +379,10 @@ sub _return_rdg {
             unless( $seen_apps == $app_count ) {
                 foreach my $i ( 0 .. $#cur_wits ) {
                     my $w = $cur_wits[$i];
-                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    my $l = $tradition->collation->add_reading( {
+                    	'collation' => $tradition->collation,
+                    	'id' => $current_app . "_$i",
+                    	'is_lacuna' => 1 } );
                     push( @{$text->{$w}}, $l );
                 }
             }
@@ -471,8 +471,11 @@ sub _get_sigla {
                 $xml_id = $try_id;
             }
         }
-        my $rdg = $graph->add_reading( $xml_id );
-        $rdg->text( $word );
+        my $rdg = $graph->add_reading(
+        	{ 'collation' => $graph,
+        	  'id' => $xml_id,
+        	  'text' => $word }
+        	);
         $used_nodeids{$xml_id} = $rdg;
         return $rdg;
     }

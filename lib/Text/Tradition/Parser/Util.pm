@@ -59,16 +59,16 @@ sub collate_linearly {
                 my @l = $diff->Items( 1 );
                 my @v = $diff->Items( 2 );
                 foreach my $i ( 0 .. $#l ) {
-                    if( !$merged{$l[$i]->name} ) {
+                    if( !$merged{$l[$i]->id} ) {
                         next if $v[$i] eq $l[$i];
                         print STDERR sprintf( "Merging %s into %s\n", 
-                                             $v[$i]->name,
-                                             $l[$i]->name );
+                                             $v[$i]->id,
+                                             $l[$i]->id );
                         $collation->merge_readings( $l[$i], $v[$i] );
-                        $merged{$l[$i]->name} = 1;
-                        $substitutions->{$v[$i]->name} = $l[$i];
+                        $merged{$l[$i]->id} = 1;
+                        $substitutions->{$v[$i]->id} = $l[$i];
                     } else {
-                        print STDERR "Would have double merged " . $l[$i]->name . "\n";
+                        print STDERR "Would have double merged " . $l[$i]->id . "\n";
                     }
                 }
                 # splice the lemma nodes into the variant set
@@ -102,19 +102,19 @@ sub collate_nonlinearly {
         my %merged;
         foreach my $idx ( 0 .. $#{$variant_set} ) {
             my $vw = $variant_set->[$idx];
-            my @same = grep { cmp_str( $_ ) eq $vw->label } @unique;
+            my @same = grep { cmp_str( $_ ) eq $vw->text } @unique;
             my $matched;
             if( @same ) {
                 foreach my $i ( 0 .. $#same ) {
-                    unless( $merged{$same[$i]->name} ) {
+                    unless( $merged{$same[$i]->id} ) {
                         #print STDERR sprintf( "Merging %s into %s\n", 
-                        #                     $vw->name,
-                        #                     $same[$i]->name );
+                        #                     $vw->id,
+                        #                     $same[$i]->id );
                         $collation->merge_readings( $same[$i], $vw );
-                        $merged{$same[$i]->name} = 1;
+                        $merged{$same[$i]->id} = 1;
                         $matched = $i;
                         $variant_set->[$idx] = $same[$i];
-                        $substitutions->{$vw->name} = $same[$i];
+                        $substitutions->{$vw->id} = $same[$i];
                     }
                 }
             }
@@ -134,7 +134,7 @@ sub _collation_hash {
 
 sub cmp_str {
     my( $reading ) = @_;
-    my $word = $reading->label();
+    my $word = $reading->text();
     $word = lc( $word );
     $word =~ s/\W//g;
     $word =~ s/v/u/g;
@@ -157,10 +157,10 @@ sub check_for_repeated {
     my %unique;
     my @repeated;
     foreach ( @seq ) {
-        if( exists $unique{$_->name} ) {
-            push( @repeated, $_->name );
+        if( exists $unique{$_->id} ) {
+            push( @repeated, $_->id );
         } else {
-            $unique{$_->name} = 1;
+            $unique{$_->id} = 1;
         }
     }
     return @repeated;
@@ -179,7 +179,7 @@ sub is_monotonic {
     my( @readings ) = @_;
     my( $common, $min, $max ) = ( -1, -1, -1 );
     foreach my $rdg ( @readings ) {
-#         print STDERR "Checking reading " . $rdg->name . "/" . $rdg->text . " - " 
+#         print STDERR "Checking reading " . $rdg->id . "/" . $rdg->text . " - " 
 #         . $rdg->position->reference ."\n";
         return 0 if $rdg->position->common < $common;
         if( $rdg->position->common == $common ) {

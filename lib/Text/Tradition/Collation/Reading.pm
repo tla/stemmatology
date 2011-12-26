@@ -1,7 +1,7 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
-use overload '""' => \&_stringify;
+use overload '""' => \&_stringify, 'fallback' => 1;
 use Text::Tradition::Collation;
 
 =head1 NAME

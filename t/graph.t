@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 use strict; use warnings;
-use Test::More;
+use Test::More skip_all => "lemmatization disabled for now";
 use lib 'lib';
 use Text::Tradition;
 use XML::LibXML;
