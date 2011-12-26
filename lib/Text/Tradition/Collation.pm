@@ -316,9 +316,9 @@ sub related_readings {
 	if( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
 		$reading = $reading->id;
 		$return_object = 1;
-		print STDERR "Returning related objects\n";
-	} else {
-		print STDERR "Returning related object names\n";
+# 		print STDERR "Returning related objects\n";
+# 	} else {
+# 		print STDERR "Returning related object names\n";
 	}
 	my @related = $self->relations->all_reachable( $reading );
 	if( $colocated ) {

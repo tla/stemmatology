@@ -10,12 +10,12 @@ use XML::LibXML::XPathContext;
 
 my $datafile = 't/data/Collatex-16.xml'; #TODO need other test data
 
-open( GRAPHFILE, $datafile ) or die "Could not open $datafile";
-my @lines = <GRAPHFILE>;
-close GRAPHFILE;
-my $tradition = Text::Tradition->new( 'CollateX' => join( '', @lines ),
-				      'linear' => 1 );
-my $stemma = Text::Tradition::Stemma->new( 'tradition' => $tradition );
+my $tradition = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $datafile,
+    );
+my $stemma = Text::Tradition::Stemma->new( 'collation' => $tradition->collation );
 
 # Test for object creation
 ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
@@ -26,10 +26,12 @@ $stemma->make_character_matrix();
  ## check number of columns
 
 # Test that pars runs
-my( $status, $tree ) = $stemma->run_pars();
+my( $status, $tree ) = $stemma->run_phylip_pars();
 ok( $status, "pars ran successfully" );
 print STDERR "Error was $tree\n" unless $status;
 
 # Test that we get a tree
 
 # Test that the tree has all our witnesses
+
+done_testing();

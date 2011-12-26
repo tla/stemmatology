@@ -9,10 +9,11 @@ use XML::LibXML::XPathContext;
 
 my $datafile = 't/data/Collatex-16.xml';
 
-open( GRAPHFILE, $datafile ) or die "Could not open $datafile";
-my @lines = <GRAPHFILE>;
-close GRAPHFILE;
-my $tradition = Text::Tradition->new( 'CollateX' => join( '', @lines ) );
+my $tradition = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $datafile,
+    );
 my $collation = $tradition->collation;
 
 # Test the svg creation
@@ -62,7 +63,7 @@ sub make_text {
     my @words;
     foreach my $n ( @_ ) {
 	if( $n->[1] ) {
-	    push( @words, $collation->reading( $n->[0] )->label );
+	    push( @words, $collation->reading( $n->[0] )->text );
 	} elsif ( !defined $n->[1] ) {
 	    push( @words, '...' );
 	}
