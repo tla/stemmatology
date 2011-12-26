@@ -312,15 +312,20 @@ sub relationship_valid {
 
 sub related_readings {
 	my( $self, $reading, $colocated ) = @_;
-	$reading = $reading->id 
-		if ref( $reading ) eq 'Text::Tradition::Collation::Reading';
+	my $return_object;
+	if( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
+		$reading = $reading->id;
+		$return_object = 1;
+		print STDERR "Returning related objects\n";
+	} else {
+		print STDERR "Returning related object names\n";
+	}
 	my @related = $self->relations->all_reachable( $reading );
 	if( $colocated ) {
 		my @colo = grep { $self->relations->has_edge_attribute( $reading, $_, 'colocated' ) } @related;
-		return @colo;
-	} else {
-		return @related;
-	}
+		@related = @colo;
+	} 
+	return $return_object ? map { $self->reading( $_ ) } @related : @related;
 }
 
 =head2 Output method(s)

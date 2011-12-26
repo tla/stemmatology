@@ -59,13 +59,14 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
-    is( scalar $t->collation->paths, 49, "Collation has all paths" );
+    is( scalar $t->collation->paths, 32, "Collation has all paths" );
     is( scalar $t->witnesses, 3, "Collation has all witnesses" );
     
     # Check an 'identical' node
     my $transposed = $t->collation->reading( 'n15' );
-    ok( $transposed->has_primary, "Reading links to transposed primary" );
-    is( $transposed->primary->name, 'n17', "Correct transposition link" );
+    my @related = $transposed->related_readings;
+    is( scalar @related, 1, "Reading links to transposed version" );
+    is( $related[0]->id, 'n17', "Correct transposition link" );
 }
 
 =end testing

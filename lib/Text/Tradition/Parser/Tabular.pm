@@ -151,8 +151,11 @@ sub parse {
                 # If we are in a lacuna already, drop this node.
                 # Otherwise make a lacuna node and drop this node.
                 unless( $last_rdg->is_lacuna ) {
-                    my $l = $c->add_lacuna( $rdg->name );
-                    $l->rank( $rdg->rank );
+                    my $l = $c->add_reading( {
+                		'collation' => $c,
+                		'id' => $rdg->name,
+                		'is_lacuna' => 1,
+                		} );
                     push( @$new_p, $l );
                     $last_rdg = $l;
                 }
@@ -188,11 +191,15 @@ sub make_nodes {
     }
     my $ctr = 1;
     foreach my $w ( keys %unique ) {
-        my $r = $collation->add_reading( "$index,$ctr" );
-        $ctr++;
-        $r->rank( $index );
-        $r->text( $w );
+    	my $rargs = {
+    		'collation' => $collation,
+    		'id' => "$index,$ctr",
+    		'rank' => $index,
+    		'text' => $w,
+    		};
+        my $r = $collation->add_reading( $rargs );
         $unique{$w} = $r;
+        $ctr++;
     }
     return \%unique;
 }
