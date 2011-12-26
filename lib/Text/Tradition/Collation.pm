@@ -487,7 +487,7 @@ sub as_graphml {
     my $ndi = 0;
     my %node_data = ( 
     	id => 'string',
-    	reading => 'string',
+    	text => 'string',
     	rank => 'string',
     	is_start => 'boolean',
     	is_end => 'boolean',
@@ -547,10 +547,11 @@ sub as_graphml {
         my $node_xmlid = 'n' . $node_ctr++;
         $node_hash{ $n->id } = $node_xmlid;
         $node_el->setAttribute( 'id', $node_xmlid );
-        _add_graphml_data( $node_el, $node_data_keys{'id'}, $n->id );
-        _add_graphml_data( $node_el, $node_data_keys{'reading'}, $n->text );
-        _add_graphml_data( $node_el, $node_data_keys{'rank'}, $n->rank )
-            if $n->has_rank;
+        foreach my $d ( keys %node_data ) {
+        	my $nval = $n->$d;
+        	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
+        		if defined $nval;
+        }
     }
 
     # Add the path edges
