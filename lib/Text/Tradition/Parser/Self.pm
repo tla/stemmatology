@@ -138,7 +138,6 @@ sub parse {
     my $use_version;
     print STDERR "Setting graph globals\n";
     $tradition->name( $graph_data->{'name'} );
-	$DB::single = 1;
     foreach my $gkey ( keys %{$graph_data->{'global'}} ) {
 		my $val = $graph_data->{'global'}->{$gkey};
 		if( $gkey eq 'version' ) {

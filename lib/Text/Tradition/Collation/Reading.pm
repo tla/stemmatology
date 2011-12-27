@@ -78,6 +78,7 @@ has 'text' => (
 	is => 'ro',
 	isa => 'Str',
 	required => 1,
+	writer => 'alter_text',
 	);
 
 has 'is_start' => (

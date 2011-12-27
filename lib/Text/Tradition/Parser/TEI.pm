@@ -364,7 +364,6 @@ sub _return_rdg {
                 foreach my $sig ( keys %$text ) {
                     next if $active_wits{$sig};
                     my $l = $tradition->collation->add_reading( {
-                    	'collation' => $tradition->collation,
                     	'id' => $current_app . "_$i",
                     	'is_lacuna' => 1 } );
                     $i++;
@@ -380,7 +379,6 @@ sub _return_rdg {
                 foreach my $i ( 0 .. $#cur_wits ) {
                     my $w = $cur_wits[$i];
                     my $l = $tradition->collation->add_reading( {
-                    	'collation' => $tradition->collation,
                     	'id' => $current_app . "_$i",
                     	'is_lacuna' => 1 } );
                     push( @{$text->{$w}}, $l );
@@ -472,8 +470,7 @@ sub _get_sigla {
             }
         }
         my $rdg = $graph->add_reading(
-        	{ 'collation' => $graph,
-        	  'id' => $xml_id,
+        	{ 'id' => $xml_id,
         	  'text' => $word }
         	);
         $used_nodeids{$xml_id} = $rdg;

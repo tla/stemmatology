@@ -92,7 +92,6 @@ sub parse {
         }
         my %node_data = %$n;
         my $gnode_args = { 
-        	'collation' => $collation,
         	'id' => delete $node_data{$IDKEY},
         	'text' => delete $node_data{$CONTENTKEY},
         };

@@ -157,7 +157,6 @@ sub parse {
                 		$l = $c->reading( $l_id );
                 	} else {
                     	$l = $c->add_reading( {
-							'collation' => $c,
 							'id' => $l_id,
 							'is_lacuna' => 1,
 							} );
@@ -198,7 +197,6 @@ sub make_nodes {
     my $ctr = 1;
     foreach my $w ( keys %unique ) {
     	my $rargs = {
-    		'collation' => $collation,
     		'id' => "$index,$ctr",
     		'rank' => $index,
     		'text' => $w,

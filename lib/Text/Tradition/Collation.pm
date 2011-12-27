@@ -135,7 +135,6 @@ around del_reading => sub {
 	if( ref( $arg ) eq 'Text::Tradition::Collation::Reading' ) {
 		$arg = $arg->id;
 	}
-	
 	# Remove the reading from the graphs.
 	$self->sequence->delete_vertex( $arg );
 	$self->relations->delete_vertex( $arg );
@@ -151,7 +150,7 @@ sub merge_readings {
 
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $kept, $deleted ) = $self->_stringify_args( @_ );
+    my( $kept, $deleted, $combine_char ) = $self->_stringify_args( @_ );
 
     # The kept reading should inherit the paths and the relationships
     # of the deleted reading.
@@ -159,6 +158,7 @@ sub merge_readings {
 		my @vector = ( $kept );
 		push( @vector, $path->[1] ) if $path->[0] eq $deleted;
 		unshift( @vector, $path->[0] ) if $path->[1] eq $deleted;
+		next if $vector[0] eq $vector[1]; # Don't add a self loop
 		my %wits = %{$self->sequence->get_edge_attributes( @$path )};
 		$self->sequence->add_edge( @vector );
 		my $fwits = $self->sequence->get_edge_attributes( @vector );
@@ -168,6 +168,7 @@ sub merge_readings {
 	foreach my $rel ( $self->relations->edges_at( $deleted ) ) {
 		my @vector = ( $kept );
 		push( @vector, $rel->[0] eq $deleted ? $rel->[1] : $rel->[0] );
+		next if $vector[0] eq $vector[1]; # Don't add a self loop
 		# Is there a relationship here already? If so, keep it.
 		# TODO Warn about conflicting relationships
 		next if $self->relations->has_edge( @vector );
@@ -178,6 +179,12 @@ sub merge_readings {
 	}
 	
 	# Do the deletion deed.
+	if( $combine_char ) {
+		my $kept_obj = $self->reading( $kept );
+		my $new_text = join( $combine_char, $kept_obj->text, 
+			$self->reading( $deleted )->text );
+		$kept_obj->alter_text( $new_text );
+	}
 	$self->del_reading( $deleted );
 }
 
@@ -209,13 +216,20 @@ sub add_path {
 
 sub del_path {
 	my $self = shift;
+	my @args;
+	if( ref( $_[0] ) eq 'ARRAY' ) {
+		my $e = shift @_;
+		@args = ( @$e, @_ );
+	} else {
+		@args = @_;
+	}
 
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $source, $target, $wit ) = $self->_stringify_args( @_ );
+    my( $source, $target, $wit ) = $self->_stringify_args( @args );
 
 	if( $self->sequence->has_edge_attribute( $source, $target, $wit ) ) {
-		$self->sequence->del_edge_attribute( $source, $target, $wit );
+		$self->sequence->delete_edge_attribute( $source, $target, $wit );
 	}
 	unless( keys %{$self->sequence->get_edge_attributes( $source, $target )} ) {
 		$self->sequence->delete_edge( $source, $target );
@@ -262,11 +276,11 @@ sub add_relationship {
 
 	# Check the options
 	if( !defined $options->{'type'} ||
-		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|repetition|transposition)$/i ) {
+		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lookalike|repetition|transposition)$/i ) {
 		my $t = $options->{'type'} ? $options->{'type'} : '';
-		return( undef, "Invalid or missing type" . $options->{'type'} );
+		return( undef, "Invalid or missing type " . $options->{'type'} );
 	}
-	if( $options->{'type'} =~ /^(spelling|orthographic|grammatical|meaning)$/ ) {
+	unless ( $options->{'type'} =~ /^(repetition|transposition)$/ ) {
 		$options->{'colocated'} = 1;
 	}
 	
@@ -305,10 +319,10 @@ sub relationship_valid {
 		# to a path loop for any witness.  First make a lookup table of all the
 		# readings related to either the source or the target.
 		my @proposed_related = ( $source, $target );
-		push( @proposed_related, $source->related_readings( 'colocated' ) );
-		push( @proposed_related, $target->related_readings( 'colocated' ) );
+		push( @proposed_related, $self->related_readings( $source, 'colocated' ) );
+		push( @proposed_related, $self->related_readings( $target, 'colocated' ) );
 		my %pr_ids;
-		map { $pr_ids{ $_->id } = 1 } @proposed_related;
+		map { $pr_ids{ $_ } = 1 } @proposed_related;
 	
 		# None of these proposed related readings should have a neighbor that
 		# is also in proposed_related.
@@ -784,7 +798,6 @@ sub reading_sequence {
         $seen{$n->id} = 1;
         
         my $next = $self->next_reading( $n, $witness, $backup );
-        $DB::single = 1 if $next->id eq $end->id;
         unless( $next ) {
             warn "Did not find any path for $witness from reading " . $n->id;
             last;
@@ -952,6 +965,7 @@ sub calculate_ranks {
         foreach my $n ( $self->sequence->successors( $r->id ) ) {
         	my( $tfrom, $tto ) = ( $rel_containers{$r->id},
         		$rel_containers{$n} );
+        	$DB::single = 1 unless $tfrom && $tto;
             $topo_graph->add_edge( $tfrom, $tto );
         }
     }
