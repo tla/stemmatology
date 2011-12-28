@@ -18,7 +18,7 @@ GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
             'o|out=s'   => \$outformat,
             'l|linear!' => \$linear,
-            'n|name'    => \$name,
+            'n|name=s'    => \$name,
             'h|help'    => \$help,
             'sep=s'		=> \$sep,
             'hack'      => \$HACK,
@@ -47,7 +47,7 @@ unless( $outformat =~ /^(graphml|svg|dot|stemma|csv)$/ ) {
 if( $informat =~ /^(KUL|CollateText)$/ && !$inbase ) {
     help( "$informat input needs a base text" );
 }
-
+$sep = "\t" if $sep eq 'tab';
 
 my $input = $ARGV[0];
 

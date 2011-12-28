@@ -15,7 +15,6 @@ my $kdb = KiokuDB->connect( "dbi:SQLite:dbname=db/traditions.db",
 	create => 1,
 	typemap => KiokuDB::TypeMap->new(
             isa_entries => {
-                "Graph::Easy::Base" => KiokuDB::TypeMap::Entry::Naive->new,
                 "Graph" => KiokuDB::TypeMap::Entry::Naive->new,
                 "Graph::AdjacencyMap" => KiokuDB::TypeMap::Entry::Naive->new,
             },
