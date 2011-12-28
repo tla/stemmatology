@@ -276,7 +276,7 @@ sub add_relationship {
 
 	# Check the options
 	if( !defined $options->{'type'} ||
-		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lookalike|repetition|transposition)$/i ) {
+		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lexical|repetition|transposition)$/i ) {
 		my $t = $options->{'type'} ? $options->{'type'} : '';
 		return( undef, "Invalid or missing type " . $options->{'type'} );
 	}
@@ -426,7 +426,9 @@ sub as_dot {
     foreach my $reading ( $self->readings ) {
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
-        $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $reading->text );
+        my $label = $reading->text;
+        $label =~ s/\"/\\\"/g;
+        $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
     }
     
     # TODO do something sensible for relationships
@@ -435,7 +437,7 @@ sub as_dot {
     foreach my $edge ( @edges ) {
         my %variables = ( 'color' => '#000000',
                           'fontcolor' => '#000000',
-                          'label' => join( ', ', $self->path_witnesses( $edge ) ),
+                          'label' => join( ', ', $self->path_display_label( $edge ) ),
             );
         my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
         $dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
@@ -455,6 +457,18 @@ sub path_witnesses {
 	my @wits = keys %{$self->sequence->get_edge_attributes( @edge )};
 	return sort @wits;
 }
+
+sub path_display_label {
+	my( $self, $edge ) = @_;
+	my @wits = $self->path_witnesses( $edge );
+	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
+	if( scalar @wits > $maj ) {
+		return 'majority';
+	} else {
+		return join( ', ', @wits );
+	}
+}
+		
 
 =item B<as_graphml>
 
@@ -670,6 +684,7 @@ sub make_alignment_table {
         return;
     }
     my $table;
+    $DB::single = 1;
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
