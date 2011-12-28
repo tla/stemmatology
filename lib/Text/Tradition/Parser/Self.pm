@@ -159,8 +159,16 @@ sub parse {
                          # after the nodes & edges are created.
     print STDERR "Adding graph nodes\n";
     foreach my $n ( @{$graph_data->{'nodes'}} ) {
-    	# If it is the start or end node, we already have one, so skip it.
-    	next if defined $n->{$START_KEY} || defined $n->{$END_KEY};
+    	# If it is the start or end node, we already have one, so
+    	# grab the rank and go.
+    	if( defined $n->{$START_KEY} ) {
+    		$collation->start->rank( $n->{$RANK_KEY} );
+    		next;
+    	}
+    	if( defined $n->{$END_KEY} ) {
+    		$collation->end->rank( $n->{$RANK_KEY} );
+    		next;
+    	}
     	
     	# First extract the data that we can use without reference to
     	# anything else.
@@ -225,7 +233,9 @@ sub parse {
         	warn "No relationship type for relationship edge!" unless $opts->{'type'};
         	my( $ok, @result ) = $collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
         	unless( $ok ) {
-        		warn "Did not add relationship: @result";
+        		my $relinfo = $opts->{'type'} . ' ' 
+        			. join( ' -> ', $from->{$IDKEY}, $to->{$IDKEY} );
+        		warn "Did not add relationship $relinfo: @result";
         	}
         } 
     }
