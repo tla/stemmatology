@@ -374,10 +374,7 @@ sub related_readings {
 
 print $graph->as_svg( $recalculate );
 
-Returns an SVG string that represents the graph.  Uses GraphViz to do
-this, because Graph::Easy doesn\'t cope well with long graphs. Unless
-$recalculate is passed (and is a true value), the method will return a
-cached copy of the SVG after the first call to the method.
+Returns an SVG string that represents the graph, via as_dot and graphviz.
 
 =cut
 
@@ -923,7 +920,7 @@ sub _is_within {
 sub make_witness_paths {
     my( $self ) = @_;
     foreach my $wit ( $self->tradition->witnesses ) {
-        print STDERR "Making path for " . $wit->sigil . "\n";
+        # print STDERR "Making path for " . $wit->sigil . "\n";
         $self->make_witness_path( $wit );
     }
 }
@@ -1050,7 +1047,7 @@ sub flatten_ranks {
         my $key = $rdg->rank . "||" . $rdg->text;
         if( exists $unique_rank_rdg{$key} ) {
             # Combine!
-            print STDERR "Combining readings at same rank: $key\n";
+            # print STDERR "Combining readings at same rank: $key\n";
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
         } else {
             $unique_rank_rdg{$key} = $rdg;
@@ -1077,8 +1074,6 @@ __PACKAGE__->meta->make_immutable;
 
 =over
 
-=item * Rationalize edge classes
-
-=item * Port the internal graph from Graph::Easy to Graph
+=item * Think about making Relationship objects again
 
 =back

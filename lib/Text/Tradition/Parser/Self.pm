@@ -136,7 +136,7 @@ sub parse {
     # Set up the graph-global attributes.  They will appear in the
     # hash under their accessor names.
     my $use_version;
-    print STDERR "Setting graph globals\n";
+    # print STDERR "Setting graph globals\n";
     $tradition->name( $graph_data->{'name'} );
     foreach my $gkey ( keys %{$graph_data->{'global'}} ) {
 		my $val = $graph_data->{'global'}->{$gkey};
@@ -157,14 +157,17 @@ sub parse {
 
     my $extra_data = {}; # Keep track of data that needs to be processed
                          # after the nodes & edges are created.
-    print STDERR "Adding graph nodes\n";
+    # print STDERR "Adding graph nodes\n";
     foreach my $n ( @{$graph_data->{'nodes'}} ) {
+    	unless( $use_version ) {
+    		# Backwards compat!
+    		$n->{$START_KEY} = 1 if $n->{$IDKEY} eq '#START#';
+    		$n->{$END_KEY} = 1 if $n->{$IDKEY} eq '#END#';
+    	}
+    	
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
-    	if( defined $n->{$START_KEY} ) {
-    		$collation->start->rank( $n->{$RANK_KEY} );
-    		next;
-    	}
+    	next if( defined $n->{$START_KEY} );
     	if( defined $n->{$END_KEY} ) {
     		$collation->end->rank( $n->{$RANK_KEY} );
     		next;
@@ -201,7 +204,7 @@ sub parse {
     }
         
     # Now add the edges.
-    print STDERR "Adding graph edges\n";
+    # print STDERR "Adding graph edges\n";
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
@@ -244,7 +247,7 @@ sub parse {
     ## needs to be processed after all the nodes are created.
     ## TODO unneeded after conversion
     unless( $use_version ) {
-		print STDERR "Adding second-pass node data\n";
+		# print STDERR "Adding second-pass node data\n";
 		foreach my $nkey ( keys %$extra_data ) {
 			foreach my $edkey ( keys %{$extra_data->{$nkey}} ) {
 				my $this_reading = $collation->reading( $nkey );

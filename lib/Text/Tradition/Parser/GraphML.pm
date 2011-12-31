@@ -84,7 +84,7 @@ sub graphml_parse {
     my $node_reg = {};
     
     # Read in graph globals (if any).
-    print STDERR "Reading graphml global data\n";
+    # print STDERR "Reading graphml global data\n";
     foreach my $dkey ( keys %$graphattr ) {
     	my $keyname = $graphattr->{$dkey};
     	my $keyvalue = _lookup_node_data( $graph_el, $dkey );
@@ -92,7 +92,7 @@ sub graphml_parse {
     }
 
     # Add the nodes to the graph hash.
-    print STDERR "Reading graphml nodes\n"; 
+    # print STDERR "Reading graphml nodes\n"; 
     my @nodes = $xpc->findnodes( '//g:node' );
     foreach my $n ( @nodes ) {
         # Could use a better way of registering these
@@ -107,7 +107,7 @@ sub graphml_parse {
     }
         
     # Now add the edges, and cross-ref with the node objects.
-    print STDERR "Reading graphml edges\n";
+    # print STDERR "Reading graphml edges\n";
     my @edges = $xpc->findnodes( '//g:edge' );
     foreach my $e ( @edges ) {
         my $from = $e->getAttribute('source');

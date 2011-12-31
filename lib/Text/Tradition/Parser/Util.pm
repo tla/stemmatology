@@ -61,9 +61,9 @@ sub collate_linearly {
                 foreach my $i ( 0 .. $#l ) {
                     if( !$merged{$l[$i]->id} ) {
                         next if $v[$i] eq $l[$i];
-                        print STDERR sprintf( "Merging %s into %s\n", 
-                                             $v[$i]->id,
-                                             $l[$i]->id );
+#                         print STDERR sprintf( "Merging %s into %s\n", 
+#                                              $v[$i]->id,
+#                                              $l[$i]->id );
                         $collation->merge_readings( $l[$i], $v[$i] );
                         $merged{$l[$i]->id} = 1;
                         $substitutions->{$v[$i]->id} = $l[$i];

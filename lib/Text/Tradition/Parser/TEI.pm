@@ -172,13 +172,13 @@ sub parse {
             foreach my $rdg ( @uncorrected ) {
                 my $has_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
                 if( $rdg ne $c->start && !$has_base ) {
-                    print STDERR sprintf( "Adding path %s from %s -> %s\n",
-                        $sig.$c->ac_label, $source->id, $rdg->id );
+                    # print STDERR sprintf( "Adding path %s from %s -> %s\n",
+                    #     $sig.$c->ac_label, $source->id, $rdg->id );
                     $c->add_path( $source, $rdg, $sig.$c->ac_label );
                 }
                 $source = $rdg;
             }
-            print STDERR "Adding a.c. version for witness $sig\n";
+            # print STDERR "Adding a.c. version for witness $sig\n";
             $tradition->witness( $sig )->is_layered( 1 );
         }
     }
@@ -200,7 +200,7 @@ sub _clean_sequence {
             my $app_id = $1;
             if( exists $app_ac->{$wit} &&
                 exists $app_ac->{$wit}->{$app_id} ) {
-                print STDERR "Retaining empty placeholder for $app_id\n";
+                # print STDERR "Retaining empty placeholder for $app_id\n";
                 push( @clean_sequence, $rdg );
             }
         } else {
