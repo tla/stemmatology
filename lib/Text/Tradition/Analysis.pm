@@ -11,10 +11,17 @@ use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants wit_stringify /;
 
 sub run_analysis {
-	my( $tradition, $stemma ) = @_;
+	my( $tradition ) = @_;
 	# What we will return
 	my $variants = [];
 	my $data = {};
+	
+	# We need a stemma in order to run this...
+	unless( $tradition->has_stemma ) {
+		warn "Tradition '" . $tradition->name . "' has no stemma to analyze";
+		return undef;
+	}
+	my $stemma = $tradition->stemma;
 		
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.

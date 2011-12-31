@@ -3,6 +3,7 @@ package Text::Tradition;
 use Module::Load;
 use Moose;
 use Text::Tradition::Collation;
+use Text::Tradition::Stemma;
 use Text::Tradition::Witness;
 
 use vars qw( $VERSION );
@@ -32,6 +33,12 @@ has 'name' => (
     isa => 'Str',
     default => 'Tradition',
     );
+    
+has 'stemma' => (
+	is => 'ro',
+	isa => 'Text::Tradition::Stemma',
+	writer => '_add_stemma',
+	);
   
 # Create the witness before trying to add it
 around 'add_witness' => sub {
@@ -274,6 +281,40 @@ sub BUILD {
             $mod->can('parse')->( $self, $init_args );
         }
     }
+}
+
+=head2 add_stemma( $dotfile )
+
+Initializes a Text::Tradition::Stemma object from the given dotfile,
+and associates it with the tradition.
+
+=begin testing
+
+use Text::Tradition;
+
+my $t = Text::Tradition->new( 
+    'name'  => 'simple test', 
+    'input' => 'Tabular',
+    'file'  => 't/data/simple.txt',
+    );
+
+my $s;
+ok( $s = $t->add_stemma( 't/data/simple.dot' ), "Added a simple stemma" );
+is( ref( $s ), 'Text::Tradition::Stemma', "Got a stemma object returned" );
+is( $t->stemma, $s, "Stemma is the right one" );
+
+=end testing
+
+=cut
+
+sub add_stemma {
+	my( $self, $dot ) = @_;
+	open my $stemma_fh, '<', $dot or warn "Could not open file $dot";
+	my $stemma = Text::Tradition::Stemma->new( 
+		'collation' => $self->collation,
+		'dot' => $stemma_fh );
+	$self->_add_stemma( $stemma ) if $stemma;
+	return $stemma;
 }
 
 no Moose;

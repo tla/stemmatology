@@ -47,5 +47,23 @@ is( scalar $s->witnesses, 3, "object has three witnesses again" );
 
 
 
+# =begin testing
+{
+use Text::Tradition;
+
+my $t = Text::Tradition->new( 
+    'name'  => 'simple test', 
+    'input' => 'Tabular',
+    'file'  => 't/data/simple.txt',
+    );
+
+my $s;
+ok( $s = $t->add_stemma( 't/data/simple.dot' ), "Added a simple stemma" );
+is( ref( $s ), 'Text::Tradition::Stemma', "Got a stemma object returned" );
+is( $t->stemma, $s, "Stemma is the right one" );
+}
+
+
+
 
 1;

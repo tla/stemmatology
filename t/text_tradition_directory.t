@@ -8,9 +8,9 @@ $| = 1;
 
 # =begin testing
 {
+use Test::Warn;
 use File::Temp;
 use Text::Tradition;
-use Text::Tradition::Stemma;
 use_ok 'Text::Tradition::Directory';
 
 my $fh = File::Temp->new();
@@ -19,47 +19,35 @@ $fh->close;
 my $dsn = "dbi:SQLite:dbname=$file";
 
 my $d = Text::Tradition::Directory->new( 'dsn' => $dsn,
-    'extra_args' => { 'create' => 1 } );
+	'extra_args' => { 'create' => 1 } );
 is( ref $d, 'Text::Tradition::Directory', "Got directory object" );
 
+my $scope = $d->new_scope;
 my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'Tabular',
-    'file'  => 't/data/simple.txt',
-    );
-my $uuid = $d->save_tradition( $t );
+	'name'  => 'inline', 
+	'input' => 'Tabular',
+	'file'  => 't/data/simple.txt',
+	);
+my $uuid = $d->save( $t );
 ok( $uuid, "Saved test tradition" );
 
-my $s = Text::Tradition::Stemma->new( 
-	'collation' => $t->collation,
-	'dotfile' => 't/data/simple.dot' );
-my $sid = $d->save_stemma( $s );
-ok( $sid, "Saved test stemma" );
-
+my $s = $t->add_stemma( 't/data/simple.dot' );
+ok( $d->save( $t ), "Updated tradition with stemma" );
 is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
-is( $d->stemma( $uuid ), $s, "Correct stemma returned for id" );
-is( scalar $d->tradition_ids, 1, "Only one tradition in DB" );
+is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );
+warning_like { $d->save( $s ) } qr/not a Text::Tradition/, "Correctly failed to save stemma directly";
 
-# Connect to a new instance
 my $e = Text::Tradition::Directory->new( 'dsn' => $dsn );
-is( scalar $e->tradition_ids, 1, "One tradition preloaded from DB" );
+$scope = $e->new_scope;
+is( scalar $e->tradition_ids, 1, "Directory index has our tradition" );
 my $te = $e->tradition( $uuid );
-is( $te->name, $t->name, "New instance returns correct tradition" );
-my $se = $e->stemma( $uuid );
-is( $se->graph, $s->graph, "New instance returns correct stemma" );
-is( $e->tradition( 'NOT-A-UUID' ), undef, "Undef returned for non-tradition" );
-is( $e->stemma( 'NOT-A-UUID' ), undef, "Undef returned for non-stemma" );
-$te->name( "Changed name" );
-my $new_id = $e->save_tradition( $te );
-is( $new_id, $uuid, "Updated tradition ID did not change" );
-
-my $f = Text::Tradition::Directory->new( 'dsn' => $dsn, 'preload' => 0 );
-is( scalar $f->tradition_ids, 0, "No traditions preloaded from DB" );
-### TODO This doesn't work, as I cannot get an object scope in the
-### 'tradition' wrapper.
-# my $tf = $f->tradition( $uuid );
-# is( $tf->name, $t->name, "Next instance returns correct tradition" );
-# is( $tf->name, "Changed name", "Change to tradition carried through" );
+is( $te->name, $t->name, "Retrieved the tradition from a new directory" );
+my $sid = $e->object_to_id( $te->stemma );
+warning_like { $e->tradition( $sid ) } qr/not a Text::Tradition/, "Did not retrieve stemma via tradition call";
+warning_like { $e->delete( $sid ) } qr/Cannot directly delete non-Tradition object/, "Stemma object not deleted from DB";
+$e->delete( $uuid );
+ok( !$e->exists( $uuid ), "Object is deleted from DB" );
+is( scalar $e->tradition_ids, 0, "Object is deleted from index" );
 }
 
 
