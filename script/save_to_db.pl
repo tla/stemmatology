@@ -41,23 +41,17 @@ if( $dir ) {
 		my $stemma;
 		if( exists $stemma_map{$_} ) {
 			my $stemmafile = "$dir/" . $stemma_map{$_};	
-			open my $stemma_fh, '<', $stemmafile or die "Could not read stemma file $stemmafile";		
-			$stemma = Text::Tradition::Stemma->new(
-				'collation' => $tradition->collation,
-				'dot' => $stemma_fh,
-				);
+			$stemma = $tradition->add_stemma( $stemmafile );
 		}
-			
-		my $tid = $kdb->save_tradition( $tradition );
-		my $sid = $kdb->save_stemma( $stemma ) if $stemma;
+		my $scope = $kdb->new_scope();
+		my $tid = $kdb->save( $tradition );
 		print STDERR "Stored tradition for " . $tradition->name . " at $tid\n";
-		print STDERR "\tand stemma at $sid\n" if $stemma;
 	}
 }
 
 # Now try reading the objects from the DB.
-
 foreach my $tid ( $kdb->tradition_ids ) {
+	my $scope = $kdb->new_scope();
 	my $t = $kdb->tradition( $tid );
 	print STDERR "Got tradition " . $t->name . " out of the database\n";
 	my @wits = map { $_->sigil } $t->witnesses;
@@ -66,7 +60,7 @@ foreach my $tid ( $kdb->tradition_ids ) {
 	print STDERR "Collation has " . scalar( $c->readings ) . " readings\n";
 	print STDERR "Collation has " . scalar( $c->paths ) . " paths\n";
 	print STDERR "Collation has " . scalar( $c->relationships ) . " relationship links\n";
-	my $s = $kdb->stemma( $tid );
+	my $s = $t->stemma;
 	if( $s ) {
 		print STDERR "Got stemma for tradition " . $s->collation->tradition->name 
 			. " out of the database\n";
