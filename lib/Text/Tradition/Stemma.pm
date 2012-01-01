@@ -5,11 +5,9 @@ use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
 use Graph;
-use Graph::Convert;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Moose;
-use Text::Balanced qw/ extract_bracketed /;
 
 has collation => (
     is => 'ro',
@@ -45,37 +43,114 @@ sub graph_from_dot {
 	binmode( $dotfh, ':utf8' );
  	my $reader = Graph::Reader::Dot->new();
 	my $graph = $reader->read_graph( $dotfh );
-	$graph 
-		? $self->graph( $graph ) 
-		: warn "Failed to parse dot in $dotfh";
+	if( $graph ) {
+		$self->graph( $graph );
+		# Go through the nodes and set any non-hypothetical node to extant.
+		foreach my $v ( $self->graph->vertices ) {
+			$self->graph->set_vertex_attribute( $v, 'class', 'extant' )
+				unless $self->graph->has_vertex_attribute( $v, 'class' );
+		}
+	} else {
+		warn "Failed to parse dot in $dotfh";
+	}
 }
 
 sub as_dot {
     my( $self, $opts ) = @_;
-    # TODO add options for display, someday
-    # TODO see what happens with Graph::Writer::Dot someday
-    my $dgraph = Graph::Convert->as_graph_easy( $self->graph );
-    # Set some class display attributes for 'hypothetical' and 'extant' nodes
-    $dgraph->set_attribute( 'flow', 'south' );
-    foreach my $n ( $dgraph->nodes ) {
-        if( $n->attribute( 'class' ) eq 'hypothetical' ) {
-            $n->set_attribute( 'shape', 'point' );
-            $n->set_attribute( 'pointshape', 'diamond' );
+    
+    # Get default and specified options
+    my %graphopts = ();
+    my %nodeopts = (
+		'fontsize' => 11,
+		'hshape' => 'plaintext',	# Shape for the hypothetical nodes
+		'htext' => '*',
+		'style' => 'filled',
+		'fillcolor' => 'white',
+		'shape' => 'ellipse',	# Shape for the extant nodes
+	);
+	my %edgeopts = (
+		'arrowhead' => 'open',
+	);
+	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
+		if $opts->{'graph'};
+	@nodeopts{ keys %{$opts->{'node'}} } = values %{$opts->{'node'}} 
+		if $opts->{'node'};
+	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
+		if $opts->{'edge'};
+
+	my @dotlines;
+	push( @dotlines, 'digraph stemma {' );
+	## Print out the global attributes
+	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
+	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
+	## Delete our special attributes from the node set before continuing
+	my $hshape = delete $nodeopts{'hshape'};
+	my $htext = delete $nodeopts{'htext'};
+	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
+
+	# Add each of the nodes.
+    foreach my $n ( $self->graph->vertices ) {
+        if( $self->graph->get_vertex_attribute( $n, 'class' ) eq 'hypothetical' ) {
+        	# Apply our display settings for hypothetical nodes.
+        	push( @dotlines, _make_dotline( $n, 'shape' => $hshape, 'label' => $htext ) );
         } else {
-            $n->set_attribute( 'shape', 'ellipse' );
+        	# Use the default display settings.
+            push( @dotlines, "  $n;" );
         }
     }
-    
-    # Render to svg via graphviz
-    my @lines = split( /\n/, $dgraph->as_graphviz() );
-    # Add the size attribute
-    if( $opts->{'size'} ) {
-        my $sizeline = "  graph [ size=\"" . $opts->{'size'} . "\" ]";
-        splice( @lines, 1, 0, $sizeline );
+    # Add each of our edges.
+    foreach my $e ( $self->graph->edges ) {
+    	my( $from, $to ) = @$e;
+    	push( @dotlines, "  $from -> $to;" );
     }
-    return join( "\n", @lines );
+    push( @dotlines, '}' );
+    
+    return join( "\n", @dotlines );
+}
+
+
+# Another version of dot output meant for graph editing, thus
+# much simpler.
+sub editable {
+	my $self = shift;
+	my @dotlines;
+	push( @dotlines, 'digraph stemma {' );
+	my @real; # A cheap sort
+    foreach my $n ( sort $self->graph->vertices ) {
+    	my $c = $self->graph->get_vertex_attribute( $n, 'class' );
+    	$c = 'extant' unless $c;
+    	if( $c eq 'extant' ) {
+    		push( @real, $n );
+    	} else {
+			push( @dotlines, _make_dotline( $n, 'class' => $c ) );
+		}
+    }
+	# Now do the real ones
+	foreach my $n ( @real ) {
+		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
+	}
+	foreach my $e ( sort _by_vertex $self->graph->edges ) {
+		my( $from, $to ) = @$e;
+		push( @dotlines, "  $from -> $to;" );
+	}
+    push( @dotlines, '}' );
+    return join( "\n", @dotlines );
+}
+
+sub _make_dotline {
+	my( $obj, %attr ) = @_;
+	my @pairs;
+	foreach my $k ( keys %attr ) {
+		my $v = $attr{$k};
+		$v =~ s/\"/\\\"/g;
+		push( @pairs, "$k=\"$v\"" );
+	}
+	return sprintf( "  %s [ %s ];", $obj, join( ', ', @pairs ) );
 }
 	
+sub _by_vertex {
+	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
+}
 
 # Render the stemma as SVG.
 sub as_svg {

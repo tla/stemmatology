@@ -9,8 +9,6 @@ requires( 'Algorithm::Diff' );
 requires( 'Bio::Phylo::IO' );
 requires( 'File::chdir' );
 requires( 'Graph' );
-requires( 'Graph::Convert' );   # TODO delete
-requires( 'Graph::Easy' );	# TODO delete
 requires( 'Graph::Reader::Dot' );
 requires( 'IPC::Run' );
 requires( 'KiokuDB::Backend::DBI' );
