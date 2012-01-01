@@ -681,7 +681,6 @@ sub make_alignment_table {
         return;
     }
     my $table;
-    $DB::single = 1;
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
