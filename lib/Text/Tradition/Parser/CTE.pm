@@ -32,6 +32,9 @@ initializes the Tradition from the file.
 my %sigil_for;  # Save the XML IDs for witnesses.
 my %apps;       # Save the apparatus XML for a given ID.    
 my %has_ac;     # Keep track of witnesses that have corrections.
+my %group_sigla = (   ## HACK HACK HACK
+	'#M38' => [ qw( #M23 #M24 #M25 #M27 #M30 #M26 #M31 #M32 #M33 ) ], # l -> L*
+	);
 
 sub parse {
 	my( $tradition, $opts ) = @_;
@@ -60,8 +63,10 @@ sub parse {
 		my $id= $wit_el->getAttribute( 'xml:id' );
 		my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
-		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
-		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
+		unless( exists $group_sigla{'#'.$id} ) {  ## More HACKY
+			$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
+			$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
+		}
 	}
 
 	# Now go through the text and find the base tokens, apparatus tags, and
@@ -85,15 +90,14 @@ sub parse {
 	foreach my $item ( @base_text ) {
 	    my $r;
         if( $item->{'type'} eq 'token' ) {
-            $r = $c->add_reading( 'n'.$counter++ );
-            $r->text( $item->{'content'} );
+            $r = $c->add_reading( { id => 'n'.$counter++, 
+            						text => $item->{'content'} } );
         } elsif ( $item->{'type'} eq 'anchor' ) {
-            $r = $c->add_reading( '#ANCHOR_' . $item->{'content'} . '#' );
-            $r->is_meta(1);
+            $r = $c->add_reading( { id => '#ANCHOR_' . $item->{'content'} . '#', 
+            						is_ph => 1 } );
         } elsif ( $item->{'type'} eq 'app' ) {
             my $tag = '#APP_' . $counter++ . '#';
-            $r = $c->add_reading( $tag );
-            $r->is_meta(1);
+            $r = $c->add_reading( { id => $tag, is_ph => 1 } );
             $apps{$tag} = $item->{'content'};
         }
         $c->add_path( $last, $r, $c->baselabel );
@@ -169,29 +173,33 @@ sub _add_readings {
     my $ctr = 0;
     my $tag = $app_id;
     $tag =~ s/^\#APP_(.*)\#$/$1/;
-    $DB::single = 1 if $tag < 2;
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
         my @text;
         foreach ( $rdg->childNodes ) {
             push( @text, _get_base( $_ ) );
         }
-        my $interpreted = @text 
-            ? interpret( join( ' ', map { $_->{'content'} } @text ), $lemma_str ) 
-            : '';
+        my( $interpreted, $flag ) = ( '', undef );
+        if( @text ) {
+        	( $interpreted, $flag ) = interpret( 
+        		join( ' ', map { $_->{'content'} } @text ), $lemma_str );
+        }
         my @rdg_nodes;
         foreach my $w ( split( /\s+/, $interpreted ) ) {
-            my $r = $c->add_reading( $tag . "/" . $ctr++ );
-            $r->text( $w );
+            my $r = $c->add_reading( { id => $tag . "/" . $ctr++,
+            						   text => $w } );
             push( @rdg_nodes, $r );
         }
         
         # For each listed wit, save the reading.
         foreach my $wit ( split( /\s+/, $rdg->getAttribute( 'wit' ) ) ) {
+			$wit .= $flag if $flag;
             $wit_rdgs{$wit} = \@rdg_nodes;
         }
+        		
         # Does the reading have an ID? If so it probably has a witDetail
         # attached, and we need to read it.
         if( $rdg->hasAttribute( 'xml:id' ) ) {
+        	warn "Witdetail on meta reading" if $flag; # this could get complicated.
             my $rid = $rdg->getAttribute( 'xml:id' );
             my $xpc = XML::LibXML::XPathContext->new( $xn );
             my @details = $xpc->findnodes( './witDetail[@target="'.$rid.'"]' );
@@ -202,7 +210,24 @@ sub _add_readings {
     }       
         
     # Now collate the variant readings, since it is not done for us.
-    collate_variants( $c, \@lemma, values %wit_rdgs );    
+    collate_variants( $c, \@lemma, values %wit_rdgs );
+    
+    # HACKY HACKY Expand "group" sigla.
+    # Does not work for nested groups; also does not work with a modifier
+    # on the group sigil.
+    foreach my $wit_id ( keys %group_sigla ) {
+    	if ( exists $wit_rdgs{$wit_id} ) {
+    		my $rdg = $wit_rdgs{$wit_id};
+    		foreach my $w ( @{$group_sigla{$wit_id}} ) {
+    			if( exists $wit_rdgs{$w} ) {
+    				$DB::single = 1;
+					warn "Had reading for individual member $w of group $wit_id at $xn";
+    			}
+    			$wit_rdgs{$w} = $rdg;
+    		}
+    		delete $wit_rdgs{$wit_id};
+    	}
+    }
     
     # Now add the witness paths for each reading.
     foreach my $wit_id ( keys %wit_rdgs ) {
@@ -220,10 +245,9 @@ sub _anchor_name {
 
 sub _return_lemma {
     my( $c, $app, $anchor ) = @_;
-    my $app_node = $c->graph->node( $app );
-    my $anchor_node = $c->graph->node( $anchor );
-    my @nodes = grep { $_->name !~ /^\#A(PP|NCHOR)/ } 
-        $c->reading_sequence( $app_node, $anchor_node, $c->baselabel );
+    my @nodes = grep { $_->id !~ /^\#A(PP|NCHOR)/ } 
+        $c->reading_sequence( $c->reading( $app ), $c->reading( $anchor ),
+        	$c->baselabel );
     return @nodes;
 }
 
@@ -234,26 +258,34 @@ sub interpret {
 	my $oldreading = $reading;
 	# $lemma =~ s/\s+[[:punct:]]+$//;
 	# $reading =~ s/\s*\(?sic([\s\w.]+)?\)?$//;
+	my $flag;  # In case of p.c. indications
 	my @words = split( /\s+/, $lemma );
 	if( $reading =~ /^(.*) praem.$/ ) {
 		$reading = "$1 $lemma";
 	} elsif( $reading =~ /^(.*) add.$/ ) {
 		$reading = "$lemma $1";
+	} elsif( $reading =~ /add. alia manu/ ) {
+		# Ignore it.
+		$reading = $lemma;
 	} elsif( $reading eq 'om.' 
 	    || $reading =~ /locus [uv]acuus/
 	    || $reading =~ /inscriptionem compegi e/ # TODO huh?
 	    || $reading eq 'def.' # TODO huh?
 	    ) {
 		$reading = '';
-	} elsif( $reading eq 'inv.' ) {
+	} elsif( $reading =~ /^in[uv]\.$/ ) {
 		# Hope it is two words.
 		print STDERR "WARNING: want to invert a lemma that is not two words\n" 
 			unless scalar( @words ) == 2;
 		$reading = join( ' ', reverse( @words ) );
-	} elsif( $reading eq 'iter.' ) {
+	} elsif( $reading =~ /^iter(\.|at)$/ ) {
 		# Repeat the lemma
 		$reading = "$lemma $lemma";
-	 } elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
+	} elsif( $reading eq 'in marg.' ) {
+		# There was nothing before a correction.
+		$reading = '';
+		$flag = '_ac';
+	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
 		# The first and last N words captured should replace the first and
 		# last N words of the lemma.
 		my @begin = split( /\s+/, $1 );
@@ -267,8 +299,12 @@ sub interpret {
 			$reading = join( ' ', @words );
 		}
 	}
-	print STDERR "Interpreted $oldreading as $reading given $lemma\n";
-	return $reading;
+	if( $oldreading ne $reading || $flag || $oldreading =~ /\./ ) {
+		my $int = $reading;
+		$int .= " ($flag)" if $flag;
+		print STDERR "Interpreted $oldreading as $int given $lemma\n";
+	}
+	return( $reading, $flag );
 }
 
 sub _parse_wit_detail {
@@ -305,22 +341,22 @@ sub expand_all_paths {
     # Walk the collation and fish out the paths for each witness
     foreach my $wit ( $c->tradition->witnesses ) {
         my $sig = $wit->sigil;
-        my @path = grep { $_->name !~ /(APP|ANCHOR)/ } 
+        my @path = grep { !$_->is_ph } 
             $c->reading_sequence( $c->start, $c->end, $sig );
         $wit->path( \@path );
         if( $has_ac{$sig} ) {
-            my @ac_path = grep { $_->name !~ /(APP|ANCHOR)/ } 
+            my @ac_path = grep { !$_->is_ph } 
                 $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label, $sig );
             $wit->uncorrected_path( \@ac_path );
         }
     }   
     
     # Delete the anchors
-    foreach my $anchor ( grep { $_->name =~ /(APP|ANCHOR)/ } $c->readings ) {
+    foreach my $anchor ( grep { $_->is_ph } $c->readings ) {
         $c->del_reading( $anchor );
     }
-    # Delete all edges
-    map { $c->del_path( $_ ) } $c->paths;
+    # Delete the base edges
+    map { $c->del_path( $_, $c->baselabel ) } $c->paths;
     
     # Make the path edges
     $c->make_witness_paths();

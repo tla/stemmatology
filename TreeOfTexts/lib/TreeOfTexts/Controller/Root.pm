@@ -24,7 +24,8 @@ TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
 
 =head2 index
 
-The root page (/)
+The root page (/).  Lists the traditions available in the DB to work on,
+and should also eventually have an 'Upload new' interface.
 
 =cut
 
@@ -33,11 +34,10 @@ sub index :Path :Args(0) {
 
     my $m = $c->model('Directory');
     my @all_texts;
-    foreach my $id ( $m->traditions ) {
+    foreach my $id ( $m->tradition_ids ) {
     	my $data = { 
     		'id' => $id,
-    		'name' => $m->tradition( $id )->name,
-    		'has_stemma' => defined $m->stemma( $id ),
+    		'name' => $m->name( $id ),
     	};
     	push( @all_texts, $data );
     }
@@ -45,6 +45,17 @@ sub index :Path :Args(0) {
     $c->stash->{texts} = \@all_texts;
     $c->stash->{template} = 'frontpage.tt';
 }
+
+=head2 tradition (TODO)
+
+The main page for a tradition, with information about it and links to the
+available tools.
+
+=head2 relationships
+
+The relationship editor tool.
+
+=cut
 
 sub relationships :Local {
 	my( $self, $c ) = @_;
@@ -54,21 +65,36 @@ sub relationships :Local {
 	$c->stash->{template} = 'relationships.tt';	
 }
 
+=head2 stexaminer
+
+The stemma analysis tool with the pretty colored table.
+
+=cut
+
 sub stexaminer :Local {
     my( $self, $c ) = @_;
     my $m = $c->model('Directory');
-	my $id = $c->request->params->{'textid'};
-	my $tradition = $m->tradition( $id );
-	my $stemma = $m->stemma( $id );
-	my $t = run_analysis( $tradition, $stemma );
+	my $tradition = $m->tradition( $c->request->params->{'textid'} );
+	my $stemma = $tradition->stemma;
+	# TODO Think about caching the stemma in a session 
 	$c->stash->{svg} = $stemma->as_svg;
-	$c->stash->{variants} = $t->{'variants'};
 	$c->stash->{text_title} = $tradition->name;
+	$c->stash->{template} = 'index.tt'; 
+	# TODO Run the analysis as AJAX from the loaded page.
+	my $t = run_analysis( $tradition );
+	$c->stash->{variants} = $t->{'variants'};
 	$c->stash->{total} = $t->{'variant_count'};
 	$c->stash->{genealogical} = $t->{'genealogical_count'};
 	$c->stash->{conflict} = $t->{'conflict_count'};
-	$c->stash->{template} = 'index.tt'; 
 }
+
+=head1 OPENSOCIAL URLs
+
+=head2 view_table
+
+Simple gadget to return the analysis table for the stexaminer
+
+=cut
 
 sub view_table :Local {
     my( $self, $c ) = @_;
@@ -79,10 +105,16 @@ sub view_table :Local {
     $c->stash->{template} = 'table_gadget.tt';
 }
 
+=head2 view_svg
+
+Simple gadget to return the SVG for a given stemma
+
+=cut
+
 sub view_svg :Local {
     my( $self, $c ) = @_;
     my $m = $c->model('Directory');
-	my $stemma = $m->stemma( $c->request->params->{'textid'} );
+    my $stemma = $m->tradition( $c->request->params->{'textid'} )->stemma;
 	if( $stemma ) {
 	   	$c->stash->{svg} = $stemma->as_svg;
 	}

@@ -37,6 +37,8 @@ Options include:
 
 =item is_lacuna - The 'reading' represents a known gap in the text.
 
+=item is_ph - A temporary placeholder for apparatus parsing purposes.  Do not use unless you know what you are doing.
+
 =item rank - The sequence number of the reading. This should probably not be set manually.
 
 =back
@@ -98,6 +100,12 @@ has 'is_lacuna' => (
     isa => 'Bool',
 	default => undef,
     );
+    
+has 'is_ph' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	);
 
 has 'rank' => (
     is => 'rw',
@@ -128,6 +136,8 @@ around BUILDARGS => sub {
 	} elsif( exists $args->{'is_end'} ) {
 		$args->{'id'} = '#END#';	# Change the ID to ensure we have only one
 		$args->{'text'} = '#END#';
+	} elsif( exists $args->{'is_ph'} ) {
+		$args->{'text'} = $args->{'id'};
 	}
 	
 	$class->$orig( $args );
@@ -143,7 +153,7 @@ of text found in a witness.
 
 sub is_meta {
 	my $self = shift;
-	return $self->is_start || $self->is_end || $self->is_lacuna;	
+	return $self->is_start || $self->is_end || $self->is_lacuna || $self->is_ph;	
 }
 
 # Some syntactic sugar
