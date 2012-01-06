@@ -32,9 +32,6 @@ initializes the Tradition from the file.
 my %sigil_for;  # Save the XML IDs for witnesses.
 my %apps;       # Save the apparatus XML for a given ID.    
 my %has_ac;     # Keep track of witnesses that have corrections.
-my %group_sigla = (   ## HACK HACK HACK
-	'#M38' => [ qw( #M23 #M24 #M25 #M27 #M30 #M26 #M31 #M32 #M33 ) ], # l -> L*
-	);
 
 sub parse {
 	my( $tradition, $opts ) = @_;
@@ -63,10 +60,8 @@ sub parse {
 		my $id= $wit_el->getAttribute( 'xml:id' );
 		my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
-		unless( exists $group_sigla{'#'.$id} ) {  ## More HACKY
-			$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
-			$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
-		}
+		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
+		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
 
 	# Now go through the text and find the base tokens, apparatus tags, and
@@ -136,8 +131,6 @@ sub _get_base {
 		my $str = $xn->data;
 		$str =~ s/^\s+//;
 		foreach my $w ( split( /\s+/, $str ) ) {
-		    # HACK to cope with mismatched doublequotes
-		    $w =~ s/\"//g;
 			push( @readings, { 'type' => 'token', 'content' => $w } );
 		}
 	} elsif( $xn->nodeName eq 'hi' ) {
@@ -183,13 +176,19 @@ sub _add_readings {
         	( $interpreted, $flag ) = interpret( 
         		join( ' ', map { $_->{'content'} } @text ), $lemma_str );
         }
-        my @rdg_nodes;
-        foreach my $w ( split( /\s+/, $interpreted ) ) {
-            my $r = $c->add_reading( { id => $tag . "/" . $ctr++,
-            						   text => $w } );
-            push( @rdg_nodes, $r );
-        }
+        next if( $interpreted eq $lemma_str ) && !$flag;  # Reading is lemma.
         
+        my @rdg_nodes;
+        if( $interpreted eq '#LACUNA#' ) {
+        	push( @rdg_nodes, $c->add_reading( { id => $tag . "/" . $ctr++,
+        										 is_lacuna => 1 } ) );
+        } else {
+			foreach my $w ( split( /\s+/, $interpreted ) ) {
+				my $r = $c->add_reading( { id => $tag . "/" . $ctr++,
+										   text => $w } );
+				push( @rdg_nodes, $r );
+			}
+        }
         # For each listed wit, save the reading.
         foreach my $wit ( split( /\s+/, $rdg->getAttribute( 'wit' ) ) ) {
 			$wit .= $flag if $flag;
@@ -211,24 +210,7 @@ sub _add_readings {
         
     # Now collate the variant readings, since it is not done for us.
     collate_variants( $c, \@lemma, values %wit_rdgs );
-    
-    # HACKY HACKY Expand "group" sigla.
-    # Does not work for nested groups; also does not work with a modifier
-    # on the group sigil.
-    foreach my $wit_id ( keys %group_sigla ) {
-    	if ( exists $wit_rdgs{$wit_id} ) {
-    		my $rdg = $wit_rdgs{$wit_id};
-    		foreach my $w ( @{$group_sigla{$wit_id}} ) {
-    			if( exists $wit_rdgs{$w} ) {
-    				$DB::single = 1;
-					warn "Had reading for individual member $w of group $wit_id at $xn";
-    			}
-    			$wit_rdgs{$w} = $rdg;
-    		}
-    		delete $wit_rdgs{$wit_id};
-    	}
-    }
-    
+        
     # Now add the witness paths for each reading.
     foreach my $wit_id ( keys %wit_rdgs ) {
         my $witstr = get_sigil( $wit_id, $c );
@@ -264,14 +246,17 @@ sub interpret {
 		$reading = "$1 $lemma";
 	} elsif( $reading =~ /^(.*) add.$/ ) {
 		$reading = "$lemma $1";
-	} elsif( $reading =~ /add. alia manu/ ) {
+	} elsif( $reading =~ /add. alia manu/
+		|| $reading =~ /inscriptionem compegi e/ # TODO huh?
+		|| $reading eq 'inc.'  # TODO huh?
+ 		) {
 		# Ignore it.
 		$reading = $lemma;
-	} elsif( $reading eq 'om.' 
-	    || $reading =~ /locus [uv]acuus/
-	    || $reading =~ /inscriptionem compegi e/ # TODO huh?
-	    || $reading eq 'def.' # TODO huh?
+	} elsif( $reading =~ /locus [uv]acuus/
+	    || $reading eq 'def.'
 	    ) {
+		$reading = '#LACUNA#';
+	} elsif( $reading eq 'om.' ) {
 		$reading = '';
 	} elsif( $reading =~ /^in[uv]\.$/ ) {
 		# Hope it is two words.
