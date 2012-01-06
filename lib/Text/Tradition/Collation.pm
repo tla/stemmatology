@@ -276,7 +276,7 @@ sub add_relationship {
 
 	# Check the options
 	if( !defined $options->{'type'} ||
-		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lexical|repetition|transposition)$/i ) {
+		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lexical|collated|repetition|transposition)$/i ) {
 		my $t = $options->{'type'} ? $options->{'type'} : '';
 		return( undef, "Invalid or missing type " . $options->{'type'} );
 	}
