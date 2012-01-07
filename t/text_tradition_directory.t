@@ -47,6 +47,7 @@ warning_like { $e->tradition( $sid ) } qr/not a Text::Tradition/, "Did not retri
 warning_like { $e->delete( $sid ) } qr/Cannot directly delete non-Tradition object/, "Stemma object not deleted from DB";
 $e->delete( $uuid );
 ok( !$e->exists( $uuid ), "Object is deleted from DB" );
+ok( !$e->exists( $sid ), "Object stemma also deleted from DB" );
 is( scalar $e->tradition_ids, 0, "Object is deleted from index" );
 }
 

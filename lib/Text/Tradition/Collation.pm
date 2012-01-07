@@ -255,7 +255,7 @@ specified in the hashref $definition:
 
 =over 4
 
-=item * type - Can be one of spelling, orthographic, grammatical, meaning, repetition, transposition.  The first three are only valid relationships between readings that occur at the same point in the text.
+=item * type - Can be one of spelling, orthographic, grammatical, meaning, lexical, collated, repetition, transposition.  All but the last two are only valid relationships between readings that occur at the same point in the text.
 
 =item * non_correctable - (Optional) True if the reading would not have been corrected independently.
 

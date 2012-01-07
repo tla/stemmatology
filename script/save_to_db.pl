@@ -4,66 +4,84 @@ use lib 'lib';
 use strict;
 use warnings;
 use File::Basename;
+use Getopt::Long;
 use Text::Tradition;
 use Text::Tradition::Directory;
-use Text::Tradition::Stemma;
 
 binmode( STDOUT, ':utf8' );
 binmode( STDERR, ':utf8' );
 
+my( $tfile, $sfile, $delete, $list, $dsn ) = 
+	( undef, undef, undef, 0, 'dbi:SQLite:dbname=db/traditions.db' );
+
+GetOptions( 
+	't|tradition=s' => \$tfile,
+	's|stemma=s' => \$sfile,
+	'l|list' => \$list,
+	'd|delete=s' => \$delete,
+	'dsn=s' => \$dsn,
+	);
+
 # Make a KiokuDB store from the traditions data we have.
 
 my $kdb = Text::Tradition::Directory->new(
-	'dsn' => "dbi:SQLite:dbname=db/traditions.db",
+	'dsn' => $dsn,
 	'extra_args' => { 'create' => 1 },
     );
     
-my %stemma_map = (
-	'florilegium.xml' => 'stemma_a.dot',
-	'besoin.xml' => 'stemma_b.dot',
-	'heinrichi.xml' => 'stemma_h.dot',
-	'parzival.xml' => 'stemma_p.dot',
-	's158.xml' => 'stemma_s.dot',
-	);
+unless( $tfile || $delete || $list ) {
+	print STDERR "Please specify a tradition file, an ID to delete, or the --list option\n";
+	exit;
+}
 
-my $dir = $ARGV[0];
-if( $dir ) {
-	$dir =~ s/\/$//;
-	opendir( DIR, $dir ) or die "Could not open directory $dir";
-	while( readdir DIR ) {
-		next unless /\.xml$/;
-		print STDERR "Looking at $_\n";
-		my $tradition = Text::Tradition->new( 
-			'input' => 'Self',
-			'file' => "$dir/$_",
-			'linear' => 1,
-			);
-		my $stemma;
-		if( exists $stemma_map{$_} ) {
-			my $stemmafile = "$dir/" . $stemma_map{$_};	
-			$stemma = $tradition->add_stemma( $stemmafile );
-		}
-		my $scope = $kdb->new_scope();
-		my $tid = $kdb->save( $tradition );
-		print STDERR "Stored tradition for " . $tradition->name . " at $tid\n";
+if( $tfile && $delete ) {
+	print STDERR "Specify deletion by UUID, not by tradition file\n";
+	exit;
+}
+
+my( $tradition, $stemma );
+if( $tfile ) {
+	print STDERR "Reading tradition from $tfile\n";
+	$tradition = Text::Tradition->new( 
+		'input' => 'Self',
+		'file' => $tfile,
+		'linear' => 1,
+		);
+	if( $tradition && $sfile ) {
+		$stemma = $tradition->add_stemma( $sfile );
+		warn "Did not get stemma from $sfile\n" unless $stemma;
+	}
+    
+	my $scope = $kdb->new_scope();
+	my $tid = $kdb->save( $tradition );
+	print STDERR "Stored tradition for " . $tradition->name . " at $tid\n";
+	print STDERR "...and associated stemma from $sfile\n" if $stemma;
+}
+
+if( $delete ) {
+	my $scope = $kdb->new_scope();
+	if( $kdb->exists( $delete ) ) {
+		$kdb->delete( $delete );
+	} else {
+		print STDERR "Object $delete does not appear to be a Text::Tradition in the DB\n";
 	}
 }
 
 # Now try reading the objects from the DB.
-foreach my $tid ( $kdb->tradition_ids ) {
-	my $scope = $kdb->new_scope();
-	my $t = $kdb->tradition( $tid );
-	print STDERR "Got tradition " . $t->name . " out of the database\n";
-	my @wits = map { $_->sigil } $t->witnesses;
-	print STDERR "...with witnesses @wits\n";
-	my $c = $t->collation;
-	print STDERR "Collation has " . scalar( $c->readings ) . " readings\n";
-	print STDERR "Collation has " . scalar( $c->paths ) . " paths\n";
-	print STDERR "Collation has " . scalar( $c->relationships ) . " relationship links\n";
-	my $s = $t->stemma;
-	if( $s ) {
-		print STDERR "Got stemma for tradition " . $s->collation->tradition->name 
-			. " out of the database\n";
-		print STDERR "Stemma graph is " . $s->graph . "\n";
+if( $list ) {
+	foreach my $tid ( $kdb->tradition_ids ) {
+		my $scope = $kdb->new_scope();
+		my $t = $kdb->tradition( $tid );
+		print STDERR "$tid: Tradition '" . $t->name . "'\n";
+		my @wits = map { $_->sigil } $t->witnesses;
+		print STDERR "...with witnesses @wits\n";
+		my $c = $t->collation;
+		print STDERR "...collation has " . scalar( $c->readings ) . " readings\n";
+		print STDERR "...collation has " . scalar( $c->paths ) . " paths\n";
+		print STDERR "...collation has " . scalar( $c->relationships ) . " relationship links\n";
+		my $s = $t->stemma;
+		if( $s ) {
+			print STDERR "...associated stemma has graph " . $s->graph . "\n";
+		}
 	}
 }

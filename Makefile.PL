@@ -12,6 +12,7 @@ requires( 'Graph' );
 requires( 'Graph::Reader::Dot' );
 requires( 'IPC::Run' );
 requires( 'KiokuDB::Backend::DBI' );
+requires( 'KiokuDB::GC::Naive' );
 requires( 'KiokuDB::TypeMap' );
 requires( 'KiokuDB::TypeMap::Entry::Naive' );
 requires( 'KiokuX::Model' );

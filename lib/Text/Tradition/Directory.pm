@@ -3,6 +3,7 @@ package Text::Tradition::Directory;
 use strict;
 use warnings;
 use Moose;
+use KiokuDB::GC::Naive;
 use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
 
@@ -91,6 +92,7 @@ warning_like { $e->tradition( $sid ) } qr/not a Text::Tradition/, "Did not retri
 warning_like { $e->delete( $sid ) } qr/Cannot directly delete non-Tradition object/, "Stemma object not deleted from DB";
 $e->delete( $uuid );
 ok( !$e->exists( $uuid ), "Object is deleted from DB" );
+ok( !$e->exists( $sid ), "Object stemma also deleted from DB" );
 is( scalar $e->tradition_ids, 0, "Object is deleted from index" );
 
 
@@ -144,7 +146,7 @@ sub BUILD {
 around delete => sub {
 	my $orig = shift;
 	my $self = shift;
-	warn "Only the first object will be deleted" if @_ > 1;
+	warn "Will only delete one tradition at a time" if @_ > 1;
 	my $arg = shift;
 	my $obj = ref( $arg ) ? $arg : $self->lookup( $arg );
 	my $id = ref( $arg ) ? $self->object_to_id( $arg ) : $arg;
@@ -153,6 +155,8 @@ around delete => sub {
 		return;
 	}
 	$self->$orig( $arg );
+	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
+	$self->$orig( $gc->garbage->members );
 	$self->del_index( $id );
 };
 
