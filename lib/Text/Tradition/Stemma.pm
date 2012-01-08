@@ -5,29 +5,21 @@ use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
 use Graph;
-use Graph::Convert;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Moose;
-use Text::Balanced qw/ extract_bracketed /;
 
 has collation => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
     required => 1,
+    weak_ref => 1,
     );  
 
-# TODO Think about making a new class for the graphs, which has apsp as a property.
 has graph => (
     is => 'rw',
     isa => 'Graph',
     predicate => 'has_graph',
-    );
-    
-has apsp => (
-    is => 'ro',
-    isa => 'Graph',
-    writer => '_save_apsp',
     );
     
 has distance_trees => (
@@ -37,84 +29,151 @@ has distance_trees => (
     predicate => 'has_distance_trees',
     );
     
-has distance_apsps => (
-    is => 'ro',
-    isa => 'ArrayRef[Graph]',
-    writer => '_save_distance_apsps',
-    );
-        
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
-        # Open the file, assume UTF-8
-        open( my $dot, $args->{'dot'} ) or warn "Failed to read dot file";
-        # TODO don't bother if we haven't opened
-        binmode $dot, ":utf8";
-        my $reader = Graph::Reader::Dot->new();
-        my $graph = $reader->read_graph( $dot );
-        $graph 
-            ? $self->graph( $graph ) 
-            : warn "Failed to parse dot file " . $args->{'dot'};
+        $self->graph_from_dot( $args->{'dot'} );
     }
 }
 
-# If we are saving a new graph, calculate its apsp values.
-after 'graph' => sub {
-    my( $self, $args ) = @_;
-    if( $args ) {
-        # We had a new graph.
-        my $undirected;
-        if( $self->graph->is_directed ) {
-            # Make an undirected version.
-            $undirected = Graph->new( 'undirected' => 1 );
-            foreach my $v ( $self->graph->vertices ) {
-                $undirected->add_vertex( $v );
-            }
-            foreach my $e ( $self->graph->edges ) {
-                $undirected->add_edge( @$e );
-            }
+sub graph_from_dot {
+	my( $self, $dotfh ) = @_;
+	# Assume utf-8
+	binmode( $dotfh, ':utf8' );
+ 	my $reader = Graph::Reader::Dot->new();
+	my $graph = $reader->read_graph( $dotfh );
+	if( $graph ) {
+		$self->graph( $graph );
+		# Go through the nodes and set any non-hypothetical node to extant.
+		foreach my $v ( $self->graph->vertices ) {
+			$self->graph->set_vertex_attribute( $v, 'class', 'extant' )
+				unless $self->graph->has_vertex_attribute( $v, 'class' );
+		}
+	} else {
+		warn "Failed to parse dot in $dotfh";
+	}
+}
+
+sub as_dot {
+    my( $self, $opts ) = @_;
+    
+    # Get default and specified options
+    my %graphopts = ();
+    my %nodeopts = (
+		'fontsize' => 11,
+		'hshape' => 'plaintext',	# Shape for the hypothetical nodes
+		'htext' => '*',
+		'style' => 'filled',
+		'fillcolor' => 'white',
+		'shape' => 'ellipse',	# Shape for the extant nodes
+	);
+	my %edgeopts = (
+		'arrowhead' => 'open',
+	);
+	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
+		if $opts->{'graph'};
+	@nodeopts{ keys %{$opts->{'node'}} } = values %{$opts->{'node'}} 
+		if $opts->{'node'};
+	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
+		if $opts->{'edge'};
+
+	my @dotlines;
+	push( @dotlines, 'digraph stemma {' );
+	## Print out the global attributes
+	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
+	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
+	## Delete our special attributes from the node set before continuing
+	my $hshape = delete $nodeopts{'hshape'};
+	my $htext = delete $nodeopts{'htext'};
+	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
+
+	# Add each of the nodes.
+    foreach my $n ( $self->graph->vertices ) {
+        if( $self->graph->get_vertex_attribute( $n, 'class' ) eq 'hypothetical' ) {
+        	# Apply our display settings for hypothetical nodes.
+        	push( @dotlines, _make_dotline( $n, 'shape' => $hshape, 'label' => $htext ) );
         } else {
-            $undirected = $self->graph;
+        	# Use the default display settings.
+            push( @dotlines, "  $n;" );
         }
-        $self->_save_apsp( $undirected->APSP_Floyd_Warshall() );
-    }       
-};
+    }
+    # Add each of our edges.
+    foreach my $e ( $self->graph->edges ) {
+    	my( $from, $to ) = @$e;
+    	push( @dotlines, "  $from -> $to;" );
+    }
+    push( @dotlines, '}' );
+    
+    return join( "\n", @dotlines );
+}
+
+
+# Another version of dot output meant for graph editing, thus
+# much simpler.
+sub editable {
+	my $self = shift;
+	my @dotlines;
+	push( @dotlines, 'digraph stemma {' );
+	my @real; # A cheap sort
+    foreach my $n ( sort $self->graph->vertices ) {
+    	my $c = $self->graph->get_vertex_attribute( $n, 'class' );
+    	$c = 'extant' unless $c;
+    	if( $c eq 'extant' ) {
+    		push( @real, $n );
+    	} else {
+			push( @dotlines, _make_dotline( $n, 'class' => $c ) );
+		}
+    }
+	# Now do the real ones
+	foreach my $n ( @real ) {
+		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
+	}
+	foreach my $e ( sort _by_vertex $self->graph->edges ) {
+		my( $from, $to ) = @$e;
+		push( @dotlines, "  $from -> $to;" );
+	}
+    push( @dotlines, '}' );
+    return join( "\n", @dotlines );
+}
+
+sub _make_dotline {
+	my( $obj, %attr ) = @_;
+	my @pairs;
+	foreach my $k ( keys %attr ) {
+		my $v = $attr{$k};
+		$v =~ s/\"/\\\"/g;
+		push( @pairs, "$k=\"$v\"" );
+	}
+	return sprintf( "  %s [ %s ];", $obj, join( ', ', @pairs ) );
+}
+	
+sub _by_vertex {
+	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
+}
 
 # Render the stemma as SVG.
 sub as_svg {
     my( $self, $opts ) = @_;
-    # TODO add options for display, someday
-    my $dgraph = Graph::Convert->as_graph_easy( $self->graph );
-    # Set some class display attributes for 'hypothetical' and 'extant' nodes
-    $dgraph->set_attribute( 'flow', 'south' );
-    foreach my $n ( $dgraph->nodes ) {
-        if( $n->attribute( 'class' ) eq 'hypothetical' ) {
-            $n->set_attribute( 'shape', 'point' );
-            $n->set_attribute( 'pointshape', 'diamond' );
-        } else {
-            $n->set_attribute( 'shape', 'ellipse' );
-        }
-    }
-    
-    # Render to svg via graphviz
-    my @lines = split( /\n/, $dgraph->as_graphviz() );
-    # Add the size attribute
-    if( $opts->{'size'} ) {
-        my $sizeline = "  graph [ size=\"" . $opts->{'size'} . "\" ]";
-        splice( @lines, 1, 0, $sizeline );
-    }
+    my $dot = $self->as_dot( $opts );
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
-    print $dotfile join( "\n", @lines );
+    print $dotfile $dot;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     $svg = decode_utf8( $svg );
     return $svg;
+}
+
+sub witnesses {
+    my $self = shift;
+    my @wits = grep { $self->graph->get_vertex_attribute( $_, 'class' ) eq 'extant' }
+        $self->graph->vertices;
+    return @wits;
 }
 
 #### Methods for calculating phylogenetic trees ####
@@ -130,12 +189,6 @@ before 'distance_trees' => sub {
             # Save the resulting trees
             my $trees = _parse_newick( $result );
             $self->_save_distance_trees( $trees );
-            # and calculate their APSP values.
-            my @apsps;
-            foreach my $t ( @$trees ) {
-                push( @apsps, $t->APSP_Floyd_Warshall() );
-            }
-            $self->_save_distance_apsps( \@apsps );
         } else {
             warn "Failed to calculate distance trees: $result";
         }
@@ -179,14 +232,25 @@ sub convert_characters {
     my %unique = ( '__UNDEF__' => 'X',
                    '#LACUNA#'  => '?',
                  );
+    my %count;
     my $ctr = 0;
     foreach my $word ( @$row ) {
         if( $word && !exists $unique{$word} ) {
             $unique{$word} = chr( 65 + $ctr );
             $ctr++;
         }
+        $count{$word}++ if $word;
     }
+    # Try to keep variants under 8 by lacunizing any singletons.
     if( scalar( keys %unique ) > 8 ) {
+		foreach my $word ( keys %count ) {
+			if( $count{$word} == 1 ) {
+				$unique{$word} = '?';
+			}
+		}
+    }
+    my %u = reverse %unique;
+    if( scalar( keys %u ) > 8 ) {
         warn "Have more than 8 variants on this location; phylip will break";
     }
     my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;

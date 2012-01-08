@@ -1,7 +1,10 @@
 *~
-tla.bbprojectsettings
+*.bbprojectd/
 data
 !/t/data
 Makefile
 Makefile.old
+META.yml
 blib
+db
+inc

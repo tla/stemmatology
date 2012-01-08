@@ -11,15 +11,16 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK ) 
-    = ( '', '', '', '', 1, 'Tradition', 0 );
+my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep ) 
+    = ( '', '', '', '', 1, 'Tradition', 0, ',' );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
             'o|out=s'   => \$outformat,
             'l|linear!' => \$linear,
-            'n|name'    => \$name,
+            'n|name=s'    => \$name,
             'h|help'    => \$help,
+            'sep=s'		=> \$sep,
             'hack'      => \$HACK,
     );
 
@@ -27,7 +28,7 @@ if( $help ) {
     help();
 }
 
-unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)$/i ) {
+unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|stone$/i ) {
     help( "Input format must be one of CollateX, CSV, CTE, Self, TEI" );
 }
 $informat = 'CollateX' if $informat =~ /^c(ollate)?x$/i;
@@ -36,15 +37,17 @@ $informat = 'CTE' if $informat =~ /^cte$/i;
 $informat = 'Self' if $informat =~ /^self$/i;
 $informat = 'TEI' if $informat =~ /^tei$/i;
 $informat = 'Tabular' if $informat =~ /^tab$/i;
+$informat = 'CollateText' if $informat =~ /^stone$/i;
 
 unless( $outformat =~ /^(graphml|svg|dot|stemma|csv)$/ ) {
     help( "Output format must be one of graphml, svg, csv, stemma, or dot" );
 }
 
 # Do we have a base if we need it?
-if( $informat eq 'KUL' && !$inbase ) {
+if( $informat =~ /^(KUL|CollateText)$/ && !$inbase ) {
     help( "$informat input needs a base text" );
 }
+$sep = "\t" if $sep eq 'tab';
 
 my $input = $ARGV[0];
 
@@ -55,6 +58,11 @@ my %args = ( 'input' => $informat,
              'linear' => $linear );
 $args{'base'} = $inbase if $inbase;
 $args{'name'} = $name if $name;
+$args{'sep_char'} = $sep if $informat eq 'Tabular';
+### Custom hacking for Stone
+if( $informat eq 'CollateText' ) {
+    $args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
+}
 my $tradition = Text::Tradition->new( %args );
 
 ### Custom hacking

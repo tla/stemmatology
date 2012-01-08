@@ -15,7 +15,7 @@ __PACKAGE__->config(namespace => '');
 
 =head1 NAME
 
-TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
+TreeOfTexts::Controller::Stemmagraph - Simple controller for stemma display
 
 =head1 DESCRIPTION
 
@@ -32,7 +32,6 @@ sub get_graph :Local {
 	# The body is actually a File::Temp object; this is undocumented but 
 	# so it seems to be.
 	my $dotfile;
-	$DB::single = 1;
 	my $must_unlink = 0;
 	if( $c->request->params->{'dot'} ) {
 	    # Make a File::Temp object.

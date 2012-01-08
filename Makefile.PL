@@ -9,17 +9,19 @@ requires( 'Algorithm::Diff' );
 requires( 'Bio::Phylo::IO' );
 requires( 'File::chdir' );
 requires( 'Graph' );
-requires( 'Graph::Convert' );
-requires( 'Graph::Easy' );
 requires( 'Graph::Reader::Dot' );
 requires( 'IPC::Run' );
+requires( 'KiokuDB::Backend::DBI' );
+requires( 'KiokuDB::GC::Naive' );
+requires( 'KiokuDB::TypeMap' );
+requires( 'KiokuDB::TypeMap::Entry::Naive' );
+requires( 'KiokuX::Model' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
-requires( 'MooseX::NonMoose' );
-# TODO get rid of this dependency
-requires( 'Text::CSV::Simple' );
 requires( 'Text::CSV_XS' );
+requires( 'Text::CSV::Simple' ); # TODO delete
 requires( 'XML::LibXML' );
 requires( 'XML::LibXML::XPathContext' );
+build_requires( 'Test::Warn' );
 &WriteAll;

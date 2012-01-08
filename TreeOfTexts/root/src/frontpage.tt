@@ -1,21 +1,16 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link type="text/css" href="css/cupertino/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
-    <link type="text/css" href="css/style.css" rel="stylesheet" />
-  </head>
-  <body>
-    <h1>Stexaminer</h1>
+[% BLOCK js %]
+[% END %]
+
     <h2>Choose a text to examine</h2>
     <div id="text_list">
       <ul>
 [% SET i = 0 -%]
 [% FOREACH t IN texts -%]
-        <li><a href="view_text?textid=[% i %]">[% t %]</a></li>
+        <li>[% t.name %] | <a href="relationships?textid=[% t.id %]">Relationship mapper</a>
+[% IF t.has_stemma -%]
+         | <a href="stexaminer?textid=[% t.id %]">Stexaminer</a>
+[% END -%]</li>
 [% i = i + 1 -%]
 [% END -%]
      </table>
     </div>
-  </body>
-</html>

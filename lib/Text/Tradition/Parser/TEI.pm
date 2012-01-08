@@ -63,7 +63,7 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
     is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+    is( scalar $t->collation->paths, 374, "Collation has all paths" );
 }
 
 =end testing
@@ -129,7 +129,7 @@ sub parse {
     map { $text->{$_->sigil} = [] } $tradition->witnesses;
 
     # Look for all word/seg node IDs and note their pre-existence.
-    my @attrs = $xpc->findnodes( "//$W|$SEG/attribute::xml:id" );
+    my @attrs = $xpc->findnodes( "//$W/attribute::xml:id" );
     _save_preexisting_nodeids( @attrs );
 
     # Count up how many apps we have.
@@ -147,7 +147,6 @@ sub parse {
     # Join them up.
     my $c = $tradition->collation;
     foreach my $sig ( keys %$text ) {
-        next if $sig eq 'base';  # Skip base text readings with no witnesses.
         # Determine the list of readings for 
         my $sequence = $text->{$sig};
         my @real_sequence = ( $c->start );
@@ -159,7 +158,6 @@ sub parse {
             $c->add_path( $source, $rdg, $sig );
             $source = $rdg;
         }
-        $tradition->witness( $sig )->path( \@real_sequence );
         # See if we need to make an a.c. version of the witness.
         if( exists $app_ac->{$sig} ) {
             my @uncorrected;
@@ -172,21 +170,21 @@ sub parse {
             }
             my $source = $c->start;
             foreach my $rdg ( @uncorrected ) {
-                my $has_base = grep { $_->label eq $sig } $source->edges_to( $rdg );
+                my $has_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
                 if( $rdg ne $c->start && !$has_base ) {
-                    print STDERR sprintf( "Adding path %s from %s -> %s\n",
-                        $sig.$c->ac_label, $source->name, $rdg->name );
+                    # print STDERR sprintf( "Adding path %s from %s -> %s\n",
+                    #     $sig.$c->ac_label, $source->id, $rdg->id );
                     $c->add_path( $source, $rdg, $sig.$c->ac_label );
                 }
                 $source = $rdg;
             }
-            print STDERR "Adding a.c. version for witness $sig\n";
-            $tradition->witness( $sig )->uncorrected_path( \@uncorrected );
+            # print STDERR "Adding a.c. version for witness $sig\n";
+            $tradition->witness( $sig )->is_layered( 1 );
         }
     }
     
     # Calculate the ranks for the nodes.
-    $tradition->collation->calculate_ranks();
+	$tradition->collation->calculate_ranks();
     
     # Now that we have ranks, see if we have distinct nodes with identical
     # text and identical rank that can be merged.
@@ -202,7 +200,7 @@ sub _clean_sequence {
             my $app_id = $1;
             if( exists $app_ac->{$wit} &&
                 exists $app_ac->{$wit}->{$app_id} ) {
-                print STDERR "Retaining empty placeholder for $app_id\n";
+                # print STDERR "Retaining empty placeholder for $app_id\n";
                 push( @clean_sequence, $rdg );
             }
         } else {
@@ -216,8 +214,8 @@ sub _replace_sequence {
     my( $arr, $start, $end, @new ) = @_;
     my( $start_idx, $end_idx );
     foreach my $i ( 0 .. $#{$arr} ) {
-        $start_idx = $i if( $arr->[$i]->name eq $start );
-        if( $arr->[$i]->name eq $end ) {
+        $start_idx = $i if( $arr->[$i]->id eq $start );
+        if( $arr->[$i]->id eq $end ) {
             $end_idx = $i;
             last;
         }
@@ -236,9 +234,9 @@ sub _return_rdg {
     # passed a reading object, return the object.
     my $wantobj = ref( $rdg ) eq 'Text::Tradition::Collation::Reading';
     my $real = $rdg;
-    if( exists $substitutions->{ $wantobj ? $rdg->name : $rdg } ) {
-        $real = $substitutions->{ $wantobj ? $rdg->name : $rdg };
-        $real = $real->name unless $wantobj;
+    if( exists $substitutions->{ $wantobj ? $rdg->id : $rdg } ) {
+        $real = $substitutions->{ $wantobj ? $rdg->id : $rdg };
+        $real = $real->id unless $wantobj;
     }
     return $real;
 }
@@ -279,9 +277,6 @@ sub _return_rdg {
                 next if $w !~ /[[:alnum:]]/;
                 my $rdg = _make_reading( $tradition->collation, $w );
                 push( @new_readings, $rdg );
-                unless( $in_var ) {
-                    $rdg->make_common;
-                }
                 foreach ( @cur_wits ) {
                     warn "Empty wit!" unless $_;
                     warn "Empty reading!" unless $rdg;
@@ -298,9 +293,6 @@ sub _return_rdg {
             my $xml_id = $xn->getAttribute( 'xml:id' );
             my $rdg = _make_reading( $tradition->collation, $xn->textContent, $xml_id );
             push( @new_readings, $rdg );
-            unless( $in_var ) {
-                $rdg->make_common;
-            }
             foreach( @cur_wits ) {
                 warn "Empty wit!" unless $_;
                 warn "Empty reading!" unless $rdg;
@@ -324,7 +316,7 @@ sub _return_rdg {
             # Return the entire set of unique readings.
             my %unique;
             foreach my $s ( @sets ) {
-                map { $unique{$_->name} = $_ } @$s;
+                map { $unique{$_->id} = $_ } @$s;
             }
             push( @new_readings, values( %unique ) );
             # Exit the current app.
@@ -335,7 +327,7 @@ sub _return_rdg {
             # TODO handle p.c. and s.l. designations too
             $ac = $xn->getAttribute( 'type' ) && $xn->getAttribute( 'type' ) eq 'a.c.';
             my @rdg_wits = _get_sigla( $xn );
-            @rdg_wits = ( 'base' ) unless @rdg_wits;  # Allow for editorially-supplied readings
+            return unless @rdg_wits;  # Skip readings that appear in no witnesses
             my @words;
             foreach ( $xn->childNodes ) {
                 my @rdg_set = _get_readings( $tradition, $_, 1, $ac, @rdg_wits );
@@ -353,8 +345,8 @@ sub _return_rdg {
                 # Add the reading set to the app anchors for each witness
                 # or put in placeholders for empty p.c. readings
                 foreach ( @rdg_wits ) {
-                    my $start = @words ? $words[0]->name : "PH-$current_app";
-                    my $end = @words ? $words[-1]->name : "PH-$current_app";
+                    my $start = @words ? $words[0]->id : "PH-$current_app";
+                    my $end = @words ? $words[-1]->id : "PH-$current_app";
                     $app_anchors->{$current_app}->{$_}->{'start'} = $start;
                     $app_anchors->{$current_app}->{$_}->{'end'} = $end;
                     push( @{$text->{$_}}, $start ) unless @words;
@@ -371,7 +363,9 @@ sub _return_rdg {
                 my $i = 0;
                 foreach my $sig ( keys %$text ) {
                     next if $active_wits{$sig};
-                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    my $l = $tradition->collation->add_reading( {
+                    	'id' => $current_app . "_$i",
+                    	'is_lacuna' => 1 } );
                     $i++;
                     push( @{$text->{$sig}}, $l );
                 }
@@ -384,11 +378,14 @@ sub _return_rdg {
             unless( $seen_apps == $app_count ) {
                 foreach my $i ( 0 .. $#cur_wits ) {
                     my $w = $cur_wits[$i];
-                    my $l = $tradition->collation->add_lacuna( $current_app . "_$i" );
+                    my $l = $tradition->collation->add_reading( {
+                    	'id' => $current_app . "_$i",
+                    	'is_lacuna' => 1 } );
                     push( @{$text->{$w}}, $l );
                 }
             }
-        } elsif( $xn->nodeName eq 'witDetail' ) {
+        } elsif( $xn->nodeName eq 'witDetail' 
+        		 || $xn->nodeName eq 'note' ) {
             # Ignore these for now.
             return;
         } else {
@@ -433,6 +430,7 @@ sub _get_sigla {
     my @wits;
     if( ref( $rdg ) eq 'XML::LibXML::Element' ) {
         my $witstr = $rdg->getAttribute( 'wit' );
+        return () unless $witstr;
         $witstr =~ s/^\s+//;
         $witstr =~ s/\s+$//;
         @wits = split( /\s+/, $witstr );
@@ -471,8 +469,10 @@ sub _get_sigla {
                 $xml_id = $try_id;
             }
         }
-        my $rdg = $graph->add_reading( $xml_id );
-        $rdg->text( $word );
+        my $rdg = $graph->add_reading(
+        	{ 'id' => $xml_id,
+        	  'text' => $word }
+        	);
         $used_nodeids{$xml_id} = $rdg;
         return $rdg;
     }

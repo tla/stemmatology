@@ -2,7 +2,7 @@ package Text::Tradition::Parser::CollateX;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
 
 =head1 NAME
 
@@ -59,13 +59,14 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
-    is( scalar $t->collation->paths, 49, "Collation has all paths" );
+    is( scalar $t->collation->paths, 32, "Collation has all paths" );
     is( scalar $t->witnesses, 3, "Collation has all witnesses" );
     
     # Check an 'identical' node
     my $transposed = $t->collation->reading( 'n15' );
-    ok( $transposed->has_primary, "Reading links to transposed primary" );
-    is( $transposed->primary->name, 'n17', "Correct transposition link" );
+    my @related = $transposed->related_readings;
+    is( scalar @related, 1, "Reading links to transposed version" );
+    is( $related[0]->id, 'n17', "Correct transposition link" );
 }
 
 =end testing
@@ -80,34 +81,30 @@ sub parse {
     my( $tradition, $opts ) = @_;
     my $graph_data = graphml_parse( $opts );
     my $collation = $tradition->collation;
-    my %witnesses; # Keep track of the witnesses we encounter as we
-                   # run through the graph data.
 
-    # Add the nodes to the graph.  First delete the start node, because
-    # GraphML graphs will have their own start nodes.
-    $collation->del_reading( $collation->start() );
-    $collation->del_reading( $collation->end() );
-
+	# First add the readings to the graph.
     my $extra_data = {}; # Keep track of info to be processed after all
                          # nodes have been created
     foreach my $n ( @{$graph_data->{'nodes'}} ) {
-        my %node_data = %$n;
-        my $nodeid = delete $node_data{$IDKEY};
-        my $token = delete $node_data{$CONTENTKEY};
-        unless( defined $nodeid && defined $token ) {
+        unless( defined $n->{$IDKEY} && defined $n->{$CONTENTKEY} ) {
             warn "Did not find an ID or token for graph node, can't add it";
             next;
         }
-        my $gnode = $collation->add_reading( $nodeid );
-        $gnode->text( $token );
+        my %node_data = %$n;
+        my $gnode_args = { 
+        	'id' => delete $node_data{$IDKEY},
+        	'text' => delete $node_data{$CONTENTKEY},
+        };
+        my $gnode = $collation->add_reading( $gnode_args );
 
-        # Whatever is left is extra info to be processed later.
+        # Whatever is left is extra info to be processed later,
+        # e.g. a transposition link.
         if( keys %node_data ) {
-            $extra_data->{$nodeid} = \%node_data;
+            $extra_data->{$gnode->id} = \%node_data;
         }
     }
         
-    # Now add the edges.
+    # Now add the path edges.
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my %edge_data = %$e;
         my $from = delete $edge_data{'source'};
@@ -120,9 +117,8 @@ sub parse {
         foreach my $ekey ( keys %edge_data ) {
             my $wit = $edge_data{$ekey};
             # Create the witness object if it does not yet exist.
-            unless( $witnesses{$wit} ) {
+            unless( $tradition->witness( $wit ) ) {
                 $tradition->add_witness( 'sigil' => $wit );
-                $witnesses{$wit} = 1;
             }
             $collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
         }
@@ -132,11 +128,11 @@ sub parse {
     foreach my $nodeid ( keys %$extra_data ) {
         my $ed = $extra_data->{$nodeid};
         if( exists $ed->{$TRANSKEY} ) {
-            
             my $tn_reading = $collation->reading( $nodeid );
             my $main_reading = $collation->reading( $ed->{$TRANSKEY} );
             if( $collation->linear ) {
-                $tn_reading->set_identical( $main_reading );
+                $collation->add_relationship( $tn_reading, $main_reading,
+                	{ type => 'transposition' } );
             } else {
                 $collation->merge_readings( $main_reading, $tn_reading );
             }
@@ -146,26 +142,19 @@ sub parse {
     # Find the beginning and end nodes of the graph.  The beginning node
     # has no incoming edges; the end node has no outgoing edges.
     my( $begin_node, $end_node );
-    foreach my $gnode ( $collation->readings() ) {
-        # print STDERR "Checking node " . $gnode->name . "\n";
-        my @outgoing = $gnode->outgoing();
-        my @incoming = $gnode->incoming();
-
-        unless( scalar @incoming ) {
-            warn "Already have a beginning node" if $begin_node;
-            $begin_node = $gnode;
-            $collation->start( $gnode );
-        }
-        unless( scalar @outgoing ) {
-            warn "Already have an ending node" if $end_node;
-            $end_node = $gnode;
-            $collation->end( $gnode );
-        }
+    my @starts = $collation->sequence->source_vertices();
+    my @ends = $collation->sequence->sink_vertices();
+    if( @starts != 1 ) {
+    	warn "Found more or less than one start vertex: @starts";
+    } else {
+    	$collation->merge_readings( $collation->start, @starts );
+    }
+    if( @ends != 1 )  {
+    	warn "Found more or less than one end vertex: @ends";
+    } else {
+    	$collation->merge_readings( $collation->end, @ends );
     }
     
-    # Set the $witness->path arrays for each wit.
-    populate_witness_path( $tradition );
-
     # Rank the readings.
     $collation->calculate_ranks() if $collation->linear;
 }

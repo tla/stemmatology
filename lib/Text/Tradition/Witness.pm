@@ -65,15 +65,10 @@ Accessor method for the witness identifier.
 
 Accessor method for the general witness description.
 
-=head2 path
+=head2 is_layered
 
-An array of Text::Tradition::Collation::Reading objects which, taken in
-sequence, represent the text.
-
-=head2 uncorrected_path
-
-An array of Text::Tradition::Collation::Reading objects which, taken in
-sequence, represent the text before any scribal corrections were made.
+Boolean method to note whether the witness has layers (e.g. pre-correction 
+readings) in the collation.
 
 =begin testing
 
@@ -118,18 +113,24 @@ has 'source' => (
 	predicate => 'has_source',
 	);
 
-# Path.	 This is an array of Reading nodes that should mirror the
-# text above.
+# Path.	 This is an array of Reading nodes that can be saved during
+# initialization, but should be cleared before saving in a DB.
 has 'path' => (
 	is => 'rw',
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
 	predicate => 'has_path',
+	clearer => 'clear_path',
 	);		   
 
 has 'uncorrected_path' => (
 	is => 'rw',
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
-	predicate => 'has_ante_corr',
+	clearer => 'clear_uncorrected_path',
+	);
+	
+has 'is_layered' => (
+	is => 'rw',
+	isa => 'Bool',
 	);
 
 # Manuscript name or similar
@@ -144,6 +145,14 @@ has 'other_info' => (
 	isa => 'Str',
 	);
 	
+# If we set an uncorrected path, ever, remember that we did so.
+around 'uncorrected_path' => sub {
+	my $orig = shift;
+	my $self = shift;
+	
+	$self->is_layered( 1 );
+	$self->$orig( @_ );
+};
 
 sub BUILD {
 	my $self = shift;
@@ -164,43 +173,6 @@ sub BUILD {
 		  # XML, and we are doing nothing with it.
 	}
 }
-
-=begin testing
-
-use Text::Tradition;
-
-my $simple = 't/data/simple.txt';
-my $s = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'Tabular',
-    'file'  => $simple,
-    );
-my $wit_c = $s->witness( 'C' );
-is( ref( $wit_c ), 'Text::Tradition::Witness' ),;
-if( $wit_c ) {
-    ok( !$wit_c->has_text, "Text property not yet set" );
-    my $c_arr = $wit_c->text;
-    is( $c_arr->[0], 'Je', "Text constructed from path" );
-    ok( $wit_c->has_text, "Text property now set" );
-}
-
-=end testing
-
-=cut
-
-# If the text is not present, and the path is, and this is a 'get'
-# request, generate text from path.
-around text => sub {
-	my $orig = shift;
-	my $self = shift;
-
-	if( $self->has_path && !$self->has_text && !@_ ) {
-		my @words = map { $_->label } grep { !$_->is_meta } @{$self->path};
-		$self->$orig( \@words );
-	}
-	
-	$self->$orig( @_ );
-};
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

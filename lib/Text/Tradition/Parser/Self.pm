@@ -2,7 +2,7 @@ package Text::Tradition::Parser::Self;
 
 use strict;
 use warnings;
-use Text::Tradition::Parser::GraphML qw/ graphml_parse populate_witness_path /;
+use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
 
 =head1 NAME
 
@@ -109,7 +109,7 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
 if( $t ) {
     is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+    is( scalar $t->collation->paths, 376, "Collation has all paths" );
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 
@@ -118,9 +118,13 @@ if( $t ) {
 =cut
 
 my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY, $CLASS_KEY,
-	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY ) 
-    = qw/ name reading identical rank class 
-    	  source target witness extra relationship/;
+	$START_KEY, $END_KEY, $LACUNA_KEY,
+	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY,
+	$COLO_KEY, $CORRECT_KEY, $INDEP_KEY )
+    = qw/ name reading identical rank class
+    	  is_start is_end is_lacuna 
+    	  source target witness extra relationship
+    	  equal_rank non_correctable non_independent /;
 
 sub parse {
     my( $tradition, $opts ) = @_;
@@ -131,47 +135,76 @@ sub parse {
     
     # Set up the graph-global attributes.  They will appear in the
     # hash under their accessor names.
-    print STDERR "Setting graph globals\n";
+    my $use_version;
+    # print STDERR "Setting graph globals\n";
     $tradition->name( $graph_data->{'name'} );
-    foreach my $gkey ( keys %{$graph_data->{'attr'}} ) {
-		my $val = $graph_data->{'attr'}->{$gkey};
-		$collation->$gkey( $val );
+    foreach my $gkey ( keys %{$graph_data->{'global'}} ) {
+		my $val = $graph_data->{'global'}->{$gkey};
+		if( $gkey eq 'version' ) {
+			$use_version = $val;
+		} else {
+			$collation->$gkey( $val );
+		}
+	}
+	if( $use_version ) {
+		# Many of our tags changed.
+		$IDKEY = 'id';
+		$TOKENKEY = 'text';
+		$COLO_KEY = 'colocated';
 	}
 		
     # Add the nodes to the graph. 
 
     my $extra_data = {}; # Keep track of data that needs to be processed
                          # after the nodes & edges are created.
-    print STDERR "Adding graph nodes\n";
+    # print STDERR "Adding graph nodes\n";
     foreach my $n ( @{$graph_data->{'nodes'}} ) {
+    	unless( $use_version ) {
+    		# Backwards compat!
+    		$n->{$START_KEY} = 1 if $n->{$IDKEY} eq '#START#';
+    		$n->{$END_KEY} = 1 if $n->{$IDKEY} eq '#END#';
+    	}
+    	
+    	# If it is the start or end node, we already have one, so
+    	# grab the rank and go.
+    	next if( defined $n->{$START_KEY} );
+    	if( defined $n->{$END_KEY} ) {
+    		$collation->end->rank( $n->{$RANK_KEY} );
+    		next;
+    	}
+    	
     	# First extract the data that we can use without reference to
     	# anything else.
     	my %node_data = %$n; # Need $n itself untouched for edge processing
-        my $nodeid = delete $node_data{$IDKEY};
-        my $reading = delete $node_data{$TOKENKEY};
-        my $class = delete $node_data{$CLASS_KEY} || '';
-        my $rank = delete $node_data{$RANK_KEY};
         
-        # Create the node.  Current valid classes are common and meta. 
-        # Everything else is a normal reading.
-        my $gnode = $collation->add_reading( $nodeid );
-        $gnode->text( $reading );
-        $gnode->make_common if $class eq 'common';
-        $gnode->is_meta( 1 ) if $class eq 'meta';
-        # This is a horrible hack.
-        $gnode->is_lacuna( $reading =~ /^\#LACUNA/ );
-        $gnode->rank( $rank ) if defined $rank;
+        # Create the node.  
+        my $reading_options = { 
+        	'id' => delete $node_data{$IDKEY},
+        	'is_lacuna' => delete $node_data{$LACUNA_KEY},
+        	};
+        my $rank = delete $node_data{$RANK_KEY};
+		$reading_options->{'rank'} = $rank if $rank;
+		my $text = delete $node_data{$TOKENKEY};
+		$reading_options->{'text'} = $text if $text;
+
+        # This is a horrible hack for backwards compatibility.
+        unless( $use_version ) {
+			$reading_options->{'is_lacuna'} = 1 
+				if $reading_options->{'text'} =~ /^\#LACUNA/;
+		}
+		
+		delete $node_data{$CLASS_KEY}; # Not actually used
+		my $gnode = $collation->add_reading( $reading_options );
 
         # Now save the data that we need for post-processing,
-        # if it exists.
+        # if it exists. TODO this is unneeded after conversion
         if ( keys %node_data ) {
-            $extra_data->{$nodeid} = \%node_data
+            $extra_data->{$gnode->id} = \%node_data
         }
     }
         
     # Now add the edges.
-    print STDERR "Adding graph edges\n";
-    my $has_ante_corr = {};
+    # print STDERR "Adding graph edges\n";
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
@@ -190,38 +223,43 @@ sub parse {
 				$tradition->add_witness( sigil => $wit );
 				$witnesses{$wit} = 1;
 			}
-			$has_ante_corr->{$wit} = 1 if $extra;
+			$tradition->witness( $wit )->is_layered( 1 ) if $extra;
         } elsif( $class eq 'relationship' ) {
         	# We need the metadata about the relationship.
         	my $opts = { 'type' => $e->{$RELATIONSHIP_KEY} };
-        	$opts->{'equal_rank'} = $e->{'equal_rank'} 
-        		if exists $e->{'equal_rank'};
-        	$opts->{'non_correctable'} = $e->{'non_correctable'} 
-        		if exists $e->{'non_correctable'};
-        	$opts->{'non_independent'} = $e->{'non_independent'} 
-        		if exists $e->{'non_independent'};
+        	$opts->{$COLO_KEY} = $e->{$COLO_KEY} 
+        		if exists $e->{$COLO_KEY};
+        	$opts->{$CORRECT_KEY} = $e->{$CORRECT_KEY} 
+        		if exists $e->{$CORRECT_KEY};
+        	$opts->{$INDEP_KEY} = $e->{$INDEP_KEY} 
+        		if exists $e->{$INDEP_KEY};
         	warn "No relationship type for relationship edge!" unless $opts->{'type'};
-        	$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
+        	my( $ok, @result ) = $collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, $opts );
+        	unless( $ok ) {
+        		my $relinfo = $opts->{'type'} . ' ' 
+        			. join( ' -> ', $from->{$IDKEY}, $to->{$IDKEY} );
+        		warn "Did not add relationship $relinfo: @result";
+        	}
         } 
     }
 
     ## Deal with node information (transposition, relationships, etc.) that
     ## needs to be processed after all the nodes are created.
-    print STDERR "Adding second-pass node data\n";
-    foreach my $nkey ( keys %$extra_data ) {
-        foreach my $edkey ( keys %{$extra_data->{$nkey}} ) {
-            my $this_reading = $collation->reading( $nkey );
-            if( $edkey eq $TRANSPOS_KEY ) {
-                my $other_reading = $collation->reading( $extra_data->{$nkey}->{$edkey} );
-                $this_reading->set_identical( $other_reading );
-            } else {
-                warn "Unfamiliar reading node data $edkey for $nkey";
-            }
-        }
+    ## TODO unneeded after conversion
+    unless( $use_version ) {
+		# print STDERR "Adding second-pass node data\n";
+		foreach my $nkey ( keys %$extra_data ) {
+			foreach my $edkey ( keys %{$extra_data->{$nkey}} ) {
+				my $this_reading = $collation->reading( $nkey );
+				if( $edkey eq $TRANSPOS_KEY ) {
+					my $other_reading = $collation->reading( $extra_data->{$nkey}->{$edkey} );
+					$this_reading->set_identical( $other_reading );
+				} else {
+					warn "Unfamiliar reading node data $edkey for $nkey";
+				}
+			}
+		}
     }
-    
-    # Set the $witness->path arrays for each wit.
-    populate_witness_path( $tradition, $has_ante_corr );
 }
 
 1;

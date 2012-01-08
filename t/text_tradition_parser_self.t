@@ -23,7 +23,7 @@ my $t = Text::Tradition->new(
 is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
 if( $t ) {
     is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 2854, "Collation has all paths" );
+    is( scalar $t->collation->paths, 376, "Collation has all paths" );
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 }

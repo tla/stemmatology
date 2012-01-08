@@ -89,7 +89,6 @@ sub merge_base {
     my @base_line_starts = read_base( $base_file, $collation );
 
     my %all_witnesses;
-    my @unwitnessed_lemma_nodes;
     foreach my $app ( @app_entries ) {
         my( $line, $num ) = split( /\./, $app->{_id} );
         # DEBUG with a short graph
@@ -113,12 +112,12 @@ sub merge_base {
         my %seen;
         while( $lemma_start ne $too_far ) {
             # Loop detection
-            if( $seen{ $lemma_start->name() } ) {
-                warn "Detected loop at " . $lemma_start->name() . 
+            if( $seen{ $lemma_start->id() } ) {
+                warn "Detected loop at " . $lemma_start->id() . 
                     ", ref $line,$num";
                 last;
             }
-            $seen{ $lemma_start->name() } = 1;
+            $seen{ $lemma_start->id() } = 1;
             
             # Try to match the lemma.
             my $unmatch = 0;
@@ -178,11 +177,6 @@ sub merge_base {
         foreach my $k ( grep { /^rdg/ } keys( %$app ) ) {
             my @mss = grep { $app->{$_} eq $k } keys( %$app );
 
-            # Keep track of lemma nodes that don't actually appear in
-            # any MSS; we will want to remove them from the collation.
-            push( @unwitnessed_lemma_nodes, @lemma_set )
-                if !@mss && $k eq 'rdg_0';
-
             # Keep track of what witnesses we have seen.
             @all_witnesses{ @mss } = ( 1 ) x scalar( @mss );
             # Keep track of which witnesses bear corrected readings here.
@@ -202,8 +196,9 @@ sub merge_base {
             my $ctr = 0;
             foreach my $vw ( @variant ) {
                 my $vwname = "$k/$line.$num.$ctr"; $ctr++;
-                my $vwreading = $collation->add_reading( $vwname );
-                $vwreading->text( $vw );
+                my $vwreading = $collation->add_reading( {
+                	'id' => $vwname,
+                	'text' => $vw } );
                 push( @variant_readings, $vwreading );
             }
 
@@ -226,7 +221,7 @@ sub merge_base {
         foreach my $rkey ( keys %$variant_objects ) {
             # Object is argument list for splice, so:
             # offset, length, replacements
-            my $edit_object = [ $lemma_start->name,
+            my $edit_object = [ $lemma_start->id,
                                 scalar( @lemma_set ),
                                 $variant_objects->{$rkey}->{reading} ];
             foreach my $ms ( @{$variant_objects->{$rkey}->{mss}} ) {
@@ -278,11 +273,7 @@ sub merge_base {
     # ones we have created so far.  Also remove any unwitnessed
     # lemma nodes (TODO unless we are treating base as witness)
     foreach ( $collation->paths() ) {
-        $collation->del_path( $_ );
-    }
-    foreach( @unwitnessed_lemma_nodes ) {
-        $collation->del_reading( $_ );
-        # TODO do we need to delete any relationship paths here?
+        $collation->del_path( $_, $collation->baselabel );
     }
 
     ### HACKY HACKY Do some one-off path corrections here.
@@ -291,6 +282,13 @@ sub merge_base {
 
     # Now walk paths and calculate positional rank.
     $collation->make_witness_paths();
+    # Now delete any orphaned readings.
+	foreach my $r ( $collation->sequence->isolated_vertices ) {
+		print STDERR "Deleting unconnected reading $r / " . 
+			$collation->reading( $r )->text . "\n";
+		$collation->del_reading( $r );
+	}
+	
     KUL::HACK::post_path_hack( $collation );
     # Have to check relationship validity at this point, because before that
     # we had no paths.
@@ -298,7 +296,7 @@ sub merge_base {
 #         next unless $rel->equal_rank;
 #         unless( Text::Tradition::Collation::relationship_valid( $rel->from, $rel->to ) ) {
 #             warn sprintf( "Relationship type %s between %s and %s is invalid, deleting",
-#                             $rel->type, $rel->from->name, $rel->to->name );
+#                             $rel->type, $rel->from->id, $rel->to->id );
 #         }
 #     }
     $collation->calculate_ranks();
@@ -321,8 +319,8 @@ sub read_base {
     
     # This array gives the first reading for each line.  We put the
     # common starting point in line zero.
-    my $last_reading = $collation->start();
-    $base_text_index{$last_reading->name} = 0;
+    my $last_reading = $collation->start;
+    $base_text_index{$last_reading->id} = 0;
     my $lineref_array = [ $last_reading ]; # There is no line zero.
 
     open( BASE, $base_file ) or die "Could not open file $base_file: $!";
@@ -340,8 +338,7 @@ sub read_base {
         last if $SHORTEND && $lineref > $SHORTEND;
         foreach my $w ( @words ) {
             my $readingref = join( ',', $lineref, ++$wordref );
-            my $reading = $collation->add_reading( $readingref );
-            $reading->text( $w );
+            my $reading = $collation->add_reading( { id => $readingref, text => $w } );
             unless( $started ) {
                 push( @$lineref_array, $reading );
                 $started = 1;
@@ -361,7 +358,7 @@ sub read_base {
     # Ending point for all texts
     $collation->add_path( $last_reading, $collation->end, $collation->baselabel );
     push( @$lineref_array, $collation->end );
-    $base_text_index{$collation->end->name} = $i;
+    $base_text_index{$collation->end->id} = $i;
 
     return( @$lineref_array );
 }
@@ -389,14 +386,14 @@ sub set_relationships {
                 $labels{cmp_str( $r )} = $r;
             }
             foreach my $r( @$var ) {
-                if( exists $labels{$r->label} &&
-                    $r->name ne $labels{$r->label}->name ) {
+                if( exists $labels{$r->text} &&
+                    $r->id ne $labels{$r->text}->id ) {
                     if( $type eq 'repetition' ) {
                         # Repetition
-                        $collation->add_relationship( $r, $labels{$r->label}, \%rel_options );
+                        $collation->add_relationship( $r, $labels{$r->text}, \%rel_options );
                     } else {
                         # Transposition
-                        $r->set_identical( $labels{$r->label} );
+                        $r->set_identical( $labels{$r->text} );
                     }
                 }
             }
@@ -437,15 +434,15 @@ sub set_relationships {
 
 sub apply_edits {
     my( $collation, $edit_sequence, $debug ) = @_;
-    my @lemma_text = $collation->reading_sequence( $collation->start,
-                                           $collation->reading( '#END#' ) );
+    my @lemma_text = $collation->reading_sequence( 
+    	$collation->start, $collation->end );
     my $drift = 0;
     foreach my $correction ( @$edit_sequence ) {
         my( $lemma_start, $length, $items ) = @$correction;
         my $offset = $base_text_index{$lemma_start};
         my $realoffset = $offset + $drift;
         if( $debug ||
-            $lemma_text[$realoffset]->name ne $lemma_start ) {
+            $lemma_text[$realoffset]->id ne $lemma_start ) {
             my @this_phrase = @lemma_text[$realoffset..$realoffset+$length-1];
             my @base_phrase;
             my $i = $realoffset;
@@ -458,23 +455,23 @@ sub apply_edits {
             
             print STDERR sprintf( "Trying to replace %s (%s) starting at %d " .
                                   "with %s (%s) with drift %d\n",
-                                  join( ' ', map {$_->label} @base_phrase ),
-                                  join( ' ', map {$_->name} @base_phrase ),
+                                  join( ' ', map {$_->text} @base_phrase ),
+                                  join( ' ', map {$_->id} @base_phrase ),
                                   $realoffset,
-                                  join( ' ', map {$_->label} @$items ),
-                                  join( ' ', map {$_->name} @$items ),
+                                  join( ' ', map {$_->text} @$items ),
+                                  join( ' ', map {$_->id} @$items ),
                                   $drift,
                                   ) if $debug;
                                   
-            if( $lemma_text[$realoffset]->name ne $lemma_start ) {
+            if( $lemma_text[$realoffset]->id ne $lemma_start ) {
                 warn( sprintf( "Should be replacing %s (%s) with %s (%s) " .
                                "but %s (%s) is there instead", 
-                               join( ' ', map {$_->label} @base_phrase ),
-                               join( ' ', map {$_->name} @base_phrase ),
-                               join( ' ', map {$_->label} @$items ),
-                               join( ' ', map {$_->name} @$items ),
-                               join( ' ', map {$_->label} @this_phrase ),
-                               join( ' ', map {$_->name} @this_phrase ),
+                               join( ' ', map {$_->text} @base_phrase ),
+                               join( ' ', map {$_->id} @base_phrase ),
+                               join( ' ', map {$_->text} @$items ),
+                               join( ' ', map {$_->id} @$items ),
+                               join( ' ', map {$_->text} @this_phrase ),
+                               join( ' ', map {$_->id} @this_phrase ),
                       ) );
                 # next;
             }

@@ -1,7 +1,7 @@
 package TreeOfTexts::Controller::Root;
 use Moose;
 use namespace::autoclean;
-use TreeOfTexts::Model::Analysis qw/ run_analysis /;
+use Text::Tradition::Analysis qw/ run_analysis /;
 
 BEGIN { extends 'Catalyst::Controller' }
 
@@ -23,7 +23,8 @@ TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
 
 =head2 index
 
-The root page (/)
+The root page (/).  Lists the traditions available in the DB to work on,
+and should also eventually have an 'Upload new' interface.
 
 =cut
 
@@ -40,28 +41,94 @@ sub os_index :Local {
     my( $self, $c ) = @_;
     my $m = $c->model('Analysis');
     my @all_texts = map { $_->{'title'} } @{$m->{'data'}};
+    my $m = $c->model('Directory');
+    my @all_texts;
+    foreach my $id ( $m->tradition_ids ) {
+    	my $data = { 
+    		'id' => $id,
+    		'name' => $m->name( $id ),
+    	};
+    	push( @all_texts, $data );
+    }
+    
     $c->stash->{texts} = \@all_texts;
     $c->stash->{template} = 'index_gadget.tt';    
 }
 
-# Return the table for the given text ID.
-sub table_service :Local {
+=head2 tradition (TODO)
+
+The main page for a tradition, with information about it and links to the
+available tools.
+
+=head2 relationships
+
+The relationship editor tool.
+
+=cut
+
+sub relationships :Local {
+	my( $self, $c ) = @_;
+	my $m = $c->model('Directory');
+	my $tradition = $m->tradition( $c->request->params->{'textid'} );
+	$c->stash->{alignment} = $tradition->collation->make_alignment_table( 'refs' );
+	$c->stash->{template} = 'relationships.tt';	
+}
+
+=head2 stexaminer
+
+The stemma analysis tool with the pretty colored table.
+
+=cut
+
+sub stexaminer :Local {
     my( $self, $c ) = @_;
-    my $m = $c->model( 'Analysis' );
-    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
+    my $m = $c->model('Directory');
+	my $tradition = $m->tradition( $c->request->params->{'textid'} );
+	my $stemma = $tradition->stemma;
+	# TODO Think about caching the stemma in a session 
+	$c->stash->{svg} = $stemma->as_svg;
+	$c->stash->{text_title} = $tradition->name;
+	$c->stash->{template} = 'index.tt'; 
+	# TODO Run the analysis as AJAX from the loaded page.
+	my $t = run_analysis( $tradition );
+	$c->stash->{variants} = $t->{'variants'};
+	$c->stash->{total} = $t->{'variant_count'};
+	$c->stash->{genealogical} = $t->{'genealogical_count'};
+	$c->stash->{conflict} = $t->{'conflict_count'};
+}
+
+=head1 OPENSOCIAL URLs
+
+=head2 view_table
+
+Simple gadget to return the analysis table for the stexaminer
+
+=cut
+
+sub view_table :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model('Directory');
+	my $id = $c->request->params->{'textid'};
+	my $t = run_analysis( $m->tradition( $id ), $m->stemma( $id ) );
    	$c->stash->{variants} = $t->{'variants'};
     $c->stash->{template} = 'table_service.tt';
 }
 
-# Return the stemma SVG for the given text ID.
-sub svg_service :Local {
-    my( $self, $c ) = @_;
-    my $m = $c->model( 'Analysis' );
-    my $t = $m->{'data'}->[ $c->request->params->{'textid'} ];
-    $c->stash->{result} = $t->{'svg'};
-    $c->forward( "View::SVG" );
-}
+=head2 view_svg
 
+Simple gadget to return the SVG for a given stemma
+
+=cut
+
+sub view_svg :Local {
+    my( $self, $c ) = @_;
+    my $m = $c->model('Directory');
+    my $stemma = $m->tradition( $c->request->params->{'textid'} )->stemma;
+	if( $stemma ) {
+	   	$c->stash->{svg} = $stemma->as_svg;
+	}
+    $c->stash->{template} = 'stemma_gadget.tt';
+}
 
 =head2 default
 

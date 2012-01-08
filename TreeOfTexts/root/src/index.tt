@@ -1,31 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+[% BLOCK js %]
     <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.10.custom.min.js"></script>
     <script type="text/javascript" src="js/interaction.js"></script>
-    <link type="text/css" href="css/cupertino/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
-    <link type="text/css" href="css/style.css" rel="stylesheet" />
-  </head>
-  <body>
-    <h1>Stexaminer</h1>
-    <h2>[% text_title %]</h2>
-    <div id="statistics">
-      <p>Analyzed [% total %] variant locations, of which [% genealogical %] entirely followed the stemma.  [% conflict %] readings conflicted with the stemma.</p>
-    </div>
-    <div id="svg_graph">
-      [% svg %]
-    </div>
-    <div id="variants_table">
-      <table>
-[% FOREACH row IN variants -%]
-[% INCLUDE variantrow %]
-[% END -%]
-     </table>
-    </div>
-  </body>
-</html>
+[% END %]
 
 [% BLOCK variantrow -%]
 [% SET rowclass = 'class="genealogical"' IF row.genealogical -%]
@@ -42,3 +19,19 @@
 [% END -%]
         </tr>
 [% END -%]
+    <h1>Stexaminer</h1>
+    <h2>[% text_title %]</h2>
+    <div id="statistics">
+      <p>Analyzed [% total %] variant locations, of which [% genealogical %] entirely followed the stemma.  [% conflict %] readings conflicted with the stemma.</p>
+    </div>
+    <div id="svg_graph">
+      [% svg %]
+    </div>
+    <div id="variants_table">
+      <table>
+[% FOREACH row IN variants -%]
+[% INCLUDE variantrow %]
+[% END -%]
+     </table>
+    </div>
+
