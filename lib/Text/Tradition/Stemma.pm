@@ -4,6 +4,7 @@ use Bio::Phylo::IO;
 use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
+use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
@@ -28,6 +29,12 @@ has distance_trees => (
     writer => '_save_distance_trees',
     predicate => 'has_distance_trees',
     );
+    
+has distance_program => (
+	is => 'rw',
+	isa => 'Str',
+	default => '',
+	);
     
 sub BUILD {
     my( $self, $args ) = @_;
@@ -180,15 +187,20 @@ sub witnesses {
 
 before 'distance_trees' => sub {
     my $self = shift;
-    my %args = @_;
+    my %args = (
+    	'program' => 'phylip_pars',
+    	@_ );
     # TODO allow specification of method for calculating distance tree
-    if( $args{'recalc'} || !$self->has_distance_trees ) {
+    if( !$self->has_distance_trees
+    	|| $args{'program'} ne $self->distance_program ) {
         # We need to make a tree before we can return it.
-        my( $ok, $result ) = $self->run_phylip_pars();
+        my $dsub = 'run_' . $args{'program'};
+        my( $ok, $result ) = $self->$dsub();
         if( $ok ) {
             # Save the resulting trees
             my $trees = _parse_newick( $result );
             $self->_save_distance_trees( $trees );
+            $self->distance_program( $args{'program'} );
         } else {
             warn "Failed to calculate distance trees: $result";
         }
@@ -303,13 +315,9 @@ sub run_phylip_pars {
     close CMD;
 
     # And then we run the program.
-    ### HACKY HACKY
-    my $PHYLIP_PATH = '/Users/tla/Projects/phylip-3.69/exe';
-    my $program = "pars";
-    if( $^O eq 'darwin' ) {
-        $program = "$PHYLIP_PATH/$program.app/Contents/MacOS/$program";
-    } else {
-        $program = "$PHYLIP_PATH/$program";
+    my $program = File::Which::which( 'pars' );
+    unless( -x $program ) {
+		return( undef, "Phylip pars not found in path" );
     }
 
     {
