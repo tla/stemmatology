@@ -49,7 +49,7 @@ foreach my $i ( 0 .. $#wits ) {
 
 # Test that pars runs
 SKIP: {
-    skip "pars not installed", 3 unless File::Which::which('pars');
+    skip "pars not in path", 3 unless File::Which::which('pars');
     my( $status, $tree ) = $stemma->run_phylip_pars();
     ok( $status, "pars ran successfully" );
     print STDERR "Error was $tree\n" unless $status;

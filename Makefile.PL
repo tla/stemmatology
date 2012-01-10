@@ -8,6 +8,7 @@ all_from( 'lib/Text/Tradition.pm' );
 requires( 'Algorithm::Diff' );
 requires( 'Bio::Phylo::IO' );
 requires( 'File::chdir' );
+requires( 'File::Which' );
 requires( 'Graph' );
 requires( 'Graph::Reader::Dot' );
 requires( 'IPC::Run' );

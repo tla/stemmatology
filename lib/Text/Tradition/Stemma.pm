@@ -30,6 +30,12 @@ has distance_trees => (
     predicate => 'has_distance_trees',
     );
     
+has distance_program => (
+	is => 'rw',
+	isa => 'Str',
+	default => '',
+	);
+    
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
@@ -181,15 +187,20 @@ sub witnesses {
 
 before 'distance_trees' => sub {
     my $self = shift;
-    my %args = @_;
+    my %args = (
+    	'program' => 'phylip_pars',
+    	@_ );
     # TODO allow specification of method for calculating distance tree
-    if( $args{'recalc'} || !$self->has_distance_trees ) {
+    if( !$self->has_distance_trees
+    	|| $args{'program'} ne $self->distance_program ) {
         # We need to make a tree before we can return it.
-        my( $ok, $result ) = $self->run_phylip_pars();
+        my $dsub = 'run_' . $args{'program'};
+        my( $ok, $result ) = $self->$dsub();
         if( $ok ) {
             # Save the resulting trees
             my $trees = _parse_newick( $result );
             $self->_save_distance_trees( $trees );
+            $self->distance_program( $args{'program'} );
         } else {
             warn "Failed to calculate distance trees: $result";
         }
@@ -306,7 +317,7 @@ sub run_phylip_pars {
     # And then we run the program.
     my $program = File::Which::which( 'pars' );
     unless( -x $program ) {
-	return( undef, "Phylip pars not found in path" );
+		return( undef, "Phylip pars not found in path" );
     }
 
     {
