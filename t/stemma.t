@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use strict; use warnings;
+use File::Which;
 use Test::More;
 use lib 'lib';
 use Text::Tradition;
@@ -47,16 +48,19 @@ foreach my $i ( 0 .. $#wits ) {
 }
 
 # Test that pars runs
-my( $status, $tree ) = $stemma->run_phylip_pars();
-ok( $status, "pars ran successfully" );
-print STDERR "Error was $tree\n" unless $status;
-
-# Test that we get a tree
-is( scalar @{$stemma->distance_trees}, 1, "Got a single tree" );
-# Test that the tree has all our witnesses
-$tree = $stemma->distance_trees->[0];
-my @leaves = grep { $tree->degree( $_ ) == 1 } $tree->vertices;
-is( scalar @leaves, 3, "All witnesses in the tree" );
+SKIP: {
+    skip "pars not installed", 3 unless File::Which::which('pars');
+    my( $status, $tree ) = $stemma->run_phylip_pars();
+    ok( $status, "pars ran successfully" );
+    print STDERR "Error was $tree\n" unless $status;
+    
+    # Test that we get a tree
+    is( scalar @{$stemma->distance_trees}, 1, "Got a single tree" );
+    # Test that the tree has all our witnesses
+    $tree = $stemma->distance_trees->[0];
+    my @leaves = grep { $tree->degree( $_ ) == 1 } $tree->vertices;
+    is( scalar @leaves, 3, "All witnesses in the tree" );
+}
 
 # Test our dot output
 my $display = $stemma->as_dot();

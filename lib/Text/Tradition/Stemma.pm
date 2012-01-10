@@ -4,6 +4,7 @@ use Bio::Phylo::IO;
 use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
+use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
@@ -303,13 +304,9 @@ sub run_phylip_pars {
     close CMD;
 
     # And then we run the program.
-    ### HACKY HACKY
-    my $PHYLIP_PATH = '/Users/tla/Projects/phylip-3.69/exe';
-    my $program = "pars";
-    if( $^O eq 'darwin' ) {
-        $program = "$PHYLIP_PATH/$program.app/Contents/MacOS/$program";
-    } else {
-        $program = "$PHYLIP_PATH/$program";
+    my $program = File::Which::which( 'pars' );
+    unless( -x $program ) {
+	return( undef, "Phylip pars not found in path" );
     }
 
     {
