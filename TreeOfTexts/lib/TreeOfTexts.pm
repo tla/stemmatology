@@ -41,6 +41,9 @@ __PACKAGE__->config(
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
     default_view => 'TT',
+	'View::JSON' => {
+		expose_stash => 'result',
+	},
 );
 
 # Start the application

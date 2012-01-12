@@ -61,8 +61,11 @@ sub relationships :Local {
 	my( $self, $c ) = @_;
 	my $m = $c->model('Directory');
 	my $tradition = $m->tradition( $c->request->params->{'textid'} );
-	$c->stash->{alignment} = $tradition->collation->make_alignment_table( 'refs' );
-	$c->stash->{template} = 'relationships.tt';	
+	my $table = $tradition->collation->make_alignment_table();
+	my $witlist = shift @$table;
+	$c->stash->{witnesses} = $wits;
+	$c->stash->{alignment} = $table;
+	$c->stash->{template} = 'relate.tt';	
 }
 
 =head2 stexaminer
@@ -86,6 +89,21 @@ sub stexaminer :Local {
 	$c->stash->{total} = $t->{'variant_count'};
 	$c->stash->{genealogical} = $t->{'genealogical_count'};
 	$c->stash->{conflict} = $t->{'conflict_count'};
+}
+
+=head2 alignment_table 
+
+Return a JSON alignment table of a given text.
+
+=cut
+
+sub alignment_table :Local {
+	my( $self, $c ) = @_;
+	my $m = $c->model( 'Directory' );
+	my $tradition = $m->tradition( $c->request->params->{'textid'} );
+	my $table = $tradition->collation->make_alignment_table();
+	$c->stash->{'result'} => $table;
+	$c->forward-( 'View::JSON' );
 }
 
 =head1 OPENSOCIAL URLs
