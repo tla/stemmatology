@@ -2,8 +2,9 @@ package TreeOfTexts::Controller::Stemmagraph;
 use Moose;
 use namespace::autoclean;
 use File::Temp;
+use JSON;
 use Text::Tradition::Collation;
-use Text::Tradition::Stemma;
+use Text::Tradition::StemmaUtil qw/ phylip_pars_input /;
 
 BEGIN { extends 'Catalyst::Controller' }
 
@@ -52,6 +53,22 @@ sub get_graph :Local {
     $c->forward( "View::SVG" );
 }
 
+=head2 character_matrix
+
+Given an alignment table in JSON form, in the parameter 'alignment', returns a
+character matrix suitable for input to Phylip PARS. 
+
+=cut
+
+sub character_matrix :Local {
+	my( $self, $c ) = @_;
+	my $json = $c->request->params->{'alignment'};
+	$c->log->debug( $json );
+	my $table = from_json( $json );
+	my $matrix = phylip_pars_input( $table );
+	$c->stash->{'result'} = { 'matrix' => $matrix };
+	$c->forward( 'View::JSON' );
+}
 =head2 end
 
 Attempt to render a view, if needed.

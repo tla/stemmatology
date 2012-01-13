@@ -62,8 +62,8 @@ sub relationships :Local {
 	my $m = $c->model('Directory');
 	my $tradition = $m->tradition( $c->request->params->{'textid'} );
 	my $table = $tradition->collation->make_alignment_table();
-	my $witlist = shift @$table;
-	$c->stash->{witnesses} = $wits;
+	my $witlist = map { $_->{'witness'} } @{$table->{'alignment'}};
+	$c->stash->{witnesses} = $witlist;
 	$c->stash->{alignment} = $table;
 	$c->stash->{template} = 'relate.tt';	
 }
@@ -102,7 +102,7 @@ sub alignment_table :Local {
 	my $m = $c->model( 'Directory' );
 	my $tradition = $m->tradition( $c->request->params->{'textid'} );
 	my $table = $tradition->collation->make_alignment_table();
-	$c->stash->{'result'} => $table;
+	$c->stash->{'result'} = $table;
 	$c->forward-( 'View::JSON' );
 }
 

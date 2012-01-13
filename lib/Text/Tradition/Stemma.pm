@@ -8,6 +8,7 @@ use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
+use Text::Tradition::StemmaUtil qw/ phylip_pars_input /;
 use Moose;
 
 has collation => (
@@ -206,85 +207,6 @@ before 'distance_trees' => sub {
         }
     }
 };
-        
-sub make_character_matrix {
-    my $self = shift;
-    unless( $self->collation->linear ) {
-        warn "Need a linear graph in order to make an alignment table";
-        return;
-    }
-    my $table = $self->collation->make_alignment_table;
-    # Push the names of the witnesses to initialize the rows of the matrix.
-    my @matrix = map { [ $self->_normalize_ac( $_->{'witness'} ) ] } 
-    				@{$table->{'alignment'}};
-    foreach my $token_index ( 0 .. $table->{'length'} - 1) {
-        # First implementation: make dumb alignment table, caring about
-        # nothing except which reading is in which position.
-        my @pos_readings = map { $_->{'tokens'}->[$token_index] }
-        						@{$table->{'alignment'}};
-        my @pos_text = map { $_ ? $_->{'t'} : $_ } @pos_readings;
-        my @chars = convert_characters( \@pos_text );
-        foreach my $idx ( 0 .. $#matrix ) {
-            push( @{$matrix[$idx]}, $chars[$idx] );
-        }
-    }
-    return \@matrix;
-} 
-
-sub _normalize_ac {
-    my( $self, $witname ) = @_;
-    my $ac = $self->collation->ac_label;
-    if( $witname =~ /(.*)\Q$ac\E$/ ) {
-        $witname = $1 . '_ac';
-    }
-    return sprintf( "%-10s", $witname );
-}
-
-sub convert_characters {
-    my $row = shift;
-    # This is a simple algorithm that treats every reading as different.
-    # Eventually we will want to be able to specify how relationships
-    # affect the character matrix.
-    my %unique = ( '__UNDEF__' => 'X',
-                   '#LACUNA#'  => '?',
-                 );
-    my %count;
-    my $ctr = 0;
-    foreach my $word ( @$row ) {
-        if( $word && !exists $unique{$word} ) {
-            $unique{$word} = chr( 65 + $ctr );
-            $ctr++;
-        }
-        $count{$word}++ if $word;
-    }
-    # Try to keep variants under 8 by lacunizing any singletons.
-    if( scalar( keys %unique ) > 8 ) {
-		foreach my $word ( keys %count ) {
-			if( $count{$word} == 1 ) {
-				$unique{$word} = '?';
-			}
-		}
-    }
-    my %u = reverse %unique;
-    if( scalar( keys %u ) > 8 ) {
-        warn "Have more than 8 variants on this location; phylip will break";
-    }
-    my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
-    return @chars;
-}
-
-sub phylip_pars_input {
-    my $self = shift;
-    my $character_matrix = $self->make_character_matrix;
-    my $input = '';
-    my $rows = scalar @{$character_matrix};
-    my $columns = scalar @{$character_matrix->[0]} - 1;
-    $input .= "\t$rows\t$columns\n";
-    foreach my $row ( @{$character_matrix} ) {
-        $input .= join( '', @$row ) . "\n";
-    }
-    return $input;
-}
 
 sub run_phylip_pars {
     my $self = shift;
@@ -294,7 +216,7 @@ sub run_phylip_pars {
     # $phylip_dir->unlink_on_destroy(0);
     # We need an infile, and we need a command input file.
     open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
-    print MATRIX $self->phylip_pars_input();
+    print MATRIX phylip_pars_input( $self->collation->make_alignment_table() );
     close MATRIX;
 
     open( CMD, ">$phylip_dir/cmdfile" ) or die "Could not write $phylip_dir/cmdfile";
