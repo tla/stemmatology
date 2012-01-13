@@ -5,13 +5,15 @@ use warnings;
 use Exporter 'import';
 use vars qw/ @EXPORT_OK /;
 use Bio::Phylo::IO;
+use Encode qw( decode_utf8 );
 use File::chdir;
 use File::Temp;
 use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
-@EXPORT_OK = qw/ make_character_matrix character_input phylip_pars parse_newick /;
+@EXPORT_OK = qw/ make_character_matrix character_input phylip_pars 
+				 parse_newick newick_to_svg /;
 
 sub make_character_matrix {
     my( $table ) = @_;
@@ -167,6 +169,22 @@ sub parse_newick {
         push( @trees, _graph_from_bio( $tree ) );
     }
     return \@trees;
+}
+
+sub newick_to_svg {
+	my $newick = shift;
+    my $program = File::Which::which( 'figtree' );
+    unless( -x $program ) {
+		warn "FigTree commandline utility not found in path";
+		return;
+    }
+    my $svg;
+    my $nfile = File::Temp->new();
+    print $nfile $newick;
+    close $nfile;
+	my @cmd = ( $program, '-graphic', 'SVG', $nfile );
+    run( \@cmd, ">", binary(), \$svg );
+    return decode_utf8( $svg );
 }
 
 sub _graph_from_bio {
