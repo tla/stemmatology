@@ -24,7 +24,7 @@ ok( $tradition->collation, "Tradition has a collation" );
 
 my $c = $tradition->collation;
 is( scalar $c->readings, 319, "Collation has all readings" );
-is( scalar $c->paths, 374, "Collation has all paths" );
+is( scalar $c->paths, 375, "Collation has all paths" );
 is( scalar $c->relationships, 0, "Collation has all relationships" );
 
 done_testing;

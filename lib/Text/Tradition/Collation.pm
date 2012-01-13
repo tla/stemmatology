@@ -419,7 +419,7 @@ sub as_dot {
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
     my $dot = sprintf( "digraph %s {\n", $graph_name );
     $dot .= "\tedge [ arrowhead=open ];\n";
-    $dot .= "\tgraph [ rankdir=LR ];\n";
+    $dot .= "\tgraph [ rankdir=LR,bgcolor=none ];\n";
     $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
                      11, "white", "filled", "ellipse" );
 
