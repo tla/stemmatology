@@ -339,7 +339,10 @@ sub relationship_valid {
 sub reading_witnesses {
 	my( $self, $reading ) = @_;
 	# We need only check either the incoming or the outgoing edges; I have
-	# arbitrarily chosen "incoming".
+	# arbitrarily chosen "incoming".  Thus, special-case the start node.
+	if( $reading eq $self->start ) {
+		return map { $_->sigil } $self->tradition->witnesses;
+	}
 	my %all_witnesses;
 	foreach my $e ( $self->sequence->edges_to( $reading ) ) {
 		my $wits = $self->sequence->get_edge_attributes( @$e );
@@ -416,7 +419,7 @@ sub as_dot {
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
     my $dot = sprintf( "digraph %s {\n", $graph_name );
     $dot .= "\tedge [ arrowhead=open ];\n";
-    $dot .= "\tgraph [ rankdir=LR ];\n";
+    $dot .= "\tgraph [ rankdir=LR,bgcolor=none ];\n";
     $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
                      11, "white", "filled", "ellipse" );
 
@@ -437,6 +440,10 @@ sub as_dot {
                           'label' => join( ', ', $self->path_display_label( $edge ) ),
             );
         my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+        # Account for the rank gap if necessary
+        my $rankgap = $self->reading( $edge->[1] )->rank 
+        	- $self->reading( $edge->[0] )->rank;
+		$varopts .= ", minlen=$rankgap" if $rankgap > 1;
         $dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
                          $edge->[0], $edge->[1], $varopts );
     }
@@ -531,7 +538,6 @@ sub as_graphml {
     my $edi = 0;
     my %edge_data_keys;
     my %edge_data = (
-    	class => 'string',				# Path or relationship?
     	witness => 'string',			# ID/label for a path
     	relationship => 'string',		# ID/label for a relationship
     	extra => 'boolean',				# Path key
@@ -548,27 +554,37 @@ sub as_graphml {
         $key->setAttribute( 'id', $edge_data_keys{$datum} );
     }
 
-    # Add the collation graph itself
-    my $graph = $root->addNewChild( $graphml_ns, 'graph' );
-    $graph->setAttribute( 'edgedefault', 'directed' );
-    $graph->setAttribute( 'id', $self->tradition->name );
-    $graph->setAttribute( 'parse.edgeids', 'canonical' );
-    $graph->setAttribute( 'parse.edges', scalar($self->paths) );
-    $graph->setAttribute( 'parse.nodeids', 'canonical' );
-    $graph->setAttribute( 'parse.nodes', scalar($self->readings) );
-    $graph->setAttribute( 'parse.order', 'nodesfirst' );
+    # Add the collation graphs themselves
+    my $sgraph = $root->addNewChild( $graphml_ns, 'graph' );
+    $sgraph->setAttribute( 'edgedefault', 'directed' );
+    $sgraph->setAttribute( 'id', $self->tradition->name );
+    $sgraph->setAttribute( 'parse.edgeids', 'canonical' );
+    $sgraph->setAttribute( 'parse.edges', scalar($self->paths) );
+    $sgraph->setAttribute( 'parse.nodeids', 'canonical' );
+    $sgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
+    $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
+    
+    my $rgraph = $root->addNewChild( $graphml_ns, 'graph' );
+    $rgraph->setAttribute( 'edgedefault', 'undirected' );
+    $rgraph->setAttribute( 'id', 'relationships' );
+    $rgraph->setAttribute( 'parse.edgeids', 'canonical' );
+    $rgraph->setAttribute( 'parse.edges', scalar($self->relationships) );
+    $rgraph->setAttribute( 'parse.nodeids', 'canonical' );
+    $rgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
+    $rgraph->setAttribute( 'parse.order', 'nodesfirst' );
     
     # Collation attribute data
     foreach my $datum ( @graph_attributes ) {
-    	my $value = $datum eq 'version' ? '2.0' : $self->$datum;
-		_add_graphml_data( $graph, $graph_data_keys{$datum}, $value );
+    	my $value = $datum eq 'version' ? '3.0' : $self->$datum;
+		_add_graphml_data( $sgraph, $graph_data_keys{$datum}, $value );
 	}
 
     my $node_ctr = 0;
     my %node_hash;
-    # Add our readings to the graph
+    # Add our readings to the graphs
     foreach my $n ( sort { $a->id cmp $b->id } $self->readings ) {
-        my $node_el = $graph->addNewChild( $graphml_ns, 'node' );
+    	# Add to the main graph
+        my $node_el = $sgraph->addNewChild( $graphml_ns, 'node' );
         my $node_xmlid = 'n' . $node_ctr++;
         $node_hash{ $n->id } = $node_xmlid;
         $node_el->setAttribute( 'id', $node_xmlid );
@@ -577,9 +593,12 @@ sub as_graphml {
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
         }
+        # Add to the relationships graph
+        my $rnode_el = $rgraph->addNewChild( $graphml_ns, 'node' );
+        $rnode_el->setAttribute( 'id', $node_xmlid );
     }
 
-    # Add the path edges
+    # Add the path edges to the sequence graph
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->sequence->edges() ) {
     	# We add an edge in the graphml for every witness in $e.
@@ -587,12 +606,10 @@ sub as_graphml {
 			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
 										$node_hash{ $e->[0] },
 										$node_hash{ $e->[1] } );
-			my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
+			my $edge_el = $sgraph->addNewChild( $graphml_ns, 'edge' );
 			$edge_el->setAttribute( 'source', $from );
 			$edge_el->setAttribute( 'target', $to );
 			$edge_el->setAttribute( 'id', $id );
-			# Add the edge class
-			_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'path' );
 			
 			# It's a witness path, so add the witness
 			my $base = $wit;
@@ -609,17 +626,15 @@ sub as_graphml {
 		}
 	}
 	
-	# Add the relationship edges
+	# Add the relationship edges to the relationships graph
 	foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->relationships ) {
 		my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
 									$node_hash{ $e->[0] },
 									$node_hash{ $e->[1] } );
-		my $edge_el = $graph->addNewChild( $graphml_ns, 'edge' );
+		my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
 		$edge_el->setAttribute( 'source', $from );
 		$edge_el->setAttribute( 'target', $to );
 		$edge_el->setAttribute( 'id', $id );
-		# Add the edge class
-		_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'relationship' );
 		
 		my $data = $self->relations->get_edge_attributes( @$e );
 		# It's a relationship, so save the relationship data
@@ -653,9 +668,7 @@ sub _add_graphml_data {
 print $graph->as_csv( $recalculate )
 
 Returns a CSV alignment table representation of the collation graph, one
-row per witness (or witness uncorrected.) Unless $recalculate is passed
-(and is a true value), the method will return a cached copy of the CSV
-after the first call to the method.
+row per witness (or witness uncorrected.) 
 
 =cut
 
@@ -664,15 +677,39 @@ sub as_csv {
     my $table = $self->make_alignment_table;
     my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );    
     my @result;
-    foreach my $row ( @$table ) {
-        $csv->combine( @$row );
+    # Make the header row
+    $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
+	push( @result, decode_utf8( $csv->string ) );
+    # Make the rest of the rows
+    foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
+    	my @rowobjs = map { $_->{'tokens'}->[$idx] } @{$table->{'alignment'}};
+    	my @row = map { $_ ? $_->{'t'} : $_ } @rowobjs;
+        $csv->combine( @row );
         push( @result, decode_utf8( $csv->string ) );
     }
     return join( "\n", @result );
 }
 
-# Make an alignment table - $noderefs controls whether the objects
-# in the table are the nodes or simply their readings.
+=item B<make_alignment_table>
+
+my $table = $graph->make_alignment_table( $use_refs, \@wits_to_include )
+
+Return a reference to an alignment table, in a slightly enhanced CollateX
+format which looks like this:
+
+ $table = { alignment => [ { witness => "SIGIL", 
+                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                           { witness => "SIG2", 
+                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                           ... ],
+            length => TEXTLEN };
+
+If $use_refs is set to 1, the reading object is returned in the table 
+instead of READINGTEXT; if not, the text of the reading is returned.
+If $wits_to_include is set to a hashref, only the witnesses whose sigil
+keys have a true hash value will be included.
+
+=cut
 
 sub make_alignment_table {
     my( $self, $noderefs, $include ) = @_;
@@ -680,48 +717,40 @@ sub make_alignment_table {
         warn "Need a linear graph in order to make an alignment table";
         return;
     }
-    my $table;
+    my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
+    	if( $include ) {
+    		next unless $include->{$wit->sigil};
+    	}
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
         my @row = _make_witness_row( \@wit_path, \@all_pos, $noderefs );
-        unshift( @row, $wit->sigil );
-        push( @$table, \@row );
+        push( @{$table->{'alignment'}}, 
+        	{ 'witness' => $wit->sigil, 'tokens' => \@row } );
         if( $wit->is_layered ) {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
         		$wit->sigil.$self->ac_label, $wit->sigil );
             my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos, $noderefs );
-            unshift( @ac_row, $wit->sigil . $self->ac_label );
-            push( @$table, \@ac_row );
+			push( @{$table->{'alignment'}},
+				{ 'witness' => $wit->sigil.$self->ac_label, 'tokens' => \@ac_row } );
         }           
     }
-
-    if( $include ) {
-        my $winnowed = [];
-        # Winnow out the rows for any witness not included.
-        foreach my $row ( @$table ) {
-            next unless $include->{$row->[0]};
-            push( @$winnowed, $row );
-        }
-        $table = $winnowed;
-    }
-
-    # Return a table where the witnesses read in columns rather than rows.
-    my $turned = _turn_table( $table );
-    # TODO We should really go through and delete empty rows.
-    return $turned;
+	return $table;
 }
 
 sub _make_witness_row {
     my( $path, $positions, $noderefs ) = @_;
     my %char_hash;
     map { $char_hash{$_} = undef } @$positions;
+    my $debug = 0;
     foreach my $rdg ( @$path ) {
         my $rtext = $rdg->text;
         $rtext = '#LACUNA#' if $rdg->is_lacuna;
+        print STDERR "rank " . $rdg->rank . "\n" if $debug;
         # print STDERR "No rank for " . $rdg->id . "\n" unless defined $rdg->rank;
-        $char_hash{$rdg->rank} = $noderefs ? $rdg : $rtext;
+        $char_hash{$rdg->rank} = $noderefs ? { 't' => $rdg } 
+        								   : { 't' => $rtext };
     }
     my @row = map { $char_hash{$_} } @$positions;
     # Fill in lacuna markers for undef spots in the row
@@ -731,7 +760,7 @@ sub _make_witness_row {
         # If we are using node reference, make the lacuna node appear many times
         # in the table.  If not, use the lacuna tag.
         if( $last_el && _el_is_lacuna( $last_el ) && !defined $el ) {
-            $el = $noderefs ? $last_el : '#LACUNA#';
+            $el = $noderefs ? $last_el : { 't' => '#LACUNA#' };
         }
         push( @filled_row, $el );
         $last_el = $el;
@@ -742,9 +771,9 @@ sub _make_witness_row {
 # Tiny utility function to say if a table element is a lacuna
 sub _el_is_lacuna {
     my $el = shift;
-    return 1 if $el eq '#LACUNA#';
-    return 1 if ref( $el ) eq 'Text::Tradition::Collation::Reading'
-        && $el->is_lacuna;
+    return 1 if $el->{'t'} eq '#LACUNA#';
+    return 1 if ref( $el->{'t'} ) eq 'Text::Tradition::Collation::Reading'
+        && $el->{'t'}->is_lacuna;
     return 0;
 }
 
@@ -838,6 +867,7 @@ sub next_reading {
     # Return the successor via the corresponding path.
     my $self = shift;
     my $answer = $self->_find_linked_reading( 'next', @_ );
+	return undef unless $answer;
     return $self->reading( $answer );
 }
 
@@ -892,7 +922,7 @@ sub _find_linked_reading {
         if $base_le;
 
     # Got this far? We have no appropriate path.
-    warn "Could not find $direction node from " . $node->label 
+    warn "Could not find $direction node from " . $node->id 
         . " along path $path";
     return undef;
 }

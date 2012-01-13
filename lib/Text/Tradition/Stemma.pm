@@ -215,11 +215,15 @@ sub make_character_matrix {
     }
     my $table = $self->collation->make_alignment_table;
     # Push the names of the witnesses to initialize the rows of the matrix.
-    my @matrix = map { [ $self->_normalize_ac( $_ ) ] } @{$table->[0]};
-    foreach my $token_index ( 1 .. $#{$table} ) {
+    my @matrix = map { [ $self->_normalize_ac( $_->{'witness'} ) ] } 
+    				@{$table->{'alignment'}};
+    foreach my $token_index ( 0 .. $table->{'length'} - 1) {
         # First implementation: make dumb alignment table, caring about
         # nothing except which reading is in which position.
-        my @chars = convert_characters( $table->[$token_index] );
+        my @pos_readings = map { $_->{'tokens'}->[$token_index] }
+        						@{$table->{'alignment'}};
+        my @pos_text = map { $_ ? $_->{'t'} : $_ } @pos_readings;
+        my @chars = convert_characters( \@pos_text );
         foreach my $idx ( 0 .. $#matrix ) {
             push( @{$matrix[$idx]}, $chars[$idx] );
         }
