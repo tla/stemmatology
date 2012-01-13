@@ -160,6 +160,7 @@ sub parse {
         }
         # See if we need to make an a.c. version of the witness.
         if( exists $app_ac->{$sig} ) {
+        	$DB::single = 1;
             my @uncorrected;
             push( @uncorrected, @real_sequence );
             foreach my $app ( keys %{$app_ac->{$sig}} ) {
@@ -168,10 +169,12 @@ sub parse {
                 my @new = map { _return_rdg( $_ ) } @{$app_ac->{$sig}->{$app}};
                 _replace_sequence( \@uncorrected, $start, $end, @new );
             }
-            my $source = $c->start;
+            my $source = shift @uncorrected; # the start node
+            warn "Something weird!" unless $source eq $c->start;
             foreach my $rdg ( @uncorrected ) {
-                my $has_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
-                if( $rdg ne $c->start && !$has_base ) {
+            	my $source_base = grep { $_ eq $sig } $c->reading_witnesses( $source );
+                my $target_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
+                unless( $source_base && $target_base ) {
                     # print STDERR sprintf( "Adding path %s from %s -> %s\n",
                     #     $sig.$c->ac_label, $source->id, $rdg->id );
                     $c->add_path( $source, $rdg, $sig.$c->ac_label );

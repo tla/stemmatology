@@ -38,6 +38,7 @@ has 'stemma' => (
 	is => 'ro',
 	isa => 'Text::Tradition::Stemma',
 	writer => '_add_stemma',
+	predicate => 'has_stemma',
 	);
   
 # Create the witness before trying to add it
