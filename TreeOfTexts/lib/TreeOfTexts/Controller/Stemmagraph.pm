@@ -4,7 +4,7 @@ use namespace::autoclean;
 use File::Temp;
 use JSON;
 use Text::Tradition::Collation;
-use Text::Tradition::StemmaUtil qw/ phylip_pars_input /;
+use Text::Tradition::StemmaUtil qw/ character_input /;
 
 BEGIN { extends 'Catalyst::Controller' }
 
@@ -65,7 +65,7 @@ sub character_matrix :Local {
 	my $json = $c->request->params->{'alignment'};
 	$c->log->debug( $json );
 	my $table = from_json( $json );
-	my $matrix = phylip_pars_input( $table );
+	my $matrix = character_input( $table );
 	$c->stash->{'result'} = { 'matrix' => $matrix };
 	$c->forward( 'View::JSON' );
 }

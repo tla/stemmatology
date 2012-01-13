@@ -4,7 +4,14 @@ use strict;
 use warnings;
 use Exporter 'import';
 use vars qw/ @EXPORT_OK /;
-@EXPORT_OK = qw/ phylip_pars_input /;
+use Bio::Phylo::IO;
+use File::chdir;
+use File::Temp;
+use File::Which;
+use Graph;
+use Graph::Reader::Dot;
+use IPC::Run qw/ run binary /;
+@EXPORT_OK = qw/ make_character_matrix character_input phylip_pars parse_newick /;
 
 sub make_character_matrix {
     my( $table ) = @_;
@@ -68,7 +75,7 @@ sub convert_characters {
     return @chars;
 }
 
-sub phylip_pars_input {
+sub character_input {
     my $table = shift;
     my $character_matrix = make_character_matrix( $table );
     my $input = '';
@@ -81,3 +88,108 @@ sub phylip_pars_input {
     return $input;
 }
 
+sub phylip_pars {
+	my( $charmatrix ) = @_;
+    # Set up a temporary directory for all the default Phylip files.
+    my $phylip_dir = File::Temp->newdir();
+    # $phylip_dir->unlink_on_destroy(0);
+    # We need an infile, and we need a command input file.
+    open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
+    print MATRIX $charmatrix;
+    close MATRIX;
+
+    open( CMD, ">$phylip_dir/cmdfile" ) or die "Could not write $phylip_dir/cmdfile";
+    ## TODO any configuration parameters we want to set here
+#   U                 Search for best tree?  Yes
+#   S                        Search option?  More thorough search
+#   V              Number of trees to save?  100
+#   J     Randomize input order of species?  No. Use input order
+#   O                        Outgroup root?  No, use as outgroup species 1
+#   T              Use Threshold parsimony?  No, use ordinary parsimony
+#   W                       Sites weighted?  No
+#   M           Analyze multiple data sets?  No
+#   I            Input species interleaved?  Yes
+#   0   Terminal type (IBM PC, ANSI, none)?  ANSI
+#   1    Print out the data at start of run  No
+#   2  Print indications of progress of run  Yes
+#   3                        Print out tree  Yes
+#   4          Print out steps in each site  No
+#   5  Print character at all nodes of tree  No
+#   6       Write out trees onto tree file?  Yes
+    print CMD "Y\n";
+    close CMD;
+
+    # And then we run the program.
+    my $program = File::Which::which( 'pars' );
+    unless( -x $program ) {
+		return( undef, "Phylip pars not found in path" );
+    }
+
+    {
+        # We need to run it in our temporary directory where we have created
+        # all the expected files.
+        local $CWD = $phylip_dir;
+        my @cmd = ( $program );
+        run \@cmd, '<', 'cmdfile', '>', '/dev/null';
+    }
+    # Now our output should be in 'outfile' and our tree in 'outtree',
+    # both in the temp directory.
+
+    my @outtree;
+    if( -f "$phylip_dir/outtree" ) {
+        open( TREE, "$phylip_dir/outtree" ) or die "Could not open outtree for read";
+        @outtree = <TREE>;
+        close TREE;
+    }
+    return( 1, join( '', @outtree ) ) if @outtree;
+
+    my @error;
+    if( -f "$phylip_dir/outfile" ) {
+        open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";
+        @error = <OUTPUT>;
+        close OUTPUT;
+    } else {
+        push( @error, "Neither outtree nor output file was produced!" );
+    }
+    return( undef, join( '', @error ) );
+}
+
+sub parse_newick {
+    my $newick = shift;
+    my @trees;
+    # Parse the result into a tree
+    my $forest = Bio::Phylo::IO->parse( 
+        -format => 'newick',
+        -string => $newick,
+        );
+    # Turn the tree into a graph, starting with the root node
+    foreach my $tree ( @{$forest->get_entities} ) {
+        push( @trees, _graph_from_bio( $tree ) );
+    }
+    return \@trees;
+}
+
+sub _graph_from_bio {
+    my $tree = shift;
+    my $graph = Graph->new( 'undirected' => 1 );
+    # Give all the intermediate anonymous nodes a name.
+    my $i = 0;
+    foreach my $n ( @{$tree->get_entities} ) {
+        next if $n->get_name;
+        $n->set_name( $i++ );
+    }
+    my $root = $tree->get_root->get_name;
+    $graph->add_vertex( $root );
+    _add_tree_children( $graph, $root, $tree->get_root->get_children() );
+    return $graph;
+}
+
+sub _add_tree_children {
+    my( $graph, $parent, $tree_children ) = @_;
+    foreach my $c ( @$tree_children ) {
+        my $child = $c->get_name;
+        $graph->add_vertex( $child );
+        $graph->add_path( $parent, $child );
+        _add_tree_children( $graph, $child, $c->get_children() );
+    }
+}
