@@ -2,8 +2,9 @@ package TreeOfTexts::Controller::Stemmagraph;
 use Moose;
 use namespace::autoclean;
 use File::Temp;
+use JSON;
 use Text::Tradition::Collation;
-use Text::Tradition::Stemma;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars newick_to_svg /;
 
 BEGIN { extends 'Catalyst::Controller' }
 
@@ -52,13 +53,73 @@ sub get_graph :Local {
     $c->forward( "View::SVG" );
 }
 
-=head2 end
+=head2 character_matrix
 
-Attempt to render a view, if needed.
+Given an alignment table in JSON form, in the parameter 'alignment', returns a
+character matrix suitable for input to Phylip PARS. 
 
 =cut
 
-sub end : ActionClass('RenderView') {}
+sub character_matrix :Local {
+	my( $self, $c ) = @_;
+	my $json = $c->request->params->{'alignment'};
+	$c->log->debug( $json );
+	my $table = from_json( $json );
+	my $matrix = character_input( $table );
+	$c->stash->{'result'} = { 'matrix' => $matrix };
+	$c->forward( 'View::JSON' );
+}
+
+=head2 run_pars 
+
+Takes either an alignment table in JSON format (passed as the parameter 'alignment')
+or a character matrix Phylip accepts (passed as the parameter 'matrix').  Returns
+either the Newick-format answer or an SVG representation of the graph.
+
+=cut
+
+sub run_pars :Local {
+	my( $self, $c ) = @_;
+	my $error;
+	my $view = 'View::JSON';
+	my $matrix;
+	if( $c->request->param('matrix') ) {
+		$matrix = $c->request->param('matrix');
+	} elsif( $c->request->param('alignment') ) {
+		# Make the matrix from the alignment
+		my $table = from_json( $c->request->param('alignment') );
+		$matrix = character_input( $table );
+	} else {
+		$error = "Must pass either an alignment or a matrix";
+	}
+	
+	# Got the matrix, so try to run pars.
+	my( $result, $output );
+	unless( $error ) {
+		( $result, $output ) = phylip_pars( $matrix );
+		$error = $output unless( $result );
+	}
+	
+	# Did we want newick or a graph?
+	unless( $error ) {
+		my $format = 'newick';
+		$format = $c->request->param('format') if $c->request->param('format');
+		if( $format eq 'svg' ) {
+			# Do something
+			$c->stash->{'result'} = newick_to_svg( $output );
+			$view = 'View::SVG';
+		} elsif( $format ne 'newick' ) {
+			$error = "Requested output format $format unknown";
+		} else {
+			$c->stash->{'result'} = { 'tree' => $output };
+		}
+	}
+
+	if( $error ) {
+		$c->stash->{'error'} = $error;
+	} # else the stash is populated.
+	$c->forward( $view );
+}
 
 =head1 AUTHOR
 

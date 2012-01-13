@@ -2,12 +2,11 @@ package Text::Tradition::Stemma;
 
 use Bio::Phylo::IO;
 use Encode qw( decode_utf8 );
-use File::chdir;
 use File::Temp;
-use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
 use Moose;
 
 has collation => (
@@ -198,7 +197,7 @@ before 'distance_trees' => sub {
         my( $ok, $result ) = $self->$dsub();
         if( $ok ) {
             # Save the resulting trees
-            my $trees = _parse_newick( $result );
+            my $trees = parse_newick( $result );
             $self->_save_distance_trees( $trees );
             $self->distance_program( $args{'program'} );
         } else {
@@ -206,191 +205,11 @@ before 'distance_trees' => sub {
         }
     }
 };
-        
-sub make_character_matrix {
-    my $self = shift;
-    unless( $self->collation->linear ) {
-        warn "Need a linear graph in order to make an alignment table";
-        return;
-    }
-    my $table = $self->collation->make_alignment_table;
-    # Push the names of the witnesses to initialize the rows of the matrix.
-    my @matrix = map { [ $self->_normalize_ac( $_->{'witness'} ) ] } 
-    				@{$table->{'alignment'}};
-    foreach my $token_index ( 0 .. $table->{'length'} - 1) {
-        # First implementation: make dumb alignment table, caring about
-        # nothing except which reading is in which position.
-        my @pos_readings = map { $_->{'tokens'}->[$token_index] }
-        						@{$table->{'alignment'}};
-        my @pos_text = map { $_ ? $_->{'t'} : $_ } @pos_readings;
-        my @chars = convert_characters( \@pos_text );
-        foreach my $idx ( 0 .. $#matrix ) {
-            push( @{$matrix[$idx]}, $chars[$idx] );
-        }
-    }
-    return \@matrix;
-} 
-
-sub _normalize_ac {
-    my( $self, $witname ) = @_;
-    my $ac = $self->collation->ac_label;
-    if( $witname =~ /(.*)\Q$ac\E$/ ) {
-        $witname = $1 . '_ac';
-    }
-    return sprintf( "%-10s", $witname );
-}
-
-sub convert_characters {
-    my $row = shift;
-    # This is a simple algorithm that treats every reading as different.
-    # Eventually we will want to be able to specify how relationships
-    # affect the character matrix.
-    my %unique = ( '__UNDEF__' => 'X',
-                   '#LACUNA#'  => '?',
-                 );
-    my %count;
-    my $ctr = 0;
-    foreach my $word ( @$row ) {
-        if( $word && !exists $unique{$word} ) {
-            $unique{$word} = chr( 65 + $ctr );
-            $ctr++;
-        }
-        $count{$word}++ if $word;
-    }
-    # Try to keep variants under 8 by lacunizing any singletons.
-    if( scalar( keys %unique ) > 8 ) {
-		foreach my $word ( keys %count ) {
-			if( $count{$word} == 1 ) {
-				$unique{$word} = '?';
-			}
-		}
-    }
-    my %u = reverse %unique;
-    if( scalar( keys %u ) > 8 ) {
-        warn "Have more than 8 variants on this location; phylip will break";
-    }
-    my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
-    return @chars;
-}
-
-sub phylip_pars_input {
-    my $self = shift;
-    my $character_matrix = $self->make_character_matrix;
-    my $input = '';
-    my $rows = scalar @{$character_matrix};
-    my $columns = scalar @{$character_matrix->[0]} - 1;
-    $input .= "\t$rows\t$columns\n";
-    foreach my $row ( @{$character_matrix} ) {
-        $input .= join( '', @$row ) . "\n";
-    }
-    return $input;
-}
 
 sub run_phylip_pars {
-    my $self = shift;
-
-    # Set up a temporary directory for all the default Phylip files.
-    my $phylip_dir = File::Temp->newdir();
-    # $phylip_dir->unlink_on_destroy(0);
-    # We need an infile, and we need a command input file.
-    open( MATRIX, ">$phylip_dir/infile" ) or die "Could not write $phylip_dir/infile";
-    print MATRIX $self->phylip_pars_input();
-    close MATRIX;
-
-    open( CMD, ">$phylip_dir/cmdfile" ) or die "Could not write $phylip_dir/cmdfile";
-    ## TODO any configuration parameters we want to set here
-#   U                 Search for best tree?  Yes
-#   S                        Search option?  More thorough search
-#   V              Number of trees to save?  100
-#   J     Randomize input order of species?  No. Use input order
-#   O                        Outgroup root?  No, use as outgroup species 1
-#   T              Use Threshold parsimony?  No, use ordinary parsimony
-#   W                       Sites weighted?  No
-#   M           Analyze multiple data sets?  No
-#   I            Input species interleaved?  Yes
-#   0   Terminal type (IBM PC, ANSI, none)?  ANSI
-#   1    Print out the data at start of run  No
-#   2  Print indications of progress of run  Yes
-#   3                        Print out tree  Yes
-#   4          Print out steps in each site  No
-#   5  Print character at all nodes of tree  No
-#   6       Write out trees onto tree file?  Yes
-    print CMD "Y\n";
-    close CMD;
-
-    # And then we run the program.
-    my $program = File::Which::which( 'pars' );
-    unless( -x $program ) {
-		return( undef, "Phylip pars not found in path" );
-    }
-
-    {
-        # We need to run it in our temporary directory where we have created
-        # all the expected files.
-        local $CWD = $phylip_dir;
-        my @cmd = ( $program );
-        run \@cmd, '<', 'cmdfile', '>', '/dev/null';
-    }
-    # Now our output should be in 'outfile' and our tree in 'outtree',
-    # both in the temp directory.
-
-    my @outtree;
-    if( -f "$phylip_dir/outtree" ) {
-        open( TREE, "$phylip_dir/outtree" ) or die "Could not open outtree for read";
-        @outtree = <TREE>;
-        close TREE;
-    }
-    return( 1, join( '', @outtree ) ) if @outtree;
-
-    my @error;
-    if( -f "$phylip_dir/outfile" ) {
-        open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";
-        @error = <OUTPUT>;
-        close OUTPUT;
-    } else {
-        push( @error, "Neither outtree nor output file was produced!" );
-    }
-    return( undef, join( '', @error ) );
-}
-
-sub _parse_newick {
-    my $newick = shift;
-    my @trees;
-    # Parse the result into a tree
-    my $forest = Bio::Phylo::IO->parse( 
-        -format => 'newick',
-        -string => $newick,
-        );
-    # Turn the tree into a graph, starting with the root node
-    foreach my $tree ( @{$forest->get_entities} ) {
-        push( @trees, _graph_from_bio( $tree ) );
-    }
-    return \@trees;
-}
-
-sub _graph_from_bio {
-    my $tree = shift;
-    my $graph = Graph->new( 'undirected' => 1 );
-    # Give all the intermediate anonymous nodes a name.
-    my $i = 0;
-    foreach my $n ( @{$tree->get_entities} ) {
-        next if $n->get_name;
-        $n->set_name( $i++ );
-    }
-    my $root = $tree->get_root->get_name;
-    $graph->add_vertex( $root );
-    _add_tree_children( $graph, $root, $tree->get_root->get_children() );
-    return $graph;
-}
-
-sub _add_tree_children {
-    my( $graph, $parent, $tree_children ) = @_;
-    foreach my $c ( @$tree_children ) {
-        my $child = $c->get_name;
-        $graph->add_vertex( $child );
-        $graph->add_path( $parent, $child );
-        _add_tree_children( $graph, $child, $c->get_children() );
-    }
+	my $self = shift;
+	my $cdata = character_input( $self->collation->make_alignment_table() );
+	return phylip_pars( $cdata );
 }
 
 no Moose;

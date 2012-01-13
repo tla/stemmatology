@@ -719,7 +719,7 @@ sub make_alignment_table {
     }
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
-    foreach my $wit ( $self->tradition->witnesses ) {
+    foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {
     	if( $include ) {
     		next unless $include->{$wit->sigil};
     	}

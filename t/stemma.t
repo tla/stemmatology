@@ -5,6 +5,7 @@ use File::Which;
 use Test::More;
 use lib 'lib';
 use Text::Tradition;
+use Text::Tradition::StemmaUtil qw/ make_character_matrix /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -29,7 +30,7 @@ ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
 is( $stemma->graph, '1-2,1-A,2-B,2-C', "Got the correct graph" );
 
 # Test for character matrix creation
-my $m = $stemma->make_character_matrix();
+my $m = make_character_matrix( $c->make_alignment_table() );
  ## check number of rows
 is( scalar @$m, 3, "Found three witnesses in char matrix" );
  ## check number of columns
