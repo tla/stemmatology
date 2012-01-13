@@ -339,7 +339,10 @@ sub relationship_valid {
 sub reading_witnesses {
 	my( $self, $reading ) = @_;
 	# We need only check either the incoming or the outgoing edges; I have
-	# arbitrarily chosen "incoming".
+	# arbitrarily chosen "incoming".  Thus, special-case the start node.
+	if( $reading eq $self->start ) {
+		return map { $_->sigil } $self->tradition->witnesses;
+	}
 	my %all_witnesses;
 	foreach my $e ( $self->sequence->edges_to( $reading ) ) {
 		my $wits = $self->sequence->get_edge_attributes( @$e );
