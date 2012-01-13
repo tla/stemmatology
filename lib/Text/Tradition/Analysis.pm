@@ -98,33 +98,33 @@ sub group_variants {
 	# Also return the reading objects in the table, rather than just the words.
 	my $all_wits_table = $c->make_alignment_table( 'refs', $wits );
 	# Strip the list of sigla and save it for correlation to the readings.
-	my $col_wits = shift @$all_wits_table;
+	my @table_wits = map { $_->{'witness'} } @{$all_wits_table->{'alignment'}};
 	# Any witness in the stemma that has no row should be noted.
-    foreach ( @$col_wits ) {
+    foreach ( @table_wits ) {
         $wits->{$_}++; # Witnesses present in table and stemma now have value 2.
     }
     my @not_collated = grep { $wits->{$_} == 1 } keys %$wits;
-	foreach my $i ( 0 .. $#$all_wits_table ) {
+	foreach my $i ( 0 .. $all_wits_table->{'length'} - 1 ) {
 		# For each column in the table, group the readings by witness.
 		my $rdg_wits = {};
-		my $col_rdgs = shift @$all_wits_table;
+		my @col_rdgs = map { $_->{tokens}->[$i] } @{$all_wits_table->{'alignment'}};
 		my $lacunose = [ @not_collated ];
-		foreach my $j ( 0 .. $#{$col_rdgs} ) {
-			my $rdg = $col_rdgs->[$j];
+		foreach my $j ( 0 .. $#col_rdgs ) {
+			my $rdg = $col_rdgs[$j];
 			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
 			if( $rdg ) {
-			    if( $rdg->is_lacuna ) {
+			    if( $rdg->{'t'}->is_lacuna ) {
 			        $rdg_text = undef;   # Don't count lacunae
-			        push( @$lacunose, $col_wits->[$j] );
+			        push( @$lacunose, $table_wits[$j] );
 			    } else {
-    				$rdg_text = $rdg->text; 
+    				$rdg_text = $rdg->{'t'}->text; 
 				}
 			}
 			if( defined $rdg_text ) {
 				# Initialize the witness array if we haven't got one yet
 				$rdg_wits->{$rdg_text} = [] unless $rdg_wits->{$rdg_text};
 				# Add the relevant witness, subject to a.c. logic
-				add_variant_wit( $rdg_wits->{$rdg_text}, $col_wits->[$j],
+				add_variant_wit( $rdg_wits->{$rdg_text}, $table_wits[$j],
 					$c->ac_label );
 			}
 		}
