@@ -437,6 +437,10 @@ sub as_dot {
                           'label' => join( ', ', $self->path_display_label( $edge ) ),
             );
         my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+        # Account for the rank gap if necessary
+        my $rankgap = $self->reading( $edge->[1] )->rank 
+        	- $self->reading( $edge->[0] )->rank;
+		$varopts .= ", minlen=$rankgap" if $rankgap > 1;
         $dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
                          $edge->[0], $edge->[1], $varopts );
     }
