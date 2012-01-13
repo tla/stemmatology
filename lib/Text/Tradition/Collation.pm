@@ -679,7 +679,7 @@ sub as_csv {
 	push( @result, decode_utf8( $csv->string ) );
     # Make the rest of the rows
     foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
-    	my @rowobjs = map { $_->[$idx] } @{$table->{'alignment'}};
+    	my @rowobjs = map { $_->{'tokens'}->[$idx] } @{$table->{'alignment'}};
     	my @row = map { $_ ? $_->{'t'} : $_ } @rowobjs;
         $csv->combine( @row );
         push( @result, decode_utf8( $csv->string ) );
@@ -691,11 +691,20 @@ sub as_csv {
 
 my $table = $graph->make_alignment_table( $use_refs, \@wits_to_include )
 
-Return a reference to an alignment table, in the format described at
-L<http://gregor.middell.net/collatex>.  If $use_refs is set to 1, the reading
-object is returned in the table; if not, the text of the reading is returned.
-If $wits_to_include is set to an arrayref, only the witnesses listed will be 
-included in the table.
+Return a reference to an alignment table, in a slightly enhanced CollateX
+format which looks like this:
+
+ $table = { alignment => [ { witness => "SIGIL", 
+                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                           { witness => "SIG2", 
+                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                           ... ],
+            length => TEXTLEN };
+
+If $use_refs is set to 1, the reading object is returned in the table 
+instead of READINGTEXT; if not, the text of the reading is returned.
+If $wits_to_include is set to a hashref, only the witnesses whose sigil
+keys have a true hash value will be included.
 
 =cut
 
@@ -709,9 +718,8 @@ sub make_alignment_table {
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( $self->tradition->witnesses ) {
     	if( $include ) {
-    		next unless grep { $_ eq $wit->sigil } @$include;
+    		next unless $include->{$wit->sigil};
     	}
-    	$DB::single = 1 if $wit->sigil eq 'U';
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
         my @row = _make_witness_row( \@wit_path, \@all_pos, $noderefs );
@@ -749,7 +757,7 @@ sub _make_witness_row {
         # If we are using node reference, make the lacuna node appear many times
         # in the table.  If not, use the lacuna tag.
         if( $last_el && _el_is_lacuna( $last_el ) && !defined $el ) {
-            $el = $noderefs ? { 't' => $last_el } : { 't' => '#LACUNA#' };
+            $el = $noderefs ? $last_el : { 't' => '#LACUNA#' };
         }
         push( @filled_row, $el );
         $last_el = $el;
