@@ -208,7 +208,7 @@ sub parse {
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{$SOURCE_KEY};
         my $to = $e->{$TARGET_KEY};
-        my $class = $e->{$CLASS_KEY};
+        my $class = $e->{$CLASS_KEY} || 'path';
 
         # We may have more information depending on the class.
         if( $class eq 'path' ) {

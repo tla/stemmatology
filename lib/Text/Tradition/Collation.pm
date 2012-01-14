@@ -538,6 +538,7 @@ sub as_graphml {
     my $edi = 0;
     my %edge_data_keys;
     my %edge_data = (
+    	class => 'string',				# Class, deprecated soon
     	witness => 'string',			# ID/label for a path
     	relationship => 'string',		# ID/label for a relationship
     	extra => 'boolean',				# Path key
@@ -564,15 +565,18 @@ sub as_graphml {
     $sgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
     $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
     
-    my $rgraph = $root->addNewChild( $graphml_ns, 'graph' );
-    $rgraph->setAttribute( 'edgedefault', 'undirected' );
-    $rgraph->setAttribute( 'id', 'relationships' );
-    $rgraph->setAttribute( 'parse.edgeids', 'canonical' );
-    $rgraph->setAttribute( 'parse.edges', scalar($self->relationships) );
-    $rgraph->setAttribute( 'parse.nodeids', 'canonical' );
-    $rgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
-    $rgraph->setAttribute( 'parse.order', 'nodesfirst' );
-    
+    my $rgraph;
+    if( scalar $self->relationships ) {
+		my $rgraph = $root->addNewChild( $graphml_ns, 'graph' );
+		$rgraph->setAttribute( 'edgedefault', 'undirected' );
+		$rgraph->setAttribute( 'id', 'relationships' );
+		$rgraph->setAttribute( 'parse.edgeids', 'canonical' );
+		$rgraph->setAttribute( 'parse.edges', scalar($self->relationships) );
+		$rgraph->setAttribute( 'parse.nodeids', 'canonical' );
+		$rgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
+		$rgraph->setAttribute( 'parse.order', 'nodesfirst' );
+	}
+	    
     # Collation attribute data
     foreach my $datum ( @graph_attributes ) {
     	my $value = $datum eq 'version' ? '3.0' : $self->$datum;
@@ -594,8 +598,10 @@ sub as_graphml {
         		if defined $nval;
         }
         # Add to the relationships graph
-        my $rnode_el = $rgraph->addNewChild( $graphml_ns, 'node' );
-        $rnode_el->setAttribute( 'id', $node_xmlid );
+        if( $rgraph ) {
+			my $rnode_el = $rgraph->addNewChild( $graphml_ns, 'node' );
+			$rnode_el->setAttribute( 'id', $node_xmlid );
+        }
     }
 
     # Add the path edges to the sequence graph
@@ -623,30 +629,34 @@ sub as_graphml {
 				_add_graphml_data( $edge_el, $edge_data_keys{'extra'}, $aclabel );
 			}
 			_add_graphml_data( $edge_el, $edge_data_keys{'witness'}, $base );
+			_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'path' );
 		}
 	}
 	
 	# Add the relationship edges to the relationships graph
-	foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->relationships ) {
-		my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
-									$node_hash{ $e->[0] },
-									$node_hash{ $e->[1] } );
-		my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
-		$edge_el->setAttribute( 'source', $from );
-		$edge_el->setAttribute( 'target', $to );
-		$edge_el->setAttribute( 'id', $id );
-		
-		my $data = $self->relations->get_edge_attributes( @$e );
-		# It's a relationship, so save the relationship data
-		_add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $data->{type} );
-		_add_graphml_data( $edge_el, $edge_data_keys{'colocated'}, $data->{colocated} );
-		if( exists $data->{non_correctable} ) {
-			_add_graphml_data( $edge_el, $edge_data_keys{'non_correctable'}, 
-				$data->{non_correctable} );
-		}
-		if( exists $data->{non_independent} ) {
-			_add_graphml_data( $edge_el, $edge_data_keys{'non_independent'}, 
-				$data->{non_independent} );
+	if( $rgraph ) {
+		foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->relationships ) {
+			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
+										$node_hash{ $e->[0] },
+										$node_hash{ $e->[1] } );
+			my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
+			$edge_el->setAttribute( 'source', $from );
+			$edge_el->setAttribute( 'target', $to );
+			$edge_el->setAttribute( 'id', $id );
+			
+			my $data = $self->relations->get_edge_attributes( @$e );
+			# It's a relationship, so save the relationship data
+			_add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $data->{type} );
+			_add_graphml_data( $edge_el, $edge_data_keys{'colocated'}, $data->{colocated} );
+			if( exists $data->{non_correctable} ) {
+				_add_graphml_data( $edge_el, $edge_data_keys{'non_correctable'}, 
+					$data->{non_correctable} );
+			}
+			if( exists $data->{non_independent} ) {
+				_add_graphml_data( $edge_el, $edge_data_keys{'non_independent'}, 
+					$data->{non_independent} );
+			}
+			_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'relationship' );
 		}
     }
 
