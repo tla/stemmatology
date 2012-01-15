@@ -2,7 +2,6 @@ package Text::Tradition::Collation::Reading;
 
 use Moose;
 use overload '""' => \&_stringify, 'fallback' => 1;
-use Text::Tradition::Collation;
 
 =head1 NAME
 
@@ -160,6 +159,18 @@ sub is_meta {
 sub related_readings {
 	my $self = shift;
 	return $self->collation->related_readings( $self, @_ );
+}
+
+sub predecessors {
+	my $self = shift;
+	my @pred = $self->collation->sequence->predecessors( $self->id );
+	return map { $self->collation->reading( $_ ) } @pred;
+}
+
+sub successors {
+	my $self = shift;
+	my @succ = $self->collation->sequence->successors( $self->id );
+	return map { $self->collation->reading( $_ ) } @succ;
 }
 
 sub set_identical {

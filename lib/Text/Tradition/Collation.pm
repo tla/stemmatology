@@ -6,6 +6,7 @@ use Graph;
 use IPC::Run qw( run binary );
 use Text::CSV_XS;
 use Text::Tradition::Collation::Reading;
+use Text::Tradition::Collation::RelationshipStore;
 use XML::LibXML;
 use Moose;
 
@@ -20,11 +21,12 @@ has 'sequence' => (
     
 has 'relations' => (
 	is => 'ro',
-	isa => 'Graph',
-	default => sub { Graph->new( undirected => 1 ) },
-    handles => {
-    	relationships => 'edges',
-    },
+	isa => 'Text::Tradition::Collation::RelationshipStore',
+	handles => {
+		relationships => 'relationships',
+		related_readings => 'related_readings',
+	},
+	writer => '_set_relations',
 	);
 
 has 'tradition' => (
@@ -101,6 +103,7 @@ has 'end' => (
 
 sub BUILD {
     my $self = shift;
+    $self->_set_relations( Text::Tradition::Collation::RelationshipStore->new( 'collation' => $self ) );
     $self->_set_start( $self->add_reading( { 'collation' => $self, 'is_start' => 1 } ) );
     $self->_set_end( $self->add_reading( { 'collation' => $self, 'is_end' => 1 } ) );
 }
@@ -123,7 +126,7 @@ sub add_reading {
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
 	$self->sequence->add_vertex( $reading->id );
-	$self->relations->add_vertex( $reading->id );
+	$self->relations->add_reading( $reading->id );
 	return $reading;
 };
 
@@ -137,7 +140,7 @@ around del_reading => sub {
 	}
 	# Remove the reading from the graphs.
 	$self->sequence->delete_vertex( $arg );
-	$self->relations->delete_vertex( $arg );
+	$self->relations->delete_reading( $arg );
 	
 	# Carry on.
 	$self->$orig( $arg );
@@ -165,18 +168,7 @@ sub merge_readings {
 		@wits{keys %$fwits} = values %$fwits;
 		$self->sequence->set_edge_attributes( @vector, \%wits );
 	}
-	foreach my $rel ( $self->relations->edges_at( $deleted ) ) {
-		my @vector = ( $kept );
-		push( @vector, $rel->[0] eq $deleted ? $rel->[1] : $rel->[0] );
-		next if $vector[0] eq $vector[1]; # Don't add a self loop
-		# Is there a relationship here already? If so, keep it.
-		# TODO Warn about conflicting relationships
-		next if $self->relations->has_edge( @vector );
-		# If not, adopt the relationship that would be deleted.
-		$self->relations->add_edge( @vector );
-		my $attr = $self->relations->get_edge_attributes( @$rel );
-		$self->relations->set_edge_attributes( @vector, $attr );
-	}
+	$self->relations->merge_readings( $kept, $deleted, $combine_char );
 	
 	# Do the deletion deed.
 	if( $combine_char ) {
@@ -245,25 +237,11 @@ sub has_path {
 	return $self->sequence->has_edge_attribute( $source, $target, $wit );
 }
 
-### Relationship logic
-
 =head2 add_relationship( $reading1, $reading2, $definition )
 
 Adds the specified relationship between the two readings.  A relationship
-is transitive (i.e. undirected), and must have the following attributes
-specified in the hashref $definition:
-
-=over 4
-
-=item * type - Can be one of spelling, orthographic, grammatical, meaning, lexical, collated, repetition, transposition.  All but the last two are only valid relationships between readings that occur at the same point in the text.
-
-=item * non_correctable - (Optional) True if the reading would not have been corrected independently.
-
-=item * non_independent - (Optional) True if the variant is unlikely to have occurred independently in unrelated witnesses.
-
-=item * global - (Optional) A meta-attribute, to set the same relationship between readings with the same text whenever they occur in the same place.
-
-=back
+is transitive (i.e. undirected); the options for its definition may be found
+in Text::Tradition::Collation::Relationship.
 
 =cut
 
@@ -272,70 +250,17 @@ specified in the hashref $definition:
 
 sub add_relationship {
 	my $self = shift;
-    my( $source, $target, $options ) = $self->_stringify_args( @_ );
-
-	# Check the options
-	if( !defined $options->{'type'} ||
-		$options->{'type'} !~ /^(spelling|orthographic|grammatical|meaning|lexical|collated|repetition|transposition)$/i ) {
-		my $t = $options->{'type'} ? $options->{'type'} : '';
-		return( undef, "Invalid or missing type " . $options->{'type'} );
-	}
-	unless ( $options->{'type'} =~ /^(repetition|transposition)$/ ) {
-		$options->{'colocated'} = 1;
-	}
-	
-    # Make sure there is not another relationship between these two
-    # readings already
-    if( $self->relations->has_edge( $source, $target ) ) {
-		return ( undef, "Relationship already exists between these readings" );
-    }
-    if( !$self->relationship_valid( $source, $target, $options->{'type'} ) ) {
-        return ( undef, 'Relationship creates witness loop' );
-    }
-
-	my @vector = ( $source, $target );
-	$self->relations->add_edge( @vector );
-	$self->relations->set_edge_attributes( @vector, $options );
-    
-    # TODO Handle global relationship setting
-
-    return( 1, @vector );
+    my( $source, $target, $opts ) = $self->_stringify_args( @_ );
+    return $self->relations->add_relationship( $source, $self->reading( $source ),
+    	$target, $self->reading( $target ), $opts );
 }
 
-sub relationship_valid {
-    my( $self, $source, $target, $rel ) = @_;
-    if( $rel eq 'repetition' ) {
-    	return 1;
-	} elsif ( $rel eq 'transposition' ) {
-		# Check that the two readings do not appear in the same witness.
-		my %seen_wits;
-		map { $seen_wits{$_} = 1 } $self->reading_witnesses( $source );
-		foreach my $w ( $self->reading_witnesses( $target ) ) {
-			return 0 if $seen_wits{$w};
-		}
-		return 1;
-	} else {
-		# Check that linking the source and target in a relationship won't lead
-		# to a path loop for any witness.  First make a lookup table of all the
-		# readings related to either the source or the target.
-		my @proposed_related = ( $source, $target );
-		push( @proposed_related, $self->related_readings( $source, 'colocated' ) );
-		push( @proposed_related, $self->related_readings( $target, 'colocated' ) );
-		my %pr_ids;
-		map { $pr_ids{ $_ } = 1 } @proposed_related;
-	
-		# None of these proposed related readings should have a neighbor that
-		# is also in proposed_related.
-		foreach my $pr ( keys %pr_ids ) {
-			foreach my $neighbor( $self->sequence->neighbors( $pr ) ) {
-				return 0 if exists $pr_ids{$neighbor};
-			}
-		}		
-		return 1;
-	}
-}
+=head2 reading_witnesses( $reading )
 
-# Return a list of the witnesses in which the reading appears.
+Return a list of sigils corresponding to the witnesses in which the reading appears.
+
+=cut
+
 sub reading_witnesses {
 	my( $self, $reading ) = @_;
 	# We need only check either the incoming or the outgoing edges; I have
@@ -349,24 +274,6 @@ sub reading_witnesses {
 		@all_witnesses{ keys %$wits } = 1;
 	}
 	return keys %all_witnesses;
-}
-
-sub related_readings {
-	my( $self, $reading, $colocated ) = @_;
-	my $return_object;
-	if( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
-		$reading = $reading->id;
-		$return_object = 1;
-# 		print STDERR "Returning related objects\n";
-# 	} else {
-# 		print STDERR "Returning related object names\n";
-	}
-	my @related = $self->relations->all_reachable( $reading );
-	if( $colocated ) {
-		my @colo = grep { $self->relations->has_edge_attribute( $reading, $_, 'colocated' ) } @related;
-		@related = @colo;
-	} 
-	return $return_object ? map { $self->reading( $_ ) } @related : @related;
 }
 
 =head2 Output method(s)
@@ -555,7 +462,7 @@ sub as_graphml {
         $key->setAttribute( 'id', $edge_data_keys{$datum} );
     }
 
-    # Add the collation graphs themselves
+    # Add the collation graph itself
     my $sgraph = $root->addNewChild( $graphml_ns, 'graph' );
     $sgraph->setAttribute( 'edgedefault', 'directed' );
     $sgraph->setAttribute( 'id', $self->tradition->name );
@@ -564,19 +471,7 @@ sub as_graphml {
     $sgraph->setAttribute( 'parse.nodeids', 'canonical' );
     $sgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
     $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
-    
-    my $rgraph;
-    if( scalar $self->relationships ) {
-		my $rgraph = $root->addNewChild( $graphml_ns, 'graph' );
-		$rgraph->setAttribute( 'edgedefault', 'undirected' );
-		$rgraph->setAttribute( 'id', 'relationships' );
-		$rgraph->setAttribute( 'parse.edgeids', 'canonical' );
-		$rgraph->setAttribute( 'parse.edges', scalar($self->relationships) );
-		$rgraph->setAttribute( 'parse.nodeids', 'canonical' );
-		$rgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
-		$rgraph->setAttribute( 'parse.order', 'nodesfirst' );
-	}
-	    
+    	    
     # Collation attribute data
     foreach my $datum ( @graph_attributes ) {
     	my $value = $datum eq 'version' ? '3.0' : $self->$datum;
@@ -585,7 +480,7 @@ sub as_graphml {
 
     my $node_ctr = 0;
     my %node_hash;
-    # Add our readings to the graphs
+    # Add our readings to the graph
     foreach my $n ( sort { $a->id cmp $b->id } $self->readings ) {
     	# Add to the main graph
         my $node_el = $sgraph->addNewChild( $graphml_ns, 'node' );
@@ -596,11 +491,6 @@ sub as_graphml {
         	my $nval = $n->$d;
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
-        }
-        # Add to the relationships graph
-        if( $rgraph ) {
-			my $rnode_el = $rgraph->addNewChild( $graphml_ns, 'node' );
-			$rnode_el->setAttribute( 'id', $node_xmlid );
         }
     }
 
@@ -633,32 +523,8 @@ sub as_graphml {
 		}
 	}
 	
-	# Add the relationship edges to the relationships graph
-	if( $rgraph ) {
-		foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->relationships ) {
-			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
-										$node_hash{ $e->[0] },
-										$node_hash{ $e->[1] } );
-			my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
-			$edge_el->setAttribute( 'source', $from );
-			$edge_el->setAttribute( 'target', $to );
-			$edge_el->setAttribute( 'id', $id );
-			
-			my $data = $self->relations->get_edge_attributes( @$e );
-			# It's a relationship, so save the relationship data
-			_add_graphml_data( $edge_el, $edge_data_keys{'relationship'}, $data->{type} );
-			_add_graphml_data( $edge_el, $edge_data_keys{'colocated'}, $data->{colocated} );
-			if( exists $data->{non_correctable} ) {
-				_add_graphml_data( $edge_el, $edge_data_keys{'non_correctable'}, 
-					$data->{non_correctable} );
-			}
-			if( exists $data->{non_independent} ) {
-				_add_graphml_data( $edge_el, $edge_data_keys{'non_independent'}, 
-					$data->{non_independent} );
-			}
-			_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'relationship' );
-		}
-    }
+	# Add the relationship graph to the XML
+	$self->relations->as_graphml( $root );
 
     # Save and return the thing
     my $result = decode_utf8( $graphml->toString(1) );
@@ -1105,6 +971,68 @@ sub witnesses_of_label {
     my @answer = split( /\Q$regex\E/, $label );
     return @answer;
 }    
+
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+is( $c->common_predecessor( $c->reading('n9'), $c->reading('n23') )->id, 
+    'n20', "Found correct common predecessor" );
+is( $c->common_successor( $c->reading('n9'), $c->reading('n23') )->id, 
+    '#END#', "Found correct common successor" );
+
+is( $c->common_predecessor( $c->reading('n19'), $c->reading('n17') )->id, 
+    'n16', "Found correct common predecessor for readings on same path" );
+is( $c->common_successor( $c->reading('n21'), $c->reading('n26') )->id, 
+    '#END#', "Found correct common successor for readings on same path" );
+
+=end testing
+
+=cut
+
+## Return the closest reading that is a predecessor of both the given readings.
+sub common_predecessor {
+	my $self = shift;
+	return $self->common_in_path( @_, 'predecessors' );
+}
+
+sub common_successor {
+	my $self = shift;
+	return $self->common_in_path( @_, 'successors' );
+}
+
+sub common_in_path {
+	my( $self, $r1, $r2, $dir ) = @_;
+	my $iter = $r1->rank > $r2->rank ? $r1->rank : $r2->rank;
+	$iter = $self->end->rank - $iter if $dir eq 'successors';
+	my @candidates;
+	my @last_checked = ( $r1, $r2 );
+	my %all_seen;
+	while( !@candidates ) {
+		my @new_lc;
+		foreach my $lc ( @last_checked ) {
+			foreach my $p ( $lc->$dir ) {
+				if( $all_seen{$p->id} ) {
+					push( @candidates, $p );
+				} else {
+					$all_seen{$p->id} = 1;
+					push( @new_lc, $p );
+				}
+			}
+		}
+		@last_checked = @new_lc;
+	}
+	my @answer = sort { $a->rank <=> $b->rank } @candidates;
+	return $dir eq 'predecessors' ? pop( @answer ) : shift ( @answer );
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
