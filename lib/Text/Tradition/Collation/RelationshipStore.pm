@@ -163,6 +163,7 @@ sub add_relationship {
     	my @identical_readings = grep { $_->text eq $relationship->reading_a }
     		$c->readings;
     	foreach my $ir ( @identical_readings ) {
+    		next if $ir->id eq $source;
     		# Check to see if there is a target reading with the same text at
     		# the same rank.
     		my @itarget = grep 
@@ -172,7 +173,7 @@ sub add_relationship {
     			# We found a hit.
     			warn "More than one reading with text " . $target_rdg->text
     				. " at rank " . $ir->rank . "!" if @itarget > 1;
-    			push( @vectors, [ $ir, $itarget[0] ] );
+    			push( @vectors, [ $ir->id, $itarget[0]->id ] );
     		}
     	}	
     }
