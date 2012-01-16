@@ -40,9 +40,6 @@ and their associated data.
 sub graphml_parse {
     my( $opts ) = @_;
 
-    my $graph_hash = { 'nodes' => [],
-                       'edges' => [] };
-                       
     my $parser = XML::LibXML->new();
     my $doc;
     if( exists $opts->{'string'} ) {
@@ -54,15 +51,15 @@ sub graphml_parse {
         return;
     }
     
-    my( $graphattr, $nodedata, $witnesses ) = ( {}, {}, {} );
+    my( $graphattr, $nodedata, $edgedata ) = ( {}, {}, {} );
     my $graphml = $doc->documentElement();
     $xpc = XML::LibXML::XPathContext->new( $graphml );
     $xpc->registerNs( 'g', 'http://graphml.graphdrawing.org/xmlns' );
     
-    # First get the ID keys, for witnesses and for collation data
+    # First get the ID keys, for node/edge data and for collation data
     foreach my $k ( $xpc->findnodes( '//g:key' ) ) {
-        # Each key has a 'for' attribute; the edge keys are witnesses, and
-        # the node keys contain an ID and string for each node.
+        # Each key has a 'for' attribute to say whether it is for graph,
+        # node, or edge.
         my $keyid = $k->getAttribute( 'id' );
         my $keyname = $k->getAttribute( 'attr.name' );
 
@@ -74,60 +71,65 @@ sub graphml_parse {
         } elsif( $dtype eq 'node' ) {
             $nodedata->{$keyid} = $keyname;
         } else {
-            $witnesses->{$keyid} = $keyname;
+            $edgedata->{$keyid} = $keyname;
         }
     }
 
-    my $graph_el = $xpc->find( '/g:graphml/g:graph' )->[0];
-    $graph_hash->{'name'} = $graph_el->getAttribute( 'id' );
-
-    my $node_reg = {};
-    
-    # Read in graph globals (if any).
-    # print STDERR "Reading graphml global data\n";
-    foreach my $dkey ( keys %$graphattr ) {
-    	my $keyname = $graphattr->{$dkey};
-    	my $keyvalue = _lookup_node_data( $graph_el, $dkey );
-    	$graph_hash->{'global'}->{$keyname} = $keyvalue;
+    my @returned_graphs;
+    foreach my $graph_el ( $xpc->findnodes( '/g:graphml/g:graph' ) ) {
+        my $graph_hash = { 'nodes' => [],
+						   'edges' => [],
+						   'name'  => $graph_el->getAttribute( 'id' ) };
+                       	
+		my $node_reg = {};
+		
+		# Read in graph globals (if any).
+		# print STDERR "Reading graphml global data\n";
+		foreach my $dkey ( keys %$graphattr ) {
+			my $keyname = $graphattr->{$dkey};
+			my $keyvalue = _lookup_node_data( $graph_el, $dkey );
+			$graph_hash->{'global'}->{$keyname} = $keyvalue if defined $keyvalue;
+		}
+	
+		# Add the nodes to the graph hash.
+		# print STDERR "Reading graphml nodes\n"; 
+		my @nodes = $xpc->findnodes( './/g:node', $graph_el );
+		foreach my $n ( @nodes ) {
+			# Could use a better way of registering these
+			my $node_hash = {};
+			foreach my $dkey ( keys %$nodedata ) {
+				my $keyname = $nodedata->{$dkey};
+				my $keyvalue = _lookup_node_data( $n, $dkey );
+				$node_hash->{$keyname} = $keyvalue if defined $keyvalue;
+			}
+			$node_reg->{$n->getAttribute( 'id' )} = $node_hash;
+			push( @{$graph_hash->{'nodes'}}, $node_hash );
+		}
+			
+		# Now add the edges, and cross-ref with the node objects.
+		# print STDERR "Reading graphml edges\n";
+		my @edges = $xpc->findnodes( './/g:edge', $graph_el );
+		foreach my $e ( @edges ) {
+			my $from = $e->getAttribute('source');
+			my $to = $e->getAttribute('target');
+	
+			# We don't know whether the edge data is one per witness
+			# or one per witness type, or something else.  So we just
+			# save it and let our calling parser decide.
+			my $edge_hash = {
+				'source' => $node_reg->{$from},
+				'target' => $node_reg->{$to},
+			};
+			foreach my $wkey( keys %$edgedata ) {
+				my $wname = $edgedata->{$wkey};
+				my $wlabel = _lookup_node_data( $e, $wkey );
+				$edge_hash->{$wname} = $wlabel if $wlabel;
+			}
+			push( @{$graph_hash->{'edges'}}, $edge_hash );
+		}
+    	push( @returned_graphs, $graph_hash );
     }
-
-    # Add the nodes to the graph hash.
-    # print STDERR "Reading graphml nodes\n"; 
-    my @nodes = $xpc->findnodes( '//g:node' );
-    foreach my $n ( @nodes ) {
-        # Could use a better way of registering these
-        my $node_hash = {};
-        foreach my $dkey ( keys %$nodedata ) {
-            my $keyname = $nodedata->{$dkey};
-            my $keyvalue = _lookup_node_data( $n, $dkey );
-            $node_hash->{$keyname} = $keyvalue if defined $keyvalue;
-        }
-        $node_reg->{$n->getAttribute( 'id' )} = $node_hash;
-        push( @{$graph_hash->{'nodes'}}, $node_hash );
-    }
-        
-    # Now add the edges, and cross-ref with the node objects.
-    # print STDERR "Reading graphml edges\n";
-    my @edges = $xpc->findnodes( '//g:edge' );
-    foreach my $e ( @edges ) {
-        my $from = $e->getAttribute('source');
-        my $to = $e->getAttribute('target');
-
-        # We don't know whether the edge data is one per witness
-        # or one per witness type, or something else.  So we just
-        # save it and let our calling parser decide.
-        my $edge_hash = {
-            'source' => $node_reg->{$from},
-            'target' => $node_reg->{$to},
-        };
-        foreach my $wkey( keys %$witnesses ) {
-            my $wname = $witnesses->{$wkey};
-            my $wlabel = _lookup_node_data( $e, $wkey );
-            $edge_hash->{$wname} = $wlabel if $wlabel;
-        }
-        push( @{$graph_hash->{'edges'}}, $edge_hash );
-    }
-    return $graph_hash;
+    return @returned_graphs;
 }
 
 

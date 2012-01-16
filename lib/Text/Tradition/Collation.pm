@@ -610,7 +610,8 @@ sub as_graphml {
 	}
 	
 	# Add the relationship graph to the XML
-	$self->relations->as_graphml( $root, $graphml_ns, \%node_hash, \%edge_data_keys );
+	$self->relations->as_graphml( $graphml_ns, $root, \%node_hash, 
+		$node_data_keys{'id'}, \%edge_data_keys );
 
     # Save and return the thing
     my $result = decode_utf8( $graphml->toString(1) );

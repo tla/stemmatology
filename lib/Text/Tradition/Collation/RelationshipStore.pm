@@ -8,7 +8,8 @@ use Moose;
 
 =head1 NAME
 
-Text::Tradition::Collation::Reading - represents a reading (usually a word) in a collation.
+Text::Tradition::Collation::RelationshipStore - Keeps track of the relationships
+between readings in a given collation
     
 =head1 DESCRIPTION
 
@@ -65,7 +66,7 @@ sub create {
 	if( $self->graph->has_edge( $source, $target ) ) {
 		$rel = $self->graph->get_edge_attribute( $source, $target, 'object' );
 		if( $rel->type ne $options->type ) {
-			warn "Relationship of type " . $rel->type 
+			warn "Another relationship of type " . $rel->type 
 				. "already exists between $source and $target";
 			return;
 		} else {
@@ -325,7 +326,7 @@ sub merge_readings {
 }
 
 sub as_graphml { 
-	my( $self, $graphml_ns, $xmlroot, $node_hash, $edge_keys ) = @_;
+	my( $self, $graphml_ns, $xmlroot, $node_hash, $nodeid_key, $edge_keys ) = @_;
 	
     my $rgraph = $xmlroot->addNewChild( $graphml_ns, 'graph' );
 	$rgraph->setAttribute( 'edgedefault', 'directed' );
@@ -337,9 +338,11 @@ sub as_graphml {
     $rgraph->setAttribute( 'parse.order', 'nodesfirst' );
     
     # Add the vertices according to their XML IDs
-    foreach my $n ( sort _by_xmlid values( %$node_hash ) ) {
+    my %rdg_lookup = ( reverse %$node_hash );
+    foreach my $n ( sort _by_xmlid keys( %rdg_lookup ) ) {
     	my $n_el = $rgraph->addNewChild( $graphml_ns, 'node' );
     	$n_el->setAttribute( 'id', $n );
+    	_add_graphml_data( $n_el, $nodeid_key, $rdg_lookup{$n} );
     }
     
     # Add the relationship edges, with their object information
@@ -362,9 +365,11 @@ sub as_graphml {
 }
 
 sub _by_xmlid {
-	$a =~ s/\D//g;
-	$b =~ s/\D//g;
-	return $a <=> $b;
+	my $tmp_a = $a;
+	my $tmp_b = $b;
+	$tmp_a =~ s/\D//g;
+	$tmp_b =~ s/\D//g;
+	return $tmp_a <=> $tmp_b;
 }
 
 sub _add_graphml_data {

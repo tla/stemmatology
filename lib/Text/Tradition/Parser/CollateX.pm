@@ -79,7 +79,7 @@ my $TRANSKEY = 'identical';
 
 sub parse {
     my( $tradition, $opts ) = @_;
-    my $graph_data = graphml_parse( $opts );
+    my( $graph_data ) = graphml_parse( $opts );
     my $collation = $tradition->collation;
 
 	# First add the readings to the graph.
