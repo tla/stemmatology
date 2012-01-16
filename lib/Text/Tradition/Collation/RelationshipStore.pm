@@ -311,6 +311,10 @@ sub merge_readings {
 	$self->delete_reading( $deleted );
 }
 
+sub as_graphml { ## TODO
+	return;
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

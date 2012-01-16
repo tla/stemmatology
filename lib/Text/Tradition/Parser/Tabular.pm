@@ -146,14 +146,11 @@ sub parse {
         my $last_rdg = shift @$p;
         my $new_p = [ $last_rdg ];
         foreach my $rdg ( @$p ) {
-            if( $rdg->is_lacuna && $last_rdg->is_lacuna ) {
-                # If we are in a lacuna already, drop this node.
-				$c->del_reading( $rdg );
-            } else {
-                # Save the reading, lacuna or no.
-                push( @$new_p, $rdg );
-                $last_rdg = $rdg;
-            }
+        	# Omit the reading if we are in a lacuna already.
+        	next if $rdg->is_lacuna && $last_rdg->is_lacuna;
+			# Save the reading otherwise.
+			push( @$new_p, $rdg );
+			$last_rdg = $rdg;
         }
         push( @$new_p, $c->end );
         $wit->path( $new_p );
@@ -168,9 +165,13 @@ sub parse {
         $main_wit->uncorrected_path( $ac_wit->path );
         $tradition->del_witness( $ac_wit );
     }
-
+    
     # Join up the paths.
     $c->make_witness_paths;
+    # Delete our unused lacuna nodes.
+	foreach my $rdg ( grep { $_->is_lacuna } $c->readings ) {
+		$c->del_reading( $rdg ) unless $c->reading_witnesses( $rdg );
+	}
 }
 
 sub make_nodes {
