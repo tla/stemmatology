@@ -146,28 +146,13 @@ sub parse {
         my $last_rdg = shift @$p;
         my $new_p = [ $last_rdg ];
         foreach my $rdg ( @$p ) {
-            if( $rdg->text eq '#LACUNA#' ) {
+            if( $rdg->is_lacuna && $last_rdg->is_lacuna ) {
                 # If we are in a lacuna already, drop this node.
-                # Otherwise make a lacuna node and drop this node.
-                unless( $last_rdg->is_lacuna ) {
-                	my $l_id = 'l' . $rdg->id;
-                	my $l;
-                	if( $c->has_reading( $l_id ) ) {
-                		$l = $c->reading( $l_id );
-                	} else {
-                    	$l = $c->add_reading( {
-							'id' => $l_id,
-							'is_lacuna' => 1,
-							'rank' => $rdg->rank,
-							} );
-					}
-                    push( @$new_p, $l );
-                    $last_rdg = $l;
-                }
-                $c->del_reading( $rdg );
+				$c->del_reading( $rdg );
             } else {
-                # No lacuna, save the reading.
+                # Save the reading, lacuna or no.
                 push( @$new_p, $rdg );
+                $last_rdg = $rdg;
             }
         }
         push( @$new_p, $c->end );
@@ -201,6 +186,7 @@ sub make_nodes {
     		'rank' => $index,
     		'text' => $w,
     		};
+    	$rargs->{'is_lacuna'} = 1 if $w eq '#LACUNA#';
         my $r = $collation->add_reading( $rargs );
         $unique{$w} = $r;
         $ctr++;
