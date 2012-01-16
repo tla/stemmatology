@@ -81,6 +81,22 @@ has 'text' => (
 	required => 1,
 	writer => 'alter_text',
 	);
+	
+has 'punctuation' => (
+	traits => ['Array'],
+	isa => 'ArrayRef[HashRef[Str]]',
+	default => sub { [] },
+	handles => {
+			punctuation => 'elements',
+			add_punctuation => 'push',
+			},
+	);
+
+has 'separate_punctuation' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => 1,
+	);
 
 has 'is_start' => (
 	is => 'ro',
@@ -141,6 +157,33 @@ around BUILDARGS => sub {
 	
 	$class->$orig( $args );
 };
+
+# Post-process the given text, stripping punctuation if we are asked.
+sub BUILD {
+	my $self = shift;
+	if( $self->separate_punctuation && !$self->is_meta ) {
+		my $pos = 0;
+		my $wspunct = '';  # word sans punctuation
+		foreach my $char ( split( //, $self->text ) ) {
+			if( $char =~ /^[[:punct:]]$/ ) {
+				$self->add_punctuation( { 'char' => $char, 'pos' => $pos } );
+			} else {
+				$wspunct .= $char;
+			}
+			$pos++;
+		}
+		$self->alter_text( $wspunct );
+	}
+}
+
+sub punctuated_form {
+	my $self = shift;
+	my $word = $self->text;
+	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } $self->punctuation ) {
+		substr( $word, $p->{pos}, 0, $p->{char} );
+	}
+	return $word;
+}
 
 =head2 is_meta
 
