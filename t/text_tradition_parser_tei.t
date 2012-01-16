@@ -22,8 +22,8 @@ my $t = Text::Tradition->new(
 
 is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
-    is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 375, "Collation has all paths" );
+    is( scalar $t->collation->readings, 311, "Collation has all readings" );
+    is( scalar $t->collation->paths, 361, "Collation has all paths" );
 }
 }
 

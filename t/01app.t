@@ -23,8 +23,8 @@ is( scalar $tradition->witnesses, 13, "Found all witnesses" );
 ok( $tradition->collation, "Tradition has a collation" );
 
 my $c = $tradition->collation;
-is( scalar $c->readings, 319, "Collation has all readings" );
-is( scalar $c->paths, 375, "Collation has all paths" );
+is( scalar $c->readings, 311, "Collation has all readings" );
+is( scalar $c->paths, 361, "Collation has all paths" );
 is( scalar $c->relationships, 0, "Collation has all relationships" );
 
 done_testing;

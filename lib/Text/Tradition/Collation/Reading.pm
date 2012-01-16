@@ -143,7 +143,7 @@ around BUILDARGS => sub {
 	# ID to match.
 	
 	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
-		$args->{'text'} = sprintf( "#LACUNA_%s#", $args->{'id'} );
+		$args->{'text'} = '#LACUNA#';
 	} elsif( exists $args->{'is_start'} ) {
 		$args->{'id'} = '#START#';  # Change the ID to ensure we have only one
 		$args->{'text'} = '#START#';

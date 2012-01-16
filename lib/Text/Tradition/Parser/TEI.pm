@@ -62,8 +62,8 @@ my $t = Text::Tradition->new(
 
 is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
-    is( scalar $t->collation->readings, 319, "Collation has all readings" );
-    is( scalar $t->collation->paths, 375, "Collation has all paths" );
+    is( scalar $t->collation->readings, 311, "Collation has all readings" );
+    is( scalar $t->collation->paths, 361, "Collation has all paths" );
 }
 
 =end testing
@@ -171,15 +171,12 @@ sub parse {
             my $source = shift @uncorrected; # the start node
             warn "Something weird!" unless $source eq $c->start;
             foreach my $rdg ( @uncorrected ) {
-            	my $source_base = grep { $_ eq $sig } $c->reading_witnesses( $source );
-                my $target_base = grep { $_ eq $sig } $c->reading_witnesses( $rdg );
-                unless( $source_base && $target_base ) {
-                    # print STDERR sprintf( "Adding path %s from %s -> %s\n",
-                    #     $sig.$c->ac_label, $source->id, $rdg->id );
-                    $c->add_path( $source, $rdg, $sig.$c->ac_label );
-                }
-                $source = $rdg;
+            	unless( $c->has_path( $source, $rdg, $sig ) ) {
+            		$c->add_path( $source, $rdg, $sig.$c->ac_label );
+            	}
+            	$source = $rdg;
             }
+            warn "Something else weird!" unless $source eq $c->end;
             # print STDERR "Adding a.c. version for witness $sig\n";
             $tradition->witness( $sig )->is_layered( 1 );
         }

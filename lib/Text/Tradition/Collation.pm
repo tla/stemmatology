@@ -475,6 +475,43 @@ transposition information and position information. Unless
 $recalculate is passed (and is a true value), the method will return a
 cached copy of the SVG after the first call to the method.
 
+=begin testing
+
+use Text::Tradition;
+
+my $READINGS = 311;
+my $PATHS = 361;
+
+my $datafile = 't/data/florilegium_tei_ps.xml';
+my $tradition = Text::Tradition->new( 'input' => 'TEI',
+                                      'name' => 'test0',
+                                      'file' => $datafile,
+                                      'linear' => 1 );
+
+ok( $tradition, "Got a tradition object" );
+is( scalar $tradition->witnesses, 13, "Found all witnesses" );
+ok( $tradition->collation, "Tradition has a collation" );
+
+my $c = $tradition->collation;
+is( scalar $c->readings, $READINGS, "Collation has all readings" );
+is( scalar $c->paths, $PATHS, "Collation has all paths" );
+is( scalar $c->relationships, 0, "Collation has all relationships" );
+
+# Add a few relationships
+$c->add_relationship( 'w123', 'w125', { 'type' => 'collated' } );
+$c->add_relationship( 'w193', 'w196', { 'type' => 'collated' } );
+$c->add_relationship( 'w257', 'w262', { 'type' => 'transposition' } );
+
+# Now write it to GraphML and parse it again.
+
+my $graphml = $c->as_graphml;
+my $st = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml );
+is( scalar $st->collation->readings, $READINGS, "Reparsed collation has all readings" );
+is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
+is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
+
+=end testing
+
 =cut
 
 sub as_graphml {
@@ -1039,7 +1076,7 @@ sub flatten_ranks {
         my $key = $rdg->rank . "||" . $rdg->text;
         if( exists $unique_rank_rdg{$key} ) {
             # Combine!
-            # print STDERR "Combining readings at same rank: $key\n";
+        	# print STDERR "Combining readings at same rank: $key\n";
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
         } else {
             $unique_rank_rdg{$key} = $rdg;
