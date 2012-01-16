@@ -362,6 +362,7 @@ sub as_dot {
 	}
 	if( defined $endrank ) {
 		return if $endrank < 0;
+		$endrank = undef if $endrank == $self->end->rank;
 	}
 	
     # TODO consider making some of these things configurable
