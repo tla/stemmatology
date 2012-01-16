@@ -285,7 +285,7 @@ sub reading_witnesses {
 
 =item B<as_svg>
 
-print $graph->as_svg( $recalculate );
+print $collation->as_svg();
 
 Returns an SVG string that represents the graph, via as_dot and graphviz.
 
@@ -307,9 +307,41 @@ sub as_svg {
     return $svg;
 }
 
+=item B<svg_subgraph>
+
+print $collation->svg_subgraph( $from, $to )
+
+Returns an SVG string that represents the portion of the graph given by the
+specified range.  The $from and $to variables refer to ranks within the graph.
+
+=cut
+
+sub svg_subgraph {
+    my( $self, $from, $to ) = @_;
+    
+    my $dot = $self->as_dot( $from, $to );
+    unless( $dot ) {
+    	warn "Could not output a graph with range $from - $to";
+    	return;
+    }
+    
+    my @cmd = qw/dot -Tsvg/;
+    my( $svg, $err );
+    my $dotfile = File::Temp->new();
+    ## TODO REMOVE
+    # $dotfile->unlink_on_destroy(0);
+    binmode $dotfile, ':utf8';
+    print $dotfile $dot;
+    push( @cmd, $dotfile->filename );
+    run( \@cmd, ">", binary(), \$svg );
+    $svg = decode_utf8( $svg );
+    return $svg;
+}
+
+
 =item B<as_dot>
 
-print $graph->as_dot( $view, $recalculate );
+print $collation->as_dot();
 
 Returns a string that is the collation graph expressed in dot
 (i.e. GraphViz) format.  The 'view' argument determines what kind of
@@ -321,8 +353,17 @@ graph is produced.
 =cut
 
 sub as_dot {
-    my( $self, $view ) = @_;
-    $view = 'sequence' unless $view;
+    my( $self, $startrank, $endrank ) = @_;
+    
+    # Check the arguments
+    if( $startrank ) {
+    	return if $endrank && $startrank > $endrank;
+    	return if $startrank > $self->end->rank;
+	}
+	if( defined $endrank ) {
+		return if $endrank < 0;
+	}
+	
     # TODO consider making some of these things configurable
     my $graph_name = $self->tradition->name;
     $graph_name =~ s/[^\w\s]//g;
@@ -333,7 +374,25 @@ sub as_dot {
     $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
                      11, "white", "filled", "ellipse" );
 
+	# Output substitute start/end readings if necessary
+	if( $startrank ) {
+		$dot .= "\t\"#SUBSTART#\" [ label=\"...\" ];\n";
+	}
+	if( $endrank ) {
+		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
+	}
+	my %used;  # Keep track of the readings that actually appear in the graph
+	my %subedges;
+	my %subend;
     foreach my $reading ( $self->readings ) {
+    	# Only output readings within our rank range.
+    	next if $startrank && $reading->rank < $startrank;
+    	next if $endrank && $reading->rank > $endrank;
+        $used{$reading->id} = 1;
+        $subedges{$reading->id} = '#SUBSTART#' 
+        	if $startrank && $startrank == $reading->rank;
+        $subedges{$reading->id} = '#SUBEND#' 
+        	if $endrank && $endrank == $reading->rank;
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
         my $label = $reading->text;
@@ -341,22 +400,38 @@ sub as_dot {
         $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
     }
     
-    # TODO do something sensible for relationships
-
-    my @edges = $self->paths;
-    foreach my $edge ( @edges ) {
-        my %variables = ( 'color' => '#000000',
+    # Add substitute start and end edges if necessary
+    foreach my $node ( keys %subedges ) {
+		my @vector = ( $subedges{$node}, $node );
+		@vector = reverse( @vector ) if $vector[0] =~ /END/;
+    	my $witstr = join( ', ', sort $self->reading_witnesses( $self->reading( $node ) ) );
+    	my %variables = ( 'color' => '#000000',
                           'fontcolor' => '#000000',
-                          'label' => join( ', ', $self->path_display_label( $edge ) ),
+                          'label' => $witstr,
             );
         my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-        # Account for the rank gap if necessary
-        my $rankgap = $self->reading( $edge->[1] )->rank 
-        	- $self->reading( $edge->[0] )->rank;
-		$varopts .= ", minlen=$rankgap" if $rankgap > 1;
-        $dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
-                         $edge->[0], $edge->[1], $varopts );
+		$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n", @vector, $varopts );
+	}
+	
+	# Add the real edges
+    my @edges = $self->paths;
+    foreach my $edge ( @edges ) {
+    	# Do we need to output this edge?
+    	if( $used{$edge->[0]} && $used{$edge->[1]} ) {;
+			my %variables = ( 'color' => '#000000',
+							  'fontcolor' => '#000000',
+							  'label' => join( ', ', $self->path_display_label( $edge ) ),
+				);
+			my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+			# Account for the rank gap if necessary
+			my $rankgap = $self->reading( $edge->[1] )->rank 
+				- $self->reading( $edge->[0] )->rank;
+			$varopts .= ", minlen=$rankgap" if $rankgap > 1;
+			$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
+							 $edge->[0], $edge->[1], $varopts );
+        }
     }
+    
     $dot .= "}\n";
     return $dot;
 }
@@ -386,7 +461,7 @@ sub path_display_label {
 
 =item B<as_graphml>
 
-print $graph->as_graphml( $recalculate )
+print $collation->as_graphml( $recalculate )
 
 Returns a GraphML representation of the collation graph, with
 transposition information and position information. Unless
@@ -544,7 +619,7 @@ sub _add_graphml_data {
 
 =item B<as_csv>
 
-print $graph->as_csv( $recalculate )
+print $collation->as_csv( $recalculate )
 
 Returns a CSV alignment table representation of the collation graph, one
 row per witness (or witness uncorrected.) 
@@ -571,7 +646,7 @@ sub as_csv {
 
 =item B<make_alignment_table>
 
-my $table = $graph->make_alignment_table( $use_refs, \@wits_to_include )
+my $table = $collation->make_alignment_table( $use_refs, \@wits_to_include )
 
 Return a reference to an alignment table, in a slightly enhanced CollateX
 format which looks like this:
@@ -692,7 +767,7 @@ Returns the end of the collation, a meta-reading with label '#END#'.
 
 =item B<reading_sequence>
 
-my @readings = $graph->reading_sequence( $first, $last, $path[, $alt_path] );
+my @readings = $collation->reading_sequence( $first, $last, $path[, $alt_path] );
 
 Returns the ordered list of readings, starting with $first and ending
 with $last, along the given witness path.  If no path is specified,
@@ -735,7 +810,7 @@ sub reading_sequence {
 
 =item B<next_reading>
 
-my $next_reading = $graph->next_reading( $reading, $witpath );
+my $next_reading = $collation->next_reading( $reading, $witpath );
 
 Returns the reading that follows the given reading along the given witness
 path.  
@@ -752,7 +827,7 @@ sub next_reading {
 
 =item B<prior_reading>
 
-my $prior_reading = $graph->prior_reading( $reading, $witpath );
+my $prior_reading = $collation->prior_reading( $reading, $witpath );
 
 Returns the reading that precedes the given reading along the given witness
 path.  
