@@ -251,8 +251,11 @@ in Text::Tradition::Collation::Relationship.
 sub add_relationship {
 	my $self = shift;
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
-    return $self->relations->add_relationship( $source, $self->reading( $source ),
-    	$target, $self->reading( $target ), $opts );
+    my( $ret, @vectors ) = $self->relations->add_relationship( $source, 
+    	$self->reading( $source ), $target, $self->reading( $target ), $opts );
+    # Force a full rank recalculation every time. Yuck.
+    $self->calculate_ranks() if $ret && $self->end->has_rank;
+    return( $ret, @vectors );
 }
 
 =head2 reading_witnesses( $reading )
