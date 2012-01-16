@@ -146,7 +146,6 @@ sub parse {
         my $last_rdg = shift @$p;
         my $new_p = [ $last_rdg ];
         foreach my $rdg ( @$p ) {
-        	$DB::single = 1 if $rdg->id eq '228,1';
             if( $rdg->text eq '#LACUNA#' ) {
                 # If we are in a lacuna already, drop this node.
                 # Otherwise make a lacuna node and drop this node.
@@ -159,6 +158,7 @@ sub parse {
                     	$l = $c->add_reading( {
 							'id' => $l_id,
 							'is_lacuna' => 1,
+							'rank' => $rdg->rank,
 							} );
 					}
                     push( @$new_p, $l );
