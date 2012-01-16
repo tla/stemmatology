@@ -160,7 +160,6 @@ sub parse {
         }
         # See if we need to make an a.c. version of the witness.
         if( exists $app_ac->{$sig} ) {
-        	$DB::single = 1;
             my @uncorrected;
             push( @uncorrected, @real_sequence );
             foreach my $app ( keys %{$app_ac->{$sig}} ) {

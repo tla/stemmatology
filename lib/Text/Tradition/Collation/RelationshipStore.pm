@@ -183,7 +183,7 @@ sub add_relationship {
     foreach my $v ( @vectors ) {
     	if( $self->graph->has_edge( @$v ) ) {
     		# Is it locally scoped?
-    		my $rel = $self->graph->get_edge_attribute( @$v );
+    		my $rel = $self->graph->get_edge_attribute( @$v, 'object' );
     		if( $rel->nonlocal ) {
     			# TODO I think we should not be able to get here.
     			warn "Found conflicting relationship at @$v";
@@ -262,20 +262,33 @@ sub related_readings {
 		$reading = $reading->id;
 		$return_object = 1;
 	}
-	my @related = $self->graph->all_reachable( $reading );
+	my @answer;
 	if( $colocated ) {
-		my @colo;
-		foreach my $r ( @related ) {
-			my $obj = $self->graph->get_edge_attribute( $reading, $r, 'object' );
-			push( @colo, $r ) if $obj->colocated;
+		my %found = ( $reading => 1 );
+		my $check = [ $reading ];
+		my $iter = 0;
+		while( @$check ) {
+			$DB::single = 1 if $iter++ > 100;
+			my $more = [];
+			foreach my $r ( @$check ) {
+				foreach my $nr ( $self->graph->neighbors( $r ) ) {
+					if( $self->graph->get_edge_attribute( $r, $nr, 'object' )->colocated ) {
+						push( @$more, $nr ) unless exists $found{$nr};
+						$found{$nr} = 1;
+					}
+				}
+			}
+			$check = $more;
 		}
-		@related = @colo;
+		@answer = keys %found;
+	} else {
+		@answer = $self->graph->all_reachable( $reading );
 	}
 	if( $return_object ) {
 		my $c = $self->collation;
-		return map { $c->reading( $_ ) } @related;
+		return map { $c->reading( $_ ) } @answer;
 	} else {
-		return @related;
+		return @answer;
 	}
 }
 
@@ -311,8 +324,55 @@ sub merge_readings {
 	$self->delete_reading( $deleted );
 }
 
-sub as_graphml { ## TODO
-	return;
+sub as_graphml { 
+	my( $self, $graphml_ns, $xmlroot, $node_hash, $edge_keys ) = @_;
+	
+    my $rgraph = $xmlroot->addNewChild( $graphml_ns, 'graph' );
+	$rgraph->setAttribute( 'edgedefault', 'directed' );
+    $rgraph->setAttribute( 'id', 'relationships', );
+    $rgraph->setAttribute( 'parse.edgeids', 'canonical' );
+    $rgraph->setAttribute( 'parse.edges', scalar($self->graph->edges) );
+    $rgraph->setAttribute( 'parse.nodeids', 'canonical' );
+    $rgraph->setAttribute( 'parse.nodes', scalar($self->graph->vertices) );
+    $rgraph->setAttribute( 'parse.order', 'nodesfirst' );
+    
+    # Add the vertices according to their XML IDs
+    foreach my $n ( sort _by_xmlid values( %$node_hash ) ) {
+    	my $n_el = $rgraph->addNewChild( $graphml_ns, 'node' );
+    	$n_el->setAttribute( 'id', $n );
+    }
+    
+    # Add the relationship edges, with their object information
+    my $edge_ctr = 0;
+    foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->graph->edges ) {
+    	# Add an edge and fill in its relationship info.
+		my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
+		$edge_el->setAttribute( 'source', $node_hash->{$e->[0]} );
+		$edge_el->setAttribute( 'target', $node_hash->{$e->[1]} );
+		$edge_el->setAttribute( 'id', 'e'.$edge_ctr++ );
+
+		my $rel_obj = $self->graph->get_edge_attribute( @$e, 'object' );
+		_add_graphml_data( $edge_el, $edge_keys->{'relationship'}, $rel_obj->type );
+		_add_graphml_data( $edge_el, $edge_keys->{'scope'}, $rel_obj->scope );
+		_add_graphml_data( $edge_el, $edge_keys->{'non_correctable'}, 
+			$rel_obj->non_correctable ) if $rel_obj->noncorr_set;
+		_add_graphml_data( $edge_el, $edge_keys->{'non_independent'}, 
+			$rel_obj->non_independent ) if $rel_obj->nonind_set;
+	}
+}
+
+sub _by_xmlid {
+	$a =~ s/\D//g;
+	$b =~ s/\D//g;
+	return $a <=> $b;
+}
+
+sub _add_graphml_data {
+    my( $el, $key, $value ) = @_;
+    return unless defined $value;
+    my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
+    $data_el->setAttribute( 'key', $key );
+    $data_el->appendText( $value );
 }
 
 no Moose;

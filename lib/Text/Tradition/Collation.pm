@@ -65,6 +65,12 @@ has 'linear' => (
     isa => 'Bool',
     default => 1,
     );
+    
+has 'collapse_punctuation' => (
+	is => 'rw',
+	isa => 'Bool',
+	default => 1,
+	);
 
 has 'ac_label' => (
     is => 'rw',
@@ -396,7 +402,7 @@ sub as_dot {
         	if $endrank && $endrank == $reading->rank;
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
-        my $label = $reading->text;
+        my $label = $reading->punctuated_form;
         $label =~ s/\"/\\\"/g;
         $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
     }
@@ -528,7 +534,7 @@ sub as_graphml {
     	witness => 'string',			# ID/label for a path
     	relationship => 'string',		# ID/label for a relationship
     	extra => 'boolean',				# Path key
-    	colocated => 'boolean',			# Relationship key
+    	scope => 'string',				# Relationship key
     	non_correctable => 'boolean',	# Relationship key
     	non_independent => 'boolean',	# Relationship key
     	);
@@ -568,6 +574,7 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         foreach my $d ( keys %node_data ) {
         	my $nval = $n->$d;
+        	$nval = $n->punctuated_form if $d eq 'text';
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
         }
@@ -603,7 +610,7 @@ sub as_graphml {
 	}
 	
 	# Add the relationship graph to the XML
-	$self->relations->as_graphml( $root );
+	$self->relations->as_graphml( $root, $graphml_ns, \%node_hash, \%edge_data_keys );
 
     # Save and return the thing
     my $result = decode_utf8( $graphml->toString(1) );

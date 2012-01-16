@@ -4,7 +4,7 @@ use Moose;
 use Moose::Util::TypeConstraints;
 
 enum 'RelationshipType' => qw( spelling orthographic grammatical meaning lexical
-							   collation repetition transposition );
+							   collated repetition transposition );
 
 enum 'RelationshipScope' => qw( local tradition global );
 
@@ -51,11 +51,13 @@ has 'scope' => (
 has 'non_correctable' => (
 	is => 'ro',
 	isa => 'Bool',
+	predicate => 'noncorr_set',
 	);
 
 has 'non_independent' => (
 	is => 'ro',
 	isa => 'Bool',
+	predicate => 'nonind_set',
 	);
 
 # A read-only meta-Boolean attribute.
