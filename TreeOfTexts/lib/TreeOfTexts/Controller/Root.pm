@@ -106,6 +106,42 @@ sub alignment_table :Local {
 	$c->forward-( 'View::JSON' );
 }
 
+=head1 MICROSERVICE CALLS
+
+=head2 renderSVG
+
+Parse the passed collation data and return an SVG of the collated text.  Takes
+the following parameters:
+
+=over 4
+
+=item * data - The collation data itself.
+
+=item * input - The data format.  Valid values include CollateX, Self, TEI (for parallel segmentation) eventually Tabular.
+
+=item * name - A name for the text. Not so important for this function.
+
+=cut
+
+# Utility function to render SVG from a graph input.
+sub renderSVG :Local {
+	my( $self, $c ) = @_;
+	my $format = $c->request->param('format') || 'string';
+	my $type = $c->request->body_params->{'type'};
+	my $name = $c->request->param('name') || 'Collation graph';
+	my $data = $c->request->body_params->{'data'};
+	$c->log->debug( $data );
+	my $tradition = Text::Tradition->new( 
+		'name' => $name,
+		'input' => $type,
+		$format => $data,
+		);
+	$c->log->debug( "Got tradition with " . $tradition->collation->readings . " readings" );
+	$c->stash->{'result'} = $tradition->collation->as_svg;
+	$c->forward('View::SVG');
+}
+
+
 =head1 OPENSOCIAL URLs
 
 =head2 view_table
