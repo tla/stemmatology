@@ -139,9 +139,27 @@ around BUILDARGS => sub {
 		$args = { @_ };
 	}
 	
+	# Did we get a JSON token to parse into a reading?  If so, massage it.
+	if( exists $args->{'json'} ) {
+		my $j = delete $args->{'json'};
+
+		# If we have separated punctuation and don't want it, restore it.
+		if( exists $j->{'punctuation'}
+			&& exists $args->{'separate_punctuation'}
+			&& !$args->{'separate_punctuation'} ) {
+			$args->{'text'} = _restore_punct( $j->{'t'}, $j->{'punctuation'} );
+
+		# In all other cases, keep text and punct as they are.
+		} else {
+			$args->{'text'} = $j->{'t'};
+			# we don't use comparison or canonical forms here
+			$args->{'punctuation'} = $j->{'punctuation'}
+				if exists $j->{'punctuation'};
+		}
+	}
+		
 	# If one of our special booleans is set, we change the text and the
 	# ID to match.
-	
 	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
 		$args->{'text'} = '#LACUNA#';
 	} elsif( exists $args->{'is_start'} ) {
@@ -161,7 +179,8 @@ around BUILDARGS => sub {
 # Post-process the given text, stripping punctuation if we are asked.
 sub BUILD {
 	my $self = shift;
-	if( $self->separate_punctuation && !$self->is_meta ) {
+	if( $self->separate_punctuation && !$self->is_meta
+		&& !$self->punctuation ) {
 		my $pos = 0;
 		my $wspunct = '';  # word sans punctuation
 		foreach my $char ( split( //, $self->text ) ) {
@@ -178,12 +197,16 @@ sub BUILD {
 
 sub punctuated_form {
 	my $self = shift;
-	my $word = $self->text;
-	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } $self->punctuation ) {
+	return _restore_punct( $self->text, $self->punctuation );
+}
+
+sub _restore_punct {
+	my( $word, @punct ) = @_;
+	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } @punct ) {
 		substr( $word, $p->{pos}, 0, $p->{char} );
 	}
 	return $word;
-}
+}	
 
 =head2 is_meta
 

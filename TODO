@@ -1,2 +1,3 @@
 * support and test deletion of a tradition
 * support and test deletion of a relationship
+* make proper tests for Collation::Reading

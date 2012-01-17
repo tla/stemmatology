@@ -128,6 +128,8 @@ following:
 
 =item * CTE - a TEI XML format produced by Classical Text Editor
 
+=item * JSON - an alignment table in JSON format, as produced by CollateX and other tools
+
 =item * KUL - a specific CSV format for variants, not documented here
 
 =item * TEI - a TEI parallel segmentation format file
@@ -254,7 +256,7 @@ sub BUILD {
         $self->_save_collation( $collation );
 
         # Call the appropriate parser on the given data
-        my @format_standalone = qw/ Self CollateText CollateX CTE TEI Tabular /;
+        my @format_standalone = qw/ Self CollateText CollateX CTE JSON TEI Tabular /;
         my @format_basetext = qw/ KUL /;
         my $use_base;
         my $format = $init_args->{'input'};
