@@ -92,20 +92,150 @@ has 'end' => (
 	weak_ref => 1,
 	);
 
-# The collation can be created two ways:
-# 1. Collate a set of witnesses (with CollateX I guess) and process
-#    the results as in 2.
-# 2. Read a pre-prepared collation in one of a variety of formats,
-#    and make the graph from that.
+=head1 NAME
 
-# The graph itself will (for now) be immutable, and the positions
-# within the graph will also be immutable.  We need to calculate those
-# positions upon graph construction.  The equivalences between graph
-# nodes will be mutable, entirely determined by the user (or possibly
-# by some semantic pre-processing provided by the user.)  So the
-# constructor should just make an empty equivalences object.  The
-# constructor will also need to make the witness objects, if we didn't
-# come through option 1.
+Text::Tradition::Collation - a software model for a text collation
+
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  my $t = Text::Tradition->new( 
+    'name' => 'this is a text',
+    'input' => 'TEI',
+    'file' => '/path/to/tei_parallel_seg_file.xml' );
+
+  my $c = $t->collation;
+  my @readings = $c->readings;
+  my @paths = $c->paths;
+  my @relationships = $c->relationships;
+  
+  my $svg_variant_graph = $t->collation->as_svg();
+    
+=head1 DESCRIPTION
+
+Text::Tradition is a library for representation and analysis of collated
+texts, particularly medieval ones.  The Collation is the central feature of
+a Tradition, where the text, its sequence of readings, and its relationships
+between readings are actually kept.
+
+=head1 CONSTRUCTOR
+
+=head2 new
+
+The constructor.  Takes a hash or hashref of the following arguments:
+
+=over
+
+=item * tradition - The Text::Tradition object to which the collation 
+belongs. Required.
+
+=item * linear - Whether the collation should be linear; that is, whether 
+transposed readings should be treated as two linked readings rather than one, 
+and therefore whether the collation graph is acyclic.  Defaults to true.
+
+=item * collapse_punctuation - TODO
+
+=item * baselabel - The default label for the path taken by a base text 
+(if any). Defaults to 'base text'.
+
+=item * wit_list_separator - The string to join a list of witnesses for 
+purposes of making labels in display graphs.  Defaults to ', '.
+
+=item * ac_label - The extra label to tack onto a witness sigil when 
+representing another layer of path for the given witness - that is, when
+a text has more than one possible reading due to scribal corrections or
+the like.  Defaults to ' (a.c.)'.
+
+=back
+
+=head1 ACCESSORS
+
+=head2 tradition
+
+=head2 linear
+
+=head2 collapse_punctuation
+
+=head2 wit_list_separator
+
+=head2 baselabel
+
+=head2 ac_label
+
+Simple accessors for collation attributes.
+
+=head2 start
+
+The meta-reading at the start of every witness path.
+
+=head2 end
+
+The meta-reading at the end of every witness path.
+
+=head2 readings
+
+Returns all Reading objects in the graph.
+
+=head2 reading( $id )
+
+Returns the Reading object corresponding to the given ID.
+
+=head2 add_reading( $reading_args )
+
+Adds a new reading object to the collation. 
+See L<Text::Tradition::Collation::Reading> for the available arguments.
+
+=head2 del_reading( $object_or_id )
+
+Removes the given reading from the collation, implicitly removing its
+paths and relationships.
+
+=head2 merge_readings( $main, $second )
+
+Merges the $second reading into the $main one. 
+The arguments may be either readings or reading IDs.
+
+=head2 has_reading( $id )
+
+Predicate to see whether a given reading ID is in the graph.
+
+=head2 reading_witnesses( $object_or_id )
+
+Returns a list of sigils whose witnesses contain the reading.
+
+=head2 paths
+
+Returns all reading paths within the document - that is, all edges in the 
+collation graph.  Each path is an arrayref of [ $source, $target ] reading IDs.
+
+=head2 add_path( $source, $target, $sigil )
+
+Links the given readings in the collation in sequence, under the given witness
+sigil.  The readings may be specified by object or ID.
+
+=head2 del_path( $source, $target, $sigil )
+
+Links the given readings in the collation in sequence, under the given witness
+sigil.  The readings may be specified by object or ID.
+
+=head2 has_path( $source, $target );
+
+Returns true if the two readings are linked in sequence in any witness.  
+The readings may be specified by object or ID.
+
+=head2 relationships
+
+Returns all Relationship objects in the collation.
+
+=head2 add_relationship( $reading, $other_reading, $options )
+
+Adds a new relationship of the type given in $options between the two readings,
+which may be specified by object or ID.  Returns a value of ( $status, @vectors)
+where $status is true on success, and @vectors is a list of relationship edges
+that were ultimately added.
+See L<Text::Tradition::Collation::Relationship> for the available options.
+
+=cut 
 
 sub BUILD {
     my $self = shift;
@@ -197,6 +327,15 @@ sub _stringify_args {
     return( $first, $second, $arg );
 }
 
+# Helper function for manipulating the graph.
+sub _objectify_args {
+	my( $self, $first, $second, $arg ) = @_;
+    $first = $self->reading( $first )
+        unless ref( $first ) eq 'Text::Tradition::Collation::Reading';
+    $second = $self->reading( $second )
+        unless ref( $second ) eq 'Text::Tradition::Collation::Reading';        
+    return( $first, $second, $arg );
+}
 ### Path logic
 
 sub add_path {
@@ -243,16 +382,31 @@ sub has_path {
 	return $self->sequence->has_edge_attribute( $source, $target, $wit );
 }
 
-=head2 add_relationship( $reading1, $reading2, $definition )
+=head2 clear_witness( @sigil_list )
 
-Adds the specified relationship between the two readings.  A relationship
-is transitive (i.e. undirected); the options for its definition may be found
-in Text::Tradition::Collation::Relationship.
+Clear the given witnesses out of the collation entirely, removing references
+to them in paths, and removing readings that belong only to them.  Should only
+be called via $tradition->del_witness.
 
 =cut
 
-# Wouldn't it be lovely if edges could be objects, and all this type checking
-# and attribute management could be done via Moose?
+sub clear_witness {
+	my( $self, @sigils ) = @_;
+
+	# Clear the witness(es) out of the paths
+	foreach my $e ( $self->paths ) {
+		foreach my $sig ( @sigils ) {
+			$self->del_path( $e, $sig );
+		}
+	}
+	
+	# Clear out the newly unused readings
+	foreach my $r ( $self->readings ) {
+		unless( $self->reading_witnesses( $r ) ) {
+			$self->del_reading( $r );
+		}
+	}
+}
 
 sub add_relationship {
 	my $self = shift;
@@ -285,13 +439,9 @@ sub reading_witnesses {
 	return keys %all_witnesses;
 }
 
-=head2 Output method(s)
+=head1 OUTPUT METHODS
 
-=over
-
-=item B<as_svg>
-
-print $collation->as_svg();
+=head2 as_svg
 
 Returns an SVG string that represents the graph, via as_dot and graphviz.
 
@@ -313,9 +463,7 @@ sub as_svg {
     return $svg;
 }
 
-=item B<svg_subgraph>
-
-print $collation->svg_subgraph( $from, $to )
+=head2 svg_subgraph( $from, $to )
 
 Returns an SVG string that represents the portion of the graph given by the
 specified range.  The $from and $to variables refer to ranks within the graph.
@@ -345,16 +493,11 @@ sub svg_subgraph {
 }
 
 
-=item B<as_dot>
-
-print $collation->as_dot();
+=head2 as_dot( $from, $to )
 
 Returns a string that is the collation graph expressed in dot
-(i.e. GraphViz) format.  The 'view' argument determines what kind of
-graph is produced.
-    * 'path': a graph of witness paths through the collation (DEFAULT)
-    * 'relationship': a graph of how collation readings relate to 
-      each other
+(i.e. GraphViz) format.  If $from or $to is passed, as_dot creates
+a subgraph rather than the entire graph.
 
 =cut
 
@@ -466,14 +609,12 @@ sub path_display_label {
 }
 		
 
-=item B<as_graphml>
+=head2 as_graphml
 
-print $collation->as_graphml( $recalculate )
-
-Returns a GraphML representation of the collation graph, with
-transposition information and position information. Unless
-$recalculate is passed (and is a true value), the method will return a
-cached copy of the SVG after the first call to the method.
+Returns a GraphML representation of the collation.  The GraphML will contain 
+two graphs. The first expresses the attributes of the readings and the witness 
+paths that link them; the second expresses the relationships that link the 
+readings.  This is the native transfer format for a tradition.
 
 =begin testing
 
@@ -663,9 +804,7 @@ sub _add_graphml_data {
     $data_el->appendText( $value );
 }
 
-=item B<as_csv>
-
-print $collation->as_csv( $recalculate )
+=head2 as_csv
 
 Returns a CSV alignment table representation of the collation graph, one
 row per witness (or witness uncorrected.) 
@@ -690,23 +829,22 @@ sub as_csv {
     return join( "\n", @result );
 }
 
-=item B<make_alignment_table>
-
-my $table = $collation->make_alignment_table( $use_refs, \@wits_to_include )
+=head2 make_alignment_table( $use_refs, $include_witnesses )
 
 Return a reference to an alignment table, in a slightly enhanced CollateX
 format which looks like this:
 
  $table = { alignment => [ { witness => "SIGIL", 
-                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                             tokens => [ { t => "TEXT" }, ... ] },
                            { witness => "SIG2", 
-                             tokens => [ { t => "READINGTEXT" }, ... ] },
+                             tokens => [ { t => "TEXT" }, ... ] },
                            ... ],
             length => TEXTLEN };
 
 If $use_refs is set to 1, the reading object is returned in the table 
 instead of READINGTEXT; if not, the text of the reading is returned.
-If $wits_to_include is set to a hashref, only the witnesses whose sigil
+
+If $include_witnesses is set to a hashref, only the witnesses whose sigil
 keys have a true hash value will be included.
 
 =cut
@@ -792,32 +930,15 @@ sub _turn_table {
     return $result;        
 }
 
-=back
+=head1 NAVIGATION METHODS
 
-=head2 Navigation methods
-
-=over
-
-=item B<start>
-
-my $beginning = $collation->start();
-
-Returns the beginning of the collation, a meta-reading with label '#START#'.
-
-=item B<end>
-
-my $end = $collation->end();
-
-Returns the end of the collation, a meta-reading with label '#END#'.
-
-
-=item B<reading_sequence>
-
-my @readings = $collation->reading_sequence( $first, $last, $path[, $alt_path] );
+=head2 reading_sequence( $first, $last, $sigil, $backup )
 
 Returns the ordered list of readings, starting with $first and ending
-with $last, along the given witness path.  If no path is specified,
-assume that the path is that of the base text (if any.)
+with $last, for the witness given in $sigil. If a $backup sigil is 
+specified (e.g. when walking a layered witness), it will be used wherever
+no $sigil path exists.  If there is a base text reading, that will be
+used wherever no path exists for $sigil or $backup.
 
 =cut
 
@@ -854,9 +975,7 @@ sub reading_sequence {
     return @readings;
 }
 
-=item B<next_reading>
-
-my $next_reading = $collation->next_reading( $reading, $witpath );
+=head2 next_reading( $reading, $sigil );
 
 Returns the reading that follows the given reading along the given witness
 path.  
@@ -871,9 +990,7 @@ sub next_reading {
     return $self->reading( $answer );
 }
 
-=item B<prior_reading>
-
-my $prior_reading = $collation->prior_reading( $reading, $witpath );
+=head2 prior_reading( $reading, $sigil )
 
 Returns the reading that precedes the given reading along the given witness
 path.  
@@ -897,8 +1014,8 @@ sub _find_linked_reading {
     # We have to find the linked path that contains all of the
     # witnesses supplied in $path.
     my( @path_wits, @alt_path_wits );
-    @path_wits = sort( $self->witnesses_of_label( $path ) ) if $path;
-    @alt_path_wits = sort( $self->witnesses_of_label( $alt_path ) ) if $alt_path;
+    @path_wits = sort( $self->_witnesses_of_label( $path ) ) if $path;
+    @alt_path_wits = sort( $self->_witnesses_of_label( $alt_path ) ) if $alt_path;
     my $base_le;
     my $alt_le;
     foreach my $le ( @linked_paths ) {
@@ -937,8 +1054,31 @@ sub _is_within {
     return $ret;
 }
 
+# Return the string that joins together a list of witnesses for
+# display on a single path.
+sub _witnesses_of_label {
+    my( $self, $label ) = @_;
+    my $regex = $self->wit_list_separator;
+    my @answer = split( /\Q$regex\E/, $label );
+    return @answer;
+}    
 
-## INITIALIZATION METHODS - for use by parsers
+
+=head1 INITIALIZATION METHODS
+
+These are mostly for use by parsers.
+
+=head2 make_witness_path( $witness )
+
+Link the array of readings contained in $witness->path (and in 
+$witness->uncorrected_path if it exists) into collation paths.
+Clear out the arrays when finished.
+
+=head2 make_witness_paths
+
+Call make_witness_path for all witnesses in the tradition.
+
+=cut
 
 # For use when a collation is constructed from a base text and an apparatus.
 # We have the sequences of readings and just need to add path edges.
@@ -974,6 +1114,13 @@ sub make_witness_path {
     $wit->clear_uncorrected_path;
 }
 
+=head2 calculate_ranks
+
+Calculate the reading ranks (that is, their aligned positions relative
+to each other) for the graph.  This can only be called on linear collations.
+
+=cut
+
 sub calculate_ranks {
     my $self = shift;
     # Walk a version of the graph where every node linked by a relationship 
@@ -1006,7 +1153,7 @@ sub calculate_ranks {
         foreach my $n ( $self->sequence->successors( $r->id ) ) {
         	my( $tfrom, $tto ) = ( $rel_containers{$r->id},
         		$rel_containers{$n} );
-        	$DB::single = 1 unless $tfrom && $tto;
+        	# $DB::single = 1 unless $tfrom && $tto;
             $topo_graph->add_edge( $tfrom, $tto );
         }
     }
@@ -1024,7 +1171,6 @@ sub calculate_ranks {
         if( defined $node_ranks->{$rel_containers{$r->id}} ) {
             $r->rank( $node_ranks->{$rel_containers{$r->id}} );
         } else {
-            $DB::single = 1;
             die "No rank calculated for node " . $r->id 
                 . " - do you have a cycle in the graph?";
         }
@@ -1066,8 +1212,13 @@ sub _assign_rank {
     return @next_nodes;
 }
 
-# Another method to make up for rough collation methods.  If the same reading
-# appears multiple times at the same rank, collapse the nodes.
+=head2 flatten_ranks
+
+A convenience method for parsing collation data.  Searches the graph for readings
+with the same text at the same rank, and merges any that are found.
+
+=cut
+
 sub flatten_ranks {
     my $self = shift;
     my %unique_rank_rdg;
@@ -1085,17 +1236,16 @@ sub flatten_ranks {
 }
 
 
-## Utility functions
-    
-# Return the string that joins together a list of witnesses for
-# display on a single path.
-sub witnesses_of_label {
-    my( $self, $label ) = @_;
-    my $regex = $self->wit_list_separator;
-    my @answer = split( /\Q$regex\E/, $label );
-    return @answer;
-}    
+=head1 UTILITY FUNCTIONS
 
+=head2 common_predecessor( $reading_a, $reading_b )
+
+Find the last reading that occurs in sequence before both the given readings.
+
+=head2 common_successor( $reading_a, $reading_b )
+
+Find the first reading that occurs in sequence after both the given readings.
+    
 =begin testing
 
 use Text::Tradition;
@@ -1108,14 +1258,14 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
-is( $c->common_predecessor( $c->reading('n9'), $c->reading('n23') )->id, 
+is( $c->common_predecessor( 'n9', 'n23' )->id, 
     'n20', "Found correct common predecessor" );
-is( $c->common_successor( $c->reading('n9'), $c->reading('n23') )->id, 
+is( $c->common_successor( 'n9', 'n23' )->id, 
     '#END#', "Found correct common successor" );
 
-is( $c->common_predecessor( $c->reading('n19'), $c->reading('n17') )->id, 
+is( $c->common_predecessor( 'n19', 'n17' )->id, 
     'n16', "Found correct common predecessor for readings on same path" );
-is( $c->common_successor( $c->reading('n21'), $c->reading('n26') )->id, 
+is( $c->common_successor( 'n21', 'n26' )->id, 
     '#END#', "Found correct common successor for readings on same path" );
 
 =end testing
@@ -1125,12 +1275,14 @@ is( $c->common_successor( $c->reading('n21'), $c->reading('n26') )->id,
 ## Return the closest reading that is a predecessor of both the given readings.
 sub common_predecessor {
 	my $self = shift;
-	return $self->common_in_path( @_, 'predecessors' );
+	my( $r1, $r2 ) = $self->_objectify_args( @_ );
+	return $self->common_in_path( $r1, $r2, 'predecessors' );
 }
 
 sub common_successor {
 	my $self = shift;
-	return $self->common_in_path( @_, 'successors' );
+	my( $r1, $r2 ) = $self->_objectify_args( @_ );
+	return $self->common_in_path( $r1, $r2, 'successors' );
 }
 
 sub common_in_path {
@@ -1165,6 +1317,6 @@ __PACKAGE__->meta->make_immutable;
 
 =over
 
-=item * Think about making Relationship objects again
+=item * Get rid of $backup in reading_sequence
 
 =back

@@ -5,14 +5,14 @@ use strict;
 use warnings;
 use Getopt::Long;
 use Text::Tradition;
-use Text::Tradition::Stemma;
+use Text::Tradition::StemmaUtil;
 
 binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
 my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep ) 
-    = ( '', '', '', '', 1, 'Tradition', 0, ',' );
+    = ( '', '', '', '', 1, 'Tradition', 0, "\t" );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -68,22 +68,15 @@ my $tradition = Text::Tradition->new( %args );
 ### Custom hacking
 # Remove witnesses C, E, G in the Matthew text
 if( $HACK ) {
-    foreach( $tradition->collation->paths() ) {
-        $tradition->collation->del_path( $_ ) if $_->label =~ /^[ceg]$/i;
-    }
-    foreach( $tradition->collation->readings() ) {
-        if( !$_->outgoing() && !$_->incoming() ) {
-            print STDERR "Deleting reading " . $_->label . "\n";
-            $tradition->collation->del_reading( $_ );
-        }
-    }
+	my @togo = qw/ C E G /;
+	$tradition->collation->clear_witness( @togo );
+	$tradition->del_witness( @togo );
 }
 
 # Now output what we have been asked to.
 if( $outformat eq 'stemma' ) {
-    my $stemma = Text::Tradition::Stemma->new( 
-        'collation' => $tradition->collation );
-    my( $result, $tree ) = $stemma->run_phylip_pars();
+    my $cdata = character_input( $tradition->collation->make_alignment_table );
+    my( $result, $tree ) = phylip_pars( $cdata );
     if( $result ) {
         print $tree;
     } else {

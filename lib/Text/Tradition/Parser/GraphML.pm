@@ -146,8 +146,6 @@ sub _lookup_node_data {
     return $data;
 }
     
-=back
-
 =head1 LICENSE
 
 This package is free software and is provided "as is" without express
