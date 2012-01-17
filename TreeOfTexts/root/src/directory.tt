@@ -1,6 +1,3 @@
-[% BLOCK js %]
-[% END %]
-
     <h2>Choose a text to examine</h2>
     <div id="text_list">
       <ul>

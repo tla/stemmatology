@@ -18,22 +18,38 @@ TreeOfTexts::Controller::Root - Root Controller for TreeOfTexts
 
 =head1 DESCRIPTION
 
-[enter your description here]
+Serves up the main container pages.
 
-=head1 METHODS
+=head1 URLs
 
 =head2 index
 
-The root page (/).  Lists the traditions available in the DB to work on,
-and should also eventually have an 'Upload new' interface.
+The root page (/).  Serves the main container page, from which the various
+components will be loaded.
 
 =cut
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
+    $c->stash->{template} = 'index.tt';
+}
+
+=head1 Elements of index page
+
+=head2 directory
+
+ GET /directory
+
+Serves a snippet of HTML that lists the available texts.  Eventually this will be available texts by user.
+
+=cut
+sub directory :Path :Args(0) {
+	my( $self, $c ) = @_;
     my $m = $c->model('Directory');
-    my @all_texts;
+    # TODO not used yet, will load user texts later
+    my $user = $c->request->param( 'user' ) || 'ALL';
+    my @textlist;
     foreach my $id ( $m->tradition_ids ) {
     	my $data = { 
     		'id' => $id,
@@ -42,14 +58,82 @@ sub index :Path :Args(0) {
     	push( @all_texts, $data );
     }
     
-    $c->stash->{texts} = \@all_texts;
-    $c->stash->{template} = 'frontpage.tt';
+    $c->stash->{texts} = \@textlist;
+	$c->stash->{template} = 'directory.tt';
 }
 
-=head2 tradition (TODO)
+=head2 alignment
 
-The main page for a tradition, with information about it and links to the
-available tools.
+ GET /alignment/$textid
+
+Returns an alignment table for the text specified at $textid.
+
+=cut
+
+sub alignment :Path :Args(1) {
+	my( $self, $c, $textid ) = @_;
+	my $m = $c->model('Directory');
+	my $collation = $m->tradition( $textid )->collation;
+	my $alignment = $collation->make_alignment_table;
+	
+	# Turn the table, so that witnesses are by column and the rows
+	# are by rank.
+	my $wits = [ map { $_->{'witness'} } @{$alignment->{'alignment'}} ];
+	my $rows;
+	foreach my $i ( 0 .. $alignment->{'length'} - 1 ) {
+		my @rankrdgs = map { $_->{'tokens'}->[$i]->{'t'} } 
+			@{$alignment->{'alignment'}};
+		push( @$rows, { 'rank' => $i+1, 'readings' => \@rankrdgs } );
+	}
+	$c->log->debug( Dumper( $rows ) );
+	$c->stash->{'witnesses'} = $wits;
+	$c->stash->{'table'} = $rows;
+	$c->stash->{'template'} = 'alignment.tt';
+}
+
+=head2 stemma
+
+ GET /stemma/$textid
+ POST /stemma/$textid, { 'dot' => $dot_string }
+
+Returns an SVG representation of the stemma hypothesis for the text.  If 
+the URL is called with POST and a new dot string, updates the stemma and
+returns the SVG as with GET.
+
+=cut
+
+sub stemma :Path :Args(1) {
+	my( $self, $c, $textid ) = @_;
+	my $m = $c->model('Directory');
+	my $tradition = $m->tradition( $textid );
+	
+	if( $c->req->method eq 'POST' ) {
+		# Update the stemma
+		my $dot = $c->request->body_params->{'dot'};
+		$tradition->add_stemma( $dot );
+		$m->store( $tradition );
+	}
+	
+	$c->stash->{'result'} = $tradition->stemma->as_svg;
+	$c->forward('View::SVG');
+}
+
+=head2 stemmadot
+
+ GET /stemmadot/$textid
+ 
+Returns the 'dot' format representation of the current stemma hypothesis.
+
+=cut
+
+sub stemma :Path :Args(1) {
+	my( $self, $c, $textid ) = @_;
+	my $m = $c->model('Directory');
+	my $tradition = $m->tradition( $textid );
+	
+	$c->response->body( $tradition->stemma->editable );
+	$c->forward('View::Plain');
+}
 
 =head2 relationships
 
@@ -89,21 +173,6 @@ sub stexaminer :Local {
 	$c->stash->{total} = $t->{'variant_count'};
 	$c->stash->{genealogical} = $t->{'genealogical_count'};
 	$c->stash->{conflict} = $t->{'conflict_count'};
-}
-
-=head2 alignment_table 
-
-Return a JSON alignment table of a given text.
-
-=cut
-
-sub alignment_table :Local {
-	my( $self, $c ) = @_;
-	my $m = $c->model( 'Directory' );
-	my $tradition = $m->tradition( $c->request->params->{'textid'} );
-	my $table = $tradition->collation->make_alignment_table();
-	$c->stash->{'result'} = $table;
-	$c->forward-( 'View::JSON' );
 }
 
 =head1 MICROSERVICE CALLS

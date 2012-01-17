@@ -10,7 +10,6 @@ __PACKAGE__->config(
     INCLUDE_PATH => [
     	TreeOfTexts->path_to( 'root', 'src' ),
     ],
-    WRAPPER => 'wrapper.tt',
     render_die => 1,
 );
 

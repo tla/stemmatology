@@ -15,6 +15,9 @@ requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::Unicode::Encoding';
 requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Model::KiokuDB';
+requires 'Catalyst::View::Download::Plain';
+requires 'Catalyst::View::JSON';
+requires 'Catalyst::View::TT';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Config::General'; # This should reflect the config file format you've chosen
