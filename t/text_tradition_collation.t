@@ -56,14 +56,14 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
-is( $c->common_predecessor( $c->reading('n9'), $c->reading('n23') )->id, 
+is( $c->common_predecessor( 'n9', 'n23' )->id, 
     'n20', "Found correct common predecessor" );
-is( $c->common_successor( $c->reading('n9'), $c->reading('n23') )->id, 
+is( $c->common_successor( 'n9', 'n23' )->id, 
     '#END#', "Found correct common successor" );
 
-is( $c->common_predecessor( $c->reading('n19'), $c->reading('n17') )->id, 
+is( $c->common_predecessor( 'n19', 'n17' )->id, 
     'n16', "Found correct common predecessor for readings on same path" );
-is( $c->common_successor( $c->reading('n21'), $c->reading('n26') )->id, 
+is( $c->common_successor( 'n21', 'n26' )->id, 
     '#END#', "Found correct common successor for readings on same path" );
 }
 
