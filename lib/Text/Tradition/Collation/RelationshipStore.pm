@@ -65,9 +65,9 @@ sub create {
 	my $rel;
 	if( $self->graph->has_edge( $source, $target ) ) {
 		$rel = $self->graph->get_edge_attribute( $source, $target, 'object' );
-		if( $rel->type ne $options->type ) {
+		if( $rel->type ne $options->{'type'} ) {
 			warn "Another relationship of type " . $rel->type 
-				. "already exists between $source and $target";
+				. " already exists between $source and $target";
 			return;
 		} else {
 			return $rel;
@@ -269,7 +269,6 @@ sub related_readings {
 		my $check = [ $reading ];
 		my $iter = 0;
 		while( @$check ) {
-			$DB::single = 1 if $iter++ > 100;
 			my $more = [];
 			foreach my $r ( @$check ) {
 				foreach my $nr ( $self->graph->neighbors( $r ) ) {
