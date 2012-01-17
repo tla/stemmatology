@@ -44,7 +44,7 @@ sub index :Path :Args(0) {
 Serves a snippet of HTML that lists the available texts.  Eventually this will be available texts by user.
 
 =cut
-sub directory :Path :Args(0) {
+sub directory :Local :Args(0) {
 	my( $self, $c ) = @_;
     my $m = $c->model('Directory');
     # TODO not used yet, will load user texts later
@@ -55,7 +55,7 @@ sub directory :Path :Args(0) {
     		'id' => $id,
     		'name' => $m->name( $id ),
     	};
-    	push( @all_texts, $data );
+    	push( @textlist, $data );
     }
     
     $c->stash->{texts} = \@textlist;
@@ -70,7 +70,7 @@ Returns an alignment table for the text specified at $textid.
 
 =cut
 
-sub alignment :Path :Args(1) {
+sub alignment :Local :Args(1) {
 	my( $self, $c, $textid ) = @_;
 	my $m = $c->model('Directory');
 	my $collation = $m->tradition( $textid )->collation;
@@ -102,7 +102,7 @@ returns the SVG as with GET.
 
 =cut
 
-sub stemma :Path :Args(1) {
+sub stemma :Local :Args(1) {
 	my( $self, $c, $textid ) = @_;
 	my $m = $c->model('Directory');
 	my $tradition = $m->tradition( $textid );
@@ -126,122 +126,13 @@ Returns the 'dot' format representation of the current stemma hypothesis.
 
 =cut
 
-sub stemma :Path :Args(1) {
+sub stemmadot :Local :Args(1) {
 	my( $self, $c, $textid ) = @_;
 	my $m = $c->model('Directory');
 	my $tradition = $m->tradition( $textid );
 	
 	$c->response->body( $tradition->stemma->editable );
 	$c->forward('View::Plain');
-}
-
-=head2 relationships
-
-The relationship editor tool.
-
-=cut
-
-sub relationships :Local {
-	my( $self, $c ) = @_;
-	my $m = $c->model('Directory');
-	my $tradition = $m->tradition( $c->request->params->{'textid'} );
-	my $table = $tradition->collation->make_alignment_table();
-	my $witlist = map { $_->{'witness'} } @{$table->{'alignment'}};
-	$c->stash->{witnesses} = $witlist;
-	$c->stash->{alignment} = $table;
-	$c->stash->{template} = 'relate.tt';	
-}
-
-=head2 stexaminer
-
-The stemma analysis tool with the pretty colored table.
-
-=cut
-
-sub stexaminer :Local {
-    my( $self, $c ) = @_;
-    my $m = $c->model('Directory');
-	my $tradition = $m->tradition( $c->request->params->{'textid'} );
-	my $stemma = $tradition->stemma;
-	# TODO Think about caching the stemma in a session 
-	$c->stash->{svg} = $stemma->as_svg;
-	$c->stash->{text_title} = $tradition->name;
-	$c->stash->{template} = 'index.tt'; 
-	# TODO Run the analysis as AJAX from the loaded page.
-	my $t = run_analysis( $tradition );
-	$c->stash->{variants} = $t->{'variants'};
-	$c->stash->{total} = $t->{'variant_count'};
-	$c->stash->{genealogical} = $t->{'genealogical_count'};
-	$c->stash->{conflict} = $t->{'conflict_count'};
-}
-
-=head1 MICROSERVICE CALLS
-
-=head2 renderSVG
-
-Parse the passed collation data and return an SVG of the collated text.  Takes
-the following parameters:
-
-=over 4
-
-=item * data - The collation data itself.
-
-=item * input - The data format.  Valid values include CollateX, Self, TEI (for parallel segmentation) eventually Tabular.
-
-=item * name - A name for the text. Not so important for this function.
-
-=cut
-
-# Utility function to render SVG from a graph input.
-sub renderSVG :Local {
-	my( $self, $c ) = @_;
-	my $format = $c->request->param('format') || 'string';
-	my $type = $c->request->body_params->{'type'};
-	my $name = $c->request->param('name') || 'Collation graph';
-	my $data = $c->request->body_params->{'data'};
-	$c->log->debug( $data );
-	my $tradition = Text::Tradition->new( 
-		'name' => $name,
-		'input' => $type,
-		$format => $data,
-		);
-	$c->log->debug( "Got tradition with " . $tradition->collation->readings . " readings" );
-	$c->stash->{'result'} = $tradition->collation->as_svg;
-	$c->forward('View::SVG');
-}
-
-
-=head1 OPENSOCIAL URLs
-
-=head2 view_table
-
-Simple gadget to return the analysis table for the stexaminer
-
-=cut
-
-sub view_table :Local {
-    my( $self, $c ) = @_;
-    my $m = $c->model('Directory');
-	my $id = $c->request->params->{'textid'};
-	my $t = run_analysis( $m->tradition( $id ), $m->stemma( $id ) );
-   	$c->stash->{variants} = $t->{'variants'};
-    $c->stash->{template} = 'table_gadget.tt';
-}
-
-=head2 view_svg
-
-Simple gadget to return the SVG for a given stemma
-
-=cut
-
-sub view_svg :Local {
-    my( $self, $c ) = @_;
-    my $m = $c->model('Directory');
-    my $stemma = $m->tradition( $c->request->params->{'textid'} )->stemma;
-	if( $stemma ) {
-	   	$c->stash->{svg} = $stemma->as_svg;
-	}
-    $c->stash->{template} = 'stemma_gadget.tt';
 }
 
 =head2 default
