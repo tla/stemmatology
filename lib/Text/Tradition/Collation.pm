@@ -518,11 +518,26 @@ sub as_dot {
     my $graph_name = $self->tradition->name;
     $graph_name =~ s/[^\w\s]//g;
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
+
+    my %graph_attrs = (
+    	'rankdir' => 'LR',
+    	'bgcolor' => 'none',
+    	);
+    my %node_attrs = (
+    	'fontsize' => 11,
+    	'fillcolor' => 'white',
+    	'style' => 'filled',
+    	'shape' => 'ellipse'
+    	);
+    my %edge_attrs = ( 
+    	'arrowhead' => 'open',
+    	'color' => '#000000',
+    	'fontcolor' => '#000000',
+    	);
+
     my $dot = sprintf( "digraph %s {\n", $graph_name );
-    $dot .= "\tedge [ arrowhead=open ];\n";
-    $dot .= "\tgraph [ rankdir=LR,bgcolor=none ];\n";
-    $dot .= sprintf( "\tnode [ fontsize=%d, fillcolor=%s, style=%s, shape=%s ];\n",
-                     11, "white", "filled", "ellipse" );
+    $dot .= "\tgraph " . _dot_attr_string( \%graph_attrs ) . ";\n";
+    $dot .= "\tnode " . _dot_attr_string( \%node_attrs ) . ";\n";
 
 	# Output substitute start/end readings if necessary
 	if( $startrank ) {
@@ -549,19 +564,16 @@ sub as_dot {
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
-    	$DB::single = 1 if $edge->[0] =~ /n(8|13)/;
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {;
-			my %variables = ( 'color' => '#000000',
-							  'fontcolor' => '#000000',
-							  'label' => join( ', ', $self->path_display_label( $self->path_witnesses( $edge ) ) ),
-				);
-			my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+    		my $label = $self->path_display_label( $self->path_witnesses( $edge ) );
+			my $variables = { %edge_attrs, 'label' => $label };
 			# Account for the rank gap if necessary
 			my $rankgap = $self->reading( $edge->[1] )->rank 
 				- $self->reading( $edge->[0] )->rank;
-			$varopts .= ", minlen=$rankgap" if $rankgap > 1;
-			$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
-							 $edge->[0], $edge->[1], $varopts );
+			$variables->{'minlen'} = $rankgap if $rankgap > 1;
+			my $varopts = _dot_attr_string( $variables );
+			$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n", 
+				$edge->[0], $edge->[1], $varopts );
         } elsif( $used{$edge->[0]} ) {
         	$subend{$edge->[0]} = 1;
         } elsif( $used{$edge->[1]} ) {
@@ -571,25 +583,29 @@ sub as_dot {
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
     	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
-    	my %variables = ( 'color' => '#000000',
-                          'fontcolor' => '#000000',
-                          'label' => $witstr,
-            );
-        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-		$dot .= sprintf( "\t\"#SUBSTART#\" -> \"%s\" [ %s ];\n", $node, $varopts );
+    	my $variables = { %edge_attrs, 'label' => $witstr };
+        my $varopts = _dot_attr_string( $variables );
+        $dot .= "\t\"#SUBSTART#\" -> \"$node\" $varopts;";
 	}
     foreach my $node ( keys %subend ) {
     	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
-    	my %variables = ( 'color' => '#000000',
-                          'fontcolor' => '#000000',
-                          'label' => $witstr,
-            );
-        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-		$dot .= sprintf( "\t\"%s\" -> \"#SUBEND#\" [ %s ];\n", $node, $varopts );
+    	my $variables = { %edge_attrs, 'label' => $witstr };
+        my $varopts = _dot_attr_string( $variables );
+        $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
 	}
 	
     $dot .= "}\n";
     return $dot;
+}
+
+sub _dot_attr_string {
+	my( $hash ) = @_;
+	my @attrs;
+	foreach my $k ( sort keys %$hash ) {
+		my $v = $hash->{$k};
+		push( @attrs, $k.'="'.$v.'"' );
+	}
+	return( '[ ' . join( ', ', @attrs ) . ' ]' );
 }
 
 sub path_witnesses {
@@ -607,6 +623,7 @@ sub path_display_label {
 	my( $self, @wits ) = @_;
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
 	if( scalar @wits > $maj ) {
+		# TODO break out a.c. wits
 		return 'majority';
 	} else {
 		return join( ', ', @wits );
