@@ -532,17 +532,11 @@ sub as_dot {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
 	my %used;  # Keep track of the readings that actually appear in the graph
-	my %subedges;
-	my %subend;
     foreach my $reading ( $self->readings ) {
     	# Only output readings within our rank range.
     	next if $startrank && $reading->rank < $startrank;
     	next if $endrank && $reading->rank > $endrank;
         $used{$reading->id} = 1;
-        $subedges{$reading->id} = '#SUBSTART#' 
-        	if $startrank && $startrank == $reading->rank;
-        $subedges{$reading->id} = '#SUBEND#' 
-        	if $endrank && $endrank == $reading->rank;
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
         my $label = $reading->punctuated_form;
@@ -550,27 +544,16 @@ sub as_dot {
         $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
     }
     
-    # Add substitute start and end edges if necessary
-    foreach my $node ( keys %subedges ) {
-		my @vector = ( $subedges{$node}, $node );
-		@vector = reverse( @vector ) if $vector[0] =~ /END/;
-    	my $witstr = join( ', ', sort $self->reading_witnesses( $self->reading( $node ) ) );
-    	my %variables = ( 'color' => '#000000',
-                          'fontcolor' => '#000000',
-                          'label' => $witstr,
-            );
-        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
-		$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n", @vector, $varopts );
-	}
-	
 	# Add the real edges
     my @edges = $self->paths;
+	my( %substart, %subend );
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
+    	$DB::single = 1 if $edge->[0] =~ /n(8|13)/;
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {;
 			my %variables = ( 'color' => '#000000',
 							  'fontcolor' => '#000000',
-							  'label' => join( ', ', $self->path_display_label( $edge ) ),
+							  'label' => join( ', ', $self->path_display_label( $self->path_witnesses( $edge ) ) ),
 				);
 			my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
 			# Account for the rank gap if necessary
@@ -579,9 +562,32 @@ sub as_dot {
 			$varopts .= ", minlen=$rankgap" if $rankgap > 1;
 			$dot .= sprintf( "\t\"%s\" -> \"%s\" [ %s ];\n",
 							 $edge->[0], $edge->[1], $varopts );
+        } elsif( $used{$edge->[0]} ) {
+        	$subend{$edge->[0]} = 1;
+        } elsif( $used{$edge->[1]} ) {
+        	$substart{$edge->[1]} = 1;
         }
     }
-    
+    # Add substitute start and end edges if necessary
+    foreach my $node ( keys %substart ) {
+    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my %variables = ( 'color' => '#000000',
+                          'fontcolor' => '#000000',
+                          'label' => $witstr,
+            );
+        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+		$dot .= sprintf( "\t\"#SUBSTART#\" -> \"%s\" [ %s ];\n", $node, $varopts );
+	}
+    foreach my $node ( keys %subend ) {
+    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my %variables = ( 'color' => '#000000',
+                          'fontcolor' => '#000000',
+                          'label' => $witstr,
+            );
+        my $varopts = join( ', ', map { $_.'="'.$variables{$_}.'"' } sort keys %variables );
+		$dot .= sprintf( "\t\"%s\" -> \"#SUBEND#\" [ %s ];\n", $node, $varopts );
+	}
+	
     $dot .= "}\n";
     return $dot;
 }
@@ -598,8 +604,7 @@ sub path_witnesses {
 }
 
 sub path_display_label {
-	my( $self, $edge ) = @_;
-	my @wits = $self->path_witnesses( $edge );
+	my( $self, @wits ) = @_;
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
 	if( scalar @wits > $maj ) {
 		return 'majority';
