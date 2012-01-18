@@ -66,12 +66,6 @@ has 'linear' => (
     default => 1,
     );
     
-has 'collapse_punctuation' => (
-	is => 'rw',
-	isa => 'Bool',
-	default => 1,
-	);
-
 has 'ac_label' => (
     is => 'rw',
     isa => 'Str',
@@ -133,8 +127,6 @@ belongs. Required.
 transposed readings should be treated as two linked readings rather than one, 
 and therefore whether the collation graph is acyclic.  Defaults to true.
 
-=item * collapse_punctuation - TODO
-
 =item * baselabel - The default label for the path taken by a base text 
 (if any). Defaults to 'base text'.
 
@@ -153,8 +145,6 @@ the like.  Defaults to ' (a.c.)'.
 =head2 tradition
 
 =head2 linear
-
-=head2 collapse_punctuation
 
 =head2 wit_list_separator
 
@@ -554,7 +544,7 @@ sub as_dot {
         $used{$reading->id} = 1;
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
-        my $label = $reading->punctuated_form;
+        my $label = $reading->text;
         $label =~ s/\"/\\\"/g;
         $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
     }
@@ -774,7 +764,6 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         foreach my $d ( keys %node_data ) {
         	my $nval = $n->$d;
-        	$nval = $n->punctuated_form if $d eq 'text';
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
         }

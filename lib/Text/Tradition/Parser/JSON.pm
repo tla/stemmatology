@@ -87,7 +87,7 @@ sub parse {
 	my $table = from_json( $opts->{'string'} );
 	
 	# Create the witnesses
-    my @witnesses;
+	my @witnesses; # Keep the ordered list of our witnesses
     my %ac_wits;  # Track these for later removal
     foreach my $sigil ( map { $_->{'witness'} } @{$table->{'alignment'}} ) {
         my $wit = $tradition->add_witness( 'sigil' => $sigil );
@@ -163,19 +163,28 @@ $index.  Returns an array of readings of the same size as the original @tokenlis
 sub make_nodes {
 	my( $c, $idx, @tokens ) = @_;
 	my %unique;
-	my $ctr = 1;
-	foreach my $t ( @tokens ) {
-		next unless $t;
-		my $id = join( ',', $idx, $ctr++ );
-		my $rdg = Text::Tradition::Collation::Reading->new( 
-			'id' => $id, 'json' => $t, 'collation' => $c );
-		my $comptoken = $c->collapse_punctuation ? $rdg->text 
-			: $rdg->punctuated_form;
-		$unique{$comptoken} = $rdg;
-		$t->{'comptoken'} = $comptoken;
+	my @readings;
+	foreach my $j ( 0 .. $#tokens ) {
+		if( $tokens[$j] ) {
+			my $t = $tokens[$j];
+			my $rdg;
+			if( exists( $unique{$t->{'t'}} ) ) {
+				$rdg = $unique{$t->{'t'}};
+			} else {
+				my %args = ( 'id' => join( ',', $idx, $j+1 ),
+					'json' => $t,
+					'collation' => $c );
+				$args{'is_lacuna'} = 1 if $t->{'t'} eq '#LACUNA#';
+				$rdg = Text::Tradition::Collation::Reading->new( %args );
+				$unique{$t->{'t'}} = $rdg;
+			}
+			push( @readings, $rdg );
+		} else {
+			push( @readings, undef );
+		}
 	}
 	map { $c->add_reading( $_ ) } values( %unique );
-	return map { $_ && $unique{$_->{'comptoken'}} } @tokens;
+	return @readings;
 }
 
 1;

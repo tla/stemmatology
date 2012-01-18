@@ -82,22 +82,6 @@ has 'text' => (
 	writer => 'alter_text',
 	);
 	
-has 'punctuation' => (
-	traits => ['Array'],
-	isa => 'ArrayRef[HashRef[Str]]',
-	default => sub { [] },
-	handles => {
-			punctuation => 'elements',
-			add_punctuation => 'push',
-			},
-	);
-
-has 'separate_punctuation' => (
-	is => 'ro',
-	isa => 'Bool',
-	default => 1,
-	);
-
 has 'is_start' => (
 	is => 'ro',
 	isa => 'Bool',
@@ -143,18 +127,12 @@ around BUILDARGS => sub {
 	if( exists $args->{'json'} ) {
 		my $j = delete $args->{'json'};
 
-		# If we have separated punctuation and don't want it, restore it.
-		if( exists $j->{'punctuation'}
-			&& exists $args->{'separate_punctuation'}
-			&& !$args->{'separate_punctuation'} ) {
+		# If we have separated punctuation, restore it.
+		if( exists $j->{'punctuation'} ) {
 			$args->{'text'} = _restore_punct( $j->{'t'}, $j->{'punctuation'} );
-
-		# In all other cases, keep text and punct as they are.
 		} else {
 			$args->{'text'} = $j->{'t'};
-			# we don't use comparison or canonical forms here
-			$args->{'punctuation'} = $j->{'punctuation'}
-				if exists $j->{'punctuation'};
+			# we don't use comparison or canonical forms yet
 		}
 	}
 		
@@ -176,30 +154,7 @@ around BUILDARGS => sub {
 	$class->$orig( $args );
 };
 
-# Post-process the given text, stripping punctuation if we are asked.
-sub BUILD {
-	my $self = shift;
-	if( $self->separate_punctuation && !$self->is_meta
-		&& !$self->punctuation ) {
-		my $pos = 0;
-		my $wspunct = '';  # word sans punctuation
-		foreach my $char ( split( //, $self->text ) ) {
-			if( $char =~ /^[[:punct:]]$/ ) {
-				$self->add_punctuation( { 'char' => $char, 'pos' => $pos } );
-			} else {
-				$wspunct .= $char;
-			}
-			$pos++;
-		}
-		$self->alter_text( $wspunct );
-	}
-}
-
-sub punctuated_form {
-	my $self = shift;
-	return _restore_punct( $self->text, $self->punctuation );
-}
-
+# Utility function for parsing JSON from nCritic
 sub _restore_punct {
 	my( $word, @punct ) = @_;
 	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } @punct ) {
