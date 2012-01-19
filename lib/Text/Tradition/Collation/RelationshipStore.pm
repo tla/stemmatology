@@ -18,6 +18,14 @@ texts, particularly medieval ones.  The RelationshipStore is an internal object
 of the collation, to keep track of the defined relationships (both specific and
 general) between readings.
 
+=begin testing
+
+use Text::Tradition;
+
+use_ok( 'Text::Tradition::Collation::RelationshipStore' );
+
+=end testing
+
 =head1 METHODS
 
 =head2 new( collation => $collation );
@@ -50,6 +58,27 @@ has 'graph' => (
     },
 	);
 	
+=head2 get_relationship
+
+Return the relationship object, if any, that exists between two readings.
+
+=cut
+
+sub get_relationship {
+	my( $self, @vector ) = @_;
+	my $relationship;
+	if( $self->graph->has_edge_attribute( @vector, 'object' ) ) {
+		$relationship = $self->graph->get_edge_attribute( @vector, 'object' );
+	}
+	return $relationship;
+}
+
+sub _set_relationship {
+	my( $self, $relationship, @vector ) = @_;
+	$self->graph->add_edge( @vector );
+	$self->graph->set_edge_attribute( @vector, 'object', $relationship );
+}
+	
 =head2 create
 
 Create a new relationship with the given options and return it.
@@ -62,9 +91,8 @@ sub create {
 	# Check to see if a relationship exists between the two given readings
 	my $source = delete $options->{'orig_a'};
 	my $target = delete $options->{'orig_b'};
-	my $rel;
-	if( $self->graph->has_edge( $source, $target ) ) {
-		$rel = $self->graph->get_edge_attribute( $source, $target, 'object' );
+	my $rel = $self->get_relationship( $source, $target );
+	if( $rel ) {
 		if( $rel->type ne $options->{'type'} ) {
 			warn "Another relationship of type " . $rel->type 
 				. " already exists between $source and $target";
@@ -182,19 +210,15 @@ sub add_relationship {
     # Now set the relationship(s).
     my @pairs_set;
     foreach my $v ( @vectors ) {
-    	if( $self->graph->has_edge( @$v ) ) {
-    		# Is it locally scoped?
-    		my $rel = $self->graph->get_edge_attribute( @$v, 'object' );
-    		if( $rel->nonlocal ) {
-    			# TODO I think we should not be able to get here.
-    			warn "Found conflicting relationship at @$v";
-    		} else {
-    			warn "Not overriding local relationship set at @$v";
-    			next;
-    		}
+		my $rel = $self->get_relationship( @$v );
+    	if( $rel ) {
+    		my $warning = $rel->nonlocal
+    			? "Found conflicting relationship at @$v"
+    			: "Not overriding local relationship set at @$v";
+    		warn $warning;
+    		next;
     	}
-    	$self->graph->add_edge( @$v );
-    	$self->graph->set_edge_attribute( @$v, 'object', $relationship );
+    	$self->_set_relationship( $relationship, @$v );
     	push( @pairs_set, $v );
     }
     
@@ -272,7 +296,7 @@ sub related_readings {
 			my $more = [];
 			foreach my $r ( @$check ) {
 				foreach my $nr ( $self->graph->neighbors( $r ) ) {
-					if( $self->graph->get_edge_attribute( $r, $nr, 'object' )->colocated ) {
+					if( $self->get_relationship( $r, $nr )->colocated ) {
 						push( @$more, $nr ) unless exists $found{$nr};
 						$found{$nr} = 1;
 					}
@@ -311,15 +335,15 @@ sub merge_readings {
 		next if $combined;
 			
 		# If kept / rel already has a relationship, warn and keep the old
-		if( $self->graph->has_edge( @vector ) ) {
+		my $rel = $self->get_relationship( @vector );
+		if( $rel ) {
 			warn sprintf( "Readings %s and %s have existing relationship; dropping link with %s", @vector, $deleted );
 			next;
 		}
 		
 		# Otherwise, adopt the relationship that would be deleted.
-		my $rel = $self->graph->get_edge_attribute( @$edge, 'object' );
-		$self->graph->add_edge( @vector );
-		$self->graph->set_edge_attribute( @vector, 'object', $rel );
+		$rel = $self->get_relationship( @$edge );
+		$self->_set_relationship( $rel, @vector );
 	}
 	$self->delete_reading( $deleted );
 }
@@ -353,7 +377,7 @@ sub as_graphml {
 		$edge_el->setAttribute( 'target', $node_hash->{$e->[1]} );
 		$edge_el->setAttribute( 'id', 'e'.$edge_ctr++ );
 
-		my $rel_obj = $self->graph->get_edge_attribute( @$e, 'object' );
+		my $rel_obj = $self->get_relationship( @$e );
 		_add_graphml_data( $edge_el, $edge_keys->{'relationship'}, $rel_obj->type );
 		_add_graphml_data( $edge_el, $edge_keys->{'scope'}, $rel_obj->scope );
 		_add_graphml_data( $edge_el, $edge_keys->{'non_correctable'}, 
