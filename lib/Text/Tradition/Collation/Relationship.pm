@@ -14,6 +14,8 @@ no Moose::Util::TypeConstraints;
 
 =item * type - Can be one of spelling, orthographic, grammatical, meaning, lexical, collated, repetition, transposition.  All but the last two are only valid relationships between readings that occur at the same point in the text.
 
+=item * displayform - (Optional) The reading that should be displayed if the related nodes are treated as one.
+
 =item * non_correctable - (Optional) True if the reading would not have been corrected independently.
 
 =item * non_independent - (Optional) True if the variant is unlikely to have occurred independently in unrelated witnesses.
@@ -42,6 +44,12 @@ has 'reading_b' => (
 	required => 1,
 	);
 
+has 'displayform' => (
+	is => 'ro',
+	isa => 'Str',
+	predicate => 'has_displayform',
+	);
+
 has 'scope' => (
 	is => 'ro',
 	isa => 'RelationshipScope', 
@@ -59,7 +67,7 @@ has 'non_independent' => (
 	isa => 'Bool',
 	predicate => 'nonind_set',
 	);
-
+	
 # A read-only meta-Boolean attribute.
 sub colocated {
 	my $self = shift;
