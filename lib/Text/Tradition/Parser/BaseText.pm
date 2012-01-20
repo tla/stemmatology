@@ -47,7 +47,7 @@ sub parse {
     load( $format_mod );
     # TODO Handle a string someday if we ever have a format other than KUL
     my @apparatus_entries = $format_mod->can('read')->( $opts );
-    merge_base( $tradition->collation, $opts->{'base'}, @apparatus_entries );
+    merge_base( $tradition->collation, $opts, @apparatus_entries );
 }
 
 =item B<merge_base>
@@ -85,8 +85,8 @@ my $edits_required = {};
 # edits_required -> wit -> [ { start_idx, end_idx, items } ]
 
 sub merge_base {
-    my( $collation, $base_file, @app_entries ) = @_;
-    my @base_line_starts = read_base( $base_file, $collation );
+    my( $collation, $opts, @app_entries ) = @_;
+    my @base_line_starts = read_base( $opts->{'base'}, $collation );
 
     my %all_witnesses;
     foreach my $app ( @app_entries ) {
@@ -168,7 +168,7 @@ sub merge_base {
         my @lemma_set = $collation->reading_sequence( $lemma_start, 
                                                       $lemma_end );
         my @reading_sets = [ @lemma_set ];
-
+        
         # For each reading that is not rdg_0, we create the variant
         # reading nodes, and store the range as an edit operation on
         # the base text.
@@ -277,9 +277,11 @@ sub merge_base {
     }
 
     ### HACKY HACKY Do some one-off path corrections here.
-    require( 'data/boodts/s158.HACK' );
-    KUL::HACK::pre_path_hack( $collation );
-
+    if( $opts->{'input'} eq 'KUL' ) {
+		require 'data/boodts/s158.HACK';
+		KUL::HACK::pre_path_hack( $collation );
+	}
+	
     # Now walk paths and calculate positional rank.
     $collation->make_witness_paths();
     # Now delete any orphaned readings.
@@ -289,7 +291,7 @@ sub merge_base {
 		$collation->del_reading( $r );
 	}
 	
-    KUL::HACK::post_path_hack( $collation );
+    KUL::HACK::post_path_hack( $collation ) if $opts->{'input'} eq 'KUL';
     # Have to check relationship validity at this point, because before that
     # we had no paths.
 #     foreach my $rel ( $collation->relationships ) {
@@ -299,7 +301,7 @@ sub merge_base {
 #                             $rel->type, $rel->from->id, $rel->to->id );
 #         }
 #     }
-    $collation->calculate_ranks();
+    # $collation->calculate_ranks();
 }
 
 =item B<read_base>

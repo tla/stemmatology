@@ -73,6 +73,41 @@ if( $t ) {
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 
+# Check that we have the right witnesses
+my %seen_wits;
+map { $seen_wits{$_} = 0 } qw/ A B C D E F G H K P Q S T /;
+foreach my $wit ( $t->witnesses ) {
+	$seen_wits{$wit->sigil} = 1;
+}
+is( scalar keys %seen_wits, 13, "No extra witnesses were made" );
+foreach my $k ( keys %seen_wits ) {
+	ok( $seen_wits{$k}, "Witness $k still exists" );
+}
+
+# Check that the witnesses have the right texts
+foreach my $wit ( $t->witnesses ) {
+	my $origtext = join( ' ', @{$wit->text} );
+	my $graphtext = $t->collation->path_text( $wit->sigil );
+	is( $graphtext, $origtext, "Collation matches original for witness " . $wit->sigil );
+}
+
+# Check that the a.c. witnesses have the right text
+map { $seen_wits{$_} = 0 } qw/ A B C D F G H K S /;
+foreach my $k ( keys %seen_wits ) {
+	my $wit = $t->witness( $k );
+	if( $seen_wits{$k} ) {
+		ok( $wit->is_layered, "Witness $k got marked as layered" );
+		ok( $wit->has_layertext, "Witness $k has an a.c. version" );
+		my $origtext = join( ' ', @{$wit->layertext} );
+		my $acsig = $wit->sigil . $t->collation->ac_label;
+		my $graphtext = $t->collation->path_text( $acsig, $wit->sigil );
+		is( $graphtext, $origtext, "Collation matches original a.c. for witness $k" );
+	} else {
+		ok( !$wit->is_layered, "Witness $k not marked as layered" );
+		ok( !$wit->has_layertext, "Witness $k has no a.c. version" );
+	}
+}	
+
 =end testing
 
 =cut
@@ -111,16 +146,28 @@ sub parse {
 
     # Set up the witnesses we find in the first line
     my @witnesses;
-    my %ac_wits;  # Track these for later removal
+    my %ac_wits;  # Track layered witness -> main witness mapping
     foreach my $sigil ( @{$alignment_table->[0]} ) {
         my $wit = $tradition->add_witness( 'sigil' => $sigil );
         $wit->path( [ $c->start ] );
         push( @witnesses, $wit );
         my $aclabel = $c->ac_label;
         if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
-            $ac_wits{$1} = $wit;
+            $ac_wits{$sigil} = $1;
         }
     }
+    
+    # Save the original witness text sequences. Have to loop back through
+    # the witness columns after we have identified all the a.c. witnesses.
+    foreach my $idx ( 0 .. $#{$alignment_table->[0]} ) {
+    	my @sequence = map { $_->[$idx] } @{$alignment_table};
+    	my $sigil = shift @sequence;
+    	my $is_layer = exists( $ac_wits{$sigil} );
+    	my $wit = $tradition->witness( $is_layer ? $ac_wits{$sigil} : $sigil );	
+    	# Now get rid of gaps and meta-readings like #LACUNA#
+    	my @words = grep { $_ && $_ !~ /^\#.*\#$/ } @sequence;
+    	$is_layer ? $wit->layertext( \@words ) : $wit->text( \@words );
+    }    
     
     # Now for the next rows, make nodes as necessary, assign their ranks, and 
     # add them to the witness paths.
@@ -159,9 +206,9 @@ sub parse {
     # Fold any a.c. witnesses into their main witness objects, and
     # delete the independent a.c. versions.
     foreach my $a ( keys %ac_wits ) {
-        my $main_wit = $tradition->witness( $a );
+    	my $ac_wit = $tradition->witness( $a );
+        my $main_wit = $tradition->witness( $ac_wits{$a} );
         next unless $main_wit;
-        my $ac_wit = $ac_wits{$a};
         $main_wit->uncorrected_path( $ac_wit->path );
         $tradition->del_witness( $ac_wit );
     }

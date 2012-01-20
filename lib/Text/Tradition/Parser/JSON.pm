@@ -76,6 +76,24 @@ if( $t ) {
     is( scalar $t->witnesses, 3, "Collation has all witnesses" );
 }
 
+my %seen_wits;
+map { $seen_wits{$_} = 0 } qw/ A B C /;
+# Check that we have the right witnesses
+foreach my $wit ( $t->witnesses ) {
+	$seen_wits{$wit->sigil} = 1;
+}
+is( scalar keys %seen_wits, 3, "No extra witnesses were made" );
+foreach my $k ( keys %seen_wits ) {
+	ok( $seen_wits{$k}, "Witness $k still exists" );
+}
+
+# Check that the witnesses have the right texts
+foreach my $wit ( $t->witnesses ) {
+	my $origtext = join( ' ', @{$wit->text} );
+	my $graphtext = $t->collation->path_text( $wit->sigil );
+	is( $graphtext, $origtext, "Collation matches original for witness " . $wit->sigil );
+}
+
 =end testing
 
 =cut
@@ -95,9 +113,22 @@ sub parse {
         push( @witnesses, $wit );
         my $aclabel = $c->ac_label;
         if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
-            $ac_wits{$1} = $wit;
+            $ac_wits{$sigil} = $1;
         }
     }
+    
+    # Save the original witness text for consistency checking. We do this
+    # in a separate loop to make sure we have all base witnesses defined,
+    # and to make sure that our munging and comparing later doesn't affect
+    # the original text.
+    foreach my $intext ( @{$table->{'alignment'}} ) {
+    	my $rs = $intext->{'witness'};
+    	my $is_layer = exists $ac_wits{$rs};
+    	my $wit = $tradition->witness( $is_layer ? $ac_wits{$rs} : $rs );
+    	my @tokens = grep { $_ && $_->{'t'} !~ /^\#.*\#$/ } @{$intext->{'tokens'}};
+    	my @words = map { _restore_punct( $_ ) } @tokens;
+    	$is_layer ? $wit->layertext( \@words ) : $wit->text( \@words );
+	}
 
 	# Create the readings in each row
     my $length = exists $table->{'length'}
@@ -138,9 +169,9 @@ sub parse {
     # Fold any a.c. witnesses into their main witness objects, and
     # delete the independent a.c. versions.
     foreach my $a ( keys %ac_wits ) {
-        my $main_wit = $tradition->witness( $a );
+    	my $ac_wit = $tradition->witness( $a );
+        my $main_wit = $tradition->witness( $ac_wits{$a} );
         next unless $main_wit;
-        my $ac_wit = $ac_wits{$a};
         $main_wit->uncorrected_path( $ac_wit->path );
         $tradition->del_witness( $ac_wit );
     }
@@ -166,17 +197,17 @@ sub make_nodes {
 	my @readings;
 	foreach my $j ( 0 .. $#tokens ) {
 		if( $tokens[$j] ) {
-			my $t = $tokens[$j];
+			my $word = _restore_punct( $tokens[$j] );
 			my $rdg;
-			if( exists( $unique{$t->{'t'}} ) ) {
-				$rdg = $unique{$t->{'t'}};
+			if( exists( $unique{$word} ) ) {
+				$rdg = $unique{$word};
 			} else {
 				my %args = ( 'id' => join( ',', $idx, $j+1 ),
-					'json' => $t,
+					'text' => $word,
 					'collation' => $c );
-				$args{'is_lacuna'} = 1 if $t->{'t'} eq '#LACUNA#';
+				$args{'is_lacuna'} = 1 if $word eq '#LACUNA#';
 				$rdg = Text::Tradition::Collation::Reading->new( %args );
-				$unique{$t->{'t'}} = $rdg;
+				$unique{$word} = $rdg;
 			}
 			push( @readings, $rdg );
 		} else {
@@ -186,6 +217,17 @@ sub make_nodes {
 	map { $c->add_reading( $_ ) } values( %unique );
 	return @readings;
 }
+
+# Utility function for parsing JSON from nCritic
+sub _restore_punct {
+	my( $token ) = @_;
+	my $word = $token->{'t'};
+	return $word unless exists $token->{'punctuation'};
+	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } @{$token->{'punctuation'}} ) {
+		substr( $word, $p->{pos}, 0, $p->{char} );
+	}
+	return $word;
+}	
 
 1;
 

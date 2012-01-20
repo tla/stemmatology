@@ -122,20 +122,7 @@ around BUILDARGS => sub {
 	} else {
 		$args = { @_ };
 	}
-	
-	# Did we get a JSON token to parse into a reading?  If so, massage it.
-	if( exists $args->{'json'} ) {
-		my $j = delete $args->{'json'};
-
-		# If we have separated punctuation, restore it.
-		if( exists $j->{'punctuation'} ) {
-			$args->{'text'} = _restore_punct( $j->{'t'}, $j->{'punctuation'} );
-		} else {
-			$args->{'text'} = $j->{'t'};
-			# we don't use comparison or canonical forms yet
-		}
-	}
-		
+			
 	# If one of our special booleans is set, we change the text and the
 	# ID to match.
 	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
@@ -153,15 +140,6 @@ around BUILDARGS => sub {
 	
 	$class->$orig( $args );
 };
-
-# Utility function for parsing JSON from nCritic
-sub _restore_punct {
-	my( $word, @punct ) = @_;
-	foreach my $p ( sort { $a->{pos} <=> $b->{pos} } @punct ) {
-		substr( $word, $p->{pos}, 0, $p->{char} );
-	}
-	return $word;
-}	
 
 =head2 is_meta
 

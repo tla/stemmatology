@@ -104,6 +104,12 @@ has 'text' => (
 	isa => 'ArrayRef[Str]',
 	predicate => 'has_text',
 	);
+	
+has 'layertext' => (
+	is => 'rw',
+	isa => 'ArrayRef[Str]',
+	predicate => 'has_layertext',
+	);
 
 # Source.  This is where we read in the witness, if not from a
 # pre-prepared collation.  It is probably a filename.

@@ -558,9 +558,13 @@ sub as_dot {
     		my $label = $self->path_display_label( $self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
 			# Account for the rank gap if necessary
-			my $rankgap = $self->reading( $edge->[1] )->rank 
+			if( $self->reading( $edge->[1] )->has_rank 
+				&& $self->reading( $edge->[0] )->has_rank
+				&& $self->reading( $edge->[1] )->rank 
+				- $self->reading( $edge->[0] )->rank > 1 ) {
+				$variables->{'minlen'} = $self->reading( $edge->[1] )->rank 
 				- $self->reading( $edge->[0] )->rank;
-			$variables->{'minlen'} = $rankgap if $rankgap > 1;
+			}
 			my $varopts = _dot_attr_string( $variables );
 			$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n", 
 				$edge->[0], $edge->[1], $varopts );
@@ -954,6 +958,7 @@ used wherever no path exists for $sigil or $backup.
 =cut
 
 # TODO Think about returning some lazy-eval iterator.
+# TODO Get rid of backup; we should know from what witness is whether we need it.
 
 sub reading_sequence {
     my( $self, $start, $end, $witness, $backup ) = @_;
@@ -1072,8 +1077,25 @@ sub _witnesses_of_label {
     my $regex = $self->wit_list_separator;
     my @answer = split( /\Q$regex\E/, $label );
     return @answer;
-}    
+}
 
+=head2 path_text( $sigil, $mainsigil [, $start, $end ] )
+
+Returns the text of a witness (plus its backup, if we are using a layer)
+as stored in the collation.  The text is returned as a string, where the
+individual readings are joined with spaces and the meta-readings (e.g.
+lacunae) are omitted.  Optional specification of $start and $end allows
+the generation of a subset of the witness text.
+
+=cut
+
+sub path_text {
+	my( $self, $wit, $backup, $start, $end ) = @_;
+	$start = $self->start unless $start;
+	$end = $self->end unless $end;
+	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit, $backup );
+	return join( ' ', map { $_->text } @path );
+}
 
 =head1 INITIALIZATION METHODS
 
