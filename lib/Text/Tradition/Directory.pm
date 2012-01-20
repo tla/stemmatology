@@ -115,11 +115,11 @@ has +typemap => (
 
 has tradition_index => (
     traits => ['Hash'],
-    isa => 'HashRef[Str]',
+    isa => 'HashRef[HashRef[Str]]',
     handles => {
         add_index		=> 'set',
         del_index		=> 'delete',
-        name			=> 'get',
+        info			=> 'get',
         tradition_ids	=> 'keys',
     },
     default => sub { {} },
@@ -133,7 +133,8 @@ sub BUILD {
 		foreach my $obj ( $stream->items ) {
 			my $uuid = $self->object_to_id( $obj );
 			if( ref( $obj ) eq 'Text::Tradition' ) {
-				 $self->add_index( $uuid => $obj->name );
+				 $self->add_index( $uuid => { 'name' => $obj->name, 
+				 	'id' => $uuid, 'has_stemma' => $obj->has_stemma } );
 			} else {
 				warn "Found root object in DB that is not a Text::Tradition";
 			}
@@ -167,7 +168,8 @@ sub save {
 		return;
 	}
 	my $uuid = $self->store( $obj );
-	$self->add_index( $uuid => $obj->name ) if $uuid;
+	$self->add_index( $uuid => { 'name' => $obj->name, 
+				 	'id' => $uuid, 'has_stemma' => $obj->has_stemma } ) if $uuid;
 	return $uuid;
 }
 
