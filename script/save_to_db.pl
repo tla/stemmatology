@@ -11,11 +11,12 @@ use Text::Tradition::Directory;
 binmode( STDOUT, ':utf8' );
 binmode( STDERR, ':utf8' );
 
-my( $tfile, $sfile, $delete, $list, $dsn ) = 
-	( undef, undef, undef, 0, 'dbi:SQLite:dbname=db/traditions.db' );
+my( $tfile, $format, $sfile, $delete, $list, $dsn ) = 
+	( undef, 'Self', undef, undef, 0, 'dbi:SQLite:dbname=db/traditions.db' );
 
 GetOptions( 
 	't|tradition=s' => \$tfile,
+	'f|format=s' => \$format,
 	's|stemma=s' => \$sfile,
 	'l|list' => \$list,
 	'd|delete=s' => \$delete,
@@ -43,7 +44,7 @@ my( $tradition, $stemma );
 if( $tfile ) {
 	print STDERR "Reading tradition from $tfile\n";
 	$tradition = Text::Tradition->new( 
-		'input' => 'Self',
+		'input' => $format,
 		'file' => $tfile,
 		'linear' => 1,
 		);
