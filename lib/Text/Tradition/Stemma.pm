@@ -6,6 +6,7 @@ use File::Temp;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
+use Text::Tradition::Error;
 use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
 use Moose;
 
@@ -57,7 +58,7 @@ sub graph_from_dot {
 				unless $self->graph->has_vertex_attribute( $v, 'class' );
 		}
 	} else {
-		warn "Failed to parse dot in $dotfh";
+		throw( "Failed to parse dot in $dotfh" );
 	}
 }
 
@@ -201,7 +202,7 @@ before 'distance_trees' => sub {
             $self->_save_distance_trees( $trees );
             $self->distance_program( $args{'program'} );
         } else {
-            warn "Failed to calculate distance trees: $result";
+            throw( "Failed to calculate distance trees: $result" );
         }
     }
 };
@@ -211,6 +212,14 @@ sub run_phylip_pars {
 	my $cdata = character_input( $self->collation->make_alignment_table() );
 	return phylip_pars( $cdata );
 }
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Stemma error',
+		'message' => $_[0],
+		);
+}
+
 
 no Moose;
 __PACKAGE__->meta->make_immutable;

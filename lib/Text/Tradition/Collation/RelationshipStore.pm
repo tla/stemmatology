@@ -2,6 +2,7 @@ package Text::Tradition::Collation::RelationshipStore;
 
 use strict;
 use warnings;
+use Text::Tradition::Error;
 use Text::Tradition::Collation::Relationship;
 
 use Moose;
@@ -94,9 +95,8 @@ sub create {
 	my $rel = $self->get_relationship( $source, $target );
 	if( $rel ) {
 		if( $rel->type ne $options->{'type'} ) {
-			warn "Another relationship of type " . $rel->type 
-				. " already exists between $source and $target";
-			return;
+			throw( "Another relationship of type " . $rel->type 
+				. " already exists between $source and $target" );
 		} else {
 			return $rel;
 		}
@@ -108,8 +108,7 @@ sub create {
 	if( $rel && $rel->type eq $options->{'type'} ) {
 		return $rel;
 	} elsif( $rel ) {
-		warn sprintf( "Relationship of type %s with scope %s already defined for readings %s and %s", $rel->type, $rel->scope, $options->{'reading_a'}, $options->{'reading_b'} );
-		return;
+		throw( sprintf( "Relationship of type %s with scope %s already defined for readings %s and %s", $rel->type, $rel->scope, $options->{'reading_a'}, $options->{'reading_b'} ) );
 	} else {
 		$rel = Text::Tradition::Collation::Relationship->new( $options );
 		$self->add_scoped_relationship( $rel ) if $rel->nonlocal;
@@ -173,7 +172,7 @@ sub add_relationship {
 	my( $is_valid, $reason ) = 
 		$self->relationship_valid( $source, $target, $options->{'type'} );
     unless( $is_valid ) {
-        return ( undef, $reason );
+        throw( "Invalid relationship: $reason" );
     }
     
     # Try to create the relationship object.
@@ -181,8 +180,7 @@ sub add_relationship {
     $options->{'reading_b'} = $target_rdg->text;
     $options->{'orig_a'} = $source;
     $options->{'orig_b'} = $target;
-    my $relationship = $self->create( $options );
-	return( undef, "Relationship creation failed" ) unless $relationship;
+    my $relationship = $self->create( $options );  # Will throw on error
 
 	# Find all the pairs for which we need to set the relationship.
 	my @vectors = ( [ $source, $target ] );	
@@ -212,17 +210,18 @@ sub add_relationship {
     foreach my $v ( @vectors ) {
 		my $rel = $self->get_relationship( @$v );
     	if( $rel ) {
-    		my $warning = $rel->nonlocal
-    			? "Found conflicting relationship at @$v"
-    			: "Not overriding local relationship set at @$v";
-    		warn $warning;
+    		if( $rel->nonlocal ) {
+    			throw( "Found conflicting relationship at @$v" );
+    		} else {
+    			warn "Not overriding local relationship set at @$v";
+    		}
     		next;
     	}
     	$self->_set_relationship( $relationship, @$v );
     	push( @pairs_set, $v );
     }
     
-    return( 1, @pairs_set );
+    return @pairs_set;
 }
 
 =head2 relationship_valid( $source, $target, $type )
@@ -401,6 +400,13 @@ sub _add_graphml_data {
     my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
     $data_el->setAttribute( 'key', $key );
     $data_el->appendText( $value );
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Relationship error',
+		'message' => $_[0],
+		);
 }
 
 no Moose;

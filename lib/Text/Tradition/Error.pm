@@ -5,16 +5,17 @@ use warnings;
 use Moose;
 use overload '""' => \&_stringify, 'fallback' => 1;
 
-with qw/ Throwable::X /;
+with qw/ Throwable::X StackTrace::Auto /;
 use Throwable::X -all;
 
 sub _stringify {
 	my $self = shift;
-	return "Error: " . $self->ident . " // " . $self->message;
+	return "Error: " . $self->ident . " // " . $self->message
+		. "\n" . $self->stack_trace->as_string;
 }
 
 no Moose;
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 
 =head1 NAME
 

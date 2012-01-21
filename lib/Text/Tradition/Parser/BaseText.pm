@@ -3,7 +3,9 @@ package Text::Tradition::Parser::BaseText;
 use strict;
 use warnings;
 use Module::Load;
-use Text::Tradition::Parser::Util qw( collate_variants cmp_str check_for_repeated add_hash_entry );
+use TryCatch;
+use Text::Tradition::Parser::Util qw( collate_variants cmp_str 
+	check_for_repeated add_hash_entry );
 
 =head1 NAME
 
@@ -392,10 +394,20 @@ sub set_relationships {
                     $r->id ne $labels{$r->text}->id ) {
                     if( $type eq 'repetition' ) {
                         # Repetition
-                        $collation->add_relationship( $r, $labels{$r->text}, \%rel_options );
+                        try {
+                        	$collation->add_relationship( $r, $labels{$r->text}, \%rel_options );
+                        } catch( Text::Tradition::Error $e ) {
+                        	warn "Could not set repetition relationship $r -> " 
+                        		. $labels{$r->text} . ": " . $e->message;
+                        }
                     } else {
                         # Transposition
-                        $r->set_identical( $labels{$r->text} );
+                    	try {
+                       		$r->set_identical( $labels{$r->text} );
+                        } catch( Text::Tradition::Error $e ) {
+                        	warn "Could not set transposition relationship $r -> " 
+                        		. $labels{$r->text} . ": " . $e->message;
+                        }
                     }
                 }
             }
@@ -413,8 +425,13 @@ sub set_relationships {
             $rel_options{'equal_rank'} = 1;
             if( @$lemma == @$var ) {
                 foreach my $i ( 0 .. $#{$lemma} ) {
-                    $collation->add_relationship( $var->[$i], $lemma->[$i],
-                        \%rel_options );
+                	try {
+						$collation->add_relationship( $var->[$i], $lemma->[$i],
+							\%rel_options );
+					} catch( Text::Tradition::Error $e ) {
+						warn "Could not set $type relationship " . $var->[$i] . " -> " 
+							. $lemma->[$i] . ": " . $e->message;
+					}
                 } 
             } else {
                 # An uneven many-to-many mapping.  Skip for now.
@@ -422,9 +439,9 @@ sub set_relationships {
                 # my $lemseg = @$lemma > 1 ? $collation->add_segment( @$lemma ) : $lemma->[0];
                 # my $varseg = @$var > 1 ? $collation->add_segment( @$var ) : $var->[0];
                 # $collation->add_relationship( $varseg, $lemseg, \%rel_options );
-                if( @$lemma == 1 && @$var == 1 ) {
-                    $collation->add_relationship( $lemma->[0], $var->[0], \%rel_options );
-                }
+                # if( @$lemma == 1 && @$var == 1 ) {
+                #     $collation->add_relationship( $lemma->[0], $var->[0], \%rel_options );
+                # }
             }
         } elsif( $type !~ /^(add|om|lex)$/i ) {
             warn "Unrecognized type $type";

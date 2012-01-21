@@ -21,6 +21,7 @@ requires( 'KiokuX::Model' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
+requires( 'StackTrace::Auto' );
 requires( 'Text::CSV_XS' );
 requires( 'Text::CSV::Simple' ); # TODO delete
 requires( 'Throwable::X' );

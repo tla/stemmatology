@@ -7,6 +7,7 @@ use IPC::Run qw( run binary );
 use Text::CSV_XS;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
+use Text::Tradition::Error;
 use XML::LibXML;
 use Moose;
 
@@ -246,8 +247,7 @@ sub add_reading {
 	}
 	# First check to see if a reading with this ID exists.
 	if( $self->reading( $reading->id ) ) {
-		warn "Collation already has a reading with id " . $reading->id;
-		return undef;
+		throw( "Collation already has a reading with id " . $reading->id );
 	}
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
@@ -401,11 +401,11 @@ sub clear_witness {
 sub add_relationship {
 	my $self = shift;
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
-    my( $ret, @vectors ) = $self->relations->add_relationship( $source, 
+    my( @vectors ) = $self->relations->add_relationship( $source, 
     	$self->reading( $source ), $target, $self->reading( $target ), $opts );
     # Force a full rank recalculation every time. Yuck.
-    $self->calculate_ranks() if $ret && $self->end->has_rank;
-    return( $ret, @vectors );
+    $self->calculate_ranks() if $self->end->has_rank;
+    return @vectors;
 }
 
 =head2 reading_witnesses( $reading )
@@ -465,8 +465,7 @@ sub svg_subgraph {
     
     my $dot = $self->as_dot( $from, $to );
     unless( $dot ) {
-    	warn "Could not output a graph with range $from - $to";
-    	return;
+    	throw( "Could not output a graph with range $from - $to" );
     }
     
     my @cmd = qw/dot -Tsvg/;
@@ -867,8 +866,7 @@ keys have a true hash value will be included.
 sub make_alignment_table {
     my( $self, $noderefs, $include ) = @_;
     unless( $self->linear ) {
-        warn "Need a linear graph in order to make an alignment table";
-        return;
+        throw( "Need a linear graph in order to make an alignment table" );
     }
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
@@ -969,23 +967,21 @@ sub reading_sequence {
     my $n = $start;
     while( $n && $n->id ne $end->id ) {
         if( exists( $seen{$n->id} ) ) {
-            warn "Detected loop at " . $n->id;
-            last;
+            throw( "Detected loop for $witness at " . $n->id );
         }
         $seen{$n->id} = 1;
         
         my $next = $self->next_reading( $n, $witness );
         unless( $next ) {
-            warn "Did not find any path for $witness from reading " . $n->id;
-            last;
+            throw( "Did not find any path for $witness from reading " . $n->id );
         }
         push( @readings, $next );
         $n = $next;
     }
     # Check that the last reading is our end reading.
     my $last = $readings[$#readings];
-    warn "Last reading found from " . $start->text .
-        " for witness $witness is not the end!"
+    throw( "Last reading found from " . $start->text .
+        " for witness $witness is not the end!" ) # TODO do we get this far?
         unless $last->id eq $end->id;
     
     return @readings;
@@ -1212,8 +1208,12 @@ sub calculate_ranks {
         if( defined $node_ranks->{$rel_containers{$r->id}} ) {
             $r->rank( $node_ranks->{$rel_containers{$r->id}} );
         } else {
-            die "No rank calculated for node " . $r->id 
-                . " - do you have a cycle in the graph?";
+        	# Die. Find the last rank we calculated.
+        	my @all_defined = sort { $node_ranks->{$rel_containers{$a->id}}
+        			 <=> $node_ranks->{$rel_containers{$b->id}} }
+        		$self->readings;
+        	my $last = pop @all_defined;
+            throw( "Ranks not calculated after $last - do you have a cycle in the graph?" );
         }
     }
 }
@@ -1371,6 +1371,13 @@ sub common_in_path {
 	}
 	my @answer = sort { $a->rank <=> $b->rank } @candidates;
 	return $dir eq 'predecessors' ? pop( @answer ) : shift ( @answer );
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Collation error',
+		'message' => $_[0],
+		);
 }
 
 no Moose;
