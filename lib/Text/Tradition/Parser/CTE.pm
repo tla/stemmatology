@@ -110,6 +110,10 @@ sub parse {
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
     expand_all_paths( $c );
+
+    # Save the text for each witness so that we can ensure consistency
+    # later on
+	$tradition->collation->text_from_paths();	
 }
 
 sub _stringify_sigil {
@@ -331,7 +335,7 @@ sub expand_all_paths {
         $wit->path( \@path );
         if( $has_ac{$sig} ) {
             my @ac_path = grep { !$_->is_ph } 
-                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label, $sig );
+                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label );
             $wit->uncorrected_path( \@ac_path );
         }
     }   

@@ -6,6 +6,7 @@ use Moose;
 use KiokuDB::GC::Naive;
 use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
+use Text::Tradition::Error;
 
 extends 'KiokuX::Model';
 
@@ -53,7 +54,7 @@ Writes the given tradition to the database, returning its ID.
 
 =begin testing
 
-use Test::Warn;
+use TryCatch;
 use File::Temp;
 use Text::Tradition;
 use_ok 'Text::Tradition::Directory';
@@ -62,39 +63,76 @@ my $fh = File::Temp->new();
 my $file = $fh->filename;
 $fh->close;
 my $dsn = "dbi:SQLite:dbname=$file";
-
-my $d = Text::Tradition::Directory->new( 'dsn' => $dsn,
-	'extra_args' => { 'create' => 1 } );
-is( ref $d, 'Text::Tradition::Directory', "Got directory object" );
-
-my $scope = $d->new_scope;
+my $uuid;
 my $t = Text::Tradition->new( 
 	'name'  => 'inline', 
 	'input' => 'Tabular',
 	'file'  => 't/data/simple.txt',
 	);
-my $uuid = $d->save( $t );
-ok( $uuid, "Saved test tradition" );
 
-my $s = $t->add_stemma( 't/data/simple.dot' );
-ok( $d->save( $t ), "Updated tradition with stemma" );
-is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
-is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );
-warning_like { $d->save( $s ) } qr/not a Text::Tradition/, "Correctly failed to save stemma directly";
+{
+	my $d = Text::Tradition::Directory->new( 'dsn' => $dsn,
+		'extra_args' => { 'create' => 1 } );
+	is( ref $d, 'Text::Tradition::Directory', "Got directory object" );
+	
+	my $scope = $d->new_scope;
+	$uuid = $d->save( $t );
+	ok( $uuid, "Saved test tradition" );
+	
+	my $s = $t->add_stemma( 't/data/simple.dot' );
+	ok( $d->save( $t ), "Updated tradition with stemma" );
+	is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
+	is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );
+	try {
+		$d->save( $s );
+	} catch( Text::Tradition::Error $e ) {
+		is( $e->ident, 'database error', "Got exception trying to save stemma directly" );
+		like( $e->message, qr/Cannot directly save non-Tradition object/, 
+			"Exception has correct message" );
+	}
+}
+my $nt = Text::Tradition->new(
+	'name' => 'CX',
+	'input' => 'CollateX',
+	'file' => 't/data/Collatex-16.xml',
+	);
+is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 
-my $e = Text::Tradition::Directory->new( 'dsn' => $dsn );
-$scope = $e->new_scope;
-is( scalar $e->tradition_ids, 1, "Directory index has our tradition" );
-my $te = $e->tradition( $uuid );
-is( $te->name, $t->name, "Retrieved the tradition from a new directory" );
-my $sid = $e->object_to_id( $te->stemma );
-warning_like { $e->tradition( $sid ) } qr/not a Text::Tradition/, "Did not retrieve stemma via tradition call";
-warning_like { $e->delete( $sid ) } qr/Cannot directly delete non-Tradition object/, "Stemma object not deleted from DB";
-$e->delete( $uuid );
-ok( !$e->exists( $uuid ), "Object is deleted from DB" );
-ok( !$e->exists( $sid ), "Object stemma also deleted from DB" );
-is( scalar $e->tradition_ids, 0, "Object is deleted from index" );
+{
+	my $f = Text::Tradition::Directory->new( 'dsn' => $dsn );
+	my $scope = $f->new_scope;
+	is( scalar $f->tradition_ids, 1, "Directory index has our tradition" );
+	my $nuuid = $f->save( $nt );
+	ok( $nuuid, "Stored second tradition" );
+	is( scalar $f->tradition_ids, 2, "Directory index has both traditions" );
+	my $tf = $f->tradition( $uuid );
+	is( $tf->name, $t->name, "Retrieved the tradition from a new directory" );
+	my $sid = $f->object_to_id( $tf->stemma );
+	try {
+		$f->tradition( $sid );
+	} catch( Text::Tradition::Error $e ) {
+		is( $e->ident, 'database error', "Got exception trying to fetch stemma directly" );
+		like( $e->message, qr/not a Text::Tradition/, "Exception has correct message" );
+	}
+	try {
+		$f->delete( $sid );
+	} catch( Text::Tradition::Error $e ) {
+		is( $e->ident, 'database error', "Got exception trying to delete stemma directly" );
+		like( $e->message, qr/Cannot directly delete non-Tradition object/, 
+			"Exception has correct message" );
+	}
+	$f->delete( $uuid );
+	ok( !$f->exists( $uuid ), "Object is deleted from DB" );
+	ok( !$f->exists( $sid ), "Object stemma also deleted from DB" );
+	is( scalar $f->tradition_ids, 1, "Object is deleted from index" );
+}
 
+SKIP: {
+	skip 'Have yet to figure out garbage collection', 1;
+	my $g = Text::Tradition::Directory->new( 'dsn' => $dsn );
+	my $scope = $g->new_scope;
+	is( scalar $g->tradition_ids, 1, "Now one object in new directory index" );
+}
 
 =end testing
 
@@ -113,75 +151,58 @@ has +typemap => (
 	},
 );
 
-has tradition_index => (
-    traits => ['Hash'],
-    isa => 'HashRef[HashRef[Str]]',
-    handles => {
-        add_index		=> 'set',
-        del_index		=> 'delete',
-        info			=> 'get',
-        tradition_ids	=> 'keys',
-    },
-    default => sub { {} },
-    );
-
-# Populate the tradition index.
-sub BUILD {
+before [ qw/ store update insert delete / ] => sub {
 	my $self = shift;
-	my $stream = $self->root_set;
-	until( $stream->is_done ) {
-		foreach my $obj ( $stream->items ) {
-			my $uuid = $self->object_to_id( $obj );
-			if( ref( $obj ) eq 'Text::Tradition' ) {
-				 $self->add_index( $uuid => { 'name' => $obj->name, 
-				 	'id' => $uuid, 'has_stemma' => $obj->has_stemma } );
-			} else {
-				warn "Found root object in DB that is not a Text::Tradition";
+	my @nontrad;
+	foreach my $obj ( @_ ) {
+		if( ref( $obj ) && ref( $obj ) ne 'Text::Tradition' ) {
+			# Is it an id => Tradition hash?
+			if( ref( $obj ) eq 'HASH' && keys( %$obj ) == 1 ) {
+				my( $k ) = keys %$obj;
+				next if ref( $obj->{$k} ) eq 'Text::Tradition';
 			}
+			push( @nontrad, $obj );
 		}
 	}
-	return $self;
-}
+	if( @nontrad ) {
+		throw( "Cannot directly save non-Tradition object of type "
+			. ref( $nontrad[0] ) );
+	}
+};
 
 # If a tradition is deleted, remove it from the index.
-around delete => sub {
-	my $orig = shift;
+after delete => sub {
 	my $self = shift;
-	warn "Will only delete one tradition at a time" if @_ > 1;
-	my $arg = shift;
-	my $obj = ref( $arg ) ? $arg : $self->lookup( $arg );
-	my $id = ref( $arg ) ? $self->object_to_id( $arg ) : $arg;
-	unless( ref $obj eq 'Text::Tradition' ) {
-		warn "Cannot directly delete non-Tradition object $obj";
-		return;
-	}
-	$self->$orig( $arg );
 	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
-	$self->$orig( $gc->garbage->members );
-	$self->del_index( $id );
+	$self->directory->backend->delete( $gc->garbage->members );
 };
 
 sub save {
-	my( $self, $obj ) = @_;
-	unless( ref( $obj ) eq 'Text::Tradition' ) {
-		warn "Object $obj is not a Text::Tradition";
-		return;
-	}
-	my $uuid = $self->store( $obj );
-	$self->add_index( $uuid => { 'name' => $obj->name, 
-				 	'id' => $uuid, 'has_stemma' => $obj->has_stemma } ) if $uuid;
-	return $uuid;
+	my $self = shift;
+	return $self->store( @_ );
 }
-
 
 sub tradition {
 	my( $self, $id ) = @_;
 	my $obj = $self->lookup( $id );
 	unless( ref( $obj ) eq 'Text::Tradition' ) {
-		warn "Retrieved object is a " . ref( $obj ) . ", not a Text::Tradition";
-		return;
+		throw( "Retrieved object is a " . ref( $obj ) . ", not a Text::Tradition" );
 	}
 	return $obj;
+}
+
+sub tradition_ids {
+	my $self = shift;
+	my @ids;
+	$self->scan( sub { push( @ids, $self->object_to_id( @_ ) ) } );
+	return @ids;
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'database error',
+		'message' => $_[0],
+		);
 }
 
 1;

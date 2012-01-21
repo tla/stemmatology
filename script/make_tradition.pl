@@ -5,23 +5,27 @@ use strict;
 use warnings;
 use Getopt::Long;
 use Text::Tradition;
+use Text::Tradition::Directory;
 use Text::Tradition::StemmaUtil;
 
 binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep ) 
-    = ( '', '', '', '', 1, 'Tradition', 0, "\t" );
+my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep, $stemmafile, $dsn ) 
+    = ( '', '', '', '', 1, 'Tradition', 0, "\t", '',
+    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db" );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
             'o|out=s'   => \$outformat,
             'l|linear!' => \$linear,
-            'n|name=s'    => \$name,
+            'n|name=s'  => \$name,
             'h|help'    => \$help,
+            's|stemma=s' => \$stemmafile,
             'sep=s'		=> \$sep,
             'hack'      => \$HACK,
+            'dsn=s'		=> \$dsn,
     );
 
 if( $help ) {
@@ -39,8 +43,8 @@ $informat = 'TEI' if $informat =~ /^tei$/i;
 $informat = 'Tabular' if $informat =~ /^tab$/i;
 $informat = 'CollateText' if $informat =~ /^stone$/i;
 
-unless( $outformat =~ /^(graphml|svg|dot|stemma|csv)$/ ) {
-    help( "Output format must be one of graphml, svg, csv, stemma, or dot" );
+unless( $outformat =~ /^(graphml|svg|dot|stemma|csv|db)$/ ) {
+    help( "Output format must be one of db, graphml, svg, csv, stemma, or dot" );
 }
 
 # Do we have a base if we need it?
@@ -64,6 +68,10 @@ if( $informat eq 'CollateText' ) {
     $args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
 }
 my $tradition = Text::Tradition->new( %args );
+if( $stemmafile ) {
+	my $stemma = $tradition->add_stemma( $stemmafile );
+	print STDERR "Saved stemma at $stemmafile\n" if $stemma;
+}
 
 ### Custom hacking
 # Remove witnesses C, E, G in the Matthew text
@@ -82,6 +90,12 @@ if( $outformat eq 'stemma' ) {
     } else {
         print STDERR "Bad result: $tree";
     }
+} elsif( $outformat eq 'db' ) {
+	my $dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
+		'extra_args' => { 'create' => 1 } );
+	my $scope = $dir->new_scope;
+	my $uuid = $dir->store( $tradition );
+	print STDERR "Saved tradition to database with ID $uuid\n";
 } else {
     my $output = "as_$outformat";
     print $tradition->collation->$output();

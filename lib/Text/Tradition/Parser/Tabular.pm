@@ -100,7 +100,7 @@ foreach my $k ( keys %seen_wits ) {
 		ok( $wit->has_layertext, "Witness $k has an a.c. version" );
 		my $origtext = join( ' ', @{$wit->layertext} );
 		my $acsig = $wit->sigil . $t->collation->ac_label;
-		my $graphtext = $t->collation->path_text( $acsig, $wit->sigil );
+		my $graphtext = $t->collation->path_text( $acsig );
 		is( $graphtext, $origtext, "Collation matches original a.c. for witness $k" );
 	} else {
 		ok( !$wit->is_layered, "Witness $k not marked as layered" );
@@ -209,6 +209,7 @@ sub parse {
     	my $ac_wit = $tradition->witness( $a );
         my $main_wit = $tradition->witness( $ac_wits{$a} );
         next unless $main_wit;
+        $main_wit->is_layered(1);
         $main_wit->uncorrected_path( $ac_wit->path );
         $tradition->del_witness( $ac_wit );
     }
@@ -218,6 +219,23 @@ sub parse {
     # Delete our unused lacuna nodes.
 	foreach my $rdg ( grep { $_->is_lacuna } $c->readings ) {
 		$c->del_reading( $rdg ) unless $c->reading_witnesses( $rdg );
+	}
+	
+	# Do a consistency check.
+	foreach my $wit ( $tradition->witnesses ) {
+		my $pathtext = $c->path_text( $wit->sigil );
+		my $origtext = join( ' ', @{$wit->text} );
+		warn "Text differs for witness " . $wit->sigil 
+			unless $pathtext eq $origtext;
+		if( $wit->is_layered ) {
+			$pathtext = $c->path_text( $wit->sigil.$c->ac_label );
+			$origtext = join( ' ', @{$wit->layertext} );
+			warn "Ante-corr text differs for witness " . $wit->sigil
+				unless $pathtext eq $origtext;
+		} else {
+			warn "Text " . $wit->sigil . " has a layered text but is not marked as layered"
+				if $wit->has_layertext;
+		}
 	}
 }
 

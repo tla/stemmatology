@@ -32,7 +32,12 @@ Create a new witness.  Options include:
 =item * sigil - A short code to represent the manuscript.  Required.
 
 =item * text - An array of strings (words) that contains the text of the
-manuscript.
+manuscript.  This should not change after the witness has been instantiated,
+and the path through the collation should always match it.
+
+=item * layertext - An array of strings (words) that contains the layered text,
+if any, of the manuscript.  This should not change after the witness has been 
+instantiated, and the path through the collation should always match it.
 
 =item * source - A reference to the text, such as a filename, if it is not
 given in the 'text' option.

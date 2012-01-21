@@ -270,7 +270,6 @@ sub merge_stone_apparatus {
             } # end processing of $app
         } # end foreach my $app in line
     } # end while <line>
-    $DB::single = 1;
     
     # Now reconcile all the paths in the collation, and delete our
     # temporary anchor nodes.
@@ -278,6 +277,10 @@ sub merge_stone_apparatus {
     
     # Finally, calculate the ranks we've got.
     # $c->calculate_ranks;
+    
+    # Save the text for each witness so that we can ensure consistency
+    # later on
+	$tradition->collation->text_from_paths();	
 }
 
 sub _find_reading_on_line {
@@ -552,7 +555,7 @@ sub expand_all_paths {
         $wit->path( \@path );
         if( $ALL_SIGLA{$sig} > 1 ) {
             my @ac_path = grep { $_->name !~ /ATTACH/ } 
-                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label, $sig );
+                $c->reading_sequence( $c->start, $c->end, $sig.$c->ac_label );
             $wit->uncorrected_path( \@ac_path );
         }
     }   

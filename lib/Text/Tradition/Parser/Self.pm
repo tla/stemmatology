@@ -214,6 +214,11 @@ sub parse {
 		$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, 
 			$relationship_opts );
 	}
+	
+    # Save the text for each witness so that we can ensure consistency
+    # later on
+	$tradition->collation->text_from_paths();	
+
 }
 
 1;

@@ -157,6 +157,10 @@ sub parse {
     
     # Rank the readings.
     $collation->calculate_ranks() if $collation->linear;
+
+    # Save the text for each witness so that we can ensure consistency
+    # later on
+	$tradition->collation->text_from_paths();	
 }
     
 =head1 BUGS / TODO

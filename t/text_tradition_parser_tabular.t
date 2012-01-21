@@ -57,7 +57,7 @@ foreach my $k ( keys %seen_wits ) {
 		ok( $wit->has_layertext, "Witness $k has an a.c. version" );
 		my $origtext = join( ' ', @{$wit->layertext} );
 		my $acsig = $wit->sigil . $t->collation->ac_label;
-		my $graphtext = $t->collation->path_text( $acsig, $wit->sigil );
+		my $graphtext = $t->collation->path_text( $acsig );
 		is( $graphtext, $origtext, "Collation matches original a.c. for witness $k" );
 	} else {
 		ok( !$wit->is_layered, "Witness $k not marked as layered" );

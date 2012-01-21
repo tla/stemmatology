@@ -23,6 +23,8 @@ requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
 requires( 'Text::CSV_XS' );
 requires( 'Text::CSV::Simple' ); # TODO delete
+requires( 'Throwable::X' );
+requires( 'TryCatch' );
 requires( 'XML::LibXML' );
 requires( 'XML::LibXML::XPathContext' );
 build_requires( 'Test::Warn' );

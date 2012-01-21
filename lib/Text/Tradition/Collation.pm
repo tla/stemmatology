@@ -883,7 +883,7 @@ sub make_alignment_table {
         	{ 'witness' => $wit->sigil, 'tokens' => \@row } );
         if( $wit->is_layered ) {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
-        		$wit->sigil.$self->ac_label, $wit->sigil );
+        		$wit->sigil.$self->ac_label );
             my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos, $noderefs );
 			push( @{$table->{'alignment'}},
 				{ 'witness' => $wit->sigil.$self->ac_label, 'tokens' => \@ac_row } );
@@ -961,7 +961,7 @@ used wherever no path exists for $sigil or $backup.
 # TODO Get rid of backup; we should know from what witness is whether we need it.
 
 sub reading_sequence {
-    my( $self, $start, $end, $witness, $backup ) = @_;
+    my( $self, $start, $end, $witness ) = @_;
 
     $witness = $self->baselabel unless $witness;
     my @readings = ( $start );
@@ -974,7 +974,7 @@ sub reading_sequence {
         }
         $seen{$n->id} = 1;
         
-        my $next = $self->next_reading( $n, $witness, $backup );
+        my $next = $self->next_reading( $n, $witness );
         unless( $next ) {
             warn "Did not find any path for $witness from reading " . $n->id;
             last;
@@ -1021,7 +1021,15 @@ sub prior_reading {
 }
 
 sub _find_linked_reading {
-    my( $self, $direction, $node, $path, $alt_path ) = @_;
+    my( $self, $direction, $node, $path ) = @_;
+    
+    # Get a backup if we are dealing with a layered witness
+    my $alt_path;
+    my $aclabel = $self->ac_label;
+    if( $path && $path =~ /^(.*)\Q$aclabel\E$/ ) {
+    	$alt_path = $1;
+    }
+    
     my @linked_paths = $direction eq 'next' 
         ? $self->sequence->edges_from( $node ) 
         : $self->sequence->edges_to( $node );
@@ -1090,10 +1098,10 @@ the generation of a subset of the witness text.
 =cut
 
 sub path_text {
-	my( $self, $wit, $backup, $start, $end ) = @_;
+	my( $self, $wit, $start, $end ) = @_;
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
-	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit, $backup );
+	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
 	return join( ' ', map { $_->text } @path );
 }
 
@@ -1268,6 +1276,28 @@ sub flatten_ranks {
     }
 }
 
+=head2 text_from_paths
+
+Calculate the text array for all witnesses from the path, for later consistency
+checking.  Only to be used if there is no non-graph-based way to know the
+original texts.
+
+=cut
+
+sub text_from_paths {
+	my $self = shift;
+    foreach my $wit ( $self->tradition->witnesses ) {
+    	my @text = split( /\s+/, 
+    		$self->reading_sequence( $self->start, $self->end, $wit->sigil ) );
+    	$wit->text( \@text );
+    	if( $wit->is_layered ) {
+			my @uctext = split( /\s+/, 
+				$self->reading_sequence( $self->start, $self->end, 
+					$wit->sigil.$self->ac_label ) );
+			$wit->text( \@uctext );
+    	}
+    }    
+}
 
 =head1 UTILITY FUNCTIONS
 
