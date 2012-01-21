@@ -8,7 +8,7 @@ use Text::Tradition;
 use Text::Tradition::Stemma;
 
 use vars qw/ @EXPORT_OK /;
-@EXPORT_OK = qw/ run_analysis group_variants wit_stringify /;
+@EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
 
 sub run_analysis {
 	my( $tradition ) = @_;
@@ -31,9 +31,8 @@ sub run_analysis {
 	# groupings of witnesses match our stemma hypothesis. We also need to keep
 	# track of the maximum number of variants at any one location.
 	my $max_variants = 0;
-	my ( $total, $genealogical, $conflicts ) = ( 0, 0, 0 );
+	my ( $genealogical, $conflicts ) = ( 0, 0, 0 );
 	
-    my $t0 = Benchmark->new();
     my $variant_groups = group_variants( $tradition->collation, $wits );
     foreach my $rank ( 0 .. $#{$variant_groups} ) {
         my $groups = $variant_groups->[$rank]->{'groups'};
@@ -72,10 +71,7 @@ sub run_analysis {
 		# Record that we used this variant in an analysis
 		push( @$variants, $variant_loc );
 	}
-    my $t1 = Benchmark->new();
-    print STDERR "Analysis of graph for " . $tradition->name . " took " 
-        . timestr( timediff( $t1, $t0 ) ) . "seconds\n";
-	
+
 	# Go through our variant locations, after we have seen all of them once,
 	# and add the number of empty columns needed by each.
 	foreach my $row ( @$variants ) {
@@ -84,7 +80,7 @@ sub run_analysis {
 	}
 	
 	$data->{'variants'} = $variants;
-	$data->{'variant_count'} = $total;
+	$data->{'variant_count'} = $tradition->collation->end->rank - 1;
 	$data->{'conflict_count'} = $conflicts;
 	$data->{'genealogical_count'} = $genealogical;
 	return $data;
