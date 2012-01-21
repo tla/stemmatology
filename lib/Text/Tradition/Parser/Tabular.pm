@@ -115,10 +115,13 @@ foreach my $k ( keys %seen_wits ) {
 sub parse {
     my( $tradition, $opts ) = @_;
     my $c = $tradition->collation; # shorthand
-    my $csv = Text::CSV_XS->new( { 
-        binary => 1, # binary for UTF-8
-        sep_char => exists $opts->{'sep_char'} ? $opts->{'sep_char'} : "\t" } 
-        );
+    my $csv_options = { 'binary' => 1 };
+    $csv_options->{'sep_char'} = $opts->{'sep_char'} || "\t";
+    if( $csv_options->{'sep_char'} eq "\t" ) {
+    	# If it is really tab separated, nothing is an escape char.
+    	$csv_options->{'quote_char'} = undef;
+    }
+    my $csv = Text::CSV_XS->new( $csv_options );
     
     my $alignment_table;
     if( exists $opts->{'string' } ) {
