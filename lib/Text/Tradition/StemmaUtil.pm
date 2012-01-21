@@ -12,6 +12,7 @@ use File::Which;
 use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
+use Text::Tradition::Error;
 @EXPORT_OK = qw/ make_character_matrix character_input phylip_pars 
 				 parse_newick newick_to_svg /;
 
@@ -124,7 +125,7 @@ sub phylip_pars {
     # And then we run the program.
     my $program = File::Which::which( 'pars' );
     unless( -x $program ) {
-		return( undef, "Phylip pars not found in path" );
+		throw( "Phylip pars not found in path" );
     }
 
     {
@@ -143,7 +144,7 @@ sub phylip_pars {
         @outtree = <TREE>;
         close TREE;
     }
-    return( 1, join( '', @outtree ) ) if @outtree;
+    return join( '', @outtree ) if @outtree;
 
     my @error;
     if( -f "$phylip_dir/outfile" ) {
@@ -153,7 +154,7 @@ sub phylip_pars {
     } else {
         push( @error, "Neither outtree nor output file was produced!" );
     }
-    return( undef, join( '', @error ) );
+    throw( join( '', @error ) );
 }
 
 sub parse_newick {
@@ -175,8 +176,7 @@ sub newick_to_svg {
 	my $newick = shift;
     my $program = File::Which::which( 'figtree' );
     unless( -x $program ) {
-		warn "FigTree commandline utility not found in path";
-		return;
+		throw( "FigTree commandline utility not found in path" );
     }
     my $svg;
     my $nfile = File::Temp->new();
@@ -211,3 +211,11 @@ sub _add_tree_children {
         _add_tree_children( $graph, $child, $c->get_children() );
     }
 }
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'StemmaUtil error',
+		'message' => $_[0],
+		);
+}
+
