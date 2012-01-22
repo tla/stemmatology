@@ -69,7 +69,7 @@ if( $informat eq 'CollateText' ) {
 }
 my $tradition = Text::Tradition->new( %args );
 if( $stemmafile ) {
-	my $stemma = $tradition->add_stemma( $stemmafile );
+	my $stemma = $tradition->add_stemma( dotfile => $stemmafile );
 	print STDERR "Saved stemma at $stemmafile\n" if $stemma;
 }
 

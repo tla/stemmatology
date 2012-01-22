@@ -49,7 +49,7 @@ if( $tfile ) {
 		'linear' => 1,
 		);
 	if( $tradition && $sfile ) {
-		$stemma = $tradition->add_stemma( $sfile );
+		$stemma = $tradition->add_stemma( dotfile =>  $sfile );
 		warn "Did not get stemma from $sfile\n" unless $stemma;
 	}
     
