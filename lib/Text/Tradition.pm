@@ -311,8 +311,18 @@ is( $t->stemma, $s, "Stemma is the right one" );
 =cut
 
 sub add_stemma {
-	my( $self, $dot ) = @_;
-	open my $stemma_fh, '<', $dot or warn "Could not open file $dot";
+	my $self = shift;
+	my %opts = @_;
+	my $stemma_fh;
+	if( $opts{'dotfile'} ) {
+		open $stemma_fh, '<', $opts{'dotfile'}
+			or warn "Could not open file " . $opts{'dotfile'};
+	} elsif( $opts{'dot'} ) {
+		my $str = $opts{'dot'};
+		open $stemma_fh, '<', \$str;
+	}
+	# Assume utf-8
+	binmode $stemma_fh, ':utf8';
 	my $stemma = Text::Tradition::Stemma->new( 
 		'collation' => $self->collation,
 		'dot' => $stemma_fh );

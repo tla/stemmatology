@@ -46,8 +46,6 @@ sub BUILD {
 
 sub graph_from_dot {
 	my( $self, $dotfh ) = @_;
-	# Assume utf-8
-	binmode( $dotfh, ':utf8' );
  	my $reader = Graph::Reader::Dot->new();
 	my $graph = $reader->read_graph( $dotfh );
 	if( $graph ) {
