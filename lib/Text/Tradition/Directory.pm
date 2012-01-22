@@ -23,7 +23,7 @@ Text::Tradition::Directory - a KiokuDB interface for storing and retrieving trad
   );
   
   my $tradition = Text::Tradition->new( @args );
-  my $stemma = $tradition->add_stemma( $dotfile ); 
+  my $stemma = $tradition->add_stemma( dotfile => $dotfile ); 
   $d->save_tradition( $tradition );
   
   foreach my $id ( $d->traditions ) {
@@ -79,7 +79,7 @@ my $t = Text::Tradition->new(
 	$uuid = $d->save( $t );
 	ok( $uuid, "Saved test tradition" );
 	
-	my $s = $t->add_stemma( 't/data/simple.dot' );
+	my $s = $t->add_stemma( dotfile => 't/data/simple.dot' );
 	ok( $d->save( $t ), "Updated tradition with stemma" );
 	is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
 	is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );

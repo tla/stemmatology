@@ -33,7 +33,7 @@ my $t = Text::Tradition->new(
 	$uuid = $d->save( $t );
 	ok( $uuid, "Saved test tradition" );
 	
-	my $s = $t->add_stemma( 't/data/simple.dot' );
+	my $s = $t->add_stemma( dotfile => 't/data/simple.dot' );
 	ok( $d->save( $t ), "Updated tradition with stemma" );
 	is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
 	is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );

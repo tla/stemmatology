@@ -23,7 +23,7 @@ $c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
 $c->add_relationship( 'n8', 'n13', { 'type' => 'spelling' } );
 $c->calculate_ranks();
 
-my $stemma = $tradition->add_stemma( 't/data/simple.dot' );
+my $stemma = $tradition->add_stemma( dotfile => 't/data/simple.dot' );
 
 # Test for object creation
 ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
