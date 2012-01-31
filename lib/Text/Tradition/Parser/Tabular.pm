@@ -120,6 +120,7 @@ sub parse {
     if( $csv_options->{'sep_char'} eq "\t" ) {
     	# If it is really tab separated, nothing is an escape char.
     	$csv_options->{'quote_char'} = undef;
+    	$csv_options->{'escape_char'} = undef;
     }
     my $csv = Text::CSV_XS->new( $csv_options );
     
@@ -183,6 +184,7 @@ sub parse {
             if( $word ) {
                 my $reading = $nodes->{$word};
                 my $wit = $witnesses[$w];
+                $DB::single = 1 unless $wit;
                 push( @{$wit->path}, $reading );
             } # else skip it for empty readings.
         }
