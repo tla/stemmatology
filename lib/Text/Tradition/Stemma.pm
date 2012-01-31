@@ -64,17 +64,18 @@ sub as_dot {
     my( $self, $opts ) = @_;
     
     # Get default and specified options
-    my %graphopts = ();
+    my %graphopts = (
+    	# 'ratio' => 1,
+    );
     my %nodeopts = (
 		'fontsize' => 11,
-		'hshape' => 'plaintext',	# Shape for the hypothetical nodes
-		'htext' => '*',
 		'style' => 'filled',
 		'fillcolor' => 'white',
+		'color' => 'white',
 		'shape' => 'ellipse',	# Shape for the extant nodes
 	);
 	my %edgeopts = (
-		'arrowhead' => 'open',
+		'arrowhead' => 'none',
 	);
 	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
 		if $opts->{'graph'};
@@ -88,16 +89,13 @@ sub as_dot {
 	## Print out the global attributes
 	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
 	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
-	## Delete our special attributes from the node set before continuing
-	my $hshape = delete $nodeopts{'hshape'};
-	my $htext = delete $nodeopts{'htext'};
 	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
 
 	# Add each of the nodes.
     foreach my $n ( $self->graph->vertices ) {
-        if( $self->graph->get_vertex_attribute( $n, 'class' ) eq 'hypothetical' ) {
-        	# Apply our display settings for hypothetical nodes.
-        	push( @dotlines, _make_dotline( $n, 'shape' => $hshape, 'label' => $htext ) );
+        if( $self->graph->has_vertex_attribute( $n, 'label' ) ) {
+        	my $ltext = $self->graph->get_vertex_attribute( $n, 'label' );
+        	push( @dotlines, _make_dotline( $n, 'label' => $ltext ) );
         } else {
         	# Use the default display settings.
             push( @dotlines, "  $n;" );
