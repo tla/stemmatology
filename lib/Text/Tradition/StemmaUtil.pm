@@ -146,6 +146,7 @@ sub phylip_pars {
     }
     return join( '', @outtree ) if @outtree;
 
+	# If we got this far, we are about to throw an error.
     my @error;
     if( -f "$phylip_dir/outfile" ) {
         open( OUTPUT, "$phylip_dir/outfile" ) or die "Could not open output for read";

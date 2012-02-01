@@ -191,15 +191,11 @@ before 'distance_trees' => sub {
     	|| $args{'program'} ne $self->distance_program ) {
         # We need to make a tree before we can return it.
         my $dsub = 'run_' . $args{'program'};
-        my( $ok, $result ) = $self->$dsub();
-        if( $ok ) {
-            # Save the resulting trees
-            my $trees = parse_newick( $result );
-            $self->_save_distance_trees( $trees );
-            $self->distance_program( $args{'program'} );
-        } else {
-            throw( "Failed to calculate distance trees: $result" );
-        }
+        my $result = $self->$dsub(); # this might throw an error - catch it?
+		# Save the resulting trees
+		my $trees = parse_newick( $result );
+		$self->_save_distance_trees( $trees );
+		$self->distance_program( $args{'program'} );
     }
 };
 
