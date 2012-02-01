@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Text::Tradition::Error;
 use Text::Tradition::Collation::Relationship;
+use TryCatch;
 
 use Moose;
 
@@ -78,6 +79,11 @@ sub _set_relationship {
 	my( $self, $relationship, @vector ) = @_;
 	$self->graph->add_edge( @vector );
 	$self->graph->set_edge_attribute( @vector, 'object', $relationship );
+}
+
+sub _remove_relationship {
+	my( $self, @vector ) = @_;
+	$self->graph->delete_edge( @vector );
 }
 	
 =head2 create
@@ -251,7 +257,11 @@ sub relationship_valid {
 		}
 	} else {
 		# Check that linking the source and target in a relationship won't lead
-		# to a path loop for any witness.  First make a lookup table of all the
+		# to a path loop for any witness.  If they have the same rank then fine.
+		return( 1, "ok" ) 
+			if $c->reading( $source )->rank == $c->reading( $target )->rank;
+		
+		# Otherwise, first make a lookup table of all the
 		# readings related to either the source or the target.
 		my @proposed_related = ( $source, $target );
 		push( @proposed_related, $self->related_readings( $source, 'colocated' ) );
@@ -259,14 +269,22 @@ sub relationship_valid {
 		my %pr_ids;
 		map { $pr_ids{ $_ } = 1 } @proposed_related;
 	
-		# None of these proposed related readings should have a neighbor that
-		# is also in proposed_related.
+		# The cumulative predecessors and successors of the proposed-related readings
+		# should not overlap.
+		my %all_pred;
+		my %all_succ;
 		foreach my $pr ( keys %pr_ids ) {
-			foreach my $neighbor( $c->sequence->neighbors( $pr ) ) {
-				return( 0, "Would relate neighboring readings $pr and $neighbor" )
-					if exists $pr_ids{$neighbor};
-			}
-		}		
+			map { $all_pred{$_} = 1 } $c->sequence->all_predecessors( $pr );
+			map { $all_succ{$_} = 1 } $c->sequence->all_successors( $pr );
+		}
+		foreach my $k ( keys %all_pred ) {
+			return( 0, "Relationship would create witness loop" )
+				if exists $all_succ{$k};
+		}
+		foreach my $k ( keys %pr_ids ) {
+			return( 0, "Relationship would create witness loop" )
+				if exists $all_pred{$k} || exists $all_succ{$k};
+		}
 		return ( 1, "ok" );
 	}
 }
