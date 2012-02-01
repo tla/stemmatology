@@ -553,7 +553,7 @@ sub as_dot {
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
-    	if( $used{$edge->[0]} && $used{$edge->[1]} ) {;
+    	if( $used{$edge->[0]} && $used{$edge->[1]} ) {
     		my $label = $self->path_display_label( $self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
 			# Account for the rank gap if necessary
@@ -564,6 +564,10 @@ sub as_dot {
 				$variables->{'minlen'} = $self->reading( $edge->[1] )->rank 
 				- $self->reading( $edge->[0] )->rank;
 			}
+			# EXPERIMENTAL: make edge width reflect no. of witnesses
+			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
+			$variables->{'penwidth'} = $extrawidth + 0.8; # gives 1 for a single wit
+
 			my $varopts = _dot_attr_string( $variables );
 			$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n", 
 				$edge->[0], $edge->[1], $varopts );
@@ -609,11 +613,12 @@ sub path_witnesses {
 		@edge = @$e;
 	}
 	my @wits = keys %{$self->sequence->get_edge_attributes( @edge )};
-	return sort @wits;
+	return @wits;
 }
 
 sub path_display_label {
-	my( $self, @wits ) = @_;
+	my $self = shift;
+	my @wits = sort @_;
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
 	if( scalar @wits > $maj ) {
 		# TODO break out a.c. wits
@@ -776,7 +781,7 @@ sub as_graphml {
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->sequence->edges() ) {
     	# We add an edge in the graphml for every witness in $e.
-    	foreach my $wit ( $self->path_witnesses( $e ) ) {
+    	foreach my $wit ( sort $self->path_witnesses( $e ) ) {
 			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
 										$node_hash{ $e->[0] },
 										$node_hash{ $e->[1] } );
@@ -1042,7 +1047,7 @@ sub _find_linked_reading {
         if( $self->sequence->has_edge_attribute( @$le, $self->baselabel ) ) {
             $base_le = $le;
         }
-		my @le_wits = $self->path_witnesses( $le );
+		my @le_wits = sort $self->path_witnesses( $le );
 		if( _is_within( \@path_wits, \@le_wits ) ) {
 			# This is the right path.
 			return $direction eq 'next' ? $le->[1] : $le->[0];
