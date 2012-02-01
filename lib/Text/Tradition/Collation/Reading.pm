@@ -105,6 +105,12 @@ has 'is_ph' => (
 	isa => 'Bool',
 	default => undef,
 	);
+	
+has 'is_common' => (
+	is => 'rw',
+	isa => 'Bool',
+	default => undef,
+	);
 
 has 'rank' => (
     is => 'rw',

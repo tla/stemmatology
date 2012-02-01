@@ -56,6 +56,28 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
+my @common = $c->calculate_common_readings();
+is( scalar @common, 8, "Found correct number of common readings" );
+my @marked = sort $c->common_readings();
+is( scalar @common, 8, "All common readings got marked as such" );
+my @expected = qw/ n1 n12 n16 n19 n20 n5 n6 n7 /;
+is_deeply( \@marked, \@expected, "Found correct list of common readings" );
+}
+
+
+
+# =begin testing
+{
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
 is( $c->common_predecessor( 'n9', 'n23' )->id, 
     'n20', "Found correct common predecessor" );
 is( $c->common_successor( 'n9', 'n23' )->id, 

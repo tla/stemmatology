@@ -543,9 +543,13 @@ sub as_dot {
         $used{$reading->id} = 1;
         # Need not output nodes without separate labels
         next if $reading->id eq $reading->text;
+        my $rattrs;
         my $label = $reading->text;
         $label =~ s/\"/\\\"/g;
-        $dot .= sprintf( "\t\"%s\" [ label=\"%s\" ];\n", $reading->id, $label );
+		$rattrs->{'label'} = $label;
+		# TODO make this an option?
+		# $rattrs->{'fillcolor'} = 'green' if $reading->is_common;
+        $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
     
 	# Add the real edges
@@ -1088,6 +1092,19 @@ sub _witnesses_of_label {
     return @answer;
 }
 
+=head2 common_readings
+
+Returns the list of common readings in the graph (i.e. those readings that are
+shared by all non-lacunose witnesses.)
+
+=cut
+
+sub common_readings {
+	my $self = shift;
+	my @common = grep { $_->is_common } $self->readings;
+	return @common;
+}
+
 =head2 path_text( $sigil, $mainsigil [, $start, $end ] )
 
 Returns the text of a witness (plus its backup, if we are using a layer)
@@ -1279,6 +1296,58 @@ sub flatten_ranks {
             $unique_rank_rdg{$key} = $rdg;
         }
     }
+}
+
+=head2 calculate_common_readings
+
+Goes through the graph identifying the readings that appear in every witness 
+(apart from those with lacunae at that spot.) Marks them as common and returns
+the list.
+
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+my @common = $c->calculate_common_readings();
+is( scalar @common, 8, "Found correct number of common readings" );
+my @marked = sort $c->common_readings();
+is( scalar @common, 8, "All common readings got marked as such" );
+my @expected = qw/ n1 n12 n16 n19 n20 n5 n6 n7 /;
+is_deeply( \@marked, \@expected, "Found correct list of common readings" );
+
+=end testing
+
+=cut
+
+sub calculate_common_readings {
+	my $self = shift;
+	my @common;
+	my $table = $self->make_alignment_table( 1 );
+	foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
+		my @row = map { $_->{'tokens'}->[$idx]->{'t'} } @{$table->{'alignment'}};
+		my %hash;
+		foreach my $r ( @row ) {
+			if( $r ) {
+				$hash{$r->id} = $r unless $r->is_meta;
+			} else {
+				$hash{'UNDEF'} = $r;
+			}
+		}
+		if( keys %hash == 1 && !exists $hash{'UNDEF'} ) {
+			my( $r ) = values %hash;
+			$r->is_common( 1 );
+			push( @common, $r );
+		}
+	}
+	return @common;
 }
 
 =head2 text_from_paths
