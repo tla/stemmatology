@@ -486,6 +486,8 @@ sub as_dot {
     my $startrank = $opts->{'from'} if $opts;
     my $endrank = $opts->{'to'} if $opts;
     my $color_common = $opts->{'color_common'} if $opts;
+    my $STRAIGHTENHACK = !$startrank && !$endrank && $self->end->rank 
+    	&& $self->end->rank > 100;
     
     # Check the arguments
     if( $startrank ) {
@@ -529,7 +531,7 @@ sub as_dot {
 	if( $endrank ) {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
-	if( !$startrank && !$endrank ) {
+	if( $STRAIGHTENHACK ) {
 		## HACK part 1
 		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";	
 		$dot .= "\t\"#SILENT#\" [ color=white,penwidth=0,label=\"\" ];"
@@ -593,7 +595,7 @@ sub as_dot {
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
 	}
 	# HACK part 2
-	if( !$startrank && !$endrank ) {
+	if( $STRAIGHTENHACK ) {
 		$dot .= "\t\"#END#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
 	}
 	
