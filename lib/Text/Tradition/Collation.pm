@@ -432,14 +432,15 @@ sub reading_witnesses {
 
 =head1 OUTPUT METHODS
 
-=head2 as_svg
+=head2 as_svg( \%options )
 
 Returns an SVG string that represents the graph, via as_dot and graphviz.
+See as_dot for a list of options.
 
 =cut
 
 sub as_svg {
-    my( $self ) = @_;
+    my( $self, $opts ) = @_;
         
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
@@ -447,7 +448,7 @@ sub as_svg {
     ## USE FOR DEBUGGING
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
-    print $dotfile $self->as_dot();
+    print $dotfile $self->as_dot( $opts );
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     # HACK part 3 - remove silent node+edge
@@ -462,45 +463,29 @@ sub as_svg {
     return decode_utf8( $svgdom->toString() );
 }
 
-=head2 svg_subgraph( $from, $to )
 
-Returns an SVG string that represents the portion of the graph given by the
-specified range.  The $from and $to variables refer to ranks within the graph.
-
-=cut
-
-sub svg_subgraph {
-    my( $self, $from, $to ) = @_;
-    
-    my $dot = $self->as_dot( $from, $to );
-    unless( $dot ) {
-    	throw( "Could not output a graph with range $from - $to" );
-    }
-    
-    my @cmd = qw/dot -Tsvg/;
-    my( $svg, $err );
-    my $dotfile = File::Temp->new();
-    ## TODO REMOVE
-    # $dotfile->unlink_on_destroy(0);
-    binmode $dotfile, ':utf8';
-    print $dotfile $dot;
-    push( @cmd, $dotfile->filename );
-    run( \@cmd, ">", binary(), \$svg );
-    $svg = decode_utf8( $svg );
-    return $svg;
-}
-
-
-=head2 as_dot( $from, $to )
+=head2 as_dot( \%options )
 
 Returns a string that is the collation graph expressed in dot
-(i.e. GraphViz) format.  If $from or $to is passed, as_dot creates
-a subgraph rather than the entire graph.
+(i.e. GraphViz) format.  Options include:
+
+=over 4
+
+=item * from
+
+=item * to
+
+=item * color_common
+
+=back
 
 =cut
 
 sub as_dot {
-    my( $self, $startrank, $endrank ) = @_;
+    my( $self, $opts ) = @_;
+    my $startrank = $opts->{'from'} if $opts;
+    my $endrank = $opts->{'to'} if $opts;
+    my $color_common = $opts->{'color_common'} if $opts;
     
     # Check the arguments
     if( $startrank ) {
@@ -561,8 +546,7 @@ sub as_dot {
         my $label = $reading->text;
         $label =~ s/\"/\\\"/g;
 		$rattrs->{'label'} = $label;
-		# TODO make this an option?
-		# $rattrs->{'fillcolor'} = 'green' if $reading->is_common;
+		$rattrs->{'fillcolor'} = '#b3f36d' if $reading->is_common && $color_common;
         $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
     
@@ -892,9 +876,11 @@ keys have a true hash value will be included.
 
 sub make_alignment_table {
     my( $self, $noderefs, $include ) = @_;
-    unless( $self->linear ) {
-        throw( "Need a linear graph in order to make an alignment table" );
-    }
+    # Make sure we can do this
+	throw( "Need a linear graph in order to make an alignment table" )
+		unless $self->linear;
+	$self->calculate_ranks unless $self->end->has_rank;
+	
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {
@@ -1310,6 +1296,7 @@ sub flatten_ranks {
             # Combine!
         	# print STDERR "Combining readings at same rank: $key\n";
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
+            # TODO see if this now makes a common point.
         } else {
             $unique_rank_rdg{$key} = $rdg;
         }
