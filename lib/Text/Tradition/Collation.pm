@@ -9,6 +9,7 @@ use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
 use XML::LibXML;
+use XML::LibXML::XPathContext;
 use Moose;
 
 has 'sequence' => (
@@ -443,14 +444,22 @@ sub as_svg {
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
-    ## TODO REMOVE
+    ## USE FOR DEBUGGING
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $self->as_dot();
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
-    $svg = decode_utf8( $svg );
-    return $svg;
+    # HACK part 3 - remove silent node+edge
+    my $parser = XML::LibXML->new();
+    my $svgdom = $parser->parse_string( $svg );
+    my $xpc = XML::LibXML::XPathContext->new( $svgdom->documentElement );
+    $xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+    my @hacknodes = $xpc->findnodes( '//svg:g[contains(child::svg:title, "#SILENT#")]' );
+    foreach my $h ( @hacknodes ) {
+    	$h->parentNode->removeChild( $h );
+    }
+    return decode_utf8( $svgdom->toString() );
 }
 
 =head2 svg_subgraph( $from, $to )
@@ -535,6 +544,11 @@ sub as_dot {
 	if( $endrank ) {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
+	if( !$startrank && !$endrank ) {
+		## HACK part 1
+		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";	
+		$dot .= "\t\"#SILENT#\" [ color=white,penwidth=0,label=\"\" ];"
+	}
 	my %used;  # Keep track of the readings that actually appear in the graph
     foreach my $reading ( $self->readings ) {
     	# Only output readings within our rank range.
@@ -593,6 +607,10 @@ sub as_dot {
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
+	}
+	# HACK part 2
+	if( !$startrank && !$endrank ) {
+		$dot .= "\t\"#END#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
 	}
 	
     $dot .= "}\n";
