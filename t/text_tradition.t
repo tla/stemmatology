@@ -60,7 +60,8 @@ my $t = Text::Tradition->new(
 my $s;
 ok( $s = $t->add_stemma( dotfile => 't/data/simple.dot' ), "Added a simple stemma" );
 is( ref( $s ), 'Text::Tradition::Stemma', "Got a stemma object returned" );
-is( $t->stemma, $s, "Stemma is the right one" );
+is( $t->stemma_count, 1, "Tradition claims to have a stemma" );
+is( $t->stemma(0), $s, "Tradition hands back the right stemma" );
 }
 
 
