@@ -184,7 +184,6 @@ sub parse {
             if( $word ) {
                 my $reading = $nodes->{$word};
                 my $wit = $witnesses[$w];
-                $DB::single = 1 unless $wit;
                 push( @{$wit->path}, $reading );
             } # else skip it for empty readings.
         }
@@ -247,8 +246,10 @@ sub parse {
 sub make_nodes {
     my( $collation, $row, $index ) = @_;
     my %unique;
+    my $commonctr = 0; # Holds the number of unique readings + gaps, ex. lacunae.
     foreach my $w ( @$row ) {
         $unique{$w} = 1 if $w;
+        $commonctr +=1 unless ( $w && $w eq '#LACUNA#' );
     }
     my $ctr = 1;
     foreach my $w ( keys %unique ) {
@@ -257,7 +258,11 @@ sub make_nodes {
     		'rank' => $index,
     		'text' => $w,
     		};
-    	$rargs->{'is_lacuna'} = 1 if $w eq '#LACUNA#';
+    	if( $w eq '#LACUNA#' ) {
+    		$rargs->{'is_lacuna'} = 1;
+    	} elsif( $commonctr == 1 ) {
+    		$rargs->{'is_common'} = 1;
+    	}
         my $r = $collation->add_reading( $rargs );
         $unique{$w} = $r;
         $ctr++;

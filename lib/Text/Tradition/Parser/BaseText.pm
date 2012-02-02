@@ -303,7 +303,7 @@ sub merge_base {
 #                             $rel->type, $rel->from->id, $rel->to->id );
 #         }
 #     }
-    $collation->calculate_ranks();
+    $collation->calculate_common_readings(); # will implicitly rank
 }
 
 =item B<read_base>

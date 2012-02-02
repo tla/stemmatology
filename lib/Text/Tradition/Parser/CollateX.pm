@@ -156,7 +156,7 @@ sub parse {
     }
     
     # Rank the readings.
-    $collation->calculate_ranks() if $collation->linear;
+    $collation->calculate_common_readings(); # will implicitly rank
 
     # Save the text for each witness so that we can ensure consistency
     # later on
