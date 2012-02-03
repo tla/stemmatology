@@ -267,6 +267,7 @@ sub relationship_valid {
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
+		# TODO this might be called before witness paths are set...
 		my %seen_wits;
 		map { $seen_wits{$_} = 1 } $c->reading_witnesses( $source );
 		foreach my $w ( $c->reading_witnesses( $target ) ) {
