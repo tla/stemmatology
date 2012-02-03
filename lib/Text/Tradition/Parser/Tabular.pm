@@ -177,7 +177,7 @@ sub parse {
     # add them to the witness paths.
     foreach my $idx ( 1 .. $#{$alignment_table} ) {
         my $row = $alignment_table->[$idx];
-        my $nodes = make_nodes( $c, $row, $idx );
+        my $nodes = _make_nodes( $c, $row, $idx );
         foreach my $w ( 0 .. $#{$row} ) {
             # push the appropriate node onto the appropriate witness path
             my $word = $row->[$w];
@@ -243,7 +243,7 @@ sub parse {
 	}
 }
 
-sub make_nodes {
+sub _make_nodes {
     my( $collation, $row, $index ) = @_;
     my %unique;
     my $commonctr = 0; # Holds the number of unique readings + gaps, ex. lacunae.

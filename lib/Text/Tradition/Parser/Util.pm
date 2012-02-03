@@ -36,11 +36,11 @@ sub collate_variants {
     # transposed reading nodes to be merged into one (producing a
     # nonlinear, bidirectional graph) or not (producing a relatively
     # linear, unidirectional graph.)
-    return $collation->linear ? collate_linearly( @_ )
-        : collate_nonlinearly( @_ );
+    return $collation->linear ? _collate_linearly( @_ )
+        : _collate_nonlinearly( @_ );
 }
 
-sub collate_linearly {
+sub _collate_linearly {
     my( $collation, $lemma_set, @variant_sets ) = @_;
 
     my @unique;
@@ -87,7 +87,7 @@ sub collate_linearly {
     return $substitutions;
 }
 
-sub collate_nonlinearly {
+sub _collate_nonlinearly {
     my( $collation, $lemma_set, @variant_sets ) = @_;
     
     my @unique;
@@ -132,6 +132,12 @@ sub _collation_hash {
     return cmp_str( $node );
 }
 
+=head2 B<cmp_str>
+
+Don't use this. Really.
+
+=cut
+
 sub cmp_str {
     my( $reading ) = @_;
     my $word = $reading->text();
@@ -166,6 +172,12 @@ sub check_for_repeated {
     return @repeated;
 }
 
+=head2 B<add_hash_entry>( $hash, $key, $entry )
+
+Very simple utility for adding $entry to the list at $hash->{$key}.
+
+=cut
+
 sub add_hash_entry {
     my( $hash, $key, $entry ) = @_;
     if( exists $hash->{$key} ) {
@@ -173,24 +185,6 @@ sub add_hash_entry {
     } else {
         $hash->{$key} = [ $entry ];
     }
-}
-
-sub is_monotonic {
-    my( @readings ) = @_;
-    my( $common, $min, $max ) = ( -1, -1, -1 );
-    foreach my $rdg ( @readings ) {
-#         print STDERR "Checking reading " . $rdg->id . "/" . $rdg->text . " - " 
-#         . $rdg->position->reference ."\n";
-        return 0 if $rdg->position->common < $common;
-        if( $rdg->position->common == $common ) {
-            return 0 if $rdg->position->min <= $min;
-            return 0 if $rdg->position->max <= $max;
-        }
-        $common = $rdg->position->common;
-        $min = $rdg->position->min;
-        $max = $rdg->position->max;
-    }
-    return 1;
 }
 
 1;

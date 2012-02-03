@@ -10,6 +10,91 @@ use Text::Tradition::Error;
 use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
 use Moose;
 
+=head1 NAME
+
+Text::Tradition::Stemma - a representation of a I<stemma codicum> for a Text::Tradition
+
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  my $t = Text::Tradition->new( 
+    'name' => 'this is a text',
+    'input' => 'TEI',
+    'file' => '/path/to/tei_parallel_seg_file.xml' );
+
+  my $s = $tradition->add_stemma( dotfile => '/path/to/stemma.dot' );
+    
+=head1 DESCRIPTION
+
+Text::Tradition is a library for representation and analysis of collated
+texts, particularly medieval ones.  The Collation is the central feature of
+a Tradition, where the text, its sequence of readings, and its relationships
+between readings are actually kept.
+
+=head1 DOT SYNTAX
+
+The easiest way to define a stemma (which is a directed acyclic graph, denoting 
+the scholar's hypothesis concerning which text(s) were copied from which other(s)) 
+is to use a special form of the 'dot' syntax of GraphViz.  
+
+Each stemma opens with the line
+
+ digraph Stemma {
+ 
+and continues with a list of all manuscript witnesses in the stemma, whether
+extant witnesses or missing archetypes or hyparchetypes.  Each of these is
+listed by its sigil on its own line, e.g.:
+
+  alpha [ class=hypothetical ]
+  1 [ class=hypothetical,label=* ]
+  Ms4 [ class=extant ]
+  
+Extant witnesses are listed with class=extant; missing or postulated witnesses
+are listed with class=hypothetical.  Anonymous hyparchetypes must be given a 
+unique name or number, but can be represented as anonymous with the addition 
+of 'label=*' to their lines.  Greek letters or other special characters may be
+used as names, but they must always be wrapped in double quotes.
+
+Links between manuscripts are then listed with arrow notation, as below. These 
+lines show the direction of copying, one step at a time, for the entire stemma.
+
+  alpha -> 1
+  1 -> Ms4
+  
+The final line in the definition should be the closing brace:
+
+ }
+  
+Thus for a set of extant manuscripts A, B, and C, where A and B were copied 
+from the archetype O and C was copied from B, the definition would be:
+
+ digraph Stemma {
+     O [ class=hypothetical]
+     A [ class=extant ]
+     B [ class=extant ]
+     C [ class=extant ]
+     O -> A
+     O -> B
+     B -> C
+ }
+
+=head1 CONSTRUCTOR
+
+=head2 new
+
+The constructor.  This should generally be called from Text::Tradition, but
+if called directly it takes the following options:
+
+=over
+
+=item * collation - The collation with which the stemma is associated.
+
+=item * dot - A filehandle open to a DOT representation of the stemma graph.
+
+=back
+
+=cut
+
 has collation => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
@@ -40,11 +125,11 @@ sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
-        $self->graph_from_dot( $args->{'dot'} );
+        $self->_graph_from_dot( $args->{'dot'} );
     }
 }
 
-sub graph_from_dot {
+sub _graph_from_dot {
 	my( $self, $dotfh ) = @_;
  	my $reader = Graph::Reader::Dot->new();
 	my $graph = $reader->read_graph( $dotfh );
@@ -59,6 +144,27 @@ sub graph_from_dot {
 		throw( "Failed to parse dot in $dotfh" );
 	}
 }
+
+=head1 METHODS
+
+=head2 as_dot( \%options )
+
+Returns a normal dot representation of the stemma layout, suitable for rendering
+with GraphViz.  Options include:
+
+=over
+
+=item * graph - A hashref of global graph options.
+
+=item * node - A hashref of global node options.
+
+=item * edge - A hashref of global edge options.
+
+=back
+
+See the GraphViz documentation for the list of available options.
+
+=cut
 
 sub as_dot {
     my( $self, $opts ) = @_;
@@ -111,9 +217,12 @@ sub as_dot {
     return join( "\n", @dotlines );
 }
 
+=head2 editable
 
-# Another version of dot output meant for graph editing, thus
-# much simpler.
+Returns a version of the graph rendered in our definition format.
+
+=cut
+
 sub editable {
 	my $self = shift;
 	my @dotlines;
@@ -155,7 +264,12 @@ sub _by_vertex {
 	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
 }
 
-# Render the stemma as SVG.
+=head2 as_svg
+
+Returns an SVG representation of the graph, calling as_dot first.
+
+=cut
+
 sub as_svg {
     my( $self, $opts ) = @_;
     my $dot = $self->as_dot( $opts );
@@ -172,12 +286,26 @@ sub as_svg {
     return $svg;
 }
 
+=head2 witnesses
+
+Returns a list of the extant witnesses represented in the stemma.
+
+=cut
+
 sub witnesses {
     my $self = shift;
     my @wits = grep { $self->graph->get_vertex_attribute( $_, 'class' ) eq 'extant' }
         $self->graph->vertices;
     return @wits;
 }
+
+=head2 distance_trees( program => $program )
+
+Returns a set of undirected graphs, which are the result of running a distance
+tree calculation program on the collation.  Currently the only supported
+program is phylip_pars.
+
+=cut
 
 #### Methods for calculating phylogenetic trees ####
 
@@ -199,6 +327,13 @@ before 'distance_trees' => sub {
     }
 };
 
+=head2 run_phylip_pars
+
+Runs Phylip Pars on the collation, returning the results in Newick format.
+Used for the distance_trees calculation.
+
+=cut
+
 sub run_phylip_pars {
 	my $self = shift;
 	my $cdata = character_input( $self->collation->make_alignment_table() );
@@ -217,3 +352,13 @@ no Moose;
 __PACKAGE__->meta->make_immutable;
     
 1;
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>

@@ -549,7 +549,7 @@ sub as_dot {
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {
-    		my $label = $self->path_display_label( $self->path_witnesses( $edge ) );
+    		my $label = $self->_path_display_label( $self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
 			# Account for the rank gap if necessary
 			if( $self->reading( $edge->[1] )->has_rank 
@@ -574,13 +574,13 @@ sub as_dot {
     }
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
-    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"#SUBSTART#\" -> \"$node\" $varopts;";
 	}
     foreach my $node ( keys %subend ) {
-    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
@@ -604,6 +604,13 @@ sub _dot_attr_string {
 	return( '[ ' . join( ', ', @attrs ) . ' ]' );
 }
 
+=head2 path_witnesses( $edge )
+
+Returns the list of sigils whose witnesses are associated with the given edge.
+The edge can be passed as either an array or an arrayref of ( $source, $target ).
+
+=cut
+
 sub path_witnesses {
 	my( $self, @edge ) = @_;
 	# If edge is an arrayref, cope.
@@ -615,7 +622,7 @@ sub path_witnesses {
 	return @wits;
 }
 
-sub path_display_label {
+sub _path_display_label {
 	my $self = shift;
 	my @wits = sort @_;
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
@@ -806,7 +813,7 @@ sub as_graphml {
 	}
 	
 	# Add the relationship graph to the XML
-	$self->relations->as_graphml( $graphml_ns, $root, \%node_hash, 
+	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
 		$node_data_keys{'id'}, \%edge_data_keys );
 
     # Save and return the thing
@@ -1411,16 +1418,16 @@ is( $c->common_successor( 'n21', 'n26' )->id,
 sub common_predecessor {
 	my $self = shift;
 	my( $r1, $r2 ) = $self->_objectify_args( @_ );
-	return $self->common_in_path( $r1, $r2, 'predecessors' );
+	return $self->_common_in_path( $r1, $r2, 'predecessors' );
 }
 
 sub common_successor {
 	my $self = shift;
 	my( $r1, $r2 ) = $self->_objectify_args( @_ );
-	return $self->common_in_path( $r1, $r2, 'successors' );
+	return $self->_common_in_path( $r1, $r2, 'successors' );
 }
 
-sub common_in_path {
+sub _common_in_path {
 	my( $self, $r1, $r2, $dir ) = @_;
 	my $iter = $r1->rank > $r2->rank ? $r1->rank : $r2->rank;
 	$iter = $self->end->rank - $iter if $dir eq 'successors';
@@ -1455,10 +1462,12 @@ sub throw {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
-=head1 BUGS / TODO
+=head1 LICENSE
 
-=over
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
 
-=item * Get rid of $backup in reading_sequence
+=head1 AUTHOR
 
-=back
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
