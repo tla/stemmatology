@@ -477,8 +477,6 @@ sub as_dot {
     my $startrank = $opts->{'from'} if $opts;
     my $endrank = $opts->{'to'} if $opts;
     my $color_common = $opts->{'color_common'} if $opts;
-    my $STRAIGHTENHACK = !$startrank && !$endrank && $self->end->rank 
-    	&& $self->end->rank > 100;
     
     # Check the arguments
     if( $startrank ) {
@@ -522,13 +520,13 @@ sub as_dot {
 	if( $endrank ) {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
-	if( $STRAIGHTENHACK ) {
-		## HACK part 1
-		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";	
-		$dot .= "\t\"#SILENT#\" [ shape=diamond,color=white,penwidth=0,label=\"\" ];"
-	}
+
 	my %used;  # Keep track of the readings that actually appear in the graph
-    foreach my $reading ( $self->readings ) {
+	# Sort the readings by rank if we have ranks; this speeds layout.
+	my @all_readings = $self->end->has_rank 
+		? sort { $a->rank <=> $b->rank } $self->readings
+		: $self->readings;
+    foreach my $reading ( @all_readings ) {
     	# Only output readings within our rank range.
     	next if $startrank && $reading->rank < $startrank;
     	next if $endrank && $reading->rank > $endrank;
@@ -543,7 +541,9 @@ sub as_dot {
         $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
     
-	# Add the real edges
+	# Add the real edges. Need to weight one edge per rank jump, in a
+	# continuous line.
+	my $weighted = $self->_add_edge_weights;
     my @edges = $self->paths;
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
@@ -551,14 +551,23 @@ sub as_dot {
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {
     		my $label = $self->_path_display_label( $self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
+			
 			# Account for the rank gap if necessary
-			if( $self->reading( $edge->[1] )->has_rank 
-				&& $self->reading( $edge->[0] )->has_rank
-				&& $self->reading( $edge->[1] )->rank 
-				- $self->reading( $edge->[0] )->rank > 1 ) {
-				$variables->{'minlen'} = $self->reading( $edge->[1] )->rank 
-				- $self->reading( $edge->[0] )->rank;
+			my $rank0 = $self->reading( $edge->[0] )->rank
+				if $self->reading( $edge->[0] )->has_rank;
+			my $rank1 = $self->reading( $edge->[1] )->rank
+				if $self->reading( $edge->[1] )->has_rank;
+			if( defined $rank0 && defined $rank1 && $rank1 - $rank0 > 1 ) {
+				$variables->{'minlen'} = $rank1 - $rank0;
 			}
+			
+			# Add the calculated edge weights
+			if( exists $weighted->{$edge->[0]} 
+				&& $weighted->{$edge->[0]} eq $edge->[1] ) {
+				# $variables->{'color'} = 'red';
+				$variables->{'weight'} = 3.0;
+			}
+
 			# EXPERIMENTAL: make edge width reflect no. of witnesses
 			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
 			$variables->{'penwidth'} = $extrawidth + 0.8; # gives 1 for a single wit
@@ -585,11 +594,7 @@ sub as_dot {
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
 	}
-	# HACK part 2
-	if( $STRAIGHTENHACK ) {
-		$dot .= "\t\"#END#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
-	}
-	
+
     $dot .= "}\n";
     return $dot;
 }
@@ -602,6 +607,27 @@ sub _dot_attr_string {
 		push( @attrs, $k.'="'.$v.'"' );
 	}
 	return( '[ ' . join( ', ', @attrs ) . ' ]' );
+}
+
+sub _add_edge_weights {
+	my $self = shift;
+	# Walk the graph from START to END, choosing the successor node with
+	# the largest number of witness paths each time.
+	my $weighted = {};
+	my $curr = $self->start->id;
+	while( $curr ne $self->end->id ) {
+		my @succ = sort { $self->path_witnesses( $curr, $a )
+							<=> $self->path_witnesses( $curr, $b ) } 
+			$self->sequence->successors( $curr );
+		my $next = pop @succ;
+		# Try to avoid lacunae in the weighted path.
+		while( $self->reading( $next )->is_lacuna && @succ ) {
+			$next = pop @succ;
+		}
+		$weighted->{$curr} = $next;
+		$curr = $next;
+	}
+	return $weighted;	
 }
 
 =head2 path_witnesses( $edge )
