@@ -107,20 +107,7 @@ has graph => (
     isa => 'Graph',
     predicate => 'has_graph',
     );
-    
-has distance_trees => (
-    is => 'ro',
-    isa => 'ArrayRef[Graph]',
-    writer => '_save_distance_trees',
-    predicate => 'has_distance_trees',
-    );
-    
-has distance_program => (
-	is => 'rw',
-	isa => 'Str',
-	default => '',
-	);
-    
+        
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
@@ -297,47 +284,6 @@ sub witnesses {
     my @wits = grep { $self->graph->get_vertex_attribute( $_, 'class' ) eq 'extant' }
         $self->graph->vertices;
     return @wits;
-}
-
-=head2 distance_trees( program => $program )
-
-Returns a set of undirected graphs, which are the result of running a distance
-tree calculation program on the collation.  Currently the only supported
-program is phylip_pars.
-
-=cut
-
-#### Methods for calculating phylogenetic trees ####
-
-before 'distance_trees' => sub {
-    my $self = shift;
-    my %args = (
-    	'program' => 'phylip_pars',
-    	@_ );
-    # TODO allow specification of method for calculating distance tree
-    if( !$self->has_distance_trees
-    	|| $args{'program'} ne $self->distance_program ) {
-        # We need to make a tree before we can return it.
-        my $dsub = 'run_' . $args{'program'};
-        my $result = $self->$dsub(); # this might throw an error - catch it?
-		# Save the resulting trees
-		my $trees = parse_newick( $result );
-		$self->_save_distance_trees( $trees );
-		$self->distance_program( $args{'program'} );
-    }
-};
-
-=head2 run_phylip_pars
-
-Runs Phylip Pars on the collation, returning the results in Newick format.
-Used for the distance_trees calculation.
-
-=cut
-
-sub run_phylip_pars {
-	my $self = shift;
-	my $cdata = character_input( $self->collation->make_alignment_table() );
-	return phylip_pars( $cdata );
 }
 
 sub throw {

@@ -5,7 +5,7 @@ use File::Which;
 use Test::More;
 use lib 'lib';
 use Text::Tradition;
-use Text::Tradition::StemmaUtil;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -30,35 +30,36 @@ ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
 is( $stemma->graph, '1-2,1-A,2-B,2-C', "Got the correct graph" );
 
 # Test for character matrix creation
-my $m = Text::Tradition::StemmaUtil::_make_character_matrix( $c->make_alignment_table() );
+my $mstr = character_input( $c->make_alignment_table() );
  ## check number of rows
-is( scalar @$m, 3, "Found three witnesses in char matrix" );
+my @mlines = split( "\n", $mstr );
+my $msig = shift @mlines;
+my( $rows, $chars ) = $msig =~ /(\d+)\s+(\d+)/;
+is( $rows, 3, "Found three witnesses in char matrix" );
  ## check number of columns
-is( scalar( @{$m->[0]} ), 19, "Found 18 rows plus sigla in char matrix" );
+is( $chars, 18, "Found 18 rows plus sigla in char matrix" );
  ## check matrix
 my %expected = (
 	'A' => 'AAAAAAAXAAAAAAAAAA',
 	'B' => 'AXXXAAAAAABABAABAA',
 	'C' => 'AXXXAAAAABAAAAAXBB',
 	);
-my @wits = map { shift @$_; } @$m;
-map { s/\s+//g } @wits;
-foreach my $i ( 0 .. $#wits ) {
-	my $w = $wits[$i];
-	is( join( '', @{$m->[$i]} ), $expected{$w}, "Row for witness $w is correct" );
+foreach my $ml ( @mlines ) {
+	my( $wit, $chars ) = split( /\s+/, $ml );
+	is( $chars, $expected{$wit}, "Row for witness $wit is correct" );
 }
 
 # Test that pars runs
 SKIP: {
     skip "pars not in path", 3 unless File::Which::which('pars');
-    my( $status, $tree ) = $stemma->run_phylip_pars();
-    ok( $status, "pars ran successfully" );
-    print STDERR "Error was $tree\n" unless $status;
-    
+    my $newick = phylip_pars( $mstr );
+    ok( $newick, "pars ran successfully" );
+
+	my $trees = parse_newick( $newick );
     # Test that we get a tree
-    is( scalar @{$stemma->distance_trees}, 1, "Got a single tree" );
+    is( scalar @$trees, 1, "Got a single tree" );
     # Test that the tree has all our witnesses
-    $tree = $stemma->distance_trees->[0];
+    my $tree = $trees->[0];
     my @leaves = grep { $tree->degree( $_ ) == 1 } $tree->vertices;
     is( scalar @leaves, 3, "All witnesses in the tree" );
 }
