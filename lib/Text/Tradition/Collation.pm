@@ -451,16 +451,7 @@ sub as_svg {
     print $dotfile $self->as_dot( $opts );
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
-    # HACK part 3 - remove silent node+edge
-    my $parser = XML::LibXML->new();
-    my $svgdom = $parser->parse_string( $svg );
-    my $xpc = XML::LibXML::XPathContext->new( $svgdom->documentElement );
-    $xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
-    my @hacknodes = $xpc->findnodes( '//svg:g[contains(child::svg:title, "#SILENT#")]' );
-    foreach my $h ( @hacknodes ) {
-    	$h->parentNode->removeChild( $h );
-    }
-    return decode_utf8( $svgdom->toString() );
+    return decode_utf8( $svg );
 }
 
 
@@ -534,7 +525,7 @@ sub as_dot {
 	if( $STRAIGHTENHACK ) {
 		## HACK part 1
 		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";	
-		$dot .= "\t\"#SILENT#\" [ color=white,penwidth=0,label=\"\" ];"
+		$dot .= "\t\"#SILENT#\" [ shape=diamond,color=white,penwidth=0,label=\"\" ];"
 	}
 	my %used;  # Keep track of the readings that actually appear in the graph
     foreach my $reading ( $self->readings ) {
