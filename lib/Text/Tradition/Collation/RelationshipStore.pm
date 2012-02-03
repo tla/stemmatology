@@ -259,7 +259,9 @@ sub relationship_valid {
 		# Check that linking the source and target in a relationship won't lead
 		# to a path loop for any witness.  If they have the same rank then fine.
 		return( 1, "ok" ) 
-			if $c->reading( $source )->rank == $c->reading( $target )->rank;
+			if $c->reading( $source )->has_rank
+				&& $c->reading( $target )->has_rank
+				&& $c->reading( $source )->rank == $c->reading( $target )->rank;
 		
 		# Otherwise, first make a lookup table of all the
 		# readings related to either the source or the target.
