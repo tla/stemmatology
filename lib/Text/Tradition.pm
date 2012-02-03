@@ -44,6 +44,7 @@ has 'stemmata' => (
 		stemma_count => 'count',
 		clear_stemmata => 'clear',
 	},
+	default => sub { [] },
 	);
   
 # Create the witness before trying to add it
@@ -306,6 +307,7 @@ my $t = Text::Tradition->new(
     'file'  => 't/data/simple.txt',
     );
 
+is( $t->stemma_count, 0, "No stemmas added yet" );
 my $s;
 ok( $s = $t->add_stemma( dotfile => 't/data/simple.dot' ), "Added a simple stemma" );
 is( ref( $s ), 'Text::Tradition::Stemma', "Got a stemma object returned" );
