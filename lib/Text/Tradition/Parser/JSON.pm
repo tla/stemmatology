@@ -195,6 +195,7 @@ sub make_nodes {
 	my( $c, $idx, @tokens ) = @_;
 	my %unique;
 	my @readings;
+	my $commonctr = 0;
 	foreach my $j ( 0 .. $#tokens ) {
 		if( $tokens[$j] ) {
 			my $word = _restore_punct( $tokens[$j] );
@@ -203,15 +204,28 @@ sub make_nodes {
 				$rdg = $unique{$word};
 			} else {
 				my %args = ( 'id' => join( ',', $idx, $j+1 ),
+					'rank' => $idx,
 					'text' => $word,
 					'collation' => $c );
-				$args{'is_lacuna'} = 1 if $word eq '#LACUNA#';
+				if( $word eq '#LACUNA#' ) {
+					$args{'is_lacuna'} = 1 
+				} else {
+					$commonctr++;
+				}
 				$rdg = Text::Tradition::Collation::Reading->new( %args );
 				$unique{$word} = $rdg;
 			}
 			push( @readings, $rdg );
 		} else {
+			$commonctr++;
 			push( @readings, undef );
+		}
+	}
+	if( $commonctr == 1 ) {
+		# Whichever reading isn't a lacuna is a common node.
+		foreach my $rdg ( values %unique ) {
+			next if $rdg->is_lacuna;
+			$rdg->is_common( 1 );
 		}
 	}
 	map { $c->add_reading( $_ ) } values( %unique );

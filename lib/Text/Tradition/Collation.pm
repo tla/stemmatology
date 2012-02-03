@@ -9,6 +9,7 @@ use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
 use XML::LibXML;
+use XML::LibXML::XPathContext;
 use Moose;
 
 has 'sequence' => (
@@ -431,67 +432,51 @@ sub reading_witnesses {
 
 =head1 OUTPUT METHODS
 
-=head2 as_svg
+=head2 as_svg( \%options )
 
 Returns an SVG string that represents the graph, via as_dot and graphviz.
+See as_dot for a list of options.
 
 =cut
 
 sub as_svg {
-    my( $self ) = @_;
+    my( $self, $opts ) = @_;
         
     my @cmd = qw/dot -Tsvg/;
     my( $svg, $err );
     my $dotfile = File::Temp->new();
-    ## TODO REMOVE
+    ## USE FOR DEBUGGING
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
-    print $dotfile $self->as_dot();
+    print $dotfile $self->as_dot( $opts );
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
-    $svg = decode_utf8( $svg );
-    return $svg;
-}
-
-=head2 svg_subgraph( $from, $to )
-
-Returns an SVG string that represents the portion of the graph given by the
-specified range.  The $from and $to variables refer to ranks within the graph.
-
-=cut
-
-sub svg_subgraph {
-    my( $self, $from, $to ) = @_;
-    
-    my $dot = $self->as_dot( $from, $to );
-    unless( $dot ) {
-    	throw( "Could not output a graph with range $from - $to" );
-    }
-    
-    my @cmd = qw/dot -Tsvg/;
-    my( $svg, $err );
-    my $dotfile = File::Temp->new();
-    ## TODO REMOVE
-    # $dotfile->unlink_on_destroy(0);
-    binmode $dotfile, ':utf8';
-    print $dotfile $dot;
-    push( @cmd, $dotfile->filename );
-    run( \@cmd, ">", binary(), \$svg );
-    $svg = decode_utf8( $svg );
-    return $svg;
+    return decode_utf8( $svg );
 }
 
 
-=head2 as_dot( $from, $to )
+=head2 as_dot( \%options )
 
 Returns a string that is the collation graph expressed in dot
-(i.e. GraphViz) format.  If $from or $to is passed, as_dot creates
-a subgraph rather than the entire graph.
+(i.e. GraphViz) format.  Options include:
+
+=over 4
+
+=item * from
+
+=item * to
+
+=item * color_common
+
+=back
 
 =cut
 
 sub as_dot {
-    my( $self, $startrank, $endrank ) = @_;
+    my( $self, $opts ) = @_;
+    my $startrank = $opts->{'from'} if $opts;
+    my $endrank = $opts->{'to'} if $opts;
+    my $color_common = $opts->{'color_common'} if $opts;
     
     # Check the arguments
     if( $startrank ) {
@@ -513,7 +498,7 @@ sub as_dot {
     	'bgcolor' => 'none',
     	);
     my %node_attrs = (
-    	'fontsize' => 11,
+    	'fontsize' => 14,
     	'fillcolor' => 'white',
     	'style' => 'filled',
     	'shape' => 'ellipse'
@@ -535,8 +520,13 @@ sub as_dot {
 	if( $endrank ) {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
+
 	my %used;  # Keep track of the readings that actually appear in the graph
-    foreach my $reading ( $self->readings ) {
+	# Sort the readings by rank if we have ranks; this speeds layout.
+	my @all_readings = $self->end->has_rank 
+		? sort { $a->rank <=> $b->rank } $self->readings
+		: $self->readings;
+    foreach my $reading ( @all_readings ) {
     	# Only output readings within our rank range.
     	next if $startrank && $reading->rank < $startrank;
     	next if $endrank && $reading->rank > $endrank;
@@ -547,27 +537,37 @@ sub as_dot {
         my $label = $reading->text;
         $label =~ s/\"/\\\"/g;
 		$rattrs->{'label'} = $label;
-		# TODO make this an option?
-		# $rattrs->{'fillcolor'} = 'green' if $reading->is_common;
+		$rattrs->{'fillcolor'} = '#b3f36d' if $reading->is_common && $color_common;
         $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
     
-	# Add the real edges
+	# Add the real edges. Need to weight one edge per rank jump, in a
+	# continuous line.
+	my $weighted = $self->_add_edge_weights;
     my @edges = $self->paths;
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {
-    		my $label = $self->path_display_label( $self->path_witnesses( $edge ) );
+    		my $label = $self->_path_display_label( $self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
+			
 			# Account for the rank gap if necessary
-			if( $self->reading( $edge->[1] )->has_rank 
-				&& $self->reading( $edge->[0] )->has_rank
-				&& $self->reading( $edge->[1] )->rank 
-				- $self->reading( $edge->[0] )->rank > 1 ) {
-				$variables->{'minlen'} = $self->reading( $edge->[1] )->rank 
-				- $self->reading( $edge->[0] )->rank;
+			my $rank0 = $self->reading( $edge->[0] )->rank
+				if $self->reading( $edge->[0] )->has_rank;
+			my $rank1 = $self->reading( $edge->[1] )->rank
+				if $self->reading( $edge->[1] )->has_rank;
+			if( defined $rank0 && defined $rank1 && $rank1 - $rank0 > 1 ) {
+				$variables->{'minlen'} = $rank1 - $rank0;
 			}
+			
+			# Add the calculated edge weights
+			if( exists $weighted->{$edge->[0]} 
+				&& $weighted->{$edge->[0]} eq $edge->[1] ) {
+				# $variables->{'color'} = 'red';
+				$variables->{'weight'} = 3.0;
+			}
+
 			# EXPERIMENTAL: make edge width reflect no. of witnesses
 			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
 			$variables->{'penwidth'} = $extrawidth + 0.8; # gives 1 for a single wit
@@ -583,18 +583,18 @@ sub as_dot {
     }
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
-    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"#SUBSTART#\" -> \"$node\" $varopts;";
 	}
     foreach my $node ( keys %subend ) {
-    	my $witstr = $self->path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
 	}
-	
+
     $dot .= "}\n";
     return $dot;
 }
@@ -609,6 +609,34 @@ sub _dot_attr_string {
 	return( '[ ' . join( ', ', @attrs ) . ' ]' );
 }
 
+sub _add_edge_weights {
+	my $self = shift;
+	# Walk the graph from START to END, choosing the successor node with
+	# the largest number of witness paths each time.
+	my $weighted = {};
+	my $curr = $self->start->id;
+	while( $curr ne $self->end->id ) {
+		my @succ = sort { $self->path_witnesses( $curr, $a )
+							<=> $self->path_witnesses( $curr, $b ) } 
+			$self->sequence->successors( $curr );
+		my $next = pop @succ;
+		# Try to avoid lacunae in the weighted path.
+		while( $self->reading( $next )->is_lacuna && @succ ) {
+			$next = pop @succ;
+		}
+		$weighted->{$curr} = $next;
+		$curr = $next;
+	}
+	return $weighted;	
+}
+
+=head2 path_witnesses( $edge )
+
+Returns the list of sigils whose witnesses are associated with the given edge.
+The edge can be passed as either an array or an arrayref of ( $source, $target ).
+
+=cut
+
 sub path_witnesses {
 	my( $self, @edge ) = @_;
 	# If edge is an arrayref, cope.
@@ -620,7 +648,7 @@ sub path_witnesses {
 	return @wits;
 }
 
-sub path_display_label {
+sub _path_display_label {
 	my $self = shift;
 	my @wits = sort @_;
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
@@ -811,7 +839,7 @@ sub as_graphml {
 	}
 	
 	# Add the relationship graph to the XML
-	$self->relations->as_graphml( $graphml_ns, $root, \%node_hash, 
+	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
 		$node_data_keys{'id'}, \%edge_data_keys );
 
     # Save and return the thing
@@ -874,9 +902,11 @@ keys have a true hash value will be included.
 
 sub make_alignment_table {
     my( $self, $noderefs, $include ) = @_;
-    unless( $self->linear ) {
-        throw( "Need a linear graph in order to make an alignment table" );
-    }
+    # Make sure we can do this
+	throw( "Need a linear graph in order to make an alignment table" )
+		unless $self->linear;
+	$self->calculate_ranks unless $self->end->has_rank;
+	
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {
@@ -1292,6 +1322,7 @@ sub flatten_ranks {
             # Combine!
         	# print STDERR "Combining readings at same rank: $key\n";
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
+            # TODO see if this now makes a common point.
         } else {
             $unique_rank_rdg{$key} = $rdg;
         }
@@ -1413,16 +1444,16 @@ is( $c->common_successor( 'n21', 'n26' )->id,
 sub common_predecessor {
 	my $self = shift;
 	my( $r1, $r2 ) = $self->_objectify_args( @_ );
-	return $self->common_in_path( $r1, $r2, 'predecessors' );
+	return $self->_common_in_path( $r1, $r2, 'predecessors' );
 }
 
 sub common_successor {
 	my $self = shift;
 	my( $r1, $r2 ) = $self->_objectify_args( @_ );
-	return $self->common_in_path( $r1, $r2, 'successors' );
+	return $self->_common_in_path( $r1, $r2, 'successors' );
 }
 
-sub common_in_path {
+sub _common_in_path {
 	my( $self, $r1, $r2, $dir ) = @_;
 	my $iter = $r1->rank > $r2->rank ? $r1->rank : $r2->rank;
 	$iter = $self->end->rank - $iter if $dir eq 'successors';
@@ -1457,10 +1488,12 @@ sub throw {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
-=head1 BUGS / TODO
+=head1 LICENSE
 
-=over
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
 
-=item * Get rid of $backup in reading_sequence
+=head1 AUTHOR
 
-=back
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>

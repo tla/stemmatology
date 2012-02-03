@@ -33,7 +33,7 @@ my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar @svg_edges, 32, "Correct number of edges in the graph" );
 
 # Test svg creation for a subgraph
-my $part_svg = $parser->parse_string( $collation->svg_subgraph( 15 ) ); # start, no end
+my $part_svg = $parser->parse_string( $collation->as_svg( { from => 15 } ) ); # start, no end
 is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph to end" );
 my $part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
 $part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
@@ -47,7 +47,7 @@ open( OUT, ">test.svg" );
 print OUT $part_svg->toString();
 close OUT;
 
-$part_svg = $parser->parse_string( $collation->svg_subgraph( 10, 13 ) ); # start, no end
+$part_svg = $parser->parse_string( $collation->as_svg( { from => 10, to => 13 } ) ); # start, no end
 is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph in the middle" );
 $part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
 $part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
@@ -59,7 +59,7 @@ is( scalar( @svg_edges ), 11,
 	"Correct number of edges in the subgraph" );
 
 
-$part_svg = $parser->parse_string( $collation->svg_subgraph( 0, 5 ) ); # start, no end
+$part_svg = $parser->parse_string( $collation->as_svg( { to => 5 } ) ); # start, no end
 is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph from start" );
 $part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
 $part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );

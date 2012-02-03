@@ -36,7 +36,7 @@ my $t = Text::Tradition->new(
 	my $s = $t->add_stemma( dotfile => 't/data/simple.dot' );
 	ok( $d->save( $t ), "Updated tradition with stemma" );
 	is( $d->tradition( $uuid ), $t, "Correct tradition returned for id" );
-	is( $d->tradition( $uuid )->stemma, $s, "...and it has the correct stemma" );
+	is( $d->tradition( $uuid )->stemma(0), $s, "...and it has the correct stemma" );
 	try {
 		$d->save( $s );
 	} catch( Text::Tradition::Error $e ) {
@@ -61,7 +61,7 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	is( scalar $f->tradition_ids, 2, "Directory index has both traditions" );
 	my $tf = $f->tradition( $uuid );
 	is( $tf->name, $t->name, "Retrieved the tradition from a new directory" );
-	my $sid = $f->object_to_id( $tf->stemma );
+	my $sid = $f->object_to_id( $tf->stemma(0) );
 	try {
 		$f->tradition( $sid );
 	} catch( Text::Tradition::Error $e ) {

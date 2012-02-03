@@ -160,11 +160,24 @@ sub is_meta {
 	return $self->is_start || $self->is_end || $self->is_lacuna || $self->is_ph;	
 }
 
-# Some syntactic sugar
+=head1 Convenience methods
+
+=head2 related_readings
+
+Calls Collation's related_readings with $self as the first argument.
+
+=cut
+
 sub related_readings {
 	my $self = shift;
 	return $self->collation->related_readings( $self, @_ );
 }
+
+=head2 predecessors
+
+Returns a list of Reading objects that immediately precede $self in the collation.
+
+=cut
 
 sub predecessors {
 	my $self = shift;
@@ -172,11 +185,24 @@ sub predecessors {
 	return map { $self->collation->reading( $_ ) } @pred;
 }
 
+=head2 successors
+
+Returns a list of Reading objects that immediately follow $self in the collation.
+
+=cut
+
 sub successors {
 	my $self = shift;
 	my @succ = $self->collation->sequence->successors( $self->id );
 	return map { $self->collation->reading( $_ ) } @succ;
 }
+
+=head2 set_identical( $other_reading)
+
+Backwards compatibility method, to add a transposition relationship
+between $self and $other_reading.  Don't use this.
+
+=cut
 
 sub set_identical {
 	my( $self, $other ) = @_;

@@ -12,9 +12,10 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep, $stemmafile, $dsn ) 
+my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep, $stemmafile, 
+	$dsn, $dbuser, $dbpass ) 
     = ( '', '', '', '', 1, 'Tradition', 0, "\t", '',
-    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db" );
+    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -23,6 +24,8 @@ GetOptions( 'i|in=s'    => \$informat,
             'n|name=s'  => \$name,
             'h|help'    => \$help,
             's|stemma=s' => \$stemmafile,
+            'u|user=s'  => \$dbuser,
+            'p|pass=s'  => \$dbpass,
             'sep=s'		=> \$sep,
             'hack'      => \$HACK,
             'dsn=s'		=> \$dsn,
@@ -91,8 +94,11 @@ if( $outformat eq 'stemma' ) {
         print STDERR "Bad result: $tree";
     }
 } elsif( $outformat eq 'db' ) {
+	my $extra_args = { 'create' => 1 };
+	$extra_args->{'user'} = $dbuser if $dbuser;
+	$extra_args->{'password'} = $dbpass if $dbpass;
 	my $dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
-		'extra_args' => { 'create' => 1 } );
+		'extra_args' => $extra_args );
 	my $scope = $dir->new_scope;
 	my $uuid = $dir->store( $tradition );
 	print STDERR "Saved tradition to database with ID $uuid\n";

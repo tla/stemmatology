@@ -365,7 +365,7 @@ sub merge_readings {
 	$self->delete_reading( $deleted );
 }
 
-sub as_graphml { 
+sub _as_graphml { 
 	my( $self, $graphml_ns, $xmlroot, $node_hash, $nodeid_key, $edge_keys ) = @_;
 	
     my $rgraph = $xmlroot->addNewChild( $graphml_ns, 'graph' );

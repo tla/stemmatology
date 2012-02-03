@@ -17,11 +17,11 @@ sub run_analysis {
 	my $data = {};
 	
 	# We need a stemma in order to run this...
-	unless( $tradition->has_stemma ) {
+	unless( $tradition->stemma_count ) {
 		warn "Tradition '" . $tradition->name . "' has no stemma to analyze";
 		return undef;
 	}
-	my $stemma = $tradition->stemma;
+	my $stemma = $tradition->stemma(0); # TODO allow multiple
 		
 	# We have the collation, so get the alignment table with witnesses in rows.
 	# Also return the reading objects in the table, rather than just the words.

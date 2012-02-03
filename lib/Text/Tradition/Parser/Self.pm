@@ -118,11 +118,11 @@ if( $t ) {
 =cut
 
 my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY,
-	$START_KEY, $END_KEY, $LACUNA_KEY,
+	$START_KEY, $END_KEY, $LACUNA_KEY, $COMMON_KEY,
 	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY,
 	$SCOPE_KEY, $CORRECT_KEY, $INDEP_KEY )
     = qw/ id text identical rank 
-    	  is_start is_end is_lacuna 
+    	  is_start is_end is_lacuna is_common
     	  source target witness extra relationship
     	  scope non_correctable non_independent /;
 
@@ -167,6 +167,7 @@ sub parse {
         my $reading_options = { 
         	'id' => $n->{$IDKEY},
         	'is_lacuna' => $n->{$LACUNA_KEY},
+        	'is_common' => $n->{$COMMON_KEY},
         	};
         my $rank = $n->{$RANK_KEY};
 		$reading_options->{'rank'} = $rank if $rank;

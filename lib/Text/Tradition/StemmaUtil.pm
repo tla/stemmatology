@@ -16,7 +16,20 @@ use Text::Tradition::Error;
 @EXPORT_OK = qw/ make_character_matrix character_input phylip_pars 
 				 parse_newick newick_to_svg /;
 
-sub make_character_matrix {
+=head1 NAME
+
+Text::Tradition::StemmaUtil - standalone utilities for distance tree calculations
+
+=head1 DESCRIPTION
+
+This package contains a set of utilities for running phylogenetic analysis on
+text collations.
+
+=head1 SUBROUTINES
+
+=cut
+
+sub _make_character_matrix {
     my( $table ) = @_;
     # Push the names of the witnesses to initialize the rows of the matrix.
     my @matrix = map { [ _normalize_witname( $_->{'witness'} ) ] } 
@@ -27,7 +40,7 @@ sub make_character_matrix {
         my @pos_readings = map { $_->{'tokens'}->[$token_index] }
         						@{$table->{'alignment'}};
         my @pos_text = map { $_ ? $_->{'t'} : $_ } @pos_readings;
-        my @chars = convert_characters( \@pos_text );
+        my @chars = _convert_characters( \@pos_text );
         foreach my $idx ( 0 .. $#matrix ) {
             push( @{$matrix[$idx]}, $chars[$idx] );
         }
@@ -45,7 +58,7 @@ sub _normalize_witname {
     return sprintf( "%-10s", $witname );
 }
 
-sub convert_characters {
+sub _convert_characters {
     my $row = shift;
     # This is a simple algorithm that treats every reading as different.
     # Eventually we will want to be able to specify how relationships
@@ -78,9 +91,17 @@ sub convert_characters {
     return @chars;
 }
 
+=head2 character_input( $alignment_table )
+
+Returns a character matrix string suitable for Phylip programs, which 
+corresponds to the given alignment table.  See Text::Tradition::Collation 
+for a description of the alignment table format.
+
+=cut
+
 sub character_input {
     my $table = shift;
-    my $character_matrix = make_character_matrix( $table );
+    my $character_matrix = _make_character_matrix( $table );
     my $input = '';
     my $rows = scalar @{$character_matrix};
     my $columns = scalar @{$character_matrix->[0]} - 1;
@@ -90,6 +111,12 @@ sub character_input {
     }
     return $input;
 }
+
+=head2 phylip_pars( $character_matrix )
+
+Runs Phylip Pars on the given character matrix.  Returns results in Newick format.
+
+=cut
 
 sub phylip_pars {
 	my( $charmatrix ) = @_;
@@ -158,6 +185,12 @@ sub phylip_pars {
     throw( join( '', @error ) );
 }
 
+=head2 parse_newick( $newick_string )
+
+Parses the given Newick tree(s) into one or more undirected Graph objects.
+
+=cut
+
 sub parse_newick {
     my $newick = shift;
     my @trees;
@@ -172,6 +205,13 @@ sub parse_newick {
     }
     return \@trees;
 }
+
+=head2 newick_to_svg( $newick_string )
+
+Uses the FigTree utility (if installed) to transform the given Newick tree(s)
+into a graph visualization.
+
+=cut
 
 sub newick_to_svg {
 	my $newick = shift;
@@ -220,3 +260,14 @@ sub throw {
 		);
 }
 
+1;
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
