@@ -57,8 +57,23 @@ has 'graph' => (
     	relationships => 'edges',
     	add_reading => 'add_vertex',
     	delete_reading => 'delete_vertex',
+    	delete_relationship => 'delete_edge',
     },
 	);
+	
+around 'delete_relationship' => sub {
+	my $orig = shift;
+	my $self = shift;
+	my @vector;
+	if( @_ == 1 && ref( $_[0] ) eq 'ARRAY' ) {
+		# Dereference the edge arrayref that was passed.
+		my $edge = shift;
+		@vector = @$edge;
+	} else {
+		@vector = @_;
+	}
+	return $self->$orig( @vector );
+};
 	
 =head2 get_relationship
 
@@ -67,7 +82,15 @@ Return the relationship object, if any, that exists between two readings.
 =cut
 
 sub get_relationship {
-	my( $self, @vector ) = @_;
+	my $self = shift;
+	my @vector;
+	if( @_ == 1 && ref( $_[0] ) eq 'ARRAY' ) {
+		# Dereference the edge arrayref that was passed.
+		my $edge = shift;
+		@vector = @$edge;
+	} else {
+		@vector = @_;
+	}
 	my $relationship;
 	if( $self->graph->has_edge_attribute( @vector, 'object' ) ) {
 		$relationship = $self->graph->get_edge_attribute( @vector, 'object' );

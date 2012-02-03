@@ -488,7 +488,6 @@ sub as_dot {
 		$endrank = undef if $endrank == $self->end->rank;
 	}
 	
-    # TODO consider making some of these things configurable
     my $graph_name = $self->tradition->name;
     $graph_name =~ s/[^\w\s]//g;
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
@@ -526,6 +525,7 @@ sub as_dot {
 	my @all_readings = $self->end->has_rank 
 		? sort { $a->rank <=> $b->rank } $self->readings
 		: $self->readings;
+	# TODO Refrain from outputting lacuna nodes - just grey out the edges.
     foreach my $reading ( @all_readings ) {
     	# Only output readings within our rank range.
     	next if $startrank && $reading->rank < $startrank;
@@ -1328,6 +1328,45 @@ sub flatten_ranks {
         }
     }
 }
+
+=head2 remove_collations
+
+Another convenience method for parsing. Removes all 'collation' relationships
+that were defined in order to get the reading ranks to be correct.
+
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+isnt( $c->reading('n23')->rank, $c->reading('n9')->rank, "Rank skew exists" );
+$c->add_relationship( 'n23', 'n9', { 'type' => 'collated', 'scope' => 'local' } );
+is( scalar $c->relationships, 4, "Found all expected relationships" );
+$c->remove_collations;
+is( scalar $c->relationships, 3, "Collated relationships now gone" );
+is( $c->reading('n23')->rank, $c->reading('n9')->rank, "Aligned ranks were preserved" );
+
+=end testing
+
+=cut
+
+sub remove_collations {
+	my $self = shift;
+	foreach my $reledge ( $self->relationships ) {
+		my $relobj = $self->relations->get_relationship( $reledge );
+		if( $relobj && $relobj->type eq 'collated' ) {
+			$self->relations->delete_relationship( $reledge );
+		}
+	}
+}
+	
 
 =head2 calculate_common_readings
 
