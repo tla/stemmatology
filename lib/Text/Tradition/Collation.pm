@@ -498,7 +498,7 @@ sub as_dot {
     	'bgcolor' => 'none',
     	);
     my %node_attrs = (
-    	'fontsize' => 11,
+    	'fontsize' => 14,
     	'fillcolor' => 'white',
     	'style' => 'filled',
     	'shape' => 'ellipse'
