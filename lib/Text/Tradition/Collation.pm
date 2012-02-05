@@ -615,13 +615,18 @@ sub _add_edge_weights {
 	# the largest number of witness paths each time.
 	my $weighted = {};
 	my $curr = $self->start->id;
+	my $ranked = $self->end->has_rank;
 	while( $curr ne $self->end->id ) {
+		my $rank = $ranked ? $self->reading( $curr )->rank : 0;
 		my @succ = sort { $self->path_witnesses( $curr, $a )
 							<=> $self->path_witnesses( $curr, $b ) } 
 			$self->sequence->successors( $curr );
 		my $next = pop @succ;
+		my $nextrank = $ranked ? $self->reading( $next )->rank : 0;
 		# Try to avoid lacunae in the weighted path.
-		while( $self->reading( $next )->is_lacuna && @succ ) {
+		while( @succ && 
+			   ( $self->reading( $next )->is_lacuna ||
+			   	 $nextrank - $rank > 1 ) ){
 			$next = pop @succ;
 		}
 		$weighted->{$curr} = $next;
