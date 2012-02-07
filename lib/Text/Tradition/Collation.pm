@@ -448,7 +448,8 @@ See as_dot for a list of options.
 
 sub as_svg {
     my( $self, $opts ) = @_;
-    if( !$self->has_cached_svg || $opts->{'recalc'} ) {        
+    my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
+    if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
 		my @cmd = qw/dot -Tsvg/;
 		my( $svg, $err );
 		my $dotfile = File::Temp->new();
@@ -458,9 +459,12 @@ sub as_svg {
 		print $dotfile $self->as_dot( $opts );
 		push( @cmd, $dotfile->filename );
 		run( \@cmd, ">", binary(), \$svg );
-		$self->cached_svg( decode_utf8( $svg ) );
+		$svg = decode_utf8( $svg );
+		$self->cached_svg( $svg ) unless $want_subgraph;
+		return $svg;
+	} else {
+		return $self->cached_svg;
 	}
-	return $self->cached_svg;
 }
 
 
@@ -578,10 +582,10 @@ sub as_dot {
 			
 			# Add the calculated edge weights
 			# if( exists $weighted->{$edge->[0]} 
-# 				&& $weighted->{$edge->[0]} eq $edge->[1] ) {
-# 				# $variables->{'color'} = 'red';
-# 				$variables->{'weight'} = 3.0;
-# 			}
+			# 	&& $weighted->{$edge->[0]} eq $edge->[1] ) {
+			# 	# $variables->{'color'} = 'red';
+			# 	$variables->{'weight'} = 3.0;
+			# }
 
 			# EXPERIMENTAL: make edge width reflect no. of witnesses
 			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
