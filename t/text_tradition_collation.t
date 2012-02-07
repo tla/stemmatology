@@ -56,6 +56,31 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
+# Make an svg
+my $svg = $c->as_svg;
+is( substr( $svg, 0, 5 ), '<?xml', "Got XML doc for svg" );
+ok( $c->has_cached_svg, "SVG was cached" );
+is( $c->as_svg, $svg, "Cached SVG returned upon second call" );
+$c->calculate_ranks;
+is( $c->as_svg, $svg, "Cached SVG retained with no rank change" );
+$c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
+isnt( $c->as_svg, $svg, "SVG changed after relationship add" );
+}
+
+
+
+# =begin testing
+{
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
 isnt( $c->reading('n23')->rank, $c->reading('n9')->rank, "Rank skew exists" );
 $c->add_relationship( 'n23', 'n9', { 'type' => 'collated', 'scope' => 'local' } );
 is( scalar $c->relationships, 4, "Found all expected relationships" );
