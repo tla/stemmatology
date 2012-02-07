@@ -43,9 +43,6 @@ is( scalar( @svg_nodes ), 9,
 @svg_edges = $part_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar( @svg_edges ), 10,
 	"Correct number of edges in the subgraph" );
-open( OUT, ">test.svg" );
-print OUT $part_svg->toString();
-close OUT;
 
 $part_svg = $parser->parse_string( $collation->as_svg( { from => 10, to => 13 } ) ); # start, no end
 is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph in the middle" );
