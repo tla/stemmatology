@@ -6,7 +6,7 @@ use Moose::Util::TypeConstraints;
 enum 'RelationshipType' => qw( spelling orthographic grammatical meaning lexical
 							   collated repetition transposition );
 
-enum 'RelationshipScope' => qw( local tradition global );
+enum 'RelationshipScope' => qw( local document global );
 
 no Moose::Util::TypeConstraints;
 
@@ -35,11 +35,13 @@ Options include:
 
 =item * displayform - (Optional) The reading that should be displayed if the related nodes are treated as one.
 
+=item * scope - (Optional) A meta-attribute.  Can be one of 'local', 'document', or 'global'. Denotes whether the relationship between the two readings holds always, independent of context, either within this tradition or across all traditions.
+
+=item * anotation - (Optional) A freeform note to attach to the relationship.
+
 =item * non_correctable - (Optional) True if the reading would not have been corrected independently.
 
 =item * non_independent - (Optional) True if the variant is unlikely to have occurred independently in unrelated witnesses.
-
-=item * scope - (Optional) A meta-attribute.  Can be one of 'local', 'tradition', or 'global'. Denotes whether the relationship between the two readings holds always, independent of context, either within this tradition or across all traditions.
 
 =back
 
@@ -50,6 +52,8 @@ Options include:
 =head2 displayform
 
 =head2 scope
+
+=head2 annotation
 
 =head2 non_correctable
 
@@ -87,6 +91,11 @@ has 'scope' => (
 	is => 'ro',
 	isa => 'RelationshipScope', 
 	default => 'local',
+	);
+	
+has 'annotation' => (
+	is => 'ro',
+	isa => 'Str',
 	);
 
 has 'non_correctable' => (

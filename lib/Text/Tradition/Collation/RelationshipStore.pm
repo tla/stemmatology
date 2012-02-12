@@ -86,8 +86,23 @@ has 'graph' => (
     	relationships => 'edges',
     	add_reading => 'add_vertex',
     	delete_reading => 'delete_vertex',
+    	delete_relationship => 'delete_edge',
     },
 	);
+	
+around 'delete_relationship' => sub {
+	my $orig = shift;
+	my $self = shift;
+	my @vector;
+	if( @_ == 1 && ref( $_[0] ) eq 'ARRAY' ) {
+		# Dereference the edge arrayref that was passed.
+		my $edge = shift;
+		@vector = @$edge;
+	} else {
+		@vector = @_;
+	}
+	return $self->$orig( @vector );
+};
 	
 =head2 get_relationship
 
@@ -96,7 +111,15 @@ Return the relationship object, if any, that exists between two readings.
 =cut
 
 sub get_relationship {
-	my( $self, @vector ) = @_;
+	my $self = shift;
+	my @vector;
+	if( @_ == 1 && ref( $_[0] ) eq 'ARRAY' ) {
+		# Dereference the edge arrayref that was passed.
+		my $edge = shift;
+		@vector = @$edge;
+	} else {
+		@vector = @_;
+	}
 	my $relationship;
 	if( $self->graph->has_edge_attribute( @vector, 'object' ) ) {
 		$relationship = $self->graph->get_edge_attribute( @vector, 'object' );
@@ -298,6 +321,7 @@ sub relationship_valid {
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
+		# TODO this might be called before witness paths are set...
 		my %seen_wits;
 		map { $seen_wits{$_} = 1 } $c->reading_witnesses( $source );
 		foreach my $w ( $c->reading_witnesses( $target ) ) {
@@ -313,7 +337,9 @@ sub relationship_valid {
 		# Check that linking the source and target in a relationship won't lead
 		# to a path loop for any witness.  If they have the same rank then fine.
 		return( 1, "ok" ) 
-			if $c->reading( $source )->rank == $c->reading( $target )->rank;
+			if $c->reading( $source )->has_rank
+				&& $c->reading( $target )->has_rank
+				&& $c->reading( $source )->rank == $c->reading( $target )->rank;
 		
 		# Otherwise, first make a lookup table of all the
 		# readings related to either the source or the target.

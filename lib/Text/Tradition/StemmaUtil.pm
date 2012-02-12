@@ -13,8 +13,7 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
-@EXPORT_OK = qw/ make_character_matrix character_input phylip_pars 
-				 parse_newick newick_to_svg /;
+@EXPORT_OK = qw/ character_input phylip_pars parse_newick newick_to_svg /;
 
 =head1 NAME
 
@@ -27,7 +26,26 @@ text collations.
 
 =head1 SUBROUTINES
 
+=head2 character_input( $alignment_table )
+
+Returns a character matrix string suitable for Phylip programs, which 
+corresponds to the given alignment table.  See Text::Tradition::Collation 
+for a description of the alignment table format.
+
 =cut
+
+sub character_input {
+    my $table = shift;
+    my $character_matrix = _make_character_matrix( $table );
+    my $input = '';
+    my $rows = scalar @{$character_matrix};
+    my $columns = scalar @{$character_matrix->[0]} - 1;
+    $input .= "\t$rows\t$columns\n";
+    foreach my $row ( @{$character_matrix} ) {
+        $input .= join( '', @$row ) . "\n";
+    }
+    return $input;
+}
 
 sub _make_character_matrix {
     my( $table ) = @_;
@@ -89,27 +107,6 @@ sub _convert_characters {
     }
     my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
     return @chars;
-}
-
-=head2 character_input( $alignment_table )
-
-Returns a character matrix string suitable for Phylip programs, which 
-corresponds to the given alignment table.  See Text::Tradition::Collation 
-for a description of the alignment table format.
-
-=cut
-
-sub character_input {
-    my $table = shift;
-    my $character_matrix = _make_character_matrix( $table );
-    my $input = '';
-    my $rows = scalar @{$character_matrix};
-    my $columns = scalar @{$character_matrix->[0]} - 1;
-    $input .= "\t$rows\t$columns\n";
-    foreach my $row ( @{$character_matrix} ) {
-        $input .= join( '', @$row ) . "\n";
-    }
-    return $input;
 }
 
 =head2 phylip_pars( $character_matrix )

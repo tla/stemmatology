@@ -88,6 +88,13 @@ has 'end' => (
 	writer => '_set_end',
 	weak_ref => 1,
 	);
+	
+has 'cached_svg' => (
+	is => 'rw',
+	isa => 'Str',
+	predicate => 'has_cached_svg',
+	clearer => 'wipe_svg',
+	);
 
 =head1 NAME
 
@@ -442,17 +449,23 @@ See as_dot for a list of options.
 
 sub as_svg {
     my( $self, $opts ) = @_;
-        
-    my @cmd = qw/dot -Tsvg/;
-    my( $svg, $err );
-    my $dotfile = File::Temp->new();
-    ## USE FOR DEBUGGING
-    # $dotfile->unlink_on_destroy(0);
-    binmode $dotfile, ':utf8';
-    print $dotfile $self->as_dot( $opts );
-    push( @cmd, $dotfile->filename );
-    run( \@cmd, ">", binary(), \$svg );
-    return decode_utf8( $svg );
+    my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
+    if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
+		my @cmd = qw/dot -Tsvg/;
+		my( $svg, $err );
+		my $dotfile = File::Temp->new();
+		## USE FOR DEBUGGING
+		# $dotfile->unlink_on_destroy(0);
+		binmode $dotfile, ':utf8';
+		print $dotfile $self->as_dot( $opts );
+		push( @cmd, $dotfile->filename );
+		run( \@cmd, ">", binary(), \$svg );
+		$svg = decode_utf8( $svg );
+		$self->cached_svg( $svg ) unless $want_subgraph;
+		return $svg;
+	} else {
+		return $self->cached_svg;
+	}
 }
 
 
@@ -478,7 +491,9 @@ sub as_dot {
     my $startrank = $opts->{'from'} if $opts;
     my $endrank = $opts->{'to'} if $opts;
     my $color_common = $opts->{'color_common'} if $opts;
-    
+    my $STRAIGHTENHACK = !$startrank && !$endrank && $self->end->rank 
+       && $self->end->rank > 100;
+
     # Check the arguments
     if( $startrank ) {
     	return if $endrank && $startrank > $endrank;
@@ -489,7 +504,6 @@ sub as_dot {
 		$endrank = undef if $endrank == $self->end->rank;
 	}
 	
-    # TODO consider making some of these things configurable
     my $graph_name = $self->tradition->name;
     $graph_name =~ s/[^\w\s]//g;
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
@@ -521,12 +535,17 @@ sub as_dot {
 	if( $endrank ) {
 		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
 	}
-
+	if( $STRAIGHTENHACK ) {
+		## HACK part 1
+		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";  
+		$dot .= "\t\"#SILENT#\" [ shape=diamond,color=white,penwidth=0,label=\"\" ];"
+	}
 	my %used;  # Keep track of the readings that actually appear in the graph
 	# Sort the readings by rank if we have ranks; this speeds layout.
 	my @all_readings = $self->end->has_rank 
 		? sort { $a->rank <=> $b->rank } $self->readings
 		: $self->readings;
+	# TODO Refrain from outputting lacuna nodes - just grey out the edges.
     foreach my $reading ( @all_readings ) {
     	# Only output readings within our rank range.
     	next if $startrank && $reading->rank < $startrank;
@@ -544,7 +563,7 @@ sub as_dot {
     
 	# Add the real edges. Need to weight one edge per rank jump, in a
 	# continuous line.
-	my $weighted = $self->_add_edge_weights;
+	# my $weighted = $self->_add_edge_weights;
     my @edges = $self->paths;
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
@@ -563,11 +582,11 @@ sub as_dot {
 			}
 			
 			# Add the calculated edge weights
-			if( exists $weighted->{$edge->[0]} 
-				&& $weighted->{$edge->[0]} eq $edge->[1] ) {
-				# $variables->{'color'} = 'red';
-				$variables->{'weight'} = 3.0;
-			}
+			# if( exists $weighted->{$edge->[0]} 
+			# 	&& $weighted->{$edge->[0]} eq $edge->[1] ) {
+			# 	# $variables->{'color'} = 'red';
+			# 	$variables->{'weight'} = 3.0;
+			# }
 
 			# EXPERIMENTAL: make edge width reflect no. of witnesses
 			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
@@ -595,6 +614,10 @@ sub as_dot {
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
 	}
+	# HACK part 2
+	if( $STRAIGHTENHACK ) {
+		$dot .= "\t\"#END#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
+	}       
 
     $dot .= "}\n";
     return $dot;
@@ -616,13 +639,18 @@ sub _add_edge_weights {
 	# the largest number of witness paths each time.
 	my $weighted = {};
 	my $curr = $self->start->id;
+	my $ranked = $self->end->has_rank;
 	while( $curr ne $self->end->id ) {
+		my $rank = $ranked ? $self->reading( $curr )->rank : 0;
 		my @succ = sort { $self->path_witnesses( $curr, $a )
 							<=> $self->path_witnesses( $curr, $b ) } 
 			$self->sequence->successors( $curr );
 		my $next = pop @succ;
+		my $nextrank = $ranked ? $self->reading( $next )->rank : 0;
 		# Try to avoid lacunae in the weighted path.
-		while( $self->reading( $next )->is_lacuna && @succ ) {
+		while( @succ && 
+			   ( $self->reading( $next )->is_lacuna ||
+			   	 $nextrank - $rank > 1 ) ){
 			$next = pop @succ;
 		}
 		$weighted->{$curr} = $next;
@@ -1209,10 +1237,36 @@ sub make_witness_path {
 Calculate the reading ranks (that is, their aligned positions relative
 to each other) for the graph.  This can only be called on linear collations.
 
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+# Make an svg
+my $svg = $c->as_svg;
+is( substr( $svg, 0, 5 ), '<?xml', "Got XML doc for svg" );
+ok( $c->has_cached_svg, "SVG was cached" );
+is( $c->as_svg, $svg, "Cached SVG returned upon second call" );
+$c->calculate_ranks;
+is( $c->as_svg, $svg, "Cached SVG retained with no rank change" );
+$c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
+isnt( $c->as_svg, $svg, "SVG changed after relationship add" );
+
+=end testing
+
 =cut
 
 sub calculate_ranks {
     my $self = shift;
+    # Save the existing ranks, in case we need to invalidate the cached SVG.
+    my %existing_ranks;
     # Walk a version of the graph where every node linked by a relationship 
     # edge is fundamentally the same node, and do a topological ranking on
     # the nodes in this graph.
@@ -1240,6 +1294,7 @@ sub calculate_ranks {
 
     # Add the edges.
     foreach my $r ( $self->readings ) {
+		$existing_ranks{$r} = $r->rank;
         foreach my $n ( $self->sequence->successors( $r->id ) ) {
         	my( $tfrom, $tto ) = ( $rel_containers{$r->id},
         		$rel_containers{$n} );
@@ -1268,6 +1323,14 @@ sub calculate_ranks {
         	my $last = pop @all_defined;
             throw( "Ranks not calculated after $last - do you have a cycle in the graph?" );
         }
+    }
+    # Do we need to invalidate the cached SVG?
+    if( $self->has_cached_svg ) {
+    	foreach my $r ( $self->readings ) {
+    		next if $existing_ranks{$r} == $r->rank;
+    		$self->wipe_svg;
+    		last;
+    	}
     }
 }
 
@@ -1329,6 +1392,45 @@ sub flatten_ranks {
         }
     }
 }
+
+=head2 remove_collations
+
+Another convenience method for parsing. Removes all 'collation' relationships
+that were defined in order to get the reading ranks to be correct.
+
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+isnt( $c->reading('n23')->rank, $c->reading('n9')->rank, "Rank skew exists" );
+$c->add_relationship( 'n23', 'n9', { 'type' => 'collated', 'scope' => 'local' } );
+is( scalar $c->relationships, 4, "Found all expected relationships" );
+$c->remove_collations;
+is( scalar $c->relationships, 3, "Collated relationships now gone" );
+is( $c->reading('n23')->rank, $c->reading('n9')->rank, "Aligned ranks were preserved" );
+
+=end testing
+
+=cut
+
+sub remove_collations {
+	my $self = shift;
+	foreach my $reledge ( $self->relationships ) {
+		my $relobj = $self->relations->get_relationship( $reledge );
+		if( $relobj && $relobj->type eq 'collated' ) {
+			$self->relations->delete_relationship( $reledge );
+		}
+	}
+}
+	
 
 =head2 calculate_common_readings
 
