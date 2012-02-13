@@ -30,7 +30,7 @@ ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
 is( $stemma->graph, '1-2,1-A,2-B,2-C', "Got the correct graph" );
 
 # Test for character matrix creation
-my $mstr = character_input( $c->make_alignment_table() );
+my $mstr = character_input( $c->alignment_table() );
  ## check number of rows
 my @mlines = split( "\n", $mstr );
 my $msig = shift @mlines;
