@@ -173,6 +173,17 @@ sub related_readings {
 	return $self->collation->related_readings( $self, @_ );
 }
 
+=head2 witnesses 
+
+Calls Collation's reading_witnesses with $self as the first argument.
+
+=cut
+
+sub witnesses {
+	my $self = shift;
+	return $self->collation->reading_witnesses( $self, @_ );
+}
+
 =head2 predecessors
 
 Returns a list of Reading objects that immediately precede $self in the collation.

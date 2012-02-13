@@ -95,6 +95,13 @@ has 'cached_svg' => (
 	predicate => 'has_cached_svg',
 	clearer => 'wipe_svg',
 	);
+	
+has 'cached_table' => (
+	is => 'rw',
+	isa => 'HashRef',
+	predicate => 'has_cached_table',
+	clearer => 'wipe_table',
+	);
 
 =head1 NAME
 
@@ -246,6 +253,12 @@ sub BUILD {
 
 ### Reading construct/destruct functions
 
+sub _clear_cache {
+	my $self = shift;
+	$self->wipe_svg if $self->has_cached_svg;
+	$self->wipe_table if $self->has_cached_table;
+}	
+
 sub add_reading {
 	my( $self, $reading ) = @_;
 	unless( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
@@ -258,6 +271,7 @@ sub add_reading {
 	if( $self->reading( $reading->id ) ) {
 		throw( "Collation already has a reading with id " . $reading->id );
 	}
+	$self->_clear_cache;
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
 	$self->sequence->add_vertex( $reading->id );
@@ -274,6 +288,7 @@ around del_reading => sub {
 		$arg = $arg->id;
 	}
 	# Remove the reading from the graphs.
+	$self->_clear_cache;
 	$self->sequence->delete_vertex( $arg );
 	$self->relations->delete_reading( $arg );
 	
@@ -289,6 +304,7 @@ sub merge_readings {
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
     my( $kept, $deleted, $combine_char ) = $self->_stringify_args( @_ );
+	$self->_clear_cache;
 
     # The kept reading should inherit the paths and the relationships
     # of the deleted reading.
@@ -344,6 +360,7 @@ sub add_path {
 	# objects themselves.
     my( $source, $target, $wit ) = $self->_stringify_args( @_ );
 
+	$self->_clear_cache;
 	# Connect the readings
     $self->sequence->add_edge( $source, $target );
     # Note the witness in question
@@ -364,6 +381,7 @@ sub del_path {
 	# objects themselves.
     my( $source, $target, $wit ) = $self->_stringify_args( @args );
 
+	$self->_clear_cache;
 	if( $self->sequence->has_edge_attribute( $source, $target, $wit ) ) {
 		$self->sequence->delete_edge_attribute( $source, $target, $wit );
 	}
@@ -392,6 +410,7 @@ be called via $tradition->del_witness.
 sub clear_witness {
 	my( $self, @sigils ) = @_;
 
+	$self->_clear_cache;
 	# Clear the witness(es) out of the paths
 	foreach my $e ( $self->paths ) {
 		foreach my $sig ( @sigils ) {
@@ -414,6 +433,7 @@ sub add_relationship {
     	$self->reading( $source ), $target, $self->reading( $target ), $opts );
     # Force a full rank recalculation every time. Yuck.
     $self->calculate_ranks() if $self->end->has_rank;
+	$self->_clear_cache;
     return @vectors;
 }
 
@@ -688,7 +708,16 @@ sub _path_display_label {
 		return join( ', ', @wits );
 	}
 }
-		
+
+=head2 witnesses_at_rank
+
+Returns a list of witnesses that are not lacunose, for a given rank.
+
+=cut
+
+sub witnesses_at_rank {
+	my( $self, $rank ) = @_;
+}		
 
 =head2 as_graphml
 
@@ -893,7 +922,7 @@ row per witness (or witness uncorrected.)
 
 sub as_csv {
     my( $self ) = @_;
-    my $table = $self->make_alignment_table;
+    my $table = $self->alignment_table;
     my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );    
     my @result;
     # Make the header row
@@ -902,14 +931,14 @@ sub as_csv {
     # Make the rest of the rows
     foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
     	my @rowobjs = map { $_->{'tokens'}->[$idx] } @{$table->{'alignment'}};
-    	my @row = map { $_ ? $_->{'t'} : $_ } @rowobjs;
+    	my @row = map { $_ ? $_->{'t'}->text : $_ } @rowobjs;
         $csv->combine( @row );
         push( @result, decode_utf8( $csv->string ) );
     }
     return join( "\n", @result );
 }
 
-=head2 make_alignment_table( $use_refs, $include_witnesses )
+=head2 alignment_table( $use_refs, $include_witnesses )
 
 Return a reference to an alignment table, in a slightly enhanced CollateX
 format which looks like this:
@@ -929,8 +958,12 @@ keys have a true hash value will be included.
 
 =cut
 
-sub make_alignment_table {
-    my( $self, $noderefs, $include ) = @_;
+sub alignment_table {
+    my( $self ) = @_;
+    my $include; # see if we can ditch this
+    ## DEBUG
+    return $self->cached_table if $self->has_cached_table;
+    
     # Make sure we can do this
 	throw( "Need a linear graph in order to make an alignment table" )
 		unless $self->linear;
@@ -944,22 +977,23 @@ sub make_alignment_table {
     	}
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
-        my @row = _make_witness_row( \@wit_path, \@all_pos, $noderefs );
+        my @row = _make_witness_row( \@wit_path, \@all_pos );
         push( @{$table->{'alignment'}}, 
         	{ 'witness' => $wit->sigil, 'tokens' => \@row } );
         if( $wit->is_layered ) {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
         		$wit->sigil.$self->ac_label );
-            my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos, $noderefs );
+            my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos );
 			push( @{$table->{'alignment'}},
 				{ 'witness' => $wit->sigil.$self->ac_label, 'tokens' => \@ac_row } );
         }           
     }
-	return $table;
+    $self->cached_table( $table );
+    return $table;
 }
 
 sub _make_witness_row {
-    my( $path, $positions, $noderefs ) = @_;
+    my( $path, $positions ) = @_;
     my %char_hash;
     map { $char_hash{$_} = undef } @$positions;
     my $debug = 0;
@@ -968,8 +1002,7 @@ sub _make_witness_row {
         $rtext = '#LACUNA#' if $rdg->is_lacuna;
         print STDERR "rank " . $rdg->rank . "\n" if $debug;
         # print STDERR "No rank for " . $rdg->id . "\n" unless defined $rdg->rank;
-        $char_hash{$rdg->rank} = $noderefs ? { 't' => $rdg } 
-        								   : { 't' => $rtext };
+        $char_hash{$rdg->rank} = { 't' => $rdg };
     }
     my @row = map { $char_hash{$_} } @$positions;
     # Fill in lacuna markers for undef spots in the row
@@ -978,37 +1011,13 @@ sub _make_witness_row {
     foreach my $el ( @row ) {
         # If we are using node reference, make the lacuna node appear many times
         # in the table.  If not, use the lacuna tag.
-        if( $last_el && _el_is_lacuna( $last_el ) && !defined $el ) {
-            $el = $noderefs ? $last_el : { 't' => '#LACUNA#' };
+        if( $last_el && $last_el->{'t'}->is_lacuna && !defined $el ) {
+            $el = $last_el;
         }
         push( @filled_row, $el );
         $last_el = $el;
     }
     return @filled_row;
-}
-
-# Tiny utility function to say if a table element is a lacuna
-sub _el_is_lacuna {
-    my $el = shift;
-    return 1 if $el->{'t'} eq '#LACUNA#';
-    return 1 if ref( $el->{'t'} ) eq 'Text::Tradition::Collation::Reading'
-        && $el->{'t'}->is_lacuna;
-    return 0;
-}
-
-# Helper to turn the witnesses along columns rather than rows.  Assumes
-# equal-sized rows.
-sub _turn_table {
-    my( $table ) = @_;
-    my $result = [];
-    return $result unless scalar @$table;
-    my $nrows = scalar @{$table->[0]};
-    foreach my $idx ( 0 .. $nrows - 1 ) {
-        foreach my $wit ( 0 .. $#{$table} ) {
-            $result->[$idx]->[$wit] = $table->[$wit]->[$idx];
-        }
-    }
-    return $result;        
 }
 
 =head1 NAVIGATION METHODS
@@ -1464,9 +1473,11 @@ is_deeply( \@marked, \@expected, "Found correct list of common readings" );
 sub calculate_common_readings {
 	my $self = shift;
 	my @common;
-	my $table = $self->make_alignment_table( 1 );
+	my $table = $self->alignment_table;
 	foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
-		my @row = map { $_->{'tokens'}->[$idx]->{'t'} } @{$table->{'alignment'}};
+		my @row = map { $_->{'tokens'}->[$idx] 
+							? $_->{'tokens'}->[$idx]->{'t'} : '' } 
+					@{$table->{'alignment'}};
 		my %hash;
 		foreach my $r ( @row ) {
 			if( $r ) {

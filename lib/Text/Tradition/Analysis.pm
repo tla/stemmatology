@@ -10,146 +10,209 @@ use Text::Tradition::Stemma;
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
 
+=head1 NAME
+
+Text::Tradition::Analysis - functions for stemma analysis of a tradition
+
+=head1 SYNOPSIS
+
+  use Text::Tradition;
+  use Text::Tradition::Analysis qw/ run_analysis analyze_variant_location /;
+  my $t = Text::Tradition->new( 
+    'name' => 'this is a text',
+    'input' => 'TEI',
+    'file' => '/path/to/tei_parallel_seg_file.xml' );
+  $t->add_stemma( 'dotfile' => $stemmafile );
+
+  my $variant_data = run_analysis( $tradition );
+  # Recalculate rank $n treating all orthographic variants as equivalent
+  my $reanalyze = analyze_variant_location( $tradition, $n, 0, 'orthographic' );
+    
+=head1 DESCRIPTION
+
+Text::Tradition is a library for representation and analysis of collated
+texts, particularly medieval ones.  The Collation is the central feature of
+a Tradition, where the text, its sequence of readings, and its relationships
+between readings are actually kept.
+
+=head1 SUBROUTINES
+
+=head2 run_analysis( $tradition, $stemma_id, @merge_relationship_types )
+
+Runs the analysis described in analyze_variant_location on every location
+in the collation of the given tradition, against the stemma specified in
+$stemma_id.  If $stemma_id is not specified, it defaults to 0 (referencing
+the first stemma saved for the tradition.)
+
+The optional @merge_relationship_types contains a list of relationship types 
+to treat as equivalent for the analysis.
+
+=begin testing
+
+use Text::Tradition;
+use Text::Tradition::Analysis qw/ run_analysis analyze_variant_location /;
+
+my $datafile = 't/data/florilegium_tei_ps.xml';
+my $tradition = Text::Tradition->new( 'input' => 'TEI',
+                                      'name' => 'test0',
+                                      'file' => $datafile );
+my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
+is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
+
+my $data = run_analysis( $tradition );
+# TODO should be 21!
+is( $data->{'genealogical_count'}, 42, "Got right genealogical count" );
+is( $data->{'conflict_count'}, 17, "Got right conflict count" );
+is( $data->{'variant_count'}, 58, "Got right total variant number" );
+
+=end testing
+
+=cut
+
 sub run_analysis {
-	my( $tradition ) = @_;
-	# What we will return
-	my $variants = [];
-	my $data = {};
+	my( $tradition, $stemma_id, @collapse ) = @_;
+	$stemma_id = 0 unless $stemma_id;
 	
-	# We need a stemma in order to run this...
-	unless( $tradition->stemma_count ) {
-		warn "Tradition '" . $tradition->name . "' has no stemma to analyze";
-		return undef;
-	}
-	my $stemma = $tradition->stemma(0); # TODO allow multiple
-		
-	# We have the collation, so get the alignment table with witnesses in rows.
-	# Also return the reading objects in the table, rather than just the words.
-	my $wits = {};
-	map { $wits->{$_} = 1 } $stemma->witnesses;
-	# For each column in the alignment table, we want to see if the existing
-	# groupings of witnesses match our stemma hypothesis. We also need to keep
-	# track of the maximum number of variants at any one location.
-	my $max_variants = 0;
-	my ( $genealogical, $conflicts ) = ( 0, 0, 0 );
+	# Run the variant analysis on every rank in the graph that doesn't
+	# have a common reading. Return the results.
+	my @variants; # holds results from analyze_variant_location
+	my $genealogical; # counter of 'genealogical' variants
+	my $conflicts;    # counter of conflicting readings
 	
-    my $variant_groups = group_variants( $tradition->collation, $wits );
-    foreach my $rank ( 0 .. $#{$variant_groups} ) {
-        my $groups = $variant_groups->[$rank]->{'groups'};
-        my $readings = $variant_groups->[$rank]->{'readings'};
-        my $lacunose = $variant_groups->[$rank]->{'lacunose'};
-		
-		$max_variants = scalar @$groups if scalar @$groups > $max_variants;
-		
-		# We can already look up witnesses for a reading; we also want to look
-		# up readings for a given witness.
-		my $group_readings = {};
-		foreach my $x ( 0 .. $#$groups ) {
-			$group_readings->{wit_stringify( $groups->[$x] )} = $readings->[$x];
-		}
-		
-		# For all the groups with more than one member, collect the list of all
-		# contiguous vertices needed to connect them.
-		my $variant_loc = analyze_variant_location( $group_readings, $groups, 
-		    $stemma->graph, $lacunose );
-		$variant_loc->{'id'} = $rank;
-		$genealogical++ if $variant_loc->{'genealogical'};
-		$conflicts += grep { $_->{'conflict'} } @{$variant_loc->{'readings'}};
-
-		# Now run the same analysis given the calculated distance tree(s).
-# 		my @trees = @{$stemma->distance_trees};
-# 		if( @trees ) {
-#             foreach my $tree ( 0 .. $#trees ) {
-#                 my $dc = analyze_variant_location( $group_readings, $groups, $tree, $lacunose, 'undirected' );
-#                 foreach my $rdg ( keys %$dc ) {
-#                     my $var = $dc->{$rdg};
-#                     # TODO Do something with this
-#                 }
-#             }
-# 	    }
-
-		# Record that we used this variant in an analysis
-		push( @$variants, $variant_loc );
-	}
-
-	# Go through our variant locations, after we have seen all of them once,
-	# and add the number of empty columns needed by each.
-	foreach my $row ( @$variants ) {
-		my $empty = $max_variants - scalar @{$row->{'readings'}};
-		$row->{'empty'} = $empty;
+	# Find and mark 'common' ranks for exclusion.
+	my %common_rank;
+	foreach my $rdg ( $tradition->collation->common_readings ) {
+		$common_rank{$rdg->rank} = 1;
 	}
 	
-	$data->{'variants'} = $variants;
-	$data->{'variant_count'} = $tradition->collation->end->rank - 1;
-	$data->{'conflict_count'} = $conflicts;
-	$data->{'genealogical_count'} = $genealogical;
-	return $data;
+	foreach my $rank ( 1 .. $tradition->collation->end->rank-1 ) {
+		next if $common_rank{$rank};
+		my $variant_row = analyze_variant_location( 
+			$tradition, $rank, $stemma_id, @collapse );
+		push( @variants, $variant_row );
+		$genealogical++ if $variant_row->{'genealogical'};
+		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
+	}
+	
+	return {
+		'variants' => \@variants,
+		'variant_count' => scalar @variants, # TODO redundant
+		'conflict_count' => $conflicts,
+		'genealogical_count' => $genealogical,
+		};
 }
 
+=head2 group_variants( $tradition, $rank, $lacunose, @merge_relationship_types )
+
+Groups the variants at the given $rank of the collation, treating any
+relationships in @merge_relationship_types as equivalent.  $lacunose should
+be a reference to an array, to which the sigla of lacunose witnesses at this 
+rank will be appended.
+
+Returns two ordered lists $readings, $groups, where $readings->[$n] is attested
+by the witnesses listed in $groups->[$n].
+
+=cut
+
+# Return group_readings, groups, lacunose
 sub group_variants {
-	my( $c, $wits ) = @_;
-	my $variant_groups = [];
+	my( $tradition, $rank, $lacunose, $collapse ) = @_;
+	my $c = $tradition->collation;
+	# Get the alignment table readings
+	my %readings_at_rank;
+	my @gap_wits;
+	foreach my $tablewit ( @{$tradition->collation->alignment_table->{'alignment'}} ) {
+		my $rdg = $tablewit->{'tokens'}->[$rank-1];
+		if( $rdg && $rdg->{'t'}->is_lacuna ) {
+			push( @$lacunose, $tablewit->{'witness'} );
+		} elsif( $rdg ) {
+			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
+		} else {
+			push( @gap_wits, $tablewit->{'witness'} );
+		}
+	}
 	
-	# We have the collation, so get the alignment table with witnesses in rows.
-	# Also return the reading objects in the table, rather than just the words.
-	my $all_wits_table = $c->make_alignment_table( 'refs', $wits );
-	# Strip the list of sigla and save it for correlation to the readings.
-	my @table_wits = map { $_->{'witness'} } @{$all_wits_table->{'alignment'}};
-	# Any witness in the stemma that has no row should be noted.
-    foreach ( @table_wits ) {
-        $wits->{$_}++; # Witnesses present in table and stemma now have value 2.
-    }
-    my @not_collated = grep { $wits->{$_} == 1 } keys %$wits;
-	foreach my $i ( 0 .. $all_wits_table->{'length'} - 1 ) {
-		# For each column in the table, group the readings by witness.
-		my $rdg_wits = {};
-		my @col_rdgs = map { $_->{tokens}->[$i] } @{$all_wits_table->{'alignment'}};
-		my $lacunose = [ @not_collated ];
-		foreach my $j ( 0 .. $#col_rdgs ) {
-			my $rdg = $col_rdgs[$j];
-			my $rdg_text = '(omitted)';  # Initialize in case of empty reading
-			if( $rdg ) {
-			    if( $rdg->{'t'}->is_lacuna ) {
-			        $rdg_text = undef;   # Don't count lacunae
-			        push( @$lacunose, $table_wits[$j] );
-			    } else {
-    				$rdg_text = $rdg->{'t'}->text; 
-				}
-			}
-			if( defined $rdg_text ) {
-				# Initialize the witness array if we haven't got one yet
-				$rdg_wits->{$rdg_text} = [] unless $rdg_wits->{$rdg_text};
-				# Add the relevant witness, subject to a.c. logic
-				add_variant_wit( $rdg_wits->{$rdg_text}, $table_wits[$j],
-					$c->ac_label );
+	# Group the readings, collapsing groups by relationship if needed
+	my %grouped_readings;
+	foreach my $rdg ( sort { $b->witnesses <=> $a->witnesses } values %readings_at_rank ) {
+		# Skip readings that have been collapsed into others.
+		next if exists $grouped_readings{$rdg->text} && !$grouped_readings{$rdg->text};
+		my @wits = $rdg->witnesses;
+		if( $collapse ) {
+			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
+			foreach my $other ( $rdg->related_readings( $filter ) ) {
+				push( @wits, $other->witnesses );
+				$grouped_readings{$other->text} = 0;
 			}
 		}
-		
-		# See if this column has any potentially genealogical variants.
-		# If not, skip to the next.
-		my( $groups, $readings ) = useful_variant( $rdg_wits );
-		next unless $groups && $readings;  
-
-		push( @$variant_groups, 
-		    { 'groups' => $groups, 'readings' => $readings, 'lacunose' => $lacunose } );
+		$grouped_readings{$rdg->text} = \@wits;	
 	}
-	return $variant_groups;
+	$grouped_readings{'(omitted)'} = \@gap_wits if @gap_wits;
+	# Get rid of our collapsed readings
+	map { delete $grouped_readings{$_} unless $grouped_readings{$_} } 
+		keys %grouped_readings 
+		if $collapse;
+	
+	# Return the readings and groups, sorted by size
+	my( @readings, @groups );
+	foreach my $r ( sort { @{$grouped_readings{$b}} <=> @{$grouped_readings{$a}} }
+						keys %grouped_readings ) {
+		push( @readings, $r );
+		push( @groups, $grouped_readings{$r} );
+	}
+	return( \@readings, \@groups );
 }
 
+=head2 analyze_variant_location( $tradition, $rank, $stemma_id, @merge_relationship_types )
 
+Runs an analysis of the given tradition, at the location given in $rank, 
+against the graph of the stemma specified in $stemma_id.  The argument 
+@merge_relationship_types is an optional list of relationship types for
+which readings so related should be treated as equivalent.
 
-# variant_row -> genealogical
-#             -> readings [ { text, group, conflict, missing } ]
+Returns a data structure as follows:
+
+ { 	'id' => $rank,
+ 	'genealogical' => boolean,
+ 	'readings => [ { text => $reading_text, 
+ 					 group => [ witnesses ], 
+ 					 conflict => [ conflicting ], 
+ 					 missing => [ excluded ] }, ... ]
+ }
+where 'conflicting' is the list of witnesses whose readings conflict with
+this group, and 'excluded' is the list of witnesses either not present in
+the stemma or lacunose at this location.
+
+=cut
 
 sub analyze_variant_location {
-    my( $group_readings, $groups, $graph, $lacunose, $undirected ) = @_;
+	my( $tradition, $rank, $sid, @collapse ) = @_;
+	$DB::single = 1 if @collapse;
+	# Get the readings in this tradition at this rank
+	my @rank_rdgs = grep { $_->rank == $rank } $tradition->collation->readings;
+	# Get the applicable stemma
+	my $undirected; # TODO Allow undirected distance tree analysis too
+	my $stemma = $tradition->stemma( $sid );
+	my $graph = $stemma->graph;
+	# Figure out which witnesses we are working with
+	my @lacunose = _set( 'symmdiff', [ $stemma->witnesses ], 
+		[ map { $_->sigil } $tradition->witnesses ] );
+
+	# Now group the readings
+	my( $readings, $groups ) = 
+		group_variants( $tradition, $rank, \@lacunose, \@collapse );
+	my $group_readings = {};
+	# Lookup table group string -> readings
+	foreach my $x ( 0 .. $#$groups ) {
+		$group_readings->{wit_stringify( $groups->[$x] )} = $readings->[$x];
+	}
+
+	# Now do the work.	
     my $contig = {};
     my $subgraph = {};
     my $is_conflicted;
     my $conflict = {};
-    my $missing = {};
-    map { $missing->{$_} = 1 } @$lacunose;
-    my $variant_row = { 'readings' => [] };
+    my $variant_row = { 'id' => $rank, 'readings' => [] };
     # Mark each ms as in its own group, first.
     foreach my $g ( @$groups ) {
         my $gst = wit_stringify( $g );
@@ -190,7 +253,7 @@ sub analyze_variant_location {
                 my $nodes_in_subtree = 0;
                 foreach my $root ( @roots ) {
                     # Prune the tree to get rid of extraneous hypotheticals.
-                    $root = prune_subtree( $part, $root, $contig );
+                    $root = _prune_subtree( $part, $root, $contig );
                     # Get all the successor nodes of our root.
                     my $tmp_reach = { $root => 1 };
                     map { $tmp_reach->{$_} = 1 } $part->all_successors( $root );
@@ -232,7 +295,7 @@ sub analyze_variant_location {
         
         # Write the reading.
         my $reading = { 'text' => $group_readings->{$gst},
-                        'missing' => wit_stringify( $lacunose ),
+                        'missing' => wit_stringify( \@lacunose ),
                         'group' => $gst };  # This will change if we find no conflict
         if( $is_conflicted ) {
             $reading->{'conflict'} = $conflict->{$group_readings->{$gst}}
@@ -307,10 +370,12 @@ sub analyze_variant_location {
     }
             
     # Now write the group and conflict information into the respective rows.
+    my %missing;
+	map { $missing{$_} = 1 } @lacunose; # quick lookup table
     foreach my $rdg ( @{$variant_row->{'readings'}} ) {
         $rdg->{'conflict'} = $conflict->{$rdg->{'text'}};
         next if $rdg->{'conflict'};
-        my @members = grep { $contig->{$_} eq $rdg->{'group'} && !$missing->{$_} } 
+        my @members = grep { $contig->{$_} eq $rdg->{'group'} && !$missing{$_} } 
             keys %$contig;
         $rdg->{'group'} = wit_stringify( \@members );
     }
@@ -319,7 +384,7 @@ sub analyze_variant_location {
     return $variant_row;
 }
 
-sub prune_subtree {
+sub _prune_subtree {
     my( $tree, $root, $contighash ) = @_;
     # First, delete hypothetical leaves / orphans until there are none left.
     my @orphan_hypotheticals = grep { ref( $contighash->{$_} ) } 
@@ -351,25 +416,12 @@ sub add_variant_wit {
     push( @$arr, $wit ) unless $skip;
 }
 
-# Return an answer if the variant is useful, i.e. if there are at least 2 variants
-# with at least 2 witnesses each.
-sub useful_variant {
-    my( $readings ) = @_;
-    my $total = keys %$readings;
-    foreach my $var ( keys %$readings ) {
-        $total-- if @{$readings->{$var}} == 1;
-    }
-    return( undef, undef ) if $total <= 1;
-    my( $groups, $text );
-    foreach my $var ( keys %$readings ) {
-        push( @$groups, $readings->{$var} );
-        push( @$text, $var );
-    }
-    return( $groups, $text );
-}
+=head2 wit_stringify( $groups )
 
-# Take an array of witness groupings and produce a string like
-# ['A','B'] / ['C','D','E'] / ['F']
+Takes an array of witness groupings and produces a string like
+['A','B'] / ['C','D','E'] / ['F']
+
+=cut
 
 sub wit_stringify {
     my $groups = shift;
@@ -385,5 +437,32 @@ sub wit_stringify {
     }
     return join( ' / ', @gst );
 }
-    
+
+sub _set {
+	my( $op, $lista, $listb ) = @_;
+	my %union;
+	my %scalars;
+	map { $union{$_} = 1; $scalars{$_} = $_ } @$lista;
+	map { $union{$_} += 1; $scalars{$_} = $_ } @$listb;
+	my @set;
+	if( $op eq 'intersection' ) {
+		@set = grep { $union{$_} == 2 } keys %union;
+	} elsif( $op eq 'symmdiff' ) {
+		@set = grep { $union{$_} == 1 } keys %union;
+	} elsif( $op eq 'union' ) {
+		@set = keys %union;
+	}
+	return map { $scalars{$_} } @set;
+}
+
 1;
+
+=head1 LICENSE
+
+This package is free software and is provided "as is" without express
+or implied warranty.  You can redistribute it and/or modify it under
+the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Tara L Andrews E<lt>aurum@cpan.orgE<gt>
