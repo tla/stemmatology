@@ -1474,7 +1474,9 @@ sub calculate_common_readings {
 	my @common;
 	my $table = $self->alignment_table;
 	foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
-		my @row = map { $_->{'tokens'}->[$idx]->{'t'} } @{$table->{'alignment'}};
+		my @row = map { $_->{'tokens'}->[$idx] 
+							? $_->{'tokens'}->[$idx]->{'t'} : '' } 
+					@{$table->{'alignment'}};
 		my %hash;
 		foreach my $r ( @row ) {
 			if( $r ) {
