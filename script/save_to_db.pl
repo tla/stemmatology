@@ -80,8 +80,7 @@ if( $list ) {
 		print STDERR "...collation has " . scalar( $c->readings ) . " readings\n";
 		print STDERR "...collation has " . scalar( $c->paths ) . " paths\n";
 		print STDERR "...collation has " . scalar( $c->relationships ) . " relationship links\n";
-		my $s = $t->stemma;
-		if( $s ) {
+		foreach my $s ( $t->stemmata ) {
 			print STDERR "...associated stemma has graph " . $s->graph . "\n";
 		}
 	}

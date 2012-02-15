@@ -369,23 +369,27 @@ sub relationship_valid {
 	}
 }
 
-=head2 related_readings( $reading, $colocated_only )
+=head2 related_readings( $reading, $filter )
 
 Returns a list of readings that are connected via relationship links to $reading.
-If $colocated_only is true, restricts the list to those readings that are in the
-same logical location (and therefore have the same rank in the collation graph.)
+If $filter is set to a subroutine ref, returns only those related readings where
+$filter( $relationship ) returns a true value.
 
 =cut
 
 sub related_readings {
-	my( $self, $reading, $colocated ) = @_;
+	my( $self, $reading, $filter ) = @_;
 	my $return_object;
 	if( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
 		$reading = $reading->id;
 		$return_object = 1;
 	}
 	my @answer;
-	if( $colocated ) {
+	if( $filter ) {
+		# Backwards compat
+		if( $filter eq 'colocated' ) {
+			$filter = sub { $_[0]->colocated };
+		}
 		my %found = ( $reading => 1 );
 		my $check = [ $reading ];
 		my $iter = 0;
@@ -393,7 +397,7 @@ sub related_readings {
 			my $more = [];
 			foreach my $r ( @$check ) {
 				foreach my $nr ( $self->graph->neighbors( $r ) ) {
-					if( $self->get_relationship( $r, $nr )->colocated ) {
+					if( &$filter( $self->get_relationship( $r, $nr ) ) ) {
 						push( @$more, $nr ) unless exists $found{$nr};
 						$found{$nr} = 1;
 					}
@@ -401,6 +405,7 @@ sub related_readings {
 			}
 			$check = $more;
 		}
+		delete $found{$reading};
 		@answer = keys %found;
 	} else {
 		@answer = $self->graph->all_reachable( $reading );
