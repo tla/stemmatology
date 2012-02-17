@@ -226,6 +226,11 @@ sub _stringify {
 	return $self->id;
 }
 
+sub TO_JSON {
+	my $self = shift;
+	return $self->text;
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
