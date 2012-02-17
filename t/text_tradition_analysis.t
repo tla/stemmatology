@@ -19,10 +19,10 @@ my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 
 my $data = run_analysis( $tradition );
-# TODO should be 21!
-is( $data->{'genealogical_count'}, 42, "Got right genealogical count" );
-is( $data->{'conflict_count'}, 17, "Got right conflict count" );
-is( $data->{'variant_count'}, 58, "Got right total variant number" );
+# TODO Check genealogical count
+is( $data->{'genealogical_count'}, 13, "Got right genealogical count" );
+is( $data->{'conflict_count'}, 16, "Got right conflict count" );
+is( $data->{'variant_count'}, 28, "Got right total variant number" );
 }
 
 

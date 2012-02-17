@@ -60,10 +60,10 @@ my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 
 my $data = run_analysis( $tradition );
-# TODO should be 21!
-is( $data->{'genealogical_count'}, 42, "Got right genealogical count" );
-is( $data->{'conflict_count'}, 17, "Got right conflict count" );
-is( $data->{'variant_count'}, 58, "Got right total variant number" );
+# TODO Check genealogical count
+is( $data->{'genealogical_count'}, 13, "Got right genealogical count" );
+is( $data->{'conflict_count'}, 16, "Got right conflict count" );
+is( $data->{'variant_count'}, 28, "Got right total variant number" );
 
 =end testing
 
@@ -89,6 +89,7 @@ sub run_analysis {
 		next if $common_rank{$rank};
 		my $variant_row = analyze_variant_location( 
 			$tradition, $rank, $stemma_id, @collapse );
+		next unless $variant_row;
 		push( @variants, $variant_row );
 		$genealogical++ if $variant_row->{'genealogical'};
 		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
@@ -124,11 +125,13 @@ sub group_variants {
 	foreach my $tablewit ( @{$tradition->collation->alignment_table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
-			push( @$lacunose, $tablewit->{'witness'} );
+			_add_to_witlist( $tablewit->{'witness'}, $lacunose, 
+				$tradition->collation->ac_label );
 		} elsif( $rdg ) {
 			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
 		} else {
-			push( @gap_wits, $tablewit->{'witness'} );
+			_add_to_witlist( $tablewit->{'witness'}, \@gap_wits, 
+				$tradition->collation->ac_label );
 		}
 	}
 	
@@ -153,14 +156,7 @@ sub group_variants {
 		keys %grouped_readings 
 		if $collapse;
 	
-	# Return the readings and groups, sorted by size
-	my( @readings, @groups );
-	foreach my $r ( sort { @{$grouped_readings{$b}} <=> @{$grouped_readings{$a}} }
-						keys %grouped_readings ) {
-		push( @readings, $r );
-		push( @groups, $grouped_readings{$r} );
-	}
-	return( \@readings, \@groups );
+	return \%grouped_readings;
 }
 
 =head2 analyze_variant_location( $tradition, $rank, $stemma_id, @merge_relationship_types )
@@ -187,7 +183,6 @@ the stemma or lacunose at this location.
 
 sub analyze_variant_location {
 	my( $tradition, $rank, $sid, @collapse ) = @_;
-	$DB::single = 1 if @collapse;
 	# Get the readings in this tradition at this rank
 	my @rank_rdgs = grep { $_->rank == $rank } $tradition->collation->readings;
 	# Get the applicable stemma
@@ -199,8 +194,10 @@ sub analyze_variant_location {
 		[ map { $_->sigil } $tradition->witnesses ] );
 
 	# Now group the readings
-	my( $readings, $groups ) = 
-		group_variants( $tradition, $rank, \@lacunose, \@collapse );
+	my( $readings, $groups ) = _useful_variant( 
+		group_variants( $tradition, $rank, \@lacunose, \@collapse ), 
+		$graph, $tradition->collation->ac_label );
+	return unless scalar @$readings;
 	my $group_readings = {};
 	# Lookup table group string -> readings
 	foreach my $x ( 0 .. $#$groups ) {
@@ -416,6 +413,33 @@ sub add_variant_wit {
     push( @$arr, $wit ) unless $skip;
 }
 
+sub _useful_variant {
+	my( $group_readings, $graph, $acstr ) = @_;
+
+	# TODO Decide what to do with AC witnesses
+
+	# Sort by group size and return
+	my $is_useful = 0;
+	my( @readings, @groups );   # The sorted groups for our answer.
+	foreach my $rdg ( sort { @{$group_readings->{$b}} <=> @{$group_readings->{$a}} } 
+		keys %$group_readings ) {
+		push( @readings, $rdg );
+		push( @groups, $group_readings->{$rdg} );
+		if( @{$group_readings->{$rdg}} > 1 ) {
+			$is_useful++;
+		} else {
+			my( $wit ) = @{$group_readings->{$rdg}};
+			$wit =~ s/^(.*)\Q$acstr\E$/$1/;
+			$is_useful++ unless( $graph->is_sink_vertex( $wit ) );
+		}
+	}
+	if( $is_useful > 1 ) {
+		return( \@readings, \@groups );
+	} else {
+		return( [], [] );
+	}
+}
+
 =head2 wit_stringify( $groups )
 
 Takes an array of witness groupings and produces a string like
@@ -436,6 +460,28 @@ sub wit_stringify {
         push( @gst, '[' . join( ',', map { "'$_'" } @$g ) . ']' );
     }
     return join( ' / ', @gst );
+}
+
+# Helper function to ensure that X and X a.c. never appear in the same list.
+sub _add_to_witlist {
+	my( $wit, $list, $acstr ) = @_;
+	my %inlist;
+	my $idx = 0;
+	map { $inlist{$_} = $idx++ } @$list;
+	if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
+		my $acwit = $1;
+		unless( exists $inlist{$acwit} ) {
+			push( @$list, $acwit.$acstr );
+		}
+	} else {
+		if( exists( $inlist{$wit.$acstr} ) ) {
+			# Replace the a.c. version with the main witness
+			my $i = $inlist{$wit.$acstr};
+			$list->[$i] = $wit;
+		} else {
+			push( @$list, $wit );
+		}
+	}
 }
 
 sub _set {
