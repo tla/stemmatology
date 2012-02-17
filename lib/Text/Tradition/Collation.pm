@@ -455,6 +455,10 @@ sub reading_witnesses {
 		my $wits = $self->sequence->get_edge_attributes( @$e );
 		@all_witnesses{ keys %$wits } = 1;
 	}
+	my $acstr = $self->ac_label;
+	foreach my $acwit ( grep { $_ =~ s/^(.*)\Q$acstr\E$/$1/ } keys %all_witnesses ) {
+		delete $all_witnesses{$acwit.$acstr} if exists $all_witnesses{$acwit};
+	}
 	return keys %all_witnesses;
 }
 
