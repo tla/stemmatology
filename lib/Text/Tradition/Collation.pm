@@ -2,6 +2,7 @@ package Text::Tradition::Collation;
 
 use Encode qw( decode_utf8 );
 use File::Temp;
+use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
 use Text::CSV_XS;
@@ -467,12 +468,14 @@ sub reading_witnesses {
 =head2 as_svg( \%options )
 
 Returns an SVG string that represents the graph, via as_dot and graphviz.
-See as_dot for a list of options.
+See as_dot for a list of options.  Must have GraphViz (dot) installed to run.
 
 =cut
 
 sub as_svg {
     my( $self, $opts ) = @_;
+    throw( "Need GraphViz installed to output SVG" )
+    	unless File::Which::which( 'dot' );
     my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
     if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
 		my @cmd = qw/dot -Tsvg/;
@@ -1262,14 +1265,13 @@ my $t = Text::Tradition->new(
 my $c = $t->collation;
 
 # Make an svg
-my $svg = $c->as_svg;
-is( substr( $svg, 0, 5 ), '<?xml', "Got XML doc for svg" );
-ok( $c->has_cached_svg, "SVG was cached" );
-is( $c->as_svg, $svg, "Cached SVG returned upon second call" );
+my $table = $c->alignment_table;
+ok( $c->has_cached_table, "Alignment table was cached" );
+is( $c->alignment_table, $table, "Cached table returned upon second call" );
 $c->calculate_ranks;
-is( $c->as_svg, $svg, "Cached SVG retained with no rank change" );
+is( $c->alignment_table, $table, "Cached table retained with no rank change" );
 $c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
-isnt( $c->as_svg, $svg, "SVG changed after relationship add" );
+isnt( $c->alignment_table, $table, "Alignment table changed after relationship add" );
 
 =end testing
 
@@ -1336,11 +1338,11 @@ sub calculate_ranks {
             throw( "Ranks not calculated after $last - do you have a cycle in the graph?" );
         }
     }
-    # Do we need to invalidate the cached SVG?
-    if( $self->has_cached_svg ) {
+    # Do we need to invalidate the cached data?
+    if( $self->has_cached_svg || $self->has_cached_table ) {
     	foreach my $r ( $self->readings ) {
     		next if $existing_ranks{$r} == $r->rank;
-    		$self->wipe_svg;
+    		$self->_clear_cache;
     		last;
     	}
     }

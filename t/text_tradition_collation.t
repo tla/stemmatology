@@ -57,14 +57,13 @@ my $t = Text::Tradition->new(
 my $c = $t->collation;
 
 # Make an svg
-my $svg = $c->as_svg;
-is( substr( $svg, 0, 5 ), '<?xml', "Got XML doc for svg" );
-ok( $c->has_cached_svg, "SVG was cached" );
-is( $c->as_svg, $svg, "Cached SVG returned upon second call" );
+my $table = $c->alignment_table;
+ok( $c->has_cached_table, "Alignment table was cached" );
+is( $c->alignment_table, $table, "Cached table returned upon second call" );
 $c->calculate_ranks;
-is( $c->as_svg, $svg, "Cached SVG retained with no rank change" );
+is( $c->alignment_table, $table, "Cached table retained with no rank change" );
 $c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
-isnt( $c->as_svg, $svg, "SVG changed after relationship add" );
+isnt( $c->alignment_table, $table, "Alignment table changed after relationship add" );
 }
 
 

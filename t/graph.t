@@ -3,9 +3,13 @@
 use strict; use warnings;
 use Test::More;
 use lib 'lib';
+use File::Which;
 use Text::Tradition;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
+
+plan skip_all => 'Need Graphviz installed to test graphs' 
+	unless File::Which::which( 'dot' );
 
 my $datafile = 't/data/Collatex-16.xml';
 
