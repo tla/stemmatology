@@ -82,6 +82,8 @@ if( $HACK ) {
 	my @togo = qw/ C E G /;
 	$tradition->collation->clear_witness( @togo );
 	$tradition->del_witness( @togo );
+	# Set the funny name while we're at it
+	$tradition->name( "\x{17d}amanakagrut\x{2bf}iwn" );
 }
 
 # Now output what we have been asked to.
