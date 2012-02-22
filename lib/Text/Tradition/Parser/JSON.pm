@@ -182,6 +182,9 @@ sub parse {
 	foreach my $rdg ( grep { $_->is_lacuna } $c->readings ) {
 		$c->del_reading( $rdg ) unless $c->reading_witnesses( $rdg );
 	}
+	
+	# Note that our ranks and common readings are set.
+	$c->_graphcalc_done(1);
 }
 
 =head2 make_nodes( $collation, $index, @tokenlist )

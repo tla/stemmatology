@@ -241,6 +241,9 @@ sub parse {
 				if $wit->has_layertext;
 		}
 	}
+	
+	# Note that our ranks and common readings are set.
+	$c->_graphcalc_done(1);
 }
 
 sub _make_nodes {

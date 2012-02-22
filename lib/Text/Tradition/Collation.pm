@@ -28,6 +28,7 @@ has 'relations' => (
 	handles => {
 		relationships => 'relationships',
 		related_readings => 'related_readings',
+		get_relationship => 'get_relationship',
 		del_relationship => 'del_relationship',
 	},
 	writer => '_set_relations',
