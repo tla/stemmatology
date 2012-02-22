@@ -141,6 +141,7 @@ Don't use this. Really.
 sub cmp_str {
     my( $reading ) = @_;
     my $word = $reading->text();
+    return $word unless $reading->collation->tradition->name =~ /158/;
     $word = lc( $word );
     $word =~ s/\W//g;
     $word =~ s/v/u/g;
