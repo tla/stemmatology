@@ -96,6 +96,7 @@ has 'scope' => (
 has 'annotation' => (
 	is => 'ro',
 	isa => 'Str',
+	predicate => 'has_annotation',
 	);
 
 has 'non_correctable' => (
