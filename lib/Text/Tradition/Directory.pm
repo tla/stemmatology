@@ -127,8 +127,7 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	is( scalar $f->tradition_ids, 1, "Object is deleted from index" );
 }
 
-SKIP: {
-	skip 'Have yet to figure out garbage collection', 1;
+{
 	my $g = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $g->new_scope;
 	is( scalar $g->tradition_ids, 1, "Now one object in new directory index" );
@@ -170,12 +169,13 @@ before [ qw/ store update insert delete / ] => sub {
 	}
 };
 
-# If a tradition is deleted, remove it from the index.
-after delete => sub {
-	my $self = shift;
-	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
-	$self->directory->backend->delete( $gc->garbage->members );
-};
+# TODO Garbage collection doesn't work. Suck it up and live with the 
+# inflated DB.
+# after delete => sub {
+# 	my $self = shift;
+# 	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
+# 	$self->directory->backend->delete( $gc->garbage->members );
+# };
 
 sub save {
 	my $self = shift;
