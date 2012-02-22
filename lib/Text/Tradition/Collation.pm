@@ -103,6 +103,12 @@ has 'cached_table' => (
 	predicate => 'has_cached_table',
 	clearer => 'wipe_table',
 	);
+	
+has '_graphcalc_done' => (
+	is => 'rw',
+	isa => 'Bool',
+	default => undef,
+	); 
 
 =head1 NAME
 
@@ -254,12 +260,6 @@ sub BUILD {
 
 ### Reading construct/destruct functions
 
-sub _clear_cache {
-	my $self = shift;
-	$self->wipe_svg if $self->has_cached_svg;
-	$self->wipe_table if $self->has_cached_table;
-}	
-
 sub add_reading {
 	my( $self, $reading ) = @_;
 	unless( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
@@ -272,7 +272,7 @@ sub add_reading {
 	if( $self->reading( $reading->id ) ) {
 		throw( "Collation already has a reading with id " . $reading->id );
 	}
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
 	$self->sequence->add_vertex( $reading->id );
@@ -289,7 +289,7 @@ around del_reading => sub {
 		$arg = $arg->id;
 	}
 	# Remove the reading from the graphs.
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 	$self->sequence->delete_vertex( $arg );
 	$self->relations->delete_reading( $arg );
 	
@@ -305,7 +305,7 @@ sub merge_readings {
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
     my( $kept, $deleted, $combine_char ) = $self->_stringify_args( @_ );
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 
     # The kept reading should inherit the paths and the relationships
     # of the deleted reading.
@@ -361,7 +361,7 @@ sub add_path {
 	# objects themselves.
     my( $source, $target, $wit ) = $self->_stringify_args( @_ );
 
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 	# Connect the readings
     $self->sequence->add_edge( $source, $target );
     # Note the witness in question
@@ -382,7 +382,7 @@ sub del_path {
 	# objects themselves.
     my( $source, $target, $wit ) = $self->_stringify_args( @args );
 
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 	if( $self->sequence->has_edge_attribute( $source, $target, $wit ) ) {
 		$self->sequence->delete_edge_attribute( $source, $target, $wit );
 	}
@@ -411,7 +411,7 @@ be called via $tradition->del_witness.
 sub clear_witness {
 	my( $self, @sigils ) = @_;
 
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
 	# Clear the witness(es) out of the paths
 	foreach my $e ( $self->paths ) {
 		foreach my $sig ( @sigils ) {
@@ -432,9 +432,7 @@ sub add_relationship {
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
     my( @vectors ) = $self->relations->add_relationship( $source, 
     	$self->reading( $source ), $target, $self->reading( $target ), $opts );
-    # Force a full rank recalculation every time. Yuck.
-    $self->calculate_ranks() if $self->end->has_rank;
-	$self->_clear_cache;
+	$self->_graphcalc_done(0);
     return @vectors;
 }
 
@@ -477,6 +475,7 @@ sub as_svg {
     throw( "Need GraphViz installed to output SVG" )
     	unless File::Which::which( 'dot' );
     my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
+    $self->calculate_ranks() unless $self->_graphcalc_done;
     if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
 		my @cmd = qw/dot -Tsvg/;
 		my( $svg, $err );
@@ -967,7 +966,7 @@ keys have a true hash value will be included.
 
 sub alignment_table {
     my( $self ) = @_;
-    my $include; # see if we can ditch this
+    $self->calculate_ranks() unless $self->_graphcalc_done;
     return $self->cached_table if $self->has_cached_table;
     
     # Make sure we can do this
@@ -978,9 +977,6 @@ sub alignment_table {
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {
-    	if( $include ) {
-    		next unless $include->{$wit->sigil};
-    	}
         # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
         my @row = _make_witness_row( \@wit_path, \@all_pos );
@@ -1342,10 +1338,15 @@ sub calculate_ranks {
     if( $self->has_cached_svg || $self->has_cached_table ) {
     	foreach my $r ( $self->readings ) {
     		next if $existing_ranks{$r} == $r->rank;
+    		# Something has changed, so clear the cache
     		$self->_clear_cache;
+			# ...and recalculate the common readings.
+			$self->calculate_common_readings();
     		last;
     	}
     }
+	# The graph calculation information is now up to date.
+	$self->_graphcalc_done(1);
 }
 
 sub _assign_rank {
@@ -1382,6 +1383,13 @@ sub _assign_rank {
     }
     return @next_nodes;
 }
+
+sub _clear_cache {
+	my $self = shift;
+	$self->wipe_svg if $self->has_cached_svg;
+	$self->wipe_table if $self->has_cached_table;
+}	
+
 
 =head2 flatten_ranks
 
@@ -1478,6 +1486,8 @@ is_deeply( \@marked, \@expected, "Found correct list of common readings" );
 sub calculate_common_readings {
 	my $self = shift;
 	my @common;
+	map { $_->is_common( 0 ) } $self->readings;
+	# Implicitly calls calculate_ranks
 	my $table = $self->alignment_table;
 	foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
 		my @row = map { $_->{'tokens'}->[$idx] 
