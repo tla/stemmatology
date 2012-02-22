@@ -34,6 +34,11 @@ has 'name' => (
     default => 'Tradition',
     );
     
+has 'language' => (
+	is => 'ro',
+	isa => 'Str',
+	);
+    
 has 'stemmata' => (
 	traits => ['Array'],
 	isa => 'ArrayRef[Text::Tradition::Stemma]',
