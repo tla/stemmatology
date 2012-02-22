@@ -80,28 +80,6 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
-isnt( $c->reading('n23')->rank, $c->reading('n9')->rank, "Rank skew exists" );
-$c->add_relationship( 'n23', 'n9', { 'type' => 'collated', 'scope' => 'local' } );
-is( scalar $c->relationships, 4, "Found all expected relationships" );
-$c->remove_collations;
-is( scalar $c->relationships, 3, "Collated relationships now gone" );
-is( $c->reading('n23')->rank, $c->reading('n9')->rank, "Aligned ranks were preserved" );
-}
-
-
-
-# =begin testing
-{
-use Text::Tradition;
-
-my $cxfile = 't/data/Collatex-16.xml';
-my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'CollateX',
-    'file'  => $cxfile,
-    );
-my $c = $t->collation;
-
 my @common = $c->calculate_common_readings();
 is( scalar @common, 8, "Found correct number of common readings" );
 my @marked = sort $c->common_readings();

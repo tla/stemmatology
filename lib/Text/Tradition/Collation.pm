@@ -773,7 +773,8 @@ is( scalar $st->collation->relationships, 3, "Reparsed collation has new relatio
 
 sub as_graphml {
     my( $self ) = @_;
-
+	$self->calculate_ranks unless $self->_graphcalc_done;
+	
     # Some namespaces
     my $graphml_ns = 'http://graphml.graphdrawing.org/xmlns';
     my $xsi_ns = 'http://www.w3.org/2001/XMLSchema-instance';
@@ -829,6 +830,7 @@ sub as_graphml {
     	relationship => 'string',		# ID/label for a relationship
     	extra => 'boolean',				# Path key
     	scope => 'string',				# Relationship key
+    	annotation => 'string',			# Relationship key
     	non_correctable => 'boolean',	# Relationship key
     	non_independent => 'boolean',	# Relationship key
     	);
@@ -1413,44 +1415,6 @@ sub flatten_ranks {
             $unique_rank_rdg{$key} = $rdg;
         }
     }
-}
-
-=head2 remove_collations
-
-Another convenience method for parsing. Removes all 'collation' relationships
-that were defined in order to get the reading ranks to be correct.
-
-=begin testing
-
-use Text::Tradition;
-
-my $cxfile = 't/data/Collatex-16.xml';
-my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'CollateX',
-    'file'  => $cxfile,
-    );
-my $c = $t->collation;
-
-isnt( $c->reading('n23')->rank, $c->reading('n9')->rank, "Rank skew exists" );
-$c->add_relationship( 'n23', 'n9', { 'type' => 'collated', 'scope' => 'local' } );
-is( scalar $c->relationships, 4, "Found all expected relationships" );
-$c->remove_collations;
-is( scalar $c->relationships, 3, "Collated relationships now gone" );
-is( $c->reading('n23')->rank, $c->reading('n9')->rank, "Aligned ranks were preserved" );
-
-=end testing
-
-=cut
-
-sub remove_collations {
-	my $self = shift;
-	foreach my $reledge ( $self->relationships ) {
-		my $relobj = $self->relations->get_relationship( $reledge );
-		if( $relobj && $relobj->type eq 'collated' ) {
-			$self->relations->delete_relationship( $reledge );
-		}
-	}
 }
 	
 

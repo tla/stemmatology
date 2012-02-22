@@ -152,7 +152,11 @@ sub create {
 	my $target = delete $options->{'orig_b'};
 	my $rel = $self->get_relationship( $source, $target );
 	if( $rel ) {
-		if( $rel->type ne $options->{'type'} ) {
+		if( $rel->type eq 'collated' ) {
+			# Always replace a 'collated' relationship with a more descriptive
+			# one, if asked.
+			$self->del_relationship( $source, $target );
+		} elsif( $rel->type ne $options->{'type'} ) {
 			throw( "Another relationship of type " . $rel->type 
 				. " already exists between $source and $target" );
 		} else {
@@ -482,6 +486,7 @@ sub _as_graphml {
 		my $rel_obj = $self->get_relationship( @$e );
 		_add_graphml_data( $edge_el, $edge_keys->{'relationship'}, $rel_obj->type );
 		_add_graphml_data( $edge_el, $edge_keys->{'scope'}, $rel_obj->scope );
+		_add_graphml_data( $edge_el, $edge_keys->{'annotation'}, $rel_obj->annotation );
 		_add_graphml_data( $edge_el, $edge_keys->{'non_correctable'}, 
 			$rel_obj->non_correctable ) if $rel_obj->noncorr_set;
 		_add_graphml_data( $edge_el, $edge_keys->{'non_independent'}, 
