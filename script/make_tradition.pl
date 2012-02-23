@@ -12,7 +12,7 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep, $stemmafile, 
+my( $informat, $inbase, $outformat, $help, $language, $name, $HACK, $sep, $stemmafile, 
 	$dsn, $dbuser, $dbpass ) 
     = ( '', '', '', '', 1, 'Tradition', 0, "\t", '',
     	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef );
@@ -20,7 +20,7 @@ my( $informat, $inbase, $outformat, $help, $linear, $name, $HACK, $sep, $stemmaf
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
             'o|out=s'   => \$outformat,
-            'l|linear!' => \$linear,
+            'l|language=s' => \$language,
             'n|name=s'  => \$name,
             'h|help'    => \$help,
             's|stemma=s' => \$stemmafile,
@@ -61,9 +61,9 @@ my $input = $ARGV[0];
 # First: read the base. Make a graph, but also note which
 # nodes represent line beginnings.
 my %args = ( 'input' => $informat,
-             'file' => $input,
-             'linear' => $linear );
+             'file' => $input );
 $args{'base'} = $inbase if $inbase;
+$args{'language'} = $language if $language;
 $args{'name'} = $name if $name;
 $args{'sep_char'} = $sep if $informat eq 'Tabular';
 ### Custom hacking for Stone
@@ -79,11 +79,11 @@ if( $stemmafile ) {
 ### Custom hacking
 # Remove witnesses C, E, G in the Matthew text
 if( $HACK ) {
-	my @togo = qw/ C E G /;
-	$tradition->collation->clear_witness( @togo );
-	$tradition->del_witness( @togo );
 	# Set the funny name while we're at it
-	$tradition->name( "\x{17d}amanakagrut\x{2bf}iwn" );
+	my $oldname = $tradition->name;
+	$oldname =~ s/(\d)/ $1/;
+	my $newname = "\x{17d}amanakagrut\x{2bf}iwn " . ucfirst( $oldname );
+	$tradition->name( $newname );
 }
 
 # Now output what we have been asked to.
