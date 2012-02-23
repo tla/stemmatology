@@ -118,6 +118,20 @@ has 'rank' => (
     predicate => 'has_rank',
     );
 
+## For prefix/suffix readings
+
+has 'join_prior' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	);
+	
+has 'join_next' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	);
+
 
 around BUILDARGS => sub {
 	my $orig = shift;

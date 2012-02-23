@@ -582,6 +582,8 @@ sub as_dot {
         next if $reading->id eq $reading->text;
         my $rattrs;
         my $label = $reading->text;
+        $label .= '-' if $reading->join_next;
+        $label = "-$label" if $reading->join_prior;
         $label =~ s/\"/\\\"/g;
 		$rattrs->{'label'} = $label;
 		$rattrs->{'fillcolor'} = '#b3f36d' if $reading->is_common && $color_common;
@@ -812,6 +814,9 @@ sub as_graphml {
     	is_start => 'boolean',
     	is_end => 'boolean',
     	is_lacuna => 'boolean',
+    	is_common => 'boolean',
+    	join_prior => 'boolean',
+    	join_next => 'boolean',
     	);
     foreach my $datum ( keys %node_data ) {
         $node_data_keys{$datum} = 'dn'.$ndi++;
@@ -1193,7 +1198,17 @@ sub path_text {
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
-	return join( ' ', map { $_->text } @path );
+	my $pathtext = '';
+	my $last;
+	foreach my $r ( @path ) {
+		if( $r->join_prior || !$last || $last->join_next ) {
+			$pathtext .= $r->text;
+		} else {
+			$pathtext .= ' ' . $r->text;
+		}
+		$last = $r;
+	}
+	return $pathtext;
 }
 
 =head1 INITIALIZATION METHODS
