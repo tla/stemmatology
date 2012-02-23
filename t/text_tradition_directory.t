@@ -55,11 +55,14 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 {
 	my $f = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $f->new_scope;
-	is( scalar $f->tradition_ids, 1, "Directory index has our tradition" );
+	is( scalar $f->traditionlist, 1, "Directory index has our tradition" );
 	my $nuuid = $f->save( $nt );
 	ok( $nuuid, "Stored second tradition" );
-	is( scalar $f->tradition_ids, 2, "Directory index has both traditions" );
+	my @tlist = $f->traditionlist;
+	is( scalar @tlist, 2, "Directory index has both traditions" );
 	my $tf = $f->tradition( $uuid );
+	my( $tlobj ) = grep { $_->{'id'} eq $uuid } @tlist;
+	is( $tlobj->{'name'}, $tf->name, "Directory index has correct tradition name" );
 	is( $tf->name, $t->name, "Retrieved the tradition from a new directory" );
 	my $sid = $f->object_to_id( $tf->stemma(0) );
 	try {
@@ -78,13 +81,13 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	$f->delete( $uuid );
 	ok( !$f->exists( $uuid ), "Object is deleted from DB" );
 	ok( !$f->exists( $sid ), "Object stemma also deleted from DB" );
-	is( scalar $f->tradition_ids, 1, "Object is deleted from index" );
+	is( scalar $f->traditionlist, 1, "Object is deleted from index" );
 }
 
 {
 	my $g = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $g->new_scope;
-	is( scalar $g->tradition_ids, 1, "Now one object in new directory index" );
+	is( scalar $g->traditionlist, 1, "Now one object in new directory index" );
 }
 }
 

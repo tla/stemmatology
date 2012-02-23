@@ -3,6 +3,7 @@ package Text::Tradition::Directory;
 use strict;
 use warnings;
 use Moose;
+use DBI;
 use KiokuDB::GC::Naive;
 use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
@@ -40,9 +41,9 @@ Text::Tradition::Directory is an interface for storing and retrieving text tradi
 
 Returns a Directory object. 
 
-=head2 tradition_ids
+=head2 traditionlist
 
-Returns the ID of all traditions in the database.
+Returns a hashref mapping of ID => name for all traditions in the directory.
 
 =head2 tradition( $id )
 
@@ -106,11 +107,14 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 {
 	my $f = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $f->new_scope;
-	is( scalar $f->tradition_ids, 1, "Directory index has our tradition" );
+	is( scalar $f->traditionlist, 1, "Directory index has our tradition" );
 	my $nuuid = $f->save( $nt );
 	ok( $nuuid, "Stored second tradition" );
-	is( scalar $f->tradition_ids, 2, "Directory index has both traditions" );
+	my @tlist = $f->traditionlist;
+	is( scalar @tlist, 2, "Directory index has both traditions" );
 	my $tf = $f->tradition( $uuid );
+	my( $tlobj ) = grep { $_->{'id'} eq $uuid } @tlist;
+	is( $tlobj->{'name'}, $tf->name, "Directory index has correct tradition name" );
 	is( $tf->name, $t->name, "Retrieved the tradition from a new directory" );
 	my $sid = $f->object_to_id( $tf->stemma(0) );
 	try {
@@ -129,13 +133,13 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	$f->delete( $uuid );
 	ok( !$f->exists( $uuid ), "Object is deleted from DB" );
 	ok( !$f->exists( $sid ), "Object stemma also deleted from DB" );
-	is( scalar $f->tradition_ids, 1, "Object is deleted from index" );
+	is( scalar $f->traditionlist, 1, "Object is deleted from index" );
 }
 
 {
 	my $g = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $g->new_scope;
-	is( scalar $g->tradition_ids, 1, "Now one object in new directory index" );
+	is( scalar $g->traditionlist, 1, "Now one object in new directory index" );
 }
 
 =end testing
@@ -154,6 +158,32 @@ has +typemap => (
 		);
 	},
 );
+
+# Push some columns into the extra_args
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $class = shift;
+	my $args;
+	if( @_ == 1 ) {
+		$args = $_[0];
+	} else {
+		$args = { @_ };
+	}
+	if( $args->{'dsn'} =~ /^dbi/ ) { # We're using Backend::DBI
+		my @column_args = ( 'columns',
+			[ 'name' => { 'data_type' => 'varchar', 'is_nullable' => 1 } ] );
+		my $ea = $args->{'extra_args'};
+		if( ref( $ea ) eq 'ARRAY' ) {
+			push( @$ea, @column_args );
+		} elsif( ref( $ea ) eq 'HASH' ) {
+			$ea = { %$ea, @column_args };
+		} else {
+			$ea = { @column_args };
+		}
+		$args->{'extra_args'} = $ea;
+	}
+	return $class->$orig( $args );
+};
 
 before [ qw/ store update insert delete / ] => sub {
 	my $self = shift;
@@ -196,11 +226,31 @@ sub tradition {
 	return $obj;
 }
 
-sub tradition_ids {
+sub traditionlist {
 	my $self = shift;
-	my @ids;
-	$self->scan( sub { push( @ids, $self->object_to_id( @_ ) ) } );
-	return @ids;
+	# If we are using DBI, we can do it the easy way; if not, the hard way.
+	# Easy way still involves making a separate DBI connection. Ew.
+	my @tlist;
+	if( $self->dsn =~ /^dbi/ ) {
+		$DB::single = 1;
+		my @connection = @{$self->directory->backend->connect_info};
+		# Get rid of KiokuDB-specific arg
+		pop @connection if scalar @connection > 4;
+		$connection[3]->{'sqlite_unicode'} = 1 if $connection[0] =~ /^dbi:SQLite/;
+		$connection[3]->{'mysql_enable_utf8'} = 1 if $connection[0] =~ /^dbi:mysql/;
+		$connection[3]->{'pg_enable_utf8'} = 1 if $connection[0] =~ /^dbi:Pg/;
+		my $dbh = DBI->connect( @connection );
+		my $q = $dbh->prepare( 'SELECT id, name from entries WHERE class = "Text::Tradition"' );
+		$q->execute();
+		while( my @row = $q->fetchrow_array ) {
+			push( @tlist, { 'id' => $row[0], 'name' => $row[1] } );
+		}
+	} else {
+		$self->scan( sub { my $o = shift; 
+						   push( @tlist, { 'id' => $self->object_to_id( $o ), 
+										   'name' => $o->name } ) } );
+	}
+	return @tlist;
 }
 
 sub throw {

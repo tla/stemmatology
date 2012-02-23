@@ -14,7 +14,8 @@ $connect_args->{'extra_args'} = { user => $user, password => $pass }
 	if $user && $pass;
 my $dir = Text::Tradition::Directory->new( $connect_args );
 
-foreach my $id ( $dir->tradition_ids ) {
+foreach my $text ( $dir->traditionlist ) {
+	my $id = $text->{'id'};
 	my $scope = $dir->new_scope;
 	my $tradition = $dir->lookup( $id );
 	print STDERR "Processing tradition " . $tradition->name . "\n";
