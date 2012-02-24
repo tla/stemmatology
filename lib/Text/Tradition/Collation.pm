@@ -1366,7 +1366,8 @@ sub calculate_ranks {
     # Do we need to invalidate the cached data?
     if( $self->has_cached_svg || $self->has_cached_table ) {
     	foreach my $r ( $self->readings ) {
-    		next if $existing_ranks{$r} && $existing_ranks{$r} == $r->rank;
+    		next if defined( $existing_ranks{$r} ) 
+    			&& $existing_ranks{$r} == $r->rank;
     		# Something has changed, so clear the cache
     		$self->_clear_cache;
 			# ...and recalculate the common readings.
