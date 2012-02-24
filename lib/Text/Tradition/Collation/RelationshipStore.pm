@@ -228,21 +228,23 @@ sub add_relationship {
 		$options->{'reading_b'} = $target_rdg->text;
 		$options->{'orig_a'} = $source;
 		$options->{'orig_b'} = $target;
-		$relationship = $self->create( $options );  # Will throw on error
+    	if( $options->{'scope'} ne 'local' ) {
+			# Is there a relationship with this a & b already?
+			my $otherrel = $self->scoped_relationship( $options->{reading_a}, 
+				$options->{reading_b} );
+			if( $otherrel && $otherrel->type eq $options->{type}
+				&& $otherrel->scope eq $options->{scope} ) {
+				warn "Applying existing scoped relationship";
+				$relationship = $otherrel;
+			}
+    	}
+		$relationship = $self->create( $options ) unless $relationship;  # Will throw on error
     }
 
 
 	# Find all the pairs for which we need to set the relationship.
 	my @vectors = ( [ $source, $target ] );	
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
-    	# Is there a relationship with this a & b already?
-    	my $otherrel = $self->scoped_relationship( $relationship->reading_a, 
-    		$relationship->reading_b );
-    	if( $otherrel && $otherrel->type eq $relationship->type 
-    		&& $otherrel->scope eq $relationship->scope ) {
-    		warn "Applying existing scoped relationship";
-    		$relationship = $otherrel;
-    	}
     	my $c = $self->collation;
     	# Set the same relationship everywhere we can, throughout the graph.
     	my @identical_readings = grep { $_->text eq $relationship->reading_a }
