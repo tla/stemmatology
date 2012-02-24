@@ -77,6 +77,12 @@ has 'ac_label' => (
     default => ' (a.c.)',
     );
     
+has 'wordsep' => (
+	is => 'rw',
+	isa => 'Str',
+	default => ' ',
+	);
+    
 has 'start' => (
 	is => 'ro',
 	isa => 'Text::Tradition::Collation::Reading',
@@ -163,6 +169,9 @@ representing another layer of path for the given witness - that is, when
 a text has more than one possible reading due to scribal corrections or
 the like.  Defaults to ' (a.c.)'.
 
+=item * wordsep - The string used to separate words in the original text.
+Defaults to ' '.
+
 =back
 
 =head1 ACCESSORS
@@ -176,6 +185,8 @@ the like.  Defaults to ' (a.c.)'.
 =head2 baselabel
 
 =head2 ac_label
+
+=head2 wordsep
 
 Simple accessors for collation attributes.
 
@@ -205,10 +216,14 @@ See L<Text::Tradition::Collation::Reading> for the available arguments.
 Removes the given reading from the collation, implicitly removing its
 paths and relationships.
 
-=head2 merge_readings( $main, $second )
+=head2 merge_readings( $main, $second, $concatenate, $with_str )
 
-Merges the $second reading into the $main one. 
-The arguments may be either readings or reading IDs.
+Merges the $second reading into the $main one. If $concatenate is true, then
+the merged node will carry the text of both readings, concatenated with either
+$with_str (if specified) or a sensible default (the empty string if the
+appropriate 'join_*' flag is set on either reading, or else $self->wordsep.)
+
+The first two arguments may be either readings or reading IDs.
 
 =head2 has_reading( $id )
 
@@ -291,6 +306,7 @@ around del_reading => sub {
 	}
 	# Remove the reading from the graphs.
 	$self->_graphcalc_done(0);
+	$self->_clear_cache; # Explicitly clear caches to GC the reading
 	$self->sequence->delete_vertex( $arg );
 	$self->relations->delete_reading( $arg );
 	
@@ -298,14 +314,57 @@ around del_reading => sub {
 	$self->$orig( $arg );
 };
 
-# merge_readings( $main, $to_be_deleted );
+=begin testing
+
+use Text::Tradition;
+
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+my $rno = scalar $c->readings;
+# Split n21 for testing purposes
+my $new_r = $c->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
+my $old_r = $c->reading( 'n21' );
+$old_r->alter_text( 'to' );
+$c->del_path( 'n20', 'n21', 'A' );
+$c->add_path( 'n20', 'n21p0', 'A' );
+$c->add_path( 'n21p0', 'n21', 'A' );
+$c->flatten_ranks();
+ok( $c->reading( 'n21p0' ), "New reading exists" );
+is( scalar $c->readings, $rno, "Reading add offset by flatten_ranks" );
+
+# Combine n3 and n4
+$c->merge_readings( 'n3', 'n4', 1 );
+ok( !$c->reading('n4'), "Reading n4 is gone" );
+is( $c->reading('n3')->text, 'with his', "Reading n3 has both words" );
+
+# Collapse n25 and n26
+$c->merge_readings( 'n25', 'n26' );
+ok( !$c->reading('n26'), "Reading n26 is gone" );
+is( $c->reading('n25')->text, 'rood', "Reading n25 has an unchanged word" );
+
+# Combine n21 and n21p0
+my $remaining = $c->reading('n21');
+$remaining ||= $c->reading('n22');  # one of these should still exist
+$c->merge_readings( 'n21p0', $remaining, 1 );
+ok( !$c->reading('n21'), "Reading $remaining is gone" );
+is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
+
+=end testing
+
+=cut
 
 sub merge_readings {
 	my $self = shift;
 
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $kept, $deleted, $combine_char ) = $self->_stringify_args( @_ );
+    my( $kept, $deleted, $combine, $combine_char ) = $self->_stringify_args( @_ );
 	$self->_graphcalc_done(0);
 
     # The kept reading should inherit the paths and the relationships
@@ -324,11 +383,15 @@ sub merge_readings {
 	$self->relations->merge_readings( $kept, $deleted, $combine_char );
 	
 	# Do the deletion deed.
-	if( $combine_char ) {
+	if( $combine ) {
 		my $kept_obj = $self->reading( $kept );
-		my $new_text = join( $combine_char, $kept_obj->text, 
-			$self->reading( $deleted )->text );
-		$kept_obj->alter_text( $new_text );
+		my $del_obj = $self->reading( $deleted );
+		my $joinstr = $combine_char;
+		unless( defined $joinstr ) {
+			$joinstr = '' if $kept_obj->join_next || $del_obj->join_prior;
+			$joinstr = $self->wordsep unless defined $joinstr;
+		}
+		$kept_obj->alter_text( join( $joinstr, $kept_obj->text, $del_obj->text ) );
 	}
 	$self->del_reading( $deleted );
 }
@@ -336,12 +399,12 @@ sub merge_readings {
 
 # Helper function for manipulating the graph.
 sub _stringify_args {
-	my( $self, $first, $second, $arg ) = @_;
+	my( $self, $first, $second, @args ) = @_;
     $first = $first->id
         if ref( $first ) eq 'Text::Tradition::Collation::Reading';
     $second = $second->id
         if ref( $second ) eq 'Text::Tradition::Collation::Reading';        
-    return( $first, $second, $arg );
+    return( $first, $second, @args );
 }
 
 # Helper function for manipulating the graph.
@@ -810,7 +873,7 @@ sub as_graphml {
     	$graph_data_keys{$datum} = 'dg'.$gdi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $datum );
-        $key->setAttribute( 'attr.type', $key eq 'linear' ? 'boolean' : 'string' );
+        $key->setAttribute( 'attr.type', $datum eq 'linear' ? 'boolean' : 'string' );
         $key->setAttribute( 'for', 'graph' );
         $key->setAttribute( 'id', $graph_data_keys{$datum} );    	
     }

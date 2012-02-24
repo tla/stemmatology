@@ -10,6 +10,50 @@ $| = 1;
 {
 use Text::Tradition;
 
+my $cxfile = 't/data/Collatex-16.xml';
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'CollateX',
+    'file'  => $cxfile,
+    );
+my $c = $t->collation;
+
+my $rno = scalar $c->readings;
+# Split n21 for testing purposes
+my $new_r = $c->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
+my $old_r = $c->reading( 'n21' );
+$old_r->alter_text( 'to' );
+$c->del_path( 'n20', 'n21', 'A' );
+$c->add_path( 'n20', 'n21p0', 'A' );
+$c->add_path( 'n21p0', 'n21', 'A' );
+$c->flatten_ranks();
+ok( $c->reading( 'n21p0' ), "New reading exists" );
+is( scalar $c->readings, $rno, "Reading add offset by flatten_ranks" );
+
+# Combine n3 and n4
+$c->merge_readings( 'n3', 'n4', 1 );
+ok( !$c->reading('n4'), "Reading n4 is gone" );
+is( $c->reading('n3')->text, 'with his', "Reading n3 has both words" );
+
+# Collapse n25 and n26
+$c->merge_readings( 'n25', 'n26' );
+ok( !$c->reading('n26'), "Reading n26 is gone" );
+is( $c->reading('n25')->text, 'rood', "Reading n25 has an unchanged word" );
+
+# Combine n21 and n21p0
+my $remaining = $c->reading('n21');
+$remaining ||= $c->reading('n22');  # one of these should still exist
+$c->merge_readings( 'n21p0', $remaining, 1 );
+ok( !$c->reading('n21'), "Reading $remaining is gone" );
+is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
+}
+
+
+
+# =begin testing
+{
+use Text::Tradition;
+
 my $READINGS = 311;
 my $PATHS = 361;
 
