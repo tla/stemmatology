@@ -116,6 +116,7 @@ has 'rank' => (
     is => 'rw',
     isa => 'Int',
     predicate => 'has_rank',
+    clearer => 'clear_rank',
     );
 
 ## For prefix/suffix readings

@@ -86,23 +86,8 @@ has 'graph' => (
     	relationships => 'edges',
     	add_reading => 'add_vertex',
     	delete_reading => 'delete_vertex',
-    	delete_relationship => 'delete_edge',
     },
 	);
-	
-around 'delete_relationship' => sub {
-	my $orig = shift;
-	my $self = shift;
-	my @vector;
-	if( @_ == 1 && ref( $_[0] ) eq 'ARRAY' ) {
-		# Dereference the edge arrayref that was passed.
-		my $edge = shift;
-		@vector = @$edge;
-	} else {
-		@vector = @_;
-	}
-	return $self->$orig( @vector );
-};
 	
 =head2 get_relationship
 
@@ -123,7 +108,7 @@ sub get_relationship {
 	my $relationship;
 	if( $self->graph->has_edge_attribute( @vector, 'object' ) ) {
 		$relationship = $self->graph->get_edge_attribute( @vector, 'object' );
-	}
+	} 
 	return $relationship;
 }
 
@@ -133,11 +118,6 @@ sub _set_relationship {
 	$self->graph->set_edge_attribute( @vector, 'object', $relationship );
 }
 
-sub _remove_relationship {
-	my( $self, @vector ) = @_;
-	$self->graph->delete_edge( @vector );
-}
-	
 =head2 create
 
 Create a new relationship with the given options and return it.
@@ -228,25 +208,41 @@ add_relationship.
 sub add_relationship {
 	my( $self, $source, $source_rdg, $target, $target_rdg, $options ) = @_;
 
-	# Check the options
-	$options->{'scope'} = 'local' unless $options->{'scope'};
-	
-	my( $is_valid, $reason ) = 
-		$self->relationship_valid( $source, $target, $options->{'type'} );
-    unless( $is_valid ) {
-        throw( "Invalid relationship: $reason" );
+	my $relationship;
+	my $thispaironly;
+	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
+		$relationship = $options;
+		$thispaironly = 1;  # If existing rel, set only where asked.
+	} else {
+		# Check the options
+		$options->{'scope'} = 'local' unless $options->{'scope'};
+		
+		my( $is_valid, $reason ) = 
+			$self->relationship_valid( $source, $target, $options->{'type'} );
+		unless( $is_valid ) {
+			throw( "Invalid relationship: $reason" );
+		}
+		
+		# Try to create the relationship object.
+		$options->{'reading_a'} = $source_rdg->text;
+		$options->{'reading_b'} = $target_rdg->text;
+		$options->{'orig_a'} = $source;
+		$options->{'orig_b'} = $target;
+		$relationship = $self->create( $options );  # Will throw on error
     }
-    
-    # Try to create the relationship object.
-    $options->{'reading_a'} = $source_rdg->text;
-    $options->{'reading_b'} = $target_rdg->text;
-    $options->{'orig_a'} = $source;
-    $options->{'orig_b'} = $target;
-    my $relationship = $self->create( $options );  # Will throw on error
+
 
 	# Find all the pairs for which we need to set the relationship.
 	my @vectors = ( [ $source, $target ] );	
-    if( $relationship->colocated && $relationship->nonlocal ) {
+    if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
+    	# Is there a relationship with this a & b already?
+    	my $otherrel = $self->scoped_relationship( $relationship->reading_a, 
+    		$relationship->reading_b );
+    	if( $otherrel && $otherrel->type eq $relationship->type 
+    		&& $otherrel->scope eq $relationship->scope ) {
+    		warn "Applying existing scoped relationship";
+    		$relationship = $otherrel;
+    	}
     	my $c = $self->collation;
     	# Set the same relationship everywhere we can, throughout the graph.
     	my @identical_readings = grep { $_->text eq $relationship->reading_a }
@@ -271,8 +267,9 @@ sub add_relationship {
     my @pairs_set;
     foreach my $v ( @vectors ) {
 		my $rel = $self->get_relationship( @$v );
-    	if( $rel ) {
+    	if( $rel && $rel ne $relationship ) {
     		if( $rel->nonlocal ) {
+    			$DB::single = 1;
     			throw( "Found conflicting relationship at @$v" );
     		} else {
     			warn "Not overriding local relationship set at @$v";
@@ -311,6 +308,11 @@ sub del_relationship {
 	return @vectors;
 }
 
+sub _remove_relationship {
+	my( $self, @vector ) = @_;
+	$self->graph->delete_edge( @vector );
+}
+	
 =head2 relationship_valid( $source, $target, $type )
 
 Checks whether a relationship of type $type may exist between the readings given

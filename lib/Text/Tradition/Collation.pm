@@ -437,6 +437,17 @@ sub add_relationship {
     return @vectors;
 }
 
+around qw/ get_relationship del_relationship / => sub {
+	my $orig = shift;
+	my $self = shift;
+	my @args = @_;
+	if( @args == 1 && ref( $args[0] ) eq 'ARRAY' ) {
+		@args = @{$_[0]};
+	}
+	my( $source, $target ) = $self->_stringify_args( @args );
+	$self->$orig( $source, $target );
+};
+
 =head2 reading_witnesses( $reading )
 
 Return a list of sigils corresponding to the witnesses in which the reading appears.
@@ -1355,7 +1366,7 @@ sub calculate_ranks {
     # Do we need to invalidate the cached data?
     if( $self->has_cached_svg || $self->has_cached_table ) {
     	foreach my $r ( $self->readings ) {
-    		next if $existing_ranks{$r} == $r->rank;
+    		next if $existing_ranks{$r} && $existing_ranks{$r} == $r->rank;
     		# Something has changed, so clear the cache
     		$self->_clear_cache;
 			# ...and recalculate the common readings.
