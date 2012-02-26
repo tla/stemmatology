@@ -3,5 +3,6 @@ lib/Text/Tradition/Parser/CollateText.pm
 lib/Text/Tradition/Parser/CTE.pm
 lib/Text/Tradition/Parser/KUL.pm
 lib/Text/Tradition/Analysis.pm
+t/text_tradition_analysis.t
 .git/
 .gitignore

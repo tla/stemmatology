@@ -7,7 +7,7 @@ use Text::Tradition::Stemma;
 use Text::Tradition::Witness;
 
 use vars qw( $VERSION );
-$VERSION = "0.2";
+$VERSION = "0.3";
 
 has 'collation' => (
     is => 'ro',
