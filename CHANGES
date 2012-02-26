@@ -1,3 +1,13 @@
+Version 0.3
+===========
+
+commit 85030ed0b680146d92cda476df6b32a081999311
+Author: Tara L Andrews <tla\@mit.edu>
+Date:   Sun Feb 26 03:54:38 2012 +0100
+
+    remove analysis tests from CPAN module too
+
+
 Version 0.2
 ===========
 
