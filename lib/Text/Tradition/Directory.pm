@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Moose;
 use DBI;
+use Encode qw/ decode_utf8 /;
 use KiokuDB::GC::Naive;
 use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
@@ -231,18 +232,20 @@ sub traditionlist {
 	# If we are using DBI, we can do it the easy way; if not, the hard way.
 	# Easy way still involves making a separate DBI connection. Ew.
 	my @tlist;
-	if( $self->dsn =~ /^dbi/ ) {
-		$DB::single = 1;
+	if( $self->dsn =~ /^dbi:(\w+):/ ) {
+		my $dbtype = $1;
 		my @connection = @{$self->directory->backend->connect_info};
 		# Get rid of KiokuDB-specific arg
 		pop @connection if scalar @connection > 4;
-		$connection[3]->{'sqlite_unicode'} = 1 if $connection[0] =~ /^dbi:SQLite/;
-		$connection[3]->{'mysql_enable_utf8'} = 1 if $connection[0] =~ /^dbi:mysql/;
-		$connection[3]->{'pg_enable_utf8'} = 1 if $connection[0] =~ /^dbi:Pg/;
+		$connection[3]->{'sqlite_unicode'} = 1 if $dbtype eq 'SQLite';
+		$connection[3]->{'pg_enable_utf8'} = 1 if $dbtype eq 'Pg';
 		my $dbh = DBI->connect( @connection );
 		my $q = $dbh->prepare( 'SELECT id, name from entries WHERE class = "Text::Tradition"' );
 		$q->execute();
 		while( my @row = $q->fetchrow_array ) {
+			my( $id, $name ) = @row;
+			# Horrible horrible hack
+			$name = decode_utf8( $name ) if $dbtype eq 'mysql';
 			push( @tlist, { 'id' => $row[0], 'name' => $row[1] } );
 		}
 	} else {
