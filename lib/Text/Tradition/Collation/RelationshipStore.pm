@@ -271,7 +271,6 @@ sub add_relationship {
 		my $rel = $self->get_relationship( @$v );
     	if( $rel && $rel ne $relationship ) {
     		if( $rel->nonlocal ) {
-    			$DB::single = 1;
     			throw( "Found conflicting relationship at @$v" );
     		} else {
     			warn "Not overriding local relationship set at @$v";
