@@ -70,7 +70,8 @@ if( $delete ) {
 
 # Now try reading the objects from the DB.
 if( $list ) {
-	foreach my $tid ( $kdb->tradition_ids ) {
+	foreach my $tref ( $kdb->traditionlist ) {
+		my $tid = $tref->{'id'};
 		my $scope = $kdb->new_scope();
 		my $t = $kdb->tradition( $tid );
 		print STDERR "$tid: Tradition '" . $t->name . "'\n";
