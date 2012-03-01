@@ -120,11 +120,11 @@ if( $t ) {
 my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY,
 	$START_KEY, $END_KEY, $LACUNA_KEY, $COMMON_KEY,
 	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY,
-	$SCOPE_KEY, $CORRECT_KEY, $INDEP_KEY )
+	$SCOPE_KEY, $ANNOTATION_KEY, $CORRECT_KEY, $INDEP_KEY )
     = qw/ id text identical rank 
     	  is_start is_end is_lacuna is_common
     	  source target witness extra relationship
-    	  scope non_correctable non_independent /;
+    	  scope annotation non_correctable non_independent /;
 
 sub parse {
     my( $tradition, $opts ) = @_;
@@ -208,12 +208,23 @@ sub parse {
 			'type' => $e->{$RELATIONSHIP_KEY},
 			'scope' => $e->{$SCOPE_KEY},
 			};
+		$relationship_opts->{'annotation'} = $e->{$ANNOTATION_KEY}
+			if exists $e->{$ANNOTATION_KEY};
 		$relationship_opts->{'non_correctable'} = $e->{$CORRECT_KEY}
 			if exists $e->{$CORRECT_KEY};
 		$relationship_opts->{'non_independent'} = $e->{$INDEP_KEY}
 			if exists $e->{$INDEP_KEY};
+		# TODO unless relationship is scoped and that scoped relationship exists...
+		my $rel_exists;
+		if( $relationship_opts->{'scope'} ne 'local' ) {
+			my $relobj = $collation->get_relationship( $from->{$IDKEY}, $to->{$IDKEY} );
+			if( $relobj && $relobj->{'scope'} eq $relationship_opts->{'scope'}
+				&& $relobj->{'type'} eq $relationship_opts->{'type'} ) {
+				$rel_exists = 1;
+			}
+		}
 		$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, 
-			$relationship_opts );
+			$relationship_opts ) unless $rel_exists;
 	}
 	
     # Save the text for each witness so that we can ensure consistency
