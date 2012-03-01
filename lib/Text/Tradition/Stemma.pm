@@ -286,6 +286,14 @@ sub witnesses {
     return @wits;
 }
 
+sub hypotheticals {
+    my $self = shift;
+    my @wits = grep 
+    	{ $self->graph->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' }
+        $self->graph->vertices;
+    return @wits;
+}
+
 sub throw {
 	Text::Tradition::Error->throw( 
 		'ident' => 'Stemma error',
