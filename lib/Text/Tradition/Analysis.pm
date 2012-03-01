@@ -59,9 +59,42 @@ my $tradition = Text::Tradition->new( 'input' => 'TEI',
 my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 
+my %expected_genealogical = (
+	1 => '',
+	2 => 1,
+	3 =>  '',
+	5 =>  '',
+	7 =>  '',
+	8 =>  '',
+	10 => '',
+	13 => 1,
+	33 => '',
+	34 => '',
+	37 => '',
+	60 => '',
+	81 => 1,
+	84 => '',
+	87 => '',
+	101 => '',
+	102 => '',
+	122 => 1,
+	157 => '',
+	166 => 1,
+	169 => 1,
+	200 => 1,
+	216 => 1,
+	217 => 1,
+	219 => 1,
+	241 => 1,
+	242 => 1,
+	243 => 1,
+);
+
 my $data = run_analysis( $tradition );
-# TODO Check genealogical count
-is( $data->{'genealogical_count'}, 13, "Got right genealogical count" );
+foreach my $row ( @{$data->{'variants'}} ) {
+	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
+		"Got correct genealogical flag for row " . $row->{'id'} );
+}
 is( $data->{'conflict_count'}, 16, "Got right conflict count" );
 is( $data->{'variant_count'}, 28, "Got right total variant number" );
 
@@ -71,6 +104,7 @@ is( $data->{'variant_count'}, 28, "Got right total variant number" );
 
 sub run_analysis {
 	my( $tradition, $stemma_id, @collapse ) = @_;
+	my $c = $tradition->collation;
 	$stemma_id = 0 unless $stemma_id;
 	
 	# Run the variant analysis on every rank in the graph that doesn't
@@ -90,10 +124,19 @@ sub run_analysis {
 		my $variant_row = analyze_variant_location( 
 			$tradition, $rank, $stemma_id, @collapse );
 		next unless $variant_row;
+		# Add the reading text to the readings in variant_row
+		foreach my $rh ( @{$variant_row->{'readings'}} ) {
+			if( $c->reading( $rh->{'readingid'} ) ) {
+				$rh->{'text'} = $c->reading( $rh->{'readingid'} )->text;
+			} else {
+				$rh->{'text'} = $rh->{'readingid'};
+			}
+		}
 		push( @variants, $variant_row );
 		$genealogical++ if $variant_row->{'genealogical'};
 		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
 	}
+	
 	
 	return {
 		'variants' => \@variants,
@@ -139,16 +182,16 @@ sub group_variants {
 	my %grouped_readings;
 	foreach my $rdg ( sort { $b->witnesses <=> $a->witnesses } values %readings_at_rank ) {
 		# Skip readings that have been collapsed into others.
-		next if exists $grouped_readings{$rdg->text} && !$grouped_readings{$rdg->text};
+		next if exists $grouped_readings{$rdg->id} && !$grouped_readings{$rdg->id};
 		my @wits = $rdg->witnesses;
 		if( $collapse ) {
 			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
 				push( @wits, $other->witnesses );
-				$grouped_readings{$other->text} = 0;
+				$grouped_readings{$other->id} = 0;
 			}
 		}
-		$grouped_readings{$rdg->text} = \@wits;	
+		$grouped_readings{$rdg->id} = \@wits;	
 	}
 	$grouped_readings{'(omitted)'} = \@gap_wits if @gap_wits;
 	# Get rid of our collapsed readings
@@ -170,7 +213,7 @@ Returns a data structure as follows:
 
  { 	'id' => $rank,
  	'genealogical' => boolean,
- 	'readings => [ { text => $reading_text, 
+ 	'readings => [ { readingid => $reading_id, 
  					 group => [ witnesses ], 
  					 conflict => [ conflicting ], 
  					 missing => [ excluded ] }, ... ]
@@ -213,6 +256,7 @@ sub analyze_variant_location {
     my %reading_roots;
     my $variant_row = { 'id' => $rank, 'readings' => [] };
     # Mark each ms as in its own group, first.
+    $DB::single = 1 if $rank == 81;
     foreach my $g ( @$groups ) {
         my $gst = wit_stringify( $g );
         map { $contig->{$_} = $gst } @$g;
@@ -220,7 +264,6 @@ sub analyze_variant_location {
     # Now for each unmarked node in the graph, initialize an array
     # for possible group memberships.  We will use this later to
     # resolve potential conflicts.
-    $DB::single = 1 if $rank == 636;
     map { $contig->{$_} = [] unless $contig->{$_} } $graph->vertices;
     foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
         my $gst = wit_stringify( $g );  # This is the group name
@@ -259,8 +302,11 @@ sub analyze_variant_location {
                 }
             } else {
             	# Dispense with the trivial case of one reading.
-                @group_roots = @$g;
-                _prune_subtree( $part, @group_roots, $contig );
+            	my $wit = pop @$g;
+                @group_roots = ( $wit );
+                foreach my $v ( $part->vertices ) {
+                	$part->delete_vertex( $v ) unless $v eq $wit;
+                }
             }
         }
         
@@ -280,7 +326,7 @@ sub analyze_variant_location {
         
         
         # Start to write the reading, and save the group subgraph.
-        my $reading = { 'text' => $group_readings->{$gst},
+        my $reading = { 'readingid' => $group_readings->{$gst},
                         'missing' => wit_stringify( \@lacunose ),
                         'group' => $gst };  # This will change if we find no conflict
 		# Save the relevant subgraph.
@@ -386,18 +432,25 @@ sub analyze_variant_location {
         $rdghash->{'independent_occurrence'} = scalar @roots;
         $rdghash->{'followed'} = scalar( $part->vertices ) - scalar( @roots );
         # Find the parent readings, if any, of this reading.
-        my @rdgparents;
+        my %rdgparents;
         foreach my $wit ( @roots ) {
-        	# Look in the main stemma to find this witness's parent(s), and look
-        	# up the reading that the parent holds.
-        	foreach my $wparent( $graph->predecessors( $wit ) ) {
-        		my $pgroup = $contig->{$wparent};
-        		if( $pgroup ) {
-        			push( @rdgparents, $group_readings->{$pgroup} );
-        		}
-        	}
+        	# Look in the main stemma to find this witness's extant or known-reading
+        	# immediate ancestor(s), and look up the reading that each ancestor olds.
+			my @check = $graph->predecessors( $wit );
+			while( @check ) {
+				my @next;
+				foreach my $wparent( @check ) {
+					my $pgroup = $contig->{$wparent};
+					if( $pgroup ) {
+						$rdgparents{$group_readings->{$pgroup}} = 1;
+					} else {
+						push( @next, $graph->predecessors( $wparent ) );
+					}
+				}
+				@check = @next;
+			}
 		}
-		$rdghash->{'reading_parents'} = \@rdgparents;
+		$rdghash->{'reading_parents'} = [ keys %rdgparents ];
 		
 		# Find the number of times this reading was altered, and the number of
 		# times we're not sure.
@@ -422,7 +475,7 @@ sub analyze_variant_location {
     
     # Now write the group and conflict information into the respective rows.
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
-        $rdghash->{'conflict'} = $conflict->{$rdghash->{'text'}};
+        $rdghash->{'conflict'} = $conflict->{$rdghash->{'readingid'}};
         my @members = grep { $contig->{$_} eq $rdghash->{'group'} } keys %$contig;
         $rdghash->{'group'} = wit_stringify( \@members );
     }
