@@ -114,6 +114,10 @@ foreach my $row ( @{$results->{'variants'}} ) {
 		}
 	} else {
 		# If not displaying, we're testing.
+		# HACK to cope with formerly unuseful rows
+		unless( exists $expected{$row->{'id'}} ) {
+			$expected{$row->{'id'}} = 1;
+		}
 		is( $row->{'genealogical'}, $expected{$row->{'id'}}, 
 			"Got expected genealogical result for rank " . $row->{'id'} );
 		# If the row is genealogical, there should be one reading with no parents,
