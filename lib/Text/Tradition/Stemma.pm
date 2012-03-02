@@ -204,14 +204,17 @@ sub as_dot {
     return join( "\n", @dotlines );
 }
 
-=head2 editable
+=head2 editable( $linesep )
 
-Returns a version of the graph rendered in our definition format.
+Returns a version of the graph rendered in our definition format.  The
+$linesep argument defaults to newline; set it to the empty string or to
+a space if the result is to be sent via JSON.
 
 =cut
 
 sub editable {
 	my $self = shift;
+	my $join = shift || "\n";
 	my @dotlines;
 	push( @dotlines, 'digraph stemma {' );
 	my @real; # A cheap sort
@@ -233,7 +236,7 @@ sub editable {
 		push( @dotlines, "  $from -> $to;" );
 	}
     push( @dotlines, '}' );
-    return join( "\n", @dotlines );
+    return join( $join, @dotlines );
 }
 
 sub _make_dotline {

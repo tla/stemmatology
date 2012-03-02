@@ -3,7 +3,10 @@ package Text::Tradition::Analysis;
 use strict;
 use warnings;
 use Benchmark;
+use Encode qw/ encode_utf8 /;
 use Exporter 'import';
+use JSON qw/ encode_json decode_json /;
+use LWP::UserAgent;
 use Text::Tradition;
 use Text::Tradition::Stemma;
 
@@ -37,15 +40,22 @@ between readings are actually kept.
 
 =head1 SUBROUTINES
 
-=head2 run_analysis( $tradition, $stemma_id, @merge_relationship_types )
+=head2 run_analysis( $tradition, %opts )
 
-Runs the analysis described in analyze_variant_location on every location
-in the collation of the given tradition, against the stemma specified in
-$stemma_id.  If $stemma_id is not specified, it defaults to 0 (referencing
-the first stemma saved for the tradition.)
+Runs the analysis described in analyze_variant_location on every location in the 
+collation of the given tradition, with the given options. These include:
 
-The optional @merge_relationship_types contains a list of relationship types 
-to treat as equivalent for the analysis.
+=over 4
+
+=item * stemma_id - Specify which of the tradition's stemmata to use. Default
+is 0 (i.e. the first).
+
+=item * ranks - Specify a list of location ranks to analyze; exclude the rest.
+
+=item * merge_types - Specify a list of relationship types, where related readings 
+should be treated as identical for the purposes of analysis.
+
+=back
 
 =begin testing
 
@@ -103,47 +113,51 @@ is( $data->{'variant_count'}, 28, "Got right total variant number" );
 =cut
 
 sub run_analysis {
-	my( $tradition, $stemma_id, @collapse ) = @_;
+	my( $tradition, %opts ) = @_;
 	my $c = $tradition->collation;
-	$stemma_id = 0 unless $stemma_id;
-	
-	# Run the variant analysis on every rank in the graph that doesn't
-	# have a common reading. Return the results.
-	my @variants; # holds results from analyze_variant_location
-	my $genealogical; # counter of 'genealogical' variants
-	my $conflicts;    # counter of conflicting readings
-	
-	# Find and mark 'common' ranks for exclusion.
-	my %common_rank;
-	foreach my $rdg ( $tradition->collation->common_readings ) {
-		$common_rank{$rdg->rank} = 1;
-	}
-	
-	foreach my $rank ( 1 .. $tradition->collation->end->rank-1 ) {
-		next if $common_rank{$rank};
-		my $variant_row = analyze_variant_location( 
-			$tradition, $rank, $stemma_id, @collapse );
-		next unless $variant_row;
-		# Add the reading text to the readings in variant_row
-		foreach my $rh ( @{$variant_row->{'readings'}} ) {
-			if( $c->reading( $rh->{'readingid'} ) ) {
-				$rh->{'text'} = $c->reading( $rh->{'readingid'} )->text;
-			} else {
-				$rh->{'text'} = $rh->{'readingid'};
-			}
+
+	my $stemma_id = $opts{'stemma_id'} || 0;
+	my @ranks = @{$opts{'ranks'}} if ref( $opts{'ranks'} ) eq 'ARRAY';
+	my @collapse = @{$opts{'merge_types'}} if ref( $opts{'merge_types'} ) eq 'ARRAY';
+
+	# Get the stemma	
+	my $stemma = $tradition->stemma( $stemma_id );
+	# Figure out which witnesses we are working with
+	my @lacunose = $stemma->hypotheticals;
+	push( @lacunose, _symmdiff( [ $stemma->witnesses ], 
+		[ map { $_->sigil } $tradition->witnesses ] ) );
+
+	# Find and mark 'common' ranks for exclusion, unless they were
+	# explicitly specified.
+	unless( @ranks ) {
+		my %common_rank;
+		foreach my $rdg ( $tradition->collation->common_readings ) {
+			$common_rank{$rdg->rank} = 1;
 		}
-		push( @variants, $variant_row );
-		$genealogical++ if $variant_row->{'genealogical'};
-		$conflicts += grep { $_->{'conflict'} } @{$variant_row->{'readings'}};
+		@ranks = grep { !$common_rank{$_} } ( 1 .. $c->end->rank-1 );
 	}
 	
+	# Group the variants to send to the solver
+	my @groups;
+	foreach my $rank ( @ranks ) {
+		push( @groups, group_variants( $tradition, $rank, \@lacunose, \@collapse ) );
+	}
 	
-	return {
-		'variants' => \@variants,
-		'variant_count' => scalar @variants, # TODO redundant
-		'conflict_count' => $conflicts,
-		'genealogical_count' => $genealogical,
-		};
+	# Parse the answer
+	my $answer = solve_variants( $stemma->editable( ' ' ), @groups );
+	
+	# Do further analysis on the answer
+	foreach my $idx ( 0 .. $#ranks ) {
+		my $location = $answer->{'variants'}->[$idx];
+		# Add the rank back in
+		$location->{'id'} = $ranks[$idx];
+		# Run the extra analysis we need.
+		# For each reading we need missing, conflict, reading_parents,
+		#  independent_occurrence, followed, not_followed, follow_unknown
+		analyze_location( $tradition, $stemma->graph, $location );
+	}
+	
+	return $answer;
 }
 
 =head2 group_variants( $tradition, $rank, $lacunose, @merge_relationship_types )
@@ -200,6 +214,78 @@ sub group_variants {
 		if $collapse;
 	
 	return \%grouped_readings;
+}
+
+=head2 solve_variants( $graph, @groups ) 
+
+Sends the set of groups to the external graph solver service and returns
+a cleaned-up answer, adding the rank IDs back where they belong.
+
+The JSON has the form 
+  { "graph": [ stemmagraph DOT string without newlines ],
+    "groupings": [ array of arrays of groups, one per rank ] }
+    
+The answer has the form 
+  { "variants" => [ array of variant location structures ],
+    "variant_count" => total,
+    "conflict_count" => number of conflicts detected,
+    "genealogical_count" => number of solutions found }
+    
+=cut
+
+sub solve_variants {
+	my( $graph, @groups ) = @_;
+
+	# Make the json with stemma + groups
+	my $jsonstruct = { 'graph' => $graph, 'groupings' => [] };
+	foreach my $ghash ( @groups ) {
+		my @grouping;
+		foreach my $k ( sort keys %$ghash ) {
+			push( @grouping, $ghash->{$k} );
+		}
+		push( @{$jsonstruct->{'groupings'}}, \@grouping );
+	}
+	my $json = encode_json( $jsonstruct );
+
+	# Send it off and get the result
+	my $solver_url = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
+	my $ua = LWP::UserAgent->new();
+	my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
+						  'Content' => $json );
+						  
+	my $answer;
+	if( $resp->is_success ) {
+		$answer = decode_json( $resp->content );
+	} else {
+		# Either throw an error or fall back to the old method.
+		die "Solver returned " . $resp->status_line . " / " . $resp->content;
+	}
+	
+	# Fold the result back into what we know about the groups.
+	my $variants = [];
+	my $genealogical = 0;
+	foreach my $idx ( 0 .. $#groups ) {
+		my( $calc_groups, $result ) = @{$answer->[$idx]};
+		$genealogical++ if $result;
+		my $input_group = $groups[$idx];
+		foreach my $k ( sort keys %$input_group ) {
+			my $cg = shift @$calc_groups;
+			$input_group->{$k} = $cg;
+		}
+		my $vstruct = { 
+			'genealogical' => $result,
+			'readings' => [],
+		}
+		foreach my $k ( keys %$input_group ) {
+			push( @{$vstruct->{'readings'}}, 
+				  { 'readingid' => $k, 'group' => $dg } );
+		}
+		push( @$variants, $vstruct );
+	}
+	
+	return { 'variants' => $variants, 
+			 'variant_count' => scalar @$variants,
+			 'genealogical_count' => $genealogical };
 }
 
 =head2 analyze_variant_location( $tradition, $rank, $stemma_id, @merge_relationship_types )
