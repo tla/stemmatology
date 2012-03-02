@@ -121,8 +121,8 @@ sub run_analysis {
 	my $c = $tradition->collation;
 
 	my $stemma_id = $opts{'stemma_id'} || 0;
-	my @ranks = @{$opts{'ranks'}} if ref( $opts{'ranks'} ) eq 'ARRAY';
-	my @collapse = @{$opts{'merge_types'}} if ref( $opts{'merge_types'} ) eq 'ARRAY';
+	my @ranks = ref( $opts{'ranks'} ) eq 'ARRAY' ? @{$opts{'ranks'}} : ();
+	my @collapse = ref( $opts{'merge_types'} ) eq 'ARRAY' ? @{$opts{'merge_types'}} : ();
 
 	# Get the stemma	
 	my $stemma = $tradition->stemma( $stemma_id );
@@ -194,22 +194,20 @@ by the witnesses listed in $groups->[$n].
 sub group_variants {
 	my( $tradition, $rank, $lacunose, $collapse ) = @_;
 	my $c = $tradition->collation;
-	# All the regexps here are to get rid of space characters in witness names.
 	my $aclabel = $c->ac_label;
-	$aclabel =~ s/\s/_/g;
 	# Get the alignment table readings
 	my %readings_at_rank;
 	my @gap_wits;
-	foreach my $tablewit ( @{$tradition->collation->alignment_table->{'alignment'}} ) {
+	foreach my $tablewit ( @{$c->alignment_table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		my $wit = $tablewit->{'witness'};
-		$wit =~ s/\s/_/g;
+		$wit =~ s/^(.*)\Q$aclabel\E$/${1}_ac/;
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
-			_add_to_witlist( $wit, $lacunose, $aclabel );
+			_add_to_witlist( $wit, $lacunose, '_ac' );
 		} elsif( $rdg ) {
 			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
 		} else {
-			_add_to_witlist( $wit, \@gap_wits, $aclabel );
+			_add_to_witlist( $wit, \@gap_wits, '_ac' );
 		}
 	}
 	
@@ -219,12 +217,12 @@ sub group_variants {
 		# Skip readings that have been collapsed into others.
 		next if exists $grouped_readings{$rdg->id} && !$grouped_readings{$rdg->id};
 		my @wits = $rdg->witnesses;
-		map { s/\s/_/g } @wits;
+		map { s/\Q$aclabel\E$/_ac/ } @wits;
 		if( $collapse ) {
 			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
 				my @otherwits = $other->witnesses;
-				map { s/\s/_/g } @otherwits;
+				map { s/\Q$aclabel\E$/_ac/ } @otherwits;
 				push( @wits, @otherwits );
 				$grouped_readings{$other->id} = 0;
 			}
