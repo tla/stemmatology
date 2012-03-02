@@ -351,8 +351,12 @@ sub relationship_valid {
 		# Otherwise, first make a lookup table of all the
 		# readings related to either the source or the target.
 		my @proposed_related = ( $source, $target );
-		push( @proposed_related, $self->related_readings( $source, 'colocated' ) );
-		push( @proposed_related, $self->related_readings( $target, 'colocated' ) );
+		# Drop the collation links of source and target, unless we want to
+		# add a collation relationship.
+		foreach my $r ( ( $source, $target ) ) {
+			$self->_drop_collations( $r ) unless $rel eq 'collated';
+			push( @proposed_related, $self->related_readings( $r, 'colocated' ) );
+		}
 		my %pr_ids;
 		map { $pr_ids{ $_ } = 1 } @proposed_related;
 	
@@ -373,6 +377,15 @@ sub relationship_valid {
 				if exists $all_pred{$k} || exists $all_succ{$k};
 		}
 		return ( 1, "ok" );
+	}
+}
+
+sub _drop_collations {
+	my( $self, $reading ) = @_;
+	foreach my $n ( $self->graph->neighbors( $reading ) ) {
+		if( $self->get_relationship( $reading, $n )->type eq 'collated' ) {
+			$self->del_relationship( $reading, $n );
+		}
 	}
 }
 
