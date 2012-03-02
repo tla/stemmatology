@@ -70,28 +70,28 @@ my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 
 my %expected_genealogical = (
-	1 => '',
+	1 => 0,
 	2 => 1,
-	3 =>  '',
-	5 =>  '',
-	7 =>  '',
-	8 =>  '',
-	10 => '',
+	3 =>  0,
+	5 =>  0,
+	7 =>  0,
+	8 =>  0,
+	10 => 0,
 	13 => 1,
-	33 => '',
-	34 => '',
-	37 => '',
-	60 => '',
+	33 => 0,
+	34 => 0,
+	37 => 0,
+	60 => 0,
 	81 => 1,
-	84 => '',
-	87 => '',
-	101 => '',
-	102 => '',
+	84 => 0,
+	87 => 0,
+	101 => 0,
+	102 => 0,
 	122 => 1,
-	157 => '',
+	157 => 0,
 	166 => 1,
 	169 => 1,
-	200 => 1,
+	200 => 0,
 	216 => 1,
 	217 => 1,
 	219 => 1,
@@ -102,11 +102,15 @@ my %expected_genealogical = (
 
 my $data = run_analysis( $tradition );
 foreach my $row ( @{$data->{'variants'}} ) {
+	# Account for rows that used to be "not useful"
+	unless( exists $expected_genealogical{$row->{'id'}} ) {
+		$expected_genealogical{$row->{'id'}} = 1;
+	}
 	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
 }
-is( $data->{'conflict_count'}, 16, "Got right conflict count" );
-is( $data->{'variant_count'}, 28, "Got right total variant number" );
+is( $data->{'conflict_count'}, 34, "Got right conflict count" );
+is( $data->{'variant_count'}, 58, "Got right total variant number" );
 
 =end testing
 
@@ -133,7 +137,7 @@ sub run_analysis {
 	# explicitly specified.
 	unless( @ranks ) {
 		my %common_rank;
-		foreach my $rdg ( $tradition->collation->common_readings ) {
+		foreach my $rdg ( $c->common_readings ) {
 			$common_rank{$rdg->rank} = 1;
 		}
 		@ranks = grep { !$common_rank{$_} } ( 1 .. $c->end->rank-1 );
@@ -141,22 +145,35 @@ sub run_analysis {
 	
 	# Group the variants to send to the solver
 	my @groups;
+	my %lacunae;
 	foreach my $rank ( @ranks ) {
-		push( @groups, group_variants( $tradition, $rank, \@lacunose, \@collapse ) );
+		my $missing = [ @lacunose ];
+		push( @groups, group_variants( $tradition, $rank, $missing, \@collapse ) );
+		$lacunae{$rank} = $missing;
 	}
 	
 	# Parse the answer
 	my $answer = solve_variants( $stemma->editable( ' ' ), @groups );
-	$DB::single = 1;
 
 	# Do further analysis on the answer
+	my $conflict_count = 0;
 	foreach my $idx ( 0 .. $#ranks ) {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
 		$location->{'id'} = $ranks[$idx];
+		# Add the lacunae back in
+		$location->{'missing'} = $lacunae{$ranks[$idx]};
 		# Run the extra analysis we need.
 		analyze_location( $tradition, $stemma->graph, $location );
+		# Add the reading text back in
+		foreach my $rdghash ( @{$location->{'readings'}} ) {
+			$conflict_count++ 
+				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
+			my $rdg = $c->reading( $rdghash->{'readingid'} );
+			$rdghash->{'text'} = $rdg ? $rdg->text : $rdghash->{'readingid'};
+		}
 	}
+	$answer->{'conflict_count'} = $conflict_count;
 	
 	return $answer;
 }
@@ -340,7 +357,6 @@ sub analyze_location {
         $rdghash->{'followed'} = scalar( $part->vertices ) - scalar( @roots );
         # Find the parent readings, if any, of this reading.
         my %rdgparents;
-        $DB::single = 1;
         foreach my $wit ( @roots ) {
         	# Look in the main stemma to find this witness's extant or known-reading
         	# immediate ancestor(s), and look up the reading that each ancestor olds.

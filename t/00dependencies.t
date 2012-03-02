@@ -17,6 +17,16 @@ if ($@) { plan skip_all => 'Module::CoreList not installed' }
 
 plan 'no_plan';
 
+my %skipped;
+if( -f 'MANIFEST.SKIP' ) {
+	# We don't want these
+	open( SKIP, 'MANIFEST.SKIP' ) or die "Could not open manifest skip file";
+	while(<SKIP>) {
+		chomp;
+		$skipped{$_} = 1;
+	}
+	close SKIP;
+}
 my %used;
 find( \&wanted, qw/ lib t / );
 
@@ -25,6 +35,7 @@ sub wanted {
     return if $File::Find::dir  =~ m!/.git($|/)!;
     return if $File::Find::name =~ /~$/;
     return if $File::Find::name =~ /\.(pod|html)$/;
+    return if $skipped{$File::Find::name};
 
     # read in the file from disk
     my $filename = $_;
