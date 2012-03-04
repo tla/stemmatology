@@ -58,8 +58,8 @@ foreach my $row ( @{$data->{'variants'}} ) {
 	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
 }
-is( $data->{'conflict_count'}, 34, "Got right conflict count" );
 is( $data->{'variant_count'}, 58, "Got right total variant number" );
+# TODO Make something meaningful of conflict count, maybe test other bits
 }
 
 
