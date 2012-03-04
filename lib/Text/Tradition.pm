@@ -35,7 +35,7 @@ has 'name' => (
     );
     
 has 'language' => (
-	is => 'ro',
+	is => 'rw',
 	isa => 'Str',
 	);
     

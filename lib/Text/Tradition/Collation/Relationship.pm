@@ -102,13 +102,11 @@ has 'annotation' => (
 has 'non_correctable' => (
 	is => 'ro',
 	isa => 'Bool',
-	predicate => 'noncorr_set',
 	);
 
 has 'non_independent' => (
 	is => 'ro',
 	isa => 'Bool',
-	predicate => 'nonind_set',
 	);
 	
 # A read-only meta-Boolean attribute.

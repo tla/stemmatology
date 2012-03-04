@@ -864,61 +864,90 @@ sub as_graphml {
     $graphml->setDocumentElement( $root );
     $root->setNamespace( $xsi_ns, 'xsi', 0 );
     $root->setAttributeNS( $xsi_ns, 'schemaLocation', $graphml_schema );
+    
+    # List of attribute types to save on our objects and their corresponding
+    # GraphML types
+    my %save_types = (
+    	'Str' => 'string',
+    	'Int' => 'int',
+    	'Bool' => 'boolean',
+    	'RelationshipType' => 'string',
+    	'RelationshipScope' => 'string',
+    );
+    
+    # List of attribute names *not* to save on our objects.
+    # We will also not save any attribute beginning with _.
+    my %skipsave;
+    map { $skipsave{$_} = 1 } qw/ cached_svg /;
 
-    # Add the data keys for the graph
+    # Add the data keys for the graph. Include an extra key 'version' for the
+    # GraphML output version.
     my %graph_data_keys;
     my $gdi = 0;
-    my @graph_attributes = qw/ version wit_list_separator baselabel linear ac_label /;
-    foreach my $datum ( @graph_attributes ) {
+    my %graph_attributes = ( 'version' => 'string' );
+	# Graph attributes include those of Tradition and those of Collation.
+	my %gattr_from;
+	my $tmeta = $self->tradition->meta;
+	my $cmeta = $self->meta;
+	map { $gattr_from{$_->name} = 'Tradition' } $tmeta->get_all_attributes;
+	map { $gattr_from{$_->name} = 'Collation' } $cmeta->get_all_attributes;
+	foreach my $attr ( ( $tmeta->get_all_attributes, $cmeta->get_all_attributes ) ) {
+		next if $attr->name =~ /^_/;
+		next if $skipsave{$attr->name};
+		next unless $save_types{$attr->type_constraint->name};
+		$graph_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
+	}
+	
+    foreach my $datum ( sort keys %graph_attributes ) {
     	$graph_data_keys{$datum} = 'dg'.$gdi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $datum );
-        $key->setAttribute( 'attr.type', $datum eq 'linear' ? 'boolean' : 'string' );
+        $key->setAttribute( 'attr.type', $graph_attributes{$datum} );
         $key->setAttribute( 'for', 'graph' );
         $key->setAttribute( 'id', $graph_data_keys{$datum} );    	
     }
 
-    # Add the data keys for nodes
+    # Add the data keys for reading nodes
+    my %reading_attributes;
+    my $rmeta = Text::Tradition::Collation::Reading->meta;
+    foreach my $attr( $rmeta->get_all_attributes ) {
+		next if $attr->name =~ /^_/;
+		next if $skipsave{$attr->name};
+		next unless $save_types{$attr->type_constraint->name};
+		$reading_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
+	}
     my %node_data_keys;
     my $ndi = 0;
-    my %node_data = ( 
-    	id => 'string',
-    	text => 'string',
-    	rank => 'string',
-    	is_start => 'boolean',
-    	is_end => 'boolean',
-    	is_lacuna => 'boolean',
-    	is_common => 'boolean',
-    	join_prior => 'boolean',
-    	join_next => 'boolean',
-    	);
-    foreach my $datum ( keys %node_data ) {
+    foreach my $datum ( sort keys %reading_attributes ) {
         $node_data_keys{$datum} = 'dn'.$ndi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $datum );
-        $key->setAttribute( 'attr.type', $node_data{$datum} );
+        $key->setAttribute( 'attr.type', $reading_attributes{$datum} );
         $key->setAttribute( 'for', 'node' );
         $key->setAttribute( 'id', $node_data_keys{$datum} );
     }
 
-    # Add the data keys for edges, i.e. witnesses
+    # Add the data keys for edges, that is, paths and relationships. Path
+    # data does not come from a Moose class so is here manually.
     my $edi = 0;
     my %edge_data_keys;
-    my %edge_data = (
-    	class => 'string',				# Class, deprecated soon
+    my %edge_attributes = (
     	witness => 'string',			# ID/label for a path
-    	relationship => 'string',		# ID/label for a relationship
     	extra => 'boolean',				# Path key
-    	scope => 'string',				# Relationship key
-    	annotation => 'string',			# Relationship key
-    	non_correctable => 'boolean',	# Relationship key
-    	non_independent => 'boolean',	# Relationship key
     	);
-    foreach my $datum ( keys %edge_data ) {
+    my @path_attributes = keys %edge_attributes; # track our manual additions
+    my $pmeta = Text::Tradition::Collation::Relationship->meta;
+    foreach my $attr( $pmeta->get_all_attributes ) {
+		next if $attr->name =~ /^_/;
+		next if $skipsave{$attr->name};
+		next unless $save_types{$attr->type_constraint->name};
+		$edge_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
+	}
+    foreach my $datum ( sort keys %edge_attributes ) {
         $edge_data_keys{$datum} = 'de'.$edi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
         $key->setAttribute( 'attr.name', $datum );
-        $key->setAttribute( 'attr.type', $edge_data{$datum} );
+        $key->setAttribute( 'attr.type', $edge_attributes{$datum} );
         $key->setAttribute( 'for', 'edge' );
         $key->setAttribute( 'id', $edge_data_keys{$datum} );
     }
@@ -934,8 +963,15 @@ sub as_graphml {
     $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
     	    
     # Collation attribute data
-    foreach my $datum ( @graph_attributes ) {
-    	my $value = $datum eq 'version' ? '3.0' : $self->$datum;
+    foreach my $datum ( keys %graph_attributes ) {
+    	my $value;
+    	if( $datum eq 'version' ) {
+    		$value = '3.1';
+    	} elsif( $gattr_from{$datum} eq 'Tradition' ) {
+    		$value = $self->tradition->$datum;
+    	} else {
+    		$value = $self->$datum;
+    	}
 		_add_graphml_data( $sgraph, $graph_data_keys{$datum}, $value );
 	}
 
@@ -948,7 +984,7 @@ sub as_graphml {
         my $node_xmlid = 'n' . $node_ctr++;
         $node_hash{ $n->id } = $node_xmlid;
         $node_el->setAttribute( 'id', $node_xmlid );
-        foreach my $d ( keys %node_data ) {
+        foreach my $d ( keys %reading_attributes ) {
         	my $nval = $n->$d;
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
@@ -980,11 +1016,11 @@ sub as_graphml {
 				_add_graphml_data( $edge_el, $edge_data_keys{'extra'}, $aclabel );
 			}
 			_add_graphml_data( $edge_el, $edge_data_keys{'witness'}, $base );
-			_add_graphml_data( $edge_el, $edge_data_keys{'class'}, 'path' );
 		}
 	}
 	
 	# Add the relationship graph to the XML
+	map { delete $edge_data_keys{$_} } @path_attributes;
 	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
 		$node_data_keys{'id'}, \%edge_data_keys );
 

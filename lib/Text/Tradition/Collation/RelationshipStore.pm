@@ -500,13 +500,11 @@ sub _as_graphml {
 		$edge_el->setAttribute( 'id', 'e'.$edge_ctr++ );
 
 		my $rel_obj = $self->get_relationship( @$e );
-		_add_graphml_data( $edge_el, $edge_keys->{'relationship'}, $rel_obj->type );
-		_add_graphml_data( $edge_el, $edge_keys->{'scope'}, $rel_obj->scope );
-		_add_graphml_data( $edge_el, $edge_keys->{'annotation'}, $rel_obj->annotation );
-		_add_graphml_data( $edge_el, $edge_keys->{'non_correctable'}, 
-			$rel_obj->non_correctable ) if $rel_obj->noncorr_set;
-		_add_graphml_data( $edge_el, $edge_keys->{'non_independent'}, 
-			$rel_obj->non_independent ) if $rel_obj->nonind_set;
+		foreach my $key ( keys %$edge_keys ) {
+			my $value = $rel_obj->$key;
+			_add_graphml_data( $edge_el, $edge_keys->{$key}, $value ) 
+				if defined $value;
+		}
 	}
 }
 

@@ -106,25 +106,39 @@ my $t = Text::Tradition->new(
     'file'  => $tradition,
     );
 
-is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
+is( ref( $t ), 'Text::Tradition', "Parsed GraphML version 2" );
 if( $t ) {
     is( scalar $t->collation->readings, 319, "Collation has all readings" );
     is( scalar $t->collation->paths, 376, "Collation has all paths" );
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 
+# TODO add a relationship, write graphml, reparse it, check that the rel
+# is still there
+$t->language('Greek');
+$t->collation->add_relationship( 'w12', 'w13', 
+	{ 'type' => 'grammatical', 'scope' => 'global', 
+	  'annotation' => 'This is some note' } );
+ok( $t->collation->get_relationship( 'w12', 'w13' ), "Relationship set" );
+my $graphml_str = $t->collation->as_graphml;
+
+my $newt = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml_str );
+is( ref( $newt ), 'Text::Tradition', "Parsed current GraphML version" );
+if( $newt ) {
+    is( scalar $newt->collation->readings, 319, "Collation has all readings" );
+    is( scalar $newt->collation->paths, 376, "Collation has all paths" );
+    is( scalar $newt->witnesses, 13, "Collation has all witnesses" );
+    is( scalar $newt->collation->relationships, 1, "Collation has added relationship" );
+    is( $newt->language, 'Greek', "Tradition has correct language setting" );
+    my $rel = $newt->collation->get_relationship( 'w12', 'w13' );
+    ok( $rel, "Found set relationship" );
+    is( $rel->annotation, 'This is some note', "Relationship has its properties" );
+}
+
+
 =end testing
 
 =cut
-
-my( $IDKEY, $TOKENKEY, $TRANSPOS_KEY, $RANK_KEY,
-	$START_KEY, $END_KEY, $LACUNA_KEY, $COMMON_KEY,
-	$SOURCE_KEY, $TARGET_KEY, $WITNESS_KEY, $EXTRA_KEY, $RELATIONSHIP_KEY,
-	$SCOPE_KEY, $ANNOTATION_KEY, $CORRECT_KEY, $INDEP_KEY )
-    = qw/ id text identical rank 
-    	  is_start is_end is_lacuna is_common
-    	  source target witness extra relationship
-    	  scope annotation non_correctable non_independent /;
 
 sub parse {
     my( $tradition, $opts ) = @_;
@@ -139,10 +153,14 @@ sub parse {
     # print STDERR "Setting graph globals\n";
     $tradition->name( $graph_data->{'name'} );
     my $use_version;
+    my $tmeta = $tradition->meta;
+    my $cmeta = $collation->meta;
     foreach my $gkey ( keys %{$graph_data->{'global'}} ) {
 		my $val = $graph_data->{'global'}->{$gkey};
 		if( $gkey eq 'version' ) {
 			$use_version = $val;
+		} elsif( $tmeta->has_attribute( $gkey ) ) {
+			$tradition->$gkey( $val );
 		} else {
 			$collation->$gkey( $val );
 		}
@@ -150,51 +168,34 @@ sub parse {
 		
     # Add the nodes to the graph. 
 
-    # print STDERR "Adding graph nodes\n";
+    # print STDERR "Adding collation readings\n";
     foreach my $n ( @{$graph_data->{'nodes'}} ) {    	
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
-    	next if( defined $n->{$START_KEY} );
-    	if( defined $n->{$END_KEY} ) {
-    		$collation->end->rank( $n->{$RANK_KEY} );
+    	next if( defined $n->{'is_start'} );
+    	if( defined $n->{'is_end'} ) {
+    		$collation->end->rank( $n->{'rank'} );
     		next;
     	}
-    	
-    	# First extract the data that we can use without reference to
-    	# anything else.
-        
-        # Create the node.  
-        my $reading_options = { 
-        	'id' => $n->{$IDKEY},
-        	'is_lacuna' => $n->{$LACUNA_KEY},
-        	'is_common' => $n->{$COMMON_KEY},
-        	};
-        my $rank = $n->{$RANK_KEY};
-		$reading_options->{'rank'} = $rank if $rank;
-		my $text = $n->{$TOKENKEY};
-		$reading_options->{'text'} = $text if $text;
-
-		my $gnode = $collation->add_reading( $reading_options );
+		my $gnode = $collation->add_reading( $n );
     }
         
     # Now add the edges.
-    # print STDERR "Adding graph edges\n";
+    # print STDERR "Adding collation path edges\n";
     foreach my $e ( @{$graph_data->{'edges'}} ) {
-        my $from = $e->{$SOURCE_KEY};
-        my $to = $e->{$TARGET_KEY};
+        my $from = $collation->reading( $e->{'source'}->{'id'} );
+        my $to = $collation->reading( $e->{'target'}->{'id'} );
 
-		# We need the witness, and whether it is an 'extra' reading path.
-		my $wit = $e->{$WITNESS_KEY};
-		warn "No witness label on path edge!" unless $wit;
-		my $extra = $e->{$EXTRA_KEY};
-		my $label = $wit . ( $extra ? $collation->ac_label : '' );
-		$collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $label );
+		warn "No witness label on path edge!" unless $e->{'witness'};
+		my $label = $e->{'witness'} . ( $e->{'extra'} ? $collation->ac_label : '' );
+		$collation->add_path( $from, $to, $label );
+		
 		# Add the witness if we don't have it already.
-		unless( $witnesses{$wit} ) {
-			$tradition->add_witness( sigil => $wit );
-			$witnesses{$wit} = 1;
+		unless( $witnesses{$e->{'witness'}} ) {
+			$tradition->add_witness( sigil => $e->{'witness'} );
+			$witnesses{$e->{'witness'}} = 1;
 		}
-		$tradition->witness( $wit )->is_layered( 1 ) if $extra;
+		$tradition->witness( $e->{'witness'} )->is_layered( 1 ) if $e->{'extra'};
     }
     
     ## Done with the main graph, now look at the relationships.
@@ -202,35 +203,31 @@ sub parse {
 	# add the relationships themselves.
 	# TODO check that scoping does trt
 	foreach my $e ( @{$rel_data->{'edges'}} ) {
-		my $from = $e->{$SOURCE_KEY};
-		my $to = $e->{$TARGET_KEY};
-		my $relationship_opts = {
-			'type' => $e->{$RELATIONSHIP_KEY},
-			'scope' => $e->{$SCOPE_KEY},
-			};
-		$relationship_opts->{'annotation'} = $e->{$ANNOTATION_KEY}
-			if exists $e->{$ANNOTATION_KEY};
-		$relationship_opts->{'non_correctable'} = $e->{$CORRECT_KEY}
-			if exists $e->{$CORRECT_KEY};
-		$relationship_opts->{'non_independent'} = $e->{$INDEP_KEY}
-			if exists $e->{$INDEP_KEY};
-		# TODO unless relationship is scoped and that scoped relationship exists...
+		my $from = $collation->reading( $e->{'source'}->{'id'} );
+		my $to = $collation->reading( $e->{'target'}->{'id'} );
+		delete $e->{'source'};
+		delete $e->{'target'};
+		# The remaining keys are relationship attributes.
+		# Backward compatibility...
+		if( $use_version eq '2.0' || $use_version eq '3.0' ) {
+			delete $e->{'class'};
+			$e->{'type'} = delete $e->{'relationship'} if exists $e->{'relationship'};
+		}
+		# Add the specified relationship unless we already have done.
 		my $rel_exists;
-		if( $relationship_opts->{'scope'} ne 'local' ) {
-			my $relobj = $collation->get_relationship( $from->{$IDKEY}, $to->{$IDKEY} );
-			if( $relobj && $relobj->{'scope'} eq $relationship_opts->{'scope'}
-				&& $relobj->{'type'} eq $relationship_opts->{'type'} ) {
+		if( $e->{'scope'} ne 'local' ) {
+			my $relobj = $collation->get_relationship( $from, $to );
+			if( $relobj && $relobj->scope eq $e->{'scope'}
+				&& $relobj->type eq $e->{'type'} ) {
 				$rel_exists = 1;
 			}
 		}
-		$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY}, 
-			$relationship_opts ) unless $rel_exists;
+		$collation->add_relationship( $from, $to, $e ) unless $rel_exists;
 	}
 	
     # Save the text for each witness so that we can ensure consistency
     # later on
-	$tradition->collation->text_from_paths();	
-
+	$collation->text_from_paths();	
 }
 
 1;
