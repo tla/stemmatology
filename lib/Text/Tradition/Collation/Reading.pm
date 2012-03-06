@@ -134,17 +134,16 @@ has 'lemma' => (
 	);
 
 has 'morphology' => (
-	is => 'rw',
-	isa => 'Str',
-	predicate => 'has_morphology',
+	traits => ['Array'],
+	isa => 'ArrayRef[HashRef[ArrayRef[Text::Tradition::Collation::Reading::Morphology]]]',
+	handles => {
+		lexemes => 'elements',
+		has_morphology => 'count',
+		_clear_morph => 'clear',
+		_add_morph => 'push',
+		},
 	);
 	
-has 'morph_possibilities' => (
-	is => 'ro',
-	isa => 'HashRef[Str]',
-	default => sub { {} },
-	);
-
 ## For prefix/suffix readings
 
 has 'join_prior' => (
@@ -267,10 +266,171 @@ sub _stringify {
 	return $self->id;
 }
 
+=head1 MORPHOLOGY
+
+A few methods to try to tack on morphological information.
+
+=head2 is_disambiguated
+
+Returns true if there is only one tag per lexeme in this reading.
+
+=cut
+
+sub use_lexemes {
+	my( $self, @lexemes ) = @_;
+	# The lexemes need to be the same as $self->text.
+	my $cmpstr = $self->has_normal_form ? lc( $self->normal_form ) : lc( $self->text );
+	$cmpstr =~ s/[\s-]+//g;
+	my $lexstr = lc( join( '', @lexemes ) );
+	$lexstr =~ s/[\s-]+//g;
+	unless( $lexstr eq $cmpstr ) {
+		warn "Cannot split " . $self->text . " into " . join( '.', @lexemes );
+		return;
+	}
+	$self->_clear_morph;
+	map { $self->_add_morph( { $_ => [] } ) } @lexemes;
+}
+
+sub add_morphological_tag {
+	my( $self, $lexeme, $opts ) = @_;
+	my $struct;
+	unless( $opts ) {
+		# No lexeme was passed; use reading text.
+		$opts = $lexeme;
+		$lexeme = $self->text;
+		$self->use_lexemes( $lexeme );
+	}
+	# Get the correct container
+	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
+	unless( $struct ) {
+		warn "No lexeme $lexeme exists in this reading";
+		return;
+	}
+	# Now make the morph object and add it to this lexeme.
+	my $morph_obj = Text::Tradition::Collation::Reading::Morphology->new( $opts );
+	# TODO Check for existence
+	push( @{$struct->{$lexeme}}, $morph_obj );
+}
+
+sub disambiguate {
+	my( $self, $lexeme, $index ) = @_;
+	my $struct;
+	unless( $index ) {
+		# No lexeme was passed; use reading text.
+		$index = $lexeme;
+		$lexeme = $self->text;
+	}
+	# Get the correct container
+	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
+	unless( $struct ) {
+		warn "No lexeme $lexeme exists in this reading";
+		return;
+	}
+	# Keep the object at the selected index
+	my $selected = $struct->{$lexeme}->[$index];
+	$struct->{$lexeme} = [ $selected ];
+}
+
+sub is_disambiguated {
+	my $self = shift;
+	return undef unless $self->has_morphology;
+	foreach my $lexeme ( $self->lexemes ) {
+		my( $key ) = keys %$lexeme; # will be only one
+		return undef unless @{$lexeme->{$key}} == 1;
+	}
+	return 1;
+}
+
+## Utility methods
+
 sub TO_JSON {
 	my $self = shift;
 	return $self->text;
 }
+
+## TODO will need a throw() here
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+
+###################################################
+### Morphology objects, to be attached to readings
+###################################################
+
+package Text::Tradition::Collation::Reading::Morphology;
+
+use Moose;
+
+has 'lemma' => (
+	is => 'ro',
+	isa => 'Str',
+	required => 1,
+	);
+	
+has 'code' => (
+	is => 'ro',
+	isa => 'Str',
+	required => 1,
+	);
+	
+has 'language' => (
+	is => 'ro',
+	isa => 'Str',
+	required => 1,
+	);
+	
+## Transmute codes into comparison arrays for our various languages.
+
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $class = shift;
+	my $args;
+	if( @_ == 1 && ref( $_[0] ) ) {
+		$args = shift;
+	} else {
+		$args = { @_ };
+	}
+	if( exists( $args->{'serial'} ) ) {
+		my( $lemma, $code ) = split( /!!/, delete $args->{'serial'} );
+		$args->{'lemma'} = $lemma;
+		$args->{'code'} = $code;
+	}
+	$class->$orig( $args );
+};
+
+sub serialization {
+	my $self = shift;
+	return join( '!!', $self->lemma, $self->code );
+};
+
+sub comparison_array {
+	my $self = shift;
+	if( $self->language eq 'French' ) {
+		my @array;
+		my @bits = split( /\+/, $self->code );
+		# First push the non k/v parts.
+		while( @bits && $bits[0] !~ /=/ ) {
+			push( @array, shift @bits );
+		}
+		while( @array < 2 ) {
+			push( @array, undef );
+		}
+		# Now push the k/v parts in a known order.
+		my @fields = qw/ Pers Nb Temps Genre Spec Fonc /;
+		my %props;
+		map { my( $k, $v ) = split( /=/, $_ ); $props{$k} = $v; } @bits;
+		foreach my $k ( @fields ) {
+			push( @array, $props{$k} );
+		}
+		# Give the answer.
+		return @array;
+	} elsif( $self->language eq 'English' ) {
+		# Do something as yet undetermined
+	} else {
+		# Latin or Greek or Armenian, just split the chars
+		return split( '', $self->code );
+	}
+};
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
