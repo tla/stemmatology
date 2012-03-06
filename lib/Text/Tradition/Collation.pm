@@ -792,14 +792,24 @@ sub _path_display_label {
 	}
 }
 
-=head2 witnesses_at_rank
+=head2 readings_at_rank( $rank )
 
-Returns a list of witnesses that are not lacunose, for a given rank.
+Returns a list of readings at a given rank, taken from the alignment table.
 
 =cut
 
-sub witnesses_at_rank {
+sub readings_at_rank {
 	my( $self, $rank ) = @_;
+	my $table = $self->alignment_table;
+	# Table rank is real rank - 1.
+	my @elements = map { $_->{'tokens'}->[$rank-1] } @{$table->{'alignment'}};
+	my %readings;
+	foreach my $e ( @elements ) {
+		next unless ref( $e ) eq 'HASH';
+		next unless exists $e->{'t'};
+		$readings{$e->{'t'}->id} = $e->{'t'};
+	}
+	return values %readings;
 }		
 
 =head2 as_graphml
@@ -1530,18 +1540,23 @@ with the same text at the same rank, and merges any that are found.
 sub flatten_ranks {
     my $self = shift;
     my %unique_rank_rdg;
+    my $changed;
     foreach my $rdg ( $self->readings ) {
         next unless $rdg->has_rank;
         my $key = $rdg->rank . "||" . $rdg->text;
         if( exists $unique_rank_rdg{$key} ) {
             # Combine!
         	# print STDERR "Combining readings at same rank: $key\n";
+        	$changed = 1;
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
             # TODO see if this now makes a common point.
         } else {
             $unique_rank_rdg{$key} = $rdg;
         }
     }
+    # If we merged readings, the ranks are still fine but the alignment
+    # table is wrong. Wipe it.
+    $self->wipe_table() if $changed;
 }
 	
 

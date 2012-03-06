@@ -202,7 +202,8 @@ sub parse {
 	# Nodes are added via the call to add_reading above.  We only need
 	# add the relationships themselves.
 	# TODO check that scoping does trt
-	foreach my $e ( @{$rel_data->{'edges'}} ) {
+	$rel_data->{'edges'} ||= []; # so that the next line doesn't break on no rels
+	foreach my $e ( sort { _layersort_rel( $a, $b ) } @{$rel_data->{'edges'}} ) {
 		my $from = $collation->reading( $e->{'source'}->{'id'} );
 		my $to = $collation->reading( $e->{'target'}->{'id'} );
 		delete $e->{'source'};
@@ -228,6 +229,21 @@ sub parse {
     # Save the text for each witness so that we can ensure consistency
     # later on
 	$collation->text_from_paths();	
+}
+
+## Return the relationship that comes first in priority.
+my %LAYERS = (
+	'collated' => 1,
+	'orthographic' => 2,
+	'spelling' => 3,
+	);
+
+sub _layersort_rel {
+	my( $a, $b ) = @_;
+	my $key = exists $a->{'type'} ? 'type' : 'relationship';
+	my $at = $LAYERS{$a->{$key}} || 99;
+	my $bt = $LAYERS{$b->{$key}} || 99;
+	return $at <=> $bt;
 }
 
 1;

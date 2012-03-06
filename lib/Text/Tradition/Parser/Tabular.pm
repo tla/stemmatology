@@ -270,6 +270,24 @@ sub _make_nodes {
         $unique{$w} = $r;
         $ctr++;
     }
+    # Collate this sequence of readings via a single 'collation' relationship.
+    my @rankrdgs = values %unique;
+    my $collation_rel;
+    while( @rankrdgs ) {
+    	my $r = shift @rankrdgs;
+    	next if $r->is_meta;
+    	foreach my $nr ( @rankrdgs ) {
+    		if( $collation_rel ) {
+    			$collation->add_relationship( $r, $nr, $collation_rel );
+    		} else {
+    			$collation->add_relationship( $r, $nr, 
+    				{ 'type' => 'collated', 
+    				  'annotation' => "Parsed together for rank $index" } );
+    			$collation_rel = $collation->get_relationship( $r, $nr );
+    		}
+    	}
+    }
+    
     return \%unique;
 }
 

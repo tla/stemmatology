@@ -216,6 +216,7 @@ sub add_relationship {
 	} else {
 		# Check the options
 		$options->{'scope'} = 'local' unless $options->{'scope'};
+		$options->{'scope'} = 'local' if $options->{'type'} eq 'collated';
 		
 		my( $is_valid, $reason ) = 
 			$self->relationship_valid( $source, $target, $options->{'type'} );
@@ -243,28 +244,11 @@ sub add_relationship {
 
 
 	# Find all the pairs for which we need to set the relationship.
-	my @vectors = ( [ $source, $target ] );	
+	my @vectors = [ $source, $target ];
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
-    	my $c = $self->collation;
-    	# Set the same relationship everywhere we can, throughout the graph.
-    	my @identical_readings = grep { $_->text eq $relationship->reading_a }
-    		$c->readings;
-    	foreach my $ir ( @identical_readings ) {
-    		next if $ir->id eq $source;
-    		# Check to see if there is a target reading with the same text at
-    		# the same rank.
-    		my @itarget = grep 
-    			{ $_->rank == $ir->rank && $_->text eq $relationship->reading_b }
-    			$c->readings;
-    		if( @itarget ) {
-    			# We found a hit.
-    			warn "More than one reading with text " . $target_rdg->text
-    				. " at rank " . $ir->rank . "!" if @itarget > 1;
-    			push( @vectors, [ $ir->id, $itarget[0]->id ] );
-    		}
-    	}	
-    }
-    
+    	push( @vectors, $self->_find_applicable( $relationship ) );
+    } 
+        
     # Now set the relationship(s).
     my @pairs_set;
     foreach my $v ( @vectors ) {
@@ -282,6 +266,47 @@ sub add_relationship {
     }
     
     return @pairs_set;
+}
+
+sub _find_applicable {
+	my( $self, $rel ) = @_;
+	my $c = $self->collation;
+	# TODO Someday we might use a case sensitive language.
+	my $lang = $c->tradition->language;
+	my @vectors;
+	my @identical_readings;
+	if( $rel->type eq 'orthographic' ) {
+		@identical_readings = grep { $_->text eq $rel->reading_a } 
+			$c->readings;
+	} else {
+		@identical_readings = grep { lc( $_->text ) eq lc( $rel->reading_a ) }
+			$c->readings;
+	}
+	foreach my $ir ( @identical_readings ) {
+		my @itarget;
+		if( $rel->type eq 'orthographic' ) {
+			@itarget = grep { $_->rank == $ir->rank 
+							  && $_->text eq $rel->reading_b } $c->readings;
+		} else {
+			@itarget = grep { $_->rank == $ir->rank 
+							  && lc( $_->text ) eq lc( $rel->reading_b ) } $c->readings;
+		}
+		if( @itarget ) {
+			# Warn if there is more than one hit with no orth link between them.
+			my $itmain = shift @itarget;
+			if( @itarget ) {
+				my %all_targets;
+				map { $all_targets{$_} = 1 } @itarget;
+				map { delete $all_targets{$_} } 
+					$self->related_readings( $itmain, 
+						sub { $_[0]->type eq 'orthographic' } );
+    			warn "More than one unrelated reading with text " . $itmain->text
+    				. " at rank " . $ir->rank . "!" if keys %all_targets;
+			}
+			push( @vectors, [ $ir->id, $itmain->id ] );
+		}
+	}
+	return @vectors;
 }
 
 =head2 del_relationship( $source, $target )
