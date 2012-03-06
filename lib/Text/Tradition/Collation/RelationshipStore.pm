@@ -167,13 +167,16 @@ non-locally.  Key on whichever reading occurs first alphabetically.
 
 sub add_scoped_relationship {
 	my( $self, $rel ) = @_;
-	my $r = $self->scoped_relationship( $rel->reading_a, $rel->reading_b );
+	my $rdga = $rel->type eq 'orthographic' ? $rel->reading_a : lc( $rel->reading_a );
+	my $rdgb = $rel->type eq 'orthographic' ? $rel->reading_b : lc( $rel->reading_b );	
+	my $r = $self->scoped_relationship( $rdga, $rdgb );
 	if( $r ) {
 		warn sprintf( "Scoped relationship of type %s already exists between %s and %s",
-			$r->type, $rel->reading_a, $rel->reading_b );
+			$r->type, $rdga, $rdgb );
 		return;
 	}
-	$self->scopedrels->{$rel->reading_a}->{$rel->reading_b} = $rel;
+	my( $first, $second ) = sort ( $rdga, $rdgb );
+	$self->scopedrels->{$first}->{$second} = $rel;
 }
 
 =head2 scoped_relationship( $reading_a, $reading_b )
@@ -231,8 +234,12 @@ sub add_relationship {
 		$options->{'orig_b'} = $target;
     	if( $options->{'scope'} ne 'local' ) {
 			# Is there a relationship with this a & b already?
-			my $otherrel = $self->scoped_relationship( $options->{reading_a}, 
-				$options->{reading_b} );
+			# Case-insensitive for non-orthographics.
+			my $rdga = $options->{'type'} eq 'orthographic' 
+				? $options->{'reading_a'} : lc( $options->{'reading_a'} );
+			my $rdgb = $options->{'type'} eq 'orthographic' 
+				? $options->{'reading_b'} : lc( $options->{'reading_b'} );
+			my $otherrel = $self->scoped_relationship( $rdga, $rdgb );
 			if( $otherrel && $otherrel->type eq $options->{type}
 				&& $otherrel->scope eq $options->{scope} ) {
 				warn "Applying existing scoped relationship";
@@ -247,7 +254,8 @@ sub add_relationship {
 	my @vectors = [ $source, $target ];
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
     	push( @vectors, $self->_find_applicable( $relationship ) );
-    } 
+    }
+    $DB::single = 1 if grep { $_->[0] eq 'w494' || $_->[1] eq 'w494' } @vectors;
         
     # Now set the relationship(s).
     my @pairs_set;
@@ -481,12 +489,9 @@ sub merge_readings {
 		# If kept changes its text, drop the relationship.
 		next if $combined;
 			
-		# If kept / rel already has a relationship, warn and keep the old
+		# If kept / rel already has a relationship, just keep the old
 		my $rel = $self->get_relationship( @vector );
-		if( $rel ) {
-			warn sprintf( "Readings %s and %s have existing relationship; dropping link with %s", @vector, $deleted );
-			next;
-		}
+		next if $rel;
 		
 		# Otherwise, adopt the relationship that would be deleted.
 		$rel = $self->get_relationship( @$edge );
