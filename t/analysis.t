@@ -17,6 +17,9 @@ my $tradition = Text::Tradition->new(
 	'file' => 't/data/besoin.xml' );
 $tradition->add_stemma( 'dotfile' => 't/data/besoin.dot' );
 
+# Hack to avoid warning
+$tradition->collation->add_relationship( '493,2', '493,3', {'type'=>'orthographic'} );
+
 # Run the analysis of the tradition
 my $results = run_analysis( $tradition );
 
@@ -118,7 +121,8 @@ foreach my $row ( @{$results->{'variants'}} ) {
 		unless( exists $expected{$row->{'id'}} ) {
 			$expected{$row->{'id'}} = 1;
 		}
-		is( $row->{'genealogical'}, $expected{$row->{'id'}}, 
+		my $gen_bool = $row->{'genealogical'} ? 1 : '';
+		is( $gen_bool, $expected{$row->{'id'}}, 
 			"Got expected genealogical result for rank " . $row->{'id'} );
 		# If the row is genealogical, there should be one reading with no parents,
 		# every reading should independently occur exactly once, and the total
