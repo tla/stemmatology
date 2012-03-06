@@ -118,6 +118,32 @@ has 'rank' => (
     predicate => 'has_rank',
     clearer => 'clear_rank',
     );
+    
+## For morphological analysis
+
+has 'normal_form' => (
+	is => 'rw',
+	isa => 'Str',
+	predicate => 'has_normal_form',
+	);
+
+has 'lemma' => (
+	is => 'rw',
+	isa => 'Str',
+	predicate => 'has_lemma',
+	);
+
+has 'morphology' => (
+	is => 'rw',
+	isa => 'Str',
+	predicate => 'has_morphology',
+	);
+	
+has 'morph_possibilities' => (
+	is => 'ro',
+	isa => 'HashRef[Str]',
+	default => sub { {} },
+	);
 
 ## For prefix/suffix readings
 
