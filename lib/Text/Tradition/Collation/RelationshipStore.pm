@@ -48,12 +48,8 @@ is( scalar @v2, 2, "Added a global relationship with two instances" );
 is( scalar @v1, 1, "Deleted first relationship" );
 @v2 = $c->del_relationship( 'n8', 'n13' );
 is( scalar @v2, 2, "Deleted second global relationship" );
-try {
-	my @v3 = $c->del_relationship( 'n1', 'n2' );
-	ok( 0, "Should have errored on non-existent relationship" );
-} catch( Text::Tradition::Error $e ) {
-	like( $e->message, qr/No relationship defined/, "Attempt to delete non-existent relationship errored" );
-}
+my @v3 = $c->del_relationship( 'n1', 'n2' );
+is( scalar @v3, 0, "Nothing deleted on non-existent relationship" );
 
 =end testing
 
@@ -327,7 +323,7 @@ non-local, removes the relationship everywhere in the graph.
 sub del_relationship {
 	my( $self, $source, $target ) = @_;
 	my $rel = $self->get_relationship( $source, $target );
-	throw( "No relationship defined between $source and $target" ) unless $rel;
+	return () unless $rel; # Nothing to delete; return an empty set.
 	my @vectors = ( [ $source, $target ] );
 	$self->_remove_relationship( $source, $target );
 	if( $rel->nonlocal ) {
