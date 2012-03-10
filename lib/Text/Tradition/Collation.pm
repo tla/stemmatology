@@ -1627,14 +1627,22 @@ original texts.
 sub text_from_paths {
 	my $self = shift;
     foreach my $wit ( $self->tradition->witnesses ) {
-    	my @text = split( /\s+/, 
-    		$self->reading_sequence( $self->start, $self->end, $wit->sigil ) );
+    	my @readings = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
+    	my @text;
+    	foreach my $r ( @readings ) {
+    		next if $r->is_meta;
+    		push( @text, $r->text );
+    	}
     	$wit->text( \@text );
     	if( $wit->is_layered ) {
-			my @uctext = split( /\s+/, 
-				$self->reading_sequence( $self->start, $self->end, 
-					$wit->sigil.$self->ac_label ) );
-			$wit->text( \@uctext );
+			my @ucrdgs = $self->reading_sequence( $self->start, $self->end, 
+												  $wit->sigil.$self->ac_label );
+			my @uctext;
+			foreach my $r ( @ucrdgs ) {
+				next if $r->is_meta;
+				push( @uctext, $r->text );
+			}
+			$wit->layertext( \@uctext );
     	}
     }    
 }
