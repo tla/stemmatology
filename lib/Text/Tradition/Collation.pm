@@ -594,6 +594,7 @@ sub as_dot {
     my $color_common = $opts->{'color_common'} if $opts;
     my $STRAIGHTENHACK = !$startrank && !$endrank && $self->end->rank 
        && $self->end->rank > 100;
+    $STRAIGHTENHACK = 1 if $opts->{'straight'}; # even for subgraphs or small graphs
 
     # Check the arguments
     if( $startrank ) {
@@ -638,7 +639,8 @@ sub as_dot {
 	}
 	if( $STRAIGHTENHACK ) {
 		## HACK part 1
-		$dot .= "\tsubgraph { rank=same \"#START#\" \"#SILENT#\" }\n";  
+		my $startlabel = $startrank ? 'SUBSTART' : 'START';
+		$dot .= "\tsubgraph { rank=same \"#$startlabel#\" \"#SILENT#\" }\n";  
 		$dot .= "\t\"#SILENT#\" [ shape=diamond,color=white,penwidth=0,label=\"\" ];"
 	}
 	my %used;  # Keep track of the readings that actually appear in the graph
@@ -719,7 +721,8 @@ sub as_dot {
 	}
 	# HACK part 2
 	if( $STRAIGHTENHACK ) {
-		$dot .= "\t\"#END#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
+		my $endlabel = $endrank ? 'SUBEND' : 'END';
+		$dot .= "\t\"#$endlabel#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
 	}       
 
     $dot .= "}\n";
