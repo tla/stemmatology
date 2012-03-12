@@ -107,8 +107,7 @@ foreach my $row ( @{$data->{'variants'}} ) {
 	unless( exists $expected_genealogical{$row->{'id'}} ) {
 		$expected_genealogical{$row->{'id'}} = 1;
 	}
-	my $gen_bool = $row->{'genealogical'} ? 1 : 0;
-	is( $gen_bool, $expected_genealogical{$row->{'id'}}, 
+	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
 }
 is( $data->{'variant_count'}, 58, "Got right total variant number" );
@@ -263,7 +262,7 @@ sub solve_variants {
 	my $groupings = [];
 	foreach my $ghash ( @groups ) {
 		my @grouping;
-		foreach my $k ( sort keys %$ghash ) {
+		foreach my $k ( keys %$ghash ) {
 			push( @grouping, $ghash->{$k} );
 		}
 		push( @$groupings, \@grouping );
@@ -279,8 +278,10 @@ sub solve_variants {
 						  'Content' => $json );
 						  
 	my $answer;
+	my $used_idp;
 	if( $resp->is_success ) {
 		$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
+		$used_idp = 1;
 	} else {
 		# Fall back to the old method.
 		warn "IDP solver returned " . $resp->status_line . " / " . $resp->content
@@ -293,7 +294,18 @@ sub solve_variants {
 	my $genealogical = 0;
 	foreach my $idx ( 0 .. $#groups ) {
 		my( $calc_groups, $result ) = @{$answer->[$idx]};
-		$genealogical++ if $result;
+		if( $result ) {
+			$genealogical++;
+			# Prune the calculated groups, in case the IDP solver failed to.
+			if( $used_idp ) {
+				my @pruned_groups;
+				foreach my $cg ( @$calc_groups ) {
+					my @pg = _prune_group( $cg, $stemma );
+					push( @pruned_groups, \@pg );
+				}
+				$calc_groups = \@pruned_groups;
+			}
+		}
 		my $input_group = $groups[$idx];
 		foreach my $k ( sort keys %$input_group ) {
 			my $cg = shift @$calc_groups;
@@ -687,6 +699,24 @@ sub _solve_variant_location {
     	push( @{$variant_row->[0]}, \@realgroup );
     }
     return $variant_row;
+}
+
+sub _prune_group {
+	my( $group, $stemma ) = @_;
+	# Get these into a form prune_subtree will recognize. Make a "contighash"
+	my $hypohash = {};
+	map { $hypohash->{$_} = 1 } @$group;
+	# ...with reference values for hypotheticals.
+	map { $hypohash->{$_} = [] } $stemma->hypotheticals;
+	# Make our subgraph
+	my $subgraph = $stemma->graph->copy;
+	map { $subgraph->delete_vertex( $_ ) unless exists $hypohash->{$_} }
+		$subgraph->vertices;
+	# ...and find the root.
+	my( $root ) = $subgraph->predecessorless_vertices;
+	# Now prune and return the remaining vertices.
+	_prune_subtree( $subgraph, $root, $hypohash );
+	return $subgraph->vertices;
 }
 
 sub _prune_subtree {
