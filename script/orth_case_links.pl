@@ -18,21 +18,29 @@ my $dir = Text::Tradition::Directory->new( $connect_args );
 
 foreach my $text ( $dir->traditionlist ) {
 	my $id = $text->{'id'};
+	next unless $text->{'name'} =~ /Virtutes/;
 	my $scope = $dir->new_scope;
 	my $tradition = $dir->lookup( $id );
 	print STDERR "Processing tradition " . $tradition->name . "\n";
 	my $c = $tradition->collation;
+	$c->flatten_ranks(); # just in case
 	foreach my $rank ( 1 .. $c->end->rank - 1 ) {
 		my @readings = $c->readings_at_rank( $rank );
+		my %merged;
 		while( @readings ) {
 			my $r = pop @readings;
 			next if $r->is_meta;
+			next if $merged{$r->id};
 			my @orthmatch = grep { lc( $r->text ) eq lc( $_->text ) } @readings;
 			foreach my $om ( @orthmatch ) {
-				unless( $c->get_relationship( $r, $om ) ) {
-					print STDERR sprintf( "Adding orthographic link for %s / %s\n", 
-						$r->text, $om->text );
-					$DB::single = 1;
+				if( $r->text eq $om->text ) {
+					print STDERR "Merging identical readings $r and $om (" 
+						. $r->text . ")\n";
+					$merged{$om->id} = 1;
+					$c->merge_readings( $r, $om ); 
+				} elsif ( $c->get_relationship( $r, $om ) ) {
+					print STDERR sprintf( "Adding orthographic link for %s and %s (%s / %s)\n", 
+						$r->id, $om->id, $r->text, $om->text );
 					$c->add_relationship( $r, $om, 
 						{ 'type' => 'orthographic', 'scope' => 'global' } );
 				}
