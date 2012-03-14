@@ -274,12 +274,10 @@ sub as_svg {
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     # HACK: Parse the SVG and change the dimensions.
-    # Convert width from pt to px, and remove height to allow scaling.
+    # Get rid of width and height attributes to allow scaling.
     my $parser = XML::LibXML->new();
     my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
-	my $dval = $svgdoc->documentElement->getAttribute('width');
-	$dval =~ s/pt/px/;
-	$svgdoc->documentElement->setAttribute( 'width', $dval );
+	$svgdoc->documentElement->removeAttribute('width');
 	$svgdoc->documentElement->removeAttribute('height');
     # Return the result
     return decode_utf8( $svgdoc->toString );
