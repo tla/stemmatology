@@ -8,6 +8,7 @@ use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
 use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
+use XML::LibXML;
 use Moose;
 
 =head1 NAME
@@ -264,7 +265,7 @@ sub as_svg {
     my( $self, $opts ) = @_;
     my $dot = $self->as_dot( $opts );
     my @cmd = qw/dot -Tsvg/;
-    my( $svg, $err );
+    my $svg;
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
     # $dotfile->unlink_on_destroy(0);
@@ -272,8 +273,16 @@ sub as_svg {
     print $dotfile $dot;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
-    $svg = decode_utf8( $svg );
-    return $svg;
+    # HACK: Parse the SVG and change the dimensions.
+    # Convert width from pt to px, and remove height to allow scaling.
+    my $parser = XML::LibXML->new();
+    my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
+	my $dval = $svgdoc->documentElement->getAttribute('width');
+	$dval =~ s/pt/px/;
+	$svgdoc->documentElement->setAttribute( 'width', $dval );
+	$svgdoc->documentElement->removeAttribute('height');
+    # Return the result
+    return decode_utf8( $svgdoc->toString );
 }
 
 =head2 witnesses
