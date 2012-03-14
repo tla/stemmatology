@@ -18,9 +18,9 @@ my $tradition = Text::Tradition->new(
     );
 # Set up some relationships
 my $c = $tradition->collation;
-$c->add_relationship( 'n25', 'n26', { 'type' => 'spelling' } );
-$c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
-$c->add_relationship( 'n8', 'n13', { 'type' => 'spelling' } );
+$c->add_relationship( 'n23', 'n24', { 'type' => 'spelling' } );
+$c->add_relationship( 'n9', 'n10', { 'type' => 'spelling' } );
+$c->add_relationship( 'n12', 'n13', { 'type' => 'spelling' } );
 $c->calculate_ranks();
 
 my $stemma = $tradition->add_stemma( dotfile => 't/data/simple.dot' );
