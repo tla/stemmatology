@@ -251,7 +251,6 @@ sub add_relationship {
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
     	push( @vectors, $self->_find_applicable( $relationship ) );
     }
-    $DB::single = 1 if grep { $_->[0] eq 'w494' || $_->[1] eq 'w494' } @vectors;
         
     # Now set the relationship(s).
     my @pairs_set;
@@ -260,10 +259,11 @@ sub add_relationship {
     	if( $rel && $rel ne $relationship ) {
     		if( $rel->nonlocal ) {
     			throw( "Found conflicting relationship at @$v" );
-    		} else {
+    		} elsif( $rel->type ne 'collated' ) {
+    			# Replace a collation relationship; leave any other sort in place.
     			warn "Not overriding local relationship set at @$v";
+				next;
     		}
-    		next;
     	}
     	$self->_set_relationship( $relationship, @$v );
     	push( @pairs_set, $v );
