@@ -41,12 +41,12 @@ my @v1 = $c->add_relationship( 'n21', 'n22', { 'type' => 'meaning' } );
 is( scalar @v1, 1, "Added a single relationship" );
 is( $v1[0]->[0], 'n21', "Got correct node 1" );
 is( $v1[0]->[1], 'n22', "Got correct node 2" );
-my @v2 = $c->add_relationship( 'n9', 'n23', 
+my @v2 = $c->add_relationship( 'n24', 'n23', 
 	{ 'type' => 'spelling', 'scope' => 'global' } );
 is( scalar @v2, 2, "Added a global relationship with two instances" );
 @v1 = $c->del_relationship( 'n22', 'n21' );
 is( scalar @v1, 1, "Deleted first relationship" );
-@v2 = $c->del_relationship( 'n8', 'n13' );
+@v2 = $c->del_relationship( 'n12', 'n13' );
 is( scalar @v2, 2, "Deleted second global relationship" );
 my @v3 = $c->del_relationship( 'n1', 'n2' );
 is( scalar @v3, 0, "Nothing deleted on non-existent relationship" );

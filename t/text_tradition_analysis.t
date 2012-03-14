@@ -55,8 +55,7 @@ foreach my $row ( @{$data->{'variants'}} ) {
 	unless( exists $expected_genealogical{$row->{'id'}} ) {
 		$expected_genealogical{$row->{'id'}} = 1;
 	}
-	my $gen_bool = $row->{'genealogical'} ? 1 : 0;
-	is( $gen_bool, $expected_genealogical{$row->{'id'}}, 
+	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
 }
 is( $data->{'variant_count'}, 58, "Got right total variant number" );

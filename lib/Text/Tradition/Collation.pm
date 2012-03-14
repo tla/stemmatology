@@ -338,15 +338,15 @@ $c->flatten_ranks();
 ok( $c->reading( 'n21p0' ), "New reading exists" );
 is( scalar $c->readings, $rno, "Reading add offset by flatten_ranks" );
 
-# Combine n3 and n4
+# Combine n3 and n4 ( with his )
 $c->merge_readings( 'n3', 'n4', 1 );
 ok( !$c->reading('n4'), "Reading n4 is gone" );
 is( $c->reading('n3')->text, 'with his', "Reading n3 has both words" );
 
-# Collapse n25 and n26
-$c->merge_readings( 'n25', 'n26' );
-ok( !$c->reading('n26'), "Reading n26 is gone" );
-is( $c->reading('n25')->text, 'rood', "Reading n25 has an unchanged word" );
+# Collapse n9 and n10 ( rood / root )
+$c->merge_readings( 'n9', 'n10' );
+ok( !$c->reading('n10'), "Reading n10 is gone" );
+is( $c->reading('n9')->text, 'rood', "Reading n9 has an unchanged word" );
 
 # Combine n21 and n21p0
 my $remaining = $c->reading('n21');
@@ -1407,7 +1407,7 @@ ok( $c->has_cached_table, "Alignment table was cached" );
 is( $c->alignment_table, $table, "Cached table returned upon second call" );
 $c->calculate_ranks;
 is( $c->alignment_table, $table, "Cached table retained with no rank change" );
-$c->add_relationship( 'n9', 'n23', { 'type' => 'spelling' } );
+$c->add_relationship( 'n24', 'n23', { 'type' => 'spelling' } );
 isnt( $c->alignment_table, $table, "Alignment table changed after relationship add" );
 
 =end testing
@@ -1585,7 +1585,7 @@ my @common = $c->calculate_common_readings();
 is( scalar @common, 8, "Found correct number of common readings" );
 my @marked = sort $c->common_readings();
 is( scalar @common, 8, "All common readings got marked as such" );
-my @expected = qw/ n1 n12 n16 n19 n20 n5 n6 n7 /;
+my @expected = qw/ n1 n11 n16 n19 n20 n5 n6 n7 /;
 is_deeply( \@marked, \@expected, "Found correct list of common readings" );
 
 =end testing
@@ -1672,14 +1672,14 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
-is( $c->common_predecessor( 'n9', 'n23' )->id, 
+is( $c->common_predecessor( 'n24', 'n23' )->id, 
     'n20', "Found correct common predecessor" );
-is( $c->common_successor( 'n9', 'n23' )->id, 
+is( $c->common_successor( 'n24', 'n23' )->id, 
     '#END#', "Found correct common successor" );
 
 is( $c->common_predecessor( 'n19', 'n17' )->id, 
     'n16', "Found correct common predecessor for readings on same path" );
-is( $c->common_successor( 'n21', 'n26' )->id, 
+is( $c->common_successor( 'n21', 'n10' )->id, 
     '#END#', "Found correct common successor for readings on same path" );
 
 =end testing

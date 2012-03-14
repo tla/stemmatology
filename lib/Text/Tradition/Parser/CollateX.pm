@@ -56,7 +56,7 @@ my $t = Text::Tradition->new(
     'file'  => $cxfile,
     );
 
-is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
+is( ref( $t ), 'Text::Tradition', "Parsed a CollateX input" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
     is( scalar $t->collation->paths, 32, "Collation has all paths" );
@@ -66,7 +66,7 @@ if( $t ) {
     my $transposed = $t->collation->reading( 'n15' );
     my @related = $transposed->related_readings;
     is( scalar @related, 1, "Reading links to transposed version" );
-    is( $related[0]->id, 'n17', "Correct transposition link" );
+    is( $related[0]->id, 'n18', "Correct transposition link" );
 }
 
 =end testing
@@ -74,8 +74,9 @@ if( $t ) {
 =cut
 
 my $IDKEY = 'number';
-my $CONTENTKEY = 'token';
-my $TRANSKEY = 'identical';
+my $CONTENTKEY = 'tokens';
+my $EDGETYPEKEY = 'type';
+my $WITKEY = 'witnesses';
 
 sub parse {
     my( $tradition, $opts ) = @_;
@@ -83,78 +84,58 @@ sub parse {
     my $collation = $tradition->collation;
 
 	# First add the readings to the graph.
-    my $extra_data = {}; # Keep track of info to be processed after all
-                         # nodes have been created
+	## Assume the start node has no text and id 0, and the end node has
+	## no text and ID [number of nodes] - 1.
+    my $endnode = scalar @{$graph_data->{'nodes'}} - 1;
     foreach my $n ( @{$graph_data->{'nodes'}} ) {
         unless( defined $n->{$IDKEY} && defined $n->{$CONTENTKEY} ) {
-            warn "Did not find an ID or token for graph node, can't add it";
+        	if( defined $n->{$IDKEY} && $n->{$IDKEY} == 0 ) {
+        		# It's the start node.
+        		$n->{$IDKEY} = $collation->start->id;
+        	} elsif ( defined $n->{$IDKEY} && $n->{$IDKEY} == $endnode ) {
+        		# It's the end node.
+        		$n->{$IDKEY} = $collation->end->id;
+        	} else {
+        		# Something is probably wrong.
+				warn "Did not find an ID or token for graph node, can't add it";
+        	} 
             next;
         }
-        my %node_data = %$n;
+        # Node ID should be an XML name, so prepend an 'n' if necessary.
+        if( $n->{$IDKEY} =~ /^\d/ ) {
+			$n->{$IDKEY} = 'n' . $n->{$IDKEY};
+		}
+		# Create the reading.
         my $gnode_args = { 
-        	'id' => delete $node_data{$IDKEY},
-        	'text' => delete $node_data{$CONTENTKEY},
+        	'id' => $n->{$IDKEY},
+        	'text' => $n->{$CONTENTKEY},
         };
         my $gnode = $collation->add_reading( $gnode_args );
-
-        # Whatever is left is extra info to be processed later,
-        # e.g. a transposition link.
-        if( keys %node_data ) {
-            $extra_data->{$gnode->id} = \%node_data;
-        }
     }
         
     # Now add the path edges.
     foreach my $e ( @{$graph_data->{'edges'}} ) {
-        my %edge_data = %$e;
-        my $from = delete $edge_data{'source'};
-        my $to = delete $edge_data{'target'};
-
-        # In CollateX, we have a distinct witness data ID per witness,
-        # so that we can have multiple witnesses per edge.  We want to
-        # translate this to one witness per edge in our own
-        # representation.
-        foreach my $ekey ( keys %edge_data ) {
-            my $wit = $edge_data{$ekey};
-            # Create the witness object if it does not yet exist.
-            unless( $tradition->witness( $wit ) ) {
-                $tradition->add_witness( 'sigil' => $wit );
-            }
-            $collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
+        my $from = $e->{'source'};
+        my $to = $e->{'target'};
+        
+        ## Edge data keys are ID (which we don't need), witnesses, and type.
+        ## Type can be 'path' or 'relationship'; 
+        ## witnesses is a comma-separated list.
+		if( $e->{$EDGETYPEKEY} eq 'path' ) {
+			## Add the path for each witness listesd.
+            # Create the witness objects if they does not yet exist.
+            foreach my $wit ( split( /, /, $e->{$WITKEY} ) ) {
+				unless( $tradition->witness( $wit ) ) {
+					$tradition->add_witness( 'sigil' => $wit );
+				}
+				$collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
+			}
+        } else { # type 'relationship'
+        	$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY},
+        		{ 'type' => 'transposition' } );
         }
     }
 
-    # Process the extra node data if it exists.
-    foreach my $nodeid ( keys %$extra_data ) {
-        my $ed = $extra_data->{$nodeid};
-        if( exists $ed->{$TRANSKEY} ) {
-            my $tn_reading = $collation->reading( $nodeid );
-            my $main_reading = $collation->reading( $ed->{$TRANSKEY} );
-            if( $collation->linear ) {
-                $collation->add_relationship( $tn_reading, $main_reading,
-                	{ type => 'transposition' } );
-            } else {
-                $collation->merge_readings( $main_reading, $tn_reading );
-            }
-        } # else we don't have any other tags to process yet.
-    }
-
-    # Find the beginning and end nodes of the graph.  The beginning node
-    # has no incoming edges; the end node has no outgoing edges.
-    my( $begin_node, $end_node );
-    my @starts = $collation->sequence->source_vertices();
-    my @ends = $collation->sequence->sink_vertices();
-    if( @starts != 1 ) {
-    	warn "Found more or less than one start vertex: @starts";
-    } else {
-    	$collation->merge_readings( $collation->start, @starts );
-    }
-    if( @ends != 1 )  {
-    	warn "Found more or less than one end vertex: @ends";
-    } else {
-    	$collation->merge_readings( $collation->end, @ends );
-    }
-    
     # Rank the readings.
     $collation->calculate_common_readings(); # will implicitly rank
 

@@ -20,7 +20,7 @@ my $t = Text::Tradition->new(
     'file'  => $cxfile,
     );
 
-is( ref( $t ), 'Text::Tradition', "Parsed our own GraphML" );
+is( ref( $t ), 'Text::Tradition', "Parsed a CollateX input" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
     is( scalar $t->collation->paths, 32, "Collation has all paths" );
@@ -30,7 +30,7 @@ if( $t ) {
     my $transposed = $t->collation->reading( 'n15' );
     my @related = $transposed->related_readings;
     is( scalar @related, 1, "Reading links to transposed version" );
-    is( $related[0]->id, 'n17', "Correct transposition link" );
+    is( $related[0]->id, 'n18', "Correct transposition link" );
 }
 }
 
