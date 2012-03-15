@@ -56,8 +56,6 @@ is 0 (i.e. the first).
 =item * merge_types - Specify a list of relationship types, where related readings 
 should be treated as identical for the purposes of analysis.
 
-=item * exclude_type1 - Exclude those ranks whose groupings have only type-1 variants.
-
 =back
 
 =begin testing
@@ -152,13 +150,7 @@ sub run_analysis {
 	my %lacunae;
 	foreach my $rank ( @ranks ) {
 		my $missing = [ @lacunose ];
-		my $rankgroup = group_variants( $tradition, $rank, $missing, \@collapse );
-		if( $opts{'exclude_type1'} ) {
-			# Check to see whether this is a "useful" group.
-			my( $rdgs, $grps ) = _useful_variant( $rankgroup );
-			next unless @$rdgs;
-		}
-		push( @groups, $rankgroup );
+		push( @groups, group_variants( $tradition, $rank, $missing, \@collapse ) );
 		$lacunae{$rank} = $missing;
 	}
 	$DB::single = 1;
@@ -195,8 +187,8 @@ relationships in @merge_relationship_types as equivalent.  $lacunose should
 be a reference to an array, to which the sigla of lacunose witnesses at this 
 rank will be appended.
 
-Returns a hash $group_readings where $rdg is attested by the witnesses listed 
-in $group_readings->{$rdg}.
+Returns two ordered lists $readings, $groups, where $readings->[$n] is attested
+by the witnesses listed in $groups->[$n].
 
 =cut
 
