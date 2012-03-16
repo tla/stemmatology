@@ -56,6 +56,8 @@ is 0 (i.e. the first).
 =item * merge_types - Specify a list of relationship types, where related readings 
 should be treated as identical for the purposes of analysis.
 
+=item * exclude_type1 - Exclude those ranks whose groupings have only type-1 variants.
+
 =back
 
 =begin testing
@@ -150,7 +152,14 @@ sub run_analysis {
 	my %lacunae;
 	foreach my $rank ( @ranks ) {
 		my $missing = [ @lacunose ];
-		push( @groups, group_variants( $tradition, $rank, $missing, \@collapse ) );
+		my $rankgroup = group_variants( $tradition, $rank, $missing, \@collapse );
+		if( $opts{'exclude_type1'} ) {
+			# Check to see whether this is a "useful" group.
+			my( $rdgs, $grps ) = _useful_variant( $rankgroup, 
+				$stemma->graph, $c->ac_label );
+			next unless @$rdgs;
+		}
+		push( @groups, $rankgroup );
 		$lacunae{$rank} = $missing;
 	}
 	$DB::single = 1;
@@ -187,8 +196,8 @@ relationships in @merge_relationship_types as equivalent.  $lacunose should
 be a reference to an array, to which the sigla of lacunose witnesses at this 
 rank will be appended.
 
-Returns two ordered lists $readings, $groups, where $readings->[$n] is attested
-by the witnesses listed in $groups->[$n].
+Returns a hash $group_readings where $rdg is attested by the witnesses listed 
+in $group_readings->{$rdg}.
 
 =cut
 
@@ -199,10 +208,15 @@ sub group_variants {
 	my $aclabel =  $c->ac_label;
 	# Get the alignment table readings
 	my %readings_at_rank;
+	my %is_lacunose; # lookup table for $lacunose
+	map { $is_lacunose{$_} = 1 } @$lacunose;
 	my @gap_wits;
 	foreach my $tablewit ( @{$c->alignment_table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		my $wit = $tablewit->{'witness'};
+		# Exclude the witness if it is "lacunose" which if we got here
+		# means "not in the stemma".
+		next if $is_lacunose{$wit};
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
 			_add_to_witlist( $wit, $lacunose, $aclabel );
 		} elsif( $rdg ) {
@@ -227,7 +241,8 @@ sub group_variants {
 				$grouped_readings{$other->id} = 0;
 			}
 		}
-		$grouped_readings{$rdg->id} = \@wits;	
+		my @use_wits = grep { !$is_lacunose{$_} } @wits;
+		$grouped_readings{$rdg->id} = \@use_wits;	
 	}
 	$grouped_readings{'(omitted)'} = \@gap_wits if @gap_wits;
 	# Get rid of our collapsed readings
