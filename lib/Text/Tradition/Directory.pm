@@ -131,6 +131,7 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 		like( $e->message, qr/Cannot directly delete non-Tradition object/, 
 			"Exception has correct message" );
 	}
+	
 	$f->delete( $uuid );
 	ok( !$f->exists( $uuid ), "Object is deleted from DB" );
 	ok( !$f->exists( $sid ), "Object stemma also deleted from DB" );
@@ -141,6 +142,10 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	my $g = Text::Tradition::Directory->new( 'dsn' => $dsn );
 	my $scope = $g->new_scope;
 	is( scalar $g->traditionlist, 1, "Now one object in new directory index" );
+	my $ntobj = $g->tradition( 'CX' );
+	my @w1 = sort $ntobj->witnesses;
+	my @w2 = sort( $nt->witnesses );
+	is_deeply( \@w1, \@w2, "Looked up remaining tradition by name" );
 }
 
 =end testing
@@ -221,7 +226,16 @@ sub save {
 sub tradition {
 	my( $self, $id ) = @_;
 	my $obj = $self->lookup( $id );
-	unless( ref( $obj ) eq 'Text::Tradition' ) {
+	unless( $obj ) {
+		# Try looking up by name.
+		foreach my $item ( $self->traditionlist ) {
+			if( $item->{'name'} eq $id ) {
+				$obj = $self->lookup( $item->{'id'} );
+				last;
+			}
+		}
+	}
+	if( $obj && ref( $obj ) ne 'Text::Tradition' ) {
 		throw( "Retrieved object is a " . ref( $obj ) . ", not a Text::Tradition" );
 	}
 	return $obj;
