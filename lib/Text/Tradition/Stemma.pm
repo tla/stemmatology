@@ -192,12 +192,13 @@ sub as_dot {
         	push( @dotlines, _make_dotline( $n, 'label' => $ltext ) );
         } else {
         	# Use the default display settings.
+        	$n = _dotquote( $n );
             push( @dotlines, "  $n;" );
         }
     }
     # Add each of our edges.
     foreach my $e ( $self->graph->edges ) {
-    	my( $from, $to ) = @$e;
+    	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
     	push( @dotlines, "  $from -> $to;" );
     }
     push( @dotlines, '}' );
@@ -233,7 +234,7 @@ sub editable {
 		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
 	}
 	foreach my $e ( sort _by_vertex $self->graph->edges ) {
-		my( $from, $to ) = @$e;
+		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
 		push( @dotlines, "  $from -> $to;" );
 	}
     push( @dotlines, '}' );
@@ -244,13 +245,20 @@ sub _make_dotline {
 	my( $obj, %attr ) = @_;
 	my @pairs;
 	foreach my $k ( keys %attr ) {
-		my $v = $attr{$k};
-		$v =~ s/\"/\\\"/g;
-		push( @pairs, "$k=\"$v\"" );
+		my $v = _dotquote( $attr{$k} );
+		push( @pairs, "$k=$v" );
 	}
-	return sprintf( "  %s [ %s ];", $obj, join( ', ', @pairs ) );
+	return sprintf( "  %s [ %s ];", _dotquote( $obj ), join( ', ', @pairs ) );
 }
 	
+sub _dotquote {
+	my( $str ) = @_;
+	return $str if $str =~ /^[A-Za-z0-9]+$/;
+	$str =~ s/\"/\\\"/g;
+	$str = '"' . $str . '"';
+	return $str;
+}
+
 sub _by_vertex {
 	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
 }
