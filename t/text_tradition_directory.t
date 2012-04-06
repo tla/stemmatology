@@ -90,8 +90,8 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 	my $scope = $g->new_scope;
 	is( scalar $g->traditionlist, 1, "Now one object in new directory index" );
 	my $ntobj = $g->tradition( 'CX' );
-	my @w1 = sort $ntobj->witnesses;
-	my @w2 = sort( $nt->witnesses );
+	my @w1 = sort { $a->sigil cmp $b->sigil } $ntobj->witnesses;
+	my @w2 = sort{ $a->sigil cmp $b->sigil } $nt->witnesses;
 	is_deeply( \@w1, \@w2, "Looked up remaining tradition by name" );
 }
 }
