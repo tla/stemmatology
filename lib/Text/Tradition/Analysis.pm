@@ -104,6 +104,7 @@ my %expected_genealogical = (
 );
 
 my $data = run_analysis( $tradition );
+my $c = $tradition->collation;
 foreach my $row ( @{$data->{'variants'}} ) {
 	# Account for rows that used to be "not useful"
 	unless( exists $expected_genealogical{$row->{'id'}} ) {
@@ -111,6 +112,19 @@ foreach my $row ( @{$data->{'variants'}} ) {
 	}
 	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
+	# Check that we have the right row with the right groups
+	my $rank = $row->{'id'};
+	foreach my $rdghash ( @{$row->{'readings'}} ) {
+		# Skip 'readings' that aren't really
+		next unless $c->reading( $rdghash->{'readingid'} );
+		# Check the rank
+		is( $c->reading( $rdghash->{'readingid'} )->rank, $rank, 
+			"Got correct reading rank" );
+		# Check the witnesses
+		my @realwits = sort $c->reading_witnesses( $rdghash->{'readingid'} );
+		my @sgrp = sort @{$rdghash->{'group'}};
+		is_deeply( \@sgrp, \@realwits, "Reading analyzed with correct groups" );
+	}
 }
 is( $data->{'variant_count'}, 58, "Got right total variant number" );
 # TODO Make something meaningful of conflict count, maybe test other bits
@@ -152,7 +166,6 @@ sub run_analysis {
 	my @use_ranks;
 	my %lacunae;
 	foreach my $rank ( @ranks ) {
-		$DB::single = 1 if $rank == 1003;
 		my $missing = [ @lacunose ];
 		my $rankgroup = group_variants( $tradition, $rank, $missing, \@collapse );
 		if( $opts{'exclude_type1'} ) {
@@ -170,16 +183,37 @@ sub run_analysis {
 
 	# Do further analysis on the answer
 	my $conflict_count = 0;
+	my $aclabel = $c->ac_label;
 	foreach my $idx ( 0 .. $#use_ranks ) {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
 		$location->{'id'} = $use_ranks[$idx];
-		# Add the lacunae back in
-		$location->{'missing'} = $lacunae{$use_ranks[$idx]};
+		# Note what our lacunae are
 		my %lmiss;
-		map { $lmiss{$_} = 1 } @{$location->{'missing'}};
+		map { $lmiss{$_} = 1 } @{$lacunae{$use_ranks[$idx]}};
+		# Run through the reading groups and add as 'lacunae' any redundant
+		# a.c. witnesses (yes, we have to do this before the analysis, thus
+		# identical loops before and after. Boo.)
+		# TODO Consider making these callbacks to analyze_location
+		foreach my $rdghash ( @{$location->{'readings'}} ) {
+			my %rwits;
+			map { $rwits{$_} = 1 } @{$rdghash->{'group'}};
+			foreach my $rw ( keys %rwits ) {
+				if( $rw =~ /^(.*)\Q$aclabel\E$/ ) {
+					if( exists $rwits{$1} ) {
+						$lmiss{$rw} = 1;
+						delete $rwits{$rw};
+					}
+				}
+			}
+			$rdghash->{'group'} = [ keys %rwits ];
+		}
+		$location->{'missing'} = [ keys %lmiss ];
+		
 		# Run the extra analysis we need.
 		analyze_location( $tradition, $stemma->graph, $location );
+
+		# Do the final post-analysis tidying up of the data.
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
 			$conflict_count++ 
 				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
@@ -187,10 +221,12 @@ sub run_analysis {
 			my $rdg = $c->reading( $rdghash->{'readingid'} );
 			$rdghash->{'text'} = $rdg ? $rdg->text : $rdghash->{'readingid'};
 			# Remove lacunose witnesses from this reading's list now that the
-			# analysis is done
+			# analysis is done 
 			my @realgroup;
-			map { push( @realgroup, $_ ) unless $lmiss{$_} } $rdghash->{'group'};
+			map { push( @realgroup, $_ ) unless $lmiss{$_} } @{$rdghash->{'group'}};
 			$rdghash->{'group'} = \@realgroup;
+			# TODO Record hypotheticals used to create group, if we end up
+			# needing it
 		}
 	}
 	$answer->{'conflict_count'} = $conflict_count;
@@ -286,7 +322,7 @@ sub solve_variants {
 	my $groupings = [];
 	foreach my $ghash ( @groups ) {
 		my @grouping;
-		foreach my $k ( keys %$ghash ) {
+		foreach my $k ( sort keys %$ghash ) {
 			push( @grouping, $ghash->{$k} );
 		}
 		push( @$groupings, \@grouping );
@@ -331,7 +367,7 @@ sub solve_variants {
 			}
 		}
 		my $input_group = $groups[$idx];
-		foreach my $k ( keys %$input_group ) {
+		foreach my $k ( sort keys %$input_group ) {
 			my $cg = shift @$calc_groups;
 			$input_group->{$k} = $cg;
 		}

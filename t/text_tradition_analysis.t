@@ -50,6 +50,7 @@ my %expected_genealogical = (
 );
 
 my $data = run_analysis( $tradition );
+my $c = $tradition->collation;
 foreach my $row ( @{$data->{'variants'}} ) {
 	# Account for rows that used to be "not useful"
 	unless( exists $expected_genealogical{$row->{'id'}} ) {
@@ -57,6 +58,19 @@ foreach my $row ( @{$data->{'variants'}} ) {
 	}
 	is( $row->{'genealogical'}, $expected_genealogical{$row->{'id'}}, 
 		"Got correct genealogical flag for row " . $row->{'id'} );
+	# Check that we have the right row with the right groups
+	my $rank = $row->{'id'};
+	foreach my $rdghash ( @{$row->{'readings'}} ) {
+		# Skip 'readings' that aren't really
+		next unless $c->reading( $rdghash->{'readingid'} );
+		# Check the rank
+		is( $c->reading( $rdghash->{'readingid'} )->rank, $rank, 
+			"Got correct reading rank" );
+		# Check the witnesses
+		my @realwits = sort $c->reading_witnesses( $rdghash->{'readingid'} );
+		my @sgrp = sort @{$rdghash->{'group'}};
+		is_deeply( \@sgrp, \@realwits, "Reading analyzed with correct groups" );
+	}
 }
 is( $data->{'variant_count'}, 58, "Got right total variant number" );
 # TODO Make something meaningful of conflict count, maybe test other bits
