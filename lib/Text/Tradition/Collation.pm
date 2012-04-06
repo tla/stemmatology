@@ -783,15 +783,34 @@ sub path_witnesses {
 	return @wits;
 }
 
+# Helper function. Make a display label for the given witnesses, showing a.c.
+# witnesses only where the main witness is not also in the list.
 sub _path_display_label {
 	my $self = shift;
-	my @wits = sort @_;
+	my %wits;
+	map { $wits{$_} = 1 } @_;
+
+	# If an a.c. wit is listed, remove it if the main wit is also listed.
+	# Otherwise keep it for explicit listing.
+	my $aclabel = $self->ac_label;
+	my @disp_ac;
+	foreach my $w ( sort keys %wits ) {
+		if( $w =~ /^(.*)\Q$aclabel\E$/ ) {
+			if( exists $wits{$1} ) {
+				delete $wits{$w};
+			} else {
+				push( @disp_ac, $w );
+			}
+		}
+	}
+	
+	# See if we are in a majority situation.
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
-	if( scalar @wits > $maj ) {
-		# TODO break out a.c. wits
-		return 'majority';
+	if( scalar keys %wits > $maj ) {
+		unshift( @disp_ac, 'majority' );
+		return join( ', ', @disp_ac );
 	} else {
-		return join( ', ', @wits );
+		return join( ', ', sort keys %wits );
 	}
 }
 
