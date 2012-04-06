@@ -149,8 +149,10 @@ sub run_analysis {
 	
 	# Group the variants to send to the solver
 	my @groups;
+	my @use_ranks;
 	my %lacunae;
 	foreach my $rank ( @ranks ) {
+		$DB::single = 1 if $rank == 1003;
 		my $missing = [ @lacunose ];
 		my $rankgroup = group_variants( $tradition, $rank, $missing, \@collapse );
 		if( $opts{'exclude_type1'} ) {
@@ -159,29 +161,36 @@ sub run_analysis {
 				$stemma->graph, $c->ac_label );
 			next unless @$rdgs;
 		}
+		push( @use_ranks, $rank );
 		push( @groups, $rankgroup );
 		$lacunae{$rank} = $missing;
 	}
-	$DB::single = 1;
 	# Parse the answer
 	my $answer = solve_variants( $stemma, @groups );
 
 	# Do further analysis on the answer
 	my $conflict_count = 0;
-	foreach my $idx ( 0 .. $#ranks ) {
+	foreach my $idx ( 0 .. $#use_ranks ) {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
-		$location->{'id'} = $ranks[$idx];
+		$location->{'id'} = $use_ranks[$idx];
 		# Add the lacunae back in
-		$location->{'missing'} = $lacunae{$ranks[$idx]};
+		$location->{'missing'} = $lacunae{$use_ranks[$idx]};
+		my %lmiss;
+		map { $lmiss{$_} = 1 } @{$location->{'missing'}};
 		# Run the extra analysis we need.
 		analyze_location( $tradition, $stemma->graph, $location );
-		# Add the reading text back in
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
 			$conflict_count++ 
 				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
+			# Add the reading text back in
 			my $rdg = $c->reading( $rdghash->{'readingid'} );
 			$rdghash->{'text'} = $rdg ? $rdg->text : $rdghash->{'readingid'};
+			# Remove lacunose witnesses from this reading's list now that the
+			# analysis is done
+			my @realgroup;
+			map { push( @realgroup, $_ ) unless $lmiss{$_} } $rdghash->{'group'};
+			$rdghash->{'group'} = \@realgroup;
 		}
 	}
 	$answer->{'conflict_count'} = $conflict_count;
@@ -322,7 +331,7 @@ sub solve_variants {
 			}
 		}
 		my $input_group = $groups[$idx];
-		foreach my $k ( sort keys %$input_group ) {
+		foreach my $k ( keys %$input_group ) {
 			my $cg = shift @$calc_groups;
 			$input_group->{$k} = $cg;
 		}
@@ -330,7 +339,8 @@ sub solve_variants {
 			'genealogical' => $result,
 			'readings' => [],
 		};
-		foreach my $k ( keys %$input_group ) {
+		foreach my $k ( sort { @{$input_group->{$b}} <=> @{$input_group->{$a}} }
+							keys %$input_group ) {
 			push( @{$vstruct->{'readings'}}, 
 				  { 'readingid' => $k, 'group' => $input_group->{$k}} );
 		}
