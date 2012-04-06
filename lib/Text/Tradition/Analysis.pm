@@ -144,7 +144,9 @@ sub run_analysis {
 	# Get the stemma	
 	my $stemma = $tradition->stemma( $stemma_id );
 
-	# Figure out which witnesses we are working with
+	# Figure out which witnesses we are working with - that is, the ones that
+	# appear both in the stemma and in the tradition. All others are 'lacunose'
+	# for our purposes.
 	my @lacunose = $stemma->hypotheticals;
 	my @tradition_wits = map { $_->sigil } $tradition->witnesses;
 	map { push( @tradition_wits, $_->sigil.$c->ac_label ) if $_->is_layered } 
@@ -178,7 +180,7 @@ sub run_analysis {
 		push( @groups, $rankgroup );
 		$lacunae{$rank} = $missing;
 	}
-	# Parse the answer
+	# Run the solver
 	my $answer = solve_variants( $stemma, @groups );
 
 	# Do further analysis on the answer
@@ -188,6 +190,7 @@ sub run_analysis {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
 		$location->{'id'} = $use_ranks[$idx];
+		$DB::single = 1 if $use_ranks[$idx] == 87;
 		# Note what our lacunae are
 		my %lmiss;
 		map { $lmiss{$_} = 1 } @{$lacunae{$use_ranks[$idx]}};
@@ -251,6 +254,8 @@ sub group_variants {
 	my( $tradition, $rank, $lacunose, $collapse ) = @_;
 	my $c = $tradition->collation;
 	my $aclabel =  $c->ac_label;
+	my %seen_acwits;
+	map { $seen_acwits{$_->sigil.$aclabel} = 0 if $_->is_layered } $tradition->witnesses;
 	# Get the alignment table readings
 	my %readings_at_rank;
 	my %is_lacunose; # lookup table for $lacunose
@@ -263,20 +268,21 @@ sub group_variants {
 		# means "not in the stemma".
 		next if $is_lacunose{$wit};
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
-			_add_to_witlist( $wit, $lacunose, $aclabel );
+			push( @$lacunose, $wit );
 		} elsif( $rdg ) {
 			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
 		} else {
-			_add_to_witlist( $wit, \@gap_wits, $aclabel );
+			$seen_acwits{$wit} = 1 if exists $seen_acwits{$wit};
+			push( @gap_wits, $wit );
 		}
 	}
 	
 	# Group the readings, collapsing groups by relationship if needed
 	my %grouped_readings;
-	foreach my $rdg ( sort { $b->witnesses <=> $a->witnesses } 
-						   values %readings_at_rank ) {
+	foreach my $rdg ( values %readings_at_rank ) {
 		# Skip readings that have been collapsed into others.
 		next if exists $grouped_readings{$rdg->id} && !$grouped_readings{$rdg->id};
+		# Get the witness list, including from readings collapsed into this one.
 		my @wits = $rdg->witnesses;
 		if( $collapse ) {
 			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
@@ -286,7 +292,14 @@ sub group_variants {
 				$grouped_readings{$other->id} = 0;
 			}
 		}
-		my @use_wits = grep { !$is_lacunose{$_} } @wits;
+		# Filter the group to those witnesses in the stemma, and note any
+		# a.c. witnesses explicitly returned.
+		my @use_wits;
+		foreach my $wit ( @wits ) {
+			next if $is_lacunose{$wit};
+			push( @use_wits, $wit );
+			$seen_acwits{$wit} = 1 if exists $seen_acwits{$wit};
+		}
 		$grouped_readings{$rdg->id} = \@use_wits;	
 	}
 	$grouped_readings{'(omitted)'} = \@gap_wits if @gap_wits;
@@ -294,7 +307,10 @@ sub group_variants {
 	map { delete $grouped_readings{$_} unless $grouped_readings{$_} } 
 		keys %grouped_readings 
 		if $collapse;
+	# Any unseen a.c. witnesses should be made lacunose
+	map { push( @$lacunose, $_ ) unless $seen_acwits{$_} } keys %seen_acwits;
 	
+	# Return the result
 	return \%grouped_readings;
 }
 
@@ -860,28 +876,6 @@ sub wit_stringify {
         push( @gst, '[' . join( ',', map { "'$_'" } @$g ) . ']' );
     }
     return join( ' / ', @gst );
-}
-
-# Helper function to ensure that X and X a.c. never appear in the same list.
-sub _add_to_witlist {
-	my( $wit, $list, $acstr ) = @_;
-	my %inlist;
-	my $idx = 0;
-	map { $inlist{$_} = $idx++ } @$list;
-	if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
-		my $acwit = $1;
-		unless( exists $inlist{$acwit} ) {
-			push( @$list, $acwit.$acstr );
-		}
-	} else {
-		if( exists( $inlist{$wit.$acstr} ) ) {
-			# Replace the a.c. version with the main witness
-			my $i = $inlist{$wit.$acstr};
-			$list->[$i] = $wit;
-		} else {
-			push( @$list, $wit );
-		}
-	}
 }
 
 sub _symmdiff {
