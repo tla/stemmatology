@@ -3,7 +3,7 @@ package Text::Tradition::Collation::Relationship;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-enum 'RelationshipType' => qw( spelling orthographic grammatical meaning lexical
+enum 'RelationshipType' => qw( spelling orthographic grammatical lexical
 							   collated repetition transposition );
 
 enum 'RelationshipScope' => qw( local document global );
@@ -31,17 +31,28 @@ Options include:
 
 =over 4
 
-=item * type - Can be one of spelling, orthographic, grammatical, meaning, lexical, collated, repetition, transposition.  All but the last two are only valid relationships between readings that occur at the same point in the text.
+=item * type - Can be one of spelling, orthographic, grammatical, lexical, 
+collated, repetition, transposition.  All but the last two are only valid 
+relationships between readings that occur at the same point in the text. 
+The 'collated' relationship should only be used by parsers to align readings 
+in the graph when the input information would otherwise be lost, e.g. from
+an alignment table.
 
-=item * displayform - (Optional) The reading that should be displayed if the related nodes are treated as one.
+=item * displayform - (Optional) The reading that should be displayed if the 
+related nodes are treated as one.
 
-=item * scope - (Optional) A meta-attribute.  Can be one of 'local', 'document', or 'global'. Denotes whether the relationship between the two readings holds always, independent of context, either within this tradition or across all traditions.
+=item * scope - (Optional) A meta-attribute.  Can be one of 'local', 
+'document', or 'global'. Denotes whether the relationship between the two 
+readings holds always, independent of context, either within this tradition 
+or across all traditions.
 
-=item * anotation - (Optional) A freeform note to attach to the relationship.
+=item * annotation - (Optional) A freeform note to attach to the relationship.
 
-=item * non_correctable - (Optional) True if the reading would not have been corrected independently.
+=item * non_correctable - (Optional) True if the reading would not have been 
+corrected independently.
 
-=item * non_independent - (Optional) True if the variant is unlikely to have occurred independently in unrelated witnesses.
+=item * non_independent - (Optional) True if the variant is unlikely to have 
+occurred independently in unrelated witnesses.
 
 =back
 
