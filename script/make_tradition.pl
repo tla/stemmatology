@@ -12,9 +12,9 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $language, $name, $HACK, $sep, $stemmafile, 
+my( $informat, $inbase, $outformat, $help, $language, $name, $sep, $stemmafile, 
 	$dsn, $dbuser, $dbpass ) 
-    = ( '', '', '', '', 1, 'Tradition', 0, "\t", '',
+    = ( '', '', '', '', 'Default', 'Tradition', "\t", '',
     	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef );
 
 GetOptions( 'i|in=s'    => \$informat,
@@ -27,7 +27,6 @@ GetOptions( 'i|in=s'    => \$informat,
             'u|user=s'  => \$dbuser,
             'p|pass=s'  => \$dbpass,
             'sep=s'		=> \$sep,
-            'hack'      => \$HACK,
             'dsn=s'		=> \$dsn,
     );
 
@@ -74,16 +73,6 @@ my $tradition = Text::Tradition->new( %args );
 if( $stemmafile ) {
 	my $stemma = $tradition->add_stemma( dotfile => $stemmafile );
 	print STDERR "Saved stemma at $stemmafile\n" if $stemma;
-}
-
-### Custom hacking
-# Remove witnesses C, E, G in the Matthew text
-if( $HACK ) {
-	# Set the funny name while we're at it
-	my $oldname = $tradition->name;
-	$oldname =~ s/(\d)/ $1/;
-	my $newname = "\x{17d}amanakagrut\x{2bf}iwn " . ucfirst( $oldname );
-	$tradition->name( $newname );
 }
 
 # Now output what we have been asked to.
