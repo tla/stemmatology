@@ -12,27 +12,21 @@ digraph Stemma {
     C [ class=extant ];
     D [ class=extant ];
     E [ class=extant ];
-    "E (a.c.)" [ class=extant ];
     F [ class=extant ];
     G [ class=extant ];
     H [ class=extant ];
     K [ class=extant ];
     P [ class=extant ];
-    "P (a.c.)" [ class=extant ];
     Q [ class=extant ];
-    "Q (a.c.)" [ class=extant ];
     S [ class=extant ];
     T [ class=extant ];
-    "T (a.c.)" [ class=extant ];
     "α" -> A;
     "α" -> T;
-    T -> "T (a.c.)";
     "α" -> "δ";
     "δ" -> 2;
     2 -> C;
     2 -> B;
     B -> P;
-    P -> "P (a.c.)";
     B -> S;
     "δ" -> "γ";
     "γ" -> 3;
@@ -42,11 +36,9 @@ digraph Stemma {
     4 -> D;
     4 -> 5;
     5 -> Q;
-    Q -> "Q (a.c.)";
     5 -> K;
     5 -> 7;
     7 -> E;
-    E -> "E (a.c.)";
     7 -> G;
 }
     

@@ -149,8 +149,6 @@ sub run_analysis {
 	# for our purposes.
 	my @lacunose = $stemma->hypotheticals;
 	my @tradition_wits = map { $_->sigil } $tradition->witnesses;
-	map { push( @tradition_wits, $_->sigil.$c->ac_label ) if $_->is_layered } 
-		$tradition->witnesses;
 	push( @lacunose, _symmdiff( [ $stemma->witnesses ], \@tradition_wits ) );
 
 	# Find and mark 'common' ranks for exclusion, unless they were
@@ -190,7 +188,6 @@ sub run_analysis {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
 		$location->{'id'} = $use_ranks[$idx];
-		$DB::single = 1 if $use_ranks[$idx] == 87;
 		# Note what our lacunae are
 		my %lmiss;
 		map { $lmiss{$_} = 1 } @{$lacunae{$use_ranks[$idx]}};
@@ -253,9 +250,8 @@ in $group_readings->{$rdg}.
 sub group_variants {
 	my( $tradition, $rank, $lacunose, $collapse ) = @_;
 	my $c = $tradition->collation;
-	my $aclabel =  $c->ac_label;
-	my %seen_acwits;
-	map { $seen_acwits{$_->sigil.$aclabel} = 0 if $_->is_layered } $tradition->witnesses;
+	my $aclabel = $c->ac_label;
+
 	# Get the alignment table readings
 	my %readings_at_rank;
 	my %is_lacunose; # lookup table for $lacunose
@@ -268,12 +264,11 @@ sub group_variants {
 		# means "not in the stemma".
 		next if $is_lacunose{$wit};
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
-			push( @$lacunose, $wit );
+			_add_to_witlist( $wit, $lacunose, $aclabel );
 		} elsif( $rdg ) {
 			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
 		} else {
-			$seen_acwits{$wit} = 1 if exists $seen_acwits{$wit};
-			push( @gap_wits, $wit );
+			_add_to_witlist( $wit, \@gap_wits, $aclabel );
 		}
 	}
 	
@@ -292,13 +287,11 @@ sub group_variants {
 				$grouped_readings{$other->id} = 0;
 			}
 		}
-		# Filter the group to those witnesses in the stemma, and note any
-		# a.c. witnesses explicitly returned.
+		# Filter the group to those witnesses in the stemma
 		my @use_wits;
 		foreach my $wit ( @wits ) {
 			next if $is_lacunose{$wit};
 			push( @use_wits, $wit );
-			$seen_acwits{$wit} = 1 if exists $seen_acwits{$wit};
 		}
 		$grouped_readings{$rdg->id} = \@use_wits;	
 	}
@@ -307,11 +300,31 @@ sub group_variants {
 	map { delete $grouped_readings{$_} unless $grouped_readings{$_} } 
 		keys %grouped_readings 
 		if $collapse;
-	# Any unseen a.c. witnesses should be made lacunose
-	map { push( @$lacunose, $_ ) unless $seen_acwits{$_} } keys %seen_acwits;
 	
 	# Return the result
 	return \%grouped_readings;
+}
+
+# Helper function to ensure that X and X a.c. never appear in the same list.
+sub _add_to_witlist {
+	my( $wit, $list, $acstr ) = @_;
+	my %inlist;
+	my $idx = 0;
+	map { $inlist{$_} = $idx++ } @$list;
+	if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
+		my $acwit = $1;
+		unless( exists $inlist{$acwit} ) {
+			push( @$list, $acwit.$acstr );
+		}
+	} else {
+		if( exists( $inlist{$wit.$acstr} ) ) {
+			# Replace the a.c. version with the main witness
+			my $i = $inlist{$wit.$acstr};
+			$list->[$i] = $wit;
+		} else {
+			push( @$list, $wit );
+		}
+	}
 }
 
 =head2 solve_variants( $graph, @groups ) 
@@ -333,70 +346,108 @@ The answer has the form
 
 sub solve_variants {
 	my( $stemma, @groups ) = @_;
+	my $aclabel = $stemma->collation->ac_label;
 
-	# Make the json with stemma + groups
-	my $groupings = [];
-	foreach my $ghash ( @groups ) {
+	# Filter the groups down to distinct groups, and work out what graph
+	# should be used in the calculation of each group. We want to send each
+	# distinct problem to the solver only once.
+	# We need a whole bunch of lookup tables for this.
+	my $index_groupkeys = {};	# Save the order of readings
+	my $group_indices = {};		# Save the indices that have a given grouping
+	my $graph_problems = {};	# Save the groupings for the given graph
+
+	foreach my $idx ( 0..$#groups ) {
+		my $ghash = $groups[$idx];
 		my @grouping;
-		foreach my $k ( sort keys %$ghash ) {
-			push( @grouping, $ghash->{$k} );
+		# Sort the groupings from big to little, and scan for a.c. witnesses
+		# that would need an extended graph.
+		my @acwits;   # note which AC witnesses crop up at this rank
+		my @idxkeys = sort { scalar @{$ghash->{$b}} <=> scalar @{$ghash->{$a}} }
+			keys %$ghash;
+		foreach my $rdg ( @idxkeys ) {
+			my @sg = sort @{$ghash->{$rdg}};
+			push( @acwits, grep { $_ =~ /\Q$aclabel\E$/ } @sg );
+			push( @grouping, \@sg );
 		}
-		push( @$groupings, \@grouping );
-	}
-	## Witness map is a HACK to get around limitations in node names from IDP
-	my $witness_map = {};
-	my $json = encode_json( _safe_wit_strings( $stemma, $groupings, $witness_map ) );
-
-	# Send it off and get the result
-	my $solver_url = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
-	my $ua = LWP::UserAgent->new();
-	my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
-						  'Content' => $json );
-						  
-	my $answer;
-	my $used_idp;
-	if( $resp->is_success ) {
-		$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
-		$used_idp = 1;
-	} else {
-		# Fall back to the old method.
-		warn "IDP solver returned " . $resp->status_line . " / " . $resp->content
-			. "; falling back to perl method";
-		$answer = perl_solver( $stemma, @$groupings );
+		# Save the reading order
+		$index_groupkeys->{$idx} = \@idxkeys;
+		
+		# Now associate the distinct group with this index
+		my $gstr = wit_stringify( \@grouping );
+		push( @{$group_indices->{$gstr}}, $idx );
+		
+		# Finally, add the group to the list to be calculated for this graph.
+		map { s/\Q$aclabel\E$// } @acwits;
+		my $graph = $stemma->extend_graph( \@acwits );
+		unless( exists $graph_problems->{"$graph"} ) {
+			$graph_problems->{"$graph"} = { 'object' => $graph, 'groups' => [] };
+		}
+		push( @{$graph_problems->{"$graph"}->{'groups'}}, \@grouping );
 	}
 	
-	# Fold the result back into what we know about the groups.
-	my $variants = [];
+	## For each distinct graph, send its groups to the solver.
+	$DB::single = 1;
+	my $solver_url = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
+	my $ua = LWP::UserAgent->new();
+	## Witness map is a HACK to get around limitations in node names from IDP
+	my $witness_map = {};
+	## Variables to store answers as they come back
+	my $variants = [ ( undef ) x ( scalar keys %$index_groupkeys ) ];
 	my $genealogical = 0;
-	foreach my $idx ( 0 .. $#groups ) {
-		my( $calc_groups, $result ) = @{$answer->[$idx]};
-		if( $result ) {
-			$genealogical++;
-			# Prune the calculated groups, in case the IDP solver failed to.
-			if( $used_idp ) {
-				my @pruned_groups;
-				foreach my $cg ( @$calc_groups ) {
-					my @pg = _prune_group( $cg, $stemma );
-					push( @pruned_groups, \@pg );
+	foreach my $graphkey ( keys %$graph_problems ) {
+		my $graph = $graph_problems->{$graphkey}->{'object'};
+		my $groupings = $graph_problems->{$graphkey}->{'groups'};
+		my $json = encode_json( _safe_wit_strings( $graph, $stemma->collation,
+			$groupings, $witness_map ) );
+		# Send it off and get the result
+		my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
+							  'Content' => $json );							  
+		my $answer;
+		my $used_idp;
+		if( $resp->is_success ) {
+			$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
+			$used_idp = 1;
+		} else {
+			# Fall back to the old method.
+			warn "IDP solver returned " . $resp->status_line . " / " . $resp->content
+				. "; falling back to perl method";
+			$answer = perl_solver( $graph, @$groupings );
+		}
+		## The answer is the evaluated groupings, plus a boolean for whether
+		## they were genealogical.  Reconstruct our original groups.
+		foreach my $gidx ( 0 .. $#{$groupings} ) {
+			my( $calc_groups, $result ) = @{$answer->[$gidx]};
+			if( $result ) {
+				$genealogical++;
+				# Prune the calculated groups, in case the IDP solver failed to.
+				if( $used_idp ) {
+					my @pruned_groups;
+					foreach my $cg ( @$calc_groups ) {
+						# This is a little wasteful but the path of least
+						# resistance. Send both the stemma, which knows what
+						# its hypotheticals are, and the actual graph used.
+						my @pg = _prune_group( $cg, $stemma, $graph );
+						push( @pruned_groups, \@pg );
+					}
+					$calc_groups = \@pruned_groups;
 				}
-				$calc_groups = \@pruned_groups;
+			}
+			# Retrieve the key for the original group that went to the solver
+			my $input_group = wit_stringify( $groupings->[$gidx] );
+			foreach my $oidx ( @{$group_indices->{$input_group}} ) {
+				my @readings = @{$index_groupkeys->{$oidx}};
+				my $vstruct = {
+					'genealogical' => $result,
+					'readings' => [],
+				};
+				foreach my $ridx ( 0 .. $#readings ) {
+					push( @{$vstruct->{'readings'}},
+						{ 'readingid' => $readings[$ridx],
+						  'group' => $calc_groups->[$ridx] } );
+				}
+				$variants->[$oidx] = $vstruct;
 			}
 		}
-		my $input_group = $groups[$idx];
-		foreach my $k ( sort keys %$input_group ) {
-			my $cg = shift @$calc_groups;
-			$input_group->{$k} = $cg;
-		}
-		my $vstruct = { 
-			'genealogical' => $result,
-			'readings' => [],
-		};
-		foreach my $k ( sort { @{$input_group->{$b}} <=> @{$input_group->{$a}} }
-							keys %$input_group ) {
-			push( @{$vstruct->{'readings'}}, 
-				  { 'readingid' => $k, 'group' => $input_group->{$k}} );
-		}
-		push( @$variants, $vstruct );
 	}
 	
 	return { 'variants' => $variants, 
@@ -407,24 +458,28 @@ sub solve_variants {
 #### HACKERY to cope with IDP's limited idea of what a node name looks like ###
 
 sub _safe_wit_strings {
-	my( $stemma, $groupings, $witness_map ) = @_;
+	my( $graph, $c, $groupings, $witness_map ) = @_;
+	# Parse the graph we were given into a stemma.
 	my $safegraph = Graph->new();
 	# Convert the graph to a safe representation and store the conversion.
-	foreach my $n ( $stemma->graph->vertices ) {
+	foreach my $n ( $graph->vertices ) {
 		my $sn = _safe_witstr( $n );
-		warn "Ambiguous stringification $sn for $n and " . $witness_map->{$sn}
-			if exists $witness_map->{$sn};
-		$witness_map->{$sn} = $n;
+		if( exists $witness_map->{$sn} ) {
+			warn "Ambiguous stringification $sn for $n and " . $witness_map->{$sn}
+				if $witness_map->{$sn} ne $n;
+		} else {
+			$witness_map->{$sn} = $n;
+		}
 		$safegraph->add_vertex( $sn );
 		$safegraph->set_vertex_attributes( $sn, 
-			$stemma->graph->get_vertex_attributes( $n ) );
+			$graph->get_vertex_attributes( $n ) );
 	}
-	foreach my $e ( $stemma->graph->edges ) {
+	foreach my $e ( $graph->edges ) {
 		my @safe_e = ( _safe_witstr( $e->[0] ), _safe_witstr( $e->[1] ) );
 		$safegraph->add_edge( @safe_e );
 	}
 	my $safe_stemma = Text::Tradition::Stemma->new( 
-		'collation' => $stemma->collation, 'graph' => $safegraph );
+		'collation' => $c, 'graph' => $safegraph );
 		
 	# Now convert the witness groupings to a safe representation.
 	my $safe_groupings = [];
@@ -446,7 +501,8 @@ sub _safe_wit_strings {
 	
 	# Return it all in the struct we expect.  We have stored the reductions
 	# in the $witness_map that we were passed.
-	return { 'graph' => $safe_stemma->editable( ' ' ), 'groupings' => $safe_groupings };
+	return { 'graph' => $safe_stemma->editable( { 'linesep' => ' ' } ), 
+			 'groupings' => $safe_groupings };
 }
 
 sub _safe_witstr {
@@ -599,8 +655,7 @@ possibly with the addition of hypothetical readings.
 =cut
 
 sub perl_solver {
-	my( $stemma, @groups ) = @_;
-	my $graph = $stemma->graph;
+	my( $graph, @groups ) = @_;
 	my @answer;
 	foreach my $g ( @groups ) {
 		push( @answer, _solve_variant_location( $graph, $g ) );
@@ -779,14 +834,14 @@ sub _solve_variant_location {
 }
 
 sub _prune_group {
-	my( $group, $stemma ) = @_;
+	my( $group, $stemma, $graph ) = @_;
 	# Get these into a form prune_subtree will recognize. Make a "contighash"
 	my $hypohash = {};
 	map { $hypohash->{$_} = 1 } @$group;
 	# ...with reference values for hypotheticals.
 	map { $hypohash->{$_} = [] } $stemma->hypotheticals;
 	# Make our subgraph
-	my $subgraph = $stemma->graph->copy;
+	my $subgraph = $graph->copy;
 	map { $subgraph->delete_vertex( $_ ) unless exists $hypohash->{$_} }
 		$subgraph->vertices;
 	# ...and find the root.

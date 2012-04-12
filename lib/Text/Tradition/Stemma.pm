@@ -28,15 +28,14 @@ Text::Tradition::Stemma - a representation of a I<stemma codicum> for a Text::Tr
 =head1 DESCRIPTION
 
 Text::Tradition is a library for representation and analysis of collated
-texts, particularly medieval ones.  The Collation is the central feature of
-a Tradition, where the text, its sequence of readings, and its relationships
-between readings are actually kept.
+texts, particularly medieval ones.  The Stemma is a representation of the
+copying relationships between the witnesses in a Tradition, modelled with
+a connected rooted directed acyclic graph (CRDAG).
 
 =head1 DOT SYNTAX
 
-The easiest way to define a stemma (which is a directed acyclic graph, denoting 
-the scholar's hypothesis concerning which text(s) were copied from which other(s)) 
-is to use a special form of the 'dot' syntax of GraphViz.  
+The easiest way to define a stemma is to use a special form of the 'dot' 
+syntax of GraphViz.  
 
 Each stemma opens with the line
 
@@ -157,6 +156,12 @@ See the GraphViz documentation for the list of available options.
 sub as_dot {
     my( $self, $opts ) = @_;
     
+	## See if we are including any a.c. witnesses in this graph.
+	my $graph = $self->graph;
+	if( exists $opts->{'layerwits'} ) {
+		$graph = $self->extend_graph( $opts->{'layerwits'} );
+	}
+
     # Get default and specified options
     my %graphopts = (
     	# 'ratio' => 1,
@@ -177,7 +182,7 @@ sub as_dot {
 		if $opts->{'node'};
 	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
 		if $opts->{'edge'};
-
+		
 	my @dotlines;
 	push( @dotlines, 'digraph stemma {' );
 	## Print out the global attributes
@@ -186,9 +191,9 @@ sub as_dot {
 	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
 
 	# Add each of the nodes.
-    foreach my $n ( $self->graph->vertices ) {
-        if( $self->graph->has_vertex_attribute( $n, 'label' ) ) {
-        	my $ltext = $self->graph->get_vertex_attribute( $n, 'label' );
+    foreach my $n ( $graph->vertices ) {
+        if( $graph->has_vertex_attribute( $n, 'label' ) ) {
+        	my $ltext = $graph->get_vertex_attribute( $n, 'label' );
         	push( @dotlines, _make_dotline( $n, 'label' => $ltext ) );
         } else {
         	# Use the default display settings.
@@ -197,7 +202,7 @@ sub as_dot {
         }
     }
     # Add each of our edges.
-    foreach my $e ( $self->graph->edges ) {
+    foreach my $e ( $graph->edges ) {
     	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
     	push( @dotlines, "  $from -> $to;" );
     }
@@ -206,17 +211,27 @@ sub as_dot {
     return join( "\n", @dotlines );
 }
 
-=head2 editable( $linesep )
+=head2 editable( $opts )
 
 Returns a version of the graph rendered in our definition format.  The
-$linesep argument defaults to newline; set it to the empty string or to
-a space if the result is to be sent via JSON.
+output separates statements with a newline; set $opts->{'linesep'} to the 
+empty string or to a space if the result is to be sent via JSON.
+
+Any layer witnesses to be included should be passed via $opts->{'layerwits'}.
 
 =cut
 
 sub editable {
-	my $self = shift;
-	my $join = shift || "\n";
+	my( $self, $opts ) = @_;
+	
+	## See if we are including any a.c. witnesses in this graph.
+	my $graph = $self->graph;
+	if( exists $opts->{'layerwits'} ) {
+		$graph = $self->extend_graph( $opts->{'layerwits'} );
+	}
+
+	# Create the graph
+	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
 	my @dotlines;
 	push( @dotlines, 'digraph stemma {' );
 	my @real; # A cheap sort
@@ -261,6 +276,55 @@ sub _dotquote {
 
 sub _by_vertex {
 	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
+}
+
+=head2 extend_graph( $layered_witnesses )
+
+Returns a graph which is the original stemma with witness layers added for the
+list in @$layered_witnesses.  A layered (a.c.) witness is added as a parent
+of its main version, and additionally shares all other parents and children with
+that version.
+
+=cut
+
+sub extend_graph {
+	my( $self, $layerwits ) = @_;
+	# For each 'layered' witness in the layerwits array, add it to the graph
+	# as an ancestor of the 'main' witness, and otherwise with the same parent/
+	# child links as its main analogue.
+	# TOOD Handle case where B is copied from A but corrected from C
+	
+	# Iterate through, adding a.c. witnesses
+	my $actag = $self->collation->ac_label;
+	my $graph = $self->graph->copy;
+	foreach my $lw ( @$layerwits ) {
+		# Add the layered witness and set it with the same attributes as
+		# its 'main' analogue
+		my $lwac = $lw . $self->collation->ac_label;
+		$graph->add_vertex( $lwac );
+		$graph->set_vertex_attributes( $lwac,
+			$graph->get_vertex_attributes( $lw ) );
+			
+		# Set it as ancestor to the main witness
+		$graph->add_edge( $lwac, $lw );
+		
+		# Give it the same ancestors and descendants as the main witness has,
+		# bearing in mind that those ancestors and descendants might also just
+		# have had a layered witness defined.
+		foreach my $v ( $graph->predecessors( $lw ) ) {
+			next if $v eq $lwac; # Don't add a loop
+			$graph->add_edge( $v, $lwac );
+			$graph->add_edge( $v.$self->collation->ac_label, $lwac )
+				if $graph->has_vertex( $v.$self->collation->ac_label );
+		}
+		foreach my $v ( $graph->successors( $lw ) ) {
+			next if $v eq $lwac; # but this shouldn't occur
+			$graph->add_edge( $lwac, $v );
+			$graph->add_edge( $lwac, $v.$self->collation->ac_label )
+				if $graph->has_vertex( $v.$self->collation->ac_label );
+		}
+	}
+	return $graph;
 }
 
 =head2 as_svg
