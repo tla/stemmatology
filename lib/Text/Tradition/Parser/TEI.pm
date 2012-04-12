@@ -151,36 +151,30 @@ sub parse {
         my $sequence = $text->{$sig};
         my @real_sequence = ( $c->start );
         push( @$sequence, $c->end );
-        my $source = $c->start;
-        foreach( _clean_sequence( $sig, $sequence ) ) {
-            my $rdg = _return_rdg( $_ );
-            push( @real_sequence, $rdg );
-            $c->add_path( $source, $rdg, $sig );
-            $source = $rdg;
+        foreach( _clean_sequence( $sig, $sequence, 1 ) ) {
+            push( @real_sequence, _return_rdg( $_ ) );
         }
         # See if we need to make an a.c. version of the witness.
         if( exists $app_ac->{$sig} ) {
             my @uncorrected;
             push( @uncorrected, @real_sequence );
+            # Get rid of any remaining placeholders.
+            @real_sequence = _clean_sequence( $sig, \@uncorrected );
+            # Do the uncorrections
             foreach my $app ( keys %{$app_ac->{$sig}} ) {
                 my $start = _return_rdg( $app_anchors->{$app}->{$sig}->{'start'} ); 
                 my $end = _return_rdg( $app_anchors->{$app}->{$sig}->{'end'} );
                 my @new = map { _return_rdg( $_ ) } @{$app_ac->{$sig}->{$app}};
                 _replace_sequence( \@uncorrected, $start, $end, @new );
             }
-            my $source = shift @uncorrected; # the start node
-            warn "Something weird!" unless $source eq $c->start;
-            foreach my $rdg ( @uncorrected ) {
-            	unless( $c->has_path( $source, $rdg, $sig ) ) {
-            		$c->add_path( $source, $rdg, $sig.$c->ac_label );
-            	}
-            	$source = $rdg;
-            }
-            warn "Something else weird!" unless $source eq $c->end;
-            # print STDERR "Adding a.c. version for witness $sig\n";
+            # and record the results.
+            $tradition->witness( $sig )->uncorrected_path( \@uncorrected );
             $tradition->witness( $sig )->is_layered( 1 );
         }
+        $tradition->witness( $sig )->path( \@real_sequence );
     }
+    # Now make our witness paths.
+    $tradition->collation->make_witness_paths();
     
     # Calculate the ranks for the nodes.
 	$tradition->collation->calculate_ranks();
@@ -198,16 +192,17 @@ sub parse {
 }
 
 sub _clean_sequence {
-    my( $wit, $sequence ) = @_;
+    my( $wit, $sequence, $keep_ac ) = @_;
     my @clean_sequence;
     foreach my $rdg ( @$sequence ) {
         if( $rdg =~ /^PH-(.*)$/ ) {
-            # It is a placeholder.  Keep it only if we need it.
+            # It is a placeholder.  Keep it only if we need it for a later
+            # a.c. run.
             my $app_id = $1;
-            if( exists $app_ac->{$wit} &&
+            if( $keep_ac && exists $app_ac->{$wit} &&
                 exists $app_ac->{$wit}->{$app_id} ) {
-                # print STDERR "Retaining empty placeholder for $app_id\n";
-                push( @clean_sequence, $rdg );
+				# print STDERR "Retaining empty placeholder for $app_id\n";
+				push( @clean_sequence, $rdg );
             }
         } else {
             push( @clean_sequence, $rdg );
@@ -220,8 +215,10 @@ sub _replace_sequence {
     my( $arr, $start, $end, @new ) = @_;
     my( $start_idx, $end_idx );
     foreach my $i ( 0 .. $#{$arr} ) {
-        $start_idx = $i if( $arr->[$i]->id eq $start );
-        if( $arr->[$i]->id eq $end ) {
+    	# If $arr->[$i] is a placeholder, cope.
+    	my $iid = ref( $arr->[$i] ) ? $arr->[$i]->id : $arr->[$i];
+        $start_idx = $i if( $iid eq $start );
+        if( $iid eq $end ) {
             $end_idx = $i;
             last;
         }
@@ -318,7 +315,6 @@ sub _return_rdg {
             # Now collate these sets if we have more than one.
             my $subs = collate_variants( $tradition->collation, @sets ) if @sets > 1;
             map { $substitutions->{$_} = $subs->{$_} } keys %$subs;
-            # TODO Look through substitutions to see if we can make anything common now.
             # Return the entire set of unique readings.
             my %unique;
             foreach my $s ( @sets ) {
