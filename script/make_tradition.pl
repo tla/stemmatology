@@ -4,9 +4,10 @@ use lib 'lib';
 use strict;
 use warnings;
 use Getopt::Long;
+use TryCatch;
 use Text::Tradition;
 use Text::Tradition::Directory;
-use Text::Tradition::StemmaUtil;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars /;
 
 binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
@@ -77,12 +78,11 @@ if( $stemmafile ) {
 
 # Now output what we have been asked to.
 if( $outformat eq 'stemma' ) {
-    my $cdata = character_input( $tradition->collation->make_alignment_table );
-    my( $result, $tree ) = phylip_pars( $cdata );
-    if( $result ) {
-        print $tree;
-    } else {
-        print STDERR "Bad result: $tree";
+    my $cdata = character_input( $tradition->collation->alignment_table );
+    try {
+    	print phylip_pars( $cdata );
+    } catch( Text::Tradition::Error $e ) {
+        print STDERR "Bad result: " . $e->message;
     }
 } elsif( $outformat eq 'db' ) {
 	my $extra_args = { 'create' => 1 };
