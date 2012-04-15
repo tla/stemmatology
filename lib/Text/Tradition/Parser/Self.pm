@@ -192,7 +192,8 @@ sub parse {
 		
 		# Add the witness if we don't have it already.
 		unless( $witnesses{$e->{'witness'}} ) {
-			$tradition->add_witness( sigil => $e->{'witness'} );
+			$tradition->add_witness( 
+				sigil => $e->{'witness'}, 'sourcetype' => 'collation' );
 			$witnesses{$e->{'witness'}} = 1;
 		}
 		$tradition->witness( $e->{'witness'} )->is_layered( 1 ) if $e->{'extra'};

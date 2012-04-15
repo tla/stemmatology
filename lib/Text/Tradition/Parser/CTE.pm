@@ -60,7 +60,7 @@ sub parse {
 		my $id= $wit_el->getAttribute( 'xml:id' );
 		my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
-		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
+		$tradition->add_witness( sigil => $sig, sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
 

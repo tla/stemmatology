@@ -39,7 +39,7 @@ sub parse {
     # Note the sigla.
     foreach my $sigil ( @{$opts->{'sigla'}} ) {
         $ALL_SIGLA{$sigil} = 1;
-        $tradition->add_witness( 'sigil' => $sigil );
+        $tradition->add_witness( sigil => $sigil, sourcetype => 'collation' );
     }
     # Now merge on the apparatus entries.
     merge_stone_apparatus( $tradition->collation, $lineref_hash, $opts->{'file'} );

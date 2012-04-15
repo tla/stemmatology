@@ -33,7 +33,7 @@ if( $wit_a ) {
 is( $s->witness('X'), undef, "There is no witness X" );
 ok( !exists $s->{'witnesses'}->{'X'}, "Witness key X not created" );
 
-my $wit_d = $s->add_witness( 'sigil' => 'D' );
+my $wit_d = $s->add_witness( 'sigil' => 'D', 'sourcetype' => 'collation' );
 is( ref( $wit_d ), 'Text::Tradition::Witness', "new witness created" );
 is( $wit_d->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );

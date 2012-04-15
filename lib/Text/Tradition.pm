@@ -101,7 +101,14 @@ Text::Tradition - a software model for a set of collated texts
 
   my @text_wits = $t->witnesses();
   my $manuscript_a = $t->witness( 'A' );
-  my $new_ms = $t->add_witness( 'sigil' => 'B' );
+
+  $t = Text::Tradition->new();
+  $t->add_witness( 'sourcetype' => 'xmldesc', 
+    'file' => '/path/to/teitranscription.xml' );
+  $t->add_witness( 'sourcetype => 'plaintext', 'sigil' => 'Q',
+    'string' => 'The quick brown fox jumped over the lazy dogs' );
+  ## TODO
+  $t->collate_texts;
   
   my $text_path_svg = $t->collation->as_svg();
   ## See Text::Tradition::Collation for more on text collation itself
@@ -226,7 +233,7 @@ if( $wit_a ) {
 is( $s->witness('X'), undef, "There is no witness X" );
 ok( !exists $s->{'witnesses'}->{'X'}, "Witness key X not created" );
 
-my $wit_d = $s->add_witness( 'sigil' => 'D' );
+my $wit_d = $s->add_witness( 'sigil' => 'D', 'sourcetype' => 'collation' );
 is( ref( $wit_d ), 'Text::Tradition::Witness', "new witness created" );
 is( $wit_d->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );

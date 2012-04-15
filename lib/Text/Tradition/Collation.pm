@@ -5,7 +5,7 @@ use File::Temp;
 use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
-use Text::CSV_XS;
+use Text::CSV;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
@@ -1079,7 +1079,7 @@ row per witness (or witness uncorrected.)
 sub as_csv {
     my( $self ) = @_;
     my $table = $self->alignment_table;
-    my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );    
+    my $csv = Text::CSV->new( { binary => 1, quote_null => 0 } );    
     my @result;
     # Make the header row
     $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
