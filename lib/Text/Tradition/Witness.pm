@@ -627,6 +627,7 @@ sub _init_from_json {
 	$self->identifier( $wit->{'name'} );
 	my @words;
 	my @layerwords;
+	my( @text, @layertext );
 	if( exists $wit->{'content'} ) {
 		# We need to tokenize the text ourselves.
 		@words = _split_words( $self, $wit->{'content'} );
@@ -637,6 +638,7 @@ sub _init_from_json {
 			my $w_obj = $self->tradition->collation->add_reading({
 				'text' => $token->{'t'}, 'id' => $self->sigil . 'r' . $ctr++ });
 			push( @words, $w_obj );
+			push( @text, $token->{'t'} ); # TODO unless...?
 		}
 		## TODO rethink this JSOn mechanism
 		if( exists $wit->{'layertokens'} ) {
@@ -644,10 +646,12 @@ sub _init_from_json {
 				my $w_obj = $self->tradition->collation->add_reading({
 					'text' => $token->{'t'}, 'id' => $self->sigil . 'r' . $ctr++ });
 				push( @layerwords, $w_obj );
+				push( @layertext, $token->{'t'} );
 			}
 		}
 	}
-	# TODO set self->text
+	$self->text( \@text );
+	$self->layertext( \@layertext ) if @layertext;
 	$self->path( \@words );
 	$self->uncorrected_path( \@layerwords ) if @layerwords;
 }
