@@ -1325,7 +1325,7 @@ sub common_readings {
 	return @common;
 }
 
-=head2 path_text( $sigil, $mainsigil [, $start, $end ] )
+=head2 path_text( $sigil, [, $start, $end ] )
 
 Returns the text of a witness (plus its backup, if we are using a layer)
 as stored in the collation.  The text is returned as a string, where the
@@ -1387,11 +1387,17 @@ sub make_witness_path {
     my( $self, $wit ) = @_;
     my @chain = @{$wit->path};
     my $sig = $wit->sigil;
+    # Add start and end if necessary
+    unshift( @chain, $self->start ) unless $chain[0] eq $self->start;
+    push( @chain, $self->end ) unless $chain[-1] eq $self->end;
+    $DB::single = 1;
     foreach my $idx ( 0 .. $#chain-1 ) {
         $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
     if( $wit->is_layered ) {
         @chain = @{$wit->uncorrected_path};
+		unshift( @chain, $self->start ) unless $chain[0] eq $self->start;
+		push( @chain, $self->end ) unless $chain[-1] eq $self->end;
         foreach my $idx( 0 .. $#chain-1 ) {
             my $source = $chain[$idx];
             my $target = $chain[$idx+1];

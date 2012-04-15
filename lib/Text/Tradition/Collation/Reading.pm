@@ -82,6 +82,12 @@ has 'text' => (
 	writer => 'alter_text',
 	);
 	
+has 'language' => (
+	is => 'ro',
+	isa => 'Str',
+	default => 'Default',
+	);
+	
 has 'is_start' => (
 	is => 'ro',
 	isa => 'Bool',
