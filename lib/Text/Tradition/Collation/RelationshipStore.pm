@@ -37,7 +37,7 @@ my $t = Text::Tradition->new(
     );
 my $c = $t->collation;
 
-my @v1 = $c->add_relationship( 'n21', 'n22', { 'type' => 'meaning' } );
+my @v1 = $c->add_relationship( 'n21', 'n22', { 'type' => 'lexical' } );
 is( scalar @v1, 1, "Added a single relationship" );
 is( $v1[0]->[0], 'n21', "Got correct node 1" );
 is( $v1[0]->[1], 'n22', "Got correct node 2" );
