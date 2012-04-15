@@ -25,17 +25,17 @@ if( $ptwit ) {
     is( $c->path_text( $ptwit->sigil ), $str, "Witness has correct text" );
 }
 
-# # Test some JSON witnesses via object
-# open( JSIN, 't/data/witnesses/testwit.json' ) or die "Could not open JSON test input";
-# binmode( JSIN, ':encoding(UTF-8)' );
-# my @lines = <JSIN>;
-# close JSIN;
-# $trad->add_json_witnesses( join( '', @lines ) );
-# is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness', 
-# 	"Found first JSON witness" );
-# is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
-# 	"Found second JSON witness" );
-# 
+# Test some JSON witnesses via object
+open( JSIN, 't/data/witnesses/testwit.json' ) or die "Could not open JSON test input";
+binmode( JSIN, ':encoding(UTF-8)' );
+my @lines = <JSIN>;
+close JSIN;
+$trad->add_json_witnesses( join( '', @lines ) );
+is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness', 
+	"Found first JSON witness" );
+is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
+	"Found second JSON witness" );
+
 # # Test an XML witness via file
 # my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
 # 	'file' => 't/data/witnesses/teiwit.xml' );

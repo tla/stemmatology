@@ -143,17 +143,17 @@ if( $ptwit ) {
     is( $c->path_text( $ptwit->sigil ), $str, "Witness has correct text" );
 }
 
-# # Test some JSON witnesses via object
-# open( JSIN, 't/data/witnesses/testwit.json' ) or die "Could not open JSON test input";
-# binmode( JSIN, ':encoding(UTF-8)' );
-# my @lines = <JSIN>;
-# close JSIN;
-# $trad->add_json_witnesses( join( '', @lines ) );
-# is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness', 
-# 	"Found first JSON witness" );
-# is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
-# 	"Found second JSON witness" );
-# 
+# Test some JSON witnesses via object
+open( JSIN, 't/data/witnesses/testwit.json' ) or die "Could not open JSON test input";
+binmode( JSIN, ':encoding(UTF-8)' );
+my @lines = <JSIN>;
+close JSIN;
+$trad->add_json_witnesses( join( '', @lines ) );
+is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness', 
+	"Found first JSON witness" );
+is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
+	"Found second JSON witness" );
+
 # # Test an XML witness via file
 # my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
 # 	'file' => 't/data/witnesses/teiwit.xml' );
@@ -392,7 +392,8 @@ sub _init_from_xmldesc {
         if( $descnode->hasAttribute('xml:id') ) {
 			$self->_set_sigil( $descnode->getAttribute('xml:id') );
 		} elsif( !$self->has_sigil ) {
-			throw( 'Could not find xml:id witness sigil' );
+			throw( ident => 'missing sigil',
+				   message => 'Could not find xml:id witness sigil' );
 		}
 	} else {
 	    throw( ident => "bad source",
@@ -603,11 +604,26 @@ sub _init_from_json {
 	my $wit;
 	if( $self->has_object ) {
 		$wit = $self->object;
-	} else {
-	
+	} elsif( $self->has_string ) {
+		$wit = from_json( $self->string );
+	} elsif( $self->has_file ) {
+    	my $ok = open( INPUT, $self->file );
+    	unless( $ok ) {
+			throw( ident => "bad source",
+				   message => 'Could not open ' . $self->file . ' for reading' );
+    	}
+    	binmode( INPUT, ':encoding(UTF-8)' );
+    	my @lines = <INPUT>;
+    	close INPUT;
+    	$wit = from_json( join( '', @lines ) );
 	}
 	
-	$self->sigil( $wit->{'id'} );
+	if( exists $wit->{'id'} ) {
+		$self->_set_sigil( $wit->{'id'} );
+	} elsif( !$self->has_sigil ) {
+		throw( ident => 'missing sigil',
+			   message => 'Could not find witness sigil (id) in JSON spec' );
+	}
 	$self->identifier( $wit->{'name'} );
 	my @words;
 	my @layerwords;
@@ -619,14 +635,14 @@ sub _init_from_json {
 		my $ctr = 0;
 		foreach my $token ( @{$wit->{'tokens'}} ) {
 			my $w_obj = $self->tradition->collation->add_reading({
-				'text' => $token, 'id' => $self->sigil . 'r' . $ctr++ });
+				'text' => $token->{'t'}, 'id' => $self->sigil . 'r' . $ctr++ });
 			push( @words, $w_obj );
 		}
 		## TODO rethink this JSOn mechanism
 		if( exists $wit->{'layertokens'} ) {
 			foreach my $token ( @{$wit->{'layertokens'}} ) {
 				my $w_obj = $self->tradition->collation->add_reading({
-					'text' => $token, 'id' => $self->sigil . 'r' . $ctr++ });
+					'text' => $token->{'t'}, 'id' => $self->sigil . 'r' . $ctr++ });
 				push( @layerwords, $w_obj );
 			}
 		}

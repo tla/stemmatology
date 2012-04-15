@@ -1390,7 +1390,6 @@ sub make_witness_path {
     # Add start and end if necessary
     unshift( @chain, $self->start ) unless $chain[0] eq $self->start;
     push( @chain, $self->end ) unless $chain[-1] eq $self->end;
-    $DB::single = 1;
     foreach my $idx ( 0 .. $#chain-1 ) {
         $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }

@@ -1,6 +1,6 @@
 package Text::Tradition;
 
-use JSON qw / decode_json /;
+use JSON qw / from_json /;
 use Module::Load;
 use Moose;
 use Text::Tradition::Collation;
@@ -294,8 +294,8 @@ each element therein.
 
 sub add_json_witnesses {
 	my( $self, $jsonstr, $extraopts ) = @_;
-	my $witarray = decode_json( $jsonstr );
-	foreach my $witspec ( @$witarray ) {
+	my $witarray = from_json( $jsonstr );
+	foreach my $witspec ( @{$witarray->{witnesses}} ) {
 		my $opts = $extraopts || {};
 		$opts->{'sourcetype'} = 'json';
 		$opts->{'object'} = $witspec;
