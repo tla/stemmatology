@@ -36,18 +36,29 @@ is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness',
 is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
 	"Found second JSON witness" );
 
-# # Test an XML witness via file
-# my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
-# 	'file' => 't/data/witnesses/teiwit.xml' );
-# is( ref( $xmlwit ), 'Text::Tradition::Witness', "Created witness from XML file" );
-# if( $xmlwit ) {
-# 	is( $xmlwit->sigil, 'V887', "XML witness has correct sigil" );
-# 	ok( $xmlwit->is_layered, "Picked up correction layer" );
-# 	is( @{$xmlwit->path}, 185, "Got correct text length" );
-# 	is( @{$xmlwit->uncorrected_path}, 185, "Got correct a.c. text length" );
-# }
+# Test an XML witness via file
+my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
+	'file' => 't/data/witnesses/teiwit.xml' );
+is( ref( $xmlwit ), 'Text::Tradition::Witness', "Created witness from XML file" );
+if( $xmlwit ) {
+	is( $xmlwit->sigil, 'V887', "XML witness has correct sigil" );
+	ok( $xmlwit->is_layered, "Picked up correction layer" );
+	is( @{$xmlwit->text}, 182, "Got correct text length" );
+	is( @{$xmlwit->layertext}, 182, "Got correct a.c. text length" );
+}
+my @allwitwords = grep { $_->id =~ /^V887/ } $c->readings;
+is( @allwitwords, 184, "Reused appropriate readings" );
 
 ## Test use_text
+my $xpwit = $trad->add_witness( 'sourcetype' => 'xmldesc',
+	'file' => 't/data/witnesses/group.xml',
+	'use_text' => '//tei:group/tei:text[2]' );
+is( ref( $xpwit ), 'Text::Tradition::Witness', "Created witness from XML group" );
+if( $xpwit ) {
+	is( $xpwit->sigil, 'G', "XML part witness has correct sigil" );
+	ok( !$xpwit->is_layered, "Picked up no correction layer" );
+	is( @{$xpwit->text}, 157, "Got correct text length" );
+}
 }
 
 

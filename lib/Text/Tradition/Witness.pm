@@ -154,18 +154,30 @@ is( ref( $trad->witness( 'MsAJ' ) ), 'Text::Tradition::Witness',
 is( ref( $trad->witness( 'MsBJ' ) ), 'Text::Tradition::Witness', 
 	"Found second JSON witness" );
 
-# # Test an XML witness via file
-# my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
-# 	'file' => 't/data/witnesses/teiwit.xml' );
-# is( ref( $xmlwit ), 'Text::Tradition::Witness', "Created witness from XML file" );
-# if( $xmlwit ) {
-# 	is( $xmlwit->sigil, 'V887', "XML witness has correct sigil" );
-# 	ok( $xmlwit->is_layered, "Picked up correction layer" );
-# 	is( @{$xmlwit->path}, 185, "Got correct text length" );
-# 	is( @{$xmlwit->uncorrected_path}, 185, "Got correct a.c. text length" );
-# }
+# Test an XML witness via file
+my $xmlwit = $trad->add_witness( 'sourcetype' => 'xmldesc', 
+	'file' => 't/data/witnesses/teiwit.xml' );
+is( ref( $xmlwit ), 'Text::Tradition::Witness', "Created witness from XML file" );
+if( $xmlwit ) {
+	is( $xmlwit->sigil, 'V887', "XML witness has correct sigil" );
+	ok( $xmlwit->is_layered, "Picked up correction layer" );
+	is( @{$xmlwit->text}, 182, "Got correct text length" );
+	is( @{$xmlwit->layertext}, 182, "Got correct a.c. text length" );
+}
+my @allwitwords = grep { $_->id =~ /^V887/ } $c->readings;
+is( @allwitwords, 184, "Reused appropriate readings" );
 
 ## Test use_text
+my $xpwit = $trad->add_witness( 'sourcetype' => 'xmldesc',
+	'file' => 't/data/witnesses/group.xml',
+	'use_text' => '//tei:group/tei:text[2]' );
+is( ref( $xpwit ), 'Text::Tradition::Witness', "Created witness from XML group" );
+if( $xpwit ) {
+	is( $xpwit->sigil, 'G', "XML part witness has correct sigil" );
+	ok( !$xpwit->is_layered, "Picked up no correction layer" );
+	is( @{$xpwit->text}, 157, "Got correct text length" );
+}
+
 
 =end testing 
 
@@ -198,6 +210,12 @@ has 'sigil' => (
 	writer => '_set_sigil',
 	);
 	
+has 'language' => (
+    is => 'ro',
+    isa => 'Str',
+    default => 'Default',
+    );
+
 # Other identifying information
 has 'identifier' => (
 	is => 'rw',
@@ -219,20 +237,14 @@ has 'idno' => (
 	isa => 'Str',
 	);
 
+# Source. Can be XML obj, JSON data struct, or string.
+# Not used if the witness is created by parsing a collation.
 has 'sourcetype' => (
 	is => 'ro',
 	isa => 'SourceType',
 	required => 1, 
 );
 
-has 'language' => (
-    is => 'ro',
-    isa => 'Str',
-    default => 'Default',
-    );
-
-# Source. Can be XML obj, JSON data struct, or string.
-# Not used if the witness is created by parsing a collation.
 has 'file' => (
 	is => 'ro',
 	isa => 'Str',
@@ -256,13 +268,6 @@ has 'object' => ( # could be anything.
 has 'use_text' => (
 	is => 'ro',
 	isa => 'Str',
-	);
-
-has 'msdesc' => (  # if we started with a TEI doc
-	is => 'ro',
-	isa => 'XML::LibXML::Element',
-	predicate => 'has_msdesc',
-	writer => '_save_msdesc',
 	);
 
 # Text.	 This is an array of strings (i.e. word tokens).
@@ -289,6 +294,7 @@ has 'path' => (
 	clearer => 'clear_path',
 	);		   
 
+## TODO change the name of this
 has 'uncorrected_path' => (
 	is => 'rw',
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
@@ -365,7 +371,6 @@ sub _init_from_xmldesc {
 	# Get the identifier
 	if( my $desc = $xpc->find( $tags{msDesc} ) ) {
 		my $descnode = $desc->get_node(1);
-		$self->_save_msdesc( $descnode );
 		# First try to use settlement/repository/idno.
 		my( $setNode, $reposNode, $idNode ) =
 			( $xpc->find( $tags{settlement}, $descnode )->get_node(1),
@@ -422,13 +427,14 @@ sub _init_from_xmldesc {
 	           message => "No text element in document '" . $self->{'identifier'} . "!" );
 	}
 	
+	my @text = map { $_->text } @words;
+	my @layertext = map { $_->text } @layerwords;
 	$self->path( \@words );
-	my $a = join( ' ', map { $_->text } @words );
-	my $b = join( ' ', map { $_->text } @layerwords );
-	if( $a ne $b ) {
+	$self->text( \@text );
+	if( join( ' ', @text ) ne join( ' ', @layertext ) ) {
 		$self->uncorrected_path( \@layerwords );
+		$self->layertext( \@layertext );
 	}
-	# TODO set self->text
 }
 
 sub _tokenize_text {
@@ -471,7 +477,7 @@ sub _objectify_words {
 		# Hunt down each wrapped word/seg, and make an object (or two objects)
 		# of it, if necessary.
 		foreach my $c ( $xpc->findnodes( $xpexpr, $pg ) ) {
-			my( $text, $uncorr ) = _get_word_object( $c );
+			my( $text, $uncorr ) = _get_word_strings( $c );
 # 			try {
 # 				( $text, $uncorr ) = _get_word_object( $c );
 # 			} catch( Text::Tradition::Error $e 
@@ -533,8 +539,8 @@ sub _get_word_strings {
 	my $word_excluded = 0;
 	my $xpc = _xpc_for_el( $node );
 	# TODO This does not cope with nested add/dels.
-	my @addition = $xpc->findnodes( 'ancestor::' . $tags{add} );
-	my @deletion = $xpc->findnodes( 'ancestor::' . $tags{del} );
+	my @addition = $xpc->findnodes( 'ancestor::' . substr( $tags{add}, 2 ) );
+	my @deletion = $xpc->findnodes( 'ancestor::' . substr( $tags{del}, 2 ) );
 	foreach my $c ($node->childNodes() ) {
 		if( $c->nodeName eq 'num' 
 			&& defined $c->getAttribute( 'value' ) ) {
@@ -555,26 +561,28 @@ sub _get_word_strings {
 			$word_excluded = 1 if $c->nodeName =~ /^(fw|sic)$/;
 			next;
 		} elsif( $c->nodeName eq 'add' ) {
-			my( $use, $discard ) = _get_text_from_node( $c );
+			my( $use, $discard ) = _get_word_strings( $c );
 			$text .= $use;
 		} elsif( $c->nodeName eq 'del' ) {
-			my( $discard, $use ) = _get_text_from_node( $c );
+			my( $discard, $use ) = _get_word_strings( $c );
 			$uncorrtext .= $use;
 		} else {
-			my $tagtxt;
+			my ( $tagtxt, $taguncorr );
 			if( ref( $c ) eq 'XML::LibXML::Text' ) {
 				# A text node.
 				$tagtxt = $c->textContent;
+				$taguncorr = $c->textContent;
 			} else {
-				$tagtxt = _get_text_from_node( $c );
+				( $tagtxt, $taguncorr ) = _get_word_strings( $c );
 			}
 			if( $strip_leading_space ) {
 				$tagtxt =~ s/^[\s\n]+//s;
+				$taguncorr =~ s/^[\s\n]+//s;
 				# Unset the flag as soon as we see non-whitespace.
 				$strip_leading_space = 0 if $tagtxt;
 			}
 			$text .= $tagtxt;
-			$uncorrtext .= $tagtxt;
+			$uncorrtext .= $taguncorr;
 		} 
 	}
 	throw( ident => "text not found",
