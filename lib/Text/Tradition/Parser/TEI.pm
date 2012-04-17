@@ -124,7 +124,7 @@ sub parse {
     foreach my $wit_el ( $xpc->findnodes( "//$LISTWIT/$WITNESS" ) ) {
         my $sig = $wit_el->getAttribute( 'xml:id' );
         my $source = $wit_el->toString();
-        $tradition->add_witness( sigil => $sig, source => $source );
+        $tradition->add_witness( sigil => $sig, sourcetype => 'collation' );
     }
     map { $text->{$_->sigil} = [] } $tradition->witnesses;
 

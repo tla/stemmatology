@@ -368,6 +368,12 @@ sub witnesses {
     return @wits;
 }
 
+=head2 hypotheticals
+
+Returns a list of the hypothetical witnesses represented in the stemma.
+
+=cut
+
 sub hypotheticals {
     my $self = shift;
     my @wits = grep 

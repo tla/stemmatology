@@ -60363,11 +60363,6 @@
       <data key="de7">global</data>
       <data key="de6">1p poss/main </data>
     </edge>
-    <edge source="n187" target="n188" id="e13">
-      <data key="de2">meaning</data>
-      <data key="de7">global</data>
-      <data key="de6">synonyms</data>
-    </edge>
     <edge source="n194" target="n195" id="e14">
       <data key="de2">grammatical</data>
       <data key="de7">global</data>
@@ -60471,11 +60466,6 @@
       <data key="de2">grammatical</data>
       <data key="de7">global</data>
       <data key="de6">verb mood</data>
-    </edge>
-    <edge source="n640" target="n641" id="e37">
-      <data key="de2">meaning</data>
-      <data key="de7">global</data>
-      <data key="de6">opposites</data>
     </edge>
     <edge source="n643" target="n644" id="e38">
       <data key="de2">grammatical</data>
