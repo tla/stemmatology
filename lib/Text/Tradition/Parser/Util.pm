@@ -31,13 +31,22 @@ on the collation graph.
 
 sub collate_variants {
     my( $collation, @reading_sets ) = @_;
+    
+    # Make sure the reading sets are unique, but keep
+    # the lemma first.
+    my $lemma = shift @reading_sets;
+    my %unique_sets;
+    map { $unique_sets{$_} = $_ } @reading_sets;
+	delete $unique_sets{$lemma};
+	my @sets = values %unique_sets;
+	unshift( @sets, $lemma );
 
     # Two different ways to do this, depending on whether we want
     # transposed reading nodes to be merged into one (producing a
     # nonlinear, bidirectional graph) or not (producing a relatively
     # linear, unidirectional graph.)
-    return $collation->linear ? _collate_linearly( @_ )
-        : _collate_nonlinearly( @_ );
+    return $collation->linear ? _collate_linearly( $collation, @sets )
+        : _collate_nonlinearly( $collation, @sets );
 }
 
 sub _collate_linearly {
