@@ -2,6 +2,7 @@ package Text::Tradition::Parser::CTE;
 
 use strict;
 use warnings;
+use Encode qw/ decode /;
 use Text::Tradition::Parser::Util qw/ collate_variants /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
@@ -38,32 +39,22 @@ sub parse {
 	my $c = $tradition->collation;	# Some shorthand
 	
 	# First, parse the XML.
-	my $parser = XML::LibXML->new();
-    my $doc;
-    if( exists $opts->{'string'} ) {
-        $doc = $parser->parse_string( $opts->{'string'} );
-    } elsif ( exists $opts->{'file'} ) {
-        $doc = $parser->parse_file( $opts->{'file'} );
-    } else {
-        warn "Could not find string or file option to parse";
-        return;
-    }
-	my $tei = $doc->documentElement();
-	my $xpc = XML::LibXML::XPathContext->new( $tei );
+    my( $tei, $xpc ) = _remove_formatting( $opts );
+    return unless $tei; # we have already warned.
 
 	# CTE uses a DTD rather than any xmlns-based parsing.  Thus we
 	# need no namespace handling.
-
 	# Get the witnesses and create the witness objects.
 	foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
 		# The witness xml:id is used internally, and is *not* the sigil name.
 		my $id= $wit_el->getAttribute( 'xml:id' );
-		my @sig_parts = $xpc->findnodes( './abbr/descendant::text()', $wit_el );
+		my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
+		print STDERR "Adding witness $sig\n";
 		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
-
+	
 	# Now go through the text and find the base tokens, apparatus tags, and
 	# anchors.  Make a giant array of all of these things in sequence.
 	# TODO consider combining this with creation of graph below
@@ -73,7 +64,6 @@ sub parse {
 			push( @base_text, _get_base( $xn ) );
 		}
 	}
-	
 	# We now have to work through this array applying the alternate 
 	# apparatus readings to the base text.  Essentially we will put 
 	# everything on the graph, from which we will delete the apps and
@@ -114,6 +104,8 @@ sub parse {
     # Save the text for each witness so that we can ensure consistency
     # later on
 	$tradition->collation->text_from_paths();	
+	$tradition->collation->calculate_ranks();
+	$tradition->collation->flatten_ranks();
 }
 
 sub _stringify_sigil {
@@ -122,8 +114,45 @@ sub _stringify_sigil {
     return join( '', @parts );
 }
 
-## Recursive little helper function to help us navigate through nested
-## XML, picking out the words, the apparatus, and the anchors.
+# Get rid of all the formatting elements that get in the way of tokenization.
+sub _remove_formatting {
+	my( $opts ) = @_;
+	
+	# First, parse the original XML
+	my $parser = XML::LibXML->new();
+    my $doc;
+    if( exists $opts->{'string'} ) {
+        $doc = $parser->parse_string( $opts->{'string'} );
+    } elsif ( exists $opts->{'file'} ) {
+        $doc = $parser->parse_file( $opts->{'file'} );
+    } else {
+        warn "Could not find string or file option to parse";
+        return;
+    }
+    
+    # Second, remove the formatting
+	my $xpc = XML::LibXML::XPathContext->new( $doc->documentElement );
+	my @useless = $xpc->findnodes( '//hi' );
+	foreach my $n ( @useless ) {
+		my $parent = $n->parentNode();
+		my @children = $n->childNodes();
+		my $first = shift @children;
+		$parent->replaceChild( $first, $n );
+		foreach my $c ( @children ) {
+			$parent->insertAfter( $c, $first );
+			$first = $c;
+		}
+	}
+	
+	# Third, write out and reparse to merge the text nodes.
+	my $result = decode( $doc->encoding, $doc->toString() );
+	my $tei = $parser->parse_string( $result )->documentElement;
+	$xpc = XML::LibXML::XPathContext->new( $tei );
+	return( $tei, $xpc );
+}
+
+## Helper function to help us navigate through nested XML, picking out 
+## the words, the apparatus, and the anchors.
 
 sub _get_base {
 	my( $xn ) = @_;
@@ -131,17 +160,10 @@ sub _get_base {
 	if( $xn->nodeType == XML_TEXT_NODE ) {
 	    # Base text, just split the words on whitespace and add them 
 	    # to our sequence.
-	    # TODO consider that XML markup might appear mid-token.
 		my $str = $xn->data;
 		$str =~ s/^\s+//;
-		foreach my $w ( split( /\s+/, $str ) ) {
-			push( @readings, { 'type' => 'token', 'content' => $w } );
-		}
-	} elsif( $xn->nodeName eq 'hi' ) {
-		# Recurse as if the hi weren't there.
-		foreach( $xn->childNodes ) {
-			push( @readings, _get_base( $_ ) );
-		}
+		my @tokens = split( /\s+/, $str );
+		push( @readings, map { { 'type' => 'token', 'content' => $_ } } @tokens );
 	} elsif( $xn->nodeName eq 'app' ) {
 		# Apparatus, just save the entire XML node.
 		push( @readings, { 'type' => 'app', 'content' => $xn } );
@@ -153,6 +175,29 @@ sub _get_base {
 	    print STDERR "Unrecognized tag " . $xn->nodeName . "\n";
 	}
 	return @readings;
+}
+
+sub _append_tokens {
+	my( $list, @tokens ) = @_;
+	if( @$list && $list->[-1]->{'content'} =~ /\#JOIN\#$/ ) {
+		# The list evidently ended mid-word; join the next token onto it.
+		my $t = shift @tokens;
+		if( ref $t && $t->{'type'} eq 'token' ) {
+			# Join the word
+			$t = $t->{'content'};
+		} elsif( ref $t ) {
+			# An app or anchor intervened; end the word.
+			unshift( @tokens, $t );
+			$t = '';
+		}
+		$list->[-1]->{'content'} =~ s/\#JOIN\#$/$t/;
+	}
+	foreach my $t ( @tokens ) {
+		unless( ref( $t ) ) {
+			$t = { 'type' => 'token', 'content' => $t };
+		}
+		push( @$list, $t );
+	}
 }
 
 sub _add_readings {
@@ -170,6 +215,7 @@ sub _add_readings {
     my $ctr = 0;
     my $tag = $app_id;
     $tag =~ s/^\#APP_(.*)\#$/$1/;
+
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
         my @text;
         foreach ( $rdg->childNodes ) {
@@ -213,6 +259,7 @@ sub _add_readings {
     }       
         
     # Now collate the variant readings, since it is not done for us.
+    $DB::single = 1 if @lemma > 10;
     collate_variants( $c, \@lemma, values %wit_rdgs );
         
     # Now add the witness paths for each reading.
@@ -243,7 +290,6 @@ sub interpret {
 	return $reading if $reading eq $lemma;
 	my $oldreading = $reading;
 	# $lemma =~ s/\s+[[:punct:]]+$//;
-	# $reading =~ s/\s*\(?sic([\s\w.]+)?\)?$//;
 	my $flag;  # In case of p.c. indications
 	my @words = split( /\s+/, $lemma );
 	if( $reading =~ /^(.*) praem.$/ ) {
@@ -258,11 +304,14 @@ sub interpret {
 		$reading = $lemma;
 	} elsif( $reading =~ /locus [uv]acuus/
 	    || $reading eq 'def.'
+	    || $reading eq 'illeg.'
+	    || $reading eq 'onleesbar'
 	    ) {
 		$reading = '#LACUNA#';
 	} elsif( $reading eq 'om.' ) {
 		$reading = '';
-	} elsif( $reading =~ /^in[uv]\.$/ ) {
+	} elsif( $reading =~ /^in[uv]\.$/ 
+			 || $reading eq 'transp.' ) {
 		# Hope it is two words.
 		print STDERR "WARNING: want to invert a lemma that is not two words\n" 
 			unless scalar( @words ) == 2;
@@ -274,6 +323,9 @@ sub interpret {
 		# There was nothing before a correction.
 		$reading = '';
 		$flag = '_ac';
+	} elsif( $reading =~ /^(.*?)\s*\(?sic([\s\w.]+)?\)?$/ ) {
+		# Discard any 'sic' notation; indeed, indeed.
+		$reading = $1;
 	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
 		# The first and last N words captured should replace the first and
 		# last N words of the lemma.
