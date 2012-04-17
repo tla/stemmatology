@@ -119,6 +119,11 @@ Accessor method for the witness identifier.
 
 Accessor method for the general witness description.
 
+=head2 has_source
+
+Boolean method that returns a true value if the witness was created with a
+data source (that is, a file, string, or object to be parsed).
+
 =head2 is_layered
 
 Boolean method to note whether the witness has layers (e.g. pre-correction 
@@ -781,6 +786,8 @@ __PACKAGE__->meta->make_immutable;
 =head1 BUGS / TODO
 
 =over
+
+=item * Figure out how to serialize a witness
 
 =item * Support encodings other than UTF-8
 

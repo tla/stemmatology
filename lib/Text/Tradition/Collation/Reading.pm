@@ -280,6 +280,18 @@ A few methods to try to tack on morphological information.
 
 Returns true if there is only one tag per lexeme in this reading.
 
+=head2 use_lexemes
+
+TBD
+
+=head2 add_morphological_tag
+
+TBD
+
+=head2 disambiguate
+
+TBD
+
 =cut
 
 sub use_lexemes {

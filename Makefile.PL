@@ -24,7 +24,7 @@ requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
 requires( 'StackTrace::Auto' );
 requires( 'Text::CSV' );
-requires( 'Text::TEI::Markup' );
+requires( 'Text::TEI::Markup' => '1.4' );
 requires( 'Throwable::X' );
 requires( 'TryCatch' );
 requires( 'XML::Easy::Syntax' );
