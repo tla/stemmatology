@@ -37,6 +37,7 @@ has 'relations' => (
 has 'tradition' => (
     is => 'ro',
     isa => 'Text::Tradition',
+    writer => '_set_tradition',
     weak_ref => 1,
     );
 
