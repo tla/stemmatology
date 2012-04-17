@@ -1,5 +1,6 @@
 package Text::Tradition;
 
+use JSON qw / from_json /;
 use Module::Load;
 use Moose;
 use Text::Tradition::Collation;
@@ -37,6 +38,7 @@ has 'name' => (
 has 'language' => (
 	is => 'rw',
 	isa => 'Str',
+	predicate => 'has_language',
 	);
     
 has 'stemmata' => (
@@ -57,7 +59,11 @@ around 'add_witness' => sub {
     my $orig = shift;
     my $self = shift;
     # TODO allow add of a Witness object?
-    my $new_wit = Text::Tradition::Witness->new( @_ );
+    my %args = @_ == 1 ? %{$_[0]} : @_;
+    $args{'tradition'} = $self;
+    $args{'language'} = $self->language 
+    	if( $self->language && !exists $args{'language'} );
+    my $new_wit = Text::Tradition::Witness->new( %args );
     $self->$orig( $new_wit->sigil => $new_wit );
     return $new_wit;
 };
@@ -95,7 +101,14 @@ Text::Tradition - a software model for a set of collated texts
 
   my @text_wits = $t->witnesses();
   my $manuscript_a = $t->witness( 'A' );
-  my $new_ms = $t->add_witness( 'sigil' => 'B' );
+
+  $t = Text::Tradition->new();
+  $t->add_witness( 'sourcetype' => 'xmldesc', 
+    'file' => '/path/to/teitranscription.xml' );
+  $t->add_witness( 'sourcetype => 'plaintext', 'sigil' => 'Q',
+    'string' => 'The quick brown fox jumped over the lazy dogs' );
+  ## TODO
+  $t->collate_texts;
   
   my $text_path_svg = $t->collation->as_svg();
   ## See Text::Tradition::Collation for more on text collation itself
@@ -220,7 +233,7 @@ if( $wit_a ) {
 is( $s->witness('X'), undef, "There is no witness X" );
 ok( !exists $s->{'witnesses'}->{'X'}, "Witness key X not created" );
 
-my $wit_d = $s->add_witness( 'sigil' => 'D' );
+my $wit_d = $s->add_witness( 'sigil' => 'D', 'sourcetype' => 'collation' );
 is( ref( $wit_d ), 'Text::Tradition::Witness', "new witness created" );
 is( $wit_d->sigil, 'D', "witness has correct sigil" );
 is( scalar $s->witnesses, 4, "object now has four witnesses" );
@@ -238,34 +251,14 @@ is( scalar $s->witnesses, 3, "object has three witnesses again" );
 
 sub BUILD {
     my( $self, $init_args ) = @_;
+    
+    # First, make a collation object. This will use only those arguments in
+    # init_args that apply to the collation.
+	my $collation = Text::Tradition::Collation->new( %$init_args,
+													'tradition' => $self );
+	$self->_save_collation( $collation );
 
-    if( exists $init_args->{'witnesses'} ) {
-        # We got passed an uncollated list of witnesses.  Make a
-        # witness object for each witness, and then send them to the
-        # collator.
-        my $autosigil = 0;
-        foreach my $wit ( %{$init_args->{'witnesses'}} ) {
-            # Each item in the list is either a string or an arrayref.
-            # If it's a string, it is a filename; if it's an arrayref,
-            # it is a tuple of 'sigil, file'.  Handle either case.
-            my $args;
-            if( ref( $wit ) eq 'ARRAY' ) {
-                $args = { 'sigil' => $wit->[0],
-                          'file' => $wit->[1] };
-            } else {
-                $args = { 'sigil' => chr( $autosigil+65 ),
-                          'file' => $wit };
-                $autosigil++;
-            }
-            $self->witnesses->add_witness( $args );
-            # TODO Now how to collate these?
-        }
-    } else {
-        # Else we need to parse some collation data.  Make a Collation object
-        my $collation = Text::Tradition::Collation->new( %$init_args,
-                                                        'tradition' => $self );
-        $self->_save_collation( $collation );
-
+    if( exists $init_args->{'input'} ) {
         # Call the appropriate parser on the given data
         my @format_standalone = qw/ Self CollateText CollateX CTE JSON TEI Tabular /;
         my @format_basetext = qw/ KUL /;
@@ -295,6 +288,26 @@ sub BUILD {
             $mod->can('parse')->( $self, $init_args );
         }
     }
+    return $self;
+}
+
+=head2 add_json_witnesses( $jsonstring, $options )
+
+Adds a set of witnesses from a JSON array specification. This is a wrapper
+to parse the JSON and call add_witness (with the specified $options) for
+each element therein.
+
+=cut
+
+sub add_json_witnesses {
+	my( $self, $jsonstr, $extraopts ) = @_;
+	my $witarray = from_json( $jsonstr );
+	foreach my $witspec ( @{$witarray->{witnesses}} ) {
+		my $opts = $extraopts || {};
+		$opts->{'sourcetype'} = 'json';
+		$opts->{'object'} = $witspec;
+		$self->add_witness( $opts );
+	}
 }
 
 =head2 add_stemma( $dotfile )

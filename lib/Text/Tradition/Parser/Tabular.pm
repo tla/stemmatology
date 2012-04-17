@@ -2,7 +2,7 @@ package Text::Tradition::Parser::Tabular;
 
 use strict;
 use warnings;
-use Text::CSV_XS;
+use Text::CSV;
 
 =head1 NAME
 
@@ -122,7 +122,7 @@ sub parse {
     	$csv_options->{'quote_char'} = undef;
     	$csv_options->{'escape_char'} = undef;
     }
-    my $csv = Text::CSV_XS->new( $csv_options );
+    my $csv = Text::CSV->new( $csv_options );
     
     my $alignment_table;
     if( exists $opts->{'string' } ) {
@@ -151,14 +151,18 @@ sub parse {
     # Set up the witnesses we find in the first line
     my @witnesses;
     my %ac_wits;  # Track layered witness -> main witness mapping
+    my $aclabel = $c->ac_label;
     foreach my $sigil ( @{$alignment_table->[0]} ) {
-        my $wit = $tradition->add_witness( 'sigil' => $sigil );
+        if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
+        	# Sanitize the sigil name to an XML name
+        	$sigil = $1 . '_layered';
+            $ac_wits{$sigil} = $1;
+        }
+        my $wit = $tradition->add_witness( 
+        	'sigil' => $sigil, 'sourcetype' => 'collation' );
         $wit->path( [ $c->start ] );
         push( @witnesses, $wit );
         my $aclabel = $c->ac_label;
-        if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
-            $ac_wits{$sigil} = $1;
-        }
     }
     
     # Save the original witness text sequences. Have to loop back through

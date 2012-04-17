@@ -249,7 +249,8 @@ sub merge_base {
     # Now make the witness objects, and create their text sequences
     foreach my $w ( grep { $_ !~ /_post$/ } keys %$edits_required ) {
         print STDERR "Creating witness $w\n";
-        my $witness_obj = $collation->tradition->add_witness( sigil => $w );
+        my $witness_obj = $collation->tradition->add_witness( 
+        	sigil => $w, sourcetype => 'collation' );
         my $debug; #  = $w eq 'Vb11';
         my @ante_corr_seq = apply_edits( $collation, $edits_required->{$w}, $debug );
         my @post_corr_seq = apply_edits( $collation, $edits_required->{$w."_post"}, $debug )

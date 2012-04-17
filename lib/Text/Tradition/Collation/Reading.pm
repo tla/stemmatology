@@ -82,6 +82,12 @@ has 'text' => (
 	writer => 'alter_text',
 	);
 	
+has 'language' => (
+	is => 'ro',
+	isa => 'Str',
+	default => 'Default',
+	);
+	
 has 'is_start' => (
 	is => 'ro',
 	isa => 'Bool',
@@ -273,6 +279,18 @@ A few methods to try to tack on morphological information.
 =head2 is_disambiguated
 
 Returns true if there is only one tag per lexeme in this reading.
+
+=head2 use_lexemes
+
+TBD
+
+=head2 add_morphological_tag
+
+TBD
+
+=head2 disambiguate
+
+TBD
 
 =cut
 

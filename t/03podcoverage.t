@@ -23,7 +23,7 @@ if( -e 'MANIFEST.SKIP' ) {
 }
 		
 foreach my $mod ( keys %mods ) {
-	pod_coverage_ok( $mod, { also_private => [ qw/ BUILD throw / ] } );
+	pod_coverage_ok( $mod, { also_private => [ qw/ TO_JSON BUILD throw / ] } );
 }
 
 done_testing();

@@ -5,7 +5,7 @@ use File::Temp;
 use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
-use Text::CSV_XS;
+use Text::CSV;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
@@ -1079,7 +1079,7 @@ row per witness (or witness uncorrected.)
 sub as_csv {
     my( $self ) = @_;
     my $table = $self->alignment_table;
-    my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );    
+    my $csv = Text::CSV->new( { binary => 1, quote_null => 0 } );    
     my @result;
     # Make the header row
     $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
@@ -1325,7 +1325,7 @@ sub common_readings {
 	return @common;
 }
 
-=head2 path_text( $sigil, $mainsigil [, $start, $end ] )
+=head2 path_text( $sigil, [, $start, $end ] )
 
 Returns the text of a witness (plus its backup, if we are using a layer)
 as stored in the collation.  The text is returned as a string, where the
@@ -1387,11 +1387,16 @@ sub make_witness_path {
     my( $self, $wit ) = @_;
     my @chain = @{$wit->path};
     my $sig = $wit->sigil;
+    # Add start and end if necessary
+    unshift( @chain, $self->start ) unless $chain[0] eq $self->start;
+    push( @chain, $self->end ) unless $chain[-1] eq $self->end;
     foreach my $idx ( 0 .. $#chain-1 ) {
         $self->add_path( $chain[$idx], $chain[$idx+1], $sig );
     }
     if( $wit->is_layered ) {
         @chain = @{$wit->uncorrected_path};
+		unshift( @chain, $self->start ) unless $chain[0] eq $self->start;
+		push( @chain, $self->end ) unless $chain[-1] eq $self->end;
         foreach my $idx( 0 .. $#chain-1 ) {
             my $source = $chain[$idx];
             my $target = $chain[$idx+1];

@@ -51,7 +51,7 @@ sub parse {
 		my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
 		print STDERR "Adding witness $sig\n";
-		$tradition->add_witness( sigil => $sig, source => $wit_el->toString() );
+		$tradition->add_witness( sigil => $sig, sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
 	
@@ -259,7 +259,6 @@ sub _add_readings {
     }       
         
     # Now collate the variant readings, since it is not done for us.
-    $DB::single = 1 if @lemma > 10;
     collate_variants( $c, \@lemma, values %wit_rdgs );
         
     # Now add the witness paths for each reading.
