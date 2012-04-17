@@ -550,7 +550,7 @@ sub as_svg {
     throw( "Need GraphViz installed to output SVG" )
     	unless File::Which::which( 'dot' );
     my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
-    $self->calculate_ranks() unless $self->_graphcalc_done;
+    $self->calculate_ranks() unless( $self->_graphcalc_done || $opts->{'nocalc'} );
     if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
 		my @cmd = qw/dot -Tsvg/;
 		my( $svg, $err );
