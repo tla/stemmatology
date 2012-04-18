@@ -382,10 +382,10 @@ sub relationship_valid {
 				return ( 0, "Readings both occur in witness $w" ) 
 					if $rel eq 'transposition';
 				return ( 1, "ok" ) if $rel eq 'repetition';
+			}
 		}
 		return $rel eq 'transposition' ? ( 1, "ok" )
 			: ( 0, "Readings occur only in distinct witnesses" );
-		}
 	} else {
 		# Check that linking the source and target in a relationship won't lead
 		# to a path loop for any witness.  If they have the same rank then fine.
