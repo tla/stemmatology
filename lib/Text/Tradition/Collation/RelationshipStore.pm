@@ -216,6 +216,7 @@ sub add_relationship {
 		# Check the options
 		$options->{'scope'} = 'local' unless $options->{'scope'};
 		$options->{'scope'} = 'local' if $options->{'type'} eq 'collated';
+		$options->{'scope'} = 'local' if $options->{'type'} eq 'transposition';
 		
 		my( $is_valid, $reason ) = 
 			$self->relationship_valid( $source, $target, $options->{'type'} );
@@ -265,6 +266,7 @@ sub add_relationship {
 				next;
     		}
     	}
+    	map { $self->_drop_collations( $_ ) } @$v;
     	$self->_set_relationship( $relationship, @$v );
     	push( @pairs_set, $v );
     }
