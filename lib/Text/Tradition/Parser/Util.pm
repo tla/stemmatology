@@ -32,14 +32,13 @@ on the collation graph.
 sub collate_variants {
     my( $collation, @reading_sets ) = @_;
     
-    # Make sure the reading sets are unique, but keep
-    # the lemma first.
-    my $lemma = shift @reading_sets;
+    # Make sure the reading sets are unique, but retain their ordering.
     my %unique_sets;
-    map { $unique_sets{$_} = $_ } @reading_sets;
-	delete $unique_sets{$lemma};
-	my @sets = values %unique_sets;
-	unshift( @sets, $lemma );
+    my @sets;
+    foreach( @reading_sets ) {
+    	push( @sets, $_ ) unless $unique_sets{$_};
+    	$unique_sets{$_} = $_;
+    }
 
     # Two different ways to do this, depending on whether we want
     # transposed reading nodes to be merged into one (producing a
