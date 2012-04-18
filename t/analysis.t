@@ -17,9 +17,6 @@ my $tradition = Text::Tradition->new(
 	'file' => 't/data/besoin.xml' );
 $tradition->add_stemma( 'dotfile' => 't/data/besoin.dot' );
 
-# Hack to avoid warning
-$tradition->collation->add_relationship( '493,2', '493,3', {'type'=>'orthographic'} );
-
 # Run the analysis of the tradition
 my $results = run_analysis( $tradition );
 
