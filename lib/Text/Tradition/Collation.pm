@@ -1493,8 +1493,8 @@ sub calculate_ranks {
             $r->rank( $node_ranks->{$rel_containers{$r->id}} );
         } else {
         	# Die. Find the last rank we calculated.
-        	my @all_defined = sort { $node_ranks->{$rel_containers{$a->id}}
-        			 <=> $node_ranks->{$rel_containers{$b->id}} }
+        	my @all_defined = sort { ( $node_ranks->{$rel_containers{$a->id}}||-1 )
+        			 <=> ( $node_ranks->{$rel_containers{$b->id}}||-1 ) }
         		$self->readings;
         	my $last = pop @all_defined;
             throw( "Ranks not calculated after $last - do you have a cycle in the graph?" );
