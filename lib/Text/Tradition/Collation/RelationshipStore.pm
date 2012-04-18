@@ -272,6 +272,19 @@ sub add_relationship {
     return @pairs_set;
 }
 
+=head2 del_scoped_relationship( $reading_a, $reading_b )
+
+Returns the general (document-level or global) relationship that has been defined 
+between the two reading strings. Returns undef if there is no general relationship.
+
+=cut
+
+sub del_scoped_relationship {
+	my( $self, $rdga, $rdgb ) = @_;
+	my( $first, $second ) = sort( $rdga, $rdgb );
+	return delete $self->scopedrels->{$first}->{$second};
+}
+
 sub _find_applicable {
 	my( $self, $rel ) = @_;
 	my $c = $self->collation;
@@ -328,12 +341,14 @@ sub del_relationship {
 	$self->_remove_relationship( $source, $target );
 	if( $rel->nonlocal ) {
 		# Remove the relationship wherever it occurs.
+		# Remove the relationship wherever it occurs.
 		my @rel_edges = grep { $self->get_relationship( @$_ ) == $rel }
 			$self->relationships;
 		foreach my $re ( @rel_edges ) {
 			$self->_remove_relationship( @$re );
 			push( @vectors, $re );
 		}
+		$self->del_scoped_relationship( $rel->reading_a, $rel->reading_b );
 	}
 	return @vectors;
 }
