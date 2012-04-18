@@ -250,13 +250,6 @@ has 'sourcetype' => (
 	required => 1, 
 );
 
-has 'source' => (
-	is => 'ro',
-	isa => 'Str',
-	predicate => 'has_old_source',
-	clearer => 'clear_old_source',
-);
-
 has 'file' => (
 	is => 'ro',
 	isa => 'Str',
