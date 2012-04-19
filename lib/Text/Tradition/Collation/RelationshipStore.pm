@@ -202,6 +202,63 @@ scoped non-locally.
 Returns a status boolean and a list of all reading pairs connected by the call to
 add_relationship.
 
+=begin testing
+
+use Text::Tradition;
+use TryCatch;
+
+my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+# Test 1: try to equate nodes that are prevented with an intermediate collation
+ok( $t1, "Parsed test fragment file" );
+my $c1 = $t1->collation;
+my $trel = $c1->get_relationship( '9,2', '9,3' );
+is( ref( $trel ), 'Text::Tradition::Collation::Relationship',
+	"Troublesome relationship exists" );
+is( $trel->type, 'collated', "Troublesome relationship is a collation" );
+
+# Try to make the link we want
+try {
+	$c1->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
+	ok( 1, "Added cross-collation relationship as expected" );
+} catch {
+	ok( 0, "Existing collation blocked equivalence relationship" );
+}
+
+try {
+	$c1->calculate_ranks();
+	ok( 1, "Successfully calculated ranks" );
+} catch {
+	ok( 0, "Collation now has a cycle" );
+}
+
+# Test 2: try to equate nodes that are prevented with a real intermediate
+# equivalence
+
+my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+# Test 1: try to equate nodes that are prevented with an intermediate collation
+my $c2 = $t2->collation;
+$c2->add_relationship( '9,2', '9,3', { 'type' => 'lexical' } );
+my $trel2 = $c2->get_relationship( '9,2', '9,3' );
+is( ref( $trel2 ), 'Text::Tradition::Collation::Relationship',
+	"Created blocking relationship" );
+is( $trel2->type, 'lexical', "Blocking relationship is not a collation" );
+# This time the link ought to fail
+try {
+	$c2->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
+	ok( 0, "Existing equivalence blocked crossing relationship" );
+} catch {
+	ok( 1, "Added cross-equivalent bad relationship" );
+}
+
+try {
+	$c2->calculate_ranks();
+	ok( 1, "Successfully calculated ranks" );
+} catch {
+	ok( 0, "Collation now has a cycle" );
+}
+
+=end testing
+
 =cut
 
 sub add_relationship {
