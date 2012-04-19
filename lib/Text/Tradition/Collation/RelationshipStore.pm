@@ -211,6 +211,8 @@ my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.x
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
+## HACK
+$c1->calculate_ranks();
 my $trel = $c1->get_relationship( '9,2', '9,3' );
 is( ref( $trel ), 'Text::Tradition::Collation::Relationship',
 	"Troublesome relationship exists" );
@@ -237,6 +239,8 @@ try {
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 my $c2 = $t2->collation;
+## HACK
+$c2->calculate_ranks();
 $c2->add_relationship( '9,2', '9,3', { 'type' => 'lexical' } );
 my $trel2 = $c2->get_relationship( '9,2', '9,3' );
 is( ref( $trel2 ), 'Text::Tradition::Collation::Relationship',
@@ -245,9 +249,9 @@ is( $trel2->type, 'lexical', "Blocking relationship is not a collation" );
 # This time the link ought to fail
 try {
 	$c2->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
-	ok( 0, "Existing equivalence blocked crossing relationship" );
+	ok( 0, "Added cross-equivalent bad relationship" );
 } catch {
-	ok( 1, "Added cross-equivalent bad relationship" );
+	ok( 1, "Existing equivalence blocked crossing relationship" );
 }
 
 try {
@@ -262,10 +266,12 @@ try {
 =cut
 
 sub add_relationship {
-	my( $self, $source, $source_rdg, $target, $target_rdg, $options ) = @_;
+	my( $self, $source, $target, $options ) = @_;
+    my $c = $self->collation;
 
 	my $relationship;
 	my $thispaironly;
+	my $droppedcolls = [];
 	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
 		$relationship = $options;
 		$thispaironly = 1;  # If existing rel, set only where asked.
@@ -275,15 +281,15 @@ sub add_relationship {
 		$options->{'scope'} = 'local' if $options->{'type'} eq 'collated';
 		$options->{'scope'} = 'local' if $options->{'type'} eq 'transposition';
 		
-		my( $is_valid, $reason ) = 
-			$self->relationship_valid( $source, $target, $options->{'type'} );
+		my( $is_valid, $reason ) = $self->relationship_valid( $source, $target, 
+			$options->{'type'}, $droppedcolls );
 		unless( $is_valid ) {
 			throw( "Invalid relationship: $reason" );
 		}
 		
 		# Try to create the relationship object.
-		$options->{'reading_a'} = $source_rdg->text;
-		$options->{'reading_b'} = $target_rdg->text;
+		$options->{'reading_a'} = $c->reading( $source )->text;
+		$options->{'reading_b'} = $c->reading( $target )->text;
 		$options->{'orig_a'} = $source;
 		$options->{'orig_b'} = $target;
     	if( $options->{'scope'} ne 'local' ) {
@@ -305,35 +311,42 @@ sub add_relationship {
 
 
 	# Find all the pairs for which we need to set the relationship.
-	my @vectors = [ $source, $target ];
+	my @vectors;
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
     	push( @vectors, $self->_find_applicable( $relationship ) );
     }
         
     # Now set the relationship(s).
     my @pairs_set;
+	my $rel = $self->get_relationship( $source, $target );
+	if( $rel && $rel ne $relationship ) {
+		if( $rel->nonlocal ) {
+			throw( "Found conflicting relationship at $source - $target" );
+		} elsif( $rel->type ne 'collated' ) {
+			# Replace a collation relationship; leave any other sort in place.
+			my $r1ann = $rel->has_annotation ? $rel->annotation : '';
+			my $r2ann = $relationship->has_annotation ? $relationship->annotation : '';
+			unless( $rel->type eq $relationship->type && $r1ann eq $r2ann ) {
+				warn sprintf( "Not overriding local relationship %s with global %s " 
+					. "set at %s -> %s (%s -> %s)", $rel->type, $relationship->type,
+					$source, $target, $rel->reading_a, $rel->reading_b );
+				next;
+			}
+		}
+	}
+	$self->_set_relationship( $relationship, $source, $target );
+	push( @pairs_set, [ $source, $target ] );
+    
+    # Set any additional relationships that might be in @vectors.
     foreach my $v ( @vectors ) {
-		my $rel = $self->get_relationship( @$v );
-    	if( $rel && $rel ne $relationship ) {
-    		if( $rel->nonlocal ) {
-    			throw( "Found conflicting relationship at @$v" );
-    		} elsif( $rel->type ne 'collated' ) {
-    			# Replace a collation relationship; leave any other sort in place.
-    			my $r1ann = $rel->has_annotation ? $rel->annotation : '';
-    			my $r2ann = $relationship->has_annotation ? $relationship->annotation : '';
-    			unless( $rel->type eq $relationship->type && $r1ann eq $r2ann ) {
-					warn sprintf( "Not overriding local relationship %s with global %s " 
-						. "set at %s -> %s (%s -> %s)", $rel->type, $relationship->type,
-						@$v, $rel->reading_a, $rel->reading_b );
-					next;
-				}
-    		}
-    	}
-    	map { $self->_drop_collations( $_ ) } @$v;
-    	$self->_set_relationship( $relationship, @$v );
-    	push( @pairs_set, $v );
+    	next if $v->[0] eq $source && $v->[1] eq $target;
+    	next if $v->[1] eq $source && $v->[0] eq $target;
+    	my @added = $self->add_relationship( @$v, $relationship );
+    	push( @pairs_set, @added );
     }
     
+    # Finally, restore whatever collations we can, and return.
+    $self->_restore_collations( @$droppedcolls );
     return @pairs_set;
 }
 
@@ -432,7 +445,8 @@ a yes/no boolean and, if the answer is no, message gives the reason why.
 =cut
 
 sub relationship_valid {
-    my( $self, $source, $target, $rel ) = @_;
+    my( $self, $source, $target, $rel, $mustdrop ) = @_;
+    $mustdrop = [] unless $mustdrop; # in case we were passed nothing
     my $c = $self->collation;
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
@@ -451,39 +465,35 @@ sub relationship_valid {
 			: ( 0, "Readings occur only in distinct witnesses" );
 	} else {
 		# Check that linking the source and target in a relationship won't lead
-		# to a path loop for any witness.  If they have the same rank then fine.
-		return( 1, "ok" ) 
-			if $c->reading( $source )->has_rank
-				&& $c->reading( $target )->has_rank
-				&& $c->reading( $source )->rank == $c->reading( $target )->rank;
-		
-		# Otherwise, first make a lookup table of all the
-		# readings related to either the source or the target.
-		my @proposed_related = ( $source, $target );
-		# Drop the collation links of source and target, unless we want to
-		# add a collation relationship.
-		foreach my $r ( ( $source, $target ) ) {
-			$self->_drop_collations( $r ) unless $rel eq 'collated';
-			push( @proposed_related, $self->related_readings( $r, 'colocated' ) );
+		# to a path loop for any witness. 
+		# First, drop/stash any collations that might interfere
+		my $sourceobj = $c->reading( $source );
+		my $targetobj = $c->reading( $target );
+		my $sourcerank = $sourceobj->has_rank ? $sourceobj->rank : -1;
+		my $targetrank = $targetobj->has_rank ? $targetobj->rank : -1;
+		unless( $rel eq 'collated' || $sourcerank == $targetrank ) {
+			push( @$mustdrop, $self->_drop_collations( $source ) );
+			push( @$mustdrop, $self->_drop_collations( $target ) );
 		}
-		my %pr_ids;
-		map { $pr_ids{ $_ } = 1 } @proposed_related;
-	
-		# The cumulative predecessors and successors of the proposed-related readings
-		# should not overlap.
-		my %all_pred;
-		my %all_succ;
-		foreach my $pr ( keys %pr_ids ) {
-			map { $all_pred{$_} = 1 } $c->sequence->all_predecessors( $pr );
-			map { $all_succ{$_} = 1 } $c->sequence->all_successors( $pr );
+		my $map = {};
+		my( $startrank, $endrank );
+		if( $c->end->has_rank ) {
+			my $cpred = $c->common_predecessor( $source, $target );
+			my $csucc = $c->common_successor( $source, $target );
+			$startrank = $cpred->rank;
+			$endrank = $csucc->rank;
+			unless( $rel eq 'collated' || $sourcerank == $targetrank ) {
+				foreach my $rk ( $startrank+1 .. $endrank-1 ) {
+					map { push( @$mustdrop, $self->_drop_collations( $_->id ) ) }
+						$c->readings_at_rank( $rk );
+				}
+			}
 		}
-		foreach my $k ( keys %all_pred ) {
-			return( 0, "Relationship would create witness loop" )
-				if exists $all_succ{$k};
-		}
-		foreach my $k ( keys %pr_ids ) {
-			return( 0, "Relationship would create witness loop" )
-				if exists $all_pred{$k} || exists $all_succ{$k};
+		my $eqgraph = $c->equivalence_graph( $map, $startrank, $endrank, 
+			$source, $target );
+		if( $eqgraph->has_a_cycle ) {
+			$self->_restore_collations( @$mustdrop );
+			return( 0, "Relationship would create witness loop" );
 		}
 		return ( 1, "ok" );
 	}
@@ -491,9 +501,23 @@ sub relationship_valid {
 
 sub _drop_collations {
 	my( $self, $reading ) = @_;
+	my @dropped;
 	foreach my $n ( $self->graph->neighbors( $reading ) ) {
 		if( $self->get_relationship( $reading, $n )->type eq 'collated' ) {
+			push( @dropped, [ $reading, $n ] );
 			$self->del_relationship( $reading, $n );
+		}
+	}
+	return @dropped;
+}
+
+sub _restore_collations {
+	my( $self, @vectors ) = @_;
+	foreach my $v ( @vectors ) {
+		try {
+			$self->add_relationship( @$v, { 'type' => 'collated' } );
+		} catch {
+			print STDERR $v->[0] . " - " . $v->[1] . " no longer collate\n";
 		}
 	}
 }
@@ -590,7 +614,8 @@ sub _as_graphml {
     
     # Add the vertices according to their XML IDs
     my %rdg_lookup = ( reverse %$node_hash );
-    foreach my $n ( sort _by_xmlid keys( %rdg_lookup ) ) {
+    my @nlist = sort _by_xmlid keys( %rdg_lookup );
+    foreach my $n ( @nlist ) {
     	my $n_el = $rgraph->addNewChild( $graphml_ns, 'node' );
     	$n_el->setAttribute( 'id', $n );
     	_add_graphml_data( $n_el, $nodeid_key, $rdg_lookup{$n} );

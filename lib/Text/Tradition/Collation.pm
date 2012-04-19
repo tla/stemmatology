@@ -495,8 +495,7 @@ sub clear_witness {
 sub add_relationship {
 	my $self = shift;
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
-    my( @vectors ) = $self->relations->add_relationship( $source, 
-    	$self->reading( $source ), $target, $self->reading( $target ), $opts );
+    my( @vectors ) = $self->relations->add_relationship( $source, $target, $opts );
 	$self->_graphcalc_done(0);
     return @vectors;
 }
@@ -895,6 +894,10 @@ sub as_graphml {
 	# The readings need to be ranked for this to work.
 	$start = $self->start unless $start->has_rank;
 	$end = $self->end unless $end->has_rank;
+	my $rankoffset = 0;
+	unless( $start eq $self->start ) {
+		$rankoffset = $start->rank - 1;
+	}
 	my %use_readings;
 	
     # Some namespaces
@@ -1034,6 +1037,10 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         foreach my $d ( keys %reading_attributes ) {
         	my $nval = $n->$d;
+        	if( $rankoffset && $d eq 'rank' ) {
+        		# Adjust the ranks within the subgraph.
+        		$nval = $n eq $self->end ? $end->rank + 1 : $nval - $rankoffset;
+        	}
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
         }
@@ -1073,8 +1080,8 @@ sub as_graphml {
 	
 	# Add the relationship graph to the XML
 	map { delete $edge_data_keys{$_} } @path_attributes;
-	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
-		$node_data_keys{'id'}, \%edge_data_keys );
+	# $self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
+	#	$node_data_keys{'id'}, \%edge_data_keys );
 
     # Save and return the thing
     my $result = decode_utf8( $graphml->toString(1) );
@@ -1428,7 +1435,7 @@ sub make_witness_path {
     $wit->clear_uncorrected_path;
 }
 
-=head2 equivalence_graph( \%readingmap, $startrank, $endrank )
+=head2 equivalence_graph( \%readingmap, $startrank, $endrank, @testvector )
 
 Returns an equivalence graph of the collation, in which all readings
 related via a 'colocated' relationship are transformed into a single
@@ -1438,13 +1445,15 @@ hash whose reference is passed as readingmap. For a subset of the graph,
 pass in a start and/or an ending rank (this only works if L<calculate_ranks>
 has been called at least once.)
 
+It is also possible to pass in a test relationship in @testvector, and get
+the resulting equivalence graph before the relationship has been made.
+
 =cut
 
 sub equivalence_graph {
-	my( $self, $map, $start, $end ) = @_;
+	my( $self, $map, $start, $end, @newvector ) = @_;
 	$start = undef unless $self->end->has_rank;
 	$end = undef unless $self->end->has_rank;
-	
 	my $eqgraph = Graph->new();
     my $rel_ctr = 0;
     # Add the nodes
@@ -1454,21 +1463,16 @@ sub equivalence_graph {
 			next if $end && $r->rank > $end;
         }
 		next if exists $map->{$r->id};
-        my @rels = $r->related_readings( 'colocated' );
-        if( @rels ) {
-            # Make an equivalence vertex
-            my $rn = 'equivalence_' . $rel_ctr++;
-            $eqgraph->add_vertex( $rn );
-            # Note which readings belong to this vertex.
-            push( @rels, $r );
-            foreach( @rels ) {
-                $map->{$_->id} = $rn;
-            }
-        } else {
-            # Add a new node to mirror the old node.
-            $map->{$r->id} = $r->id;
-            $eqgraph->add_vertex( $r->id );
-        }
+        my @rels = $self->related_readings( $r->id, 'colocated' );
+        push( @rels, $r->id );
+		# Make an equivalence vertex
+		my $rn = 'equivalence_' . $rel_ctr++;
+		$eqgraph->add_vertex( $rn );
+		# Note which readings belong to this vertex.
+		push( @rels, $r->id );
+		foreach( @rels ) {
+			$map->{$_} = $rn;
+		}
     }
 
     # Add the edges.
@@ -1479,6 +1483,18 @@ sub equivalence_graph {
     		: $map->{$self->end->id};
     	$eqgraph->add_edge( $efrom, $eto );
     }
+    
+    # Collapse the vertices in @newvector if applicable.
+    if( @newvector ) {
+		my( $eqs, $eqt ) = map { $map->{$_} } @newvector;
+		$DB::single = 1 unless $eqs && $eqt;
+		unless( $eqs eq $eqt ) {
+			# Combine the vertices.
+			map { $eqgraph->add_edge( $eqs, $_ ) } $eqgraph->successors( $eqt );
+			map { $eqgraph->add_edge( $_, $eqs ) } $eqgraph->predecessors( $eqt );
+			$eqgraph->delete_vertex( $eqt );
+		}
+	}
     return $eqgraph;
 }
 
@@ -1724,10 +1740,12 @@ sub text_from_paths {
 =head2 common_predecessor( $reading_a, $reading_b )
 
 Find the last reading that occurs in sequence before both the given readings.
+At the very least this should be $self->start.
 
 =head2 common_successor( $reading_a, $reading_b )
 
 Find the first reading that occurs in sequence after both the given readings.
+At the very least this should be $self->end.
     
 =begin testing
 
@@ -1768,26 +1786,45 @@ sub common_successor {
 	return $self->_common_in_path( $r1, $r2, 'successors' );
 }
 
+
+# TODO think about how to do this without ranks...
 sub _common_in_path {
 	my( $self, $r1, $r2, $dir ) = @_;
-	my $iter = $r1->rank > $r2->rank ? $r1->rank : $r2->rank;
-	$iter = $self->end->rank - $iter if $dir eq 'successors';
+	my $iter = $self->end->rank;
 	my @candidates;
-	my @last_checked = ( $r1, $r2 );
+	my @last_r1 = ( $r1 );
+	my @last_r2 = ( $r2 );
+	# my %all_seen = ( $r1 => 'r1', $r2 => 'r2' );
 	my %all_seen;
+	# print STDERR "Finding common $dir for $r1, $r2\n";
 	while( !@candidates ) {
-		my @new_lc;
-		foreach my $lc ( @last_checked ) {
+		last unless $iter--;  # Avoid looping infinitely
+		# Iterate separately down the graph from r1 and r2
+		my( @new_lc1, @new_lc2 );
+		foreach my $lc ( @last_r1 ) {
 			foreach my $p ( $lc->$dir ) {
-				if( $all_seen{$p->id} ) {
+				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r1' ) {
+					# print STDERR "Path candidate $p from $lc\n";
 					push( @candidates, $p );
 				} else {
-					$all_seen{$p->id} = 1;
-					push( @new_lc, $p );
+					$all_seen{$p->id} = 'r1';
+					push( @new_lc1, $p );
 				}
 			}
 		}
-		@last_checked = @new_lc;
+		foreach my $lc ( @last_r2 ) {
+			foreach my $p ( $lc->$dir ) {
+				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r2' ) {
+					# print STDERR "Path candidate $p from $lc\n";
+					push( @candidates, $p );
+				} else {
+					$all_seen{$p->id} = 'r2';
+					push( @new_lc2, $p );
+				}
+			}
+		}
+		@last_r1 = @new_lc1;
+		@last_r2 = @new_lc2;
 	}
 	my @answer = sort { $a->rank <=> $b->rank } @candidates;
 	return $dir eq 'predecessors' ? pop( @answer ) : shift ( @answer );

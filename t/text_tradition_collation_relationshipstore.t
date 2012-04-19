@@ -49,6 +49,8 @@ my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.x
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
+## HACK
+$c1->calculate_ranks();
 my $trel = $c1->get_relationship( '9,2', '9,3' );
 is( ref( $trel ), 'Text::Tradition::Collation::Relationship',
 	"Troublesome relationship exists" );
@@ -75,6 +77,8 @@ try {
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 my $c2 = $t2->collation;
+## HACK
+$c2->calculate_ranks();
 $c2->add_relationship( '9,2', '9,3', { 'type' => 'lexical' } );
 my $trel2 = $c2->get_relationship( '9,2', '9,3' );
 is( ref( $trel2 ), 'Text::Tradition::Collation::Relationship',
