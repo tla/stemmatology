@@ -1428,6 +1428,60 @@ sub make_witness_path {
     $wit->clear_uncorrected_path;
 }
 
+=head2 equivalence_graph( \%readingmap, $startrank, $endrank )
+
+Returns an equivalence graph of the collation, in which all readings
+related via a 'colocated' relationship are transformed into a single
+vertex. Can be used to determine the validity of a new relationship.  The
+mapping between equivalence vertices and reading IDs will be stored in the
+hash whose reference is passed as readingmap. For a subset of the graph,
+pass in a start and/or an ending rank (this only works if L<calculate_ranks>
+has been called at least once.)
+
+=cut
+
+sub equivalence_graph {
+	my( $self, $map, $start, $end ) = @_;
+	$start = undef unless $self->end->has_rank;
+	$end = undef unless $self->end->has_rank;
+	
+	my $eqgraph = Graph->new();
+    my $rel_ctr = 0;
+    # Add the nodes
+    foreach my $r ( $self->readings ) {
+    	unless( $r eq $self->start || $r eq $self->end ) {
+			next if $start && $r->rank < $start;
+			next if $end && $r->rank > $end;
+        }
+		next if exists $map->{$r->id};
+        my @rels = $r->related_readings( 'colocated' );
+        if( @rels ) {
+            # Make an equivalence vertex
+            my $rn = 'equivalence_' . $rel_ctr++;
+            $eqgraph->add_vertex( $rn );
+            # Note which readings belong to this vertex.
+            push( @rels, $r );
+            foreach( @rels ) {
+                $map->{$_->id} = $rn;
+            }
+        } else {
+            # Add a new node to mirror the old node.
+            $map->{$r->id} = $r->id;
+            $eqgraph->add_vertex( $r->id );
+        }
+    }
+
+    # Add the edges.
+    foreach my $p ( $self->paths ) {
+    	my $efrom = exists $map->{$p->[0]} ? $map->{$p->[0]} 
+    		: $map->{$self->start->id};
+    	my $eto = exists $map->{$p->[1]} ? $map->{$p->[1]} 
+    		: $map->{$self->end->id};
+    	$eqgraph->add_edge( $efrom, $eto );
+    }
+    return $eqgraph;
+}
+
 =head2 calculate_ranks
 
 Calculate the reading ranks (that is, their aligned positions relative
@@ -1462,41 +1516,12 @@ sub calculate_ranks {
     my $self = shift;
     # Save the existing ranks, in case we need to invalidate the cached SVG.
     my %existing_ranks;
+    map { $existing_ranks{$_} = $_->rank } $self->readings;
     # Walk a version of the graph where every node linked by a relationship 
     # edge is fundamentally the same node, and do a topological ranking on
     # the nodes in this graph.
-    my $topo_graph = Graph->new();
     my %rel_containers;
-    my $rel_ctr = 0;
-    # Add the nodes
-    foreach my $r ( $self->readings ) {
-        next if exists $rel_containers{$r->id};
-        my @rels = $r->related_readings( 'colocated' );
-        if( @rels ) {
-            # Make a relationship container.
-            push( @rels, $r );
-            my $rn = 'rel_container_' . $rel_ctr++;
-            $topo_graph->add_vertex( $rn );
-            foreach( @rels ) {
-                $rel_containers{$_->id} = $rn;
-            }
-        } else {
-            # Add a new node to mirror the old node.
-            $rel_containers{$r->id} = $r->id;
-            $topo_graph->add_vertex( $r->id );
-        }
-    }
-
-    # Add the edges.
-    foreach my $r ( $self->readings ) {
-		$existing_ranks{$r} = $r->rank;
-        foreach my $n ( $self->sequence->successors( $r->id ) ) {
-        	my( $tfrom, $tto ) = ( $rel_containers{$r->id},
-        		$rel_containers{$n} );
-        	# $DB::single = 1 unless $tfrom && $tto;
-            $topo_graph->add_edge( $tfrom, $tto );
-        }
-    }
+    my $topo_graph = $self->equivalence_graph( \%rel_containers );
     
     # Now do the rankings, starting with the start node.
     my $topo_start = $rel_containers{$self->start->id};
