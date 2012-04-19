@@ -374,7 +374,10 @@ sub relationship_valid {
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
-		# TODO this might be called before witness paths are set...
+		# If we haven't made reading paths yet, take it on faith.
+		return( 1, "no paths yet" ) unless $c->sequence->successors( $c->start );
+		
+		# We have some paths, so carry on.
 		my %seen_wits;
 		map { $seen_wits{$_} = 1 } $c->reading_witnesses( $source );
 		foreach my $w ( $c->reading_witnesses( $target ) ) {
@@ -384,24 +387,49 @@ sub relationship_valid {
 				return ( 1, "ok" ) if $rel eq 'repetition';
 			}
 		}
+		# For transpositions, there should also be a path from one reading
+		# to the other.
+		if( $rel eq 'transposition' ) {
+			my( %sourceseq, %targetseq );
+			map { $sourceseq{$_} = 1 } $c->sequence->all_successors( $source );
+			map { $targetseq{$_} = 1 } $c->sequence->all_successors( $target );
+			return( 0, "Readings are parallel" )
+				unless $sourceseq{$target} || $targetseq{$source};
+		}
 		return $rel eq 'transposition' ? ( 1, "ok" )
 			: ( 0, "Readings occur only in distinct witnesses" );
-	} else {
+	} 
+	if( $rel ne 'repetition' ) {
 		# Check that linking the source and target in a relationship won't lead
-		# to a path loop for any witness.  If they have the same rank then fine.
-		return( 1, "ok" ) 
-			if $c->reading( $source )->has_rank
-				&& $c->reading( $target )->has_rank
-				&& $c->reading( $source )->rank == $c->reading( $target )->rank;
+		# to a path loop for any witness.  If they have the same rank then
+		# they are parallel by definition.
+		# For transpositions, we want the opposite result: it is only valid if
+		# the readings cannot be parallel.
+		my $sourcerank = $c->reading( $source )->has_rank
+			? $c->reading( $source )->rank : undef;
+		my $targetrank = $c->reading( $target )->has_rank
+			? $c->reading( $target )->rank : undef;
+		if( $sourcerank && $targetrank && $sourcerank == $targetrank ) {
+			return( 0, "Cannot transpose readings of same rank" )
+				if $rel eq 'transposition';
+			return( 1, "ok" );
+		}
 		
 		# Otherwise, first make a lookup table of all the
 		# readings related to either the source or the target.
 		my @proposed_related = ( $source, $target );
 		# Drop the collation links of source and target, unless we want to
 		# add a collation relationship.
+		my @dropped;
 		foreach my $r ( ( $source, $target ) ) {
-			$self->_drop_collations( $r ) unless $rel eq 'collated';
+			push( @dropped, $self->_drop_collations( $r ) )
+				unless $rel eq 'collated';
 			push( @proposed_related, $self->related_readings( $r, 'colocated' ) );
+		}
+		# Also drop any collation links at intermediate ranks.
+		foreach my $rank ( $sourcerank+1 .. $targetrank-1 ) {
+			map { push( @dropped, $self->_drop_collations( $_ ) ) }
+				$c->readings_at_rank( $rank );
 		}
 		my %pr_ids;
 		map { $pr_ids{ $_ } = 1 } @proposed_related;
@@ -415,12 +443,22 @@ sub relationship_valid {
 			map { $all_succ{$_} = 1 } $c->sequence->all_successors( $pr );
 		}
 		foreach my $k ( keys %all_pred ) {
-			return( 0, "Relationship would create witness loop" )
-				if exists $all_succ{$k};
+			if( exists $all_succ{$k} ) {
+				$self->_restore_collations( @dropped );
+				return( 1, "ok" ) if $rel eq 'transposition';
+				return( 0, "Relationship would create witness loop" );
+			}
 		}
 		foreach my $k ( keys %pr_ids ) {
-			return( 0, "Relationship would create witness loop" )
-				if exists $all_pred{$k} || exists $all_succ{$k};
+			if( exists $all_pred{$k} || exists $all_succ{$k} ) {
+				$self->_restore_collations( @dropped );
+				return( 1, "ok" ) if $rel eq 'transposition';
+				return( 0, "Relationship would create witness loop" );
+			}
+		}
+		if( $rel eq 'transposition' ) {
+			$self->_restore_collations( @dropped );
+			return ( 0, "Cannot transpose parallel readings" );
 		}
 		return ( 1, "ok" );
 	}
@@ -428,9 +466,23 @@ sub relationship_valid {
 
 sub _drop_collations {
 	my( $self, $reading ) = @_;
+	my @deleted;
 	foreach my $n ( $self->graph->neighbors( $reading ) ) {
 		if( $self->get_relationship( $reading, $n )->type eq 'collated' ) {
 			$self->del_relationship( $reading, $n );
+			push( @deleted, [ $reading, $n ] );
+		}
+	}
+	return @deleted;
+}
+
+sub _restore_collations {
+	my( $self, @vectors ) = @_;
+	foreach my $v ( @vectors ) {
+		try {
+			$self->add_relationship( @$v, { 'type' => 'collated' } );
+		} catch ( Text::Tradition::Error $e ) {
+			warn "Could not restore collation " . join( ' -> ', @$v );
 		}
 	}
 }
@@ -493,6 +545,8 @@ stops tracking the to-be-deleted reading.
 
 sub merge_readings {
 	my( $self, $kept, $deleted, $combined ) = @_;
+	# Delete any relationship between kept and deleted
+	$self->del_relationship( $kept, $deleted );
 	foreach my $edge ( $self->graph->edges_at( $deleted ) ) {
 		# Get the pair of kept / rel
 		my @vector = ( $kept );
