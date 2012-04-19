@@ -5,8 +5,9 @@ use overload '""' => \&_stringify, 'fallback' => 1;
 
 =head1 NAME
 
-Text::Tradition::Collation::Reading - represents a reading (usually a word) in a collation.
-    
+Text::Tradition::Collation::Reading - represents a reading (usually a word)
+in a collation.
+
 =head1 DESCRIPTION
 
 Text::Tradition is a library for representation and analysis of collated
@@ -19,12 +20,13 @@ a particular sequence
 
 =head2 new
 
-Creates a new reading in the given collation with the given attributes. 
+Creates a new reading in the given collation with the given attributes.
 Options include:
 
 =over 4
 
-=item collation - The Text::Tradition::Collation object to which this reading belongs.  Required.
+=item collation - The Text::Tradition::Collation object to which this
+reading belongs.  Required.
 
 =item id - A unique identifier for this reading. Required.
 
@@ -36,9 +38,11 @@ Options include:
 
 =item is_lacuna - The 'reading' represents a known gap in the text.
 
-=item is_ph - A temporary placeholder for apparatus parsing purposes.  Do not use unless you know what you are doing.
+=item is_ph - A temporary placeholder for apparatus parsing purposes.  Do
+not use unless you know what you are doing.
 
-=item rank - The sequence number of the reading. This should probably not be set manually.
+=item rank - The sequence number of the reading. This should probably not
+be set manually.
 
 =back
 
