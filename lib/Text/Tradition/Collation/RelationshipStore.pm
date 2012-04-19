@@ -262,8 +262,14 @@ sub add_relationship {
     			throw( "Found conflicting relationship at @$v" );
     		} elsif( $rel->type ne 'collated' ) {
     			# Replace a collation relationship; leave any other sort in place.
-    			warn "Not overriding local relationship set at @$v";
-				next;
+    			my $r1ann = $rel->has_annotation ? $rel->annotation : '';
+    			my $r2ann = $relationship->has_annotation ? $relationship->annotation : '';
+    			unless( $rel->type eq $relationship->type && $r1ann eq $r2ann ) {
+					warn sprintf( "Not overriding local relationship %s with global %s " 
+						. "set at %s -> %s (%s -> %s)", $rel->type, $relationship->type,
+						@$v, $rel->reading_a, $rel->reading_b );
+					next;
+				}
     		}
     	}
     	map { $self->_drop_collations( $_ ) } @$v;
