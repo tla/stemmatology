@@ -537,6 +537,7 @@ sub _as_graphml {
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->graph->edges ) {
     	# Add an edge and fill in its relationship info.
+    	next unless( exists $node_hash->{$e->[0]} && exists $node_hash->{$e->[1]} );
 		my $edge_el = $rgraph->addNewChild( $graphml_ns, 'edge' );
 		$edge_el->setAttribute( 'source', $node_hash->{$e->[0]} );
 		$edge_el->setAttribute( 'target', $node_hash->{$e->[1]} );

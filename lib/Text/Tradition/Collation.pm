@@ -882,8 +882,20 @@ is( scalar $st->collation->relationships, 3, "Reparsed collation has new relatio
 =cut
 
 sub as_graphml {
-    my( $self ) = @_;
+    my( $self, $options ) = @_;
 	$self->calculate_ranks unless $self->_graphcalc_done;
+	
+	my $start = $options->{'from'} 
+		? $self->reading( $options->{'from'} ) : $self->start;
+	my $end = $options->{'to'} 
+		? $self->reading( $options->{'to'} ) : $self->end;
+	if( $start->has_rank && $end->has_rank && $end->rank < $start->rank ) {
+		throw( 'Start node must be before end node' );
+	}
+	# The readings need to be ranked for this to work.
+	$start = $self->start unless $start->has_rank;
+	$end = $self->end unless $end->has_rank;
+	my %use_readings;
 	
     # Some namespaces
     my $graphml_ns = 'http://graphml.graphdrawing.org/xmlns';
@@ -1012,6 +1024,9 @@ sub as_graphml {
     my %node_hash;
     # Add our readings to the graph
     foreach my $n ( sort { $a->id cmp $b->id } $self->readings ) {
+    	next if $n->has_rank && $n ne $self->start && $n ne $self->end &&
+    		( $n->rank < $start->rank || $n->rank > $end->rank );
+    	$use_readings{$n->id} = 1;
     	# Add to the main graph
         my $node_el = $sgraph->addNewChild( $graphml_ns, 'node' );
         my $node_xmlid = 'n' . $node_ctr++;
@@ -1028,7 +1043,11 @@ sub as_graphml {
     my $edge_ctr = 0;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->sequence->edges() ) {
     	# We add an edge in the graphml for every witness in $e.
-    	foreach my $wit ( sort $self->path_witnesses( $e ) ) {
+    	next unless( $use_readings{$e->[0]} || $use_readings{$e->[1]} );
+    	my @edge_wits = sort $self->path_witnesses( $e );
+    	$e->[0] = $self->start unless $use_readings{$e->[0]};
+    	$e->[1] = $self->end unless $use_readings{$e->[1]};
+    	foreach my $wit ( @edge_wits ) {
 			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
 										$node_hash{ $e->[0] },
 										$node_hash{ $e->[1] } );
