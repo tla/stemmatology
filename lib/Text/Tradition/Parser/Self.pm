@@ -3,6 +3,7 @@ package Text::Tradition::Parser::Self;
 use strict;
 use warnings;
 use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
+use TryCatch;
 
 =head1 NAME
 
@@ -224,7 +225,11 @@ sub parse {
 				$rel_exists = 1;
 			}
 		}
-		$collation->add_relationship( $from, $to, $e ) unless $rel_exists;
+		try {
+			$collation->add_relationship( $from, $to, $e ) unless $rel_exists;
+		} catch( Text::Tradition::Error $e ) {
+			warn "DROPPING $from -> $to: " . $e->message;
+		}
 	}
 	
     # Save the text for each witness so that we can ensure consistency
