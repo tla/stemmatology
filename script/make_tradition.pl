@@ -14,9 +14,9 @@ binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
 my( $informat, $inbase, $outformat, $help, $language, $name, $sep, $stemmafile, 
-	$dsn, $dbuser, $dbpass ) 
+	$dsn, $dbuser, $dbpass, $from, $to ) 
     = ( '', '', '', '', 'Default', 'Tradition', "\t", '',
-    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef );
+    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef, undef, undef );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -27,6 +27,8 @@ GetOptions( 'i|in=s'    => \$informat,
             's|stemma=s' => \$stemmafile,
             'u|user=s'  => \$dbuser,
             'p|pass=s'  => \$dbpass,
+            'f|from=s'  => \$from,
+            't|to=s'    => \$to,
             'sep=s'		=> \$sep,
             'dsn=s'		=> \$dsn,
     );
@@ -48,6 +50,11 @@ $informat = 'CollateText' if $informat =~ /^stone$/i;
 
 unless( $outformat =~ /^(graphml|svg|dot|stemma|csv|db)$/ ) {
     help( "Output format must be one of db, graphml, svg, csv, stemma, or dot" );
+}
+
+if( $from || $to ) {
+	help( "Subgraphs only supported in GraphML format" ) 
+		unless $outformat eq 'graphml';
 }
 
 # Do we have a base if we need it?
@@ -95,7 +102,10 @@ if( $outformat eq 'stemma' ) {
 	print STDERR "Saved tradition to database with ID $uuid\n";
 } else {
     my $output = "as_$outformat";
-    print $tradition->collation->$output();
+    my $opts = {};
+    $opts->{'from'} = $from if $from;
+    $opts->{'to'} = $to if $to;
+    print $tradition->collation->$output( $opts );
 }
 
 sub help {
