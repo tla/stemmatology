@@ -614,7 +614,7 @@ sub _as_graphml {
     
     # Add the vertices according to their XML IDs
     my %rdg_lookup = ( reverse %$node_hash );
-    my @nlist = sort _by_xmlid keys( %rdg_lookup );
+    my @nlist = sort keys( %rdg_lookup );
     foreach my $n ( @nlist ) {
     	my $n_el = $rgraph->addNewChild( $graphml_ns, 'node' );
     	$n_el->setAttribute( 'id', $n );

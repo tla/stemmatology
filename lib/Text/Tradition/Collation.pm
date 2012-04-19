@@ -1080,8 +1080,8 @@ sub as_graphml {
 	
 	# Add the relationship graph to the XML
 	map { delete $edge_data_keys{$_} } @path_attributes;
-	# $self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
-	#	$node_data_keys{'id'}, \%edge_data_keys );
+	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 
+		$node_data_keys{'id'}, \%edge_data_keys );
 
     # Save and return the thing
     my $result = decode_utf8( $graphml->toString(1) );
