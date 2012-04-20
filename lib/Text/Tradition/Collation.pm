@@ -9,6 +9,7 @@ use Text::CSV;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
+use XML::Easy::Syntax qw( $xml10_namestartchar_rx $xml10_namechar_rx );
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use Moose;
@@ -1000,14 +1001,19 @@ sub as_graphml {
         $key->setAttribute( 'id', $edge_data_keys{$datum} );
     }
 
-    # Add the collation graph itself
+    # Add the collation graph itself. First, sanitize the name to a valid XML ID.
+    my $xmlidname = $self->tradition->name;
+    $xmlidname =~ s/(?!$xml10_namechar_rx)./_/g;
+    if( $xmlidname !~ /^$xml10_namestartchar_rx/ ) {
+    	$xmlidname = '_'.$xmlidname;
+    }
     my $sgraph = $root->addNewChild( $graphml_ns, 'graph' );
     $sgraph->setAttribute( 'edgedefault', 'directed' );
-    $sgraph->setAttribute( 'id', $self->tradition->name );
+    $sgraph->setAttribute( 'id', $xmlidname );
     $sgraph->setAttribute( 'parse.edgeids', 'canonical' );
-    $sgraph->setAttribute( 'parse.edges', scalar($self->paths) );
+    $sgraph->setAttribute( 'parse.edges', 0 ); # fill in later
     $sgraph->setAttribute( 'parse.nodeids', 'canonical' );
-    $sgraph->setAttribute( 'parse.nodes', scalar($self->readings) );
+    $sgraph->setAttribute( 'parse.nodes', 0 ); # fill in later
     $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
     	    
     # Collation attribute data
@@ -1037,9 +1043,10 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         foreach my $d ( keys %reading_attributes ) {
         	my $nval = $n->$d;
-        	if( $rankoffset && $d eq 'rank' ) {
+        	if( $rankoffset && $d eq 'rank' && $n ne $self->start ) {
         		# Adjust the ranks within the subgraph.
-        		$nval = $n eq $self->end ? $end->rank + 1 : $nval - $rankoffset;
+        		$nval = $n eq $self->end ? $end->rank - $rankoffset + 1 
+        			: $nval - $rankoffset;
         	}
         	_add_graphml_data( $node_el, $node_data_keys{$d}, $nval )
         		if defined $nval;
@@ -1048,12 +1055,15 @@ sub as_graphml {
 
     # Add the path edges to the sequence graph
     my $edge_ctr = 0;
+    $DB::single = 1;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->sequence->edges() ) {
     	# We add an edge in the graphml for every witness in $e.
     	next unless( $use_readings{$e->[0]} || $use_readings{$e->[1]} );
     	my @edge_wits = sort $self->path_witnesses( $e );
-    	$e->[0] = $self->start unless $use_readings{$e->[0]};
-    	$e->[1] = $self->end unless $use_readings{$e->[1]};
+    	$e->[0] = $self->start->id unless $use_readings{$e->[0]};
+    	$e->[1] = $self->end->id unless $use_readings{$e->[1]};
+    	# Skip any path from start to end; that witness is not in the subgraph.
+    	next if ( $e->[0] eq $self->start->id && $e->[1] eq $self->end->id );
     	foreach my $wit ( @edge_wits ) {
 			my( $id, $from, $to ) = ( 'e'.$edge_ctr++,
 										$node_hash{ $e->[0] },
@@ -1078,6 +1088,10 @@ sub as_graphml {
 		}
 	}
 	
+	# Report the actual number of nodes and edges that went in
+	$sgraph->setAttribute( 'parse.edges', $edge_ctr );
+	$sgraph->setAttribute( 'parse.nodes', $node_ctr );
+		
 	# Add the relationship graph to the XML
 	map { delete $edge_data_keys{$_} } @path_attributes;
 	$self->relations->_as_graphml( $graphml_ns, $root, \%node_hash, 

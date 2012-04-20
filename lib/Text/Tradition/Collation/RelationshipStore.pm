@@ -211,8 +211,6 @@ my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.x
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
-## HACK
-$c1->calculate_ranks();
 my $trel = $c1->get_relationship( '9,2', '9,3' );
 is( ref( $trel ), 'Text::Tradition::Collation::Relationship',
 	"Troublesome relationship exists" );
@@ -235,12 +233,8 @@ try {
 
 # Test 2: try to equate nodes that are prevented with a real intermediate
 # equivalence
-
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
-# Test 1: try to equate nodes that are prevented with an intermediate collation
 my $c2 = $t2->collation;
-## HACK
-$c2->calculate_ranks();
 $c2->add_relationship( '9,2', '9,3', { 'type' => 'lexical' } );
 my $trel2 = $c2->get_relationship( '9,2', '9,3' );
 is( ref( $trel2 ), 'Text::Tradition::Collation::Relationship',
@@ -259,6 +253,45 @@ try {
 	ok( 1, "Successfully calculated ranks" );
 } catch {
 	ok( 0, "Collation now has a cycle" );
+}
+
+# Test 3: make a straightforward pair of transpositions.
+my $t3 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/lf2.xml' );
+# Test 1: try to equate nodes that are prevented with an intermediate collation
+my $c3 = $t3->collation;
+try {
+	$c3->add_relationship( '36,4', '38,3', { 'type' => 'transposition' } );
+	ok( 1, "Added straightforward transposition" );
+} catch {
+	ok( 0, "Failed to add normal transposition" );
+}
+try {
+	$c3->add_relationship( '36,3', '38,2', { 'type' => 'transposition' } );
+	ok( 1, "Added straightforward transposition complement" );
+} catch {
+	ok( 0, "Failed to add normal transposition complement" );
+}
+
+# Test 4: try to make a transposition that could be a parallel.
+try {
+	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
+	ok( 0, "Added bad colocated transposition" );
+} catch {
+	ok( 1, "Prevented bad colocated transposition" );
+}
+
+# Test 5: make the parallel, and then make the transposition again.
+try {
+	$c3->add_relationship( '28,3', '29,3', { 'type' => 'orthographic' } );
+	ok( 1, "Equated identical readings for transposition" );
+} catch {
+	ok( 0, "Failed to equate identical readings" );
+}
+try {
+	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
+	ok( 1, "Added straightforward transposition complement" );
+} catch {
+	ok( 0, "Failed to add normal transposition complement" );
 }
 
 =end testing
@@ -319,6 +352,7 @@ sub add_relationship {
     # Now set the relationship(s).
     my @pairs_set;
 	my $rel = $self->get_relationship( $source, $target );
+	my $skip;
 	if( $rel && $rel ne $relationship ) {
 		if( $rel->nonlocal ) {
 			throw( "Found conflicting relationship at $source - $target" );
@@ -330,11 +364,11 @@ sub add_relationship {
 				warn sprintf( "Not overriding local relationship %s with global %s " 
 					. "set at %s -> %s (%s -> %s)", $rel->type, $relationship->type,
 					$source, $target, $rel->reading_a, $rel->reading_b );
-				next;
+				$skip = 1;
 			}
 		}
 	}
-	$self->_set_relationship( $relationship, $source, $target );
+	$self->_set_relationship( $relationship, $source, $target ) unless $skip;
 	push( @pairs_set, [ $source, $target ] );
     
     # Set any additional relationships that might be in @vectors.
@@ -543,6 +577,39 @@ sub _restore_collations {
 	}
 }
 
+=head2 filter_collations()
+
+Utility function. Removes any redundant 'collated' relationships from the graph.
+A collated relationship is redundant if the readings in question would occupy
+the same rank regardless of the existence of the relationship.
+
+=cut
+
+sub filter_collations {
+	my $self = shift;
+	my $c = $self->collation;
+	foreach my $r ( 1 .. $c->end->rank - 1 ) {
+		my $anchor;
+		my @need_collations;
+		foreach my $rdg ( $c->readings_at_rank( $r ) ) {
+			next if $rdg->is_meta;
+			my $ip = 0;
+			foreach my $pred ( $rdg->predecessors ) {
+				if( $pred->rank == $r - 1 ) {
+					$ip = 1;
+					$anchor = $rdg unless( $anchor );
+					last;
+				}
+			}
+			push( @need_collations, $rdg ) unless $ip;
+			$c->relations->_drop_collations( "$rdg" );
+		}
+		$anchor
+			? map { $c->add_relationship( $anchor, $_, { 'type' => 'collated' } ) } @need_collations
+			: warn "No anchor found at $r";
+	}
+}
+
 =head2 related_readings( $reading, $filter )
 
 Returns a list of readings that are connected via relationship links to $reading.
@@ -628,19 +695,21 @@ sub _as_graphml {
 	$rgraph->setAttribute( 'edgedefault', 'directed' );
     $rgraph->setAttribute( 'id', 'relationships', );
     $rgraph->setAttribute( 'parse.edgeids', 'canonical' );
-    $rgraph->setAttribute( 'parse.edges', scalar($self->graph->edges) );
+    $rgraph->setAttribute( 'parse.edges', 0 );
     $rgraph->setAttribute( 'parse.nodeids', 'canonical' );
-    $rgraph->setAttribute( 'parse.nodes', scalar($self->graph->vertices) );
+    $rgraph->setAttribute( 'parse.nodes', 0 );
     $rgraph->setAttribute( 'parse.order', 'nodesfirst' );
     
     # Add the vertices according to their XML IDs
     my %rdg_lookup = ( reverse %$node_hash );
+    # my @nlist = sort _by_xmlid keys( %rdg_lookup ); ## CAUSES SEGFAULT
     my @nlist = sort keys( %rdg_lookup );
     foreach my $n ( @nlist ) {
     	my $n_el = $rgraph->addNewChild( $graphml_ns, 'node' );
     	$n_el->setAttribute( 'id', $n );
     	_add_graphml_data( $n_el, $nodeid_key, $rdg_lookup{$n} );
     }
+	$rgraph->setAttribute( 'parse.nodes', scalar @nlist );
     
     # Add the relationship edges, with their object information
     my $edge_ctr = 0;
@@ -659,6 +728,7 @@ sub _as_graphml {
 				if defined $value;
 		}
 	}
+	$rgraph->setAttribute( 'parse.edges', $edge_ctr );
 }
 
 sub _by_xmlid {

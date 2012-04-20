@@ -64,6 +64,12 @@ foreach my $k ( keys %seen_wits ) {
 		ok( !$wit->has_layertext, "Witness $k has no a.c. version" );
 	}
 }	
+
+# Check that we only have collation relationships where we need them
+is( scalar $t->collation->relationships, 3, "Redundant collations were removed" );
+foreach my $rel ( $t->collation->relationships ) {
+	print STDERR $rel->[0] . " -> " . $rel->[1] . "\n";
+}
 }
 
 
