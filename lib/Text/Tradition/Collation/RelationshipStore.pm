@@ -605,7 +605,8 @@ sub filter_collations {
 			$c->relations->_drop_collations( "$rdg" );
 		}
 		$anchor
-			? map { $c->add_relationship( $anchor, $_, { 'type' => 'collated' } ) } @need_collations
+			? map { $c->add_relationship( $anchor, $_, { 'type' => 'collated' } )
+						unless $c->get_relationship( $anchor, $_ ) } @need_collations
 			: warn "No anchor found at $r";
 	}
 }
