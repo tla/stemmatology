@@ -1806,7 +1806,7 @@ sub _common_in_path {
 				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r1' ) {
 					# print STDERR "Path candidate $p from $lc\n";
 					push( @candidates, $p );
-				} else {
+				} elsif( !$all_seen{$p->id} ) {
 					$all_seen{$p->id} = 'r1';
 					push( @new_lc1, $p );
 				}
@@ -1817,7 +1817,7 @@ sub _common_in_path {
 				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r2' ) {
 					# print STDERR "Path candidate $p from $lc\n";
 					push( @candidates, $p );
-				} else {
+				} elsif( !$all_seen{$p->id} ) {
 					$all_seen{$p->id} = 'r2';
 					push( @new_lc2, $p );
 				}
