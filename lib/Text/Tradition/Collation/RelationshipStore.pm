@@ -461,9 +461,30 @@ sub relationship_valid {
 				return ( 1, "ok" ) if $rel eq 'repetition';
 			}
 		}
-		return $rel eq 'transposition' ? ( 1, "ok" )
-			: ( 0, "Readings occur only in distinct witnesses" );
-	} else {
+		return ( 0, "Readings occur only in distinct witnesses" )
+			if $rel eq 'repetition';
+	} 
+	if ( $rel eq 'transposition' ) {
+		# We also need to check both that the readings occur in distinct
+		# witnesses, and that they are not in the same place. That is,
+		# proposing to link them should cause a witness loop.
+		my $map = {};
+		my( $startrank, $endrank );
+		if( $c->end->has_rank ) {
+			my $cpred = $c->common_predecessor( $source, $target );
+			my $csucc = $c->common_successor( $source, $target );
+			$startrank = $cpred->rank;
+			$endrank = $csucc->rank;
+		}
+		my $eqgraph = $c->equivalence_graph( $map, $startrank, $endrank, 
+			$source, $target );
+		if( $eqgraph->has_a_cycle ) {
+			return ( 1, "ok" );
+		} else {
+			return ( 0, "Readings appear to be colocated, not transposed" );
+		}
+		
+	} elsif( $rel ne 'repetition' ) {
 		# Check that linking the source and target in a relationship won't lead
 		# to a path loop for any witness. 
 		# First, drop/stash any collations that might interfere
