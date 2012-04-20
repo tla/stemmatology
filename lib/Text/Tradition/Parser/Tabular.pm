@@ -110,9 +110,6 @@ foreach my $k ( keys %seen_wits ) {
 
 # Check that we only have collation relationships where we need them
 is( scalar $t->collation->relationships, 3, "Redundant collations were removed" );
-foreach my $rel ( $t->collation->relationships ) {
-	print STDERR $rel->[0] . " -> " . $rel->[1] . "\n";
-}
 
 =end testing
 
