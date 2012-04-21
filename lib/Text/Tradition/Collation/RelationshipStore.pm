@@ -133,7 +133,6 @@ around delete_reading => sub {
 	my $orig = shift;
 	my $self = shift;
 	
-	$DB::single = 1;
 	$self->_remove_equivalence_node( @_ );
 	$self->$orig( @_ );
 };
@@ -165,7 +164,7 @@ sub _set_relationship {
 	my( $self, $relationship, @vector ) = @_;
 	$self->graph->add_edge( @vector );
 	$self->graph->set_edge_attribute( @vector, 'object', $relationship );
-	$self->make_equivalence( @vector ) if $relationship->colocated;
+	$self->_make_equivalence( @vector ) if $relationship->colocated;
 }
 
 =head2 create
@@ -262,7 +261,7 @@ use Text::Tradition;
 use TryCatch;
 
 my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
-# Test 1: try to equate nodes that are prevented with an intermediate collation
+# Test 1.1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
 my $trel = $c1->get_relationship( '9,2', '9,3' );
@@ -274,18 +273,18 @@ is( $trel->type, 'collated', "Troublesome relationship is a collation" );
 try {
 	$c1->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
 	ok( 1, "Added cross-collation relationship as expected" );
-} catch {
-	ok( 0, "Existing collation blocked equivalence relationship" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Existing collation blocked equivalence relationship: " . $e->message );
 }
 
 try {
 	$c1->calculate_ranks();
 	ok( 1, "Successfully calculated ranks" );
-} catch {
-	ok( 0, "Collation now has a cycle" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Collation now has a cycle: " . $e->message );
 }
 
-# Now attempt merge of an identical reading
+# Test 1.2: attempt merge of an identical reading
 try {
 	$c1->merge_readings( '9,3', '11,5' );
 	ok( 1, "Successfully merged reading 'pontifex'" );
@@ -294,7 +293,16 @@ try {
 	
 }
 
-# Test 2: try to equate nodes that are prevented with a real intermediate
+# Test 1.3: attempt relationship with a meta reading (should fail)
+try {
+	$c1->add_relationship( '8,1', '9,2', { 'type' => 'collated' } );
+	ok( 0, "Allowed a meta-reading to be used in a relationship" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Cannot set relationship on a meta reading', 
+		"Relationship link prevented for a meta reading" );
+}
+
+# Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
 my $c2 = $t2->collation;
@@ -307,54 +315,56 @@ is( $trel2->type, 'lexical', "Blocking relationship is not a collation" );
 try {
 	$c2->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
 	ok( 0, "Added cross-equivalent bad relationship" );
-} catch {
-	ok( 1, "Existing equivalence blocked crossing relationship" );
+} catch ( Text::Tradition::Error $e ) {
+	like( $e->message, qr/witness loop/,
+		"Existing equivalence blocked crossing relationship" );
 }
 
 try {
 	$c2->calculate_ranks();
 	ok( 1, "Successfully calculated ranks" );
-} catch {
-	ok( 0, "Collation now has a cycle" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Collation now has a cycle: " . $e->message );
 }
 
-# Test 3: make a straightforward pair of transpositions.
+# Test 3.1: make a straightforward pair of transpositions.
 my $t3 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/lf2.xml' );
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 my $c3 = $t3->collation;
 try {
 	$c3->add_relationship( '36,4', '38,3', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition" );
-} catch {
-	ok( 0, "Failed to add normal transposition" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition: " . $e->message );
 }
 try {
 	$c3->add_relationship( '36,3', '38,2', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition complement" );
-} catch {
-	ok( 0, "Failed to add normal transposition complement" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
-# Test 4: try to make a transposition that could be a parallel.
+# Test 3.2: try to make a transposition that could be a parallel.
 try {
 	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
 	ok( 0, "Added bad colocated transposition" );
-} catch {
-	ok( 1, "Prevented bad colocated transposition" );
+} catch ( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Readings appear to be colocated/,
+		"Prevented bad colocated transposition" );
 }
 
-# Test 5: make the parallel, and then make the transposition again.
+# Test 3.3: make the parallel, and then make the transposition again.
 try {
 	$c3->add_relationship( '28,3', '29,3', { 'type' => 'orthographic' } );
 	ok( 1, "Equated identical readings for transposition" );
-} catch {
-	ok( 0, "Failed to equate identical readings" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to equate identical readings: " . $e->message );
 }
 try {
 	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition complement" );
-} catch {
-	ok( 0, "Failed to add normal transposition complement" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
 =end testing
@@ -364,8 +374,11 @@ try {
 sub add_relationship {
 	my( $self, $source, $target, $options ) = @_;
     my $c = $self->collation;
-
+	my $sourceobj = $c->reading( $source );
+	my $targetobj = $c->reading( $target );
 	throw( "Adding self relationship at $source" ) if $source eq $target;
+	throw( "Cannot set relationship on a meta reading" )
+		if( $sourceobj->is_meta || $targetobj->is_meta );
 	my $relationship;
 	my $thispaironly;
 	my $droppedcolls = [];
@@ -385,8 +398,8 @@ sub add_relationship {
 		}
 		
 		# Try to create the relationship object.
-		$options->{'reading_a'} = $c->reading( $source )->text;
-		$options->{'reading_b'} = $c->reading( $target )->text;
+		$options->{'reading_a'} = $sourceobj->text;
+		$options->{'reading_b'} = $targetobj->text;
 		$options->{'orig_a'} = $source;
 		$options->{'orig_b'} = $target;
     	if( $options->{'scope'} ne 'local' ) {
@@ -533,7 +546,7 @@ sub del_relationship {
 sub _remove_relationship {
 	my( $self, $equiv, @vector ) = @_;
 	$self->graph->delete_edge( @vector );
-	$self->break_equivalence( @vector ) if $equiv;
+	$self->_break_equivalence( @vector ) if $equiv;
 }
 	
 =head2 relationship_valid( $source, $target, $type )
@@ -586,9 +599,7 @@ sub relationship_valid {
 			push( @$mustdrop, $self->_drop_collations( $source ) );
 			push( @$mustdrop, $self->_drop_collations( $target ) );
 			if( $c->end->has_rank ) {
-				my $cpred = $c->common_predecessor( $source, $target );
-				my $csucc = $c->common_successor( $source, $target );
-				foreach my $rk ( $cpred->rank+1 .. $csucc->rank-1 ) {
+				foreach my $rk ( $sourcerank .. $targetrank ) {
 					map { push( @$mustdrop, $self->_drop_collations( $_->id ) ) }
 						$c->readings_at_rank( $rk );
 				}
@@ -736,7 +747,7 @@ sub merge_readings {
 		$rel = $self->get_relationship( @$edge );
 		$self->_set_relationship( $rel, @vector );
 	}
-	$self->make_equivalence( $deleted, $kept );
+	$self->_make_equivalence( $deleted, $kept );
 }
 
 ### Equivalence logic
@@ -746,13 +757,13 @@ sub _remove_equivalence_node {
 	my $group = $self->equivalence( $node );
 	my $nodelist = $self->eqreadings( $group );
 	if( @$nodelist == 1 && $nodelist->[0] eq $node ) {
-		#print STDERR "Removing equivalence $group for $node\n";
+		print STDERR "Removing equivalence $group for $node\n" if $node eq '451,2';
 		$self->remove_eqreadings( $group );
 	} elsif( @$nodelist == 1 ) {
 		warn "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
 			" in group that should have only $node";
 	} else {
-		#print STDERR "Removing $node from equivalence $group\n";
+		print STDERR "Removing $node from equivalence $group\n" if $node eq '451,2';
 		my @newlist = grep { $_ ne $node } @$nodelist;
 		$self->set_eqreadings( $group, \@newlist );
 		$self->remove_equivalence( $node );
@@ -761,7 +772,8 @@ sub _remove_equivalence_node {
 
 =head2 add_equivalence_edge
 
-Return the relationship object, if any, that exists between two readings.
+Add an edge in the equivalence graph corresponding to $source -> $target in the
+collation. Should only be called by Collation.
 
 =cut
 
@@ -769,13 +781,15 @@ sub add_equivalence_edge {
 	my( $self, $source, $target ) = @_;
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
-	#print STDERR "Adding equivalence edge $seq -> $teq for $source -> $target\n";
+	print STDERR "Adding equivalence edge $seq -> $teq for $source -> $target\n"
+		if grep { $_ eq '451,2' } @_;
 	$self->equivalence_graph->add_edge( $seq, $teq );
 }
 
-=head2 add_equivalence_edge
+=head2 delete_equivalence_edge
 
-Return the relationship object, if any, that exists between two readings.
+Remove an edge in the equivalence graph corresponding to $source -> $target in the
+collation. Should only be called by Collation.
 
 =cut
 
@@ -783,7 +797,8 @@ sub delete_equivalence_edge {
 	my( $self, $source, $target ) = @_;
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
-	#print STDERR "Deleting equivalence edge $seq -> $teq for $source -> $target\n";
+	print STDERR "Deleting equivalence edge $seq -> $teq for $source -> $target\n"
+		if grep { $_ eq '451,2' } @_;
 	$self->equivalence_graph->delete_edge( $seq, $teq );
 }
 
@@ -793,23 +808,20 @@ sub _is_disconnected {
 		|| scalar $self->equivalence_graph->successorless_vertices > 1 );
 }
 
-=head2 make_equivalence
-
-Equate two readings in the equivalence graph.  Should only be called internally.
-
-=cut
-
-sub make_equivalence {
+# Equate two readings in the equivalence graph
+sub _make_equivalence {
 	my( $self, $source, $target ) = @_;
 	# Get the source equivalent readings
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
 	# Nothing to do if they are already equivalent...
 	return if $seq eq $teq;
-	#print STDERR "Making equivalence for $source -> $target\n";
+	print STDERR "Making equivalence for $source -> $target\n"
+		if grep { $_ eq '451,2' } @_;
 	my $sourcepool = $self->eqreadings( $seq );
 	# and add them to the target readings.
-	# print STDERR "Moving readings '@$sourcepool' from group $seq to $teq\n";
+	print STDERR "Moving readings '@$sourcepool' from group $seq to $teq\n"
+		if grep { $_ eq '451,2' } @_;	
 	push( @{$self->eqreadings( $teq )}, @$sourcepool );
 	map { $self->set_equivalence( $_, $teq ) } @$sourcepool;
 	# Then merge the nodes in the equivalence graph.
@@ -820,14 +832,15 @@ sub make_equivalence {
 		$self->equivalence_graph->add_edge( $teq, $succ );
 	}
 	$self->equivalence_graph->delete_vertex( $seq );
+	# TODO enable this after collation parsing is done
 # 	throw( "Graph got disconnected making $source / $target equivalence" )
 # 		if $self->_is_disconnected;
 }
 
 =head2 test_equivalence
 
-Test whether, if two readings were equated with a relationship, the graph would
-still be valid.
+Test whether, if two readings were equated with a 'colocated' relationship, 
+the graph would still be valid.
 
 =cut
 
@@ -885,13 +898,8 @@ sub test_equivalence {
 	return $ret;
 }
 
-=head2 break_equivalence
-
-Unmake an equivalence link between two readings. Should only be called internally.
-
-=cut
-
-sub break_equivalence {
+# Unmake an equivalence link between two readings. Should only be called internally.
+sub _break_equivalence {
 	my( $self, $source, $target ) = @_;
 	
 	# This is the hard one. Need to reconstruct the equivalence groups without
@@ -902,18 +910,20 @@ sub break_equivalence {
 	# If these groups intersect, they are still connected; do nothing.
 	foreach my $el ( keys %tng ) {
 		if( exists $sng{$el} ) {
-			#print STDERR "Equivalence break $source / $target is a noop\n";
+			print STDERR "Equivalence break $source / $target is a noop\n"
+				if grep { $_ eq '451,2' } @_;
 			return;
 		}
 	}
-	#print STDERR "Breaking equivalence $source / $target\n";
+	print STDERR "Breaking equivalence $source / $target\n"
+		if grep { $_ eq '451,2' } @_;
 	# If they don't intersect, then we split the nodes in the graph and in
 	# the hashes. First figure out which group has which name
-	my $oldgroup = $self->equivalence( $source ); # eq for $target
-	my $swapped = $oldgroup eq $source;
-	my $newgroup = $swapped ? $target : $source;
+	my $oldgroup = $self->equivalence( $source ); # same as $target
+	my $keepsource = $sng{$oldgroup};
+	my $newgroup = $keepsource ? $target : $source;
 	my( $oldmembers, $newmembers );
-	if( $swapped ) {
+	if( $keepsource ) {
 		$oldmembers = [ keys %sng ];
 		$newmembers = [ keys %tng ];
 	} else {
@@ -923,6 +933,9 @@ sub break_equivalence {
 		
 	# First alter the old group in the hash
 	$self->set_eqreadings( $oldgroup, $oldmembers );
+	foreach my $el ( @$oldmembers ) {
+		$self->set_equivalence( $el, $oldgroup );
+	}
 	
 	# then add the new group back to the hash with its new key
 	$self->set_eqreadings( $newgroup, $newmembers );
@@ -963,6 +976,7 @@ sub break_equivalence {
 			$self->equivalence_graph->delete_edge( $oldgroup, $s );
 		}
 	}
+	# TODO enable this after collation parsing is done
 # 	throw( "Graph got disconnected breaking $source / $target equivalence" )
 # 		if $self->_is_disconnected;
 }

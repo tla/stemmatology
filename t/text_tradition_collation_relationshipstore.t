@@ -46,7 +46,7 @@ use Text::Tradition;
 use TryCatch;
 
 my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
-# Test 1: try to equate nodes that are prevented with an intermediate collation
+# Test 1.1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
 my $trel = $c1->get_relationship( '9,2', '9,3' );
@@ -58,18 +58,18 @@ is( $trel->type, 'collated', "Troublesome relationship is a collation" );
 try {
 	$c1->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
 	ok( 1, "Added cross-collation relationship as expected" );
-} catch {
-	ok( 0, "Existing collation blocked equivalence relationship" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Existing collation blocked equivalence relationship: " . $e->message );
 }
 
 try {
 	$c1->calculate_ranks();
 	ok( 1, "Successfully calculated ranks" );
-} catch {
-	ok( 0, "Collation now has a cycle" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Collation now has a cycle: " . $e->message );
 }
 
-# Now attempt merge of an identical reading
+# Test 1.2: attempt merge of an identical reading
 try {
 	$c1->merge_readings( '9,3', '11,5' );
 	ok( 1, "Successfully merged reading 'pontifex'" );
@@ -78,7 +78,16 @@ try {
 	
 }
 
-# Test 2: try to equate nodes that are prevented with a real intermediate
+# Test 1.3: attempt relationship with a meta reading (should fail)
+try {
+	$c1->add_relationship( '8,1', '9,2', { 'type' => 'collated' } );
+	ok( 0, "Allowed a meta-reading to be used in a relationship" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Cannot set relationship on a meta reading', 
+		"Relationship link prevented for a meta reading" );
+}
+
+# Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
 my $c2 = $t2->collation;
@@ -91,54 +100,56 @@ is( $trel2->type, 'lexical', "Blocking relationship is not a collation" );
 try {
 	$c2->add_relationship( '8,6', '10,3', { 'type' => 'orthographic' } );
 	ok( 0, "Added cross-equivalent bad relationship" );
-} catch {
-	ok( 1, "Existing equivalence blocked crossing relationship" );
+} catch ( Text::Tradition::Error $e ) {
+	like( $e->message, qr/witness loop/,
+		"Existing equivalence blocked crossing relationship" );
 }
 
 try {
 	$c2->calculate_ranks();
 	ok( 1, "Successfully calculated ranks" );
-} catch {
-	ok( 0, "Collation now has a cycle" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Collation now has a cycle: " . $e->message );
 }
 
-# Test 3: make a straightforward pair of transpositions.
+# Test 3.1: make a straightforward pair of transpositions.
 my $t3 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/lf2.xml' );
 # Test 1: try to equate nodes that are prevented with an intermediate collation
 my $c3 = $t3->collation;
 try {
 	$c3->add_relationship( '36,4', '38,3', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition" );
-} catch {
-	ok( 0, "Failed to add normal transposition" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition: " . $e->message );
 }
 try {
 	$c3->add_relationship( '36,3', '38,2', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition complement" );
-} catch {
-	ok( 0, "Failed to add normal transposition complement" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
-# Test 4: try to make a transposition that could be a parallel.
+# Test 3.2: try to make a transposition that could be a parallel.
 try {
 	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
 	ok( 0, "Added bad colocated transposition" );
-} catch {
-	ok( 1, "Prevented bad colocated transposition" );
+} catch ( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Readings appear to be colocated/,
+		"Prevented bad colocated transposition" );
 }
 
-# Test 5: make the parallel, and then make the transposition again.
+# Test 3.3: make the parallel, and then make the transposition again.
 try {
 	$c3->add_relationship( '28,3', '29,3', { 'type' => 'orthographic' } );
 	ok( 1, "Equated identical readings for transposition" );
-} catch {
-	ok( 0, "Failed to equate identical readings" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to equate identical readings: " . $e->message );
 }
 try {
 	$c3->add_relationship( '28,2', '29,2', { 'type' => 'transposition' } );
 	ok( 1, "Added straightforward transposition complement" );
-} catch {
-	ok( 0, "Failed to add normal transposition complement" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 }
 
