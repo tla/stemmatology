@@ -85,6 +85,59 @@ has 'graph' => (
     },
 	);
 	
+=head2 equivalence_graph()
+
+Returns an equivalence graph of the collation, in which all readings
+related via a 'colocated' relationship are transformed into a single
+vertex. Can be used to determine the validity of a new relationship. 
+
+=cut
+
+has 'equivalence_graph' => (
+	is => 'ro',
+	isa => 'Graph',
+	default => sub { Graph->new() },
+	);
+	
+has '_node_equivalences' => (
+	is => 'ro',
+	traits => ['Hash'],
+	handles => {
+		equivalence => 'get',
+		set_equivalence => 'set',
+		remove_equivalence => 'delete',
+	},
+	);
+
+has '_equivalence_readings' => (
+	is => 'ro',
+	traits => ['Hash'],
+	handles => {
+		eqreadings => 'get',
+		set_eqreadings => 'set',
+		remove_eqreadings => 'delete',
+	},
+	);
+	
+around add_reading => sub {
+	my $orig = shift;
+	my $self = shift;
+	
+	$self->equivalence_graph->add_vertex( @_ );
+	$self->set_equivalence( $_[0], $_[0] );
+	$self->set_eqreadings( $_[0], [ $_[0] ] );
+	$self->$orig( @_ );
+};
+
+around delete_reading => sub {
+	my $orig = shift;
+	my $self = shift;
+	
+	$DB::single = 1;
+	$self->_remove_equivalence_node( @_ );
+	$self->$orig( @_ );
+};
+
 =head2 get_relationship
 
 Return the relationship object, if any, that exists between two readings.
@@ -112,6 +165,7 @@ sub _set_relationship {
 	my( $self, $relationship, @vector ) = @_;
 	$self->graph->add_edge( @vector );
 	$self->graph->set_edge_attribute( @vector, 'object', $relationship );
+	$self->make_equivalence( @vector ) if $relationship->colocated;
 }
 
 =head2 create
@@ -231,6 +285,15 @@ try {
 	ok( 0, "Collation now has a cycle" );
 }
 
+# Now attempt merge of an identical reading
+try {
+	$c1->merge_readings( '9,3', '11,5' );
+	ok( 1, "Successfully merged reading 'pontifex'" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Merge of mergeable readings failed: $e->message" );
+	
+}
+
 # Test 2: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
@@ -302,6 +365,7 @@ sub add_relationship {
 	my( $self, $source, $target, $options ) = @_;
     my $c = $self->collation;
 
+	throw( "Adding self relationship at $source" ) if $source eq $target;
 	my $relationship;
 	my $thispaironly;
 	my $droppedcolls = [];
@@ -449,15 +513,16 @@ sub del_relationship {
 	my( $self, $source, $target ) = @_;
 	my $rel = $self->get_relationship( $source, $target );
 	return () unless $rel; # Nothing to delete; return an empty set.
+	my $colo = $rel->colocated;
 	my @vectors = ( [ $source, $target ] );
-	$self->_remove_relationship( $source, $target );
+	$self->_remove_relationship( $colo, $source, $target );
 	if( $rel->nonlocal ) {
 		# Remove the relationship wherever it occurs.
 		# Remove the relationship wherever it occurs.
 		my @rel_edges = grep { $self->get_relationship( @$_ ) == $rel }
 			$self->relationships;
 		foreach my $re ( @rel_edges ) {
-			$self->_remove_relationship( @$re );
+			$self->_remove_relationship( $colo, @$re );
 			push( @vectors, $re );
 		}
 		$self->del_scoped_relationship( $rel->reading_a, $rel->reading_b );
@@ -466,8 +531,9 @@ sub del_relationship {
 }
 
 sub _remove_relationship {
-	my( $self, @vector ) = @_;
+	my( $self, $equiv, @vector ) = @_;
 	$self->graph->delete_edge( @vector );
+	$self->break_equivalence( @vector ) if $equiv;
 }
 	
 =head2 relationship_valid( $source, $target, $type )
@@ -502,20 +568,10 @@ sub relationship_valid {
 		# We also need to check both that the readings occur in distinct
 		# witnesses, and that they are not in the same place. That is,
 		# proposing to link them should cause a witness loop.
-		my $map = {};
-		my( $startrank, $endrank );
-		if( $c->end->has_rank ) {
-			my $cpred = $c->common_predecessor( $source, $target );
-			my $csucc = $c->common_successor( $source, $target );
-			$startrank = $cpred->rank;
-			$endrank = $csucc->rank;
-		}
-		my $eqgraph = $c->equivalence_graph( $map, $startrank, $endrank, 
-			$source, $target );
-		if( $eqgraph->has_a_cycle ) {
-			return ( 1, "ok" );
-		} else {
+		if( $self->test_equivalence( $source, $target ) ) {
 			return ( 0, "Readings appear to be colocated, not transposed" );
+		} else {
+			return ( 1, "ok" );
 		}
 		
 	} elsif( $rel ne 'repetition' ) {
@@ -529,24 +585,16 @@ sub relationship_valid {
 		unless( $rel eq 'collated' || $sourcerank == $targetrank ) {
 			push( @$mustdrop, $self->_drop_collations( $source ) );
 			push( @$mustdrop, $self->_drop_collations( $target ) );
-		}
-		my $map = {};
-		my( $startrank, $endrank );
-		if( $c->end->has_rank ) {
-			my $cpred = $c->common_predecessor( $source, $target );
-			my $csucc = $c->common_successor( $source, $target );
-			$startrank = $cpred->rank;
-			$endrank = $csucc->rank;
-			unless( $rel eq 'collated' || $sourcerank == $targetrank ) {
-				foreach my $rk ( $startrank+1 .. $endrank-1 ) {
+			if( $c->end->has_rank ) {
+				my $cpred = $c->common_predecessor( $source, $target );
+				my $csucc = $c->common_successor( $source, $target );
+				foreach my $rk ( $cpred->rank+1 .. $csucc->rank-1 ) {
 					map { push( @$mustdrop, $self->_drop_collations( $_->id ) ) }
 						$c->readings_at_rank( $rk );
 				}
 			}
 		}
-		my $eqgraph = $c->equivalence_graph( $map, $startrank, $endrank, 
-			$source, $target );
-		if( $eqgraph->has_a_cycle ) {
+		unless( $self->test_equivalence( $source, $target ) ) {
 			$self->_restore_collations( @$mustdrop );
 			return( 0, "Relationship would create witness loop" );
 		}
@@ -561,6 +609,7 @@ sub _drop_collations {
 		if( $self->get_relationship( $reading, $n )->type eq 'collated' ) {
 			push( @dropped, [ $reading, $n ] );
 			$self->del_relationship( $reading, $n );
+			#print STDERR "Dropped collation $reading -> $n\n";
 		}
 	}
 	return @dropped;
@@ -571,6 +620,7 @@ sub _restore_collations {
 	foreach my $v ( @vectors ) {
 		try {
 			$self->add_relationship( @$v, { 'type' => 'collated' } );
+			#print STDERR "Restored collation @$v\n";
 		} catch {
 			print STDERR $v->[0] . " - " . $v->[1] . " no longer collate\n";
 		}
@@ -686,8 +736,259 @@ sub merge_readings {
 		$rel = $self->get_relationship( @$edge );
 		$self->_set_relationship( $rel, @vector );
 	}
-	$self->delete_reading( $deleted );
+	$self->make_equivalence( $deleted, $kept );
 }
+
+### Equivalence logic
+
+sub _remove_equivalence_node {
+	my( $self, $node ) = @_;
+	my $group = $self->equivalence( $node );
+	my $nodelist = $self->eqreadings( $group );
+	if( @$nodelist == 1 && $nodelist->[0] eq $node ) {
+		#print STDERR "Removing equivalence $group for $node\n";
+		$self->remove_eqreadings( $group );
+	} elsif( @$nodelist == 1 ) {
+		warn "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
+			" in group that should have only $node";
+	} else {
+		#print STDERR "Removing $node from equivalence $group\n";
+		my @newlist = grep { $_ ne $node } @$nodelist;
+		$self->set_eqreadings( $group, \@newlist );
+		$self->remove_equivalence( $node );
+	}
+}
+
+=head2 add_equivalence_edge
+
+Return the relationship object, if any, that exists between two readings.
+
+=cut
+
+sub add_equivalence_edge {
+	my( $self, $source, $target ) = @_;
+	my $seq = $self->equivalence( $source );
+	my $teq = $self->equivalence( $target );
+	#print STDERR "Adding equivalence edge $seq -> $teq for $source -> $target\n";
+	$self->equivalence_graph->add_edge( $seq, $teq );
+}
+
+=head2 add_equivalence_edge
+
+Return the relationship object, if any, that exists between two readings.
+
+=cut
+
+sub delete_equivalence_edge {
+	my( $self, $source, $target ) = @_;
+	my $seq = $self->equivalence( $source );
+	my $teq = $self->equivalence( $target );
+	#print STDERR "Deleting equivalence edge $seq -> $teq for $source -> $target\n";
+	$self->equivalence_graph->delete_edge( $seq, $teq );
+}
+
+sub _is_disconnected {
+	my $self = shift;
+	return( scalar $self->equivalence_graph->predecessorless_vertices > 1
+		|| scalar $self->equivalence_graph->successorless_vertices > 1 );
+}
+
+=head2 make_equivalence
+
+Equate two readings in the equivalence graph.  Should only be called internally.
+
+=cut
+
+sub make_equivalence {
+	my( $self, $source, $target ) = @_;
+	# Get the source equivalent readings
+	my $seq = $self->equivalence( $source );
+	my $teq = $self->equivalence( $target );
+	# Nothing to do if they are already equivalent...
+	return if $seq eq $teq;
+	#print STDERR "Making equivalence for $source -> $target\n";
+	my $sourcepool = $self->eqreadings( $seq );
+	# and add them to the target readings.
+	# print STDERR "Moving readings '@$sourcepool' from group $seq to $teq\n";
+	push( @{$self->eqreadings( $teq )}, @$sourcepool );
+	map { $self->set_equivalence( $_, $teq ) } @$sourcepool;
+	# Then merge the nodes in the equivalence graph.
+	foreach my $pred ( $self->equivalence_graph->predecessors( $seq ) ) {
+		$self->equivalence_graph->add_edge( $pred, $teq );
+	}
+	foreach my $succ ( $self->equivalence_graph->successors( $seq ) ) {
+		$self->equivalence_graph->add_edge( $teq, $succ );
+	}
+	$self->equivalence_graph->delete_vertex( $seq );
+# 	throw( "Graph got disconnected making $source / $target equivalence" )
+# 		if $self->_is_disconnected;
+}
+
+=head2 test_equivalence
+
+Test whether, if two readings were equated with a relationship, the graph would
+still be valid.
+
+=cut
+
+sub test_equivalence {
+	my( $self, $source, $target ) = @_;
+	# Try merging the nodes in the equivalence graph; return a true value if
+	# no cycle is introduced thereby. Restore the original graph first.
+	
+	# Keep track of edges we add
+	my %added_pred;
+	my %added_succ;
+	# Get the reading equivalents
+	my $seq = $self->equivalence( $source );
+	my $teq = $self->equivalence( $target );
+	# Maybe this is easy?
+	return 1 if $seq eq $teq;
+	
+	# Save the first graph
+	my $checkstr = $self->equivalence_graph->stringify();
+	# Add and save relevant edges
+	foreach my $pred ( $self->equivalence_graph->predecessors( $seq ) ) {
+		if( $self->equivalence_graph->has_edge( $pred, $teq ) ) {
+			$added_pred{$pred} = 0;
+		} else {
+			$self->equivalence_graph->add_edge( $pred, $teq );
+			$added_pred{$pred} = 1;
+		}
+	}
+	foreach my $succ ( $self->equivalence_graph->successors( $seq ) ) {
+		if( $self->equivalence_graph->has_edge( $teq, $succ ) ) {
+			$added_succ{$succ} = 0;
+		} else {
+			$self->equivalence_graph->add_edge( $teq, $succ );
+			$added_succ{$succ} = 1;
+		}
+	}
+	# Delete source equivalent and test
+	$self->equivalence_graph->delete_vertex( $seq );
+	my $ret = !$self->equivalence_graph->has_a_cycle;
+	
+	# Restore what we changed
+	$self->equivalence_graph->add_vertex( $seq );
+	foreach my $pred ( keys %added_pred ) {
+		$self->equivalence_graph->add_edge( $pred, $seq );
+		$self->equivalence_graph->delete_edge( $pred, $teq ) if $added_pred{$pred};
+	}
+	foreach my $succ ( keys %added_succ ) {
+		$self->equivalence_graph->add_edge( $seq, $succ );
+		$self->equivalence_graph->delete_edge( $teq, $succ ) if $added_succ{$succ};
+	}
+	unless( $self->equivalence_graph->eq( $checkstr ) ) {
+		warn "GRAPH CHANGED after testing";
+	}
+	# Return our answer
+	return $ret;
+}
+
+=head2 break_equivalence
+
+Unmake an equivalence link between two readings. Should only be called internally.
+
+=cut
+
+sub break_equivalence {
+	my( $self, $source, $target ) = @_;
+	
+	# This is the hard one. Need to reconstruct the equivalence groups without
+	# the given link.
+	my( %sng, %tng );
+	map { $sng{$_} = 1 } $self->_find_equiv_without( $source, $target );
+	map { $tng{$_} = 1 } $self->_find_equiv_without( $target, $source );
+	# If these groups intersect, they are still connected; do nothing.
+	foreach my $el ( keys %tng ) {
+		if( exists $sng{$el} ) {
+			#print STDERR "Equivalence break $source / $target is a noop\n";
+			return;
+		}
+	}
+	#print STDERR "Breaking equivalence $source / $target\n";
+	# If they don't intersect, then we split the nodes in the graph and in
+	# the hashes. First figure out which group has which name
+	my $oldgroup = $self->equivalence( $source ); # eq for $target
+	my $swapped = $oldgroup eq $source;
+	my $newgroup = $swapped ? $target : $source;
+	my( $oldmembers, $newmembers );
+	if( $swapped ) {
+		$oldmembers = [ keys %sng ];
+		$newmembers = [ keys %tng ];
+	} else {
+		$oldmembers = [ keys %tng ];
+		$newmembers = [ keys %sng ];
+	}
+		
+	# First alter the old group in the hash
+	$self->set_eqreadings( $oldgroup, $oldmembers );
+	
+	# then add the new group back to the hash with its new key
+	$self->set_eqreadings( $newgroup, $newmembers );
+	foreach my $el ( @$newmembers ) {
+		$self->set_equivalence( $el, $newgroup );
+	}
+	
+	# Now add the new group back to the equivalence graph
+	$self->equivalence_graph->add_vertex( $newgroup );
+	# ...add the appropriate edges to the source group vertext
+	my $c = $self->collation;
+	foreach my $rdg ( @$newmembers ) {
+		foreach my $rp ( $c->sequence->predecessors( $rdg ) ) {
+			$self->equivalence_graph->add_edge( $self->equivalence( $rp ), $newgroup );
+		}
+		foreach my $rs ( $c->sequence->successors( $rdg ) ) {
+			$self->equivalence_graph->add_edge( $newgroup, $self->equivalence( $rs ) );
+		}
+	}
+	
+	# ...and figure out which edges on the old group vertex to delete.
+	my( %old_pred, %old_succ );
+	foreach my $rdg ( @$oldmembers ) {
+		foreach my $rp ( $c->sequence->predecessors( $rdg ) ) {
+			$old_pred{$self->equivalence( $rp )} = 1;
+		}
+		foreach my $rs ( $c->sequence->successors( $rdg ) ) {
+			$old_succ{$self->equivalence( $rs )} = 1;
+		}
+	}
+	foreach my $p ( $self->equivalence_graph->predecessors( $oldgroup ) ) {
+		unless( $old_pred{$p} ) {
+			$self->equivalence_graph->delete_edge( $p, $oldgroup );
+		}
+	}
+	foreach my $s ( $self->equivalence_graph->successors( $oldgroup ) ) {
+		unless( $old_succ{$s} ) {
+			$self->equivalence_graph->delete_edge( $oldgroup, $s );
+		}
+	}
+# 	throw( "Graph got disconnected breaking $source / $target equivalence" )
+# 		if $self->_is_disconnected;
+}
+
+sub _find_equiv_without {
+	my( $self, $first, $second ) = @_;
+	my %found = ( $first => 1 );
+	my $check = [ $first ];
+	my $iter = 0;
+	while( @$check ) {
+		my $more = [];
+		foreach my $r ( @$check ) {
+			foreach my $nr ( $self->graph->neighbors( $r ) ) {
+				next if $r eq $second;
+				if( $self->get_relationship( $r, $nr )->colocated ) {
+					push( @$more, $nr ) unless exists $found{$nr};
+					$found{$nr} = 1;
+				}
+			}
+		}
+		$check = $more;
+	}
+	return keys %found;
+}
+
+### Output logic
 
 sub _as_graphml { 
 	my( $self, $graphml_ns, $xmlroot, $node_hash, $nodeid_key, $edge_keys ) = @_;

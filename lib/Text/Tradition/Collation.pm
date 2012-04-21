@@ -31,6 +31,8 @@ has 'relations' => (
 		related_readings => 'related_readings',
 		get_relationship => 'get_relationship',
 		del_relationship => 'del_relationship',
+		equivalence => 'equivalence',
+		equivalence_graph => 'equivalence_graph',
 	},
 	writer => '_set_relations',
 	);
@@ -429,10 +431,13 @@ sub add_path {
 
 	$self->_graphcalc_done(0);
 	# Connect the readings
-    $self->sequence->add_edge( $source, $target );
+	unless( $self->sequence->has_edge( $source, $target ) ) {
+	    $self->sequence->add_edge( $source, $target );
+	    $self->relations->add_equivalence_edge( $source, $target );
+	}
     # Note the witness in question
     $self->sequence->set_edge_attribute( $source, $target, $wit, 1 );
-};
+}
 
 sub del_path {
 	my $self = shift;
@@ -454,6 +459,7 @@ sub del_path {
 	}
 	unless( keys %{$self->sequence->get_edge_attributes( $source, $target )} ) {
 		$self->sequence->delete_edge( $source, $target );
+		$self->relations->delete_equivalence_edge( $source, $target );
 	}
 }
 
@@ -1055,7 +1061,6 @@ sub as_graphml {
 
     # Add the path edges to the sequence graph
     my $edge_ctr = 0;
-    $DB::single = 1;
     foreach my $e ( sort { $a->[0] cmp $b->[0] } $self->sequence->edges() ) {
     	# We add an edge in the graphml for every witness in $e.
     	next unless( $use_readings{$e->[0]} || $use_readings{$e->[1]} );
@@ -1449,69 +1454,6 @@ sub make_witness_path {
     $wit->clear_uncorrected_path;
 }
 
-=head2 equivalence_graph( \%readingmap, $startrank, $endrank, @testvector )
-
-Returns an equivalence graph of the collation, in which all readings
-related via a 'colocated' relationship are transformed into a single
-vertex. Can be used to determine the validity of a new relationship.  The
-mapping between equivalence vertices and reading IDs will be stored in the
-hash whose reference is passed as readingmap. For a subset of the graph,
-pass in a start and/or an ending rank (this only works if L<calculate_ranks>
-has been called at least once.)
-
-It is also possible to pass in a test relationship in @testvector, and get
-the resulting equivalence graph before the relationship has been made.
-
-=cut
-
-sub equivalence_graph {
-	my( $self, $map, $start, $end, @newvector ) = @_;
-	$start = undef unless $self->end->has_rank;
-	$end = undef unless $self->end->has_rank;
-	my $eqgraph = Graph->new();
-    my $rel_ctr = 0;
-    # Add the nodes
-    foreach my $r ( $self->readings ) {
-    	unless( $r eq $self->start || $r eq $self->end ) {
-			next if $start && $r->rank < $start;
-			next if $end && $r->rank > $end;
-        }
-		next if exists $map->{$r->id};
-        my @rels = $self->related_readings( $r->id, 'colocated' );
-        push( @rels, $r->id );
-		# Make an equivalence vertex
-		my $rn = 'equivalence_' . $rel_ctr++;
-		$eqgraph->add_vertex( $rn );
-		# Note which readings belong to this vertex.
-		push( @rels, $r->id );
-		foreach( @rels ) {
-			$map->{$_} = $rn;
-		}
-    }
-
-    # Add the edges.
-    foreach my $p ( $self->paths ) {
-    	my $efrom = exists $map->{$p->[0]} ? $map->{$p->[0]} 
-    		: $map->{$self->start->id};
-    	my $eto = exists $map->{$p->[1]} ? $map->{$p->[1]} 
-    		: $map->{$self->end->id};
-    	$eqgraph->add_edge( $efrom, $eto );
-    }
-    
-    # Collapse the vertices in @newvector if applicable.
-    if( @newvector ) {
-		my( $eqs, $eqt ) = map { $map->{$_} } @newvector;
-		$DB::single = 1 unless $eqs && $eqt;
-		unless( $eqs eq $eqt ) {
-			# Combine the vertices.
-			map { $eqgraph->add_edge( $eqs, $_ ) } $eqgraph->successors( $eqt );
-			map { $eqgraph->add_edge( $_, $eqs ) } $eqgraph->predecessors( $eqt );
-			$eqgraph->delete_vertex( $eqt );
-		}
-	}
-    return $eqgraph;
-}
-
 =head2 calculate_ranks
 
 Calculate the reading ranks (that is, their aligned positions relative
@@ -1547,28 +1489,25 @@ sub calculate_ranks {
     # Save the existing ranks, in case we need to invalidate the cached SVG.
     my %existing_ranks;
     map { $existing_ranks{$_} = $_->rank } $self->readings;
-    # Walk a version of the graph where every node linked by a relationship 
-    # edge is fundamentally the same node, and do a topological ranking on
-    # the nodes in this graph.
-    my %rel_containers;
-    my $topo_graph = $self->equivalence_graph( \%rel_containers );
-    
-    # Now do the rankings, starting with the start node.
-    my $topo_start = $rel_containers{$self->start->id};
+
+    # Do the rankings based on the relationship equivalence graph, starting 
+    # with the start node.
+    my $topo_start = $self->equivalence( $self->start->id );
     my $node_ranks = { $topo_start => 0 };
     my @curr_origin = ( $topo_start );
     # A little iterative function.
     while( @curr_origin ) {
-        @curr_origin = _assign_rank( $topo_graph, $node_ranks, @curr_origin );
+        @curr_origin = _assign_rank( $self->equivalence_graph, 
+        	$node_ranks, @curr_origin );
     }
     # Transfer our rankings from the topological graph to the real one.
     foreach my $r ( $self->readings ) {
-        if( defined $node_ranks->{$rel_containers{$r->id}} ) {
-            $r->rank( $node_ranks->{$rel_containers{$r->id}} );
+        if( defined $node_ranks->{$self->equivalence( $r->id )} ) {
+            $r->rank( $node_ranks->{$self->equivalence( $r->id )} );
         } else {
         	# Die. Find the last rank we calculated.
-        	my @all_defined = sort { ( $node_ranks->{$rel_containers{$a->id}}||-1 )
-        			 <=> ( $node_ranks->{$rel_containers{$b->id}}||-1 ) }
+        	my @all_defined = sort { ( $node_ranks->{$self->equivalence( $a->id )}||-1 )
+        			 <=> ( $node_ranks->{$self->equivalence( $b->id )}||-1 ) }
         		$self->readings;
         	my $last = pop @all_defined;
             throw( "Ranks not calculated after $last - do you have a cycle in the graph?" );

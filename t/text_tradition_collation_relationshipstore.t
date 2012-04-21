@@ -69,6 +69,15 @@ try {
 	ok( 0, "Collation now has a cycle" );
 }
 
+# Now attempt merge of an identical reading
+try {
+	$c1->merge_readings( '9,3', '11,5' );
+	ok( 1, "Successfully merged reading 'pontifex'" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Merge of mergeable readings failed: $e->message" );
+	
+}
+
 # Test 2: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );

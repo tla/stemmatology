@@ -1500,11 +1500,5 @@
       <data key="de8">collated</data>
       <data key="de7">local</data>
     </edge>
-    <edge source="n29" target="n29" id="e13">
-      <data key="de5">pontifex</data>
-      <data key="de6">pontifex</data>
-      <data key="de8">collated</data>
-      <data key="de7">local</data>
-    </edge>
   </graph>
 </graphml>
