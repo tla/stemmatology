@@ -286,6 +286,7 @@ sub _make_nodes {
     	my $r = shift @rankrdgs;
     	next if $r->is_meta;
     	foreach my $nr ( @rankrdgs ) {
+    		next if $nr->is_meta;
     		if( $collation_rel ) {
     			$collation->add_relationship( $r, $nr, $collation_rel );
     		} else {
