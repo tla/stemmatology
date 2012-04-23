@@ -19,7 +19,7 @@ __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 
 =head1 NAME
 
-Text::Tradition::Error - throwable error class for CollateX package
+Text::Tradition::Error - throwable error class for Tradition package
 
 =head1 DESCRIPTION
 

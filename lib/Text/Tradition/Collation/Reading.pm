@@ -137,20 +137,16 @@ has 'normal_form' => (
 	predicate => 'has_normal_form',
 	);
 
-has 'lemma' => (
-	is => 'rw',
-	isa => 'Str',
-	predicate => 'has_lemma',
-	);
-
-has 'morphology' => (
+# Holds the word form. If is_disambiguated is true, the form at index zero
+# is the correct one.
+has 'lexemes' => (
 	traits => ['Array'],
-	isa => 'ArrayRef[HashRef[ArrayRef[Text::Tradition::Collation::Reading::Morphology]]]',
+	isa => 'ArrayRef[Text::Tradition::Collation::Lexeme]',
 	handles => {
 		lexemes => 'elements',
-		has_morphology => 'count',
-		_clear_morph => 'clear',
-		_add_morph => 'push',
+		has_lexemes => 'count',
+		_clear_lexemes => 'clear',
+		_add_lexeme => 'push',
 		},
 	);
 	
@@ -280,88 +276,47 @@ sub _stringify {
 
 A few methods to try to tack on morphological information.
 
-=head2 is_disambiguated
-
-Returns true if there is only one tag per lexeme in this reading.
-
 =head2 use_lexemes
-
-TBD
-
-=head2 add_morphological_tag
-
-TBD
-
-=head2 disambiguate
 
 TBD
 
 =cut
 
-sub use_lexemes {
-	my( $self, @lexemes ) = @_;
-	# The lexemes need to be the same as $self->text.
-	my $cmpstr = $self->has_normal_form ? lc( $self->normal_form ) : lc( $self->text );
-	$cmpstr =~ s/[\s-]+//g;
-	my $lexstr = lc( join( '', @lexemes ) );
-	$lexstr =~ s/[\s-]+//g;
-	unless( $lexstr eq $cmpstr ) {
-		warn "Cannot split " . $self->text . " into " . join( '.', @lexemes );
-		return;
-	}
-	$self->_clear_morph;
-	map { $self->_add_morph( { $_ => [] } ) } @lexemes;
-}
-
-sub add_morphological_tag {
-	my( $self, $lexeme, $opts ) = @_;
-	my $struct;
-	unless( $opts ) {
-		# No lexeme was passed; use reading text.
-		$opts = $lexeme;
-		$lexeme = $self->text;
-		$self->use_lexemes( $lexeme );
-	}
-	# Get the correct container
-	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
-	unless( $struct ) {
-		warn "No lexeme $lexeme exists in this reading";
-		return;
-	}
-	# Now make the morph object and add it to this lexeme.
-	my $morph_obj = Text::Tradition::Collation::Reading::Morphology->new( $opts );
-	# TODO Check for existence
-	push( @{$struct->{$lexeme}}, $morph_obj );
-}
-
-sub disambiguate {
-	my( $self, $lexeme, $index ) = @_;
-	my $struct;
-	unless( $index ) {
-		# No lexeme was passed; use reading text.
-		$index = $lexeme;
-		$lexeme = $self->text;
-	}
-	# Get the correct container
-	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
-	unless( $struct ) {
-		warn "No lexeme $lexeme exists in this reading";
-		return;
-	}
-	# Keep the object at the selected index
-	my $selected = $struct->{$lexeme}->[$index];
-	$struct->{$lexeme} = [ $selected ];
-}
-
-sub is_disambiguated {
-	my $self = shift;
-	return undef unless $self->has_morphology;
-	foreach my $lexeme ( $self->lexemes ) {
-		my( $key ) = keys %$lexeme; # will be only one
-		return undef unless @{$lexeme->{$key}} == 1;
-	}
-	return 1;
-}
+# sub use_lexemes {
+# 	my( $self, @lexemes ) = @_;
+# 	# The lexemes need to be the same as $self->text.
+# 	my $cmpstr = $self->has_normal_form ? lc( $self->normal_form ) : lc( $self->text );
+# 	$cmpstr =~ s/[\s-]+//g;
+# 	my $lexstr = lc( join( '', @lexemes ) );
+# 	$lexstr =~ s/[\s-]+//g;
+# 	unless( $lexstr eq $cmpstr ) {
+# 		warn "Cannot split " . $self->text . " into " . join( '.', @lexemes );
+# 		return;
+# 	}
+# 	$self->_clear_morph;
+# 	map { $self->_add_morph( { $_ => [] } ) } @lexemes;
+# }
+# 
+# sub add_morphological_tag {
+# 	my( $self, $lexeme, $opts ) = @_;
+# 	my $struct;
+# 	unless( $opts ) {
+# 		# No lexeme was passed; use reading text.
+# 		$opts = $lexeme;
+# 		$lexeme = $self->text;
+# 		$self->use_lexemes( $lexeme );
+# 	}
+# 	# Get the correct container
+# 	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
+# 	unless( $struct ) {
+# 		warn "No lexeme $lexeme exists in this reading";
+# 		return;
+# 	}
+# 	# Now make the morph object and add it to this lexeme.
+# 	my $morph_obj = Text::Tradition::Collation::Reading::Morphology->new( $opts );
+# 	# TODO Check for existence
+# 	push( @{$struct->{$lexeme}}, $morph_obj );
+# }
 
 ## Utility methods
 
