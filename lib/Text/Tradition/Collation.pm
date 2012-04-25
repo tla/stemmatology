@@ -1386,6 +1386,13 @@ sub path_text {
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
+	return _text_from_path( @path );
+}
+
+# Utility function so that we can cheat and use it when we need both the path
+# and its text.
+sub _text_from_path {
+	my( $self, @path ) = @_;
 	my $pathtext = '';
 	my $last;
 	foreach my $r ( @path ) {

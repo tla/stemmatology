@@ -76,13 +76,13 @@ has 'wordform_matchlist' => (
 		'matching_forms' => 'elements',
 		'matching_form' => 'get',
 		'add_matching_form' => 'push',
+		},
 	);
 
 has 'is_disambiguated' => (
-	is => 'ro',
+	is => 'rw',
 	isa => 'Bool',
 	default => undef,
-	writer => '_set_disambiguated',
 	);
 	
 has 'form' => (
@@ -91,6 +91,14 @@ has 'form' => (
 	writer => '_set_form',
 	);
 	
+# Do auto-disambiguation if we were created with a single wordform
+sub BUILD {
+	my $self = shift;
+
+	if( $self->matches == 1 ) {
+		$self->disambiguate( 0 );
+	}	
+}
 
 =head2 disambiguate( $index )
 
@@ -105,7 +113,7 @@ sub disambiguate {
 	throw( "There is no candidate wordform at index $idx" )
 		unless $form;
 	$self->_set_form( $form );
-	$self->_set_disambiguated( 1 );	
+	$self->is_disambiguated( 1 );	
 }
 
 =head2 lookup

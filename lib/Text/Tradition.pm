@@ -356,6 +356,17 @@ sub add_stemma {
 	return $stemma;
 }
 
+sub lemmatize {
+	my $self = shift;
+	unless( $self->has_language ) {
+		warn "Please set a language to lemmatize a tradition";
+		return;
+	}
+	my $mod = "Text::Tradition::Language::" . $self->language;
+	load( $mod );
+	$mod->can( 'lemmatize' )->( $self );
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

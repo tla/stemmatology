@@ -139,15 +139,16 @@ has 'normal_form' => (
 
 # Holds the word form. If is_disambiguated is true, the form at index zero
 # is the correct one.
-has 'lexemes' => (
+has 'reading_lexemes' => (
 	traits => ['Array'],
-	isa => 'ArrayRef[Text::Tradition::Collation::Lexeme]',
+	isa => 'ArrayRef[Text::Tradition::Collation::Reading::Lexeme]',
 	handles => {
 		lexemes => 'elements',
 		has_lexemes => 'count',
-		_clear_lexemes => 'clear',
-		_add_lexeme => 'push',
+		clear_lexemes => 'clear',
+		add_lexeme => 'push',
 		},
+	default => sub { [] },
 	);
 	
 ## For prefix/suffix readings

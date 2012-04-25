@@ -75,7 +75,7 @@ around BUILDARGS => sub {
 sub _stringify {
 	my $self = shift;
 	return sprintf( "%s//%s//%s", $self->language, $self->lemma,
-		join( '', $self->morphology ) );
+		join( '|', @{$self->morphology} ) );
 }
 
 no Moose;
