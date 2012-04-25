@@ -1386,7 +1386,7 @@ sub path_text {
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
-	return _text_from_path( @path );
+	return $self->_text_from_path( @path );
 }
 
 # Utility function so that we can cheat and use it when we need both the path
