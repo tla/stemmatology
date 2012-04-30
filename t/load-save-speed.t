@@ -83,17 +83,21 @@ my $test_save = sub {
 
 my $test_load = sub {
     my $dir = Text::Tradition::Directory->new(
-        dsn => $save_dsn,
+        dsn => $load_dsn,
     );
 
     ## This seems to be a required magic incantation:
     my $scope = $dir->new_scope;
 
-    my $tradition = $dir->tradition($load_uuid);
+    my $load_tradition = $dir->tradition($load_uuid);
+#    print STDERR $load_tradition->name, $tradition->name, "\n";
 };
 
 my $last_benchmark = $benchmark_data->[-1];
+
 ## Benchmark current code:
+## Should probably run the test the same number of times as the last time it ran
+## Or compare results more sanely
 my $new_save_result = timethis(5, $test_save);
 
 ok($new_save_result->[1] + $new_save_result->[2] < $last_benchmark->{save_times}[1] + $last_benchmark->{save_times}[2], 'Saving to a Tradition Directory got faster');
@@ -102,14 +106,16 @@ my $new_load_result = timethis(20, $test_load);
 
 ok($new_load_result->[1] + $new_load_result->[2] < $last_benchmark->{load_times}[1] + $last_benchmark->{load_times}[2], 'Loading from a Tradition Directory got faster');
 
+$test_load->();
+
 if($git_hash) {
     push(@{ $benchmark_data }, {
         git_hash => $git_hash,
-        load_times => $new_load_result,
-        save_times => $new_save_result,
+        load_times => [@$new_load_result],
+        save_times => [@$new_save_result],
     });
 
-    save_benchmark($benchmark_data);
+    save_benchmark($benchmark_file, $benchmark_data);
 }
 
 ## -----------------------------------------------------------------------------
@@ -130,7 +136,7 @@ sub load_benchmark {
             {
                 git_hash => '',
                 load_times => [1000, 1000, 1000, 0, 0, 5],
-                save_times => [1000, 1000, 1000, 0, 0, 5],
+                save_times => [1000, 1000, 1000, 0, 0, 20],
             }
         ];
     }
@@ -141,7 +147,7 @@ sub load_benchmark {
 sub save_benchmark {
     my ($filename, $new_benchmarks) = @_;
 
-    my $json_text = encode_json($new_benchmarks);
+    my $json_text = JSON->new->utf8->allow_blessed->encode($new_benchmarks);
 
     open(my $fh, '>', $filename) || die "$!";
     $fh->print($json_text);
