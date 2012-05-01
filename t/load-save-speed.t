@@ -5,6 +5,7 @@ use warnings;
 
 use Benchmark 'timethis';
 use JSON;
+use Sys::Hostname;
 use File::Path 'mkpath';
 
 use Text::Tradition;
@@ -101,7 +102,14 @@ my $test_load = sub {
 #    print STDERR $load_tradition->name, $tradition->name, "\n";
 };
 
-my $last_benchmark = $benchmark_data->[-1];
+## Find most recent benchmark info on this hostname
+my ($last_benchmark) = grep { $_->{host} eq hostname() } (reverse @{$benchmark_data}); 
+
+if(!$last_benchmark) {
+    diag "Can't find last benchmark for " . hostname() . ", starting again";
+    $last_benchmark = fresh_benchmark();
+}
+
 
 ## Benchmark current code:
 ## Should probably run the test the same number of times as the last time it ran
@@ -119,6 +127,7 @@ $test_load->();
 if($git_hash) {
     push(@{ $benchmark_data }, {
         git_hash => $git_hash,
+        host => hostname(),
         load_times => [@$new_load_result],
         save_times => [@$new_save_result],
     });
@@ -140,16 +149,22 @@ sub load_benchmark {
         $loaded_data = decode_json( $json_text );
     } else {
         ## bare bones default table:
-        $loaded_data = [
-            {
-                git_hash => '',
-                load_times => [1000, 1000, 1000, 0, 0, 5],
-                save_times => [1000, 1000, 1000, 0, 0, 20],
-            }
-        ];
+        $loaded_data = fresh_benchmark();
     }
 
     return $loaded_data;
+}
+
+sub fresh_benchmark {
+    return 
+        [
+         {
+             git_hash => '',
+             host => hostname(),
+             load_times => [1000, 1000, 1000, 0, 0, 5],
+             save_times => [1000, 1000, 1000, 0, 0, 20],
+         }
+    ];
 }
 
 sub save_benchmark {
