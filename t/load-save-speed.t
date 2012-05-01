@@ -9,7 +9,15 @@ use File::Path 'mkpath';
 
 use Text::Tradition;
 use Text::Tradition::Directory;
-use Test::More 'no_plan';
+use Test::More;
+
+## Don't run this test when running make test or prove, to run it use perl -Ilib t/load-save-speed.t
+
+if($ENV{HARNESS_ACTIVE}) {
+    plan skip_all => 'Skipping performance tests under prove/make, run manually to test performance improvements';
+} else {
+    plan 'no_plan';
+}
 
 ## Using t/data/besoin.xml  / t/data/besoin.dot as a large test example:
 my $test_name = 'besoin';
