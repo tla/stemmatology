@@ -6,7 +6,8 @@ use strict;
 =head1 DESCRIPTION
 
 Makes sure that all of the modules that are 'use'd are listed in the
-Makefile.PL as dependencies.
+Makefile.PL as dependencies.  Also as long as we are source filtering,
+make sure there are no $DB::single statements in the code.
 
 =cut
 
@@ -45,12 +46,16 @@ sub wanted {
     close(FILE);
 
     # strip pod, in a really idiotic way.  Good enough though
-    $data =~ s/^=head.+?(^=cut|\Z)//gms;
+    $data =~ s/^=(begin|head).+?(^=cut|\Z)//gms;
 
     # look for use and use base statements
     $used{$1}{$File::Find::name}++ while $data =~ /^\s*use\s+([\w:]+)/gm;
     while ( $data =~ m|^\s*use base qw.([\w\s:]+)|gm ) {
         $used{$_}{$File::Find::name}++ for split ' ', $1;
+    }
+    # look for DB statements while we are here
+    while( $data =~ /^\s*\$DB::single/gm ) {
+    	fail( "DB::single statement present in source " . $File::Find::name );
     }
 }
 
