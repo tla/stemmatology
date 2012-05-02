@@ -181,18 +181,21 @@ is( ref( $nt ), 'Text::Tradition', "Made new tradition" );
 =end testing
 
 =cut
+use Text::Tradition::TypeMap::Entry;
 
 has +typemap => (
-	is => 'rw',
-	isa => 'KiokuDB::TypeMap',
-	default => sub { 
-		KiokuDB::TypeMap->new(
-			isa_entries => {
-				"Graph" => KiokuDB::TypeMap::Entry::Naive->new,
-				"Graph::AdjacencyMap" => KiokuDB::TypeMap::Entry::Naive->new,
-			}
-		);
-	},
+  is      => 'rw',
+  isa     => 'KiokuDB::TypeMap',
+  default => sub {
+    KiokuDB::TypeMap->new(
+      isa_entries => {
+        "Text::Tradition" =>
+          KiokuDB::TypeMap::Entry::Naive->new(),
+        "Graph" => Text::Tradition::TypeMap::Entry->new(),
+        "Graph::AdjacencyMap" => Text::Tradition::TypeMap::Entry->new()
+      }
+    );
+  },
 );
 
 # Push some columns into the extra_args
