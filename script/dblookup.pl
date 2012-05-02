@@ -11,17 +11,22 @@ use Text::Tradition::Directory;
 binmode( STDOUT, ':utf8' );
 binmode( STDERR, ':utf8' );
 
-my( $name, $delete, $list, $dsn ) = 
-	( undef, undef, 1, 'dbi:SQLite:dbname=db/traditions.db' );
+my( $name, $delete, $dbuser, $dbpass );
+my( $list, $dsn ) = ( 1, 'dbi:SQLite:dbname=db/traditions.db' );
 
 GetOptions( 
 	'r|rename=s' => \$name,
 	'd|delete' => \$delete,
 	'dsn=s' => \$dsn,
+	'u|user=s' => \$dbuser,
+	'p|pass=s' => \$dbpass,
 	);
 	
 my @uuids = @ARGV;  # UUID is whatever is left over
-my $kdb = Text::Tradition::Directory->new( 'dsn' => $dsn );
+my %dbargs = ( 'dsn' => $dsn );
+$dbargs{'extra_args'} = { 'user' => $dbuser } if $dbuser;
+$dbargs{'extra_args'}->{'password'} = $dbpass if $dbpass;
+my $kdb = Text::Tradition::Directory->new( %dbargs );
 $list = !$delete;
 
 if( $delete ) {
