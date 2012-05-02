@@ -107,6 +107,7 @@ has '_node_equivalences' => (
 		equivalence => 'get',
 		set_equivalence => 'set',
 		remove_equivalence => 'delete',
+		_clear_equivalence => 'clear',
 	},
 	);
 
@@ -117,6 +118,7 @@ has '_equivalence_readings' => (
 		eqreadings => 'get',
 		set_eqreadings => 'set',
 		remove_eqreadings => 'delete',
+		_clear_eqreadings => 'clear',
 	},
 	);
 	
@@ -782,8 +784,6 @@ sub add_equivalence_edge {
 	my( $self, $source, $target ) = @_;
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
-	print STDERR "Adding equivalence edge $seq -> $teq for $source -> $target\n"
-		if grep { $_ eq '451,2' } @_;
 	$self->equivalence_graph->add_edge( $seq, $teq );
 }
 
@@ -1013,17 +1013,27 @@ adds all readings and edges, then makes an equivalence for all relationships.
 sub rebuild_equivalence {
 	my $self = shift;
 	my $newgraph = Graph->new();
-	foreach my $r ( $self->collation->readings ) {
-		$newgraph->add_vertex( $r->id );
-	}
-	foreach my $e ( $self->collation->paths ) {
-		$newgraph->add_edge( @$e );
-	}
 	# Set this as the new equivalence graph
 	$self->_reset_equivalence( $newgraph );
+	# Clear out the data hashes
+	$self->_clear_equivalence;
+	$self->_clear_eqreadings;
 	
-	# Now collapse some nodes. This does no testing; it assumes that all
-	# preexisting relationships are valid.
+	# Add the readings
+	foreach my $r ( $self->collation->readings ) {
+		my $rid = $r->id;
+		$newgraph->add_vertex( $rid );
+		$self->set_equivalence( $rid, $rid );
+		$self->set_eqreadings( $rid, [ $rid ] );
+	}
+
+	# Now add the edges
+	foreach my $e ( $self->collation->paths ) {
+		$self->add_equivalence_edge( @$e );
+	}
+
+	# Now equate the colocated readings. This does no testing; 
+	# it assumes that all preexisting relationships are valid.
 	foreach my $rel ( $self->relationships ) {
 		my $relobj = $self->get_relationship( $rel );
 		next unless $relobj && $relobj->colocated;
