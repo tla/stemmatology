@@ -97,6 +97,7 @@ has 'equivalence_graph' => (
 	is => 'ro',
 	isa => 'Graph',
 	default => sub { Graph->new() },
+	writer => '_reset_equivalence',
 	);
 	
 has '_node_equivalences' => (
@@ -1000,6 +1001,34 @@ sub _find_equiv_without {
 		$check = $more;
 	}
 	return keys %found;
+}
+
+=head2 rebuild_equivalence
+
+(Re)build the equivalence graph from scratch. Dumps the graph, makes a new one,
+adds all readings and edges, then makes an equivalence for all relationships.
+
+=cut
+
+sub rebuild_equivalence {
+	my $self = shift;
+	my $newgraph = Graph->new();
+	foreach my $r ( $self->collation->readings ) {
+		$newgraph->add_vertex( $r->id );
+	}
+	foreach my $e ( $self->collation->paths ) {
+		$newgraph->add_edge( @$e );
+	}
+	# Set this as the new equivalence graph
+	$self->_reset_equivalence( $newgraph );
+	
+	# Now collapse some nodes. This does no testing; it assumes that all
+	# preexisting relationships are valid.
+	foreach my $rel ( $self->relationships ) {
+		my $relobj = $self->get_relationship( $rel );
+		next unless $relobj && $relobj->colocated;
+		$self->_make_equivalence( @$rel );
+	}
 }
 
 ### Output logic
