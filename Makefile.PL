@@ -30,5 +30,8 @@ requires( 'TryCatch' );
 requires( 'XML::Easy::Syntax' );
 requires( 'XML::LibXML' );
 requires( 'XML::LibXML::XPathContext' );
+# For the morphology stuff
+requires( 'Lingua::TagSet::Multext' );
+requires( 'Lingua::TagSet::TreeTagger' );
 build_requires( 'Test::Warn' );
 &WriteAll;

@@ -1,6 +1,7 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
+use Module::Load;
 use overload '""' => \&_stringify, 'fallback' => 1;
 
 =head1 NAME
@@ -89,7 +90,7 @@ has 'text' => (
 has 'language' => (
 	is => 'ro',
 	isa => 'Str',
-	default => 'Default',
+	predicate => 'has_language',
 	);
 	
 has 'is_start' => (
@@ -277,47 +278,29 @@ sub _stringify {
 
 A few methods to try to tack on morphological information.
 
-=head2 use_lexemes
+=head2 lexemes
 
-TBD
+=head2 has_lexemes
+
+=head2 clear_lexemes
+
+=head2 add_lexeme
+
+=head2 lemmatize 
 
 =cut
 
-# sub use_lexemes {
-# 	my( $self, @lexemes ) = @_;
-# 	# The lexemes need to be the same as $self->text.
-# 	my $cmpstr = $self->has_normal_form ? lc( $self->normal_form ) : lc( $self->text );
-# 	$cmpstr =~ s/[\s-]+//g;
-# 	my $lexstr = lc( join( '', @lexemes ) );
-# 	$lexstr =~ s/[\s-]+//g;
-# 	unless( $lexstr eq $cmpstr ) {
-# 		warn "Cannot split " . $self->text . " into " . join( '.', @lexemes );
-# 		return;
-# 	}
-# 	$self->_clear_morph;
-# 	map { $self->_add_morph( { $_ => [] } ) } @lexemes;
-# }
-# 
-# sub add_morphological_tag {
-# 	my( $self, $lexeme, $opts ) = @_;
-# 	my $struct;
-# 	unless( $opts ) {
-# 		# No lexeme was passed; use reading text.
-# 		$opts = $lexeme;
-# 		$lexeme = $self->text;
-# 		$self->use_lexemes( $lexeme );
-# 	}
-# 	# Get the correct container
-# 	( $struct ) = grep { exists $_->{$lexeme} } $self->lexemes;
-# 	unless( $struct ) {
-# 		warn "No lexeme $lexeme exists in this reading";
-# 		return;
-# 	}
-# 	# Now make the morph object and add it to this lexeme.
-# 	my $morph_obj = Text::Tradition::Collation::Reading::Morphology->new( $opts );
-# 	# TODO Check for existence
-# 	push( @{$struct->{$lexeme}}, $morph_obj );
-# }
+sub lemmatize {
+	my $self = shift;
+	unless( $self->has_language ) {
+		warn "Please set a language to lemmatize a tradition";
+		return;
+	}
+	my $mod = "Text::Tradition::Language::" . $self->language;
+	load( $mod );
+	$mod->can( 'reading_lookup' )->( $self );
+
+}
 
 ## Utility methods
 
@@ -331,87 +314,4 @@ sub TO_JSON {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
-###################################################
-### Morphology objects, to be attached to readings
-###################################################
-
-package Text::Tradition::Collation::Reading::Morphology;
-
-use Moose;
-
-has 'lemma' => (
-	is => 'ro',
-	isa => 'Str',
-	required => 1,
-	);
-	
-has 'code' => (
-	is => 'ro',
-	isa => 'Str',
-	required => 1,
-	);
-	
-has 'language' => (
-	is => 'ro',
-	isa => 'Str',
-	required => 1,
-	);
-	
-## Transmute codes into comparison arrays for our various languages.
-
-around BUILDARGS => sub {
-	my $orig = shift;
-	my $class = shift;
-	my $args;
-	if( @_ == 1 && ref( $_[0] ) ) {
-		$args = shift;
-	} else {
-		$args = { @_ };
-	}
-	if( exists( $args->{'serial'} ) ) {
-		my( $lemma, $code ) = split( /!!/, delete $args->{'serial'} );
-		$args->{'lemma'} = $lemma;
-		$args->{'code'} = $code;
-	}
-	$class->$orig( $args );
-};
-
-sub serialization {
-	my $self = shift;
-	return join( '!!', $self->lemma, $self->code );
-};
-
-sub comparison_array {
-	my $self = shift;
-	if( $self->language eq 'French' ) {
-		my @array;
-		my @bits = split( /\+/, $self->code );
-		# First push the non k/v parts.
-		while( @bits && $bits[0] !~ /=/ ) {
-			push( @array, shift @bits );
-		}
-		while( @array < 2 ) {
-			push( @array, undef );
-		}
-		# Now push the k/v parts in a known order.
-		my @fields = qw/ Pers Nb Temps Genre Spec Fonc /;
-		my %props;
-		map { my( $k, $v ) = split( /=/, $_ ); $props{$k} = $v; } @bits;
-		foreach my $k ( @fields ) {
-			push( @array, $props{$k} );
-		}
-		# Give the answer.
-		return @array;
-	} elsif( $self->language eq 'English' ) {
-		# Do something as yet undetermined
-	} else {
-		# Latin or Greek or Armenian, just split the chars
-		return split( '', $self->code );
-	}
-};
-
-no Moose;
-__PACKAGE__->meta->make_immutable;
-
 1;
-

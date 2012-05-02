@@ -284,6 +284,9 @@ sub add_reading {
 	my( $self, $reading ) = @_;
 	unless( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
 		my %args = %$reading;
+		if( $self->tradition->has_language && !exists $args{'language'} ) {
+			$args{'language'} = $self->tradition->language;
+		}
 		$reading = Text::Tradition::Collation::Reading->new( 
 			'collation' => $self,
 			%args );
@@ -1386,21 +1389,13 @@ sub path_text {
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
-	return $self->_text_from_path( @path );
-}
-
-# Utility function so that we can cheat and use it when we need both the path
-# and its text.
-sub _text_from_path {
-	my( $self, @path ) = @_;
 	my $pathtext = '';
 	my $last;
 	foreach my $r ( @path ) {
-		if( $r->join_prior || !$last || $last->join_next ) {
-			$pathtext .= $r->text;
-		} else {
-			$pathtext .= ' ' . $r->text;
-		}
+		unless ( $r->join_prior || !$last || $last->join_next ) {
+			$pathtext .= ' ';
+		} 
+		$pathtext .= $r->text;
 		$last = $r;
 	}
 	return $pathtext;

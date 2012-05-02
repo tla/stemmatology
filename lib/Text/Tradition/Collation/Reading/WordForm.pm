@@ -57,27 +57,22 @@ has 'lemma' => (
 	
 has 'morphology' => (
 	is => 'ro',
-	isa => 'ArrayRef',
+	isa => 'Lingua::Features::Structure',
 	required => 1,
 	);
 	
-around BUILDARGS => sub {
-	my $orig = shift;
-	my $class = shift;
-	my %args = @_ == 1 ? %{$_[0]} : @_;
-	unless( ref( $args{'morphology'} ) ) {
-		my @morph = split( '', $args{'morphology'} );
-		$args{'morphology'} = \@morph;
-	}
-	$class->$orig( %args );
-};
+=head2 to_string
 
-sub _stringify {
+Returns a string combination of language/lemma/morphology that can be used
+in equivalence testing.
+
+=cut
+
+sub to_string {
 	my $self = shift;
-	return sprintf( "%s//%s//%s", $self->language, $self->lemma,
-		join( '|', @{$self->morphology} ) );
+	return join( '++', $self->language, $self->lemma, $self->morphology->to_string );
 }
-
+	
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
