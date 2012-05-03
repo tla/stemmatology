@@ -323,7 +323,17 @@ sub lemmatize {
 # reading lexemes.
 sub _serialize_lexemes {
 	my $self = shift;
-	return Dump( [ $self->lexemes ] );
+	my @lexstrs;
+	foreach my $l ( $self->lexemes ) {
+		my @mf;
+		foreach my $wf ( $l->matching_forms ) {
+			push( @mf, $wf->to_string );
+		}
+		my $form = $l->form ? $l->form->to_string : '';
+		push( @lexstrs, join( '|L|', $l->language, $l->string, $form, 
+			join( '|M|', @mf ) ) );
+	}
+	return join( '|R|', @lexstrs );
 }
 		
 
