@@ -974,6 +974,9 @@ sub as_graphml {
 		next unless $save_types{$attr->type_constraint->name};
 		$reading_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
+	# Extra custom key for the reading morphology
+	$reading_attributes{'lexemes'} = 'string';
+	
     my %node_data_keys;
     my $ndi = 0;
     foreach my $datum ( sort keys %reading_attributes ) {
@@ -1052,6 +1055,13 @@ sub as_graphml {
         $node_el->setAttribute( 'id', $node_xmlid );
         foreach my $d ( keys %reading_attributes ) {
         	my $nval = $n->$d;
+        	# Custom serialization
+        	if( $d eq 'lexemes' ) {
+				# If nval is a true value, we have lexemes so we need to
+				# serialize them. Otherwise set nval to undef so that the
+				# key is excluded from this reading.
+        		$nval = $nval ? $n->_serialize_lexemes : undef;
+        	}
         	if( $rankoffset && $d eq 'rank' && $n ne $self->start ) {
         		# Adjust the ranks within the subgraph.
         		$nval = $n eq $self->end ? $end->rank - $rankoffset + 1 

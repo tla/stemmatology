@@ -2,6 +2,7 @@ package Text::Tradition::Collation::Reading;
 
 use Moose;
 use Module::Load;
+use YAML::XS;
 use overload '""' => \&_stringify, 'fallback' => 1;
 
 =head1 NAME
@@ -138,8 +139,7 @@ has 'normal_form' => (
 	predicate => 'has_normal_form',
 	);
 
-# Holds the word form. If is_disambiguated is true, the form at index zero
-# is the correct one.
+# Holds the lexemes for the reading.
 has 'reading_lexemes' => (
 	traits => ['Array'],
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading::Lexeme]',
@@ -276,17 +276,34 @@ sub _stringify {
 
 =head1 MORPHOLOGY
 
-A few methods to try to tack on morphological information.
-
-=head2 lexemes
+Methods for the morphological information (if any) attached to readings.
+A reading may be made up of multiple lexemes; the concatenated lexeme
+strings ought to match the reading's normalized form.
+ 
+See L<Text::Tradition::Collation::Reading::Lexeme> for more information
+on Lexeme objects and their attributes.
 
 =head2 has_lexemes
 
+Returns a true value if the reading has any attached lexemes.
+
+=head2 lexemes
+
+Returns the Lexeme objects (if any) attached to the reading.
+
 =head2 clear_lexemes
 
-=head2 add_lexeme
+Wipes any associated Lexeme objects out of the reading.
 
-=head2 lemmatize 
+=head2 add_lexeme( $lexobj )
+
+Adds the Lexeme in $lexobj to the list of lexemes.
+
+=head2 lemmatize
+
+If the language of the reading is set, this method will use the appropriate
+Language model to determine the lexemes that belong to this reading.  See
+L<Text::Tradition::lemmatize> if you wish to lemmatize an entire tradition.
 
 =cut
 
@@ -301,6 +318,14 @@ sub lemmatize {
 	$mod->can( 'reading_lookup' )->( $self );
 
 }
+
+# For graph serialization. Return a string representation of the associated
+# reading lexemes.
+sub _serialize_lexemes {
+	my $self = shift;
+	return Dump( [ $self->lexemes ] );
+}
+		
 
 ## Utility methods
 
