@@ -1,6 +1,7 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
+use JSON qw/ from_json /;
 use Module::Load;
 use Text::Tradition::Error;
 use YAML::XS;
@@ -328,55 +329,30 @@ sub lemmatize {
 
 }
 
-# For graph serialization. Return a string representation of the associated
+# For graph serialization. Return a JSON representation of the associated
 # reading lexemes.
-# TODO Push this in to the Lexeme package.
 sub _serialize_lexemes {
 	my $self = shift;
-	my @lexstrs;
-	foreach my $l ( $self->lexemes ) {
-		my @mf;
-		foreach my $wf ( $l->matching_forms ) {
-			push( @mf, $wf->to_string );
-		}
-		my $form = $l->form ? $l->form->to_string : '';
-		push( @lexstrs, join( '|L|', $l->language, $l->string, $form, 
-			join( '|M|', @mf ) ) );
-	}
-	return join( '|R|', @lexstrs );
+	my $json = JSON->new->allow_blessed(1)->convert_blessed(1);
+	return $json->encode( [ $self->lexemes ] );
 }
 
+# Given a JSON representation of the lexemes, instantiate them and add
+# them to the reading.
 sub _deserialize_lexemes {
-	my( $self, $data ) = @_;
-	return unless $data;
+	my( $self, $json ) = @_;
+	my $data = from_json( $json );
+	return unless @$data;
 	
-	# Need to have the lexeme modules in order to have lexemes.
-	eval { 
-		use Text::Tradition::Collation::Reading::Lexeme; 
-		use Text::Tradition::Collation::Reading::WordForm;
-	};
+	# Need to have the lexeme module in order to have lexemes.
+	eval { use Text::Tradition::Collation::Reading::Lexeme; };
 	throw( $@ ) if $@;
 	
 	# Good to go - add the lexemes.
 	my @lexemes;
-	foreach my $lexdata ( split( /\|R\|/, $data ) ) {
-		my( $lang, $lstring, $form, $allforms ) = split( /\|L\|/, $lexdata );
-		my @wfdata;
-		push( @wfdata, $form ) if $form;
-		push( @wfdata, split( /\|M\|/, $allforms ) );
-		my @wforms;
-		foreach my $wd ( @wfdata ) {
-			my $wf = Text::Tradition::Collation::Reading::WordForm->new(
-				'serial' => $wd );
-			push( @wforms, $wf );
-		}
-		my %largs = ( 'language' => $lang, 'string' => $lstring );
-		if( $form ) {
-			$largs{'form'} = shift @wforms;
-			$largs{'is_disambiguated'} = 1;
-		}
-		$largs{'wordform_matchlist'} = \@wforms;
-		push( @lexemes, Text::Tradition::Collation::Reading::Lexeme->new( %largs ) );
+	foreach my $lexhash ( @$data ) {
+		push( @lexemes, Text::Tradition::Collation::Reading::Lexeme->new(
+			'JSON' => $lexhash ) );
 	}
 	$self->clear_lexemes;
 	$self->add_lexeme( @lexemes );

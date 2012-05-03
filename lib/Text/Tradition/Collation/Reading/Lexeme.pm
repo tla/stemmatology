@@ -1,6 +1,7 @@
 package Text::Tradition::Collation::Reading::Lexeme;
 
 use Moose;
+use JSON ();
 use Module::Load;
 
 =head1 NAME
@@ -91,6 +92,30 @@ has 'form' => (
 	writer => '_set_form',
 	);
 	
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $class = shift;
+	my $args = @_ == 1 ? $_[0] : { @_ };
+	if( exists $args->{JSON} ) {
+		my $data = $args->{JSON};
+		if( exists $data->{'form'} && $data->{'form'} ) {
+			my $form = Text::Tradition::Collation::Reading::WordForm->new(
+				'JSON' => $data->{'form'} );
+			$data->{'form'} = $form;
+		}
+		if( exists $data->{'wordform_matchlist'} && $data->{'wordform_matchlist'} ) {
+			my @ml;
+			foreach my $wfjson ( @{$data->{'wordform_matchlist'}} ) {
+				push( @ml, Text::Tradition::Collation::Reading::WordForm->new(
+					'JSON' => $wfjson ) );
+			}
+			$data->{'wordform_matchlist'} = \@ml;
+		}
+		$args = $data;
+	}
+	$class->$orig( $args );
+};
+	
 # Do auto-disambiguation if we were created with a single wordform
 sub BUILD {
 	my $self = shift;
@@ -116,30 +141,15 @@ sub disambiguate {
 	$self->is_disambiguated( 1 );	
 }
 
-=head2 lookup
-
-Uses the module for the declared language to look up the lexeme in the
-language database (if any.) Sets the returned morphological matches in
-matching_forms, and returns the list as an array of WordForm objects.
-
-=cut
-
-sub lookup {
+sub TO_JSON {
 	my $self = shift;
-	my $lang = $self->language;
-	my @answers;
-	try {
-		my $langmod = "Text::Tradition::Language::$lang";
-		load( $langmod );
-		@answers = $langmod->can( 'word_lookup' )->( $self->string );
-	} catch {
-		throw( "No language module for $lang, or the module has no word_lookup functionality" );
-	}
-	$self->clear_matching_forms;
-	$self->add_matching_form( @answers );
-	return @answers;
+	my $hash = {};
+	# Do the scalar keys
+	map { $hash->{$_} = $self->$_ if defined $self->$_ } 
+		qw/ language string is_disambiguated form /; 
+	$hash->{'wordform_matchlist'} = [ $self->matching_forms ] if $self->matches;
+	return $hash;
 }
-
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

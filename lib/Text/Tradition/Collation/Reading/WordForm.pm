@@ -1,7 +1,8 @@
 package Text::Tradition::Collation::Reading::WordForm;
 
-use Moose;
 use Lingua::Features::Structure;
+use JSON ();
+use Moose;
 
 =head1 NAME
 
@@ -66,11 +67,11 @@ around BUILDARGS => sub {
 	my $orig = shift;
 	my $class = shift;
 	my $args = @_ == 1 ? $_[0] : { @_ };
-	if( exists $args->{'serial'} ) {
-		my( $lang, $lemma, $morph ) = split( /\+\+/, delete $args->{'serial'} );
-		$args->{'language'} = $lang;
-		$args->{'lemma'} = $lemma;
-		$args->{'morphology'} = Lingua::Features::Structure->from_string( $morph );
+	if( exists $args->{'JSON'} ) {
+		my $data = $args->{'JSON'};
+		my $morph = Lingua::Features::Structure->from_string( $data->{'morphology'} );
+		$data->{'morphology'} = $morph;
+		$args = $data;
 	}
 	$class->$orig( $args );
 };
@@ -84,7 +85,16 @@ in equivalence testing.
 
 sub to_string {
 	my $self = shift;
-	return join( '++', $self->language, $self->lemma, $self->morphology->to_string );
+	return JSON->new->convert_blessed(1)->encode( $self );
+}
+
+sub TO_JSON {
+	my $self = shift;
+	return { 
+		'language' => $self->language,
+		'lemma' => $self->lemma,
+		'morphology' => $self->morphology->to_string
+	};
 }
 	
 no Moose;
