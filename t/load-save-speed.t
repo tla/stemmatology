@@ -31,7 +31,7 @@ my $benchmark_file = 't/data/load-save-benchmark.json';
 my $load_sql = 't/data/speed_test_load.sql';
 
 ## uuid to load from the above stored db:
-my $load_uuid = '2FD966F6-946D-11E1-9C51-61717D694B5D';
+my $load_uuid = 'load-test';
 
 ## Pass the git hash to identify this performance improvement, if you
 ## want to save the results of this run. Pass nothing to just run a test
