@@ -1,6 +1,7 @@
 package Text::Tradition::Collation::Reading::WordForm;
 
 use Moose;
+use Lingua::Features::Structure;
 
 =head1 NAME
 
@@ -60,6 +61,19 @@ has 'morphology' => (
 	isa => 'Lingua::Features::Structure',
 	required => 1,
 	);
+	
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $class = shift;
+	my $args = @_ == 1 ? $_[0] : { @_ };
+	if( exists $args->{'serial'} ) {
+		my( $lang, $lemma, $morph ) = split( /\+\+/, delete $args->{'serial'} );
+		$args->{'language'} = $lang;
+		$args->{'lemma'} = $lemma;
+		$args->{'morphology'} = Lingua::Features::Structure->from_string( $morph );
+	}
+	$class->$orig( $args );
+};
 	
 =head2 to_string
 

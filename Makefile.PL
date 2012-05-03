@@ -34,5 +34,6 @@ requires( 'YAML::XS' );
 # For the morphology stuff
 requires( 'Lingua::TagSet::Multext' );
 requires( 'Lingua::TagSet::TreeTagger' );
+requires( 'Lingua::Features::Structure' );
 build_requires( 'Test::Warn' );
 &WriteAll;

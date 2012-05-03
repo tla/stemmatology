@@ -2,6 +2,7 @@ package Text::Tradition::Collation::Reading;
 
 use Moose;
 use Module::Load;
+use Text::Tradition::Error;
 use YAML::XS;
 use overload '""' => \&_stringify, 'fallback' => 1;
 
@@ -195,6 +196,14 @@ around BUILDARGS => sub {
 	$class->$orig( $args );
 };
 
+# Look for a lexeme-string argument in the build args.
+sub BUILD {
+	my( $self, $args ) = @_;
+	if( exists $args->{'lexemes'} ) {
+		$self->_deserialize_lexemes( $args->{'lexemes'} );
+	}
+}
+
 =head2 is_meta
 
 A meta attribute (ha ha), which should be true if any of our 'special'
@@ -321,6 +330,7 @@ sub lemmatize {
 
 # For graph serialization. Return a string representation of the associated
 # reading lexemes.
+# TODO Push this in to the Lexeme package.
 sub _serialize_lexemes {
 	my $self = shift;
 	my @lexstrs;
@@ -335,7 +345,42 @@ sub _serialize_lexemes {
 	}
 	return join( '|R|', @lexstrs );
 }
-		
+
+sub _deserialize_lexemes {
+	my( $self, $data ) = @_;
+	return unless $data;
+	
+	# Need to have the lexeme modules in order to have lexemes.
+	eval { 
+		use Text::Tradition::Collation::Reading::Lexeme; 
+		use Text::Tradition::Collation::Reading::WordForm;
+	};
+	throw( $@ ) if $@;
+	
+	# Good to go - add the lexemes.
+	my @lexemes;
+	foreach my $lexdata ( split( /\|R\|/, $data ) ) {
+		my( $lang, $lstring, $form, $allforms ) = split( /\|L\|/, $lexdata );
+		my @wfdata;
+		push( @wfdata, $form ) if $form;
+		push( @wfdata, split( /\|M\|/, $allforms ) );
+		my @wforms;
+		foreach my $wd ( @wfdata ) {
+			my $wf = Text::Tradition::Collation::Reading::WordForm->new(
+				'serial' => $wd );
+			push( @wforms, $wf );
+		}
+		my %largs = ( 'language' => $lang, 'string' => $lstring );
+		if( $form ) {
+			$largs{'form'} = shift @wforms;
+			$largs{'is_disambiguated'} = 1;
+		}
+		$largs{'wordform_matchlist'} = \@wforms;
+		push( @lexemes, Text::Tradition::Collation::Reading::Lexeme->new( %largs ) );
+	}
+	$self->clear_lexemes;
+	$self->add_lexeme( @lexemes );
+}
 
 ## Utility methods
 
@@ -344,7 +389,12 @@ sub TO_JSON {
 	return $self->text;
 }
 
-## TODO will need a throw() here
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Reading error',
+		'message' => $_[0],
+		);
+}
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
