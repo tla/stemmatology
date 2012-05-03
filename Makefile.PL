@@ -30,5 +30,7 @@ requires( 'TryCatch' );
 requires( 'XML::Easy::Syntax' );
 requires( 'XML::LibXML' );
 requires( 'XML::LibXML::XPathContext' );
+requires( 'YAML::XS' );
+requires( 'namespace::clean' );
 build_requires( 'Test::Warn' );
 &WriteAll;

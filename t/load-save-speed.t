@@ -31,7 +31,7 @@ my $benchmark_file = 't/data/load-save-benchmark.json';
 my $load_sql = 't/data/speed_test_load.sql';
 
 ## uuid to load from the above stored db:
-my $load_uuid = '7D0AA7C0-92C2-11E1-98B2-D7BDA89F4671';
+my $load_uuid = '2FD966F6-946D-11E1-9C51-61717D694B5D';
 
 ## Pass the git hash to identify this performance improvement, if you
 ## want to save the results of this run. Pass nothing to just run a test
@@ -90,6 +90,7 @@ my $test_save = sub {
 
 };
 
+my $load_tradition;
 my $test_load = sub {
     my $dir = Text::Tradition::Directory->new(
         dsn => $load_dsn,
@@ -98,7 +99,7 @@ my $test_load = sub {
     ## This seems to be a required magic incantation:
     my $scope = $dir->new_scope;
 
-    my $load_tradition = $dir->tradition($load_uuid);
+    $load_tradition = $dir->tradition($load_uuid);
 #    print STDERR $load_tradition->name, $tradition->name, "\n";
 };
 
@@ -116,13 +117,19 @@ if(!$last_benchmark) {
 ## Or compare results more sanely
 my $new_save_result = timethis(5, $test_save);
 
-ok($new_save_result->[1] + $new_save_result->[2] < $last_benchmark->{save_times}[1] + $last_benchmark->{save_times}[2], 'Saving to a Tradition Directory got faster');
+my $new_save = $new_save_result->[1] + $new_save_result->[2];
+my $old_save = $last_benchmark->{save_times}[1] + $last_benchmark->{save_times}[2];
+ok( $new_save < $old_save, "Saving to a Tradition Directory got faster: $new_save vs $old_save");
 
 my $new_load_result = timethis(20, $test_load);
 
-ok($new_load_result->[1] + $new_load_result->[2] < $last_benchmark->{load_times}[1] + $last_benchmark->{load_times}[2], 'Loading from a Tradition Directory got faster');
+my $new_load = $new_load_result->[1] + $new_load_result->[2];
+my $old_load = $last_benchmark->{load_times}[1] + $last_benchmark->{load_times}[2];
+ok($new_load < $old_load, "Loading from a Tradition Directory got faster: $new_load vs $old_load");
 
 $test_load->();
+isa_ok($load_tradition, 'Text::Tradition');
+ok($load_tradition->collation->as_svg());
 
 if($git_hash) {
     push(@{ $benchmark_data }, {
