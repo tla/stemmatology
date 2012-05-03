@@ -78,10 +78,10 @@ sub parse {
             $r = $c->add_reading( { id => 'n'.$counter++, 
             						text => $item->{'content'} } );
         } elsif ( $item->{'type'} eq 'anchor' ) {
-            $r = $c->add_reading( { id => '#ANCHOR_' . $item->{'content'} . '#', 
+            $r = $c->add_reading( { id => '__ANCHOR_' . $item->{'content'} . '__', 
             						is_ph => 1 } );
         } elsif ( $item->{'type'} eq 'app' ) {
-            my $tag = '#APP_' . $counter++ . '#';
+            my $tag = '__APP_' . $counter++ . '__';
             $r = $c->add_reading( { id => $tag, is_ph => 1 } );
             $apps{$tag} = $item->{'content'};
         }
@@ -207,14 +207,14 @@ sub _add_readings {
     # Get the lemma, which is all the readings between app and anchor,
     # excluding other apps or anchors.
     my @lemma = _return_lemma( $c, $app_id, $anchor );
-    my $lemma_str = join( ' ', grep { $_ !~ /^\#/ } map { $_->text } @lemma );
+    my $lemma_str = join( ' ', grep { $_ !~ /^__/ } map { $_->text } @lemma );
     
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
     my %wit_rdgs;  # Maps from witnesses to the variant text
     my $ctr = 0;
     my $tag = $app_id;
-    $tag =~ s/^\#APP_(.*)\#$/$1/;
+    $tag =~ s/^\__APP_(.*)\__$/$1/;
 
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
         my @text;
@@ -230,11 +230,11 @@ sub _add_readings {
         
         my @rdg_nodes;
         if( $interpreted eq '#LACUNA#' ) {
-        	push( @rdg_nodes, $c->add_reading( { id => $tag . "/" . $ctr++,
+        	push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
         										 is_lacuna => 1 } ) );
         } else {
 			foreach my $w ( split( /\s+/, $interpreted ) ) {
-				my $r = $c->add_reading( { id => $tag . "/" . $ctr++,
+				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 										   text => $w } );
 				push( @rdg_nodes, $r );
 			}
@@ -272,12 +272,12 @@ sub _add_readings {
 sub _anchor_name {
     my $xmlid = shift;
     $xmlid =~ s/^\#//;
-    return sprintf( "#ANCHOR_%s#", $xmlid );
+    return sprintf( "__ANCHOR_%s__", $xmlid );
 }
 
 sub _return_lemma {
     my( $c, $app, $anchor ) = @_;
-    my @nodes = grep { $_->id !~ /^\#A(PP|NCHOR)/ } 
+    my @nodes = grep { $_->id !~ /^__A(PP|NCHOR)/ } 
         $c->reading_sequence( $c->reading( $app ), $c->reading( $anchor ),
         	$c->baselabel );
     return @nodes;

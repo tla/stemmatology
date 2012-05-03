@@ -266,7 +266,7 @@ sub _make_nodes {
     my $ctr = 1;
     foreach my $w ( keys %unique ) {
     	my $rargs = {
-    		'id' => "$index,$ctr",
+    		'id' => "r$index.$ctr",
     		'rank' => $index,
     		'text' => $w,
     		};

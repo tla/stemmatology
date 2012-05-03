@@ -167,7 +167,10 @@ sub parse {
 		}
 	}
 		
-    # Add the nodes to the graph. 
+    # Add the nodes to the graph.
+    # Note any reading IDs that were changed in order to comply with XML 
+    # name restrictions; we have to hardcode start & end.
+    my %namechange = ( '#START#' => '__START__', '#END#' => '__END__' );
 
     # print STDERR "Adding collation readings\n";
     foreach my $n ( @{$graph_data->{'nodes'}} ) {    	
@@ -179,13 +182,20 @@ sub parse {
     		next;
     	}
 		my $gnode = $collation->add_reading( $n );
+		if( $gnode->id ne $n->{'id'} ) {
+			$namechange{$n->{'id'}} = $gnode->id;
+		}
     }
         
     # Now add the edges.
     # print STDERR "Adding collation path edges\n";
     foreach my $e ( @{$graph_data->{'edges'}} ) {
-        my $from = $collation->reading( $e->{'source'}->{'id'} );
-        my $to = $collation->reading( $e->{'target'}->{'id'} );
+    	my $sourceid = exists $namechange{$e->{'source'}->{'id'}}
+    		? $namechange{$e->{'source'}->{'id'}} : $e->{'source'}->{'id'};
+    	my $targetid = exists $namechange{$e->{'target'}->{'id'}}
+    		? $namechange{$e->{'target'}->{'id'}} : $e->{'target'}->{'id'};
+        my $from = $collation->reading( $sourceid );
+        my $to = $collation->reading( $targetid );
 
 		warn "No witness label on path edge!" unless $e->{'witness'};
 		my $label = $e->{'witness'} . ( $e->{'extra'} ? $collation->ac_label : '' );
@@ -206,8 +216,12 @@ sub parse {
 	# TODO check that scoping does trt
 	$rel_data->{'edges'} ||= []; # so that the next line doesn't break on no rels
 	foreach my $e ( sort { _layersort_rel( $a, $b ) } @{$rel_data->{'edges'}} ) {
-		my $from = $collation->reading( $e->{'source'}->{'id'} );
-		my $to = $collation->reading( $e->{'target'}->{'id'} );
+    	my $sourceid = exists $namechange{$e->{'source'}->{'id'}}
+    		? $namechange{$e->{'source'}->{'id'}} : $e->{'source'}->{'id'};
+    	my $targetid = exists $namechange{$e->{'target'}->{'id'}}
+    		? $namechange{$e->{'target'}->{'id'}} : $e->{'target'}->{'id'};
+        my $from = $collation->reading( $sourceid );
+        my $to = $collation->reading( $targetid );
 		delete $e->{'source'};
 		delete $e->{'target'};
 		# The remaining keys are relationship attributes.

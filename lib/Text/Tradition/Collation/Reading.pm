@@ -1,11 +1,20 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
+use Moose::Util::TypeConstraints;
 use JSON qw/ from_json /;
 use Module::Load;
 use Text::Tradition::Error;
+use XML::Easy::Syntax qw( $xml10_name_rx $xml10_namestartchar_rx );
 use YAML::XS;
 use overload '""' => \&_stringify, 'fallback' => 1;
+
+subtype 'ReadingID',
+	as 'Str',
+	where { $_ =~ /\A$xml10_name_rx\z/ },
+	message { 'Reading ID must be a valid XML attribute string' };
+	
+no Moose::Util::TypeConstraints;
 
 =head1 NAME
 
@@ -79,7 +88,7 @@ has 'collation' => (
 
 has 'id' => (
 	is => 'ro',
-	isa => 'Str',
+	isa => 'ReadingID',
 	required => 1,
 	);
 
@@ -184,15 +193,24 @@ around BUILDARGS => sub {
 	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
 		$args->{'text'} = '#LACUNA#';
 	} elsif( exists $args->{'is_start'} ) {
-		$args->{'id'} = '#START#';  # Change the ID to ensure we have only one
+		$args->{'id'} = '__START__';  # Change the ID to ensure we have only one
 		$args->{'text'} = '#START#';
 		$args->{'rank'} = 0;
 	} elsif( exists $args->{'is_end'} ) {
-		$args->{'id'} = '#END#';	# Change the ID to ensure we have only one
+		$args->{'id'} = '__END__';	# Change the ID to ensure we have only one
 		$args->{'text'} = '#END#';
 	} elsif( exists $args->{'is_ph'} ) {
 		$args->{'text'} = $args->{'id'};
 	}
+	
+	# Backwards compatibility for non-XMLname IDs
+	my $rid = $args->{'id'};
+	$rid =~ s/\#/__/g;
+	$rid =~ s/[\/,]/./g;
+    if( $rid !~ /^$xml10_namestartchar_rx/ ) {
+    	$rid = 'r'.$rid;
+    }
+	$args->{'id'} = $rid;
 	
 	$class->$orig( $args );
 };

@@ -642,10 +642,10 @@ sub as_dot {
 
 	# Output substitute start/end readings if necessary
 	if( $startrank ) {
-		$dot .= "\t\"#SUBSTART#\" [ label=\"...\" ];\n";
+		$dot .= "\t\"#SUBSTART#\" [ label=\"...\",id=\"__SUBSTART__\" ];\n";
 	}
 	if( $endrank ) {
-		$dot .= "\t\"#SUBEND#\" [ label=\"...\" ];\n";	
+		$dot .= "\t\"#SUBEND#\" [ label=\"...\",id=\"__SUBEND__\" ];\n";	
 	}
 	if( $STRAIGHTENHACK ) {
 		## HACK part 1
@@ -672,6 +672,7 @@ sub as_dot {
         $label = "-$label" if $reading->join_prior;
         $label =~ s/\"/\\\"/g;
 		$rattrs->{'label'} = $label;
+		$rattrs->{'id'} = $reading->id;
 		$rattrs->{'fillcolor'} = '#b3f36d' if $reading->is_common && $color_common;
         $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
@@ -929,6 +930,7 @@ sub as_graphml {
     	'Str' => 'string',
     	'Int' => 'int',
     	'Bool' => 'boolean',
+    	'ReadingID' => 'string',
     	'RelationshipType' => 'string',
     	'RelationshipScope' => 'string',
     );
@@ -1727,12 +1729,12 @@ my $c = $t->collation;
 is( $c->common_predecessor( 'n24', 'n23' )->id, 
     'n20', "Found correct common predecessor" );
 is( $c->common_successor( 'n24', 'n23' )->id, 
-    '#END#', "Found correct common successor" );
+    '__END__', "Found correct common successor" );
 
 is( $c->common_predecessor( 'n19', 'n17' )->id, 
     'n16', "Found correct common predecessor for readings on same path" );
 is( $c->common_successor( 'n21', 'n10' )->id, 
-    '#END#', "Found correct common successor for readings on same path" );
+    '__END__', "Found correct common successor for readings on same path" );
 
 =end testing
 

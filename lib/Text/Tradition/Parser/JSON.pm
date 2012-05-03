@@ -207,7 +207,7 @@ sub make_nodes {
 			if( exists( $unique{$word} ) ) {
 				$rdg = $unique{$word};
 			} else {
-				my %args = ( 'id' => join( ',', $idx, $j+1 ),
+				my %args = ( 'id' => 'r' . join( '.', $idx, $j+1 ),
 					'rank' => $idx,
 					'text' => $word,
 					'collation' => $c );
