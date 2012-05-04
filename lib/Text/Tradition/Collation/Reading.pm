@@ -144,6 +144,18 @@ has 'rank' => (
     
 ## For morphological analysis
 
+has 'grammar_invalid' => (
+	is => 'rw',
+	isa => 'Bool',
+	default => undef,
+	);
+	
+has 'is_nonsense' => (
+	is => 'rw',
+	isa => 'Bool',
+	default => 'undef',
+	);
+
 has 'normal_form' => (
 	is => 'rw',
 	isa => 'Str',
