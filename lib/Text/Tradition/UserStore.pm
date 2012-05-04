@@ -6,10 +6,15 @@ use warnings;
 use Moose;
 use KiokuX::User::Util qw(crypt_password);
 
-use Text::Tradition::User;
-use Text::Tradition::Directory;
+extends 'KiokuX::Model';
 
-has 'directory' => ( is => 'rw', isa => 'KiokuX::Model');
+use Text::Tradition::User;
+
+# has 'directory' => ( 
+#     is => 'rw', 
+#     isa => 'KiokuX::Model',
+#     handles => []
+#     );
 
 sub add_user {
     my ($self, $username, $password) = @_;
@@ -19,16 +24,17 @@ sub add_user {
         password => crypt_password($password),
     );
 
-    my $scope = $self->directory->new_scope;
-    $self->directory->store($user->kiokudb_object_id, $user);
+    my $scope = $self->new_scope;
+    $self->store($user->kiokudb_object_id, $user);
 
     return $user;
 }
 
 sub find_user {
-    my ($self, $username) = @_;
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
 
-    return $self->directory->lookup($self->user_prefix . $username);
+    return $self->lookup(Text::Tradition::User->id_for_user($username));
     
 }
 
