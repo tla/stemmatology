@@ -642,15 +642,15 @@ sub as_dot {
 
 	# Output substitute start/end readings if necessary
 	if( $startrank ) {
-		$dot .= "\t\"#SUBSTART#\" [ label=\"...\",id=\"__SUBSTART__\" ];\n";
+		$dot .= "\t\"__SUBSTART__\" [ label=\"...\",id=\"__START__\" ];\n";
 	}
 	if( $endrank ) {
-		$dot .= "\t\"#SUBEND#\" [ label=\"...\",id=\"__SUBEND__\" ];\n";	
+		$dot .= "\t\"__SUBEND__\" [ label=\"...\",id=\"__END__\" ];\n";	
 	}
 	if( $STRAIGHTENHACK ) {
 		## HACK part 1
-		my $startlabel = $startrank ? 'SUBSTART' : 'START';
-		$dot .= "\tsubgraph { rank=same \"#$startlabel#\" \"#SILENT#\" }\n";  
+		my $startlabel = $startrank ? '__SUBSTART__' : '__START__';
+		$dot .= "\tsubgraph { rank=same \"$startlabel\" \"#SILENT#\" }\n";  
 		$dot .= "\t\"#SILENT#\" [ shape=diamond,color=white,penwidth=0,label=\"\" ];"
 	}
 	my %used;  # Keep track of the readings that actually appear in the graph
@@ -722,18 +722,18 @@ sub as_dot {
     	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
-        $dot .= "\t\"#SUBSTART#\" -> \"$node\" $varopts;";
+        $dot .= "\t\"__SUBSTART__\" -> \"$node\" $varopts;";
 	}
     foreach my $node ( keys %subend ) {
     	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
-        $dot .= "\t\"$node\" -> \"#SUBEND#\" $varopts;";
+        $dot .= "\t\"$node\" -> \"__SUBEND__\" $varopts;";
 	}
 	# HACK part 2
 	if( $STRAIGHTENHACK ) {
-		my $endlabel = $endrank ? 'SUBEND' : 'END';
-		$dot .= "\t\"#$endlabel#\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
+		my $endlabel = $endrank ? '__SUBEND__' : '__END__';
+		$dot .= "\t\"$endlabel\" -> \"#SILENT#\" [ color=white,penwidth=0 ];\n";
 	}       
 
     $dot .= "}\n";
