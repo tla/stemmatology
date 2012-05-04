@@ -160,6 +160,8 @@ has +typemap => (
 			isa_entries => {
 				"Graph" => KiokuDB::TypeMap::Entry::Naive->new,
 				"Graph::AdjacencyMap" => KiokuDB::TypeMap::Entry::Naive->new,
+				"Lingua::Features::Structure" => KiokuDB::TypeMap::Entry::Naive->new,
+				"Lingua::Features::FeatureType" => KiokuDB::TypeMap::Entry::Naive->new,
 			}
 		);
 	},
