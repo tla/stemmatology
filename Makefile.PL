@@ -36,4 +36,7 @@ requires( 'Lingua::TagSet::Multext' );
 requires( 'Lingua::TagSet::TreeTagger' );
 requires( 'Lingua::Features::Structure' );
 build_requires( 'Test::Warn' );
+# Modules needed for morphology but not trivially CPANnable
+recommends( 'Lingua::TreeTagger' );
+recommends( 'Flemm' );
 &WriteAll;

@@ -45,7 +45,7 @@ SKIP: {
 	is( $ambig, 102, "Found 102 ambiguous forms as expected" );
 	
 	# Try setting the normal form of a reading and re-analyzing
-	my $mr = $tf->collation->reading('99,2');
+	my $mr = $tf->collation->reading('r99.2');
 	is( $mr->text, 'minspire', "Picked correct test reading" );
 	is( $mr->language, 'French', "Reading has correct language setting" );
 	$mr->normal_form( "m'inspire" );
