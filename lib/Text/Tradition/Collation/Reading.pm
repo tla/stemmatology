@@ -153,7 +153,7 @@ has 'grammar_invalid' => (
 has 'is_nonsense' => (
 	is => 'rw',
 	isa => 'Bool',
-	default => 'undef',
+	default => undef,
 	);
 
 has 'normal_form' => (
