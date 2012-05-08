@@ -42,7 +42,6 @@ sub lemmatize_treetagger {
 	
 	foreach my $sig ( keys %witness_paths ) {
 		# Get the text as a sequence of readings and as a string
-		print STDERR "Morphologizing witness $sig\n";
 		my %witopts = (
 			'path' => $witness_paths{$sig},
 			%opts
@@ -184,8 +183,8 @@ sub _update_reading_lexemes {
 				map { $ofw{$_->to_string} = 1 } $ol->matching_forms;
 				foreach my $form ( $nl->matching_forms ) {
 					unless( $ofw{$form->to_string} ) {
-						print STDERR "Adding form " . $form->to_string . 
-							" to lexeme " . $nl->string . " at $reading\n";
+						# print STDERR "Adding form " . $form->to_string . 
+						# 	" to lexeme " . $nl->string . " at $reading\n";
 						$ol->add_matching_form( $form );
 						$ol->is_disambiguated(0);
 					}
@@ -232,27 +231,16 @@ sub _treetag_string {
 	}
 	# OK, we can run it then.
 	# First upgrade to UTF8 for necessary languages.
-	$lang = lc( $lang );
-	my $use_utf8;
-	my @utf8_supported = qw/ french /;
+	my @utf8_supported = qw/ French /;
+	my %ttopts = ( 'language' => $lang, 'options' => [ qw/ -token -lemma / ] );
 	if( grep { $_ eq $lang } @utf8_supported ) {
-		$lang .= '-utf8';
-		$use_utf8 = 1;
+		$ttopts{'use_utf8'} = 1;
 	}
 	# Now instantiate and run the tagger.
-	my $tagger = Lingua::TreeTagger->new(
-		'language' => $lang,
-		'options' => [ qw/ -token -lemma / ],
-		);
-	if( $use_utf8 ) {
-		$text = encode_utf8( $text );
-	} 
+	my $tagger = Lingua::TreeTagger->new( %ttopts );
 	my $tagresult = $tagger->tag_text( \$text );
 	
 	# TODO maybe send the tokens back rather than the interpreted string...
-	if( $use_utf8 ) {
-		return decode_utf8( $tagresult->as_text() );
-	} 
 	return $tagresult->as_text();
 }
 
