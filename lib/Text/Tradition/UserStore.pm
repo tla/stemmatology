@@ -9,6 +9,7 @@ use KiokuX::User::Util qw(crypt_password);
 extends 'KiokuX::Model';
 
 use Text::Tradition::User;
+# use Text::Tradition::Directory;
 
 has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 
@@ -17,6 +18,13 @@ has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 #     isa => 'KiokuX::Model',
 #     handles => []
 #     );
+
+## TODO: Some of these methods should probably optionally take $user objects
+## instead of hashrefs.
+
+## It also occurs to me that all these methods don't need to be named
+## XX_user, but leaving that way for now incase we merge this code
+## into ::Directory for one-store.
 
 ## To die or not to die, on error, this is the question.
 sub add_user {
@@ -41,6 +49,7 @@ sub find_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
+    my $scope = $self->new_scope;
     return $self->lookup(Text::Tradition::User->id_for_user($username));
     
 }
@@ -63,9 +72,67 @@ sub modify_user {
     return $user;
 }
 
-sub delete_user {
+sub deactivate_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->find_user({ username => $username });
+    return if !$user;
+
+    $user->active(0);
+    foreach my $tradition (@{ $user->traditions }) {
+        ## Not implemented yet
+        # $tradition->public(0);
+    }
+    my $scope = $self->new_scope;
+
+    ## Should we be using Text::Tradition::Directory also?
+    $self->update(@{ $user->traditions });
+
+    $self->update($user);
+
+    return $user;
 }
 
+sub reactivate_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->find_user({ username => $username });
+    return if !$user;
+
+    return $user if $user->active;
+
+    $user->active(1);
+    my $scope = $self->new_scope;
+    $self->update($user);
+
+    return $user;    
+}
+
+sub delete_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->find_user({ username => $username });
+    return if !$user;
+
+    my $scope = $self->new_scope;
+
+    ## Should we be using Text::Tradition::Directory for this bit?
+    $self->delete( @{ $user->traditions });
+
+    ## Poof, gone.
+    $self->delete($user);
+
+    return 1;
+}
 
 sub validate_password {
     my ($self, $password) = @_;

@@ -8,10 +8,11 @@ with qw(KiokuX::User);
 
 ## 'id' provided by KiokuX::User stores our username
 has 'password'   => (is => 'rw', required => 1);
+## Change this default active value if you want/need to have an admin confirm a user after they self-create.
 has 'active'     => (is => 'rw', default => sub { 1; });
 # 'traits' => ['Array'] ?
 # https://metacpan.org/module/Moose::Meta::Attribute::Native::Trait::Array
-has 'traditions' => (is => 'rw', isa => 'ArrayRef[Text::Tradition]', required => 0);
+has 'traditions' => (is => 'rw', isa => 'ArrayRef[Text::Tradition]', default => sub { [] }, required => 0);
 
 # after add_tradition => sub { 
 #     $tradition->set_user($self) 

@@ -25,6 +25,7 @@ ok(!$user_store->validate_password($shortpass), '"bloggs" is too short for a pas
 my $new_user = $user_store->add_user({ username => 'fred',
                                        password => 'bloggspass'});
 isa_ok($new_user, 'Text::Tradition::User');
+is($new_user->active, 1, 'New user created and active');
 
 ## find user
 my $find_user = $user_store->find_user({ username => 'fred'});
@@ -38,4 +39,41 @@ isa_ok($changed_user, 'Text::Tradition::User');
 my $changed = $user_store->find_user({ username => 'fred'});
 ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct new password');
 
+{
+## deactivate user
+## Sets all traditions to non-public, deactivates
+    my $user = $user_store->add_user({ username => 'testactive',
+                                       password => 'imanactiveuser' });
+    ok($user->active, 'Deactivate test user starts active');
+
+    my $d_user = $user_store->deactivate_user({ username => 'testactive' });
+    is($d_user->active, 0, 'Deactivated user');
+
+## TODO - add test where user has traditions to start with
+}
+
+{
+## reactivate user
+## reactivates user, does not mess with their traditions (as we don't know which were public to start with)
+
+    my $user = $user_store->add_user({ username => 'testinactive',
+                                       password => 'imaninactiveuser' });
+    my $d_user = $user_store->deactivate_user({ username => 'testactive' });
+    ok(!$d_user->active, 'Deactivate test user starts active');   
+    
+    my $a_user = $user_store->reactivate_user({ username => 'testinactive' });
+    is($a_user->active, 1, 'Re-activated user');
+}
+
+{
+## delete user (admin only?)
+    my $user = $user_store->add_user({ username => 'testdelete',
+                                       password => 'imgoingtobedeleted' });
+
+    my $gone = $user_store->delete_user({ username => 'testdelete' });
+
+    my $d_user = $user_store->find_user({ username => 'testdelete' });
+
+    ok($gone && !$d_user, 'Deleted user completely from store');
+}
 
