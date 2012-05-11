@@ -97,7 +97,7 @@ sub add_user {
 
 =head3 find_user
 
-Takes a hashref of C<username>.
+Takes a hashref of C<username>, optionally C<openid_identifier>.
 
 Fetches the user object for the given username and returns it.
 
@@ -105,7 +105,10 @@ Fetches the user object for the given username and returns it.
 
 sub find_user {
     my ($self, $userinfo) = @_;
-    my $username = $userinfo->{username};
+    ## url or display?
+    # 'display' => 'castaway.myopenid.com',
+    # 'url' => 'http://castaway.myopenid.com/',
+    my $username = $userinfo->{url} || $userinfo->{username};
 
     my $scope = $self->new_scope;
     return $self->lookup(Text::Tradition::User->id_for_user($username));
