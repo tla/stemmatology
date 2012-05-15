@@ -79,20 +79,26 @@ Create a new user object, store in the KiokuDB backend, and return it.
 
 sub add_user {
     my ($self, $userinfo) = @_;
-    my $username = $userinfo->{username};
+    my $username = $userinfo->{url} || $userinfo->{username};
     my $password = $userinfo->{password};
 
-    return unless $username && $self->validate_password($password);
+    return unless ($username =~ /^https?:/ 
+                   || ($username && $self->validate_password($password))) ;
 
     my $user = Text::Tradition::User->new(
         id => $username,
-        password => crypt_password($password),
+        password => ($password ? crypt_password($password) : ''),
     );
 
     my $scope = $self->new_scope;
     $self->store($user->kiokudb_object_id, $user);
 
     return $user;
+}
+
+sub create_user {
+    my $self = shift;
+    return $self->add_user(@_);
 }
 
 =head3 find_user
