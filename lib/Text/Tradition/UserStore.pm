@@ -6,10 +6,10 @@ use warnings;
 use Moose;
 use KiokuX::User::Util qw(crypt_password);
 
-extends 'KiokuX::Model';
+extends 'Text::Tradition::Directory';
+# extends 'KiokuX::Model';
 
 use Text::Tradition::User;
-# use Text::Tradition::Directory;
 
 =head1 NAME
 

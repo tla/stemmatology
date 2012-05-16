@@ -4,17 +4,16 @@ use strict;
 use warnings;
 
 use Test::More 'no_plan';
-# use KiokuX::Model;
 use File::Temp;
 
-use_ok('Text::Tradition::UserStore');
+use_ok('Text::Tradition::Directory');
 
 my $fh = File::Temp->new();
 my $file = $fh->filename;
 $fh->close;
 my $dsn = "dbi:SQLite:dbname=$file";
 
-my $user_store = Text::Tradition::UserStore->new('dsn' => $dsn,
+my $user_store = Text::Tradition::Directory->new('dsn' => $dsn,
                                                  'extra_args' => { 'create' => 1 } );
 
 ## passwords

@@ -10,9 +10,7 @@ use Getopt::Long;
 use ExtUtils::MakeMaker();
 use lib 'lib';
 
-use Text::Tradition::UserStore;
 use Text::Tradition::Directory;
-
 
 my ($dsn, $command) = ('dbi:SQLite:dbname=db/traditions.db', 'add', undef);
 my ($username, $password, $tradition_id);
@@ -35,7 +33,9 @@ if(!$username) {
     usage();
 }
 
-my $userstore = Text::Tradition::UserStore->new( dsn => $dsn);
+# my $userstore = Text::Tradition::UserStore->new( dsn => $dsn);
+my $userstore = Text::Tradition::Directory->new( dsn => $dsn);
+my $new_scope = $userstore->new_scope;
 
 given ($command) {
     when ('add') {
@@ -53,9 +53,15 @@ given ($command) {
     }
 
     when ('modify') {
-        if(!$tradition_id || (!$password || !$userstore->validate_password($password))) {
+        if(!$tradition_id && !$password) {
             print "Can't modify a user without a valid password or a tradition\n\n";
             usage();
+            break;
+        }
+        if( $password && !$userstore->validate_password($password)) {
+            print "Can't modify a user without a valid password\n\n";
+            usage();
+            break;
         }
         if($password) {
             my $user = $userstore->modify_user({ username => $username, 
@@ -66,17 +72,13 @@ given ($command) {
                 print "OK.\n";
             }
         } elsif($tradition_id) {
-            my $directory = Text::Tradition::Directory->new(
-                dsn => $dsn,
-            );
-            my $new_scope = $directory->new_scope;
-            my $tradition = $directory->tradition($tradition_id);
+            my $tradition = $userstore->tradition($tradition_id);
             my $user = $userstore->find_user({ username => $username });
             if(!$tradition || !$user) {
                 print "Can't find one of '$username' or '$tradition_id' in the database!\n";
             } else {
                 $user->add_tradition($tradition);
-                $directory->update($tradition);
+                $userstore->update($tradition);
                 $userstore->update($user);
                 print "OK.\n";
             }
@@ -135,6 +137,8 @@ admin_users.pl - add / modify / etc users
 
     admin_user.pl -c modify -u jimbob -p "jimsnewpassword"
 
+    admin_user.pl -c modify -u jimbob -t "mytradition"
+
     admin_user.pl -c delete -u jimbob
 
 =head1 OPTIONS
@@ -152,5 +156,9 @@ The username of the new user or user to change.
 =item -p | --password
 
 The new password or password to change.
+
+=item -t | --tradition
+
+A Text::Tradition id or name which will be assigned to the user given. 
 
 =back

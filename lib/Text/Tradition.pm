@@ -6,6 +6,7 @@ use Moose;
 use Text::Tradition::Collation;
 use Text::Tradition::Stemma;
 use Text::Tradition::Witness;
+use Text::Tradition::User;
 
 use vars qw( $VERSION );
 $VERSION = "0.5";
