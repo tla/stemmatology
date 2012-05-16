@@ -8,18 +8,21 @@ use v5.10.0;
 use Getopt::Long;
 ## using prompt():
 use ExtUtils::MakeMaker();
-use Text::Tradition::UserStore;
-
 use lib 'lib';
 
+use Text::Tradition::UserStore;
+use Text::Tradition::Directory;
+
+
 my ($dsn, $command) = ('dbi:SQLite:dbname=db/traditions.db', 'add', undef);
-my ($username, $password);
+my ($username, $password, $tradition_id);
 
 GetOptions(
     'c|command:s' => \$command,
     'dsn:s' => \$dsn,
     'u|username=s' => \$username,
     'p|password:s' => \$password,
+    't|tradition:s' => \$tradition_id,
     ) or usage();
 
 if(!$command || !($command ~~ [qw/add modify delete deactivate reactivate/])) {
@@ -50,17 +53,34 @@ given ($command) {
     }
 
     when ('modify') {
-        if(!$password || !$userstore->validate_password($password)) {
-            print "Can't modify a user without a valid password\n\n";
+        if(!$tradition_id || (!$password || !$userstore->validate_password($password))) {
+            print "Can't modify a user without a valid password or a tradition\n\n";
             usage();
         }
-        my $user = $userstore->modify_user({ username => $username, 
-                                             password => $password });
-        if(!$user) {
-            print "Failed to modify user! (you should see errors above this..)\n";
-        } else {
-            print "OK.\n";
-        }        
+        if($password) {
+            my $user = $userstore->modify_user({ username => $username, 
+                                                 password => $password });
+            if(!$user) {
+                print "Failed to modify user! (you should see errors above this..)\n";
+            } else {
+                print "OK.\n";
+            }
+        } elsif($tradition_id) {
+            my $directory = Text::Tradition::Directory->new(
+                dsn => $dsn,
+            );
+            my $new_scope = $directory->new_scope;
+            my $tradition = $directory->tradition($tradition_id);
+            my $user = $userstore->find_user({ username => $username });
+            if(!$tradition || !$user) {
+                print "Can't find one of '$username' or '$tradition_id' in the database!\n";
+            } else {
+                $user->add_tradition($tradition);
+                $directory->update($tradition);
+                $userstore->update($user);
+                print "OK.\n";
+            }
+        } 
     }
 
     when ('deactivate') {
@@ -101,6 +121,7 @@ sub usage {
     print "===========================================\n";
     print "Usage: $0 -c add -u jimbob -p hispassword\n";
     print "Usage: $0 -c modify -u jimbob -p hisnewpassword\n";
+    print "Usage: $0 -c modify -u jimbob -t \"Notre besoin\"\n";
     print "Usage: $0 -c deactivate -u jimbob\n";
 }
 

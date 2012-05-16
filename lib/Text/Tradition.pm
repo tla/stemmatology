@@ -53,6 +53,13 @@ has 'stemmata' => (
 	},
 	default => sub { [] },
 	);
+
+has 'user' => (
+    is => 'rw',
+    isa => 'Text::Tradition::User',
+    required => 0,
+    predicate => 'has_user',
+    );
   
 # Create the witness before trying to add it
 around 'add_witness' => sub {

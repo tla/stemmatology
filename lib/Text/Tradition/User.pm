@@ -12,12 +12,20 @@ has 'password'   => (is => 'rw', required => 1);
 has 'active'     => (is => 'rw', default => sub { 1; });
 # 'traits' => ['Array'] ?
 # https://metacpan.org/module/Moose::Meta::Attribute::Native::Trait::Array
-has 'traditions' => (is => 'rw', isa => 'ArrayRef[Text::Tradition]', default => sub { [] }, required => 0);
+has 'traditions' => (is => 'rw', 
+                     traits => ['Array'],
+                     handles => {
+                         'add_tradition' => 'push',
+                     },
+                     isa => 'ArrayRef[Text::Tradition]', 
+                     default => sub { [] }, 
+                     required => 0);
 
-# after add_tradition => sub { 
-#     $tradition->set_user($self) 
-#         unless $tradition->user->id eq $self->id;
-# }
+after add_tradition => sub { 
+    my ($self, $tradition) = @_;
+    $tradition->user($self) 
+        unless $tradition->has_user && $tradition->user->id eq $self->id;
+};
 
 1;
 
