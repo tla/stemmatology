@@ -3,7 +3,7 @@ package Text::Tradition::Language::French;
 use strict;
 use warnings;
 use Module::Load qw/ load /;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct multext_struct /;
 use TryCatch;
 
 =head1 NAME
@@ -134,10 +134,10 @@ sub _parse_wordform {
 		my( $pos, $morph ) = split( /:/, $tag );
 		my $morphobj;
 		if( $morph ) {
-			$morphobj = Lingua::TagSet::Multext->tag2structure( $morph );
+			$morphobj = multext_struct( $morph );
 		} else {
 			# Use the TreeTagger info if there is no Flemm morphology.
-			$morphobj = Lingua::TagSet::TreeTagger->tag2structure( $pos );
+			$morphobj = treetagger_struct( $pos );
 		}
 		if( $morphobj ) {
 			my $wf = Text::Tradition::Collation::Reading::WordForm->new(

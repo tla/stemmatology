@@ -13,7 +13,8 @@ use Text::Tradition::Collation::Reading::Lexeme;
 use Text::Tradition::Collation::Reading::WordForm;
 use TryCatch;
 
-@EXPORT_OK = qw/ lemmatize_treetagger reading_lookup_treetagger /;
+@EXPORT_OK = qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct
+	multext_struct /;
 
 =head1 NAME
 
@@ -244,6 +245,18 @@ sub _treetag_string {
 	return $tagresult->as_text();
 }
 
+## HACK function to correct for TagSet::TreeTagger brokenness
+sub treetagger_struct {
+	my $pos = shift;
+	$pos =~ s/PREP/PRP/;
+	return Lingua::TagSet::TreeTagger->tag2structure( $pos );
+}
+
+sub multext_struct {
+	my $pos = shift;
+	# No known hacks needed
+	return Lingua::TagSet::Multext->tag2structure( $pos );
+}
 
 1;
 

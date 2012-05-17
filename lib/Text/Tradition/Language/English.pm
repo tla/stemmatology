@@ -35,7 +35,7 @@ use_ok( 'Text::Tradition::Language::English' );
 sub lemmatize {
 	my $tradition = shift;
 	my %opts = ( 
-		'language' => 'French', 
+		'language' => 'English', 
 		'callback' => sub { _parse_wordform( @_ ) } 
 		);
 	return lemmatize_treetagger( $tradition, %opts );
