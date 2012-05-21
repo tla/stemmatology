@@ -92,11 +92,11 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
                                        password => 'testingtraditions' });
     $user->add_tradition($t);
     $user_store->update($user);
-#     $userstore->update($t);
 
     is( scalar @{$user->traditions}, 1, 'Added one tradition');
 
-    my @tlist = $user_store->traditionlist($user->kiokudb_object_id);
-    is($tlist[0]->name, $t->name, 'Traditionlist returns stored user->tradition');
+    my @tlist = $user_store->traditionlist($user);
+    is($tlist[0]->{name}, $t->name, 'Traditionlist returns same named user->tradition');
+    is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
 }
 

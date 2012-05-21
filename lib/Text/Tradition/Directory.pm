@@ -278,13 +278,15 @@ sub user_traditionlist {
     my ($self, $user) = @_;
 
     my @tlist;
-    if($user && $user ne 'public') {
+    if(ref $user) {
         ## We have a user object already, so just fetch its traditions and use tose
-        foreach my $t (@{ $self->lookup($user)->traditions }) {
+        foreach my $t (@{ $user->traditions }) {
             push( @tlist, { 'id' => $self->object_to_id( $t ), 
                             'name' => $t->name } );
         }
         return @tlist;
+    } elsif($user ne 'public') {
+        die "Passed neither a user object nor 'public' to user_traditionlist";
     }
     
     ## Search for all traditions which allow public viewing
