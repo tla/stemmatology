@@ -23,7 +23,7 @@ GetOptions(
     't|tradition:s' => \$tradition_id,
     ) or usage();
 
-if(!$command || !($command ~~ [qw/add modify delete deactivate reactivate/])) {
+if(!$command || !($command ~~ [qw/add modify delete deactivate reactivate list/])) {
     print "No command supplied, chickening out ... \n\n";
     usage();
 }
@@ -85,6 +85,22 @@ given ($command) {
         } 
     }
 
+    when ('list') {
+        my $user = $userstore->find_user({ username => $username });
+        if(!$user) {
+            print "Can't find user '$username'\n";
+            break;
+        }
+        my $traditions = $user->traditions;
+
+        print "User: $username\n";
+        print "Has traditions: \n";
+        foreach my $t (@$traditions) {
+            print "    ", $t->name, "\n";
+        }
+        print "OK.\n";
+    }
+
     when ('deactivate') {
         my $user = $userstore->deactivate_user({ username => $username});
         if(!$user) {
@@ -139,6 +155,8 @@ admin_users.pl - add / modify / etc users
 
     admin_user.pl -c modify -u jimbob -t "mytradition"
 
+    admin_user.pl -c list -u jimbob
+
     admin_user.pl -c delete -u jimbob
 
 =head1 OPTIONS
@@ -147,7 +165,37 @@ admin_users.pl - add / modify / etc users
 
 =item -c | --command
 
-The action to take, can be one of: add, modify, deactivate, reactivate, delete.
+The action to take, can be one of: add, modify, deactivate, reactivate, delete, list.
+
+=over
+
+=item add
+
+Create a new user and store it in the Directory
+
+=item modify
+
+Change an existing stored user, with a -p this will change the user's
+password, with a -t will add or remove the named tradition from the
+user.
+
+=item list
+
+List the given user's traditions.
+
+=item deactivate
+
+Deactivate this user.
+
+=item reactivate
+
+Re-activate this user.
+
+=item delete
+
+Delete the user permanently.
+
+=back
 
 =item -u | --username
 

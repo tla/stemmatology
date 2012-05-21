@@ -49,6 +49,7 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
 
     my $d_user = $user_store->deactivate_user({ username => 'testactive' });
     is($d_user->active, 0, 'Deactivated user');
+    is($user_store->find_user({ username => 'testactive' }), undef, 'Deactivated user not returned by find_user');
 
 ## TODO - add test where user has traditions to start with
 }
@@ -59,11 +60,12 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
 
     my $user = $user_store->add_user({ username => 'testinactive',
                                        password => 'imaninactiveuser' });
-    my $d_user = $user_store->deactivate_user({ username => 'testactive' });
+    my $d_user = $user_store->deactivate_user({ username => 'testinactive' });
     ok(!$d_user->active, 'Deactivate test user starts active');   
     
     my $a_user = $user_store->reactivate_user({ username => 'testinactive' });
     is($a_user->active, 1, 'Re-activated user');
+    ok($user_store->find_user({ username => 'testinactive' }), 'Re-activated user returned by find_user again');
 }
 
 {

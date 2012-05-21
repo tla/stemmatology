@@ -400,7 +400,11 @@ sub find_user {
     # 'url' => 'http://castaway.myopenid.com/',
     my $username = $userinfo->{url} || $userinfo->{username};
 
-    return $self->lookup(Text::Tradition::User->id_for_user($username));
+    ## No logins if user is deactivated (use lookup to fetch to re-activate)
+    my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
+    return if($user && !$user->active);
+
+    return $user;
     
 }
 
@@ -484,7 +488,7 @@ sub reactivate_user {
 
     return if !$username;
 
-    my $user = $self->find_user({ username => $username });
+    my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
     return if !$user;
 
     return $user if $user->active;
