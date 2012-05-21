@@ -16,6 +16,8 @@ my $dsn = "dbi:SQLite:dbname=$file";
 my $user_store = Text::Tradition::Directory->new('dsn' => $dsn,
                                                  'extra_args' => { 'create' => 1 } );
 
+my $scope = $user_store->new_scope;
+
 ## passwords
 my $shortpass = 'bloggs';
 ok(!$user_store->validate_password($shortpass), '"bloggs" is too short for a password');

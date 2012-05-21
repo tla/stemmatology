@@ -35,10 +35,36 @@ Text::Tradition::Directory - a KiokuDB interface for storing and retrieving trad
   foreach my $id ( $d->traditions ) {
   	print $d->tradition( $id )->name;
   }
+
+  ## Users:
+  my $userstore = Text::Tradition::UserStore->new(dsn => 'dbi:SQLite:foo.db');
+  my $newuser = $userstore->add_user({ username => 'fred',
+                                       password => 'somepassword' });
+
+  my $fetchuser = $userstore->find_user({ username => 'fred' });
+  if($fetchuser->check_password('somepassword')) { 
+     ## login user or .. whatever
+  }
+
+  my $user = $userstore->deactivate_user({ username => 'fred' });
+  if(!$user->active) { 
+    ## shouldnt be able to login etc
+  }
     
 =head1 DESCRIPTION
 
 Text::Tradition::Directory is an interface for storing and retrieving text traditions and all their data, including an associated stemma hypothesis.  It is an instantiation of a KiokuDB::Model, storing traditions and associated stemmas by UUID.
+
+=head1 ATTRIBUTES
+
+=head2 MIN_PASS_LEN
+
+Constant for the minimum password length when validating passwords,
+defaults to "8".
+
+=cut
+
+has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 
 =head1 METHODS
 
@@ -284,46 +310,6 @@ sub throw {
 		);
 }
 
-=head1 NAME
-
-Text::Tradition::UserStore - KiokuDB storage management for Users
-
-=head1 SYNOPSIS
-
-    my $userstore = Text::Tradition::UserStore->new(dsn => 'dbi:SQLite:foo.db');
-    my $newuser = $userstore->add_user({ username => 'fred',
-                                         password => 'somepassword' });
-
-    my $fetchuser = $userstore->find_user({ username => 'fred' });
-    if($fetchuser->check_password('somepassword')) { 
-       ## login user or .. whatever
-    }
-
-    my $user = $userstore->deactivate_user({ username => 'fred' });
-    if(!$user->active) { 
-      ## shouldnt be able to login etc
-    }
-
-=head1 DESCRIPTION
-
-A L<KiokuX::Model> for managing the storage and creation of
-L<Text::Tradition::User> objects. Subclass or replace this module in
-order to use a different source for stemmaweb users.
-
-=head2 ATTRIBUTES
-
-=head3 dsn
-
-Inherited from KiokuX::Model - dsn for the data store we are using. 
-
-=head3 MIN_PASS_LEN
-
-Constant for the minimum password length when validating passwords,
-defaults to "8".
-
-=cut
-
-has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 
 # has 'directory' => ( 
 #     is => 'rw', 
@@ -340,9 +326,7 @@ has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 
 ## To die or not to die, on error, this is the question.
 
-=head2 METHODS
-
-=head3 add_user
+=head2 add_user
 
 Takes a hashref of C<username>, C<password>.
 
@@ -363,7 +347,6 @@ sub add_user {
         password => ($password ? crypt_password($password) : ''),
     );
 
-    my $scope = $self->new_scope;
     $self->store($user->kiokudb_object_id, $user);
 
     return $user;
@@ -374,7 +357,7 @@ sub create_user {
     return $self->add_user(@_);
 }
 
-=head3 find_user
+=head2 find_user
 
 Takes a hashref of C<username>, optionally C<openid_identifier>.
 
@@ -393,7 +376,7 @@ sub find_user {
     
 }
 
-=head3 modify_user
+=head2 modify_user
 
 Takes a hashref of C<username> and C<password> (same as add_user).
 
@@ -411,7 +394,6 @@ sub modify_user {
 
     return unless $username && $self->validate_password($password);
 
-    my $scope = $self->new_scope;
     my $user = $self->find_user({ username => $username });
     return unless $user;
 
@@ -422,7 +404,7 @@ sub modify_user {
     return $user;
 }
 
-=head3 deactivate_user
+=head2 deactivate_user
 
 Takes a hashref of C<username>.
 
@@ -448,7 +430,6 @@ sub deactivate_user {
         ## Not implemented yet
         # $tradition->public(0);
     }
-    my $scope = $self->new_scope;
 
     ## Should we be using Text::Tradition::Directory also?
     $self->update(@{ $user->traditions });
@@ -458,7 +439,7 @@ sub deactivate_user {
     return $user;
 }
 
-=head3 reactivate_user
+=head2 reactivate_user
 
 Takes a hashref of C<username>.
 
@@ -475,7 +456,6 @@ sub reactivate_user {
 
     return if !$username;
 
-    my $scope = $self->new_scope;
     my $user = $self->find_user({ username => $username });
     return if !$user;
 
@@ -487,9 +467,9 @@ sub reactivate_user {
     return $user;    
 }
 
-=head3 delete_user
+=head2 delete_user
 
-CAUTION: Delets actual data!
+CAUTION: Deletes actual data!
 
 Takes a hashref of C<username>.
 
@@ -505,7 +485,6 @@ sub delete_user {
 
     return if !$username;
 
-    my $scope = $self->new_scope;
     my $user = $self->find_user({ username => $username });
     return if !$user;
 
@@ -518,7 +497,7 @@ sub delete_user {
     return 1;
 }
 
-=head3 validate_password
+=head2 validate_password
 
 Takes a password string. Returns true if it is longer than
 L</MIN_PASS_LEN>, false otherwise.
