@@ -102,3 +102,29 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
     is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
 }
 
+{
+## remove_tradition
+    use Text::Tradition;
+    my $t = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+
+    my $uuid = $user_store->save($t);
+    my $user = $user_store->add_user({ username => 'testremove',
+                                       password => 'testingtraditions' });
+    $user->add_tradition($t);
+    $user_store->update($user);
+
+    $user->remove_tradition($t);
+    $user_store->update($user);
+    my $changed_t = $user_store->tradition($uuid);
+
+    is( scalar @{$user->traditions}, 0, 'Added and removed one tradition');
+    ok(!$changed_t->has_user, 'Removed user from tradition');
+
+    my @tlist = $user_store->traditionlist($user);
+    is(scalar @tlist, 0, 'Traditionlist now empty');
+}
+

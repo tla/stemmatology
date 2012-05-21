@@ -60,6 +60,7 @@ has 'user' => (
     isa => 'Text::Tradition::User',
     required => 0,
     predicate => 'has_user',
+    clearer => 'clear_user',
     );
   
 # Create the witness before trying to add it

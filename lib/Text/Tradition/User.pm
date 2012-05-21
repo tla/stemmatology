@@ -27,6 +27,17 @@ after add_tradition => sub {
         unless $tradition->has_user && $tradition->user->id eq $self->id;
 };
 
+sub remove_tradition {
+    my ($self, $tradition) = @_;
+
+    ## FIXME: Is "name" a good unique field to compare traditions on?
+    my @traditions = @{$self->traditions};
+    @traditions = grep { $tradition->name ne $_->name } @traditions;
+
+    $tradition->clear_user;
+    $self->traditions(\@traditions);
+}
+
 1;
 
 =head1 NAME

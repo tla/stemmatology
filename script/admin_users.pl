@@ -77,7 +77,14 @@ given ($command) {
             if(!$tradition || !$user) {
                 print "Can't find one of '$username' or '$tradition_id' in the database!\n";
             } else {
-                $user->add_tradition($tradition);
+                if(grep { $userstore->object_to_id($_) 
+                          eq 
+                          $userstore->object_to_id($tradition)} 
+                   @{$user->traditions}) {
+                    $user->remove_tradition($tradition);
+                } else {
+                    $user->add_tradition($tradition);
+                }
                 $userstore->update($tradition);
                 $userstore->update($user);
                 print "OK.\n";
