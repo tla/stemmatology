@@ -78,3 +78,25 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
     ok($gone && !$d_user, 'Deleted user completely from store');
 }
 
+{
+## add_tradition
+    use Text::Tradition;
+    my $t = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+
+    my $uuid = $user_store->save($t);
+    my $user = $user_store->add_user({ username => 'testadd',
+                                       password => 'testingtraditions' });
+    $user->add_tradition($t);
+    $user_store->update($user);
+#     $userstore->update($t);
+
+    is( scalar @{$user->traditions}, 1, 'Added one tradition');
+
+    my @tlist = $user_store->traditionlist($user->kiokudb_object_id);
+    is($tlist[0]->name, $t->name, 'Traditionlist returns stored user->tradition');
+}
+

@@ -85,3 +85,4 @@ Returns an ArrayRef of L<Text::Tradition> objects belonging to this user.
 
 Inherited from KiokuX::User, verifies a given password string against
 the stored encrypted version.
+

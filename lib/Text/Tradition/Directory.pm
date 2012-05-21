@@ -274,11 +274,37 @@ sub tradition {
 	return $obj;
 }
 
+sub user_traditionlist {
+    my ($self, $user) = @_;
+
+    my @tlist;
+    if($user && $user ne 'public') {
+        ## We have a user object already, so just fetch its traditions and use tose
+        foreach my $t (@{ $self->lookup($user)->traditions }) {
+            push( @tlist, { 'id' => $self->object_to_id( $t ), 
+                            'name' => $t->name } );
+        }
+        return @tlist;
+    }
+    
+    ## Search for all traditions which allow public viewing
+    ## When they exist!
+    # $self->search({ public => 1 });
+    
+    ## For now, just fetch all
+    ## (could use all_objects or grep down there?)
+    return $self->traditionlist();
+}
+
 sub traditionlist {
 	my $self = shift;
+    my ($user) = @_;
+
+    return $self->user_traditionlist($user) if($user);
+
+	my @tlist;
 	# If we are using DBI, we can do it the easy way; if not, the hard way.
 	# Easy way still involves making a separate DBI connection. Ew.
-	my @tlist;
 	if( $self->dsn =~ /^dbi:(\w+):/ ) {
 		my $dbtype = $1;
 		my @connection = @{$self->directory->backend->connect_info};
