@@ -1,5 +1,6 @@
 *~
 *.bbprojectd/
+t/var
 data
 !/t/data
 Makefile

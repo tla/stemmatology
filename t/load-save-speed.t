@@ -118,6 +118,8 @@ if(!$last_benchmark) {
 my $new_save_result = timethis(5, $test_save);
 
 my $new_save = $new_save_result->[1] + $new_save_result->[2];
+use Data::Dump;
+
 my $old_save = $last_benchmark->{save_times}[1] + $last_benchmark->{save_times}[2];
 ok( $new_save < $old_save, "Saving to a Tradition Directory got faster: $new_save vs $old_save");
 
@@ -163,15 +165,12 @@ sub load_benchmark {
 }
 
 sub fresh_benchmark {
-    return 
-        [
-         {
+    return {
              git_hash => '',
              host => hostname(),
              load_times => [1000, 1000, 1000, 0, 0, 5],
              save_times => [1000, 1000, 1000, 0, 0, 20],
          }
-    ];
 }
 
 sub save_benchmark {
