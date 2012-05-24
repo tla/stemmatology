@@ -62,7 +62,14 @@ has 'user' => (
     predicate => 'has_user',
     clearer => 'clear_user',
     );
-  
+
+has 'public' => (
+    is => 'rw',
+    isa => 'Bool',
+    required => 0,
+    default => sub { 0; },
+    );
+
 # Create the witness before trying to add it
 around 'add_witness' => sub {
     my $orig = shift;

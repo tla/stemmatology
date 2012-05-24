@@ -293,7 +293,8 @@ sub user_traditionlist {
     
     ## Search for all traditions which allow public viewing
     ## When they exist!
-    # $self->search({ public => 1 });
+## This needs to be more sophisticated, probably needs Search::GIN
+#    my $list = $self->search({ public => 1 });
     
     ## For now, just fetch all
     ## (could use all_objects or grep down there?)
