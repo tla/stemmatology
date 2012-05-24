@@ -32,7 +32,7 @@ sub remove_tradition {
 
     ## FIXME: Is "name" a good unique field to compare traditions on?
     my @traditions = @{$self->traditions};
-    @traditions = grep { $tradition->name ne $_->name } @traditions;
+    @traditions = grep { $tradition != $_ } @traditions;
 
     $tradition->clear_user;
     $self->traditions(\@traditions);
