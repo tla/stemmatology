@@ -221,12 +221,11 @@ around BUILDARGS => sub {
 	return $class->$orig( $args );
 };
 
+## These checks don't cover store($id, $obj)
 before [ qw/ store update insert delete / ] => sub {
 	my $self = shift;
 	my @nontrad;
 	foreach my $obj ( @_ ) {
-#		if( ref( $obj ) && ref( $obj ) ne 'Text::Tradition' ) {
-
 		if( ref( $obj ) && ref( $obj ) ne 'Text::Tradition'
             && ref ($obj) ne 'Text::Tradition::User' ) {
 			# Is it an id => Tradition hash?
@@ -278,7 +277,10 @@ sub user_traditionlist {
     my ($self, $user) = @_;
 
     my @tlist;
-    if(ref $user) {
+    if(ref $user && $user->is_admin) {
+        ## Admin sees all
+        return $self->traditionlist();
+    } elsif(ref $user) {
         ## We have a user object already, so just fetch its traditions and use tose
         foreach my $t (@{ $user->traditions }) {
             push( @tlist, { 'id' => $self->object_to_id( $t ), 
@@ -366,6 +368,7 @@ sub add_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{url} || $userinfo->{username};
     my $password = $userinfo->{password};
+    my $role = $userinfo->{role} || 'user';
 
     return unless ($username =~ /^https?:/ 
                    || ($username && $self->validate_password($password))) ;
@@ -373,6 +376,7 @@ sub add_user {
     my $user = Text::Tradition::User->new(
         id => $username,
         password => ($password ? crypt_password($password) : ''),
+        role => $role,
     );
 
     $self->store($user->kiokudb_object_id, $user);

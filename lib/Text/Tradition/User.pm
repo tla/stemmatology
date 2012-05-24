@@ -10,6 +10,7 @@ with qw(KiokuX::User);
 has 'password'   => (is => 'rw', required => 1);
 ## Change this default active value if you want/need to have an admin confirm a user after they self-create.
 has 'active'     => (is => 'rw', default => sub { 1; });
+has 'role'       => (is => 'rw', default => sub { 'user' });
 # 'traits' => ['Array'] ?
 # https://metacpan.org/module/Moose::Meta::Attribute::Native::Trait::Array
 has 'traditions' => (is => 'rw', 
@@ -36,6 +37,12 @@ sub remove_tradition {
 
     $tradition->clear_user;
     $self->traditions(\@traditions);
+}
+
+sub is_admin {
+    my ($self) = @_;
+
+    return $self->role eq 'admin';
 }
 
 1;

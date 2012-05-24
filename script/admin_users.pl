@@ -39,6 +39,8 @@ my $new_scope = $userstore->new_scope;
 
 given ($command) {
     when ('add') {
+        ## We only add local users here, OpenID etc users will get auto-added
+        ## when they login
         if(!$password || !$userstore->validate_password($password)) {
             print "Can't add a new user without a valid password\n\n";
             usage();

@@ -27,6 +27,7 @@ my $new_user = $user_store->add_user({ username => 'fred',
                                        password => 'bloggspass'});
 isa_ok($new_user, 'Text::Tradition::User');
 is($new_user->active, 1, 'New user created and active');
+ok(!$new_user->is_admin, 'New user is not an admin');
 
 ## find user
 my $find_user = $user_store->find_user({ username => 'fred'});
@@ -100,6 +101,59 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
     my @tlist = $user_store->traditionlist($user);
     is($tlist[0]->{name}, $t->name, 'Traditionlist returns same named user->tradition');
     is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
+    my $fetched_t = $user_store->tradition($tlist[0]->{id});
+    is($fetched_t->user->id, $user->id, 'Traditionlist returns item belonging to this user');
+
+    ## add a second, not owned by this user, we shouldn't return it from
+    ## traditionslist
+    my $t2 = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+    $user_store->save($t2);
+    my @tlist2 = $user_store->traditionlist($user);
+    is(scalar @tlist2, 1, 'With 2 stored traditions, we only fetch one');
+    my $fetched_t2 = $user_store->tradition($tlist[0]->{id});
+    is($fetched_t2->user->id, $user->id, 'Traditionlist returns item belonging to this user');
+    
+    
+}
+
+
+TODO: {
+    local $TODO = 'searching on public attr not implemented yet';
+    ## Fetch public traditions, not user traditions, when not fetching with a user
+    use Text::Tradition;
+    my $t = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+
+    $user_store->save($t);
+    my $user = $user_store->add_user({ username => 'testpublic',
+                                       password => 'testingtraditions' });
+    $user->add_tradition($t);
+    $user_store->update($user);
+
+    ## add a second, not owned by this user, we shouldn't return it from
+    ## traditionslist
+    my $t2 = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+    $t2->public(1);
+    my $uuid = $user_store->save($t2);
+
+    my @tlist = $user_store->traditionlist('public');
+    is(scalar @tlist, 1, 'Got one public tradition');
+    is($tlist[0]->{name}, $t2->name, 'Traditionlist returns same named user->tradition');
+    is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
+    my $fetched_t = $user_store->tradition($tlist[0]->{id});
+    ok($fetched_t->public, 'Traditionlist returns public item');
+
 }
 
 {
@@ -128,3 +182,28 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
     is(scalar @tlist, 0, 'Traditionlist now empty');
 }
 
+{
+    ## Add admin user
+    my $admin = $user_store->add_user({
+        username => 'adminuser',
+        password => 'adminpassword',
+        role     => 'admin' });
+
+    ok($admin->is_admin, 'Got an admin user');
+
+    ## test admins get all traditions
+    use Text::Tradition;
+    my $t = Text::Tradition->new( 
+        'name'  => 'inline', 
+        'input' => 'Tabular',
+        'file'  => 't/data/simple.txt',
+	);
+
+    $user_store->save($t);
+
+    my @tlist = $user_store->traditionlist(); ## all traditions
+    my @admin_tlist = $user_store->traditionlist($admin);
+
+    is(scalar @admin_tlist, scalar @tlist, 'Got all traditions for admin user');
+
+}
