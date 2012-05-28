@@ -27,6 +27,7 @@ my $new_user = $user_store->add_user({ username => 'fred',
                                        password => 'bloggspass'});
 isa_ok($new_user, 'Text::Tradition::User');
 is($new_user->active, 1, 'New user created and active');
+is($new_user->display, 'fred', 'Display value set to username');
 ok(!$new_user->is_admin, 'New user is not an admin');
 
 ## find user
@@ -206,4 +207,55 @@ TODO: {
 
     is(scalar @admin_tlist, scalar @tlist, 'Got all traditions for admin user');
 
+}
+
+{
+    ## Add/find simple openid user with OpenIDish parameters:
+
+    my $openid_user = $user_store->create_user({ 
+        url => 'http://username.myopenid.com',
+        display => 'username.myopenid.com',
+    });
+    ok($openid_user, 'Created user from OpenID params');
+
+    my $get_openid_user = $user_store->find_user({
+        url => 'http://username.myopenid.com',
+        display => 'username.myopenid.com',
+    });
+
+    ok($openid_user == $get_openid_user, 'Found OpenID user again');
+    is($get_openid_user->id, 'http://username.myopenid.com', 'Set id to unique url from openid');
+    is($get_openid_user->display, 'username.myopenid.com', 'Kept original display value');
+}
+
+{
+    ## Add/find openid user with email attribute:
+    my $openid_user = $user_store->create_user({ 
+        url => 'http://blahblah.com/foo/bar/baz/lotsofjunk',
+        display => 'http://blahblah.com/foo/bar/baz/lotsofjunk',
+        extensions => {
+            'http://openid.net/srv/ax/1.0' => { 
+                'value.email' => 'fredbloggs@blahblah.com',
+                'type.email' => 'http://axschema.org/contact/email',
+                'mode' => 'fetch_response',
+            },
+        },
+    });
+    ok($openid_user, 'Created user from OpenID params');
+
+    my $get_openid_user = $user_store->find_user({
+        url => 'http://blahblah.com/foo/bar/baz/lotsofjunk',
+        display => 'http://blahblah.com/foo/bar/baz/lotsofjunk',
+        extensions => {
+            'http://openid.net/srv/ax/1.0' => { 
+                'value.email' => 'fredbloggs@blahblah.com',
+                'type.email' => 'http://axschema.org/contact/email',
+                'mode' => 'fetch_response',
+            },
+        },
+    });
+
+    ok($openid_user == $get_openid_user, 'Found OpenID user again');
+    is($get_openid_user->id, 'http://blahblah.com/foo/bar/baz/lotsofjunk', 'Set id to unique url from openid');
+    is($get_openid_user->display, 'fredbloggs@blahblah.com', 'Set display value to email from extension');
 }

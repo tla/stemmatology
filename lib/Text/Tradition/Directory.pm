@@ -367,7 +367,8 @@ Create a new user object, store in the KiokuDB backend, and return it.
 
 sub add_user {
     my ($self, $userinfo) = @_;
-    my $username = $userinfo->{url} || $userinfo->{username};
+
+    my $username = $userinfo->{username};
     my $password = $userinfo->{password};
     my $role = $userinfo->{role} || 'user';
 
@@ -377,6 +378,7 @@ sub add_user {
     my $user = Text::Tradition::User->new(
         id => $username,
         password => ($password ? crypt_password($password) : ''),
+        display => ($userinfo->{display} ? $userinfo->{display} : $username),
         role => $role,
     );
 
@@ -386,13 +388,41 @@ sub add_user {
 }
 
 sub create_user {
-    my $self = shift;
-    return $self->add_user(@_);
+    my ($self, $userinfo) = @_;
+
+    ## No username means probably an OpenID based user
+    if(!exists $userinfo->{username}) {
+        extract_openid_data($userinfo);
+    }
+
+    return $self->add_user($userinfo);
+}
+
+## Not quite sure where this method should be.. Auth /
+## Credential::OpenID just pass us back the chunk of extension data
+sub extract_openid_data {
+    my ($userinfo) = @_;
+
+    ## Spec says SHOULD use url as identifier
+    $userinfo->{username} = $userinfo->{url};
+
+    ## Use email addy as display if available
+    if(exists $userinfo->{extensions} &&
+         exists $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'} &&
+         defined $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'}) {
+        ## Somewhat ugly attribute extension reponse, contains
+        ## google-email string which we can use as the id
+
+        $userinfo->{display} = $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'};
+    }
+
+    return;
 }
 
 =head2 find_user
 
-Takes a hashref of C<username>, optionally C<openid_identifier>.
+Takes a hashref of C<username>, and possibly openIDish results from
+L<Net::OpenID::Consumer>.
 
 Fetches the user object for the given username and returns it.
 
@@ -400,17 +430,21 @@ Fetches the user object for the given username and returns it.
 
 sub find_user {
     my ($self, $userinfo) = @_;
-    ## url or display?
-    # 'display' => 'castaway.myopenid.com',
-    # 'url' => 'http://castaway.myopenid.com/',
-    my $username = $userinfo->{url} || $userinfo->{username};
+
+    ## No username means probably an OpenID based user
+    if(!exists $userinfo->{username}) {
+        extract_openid_data($userinfo);
+    }
+
+    my $username = $userinfo->{username};
 
     ## No logins if user is deactivated (use lookup to fetch to re-activate)
     my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
-    return if($user && !$user->active);
+    return if(!$user || !$user->active);
+
+    print STDERR "Found user, $username, display is :", $user->display, ":\n";
 
     return $user;
-    
 }
 
 =head2 modify_user

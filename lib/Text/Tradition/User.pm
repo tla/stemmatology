@@ -8,6 +8,7 @@ with qw(KiokuX::User);
 
 ## 'id' provided by KiokuX::User stores our username
 has 'password'   => (is => 'rw', required => 1);
+has 'display' => (is => 'rw', lazy => 1, builder => '_build_display');
 ## Change this default active value if you want/need to have an admin confirm a user after they self-create.
 has 'active'     => (is => 'rw', default => sub { 1; });
 has 'role'       => (is => 'rw', default => sub { 'user' });
@@ -28,6 +29,13 @@ after add_tradition => sub {
         unless $tradition->has_user && $tradition->user->id eq $self->id;
 };
 
+sub _build_display {
+    my ($self) = @_;
+
+    ## no display set, so use username/id
+    return $self->id;
+}
+
 sub remove_tradition {
     my ($self, $tradition) = @_;
 
@@ -42,7 +50,7 @@ sub remove_tradition {
 sub is_admin {
     my ($self) = @_;
 
-    return $self->role eq 'admin';
+    return $self->role && $self->role eq 'admin';
 }
 
 1;
