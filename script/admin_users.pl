@@ -12,8 +12,8 @@ use lib 'lib';
 
 use Text::Tradition::Directory;
 
-my ($dsn, $command) = ('dbi:SQLite:dbname=db/traditions.db', 'add', undef);
-my ($username, $password, $tradition_id);
+my ($dsn, $command) = ('dbi:SQLite:dbname=db/traditions.db', 'add');
+my ($username, $password, $tradition_id, $rolename);
 
 GetOptions(
     'c|command:s' => \$command,
@@ -21,6 +21,7 @@ GetOptions(
     'u|username=s' => \$username,
     'p|password:s' => \$password,
     't|tradition:s' => \$tradition_id,
+    'r|role:s'      => \$rolename,
     ) or usage();
 
 if(!$command || !($command ~~ [qw/add modify delete deactivate reactivate list/])) {
@@ -44,9 +45,13 @@ given ($command) {
         if(!$password || !$userstore->validate_password($password)) {
             print "Can't add a new user without a valid password\n\n";
             usage();
+            break;
         }
-        my $user = $userstore->add_user({ username => $username, 
-                                          password => $password });
+        ## Set role as passed in rolename, if set (else gets default "user")
+        my $user = $userstore->add_user({ username => $username,
+                                          password => $password,
+                                          ( $rolename ? (role => $rolename) : () ),
+                                      });
         if(!$user) {
             print "Failed to add user! (you should see errors above this..)\n";
         } else {
@@ -55,7 +60,7 @@ given ($command) {
     }
 
     when ('modify') {
-        if(!$tradition_id && !$password) {
+        if(!$tradition_id && !$password && !$rolename) {
             print "Can't modify a user without a valid password or a tradition\n\n";
             usage();
             break;
@@ -65,15 +70,20 @@ given ($command) {
             usage();
             break;
         }
-        if($password) {
-            my $user = $userstore->modify_user({ username => $username, 
-                                                 password => $password });
-            if(!$user) {
-                print "Failed to modify user! (you should see errors above this..)\n";
-            } else {
-                print "OK.\n";
-            }
-        } elsif($tradition_id) {
+        my @set_password = ( $password ? ( password => $password ) : () );
+        my @set_role = ( $rolename ? ( role => $rolename ) : () );
+
+        my $user = $userstore->modify_user({ username => $username, 
+                                             @set_password,
+                                             @set_role,
+                                         });
+        if(!$user) {
+            print "Failed to modify user! (you should see errors above this..)\n";
+        } else {
+            print "Modified User.\n";
+        }
+
+        if($tradition_id) {
             my $tradition = $userstore->tradition($tradition_id);
             my $user = $userstore->find_user({ username => $username });
             if(!$tradition || !$user) {
@@ -89,9 +99,11 @@ given ($command) {
                 }
                 $userstore->update($tradition);
                 $userstore->update($user);
-                print "OK.\n";
+                print "Added Tradition.\n";
             }
-        } 
+        }
+
+        print "OK\n";
     }
 
     when ('list') {
@@ -116,7 +128,7 @@ given ($command) {
             print "Failed to deactivate user! (you should see errors above this..)\n";
         } else {
             print "OK.\n";
-        }        
+        }
     }
 
     when ('reactivate') {
@@ -125,7 +137,7 @@ given ($command) {
             print "Failed to reactivate user! (you should see errors above this..)\n";
         } else {
             print "OK.\n";
-        }        
+        }
     }
 
     when ('delete') {
@@ -149,6 +161,7 @@ sub usage {
     print "Usage: $0 -c add -u jimbob -p hispassword\n";
     print "Usage: $0 -c modify -u jimbob -p hisnewpassword\n";
     print "Usage: $0 -c modify -u jimbob -t \"Notre besoin\"\n";
+    print "Usage: $0 -c modify -u jimbob -r \"admin\"\n";
     print "Usage: $0 -c deactivate -u jimbob\n";
 }
 
@@ -160,7 +173,11 @@ admin_users.pl - add / modify / etc users
 
     admin_user.pl -c add -u jimbob -p "jimspassword"
 
+    admin_user.pl -c add -u jimbob -p "jimspassword" -r "admin"
+
     admin_user.pl -c modify -u jimbob -p "jimsnewpassword"
+
+    admin_user.pl -c modify -u jimbob -r "admin"
 
     admin_user.pl -c modify -u jimbob -t "mytradition"
 
@@ -217,5 +234,9 @@ The new password or password to change.
 =item -t | --tradition
 
 A Text::Tradition id or name which will be assigned to the user given. 
+
+=item -r | --role
+
+A rolename to add or modify, this is a plain text string to check it carefully. Use C<modify> to change if necessary.
 
 =back

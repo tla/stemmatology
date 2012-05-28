@@ -428,13 +428,20 @@ sub modify_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
     my $password = $userinfo->{password};
+    my $role = $userinfo->{role};
 
-    return unless $username && $self->validate_password($password);
+    return unless $username;
+    return if($password && !$self->validate_password($password));
 
     my $user = $self->find_user({ username => $username });
     return unless $user;
 
-    $user->password(crypt_password($password));
+    if($password) {
+        $user->password(crypt_password($password));
+    }
+    if($role) {
+        $user->role($role);
+    }
 
     $self->update($user);
 
