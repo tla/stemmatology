@@ -32,13 +32,14 @@ SKIP: {
 		$textstr =~ s/\s+//g;
 		is( $textstr, $lexstr, "Lexemes for reading $r match the reading" );
 		foreach my $l ( @lex ) {
+			next unless $l->matches;
 			next if $l->is_disambiguated;
 	 		printf( "Ambiguous lexeme %s for reading %s:\n\t%s\n", $l->string, $r->id,
 	 			join( "\n\t", map { $_->lemma . ': ' . $_->morphology->to_string } $l->matching_forms ) );
 			$ambig++;
 		}
 	}
-	is( $ambig, 19, "Found 19 ambiguous forms as expected" );
+	is( $ambig, 7, "Found 7 ambiguous forms as expected" );
 }
 }
 

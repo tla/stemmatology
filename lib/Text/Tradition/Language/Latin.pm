@@ -50,13 +50,14 @@ SKIP: {
 		$textstr =~ s/\s+//g;
 		is( $textstr, $lexstr, "Lexemes for reading $r match the reading" );
 		foreach my $l ( @lex ) {
+			next unless $l->matches;
 			next if $l->is_disambiguated;
 	 		printf( "Ambiguous lexeme %s for reading %s:\n\t%s\n", $l->string, $r->id,
 	 			join( "\n\t", map { $_->lemma . ': ' . $_->morphology->to_string } $l->matching_forms ) );
 			$ambig++;
 		}
 	}
-	is( $ambig, 19, "Found 19 ambiguous forms as expected" );
+	is( $ambig, 7, "Found 7 ambiguous forms as expected" );
 }
 
 =end testing
@@ -101,29 +102,83 @@ sub reading_lookup {
 		}
 	}
 		
+	# TODO special case:
+	#  passive verbs (-or)
+	#  T sapientia -> sapientia
+	#  T primus -> unus
+	#  T occulta -> occultus (with occulo in next field, hmm...)
+	#  T carne -> carnis
+	#  T melius -> bonus
+	
+
+	my %excep = (
+		'absens' => 'absum',
+		'aperte' => 'apertus',
+		'evolvo' => 'exvolvo',
+		'inquiam' => 'inquam',
+		'intelligo' => 'intellego',
+		'itaque' => 'ita',
+		'iuste' => 'iustus',
+		'longe' => 'longus',
+		'male' => 'malus|malum',
+		'multum' => 'multus',
+		'nec' => 'neque',
+		'nos' => 'ego',
+		'occultum' => 'occultus',
+		'peregrinans' => 'peregrinor',
+		'perfectus' => 'perficio',
+		'potius' => 'potis',
+		'praesente' => 'praesens',
+		'prius' => 'prior',
+		'quotidianus' => 'cottidianus',
+		'se' => 'sui',
+		'septem' => 'septimus',
+		'Spiritum' => 'spiritus',
+		'viriliter' => 'virilis', # TODO special case -iter?
+		'vos' => 'tu',
+		
+		'datum' => 'do|data|datus',
+		'forte' => 'fors|fortis',
+		'vere' => 'verum|verus',
+		);
+		
 	sub _perseus_lookup_tt {
 		my( $orig, $pos, $lemma ) = split( /\t/, $_[0] );
 		_morph_connect();
 		my $result = $morph->lookup( $orig );
 		# Discard results that don't match the lemma, unless lemma is unknown
+		my @orig = @{$result->{'objects'}};
 		my @ret;
-		unless( $lemma eq '<unknown>' ) {
+		unless( $lemma eq '<unknown>' || $lemma =~ /^\W+$/ ) {
 			# TODO Perseus lemma might have a number on the end, yuck.
-			@ret = grep { $_->lemma =~ /^$lemma(\d*)$/ } @{$result->{'objects'}};
-		}
-		unless( @ret ) {
-			@ret = @{$result->{'objects'}};
+			#  multiple lemmata separated with |
+			$lemma =~ s/[^\w|]//g;
+			$lemma = $excep{$lemma} if exists $excep{$lemma};
+			$lemma =~ s/j/i/g;
+			my %lems;
+			my @forms = 
+			map { $lems{$_} = 1; $lems{lc($_)} = 1 } split( /\|/, $lemma );
+			# Now match the lemmata from Treetagger to the lemmata and alt_ls 
+			# from Perseus.
+			@ret = grep { 
+				my $x = $_->lemma; 
+				$x =~ s/\d+$//;
+				my $y = $_->alt_lex || '';
+				$y =~ s/\d+$//;
+				$lems{$x} || $lems{$y};
+				} @orig;
 			warn "TreeTagger lemma $lemma matched no results from Perseus for $orig"
-				if @ret;
+				if @orig && !@ret;
 		}
+		@ret = @orig unless @ret;
 		
-		# Discard results that don't match the given TreeTagger POS, unless
-		# that leaves zero results
 		my @wordforms;
 		foreach my $obj ( @ret ) {
 			push( @wordforms, _wordform_from_row( $obj ) );
 		}
 		## TODO Use TreeTagger info - requires serious hacking of Lingua::TagSet
+		# Discard results that don't match the given TreeTagger POS, unless
+		# that leaves zero results
 # 		my $ttstruct = treetagger_struct( $pos );
 # 		my @ttmatch = grep { $ttstruct->is_compatible( $_->morphology ) } @wordforms;
 # 		unless( @ttmatch ) {
@@ -142,17 +197,26 @@ sub reading_lookup {
 		return map { _wordform_from_row( $_ ) } @{$result->{'objects'}};
 	}
 	
-	sub _wordform_from_row {
-		my( $rowobj ) = @_;
-		my $mpstruct = Morph::Perseus::Structure->from_tag( $rowobj->code );
-		my $wf = Text::Tradition::Collation::Reading::WordForm->new(
-			'language' => 'Latin',
-			'lemma' => $rowobj->lemma,
-			'morphology' => $mpstruct,
-			);
-		return $wf;
-	}
-	
 }
 
+sub _wordform_from_row {
+	my( $rowobj ) = @_;
+	my $mpstruct;
+	try {
+		$mpstruct = Morph::Perseus::Structure->from_tag( $rowobj->code );
+	} catch {
+		warn "Could not create morphology structure from "
+			. $rowobj->code . ": $!";
+	}
+	$DB::single = 1 unless $mpstruct;
+	my $lemma = $rowobj->lemma;
+	$lemma =~ s/^(\D+)\d*$/$1/;
+	my $wf = Text::Tradition::Collation::Reading::WordForm->new(
+		'language' => 'Latin',
+		'lemma' => $lemma,
+		'morphology' => $mpstruct,
+		);
+	return $wf;
+}
+	
 1;
