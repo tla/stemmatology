@@ -125,6 +125,23 @@ sub BUILD {
 	}	
 }
 
+around 'add_matching_form' => sub {
+	my $orig = shift;
+	my $self = shift;
+	my @realargs;
+	foreach my $a ( @_ ) {
+		if( ref( $a ) ) {
+			push( @realargs, $a );
+		} else {
+			# Make the wordform from the string
+			my $wf = Text::Tradition::Collation::Reading::WordForm->new(
+				'JSON' => $a );
+			push( @realargs, $wf );
+		}
+	}
+	return $self->$orig( @realargs );
+};
+
 =head2 disambiguate( $index )
 
 Selects the word form at $index in the list of matching forms, and asserts
@@ -140,6 +157,25 @@ sub disambiguate {
 	$self->_set_form( $form );
 	$self->is_disambiguated( 1 );	
 }
+
+=head2 has_form( $rep ) 
+
+Returns the index of the matching form whose string representation is in $rep, 
+or else undef if none is found.
+
+=cut
+
+sub has_form {
+	my( $self, $rep ) = @_;
+	my $i = 0;
+	foreach my $mf ( $self->matching_forms ) {
+		my $struct = $mf->TO_JSON;
+		return $i if $struct eq $rep;
+		$i++;
+	}
+	return undef;
+}
+		
 
 sub TO_JSON {
 	my $self = shift;

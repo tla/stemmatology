@@ -167,6 +167,7 @@ has 'reading_lexemes' => (
 	traits => ['Array'],
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading::Lexeme]',
 	handles => {
+		lexeme => 'get',
 		lexemes => 'elements',
 		has_lexemes => 'count',
 		clear_lexemes => 'clear',

@@ -68,10 +68,12 @@ around BUILDARGS => sub {
 	my $class = shift;
 	my $args = @_ == 1 ? $_[0] : { @_ };
 	if( exists $args->{'JSON'} ) {
-		my $data = $args->{'JSON'};
-		my $morph = Lingua::Features::Structure->from_string( $data->{'morphology'} );
-		$data->{'morphology'} = $morph;
-		$args = $data;
+		$DB::single = 1;
+		my @data = split( / \/\/ /, $args->{'JSON'} );
+		print STDERR "Attempting to parse " . $data[2] . " into structure";
+		my $morph = Lingua::Features::Structure->from_string( $data[2] );
+		$args = { 'language' => $data[0], 'lemma' => $data[1],
+			'morphology' => $morph };
 	}
 	$class->$orig( $args );
 };
@@ -88,13 +90,12 @@ sub to_string {
 	return JSON->new->convert_blessed(1)->encode( $self );
 }
 
+# Rather than spitting it out as a JSON hash, encode it as a string so that
+# the XML serialization doesn't become insane.
 sub TO_JSON {
 	my $self = shift;
-	return { 
-		'language' => $self->language,
-		'lemma' => $self->lemma,
-		'morphology' => $self->morphology->to_string
-	};
+	return sprintf( "%s // %s // %s", $self->language, $self->lemma,
+		$self->morphology->to_string() );
 }
 	
 no Moose;
