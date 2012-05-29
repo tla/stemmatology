@@ -111,7 +111,9 @@ sub parse {
 sub _stringify_sigil {
     my( @nodes ) = @_;
     my @parts = grep { /\w/ } map { $_->data } @nodes;
-    return join( '', @parts );
+    my $whole = join( '', @parts );
+    $whole =~ s/\W//g;
+    return $whole;
 }
 
 # Get rid of all the formatting elements that get in the way of tokenization.
