@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::BEGIN@3";
+	"stemmaweb::Model::Directory::BEGIN@5";
+	"stemmaweb::Model::Directory::BEGIN@4";
+	"stemmaweb::Model::Directory::BEGIN@2";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@2";
+"stemmaweb::Model::Directory::BEGIN@5" -> "UNIVERSAL::import";
+"stemmaweb::Model::Directory::BEGIN@2" -> "strict::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@4";
+"stemmaweb::Model::Directory::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Model::Directory::BEGIN@3" -> "warnings::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@5";
+}

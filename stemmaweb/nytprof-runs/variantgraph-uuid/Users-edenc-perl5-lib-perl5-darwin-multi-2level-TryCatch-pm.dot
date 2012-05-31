@@ -1,0 +1,465 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::parse";
+	"Text::Tradition::Parser::Self::BEGIN@221";
+	"Text::Tradition::Parser::Self::BEGIN@223";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_7 {
+	label="MooseX::Traits::__ANON__::SERIAL::7";
+	"MooseX::Traits::__ANON__::SERIAL::7::variable_name";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::__ANON__[TryCatch.pm:87]";
+	"TryCatch::__ANON__[TryCatch.pm:118]";
+	"TryCatch::BEGIN@3";
+	"TryCatch::_parse_catch";
+	"TryCatch::BEGIN@30";
+	"TryCatch::BEGIN@15";
+	"TryCatch::BEGIN@9";
+	"TryCatch::BEGIN@11";
+	"TryCatch::scope_injector_call";
+	"TryCatch::_string_to_tc";
+	"TryCatch::inject_into_try";
+	"TryCatch::BEGIN@2";
+	"TryCatch::BEGIN@13";
+	"TryCatch::inject_after_try";
+	"TryCatch::BEGIN@32";
+	"TryCatch::inject_scope";
+	"TryCatch::BEGIN@10";
+	"TryCatch::BEGIN@7";
+	"TryCatch::BEGIN@4";
+	"TryCatch::parse_proto_using_pms";
+	"TryCatch::__ANON__[TryCatch.pm:320]";
+	"TryCatch::__ANON__[TryCatch.pm:44]";
+	"TryCatch::BEGIN@17";
+	"TryCatch::BEGIN@8";
+	"TryCatch::BEGIN@14";
+	"TryCatch::parse_proto";
+	"TryCatch::_parse_try";
+	"TryCatch::inject_post_catch";
+	"TryCatch::BEGIN@12";
+	"TryCatch::__ANON__[TryCatch.pm:50]";
+	"TryCatch::BEGIN@1";
+	"TryCatch::lookahead_after_block";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_3 {
+	label="MooseX::Traits::__ANON__::SERIAL::3";
+	"MooseX::Traits::__ANON__::SERIAL::3::variable_name";
+}
+subgraph cluster_PPI_Statement_Expression_TCUnion {
+	label="PPI::Statement::Expression::TCUnion";
+	"PPI::Statement::Expression::TCUnion::BEGIN@831";
+}
+subgraph cluster_PPI_Statement_Expression_TCParams {
+	label="PPI::Statement::Expression::TCParams";
+	"PPI::Statement::Expression::TCParams::BEGIN@871";
+	"PPI::Statement::Expression::TCParams::BEGIN@842";
+	"PPI::Statement::Expression::TCParams::BEGIN@841";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_5 {
+	label="MooseX::Traits::__ANON__::SERIAL::5";
+	"MooseX::Traits::__ANON__::SERIAL::5::variable_name";
+}
+subgraph cluster_TryCatch_XS {
+	label="TryCatch::XS";
+	"TryCatch::XS::install_op_checks";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_1 {
+	label="MooseX::Traits::__ANON__::SERIAL::1";
+	"MooseX::Traits::__ANON__::SERIAL::1::variable_name";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@632";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@635";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::CodeRef";
+	"__TYPE__::ClassName";
+	"__TYPE__::Str";
+	"__TYPE__::Int";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@3";
+	"Parse::Method::Signatures::BEGIN@15";
+	"Parse::Method::Signatures::ppi";
+	"Parse::Method::Signatures::BEGIN@10";
+	"Parse::Method::Signatures::DESTROY";
+	"Parse::Method::Signatures::BEGIN@17";
+	"Parse::Method::Signatures::meta";
+	"Parse::Method::Signatures::BEGIN@11";
+	"Parse::Method::Signatures::BEGIN@4";
+	"Parse::Method::Signatures::new";
+	"Parse::Method::Signatures::remaining_input";
+	"Parse::Method::Signatures::BEGIN@9";
+	"Parse::Method::Signatures::BEGIN@8";
+	"Parse::Method::Signatures::param";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Devel_Declare_Context_Simple {
+	label="Devel::Declare::Context::Simple";
+	"Devel::Declare::Context::Simple::BEGIN@4";
+	"Devel::Declare::Context::Simple::skip_declarator";
+	"Devel::Declare::Context::Simple::set_linestr";
+	"Devel::Declare::Context::Simple::BEGIN@5";
+	"Devel::Declare::Context::Simple::strip_proto";
+	"Devel::Declare::Context::Simple::offset";
+	"Devel::Declare::Context::Simple::BEGIN@3";
+	"Devel::Declare::Context::Simple::inject_if_block";
+	"Devel::Declare::Context::Simple::BEGIN@6";
+	"Devel::Declare::Context::Simple::get_curstash_name";
+	"Devel::Declare::Context::Simple::skipspace";
+	"Devel::Declare::Context::Simple::strip_name";
+	"Devel::Declare::Context::Simple::init";
+	"Devel::Declare::Context::Simple::get_linestr";
+	"Devel::Declare::Context::Simple::BEGIN@7";
+	"Devel::Declare::Context::Simple::shadow";
+	"Devel::Declare::Context::Simple::new";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::DESTROY";
+	"Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+	"Parse::Method::Signatures::TypeConstraint::_invoke_callback";
+}
+subgraph cluster_PPI_Token_StringifiedWord {
+	label="PPI::Token::StringifiedWord";
+	"PPI::Token::StringifiedWord::BEGIN@887";
+	"PPI::Token::StringifiedWord::BEGIN@889";
+	"PPI::Token::StringifiedWord::BEGIN@897";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@355";
+	"Text::Tradition::Witness::BEGIN@353";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::has_type_constraints";
+	"Parse::Method::Signatures::Param::has_constraints";
+	"Parse::Method::Signatures::Param::DESTROY";
+	"Parse::Method::Signatures::Param::meta_type_constraint";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::override";
+	"Moose::has";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@72";
+	"stemmaweb::Controller::Microservice::BEGIN@137";
+	"stemmaweb::Controller::Microservice::BEGIN@53";
+	"stemmaweb::Controller::Microservice::BEGIN@149";
+	"stemmaweb::Controller::Microservice::BEGIN@146";
+	"stemmaweb::Controller::Microservice::BEGIN@74";
+	"stemmaweb::Controller::Microservice::BEGIN@50";
+	"stemmaweb::Controller::Microservice::BEGIN@135";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::DESTROY";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_4 {
+	label="MooseX::Traits::__ANON__::SERIAL::4";
+	"MooseX::Traits::__ANON__::SERIAL::4::variable_name";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Token_LexSymbol {
+	label="PPI::Token::LexSymbol";
+	"PPI::Token::LexSymbol::BEGIN@876";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::BEGIN@11";
+	"Devel::Declare::get_linestr_offset";
+	"Devel::Declare::BEGIN@9";
+	"Devel::Declare::BEGIN@12";
+	"Devel::Declare::BEGIN@117";
+	"Devel::Declare::BEGIN@99";
+	"Devel::Declare::BEGIN@4";
+	"Devel::Declare::BEGIN@16";
+	"Devel::Declare::BEGIN@14";
+	"Devel::Declare::BEGIN@109";
+	"Devel::Declare::BEGIN@29";
+	"Devel::Declare::setup_for";
+	"Devel::Declare::BEGIN@102";
+	"Devel::Declare::toke_scan_word";
+	"Devel::Declare::BEGIN@3";
+	"Devel::Declare::linestr_callback";
+	"Devel::Declare::initialize";
+	"Devel::Declare::BEGIN@103";
+	"Devel::Declare::BEGIN@10";
+	"Devel::Declare::BEGIN@17";
+	"Devel::Declare::BEGIN@5";
+	"Devel::Declare::BEGIN@15";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_8 {
+	label="MooseX::Traits::__ANON__::SERIAL::8";
+	"MooseX::Traits::__ANON__::SERIAL::8::variable_name";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::DESTROY";
+}
+subgraph cluster_B_Hooks_OP_PPAddr {
+	label="B::Hooks::OP::PPAddr";
+	"B::Hooks::OP::PPAddr::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:15]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::class_type";
+	"Moose::Util::TypeConstraints::find_or_create_isa_type_constraint";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@183";
+	"stemmaweb::Controller::Relation::BEGIN@191";
+	"stemmaweb::Controller::Relation::BEGIN@179";
+	"stemmaweb::Controller::Relation::BEGIN@195";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+	"B::Hooks::EndOfScope::on_scope_end";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_6 {
+	label="MooseX::Traits::__ANON__::SERIAL::6";
+	"MooseX::Traits::__ANON__::SERIAL::6::variable_name";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::BEGIN@17";
+	"Scope::Upper::BEGIN@4";
+	"Scope::Upper::BEGIN@195";
+	"Scope::Upper::BEGIN@3";
+	"Scope::Upper::BEGIN@574";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+	"Sub::Exporter::default_installer";
+	"Sub::Exporter::_do_import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_2 {
+	label="MooseX::Traits::__ANON__::SERIAL::2";
+	"MooseX::Traits::__ANON__::SERIAL::2::variable_name";
+}
+"TryCatch::lookahead_after_block" -> "Devel::Declare::get_linestr_offset";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@9";
+"TryCatch::BEGIN@11" -> "Moose::Util::TypeConstraints::class_type";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@8";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::1::variable_name";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::init";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::init";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::3::variable_name";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@7";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@9";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::offset";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::offset";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@17";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@15";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::set_linestr";
+"Sub::Exporter::_do_import" -> "TryCatch::__ANON__[TryCatch.pm:50]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@30";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@12";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@897";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@7";
+"TryCatch::__ANON__[TryCatch.pm:50]" -> "Devel::Declare::setup_for";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@10";
+"TryCatch::BEGIN@10" -> "UNIVERSAL::import";
+"TryCatch::BEGIN@15" -> "UNIVERSAL::import";
+"TryCatch::BEGIN@9" -> "UNIVERSAL::import";
+"TryCatch::BEGIN@11" -> "UNIVERSAL::import";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::skip_declarator";
+"TryCatch::inject_scope" -> "TryCatch::XS::install_op_checks";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::get_linestr";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::get_linestr";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::param";
+"TryCatch::BEGIN@11" -> "Moose::has";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@12";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@10";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@109";
+"TryCatch::_parse_try" -> "TryCatch::inject_into_try";
+"TryCatch::_string_to_tc" -> "Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@889";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@574";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@4";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@4";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@14";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::5::variable_name";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCUnion::BEGIN@831";
+"Text::Tradition::Parser::Self::parse" -> "TryCatch::__ANON__[TryCatch.pm:87]";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@4";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@15";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@5";
+"TryCatch::BEGIN@32" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"TryCatch::BEGIN@8" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@11";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@871";
+"TryCatch::BEGIN@30" -> "namespace::clean::import";
+"TryCatch::BEGIN@3" -> "strict::import";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@6";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@887";
+"TryCatch::parse_proto_using_pms" -> "PPI::Node::DESTROY";
+"TryCatch::lookahead_after_block" -> "TryCatch::_parse_catch";
+"TryCatch::BEGIN@11" -> "__TYPE__::Str";
+"TryCatch::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"TryCatch::parse_proto" -> "TryCatch::parse_proto_using_pms";
+"TryCatch::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::6::variable_name";
+"TryCatch::__ANON__[TryCatch.pm:118]" -> "TryCatch::lookahead_after_block";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::TypeConstraint::DESTROY";
+"TryCatch::BEGIN@9" -> "TryCatch::BEGIN@2";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@13";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@635" -> "TryCatch::inject_scope";
+"Text::Tradition::Parser::Self::BEGIN@223" -> "TryCatch::inject_scope";
+"Text::Tradition::Witness::BEGIN@355" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@195" -> "TryCatch::inject_scope";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@632" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@72" -> "TryCatch::inject_scope";
+"Text::Tradition::Witness::BEGIN@353" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@137" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@53" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@149" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@183" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@146" -> "TryCatch::inject_scope";
+"Text::Tradition::Parser::Self::BEGIN@221" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@74" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@179" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@191" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@50" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@135" -> "TryCatch::inject_scope";
+"TryCatch::BEGIN@11" -> "__TYPE__::Int";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::remaining_input";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@16";
+"TryCatch::__ANON__[TryCatch.pm:50]" -> "Sub::Exporter::default_installer";
+"TryCatch::BEGIN@14" -> "Exporter::import";
+"TryCatch::BEGIN@13" -> "Exporter::import";
+"TryCatch::BEGIN@11" -> "Moose::override";
+"TryCatch::BEGIN@11" -> "__TYPE__::CodeRef";
+"TryCatch::_parse_catch" -> "TryCatch::parse_proto";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::4::variable_name";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@10";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::DESTROY";
+"TryCatch::BEGIN@11" -> "__TYPE__::ClassName";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@9";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@103";
+"TryCatch::parse_proto_using_pms" -> "UNIVERSAL::can";
+"TryCatch::__ANON__[TryCatch.pm:50]" -> "UNIVERSAL::can";
+"TryCatch::parse_proto" -> "Devel::Declare::Context::Simple::strip_proto";
+"TryCatch::BEGIN@17" -> "base::import";
+"TryCatch::BEGIN@4" -> "warnings::import";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::Param::has_constraints";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@3";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@11";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@99";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@29";
+"TryCatch::parse_proto_using_pms" -> "Devel::Declare::Context::Simple::get_curstash_name";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::strip_name";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::ppi";
+"TryCatch::inject_scope" -> "B::Hooks::EndOfScope::on_scope_end";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@3";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@842";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@841";
+"TryCatch::lookahead_after_block" -> "TryCatch::inject_post_catch";
+"TryCatch::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@17";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::new";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::new";
+"TryCatch::_parse_try" -> "TryCatch::scope_injector_call";
+"TryCatch::_parse_catch" -> "TryCatch::scope_injector_call";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::Param::has_type_constraints";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@3";
+"TryCatch::parse_proto_using_pms" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:15]";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@117";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::Param::meta_type_constraint";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::shadow";
+"TryCatch::_string_to_tc" -> "Moose::Util::TypeConstraints::find_or_create_isa_type_constraint";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@195";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@8";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@15";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@3";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::inject_if_block";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::inject_if_block";
+"TryCatch::_parse_try" -> "TryCatch::__ANON__[TryCatch.pm:320]";
+"TryCatch::_parse_catch" -> "TryCatch::__ANON__[TryCatch.pm:320]";
+"TryCatch::lookahead_after_block" -> "TryCatch::__ANON__[TryCatch.pm:320]";
+"Devel::Declare::linestr_callback" -> "TryCatch::__ANON__[TryCatch.pm:44]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@14";
+"TryCatch::BEGIN@9" -> "TryCatch::BEGIN@1";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::8::variable_name";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::Param::DESTROY";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@102";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::toke_scan_word";
+"TryCatch::BEGIN@7" -> "Devel::Declare::initialize";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@32";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@4";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::2::variable_name";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::meta";
+"TryCatch::BEGIN@7" -> "DynaLoader::bootstrap";
+"TryCatch::BEGIN@9" -> "DynaLoader::bootstrap";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@3";
+"TryCatch::__ANON__[TryCatch.pm:44]" -> "TryCatch::_parse_try";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "TryCatch::__ANON__[TryCatch.pm:118]";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@11";
+"Parse::Method::Signatures::TypeConstraint::_invoke_callback" -> "TryCatch::_string_to_tc";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@4";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@5";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@17";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::new";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@17";
+"TryCatch::_parse_catch" -> "TryCatch::inject_after_try";
+"TryCatch::parse_proto_using_pms" -> "PPI::Element::DESTROY";
+"TryCatch::BEGIN@11" -> "PPI::Token::LexSymbol::BEGIN@876";
+"TryCatch::BEGIN@9" -> "B::Hooks::OP::PPAddr::BEGIN@6";
+"TryCatch::parse_proto_using_pms" -> "MooseX::Traits::__ANON__::SERIAL::7::variable_name";
+}

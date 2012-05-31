@@ -1,0 +1,68 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@10";
+	"MooseX::Role::WithOverloading::BEGIN@14";
+	"MooseX::Role::WithOverloading::BEGIN@13";
+	"MooseX::Role::WithOverloading::BEGIN@15";
+	"MooseX::Role::WithOverloading::BEGIN@5";
+	"MooseX::Role::WithOverloading::BEGIN@12";
+	"MooseX::Role::WithOverloading::BEGIN@19";
+	"MooseX::Role::WithOverloading::BEGIN@17";
+	"MooseX::Role::WithOverloading::BEGIN@2";
+	"MooseX::Role::WithOverloading::BEGIN@11";
+	"MooseX::Role::WithOverloading::BEGIN@16";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@5";
+	"Catalyst::Exception::Basic::BEGIN@3";
+	"Catalyst::Exception::Basic::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"Catalyst::Exception::Basic::BEGIN@3" -> "Moose::Exporter::setup_import_methods";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@13";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@16";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Basic::BEGIN@4";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@11";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@5";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@14";
+"Catalyst::Exception::Basic::BEGIN@5" -> "namespace::clean::import";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@12";
+"Catalyst::Exception::Basic::BEGIN@3" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Exception::Basic::BEGIN@3" -> "XSLoader::load";
+"Catalyst::Exception::Basic::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Basic::BEGIN@4" -> "Exporter::import";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@2";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@10";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@19";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Basic::BEGIN@5";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Basic::BEGIN@3";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@17";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@15";
+}

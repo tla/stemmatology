@@ -1,0 +1,162 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_File_Spec_Functions {
+	label="File::Spec::Functions";
+	"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+}
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::init";
+	"FindBin::BEGIN@100";
+}
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::BEGIN@13";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::parent";
+	"Path::Class::Dir::new";
+	"Path::Class::Dir::stringify";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::is_absolute";
+	"Path::Class::Entity::absolute";
+	"Path::Class::Entity::cleanup";
+}
+subgraph cluster_File_Which {
+	label="File::Which";
+	"File::Which::which";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::canonpath";
+	"File::Spec::Unix::BEGIN@149";
+	"File::Spec::Unix::abs2rel";
+	"File::Spec::Unix::CORE:ftewrite";
+	"File::Spec::Unix::splitpath";
+	"File::Spec::Unix::splitdir";
+	"File::Spec::Unix::BEGIN@3";
+	"File::Spec::Unix::catdir";
+	"File::Spec::Unix::_cwd";
+	"File::Spec::Unix::curdir";
+	"File::Spec::Unix::path";
+	"File::Spec::Unix::rel2abs";
+	"File::Spec::Unix::CORE:ftdir";
+	"File::Spec::Unix::rootdir";
+	"File::Spec::Unix::_tmpdir";
+	"File::Spec::Unix::CORE:match";
+	"File::Spec::Unix::catfile";
+	"File::Spec::Unix::_same";
+	"File::Spec::Unix::updir";
+	"File::Spec::Unix::catpath";
+	"File::Spec::Unix::file_name_is_absolute";
+	"File::Spec::Unix::BEGIN@4";
+	"File::Spec::Unix::tmpdir";
+	"File::Spec::Unix::CORE:subst";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::_to_file";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::BEGIN@4";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+	"Path::Class::File::new";
+	"Path::Class::File::BEGIN@8";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::tempfile";
+	"File::Temp::_gettemp";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::_search_path";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Cwd {
+	label="Cwd";
+	"Cwd::getcwd";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"File::Spec::Unix::canonpath" -> "Path::Class::Dir::stringify";
+"File::Spec::Unix::CORE:subst" -> "Path::Class::Dir::stringify";
+"File::Spec::Unix::_tmpdir" -> "File::Spec::Unix::CORE:ftewrite";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::rootdir";
+"File::Spec::Unix::tmpdir" -> "File::Spec::Unix::_tmpdir";
+"File::Temp::_gettemp" -> "File::Spec::Unix::catpath";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catpath";
+"Path::Class::Dir::stringify" -> "File::Spec::Unix::catpath";
+"File::Temp::tempfile" -> "File::Spec::Unix::catfile";
+"Module::Load::_to_file" -> "File::Spec::Unix::catfile";
+"IPC::Run::_search_path" -> "File::Spec::Unix::catfile";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catfile";
+"File::Which::which" -> "File::Spec::Unix::catfile";
+"Path::Class::File::stringify" -> "File::Spec::Unix::catfile";
+"FindBin::init" -> "File::Spec::Unix::catfile";
+"Path::Class::Dir::new" -> "File::Spec::Unix::splitdir";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::splitdir";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::rel2abs";
+"Path::Class::Entity::absolute" -> "File::Spec::Unix::rel2abs";
+"File::Spec::Unix::_tmpdir" -> "File::Spec::Unix::CORE:ftdir";
+"Path::Class::Dir::new" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::rel2abs" -> "File::Spec::Unix::canonpath";
+"Path::Class::Entity::cleanup" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::_tmpdir" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::catfile" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::catdir" -> "File::Spec::Unix::canonpath";
+"File::Spec::Unix::file_name_is_absolute" -> "File::Spec::Unix::CORE:match";
+"File::Spec::Unix::splitpath" -> "File::Spec::Unix::CORE:match";
+"Path::Class::Dir::parent" -> "File::Spec::Unix::curdir";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::curdir";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Spec::Unix::curdir";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::curdir";
+"Path::Class::File::BEGIN@8" -> "File::Spec::Unix::curdir";
+"Path::Class::Dir::new" -> "File::Spec::Unix::catdir";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::catdir";
+"File::Spec::Unix::rel2abs" -> "File::Spec::Unix::catdir";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catdir";
+"File::Spec::Unix::catfile" -> "File::Spec::Unix::catdir";
+"Path::Class::Dir::stringify" -> "File::Spec::Unix::catdir";
+"File::Spec::Unix::BEGIN@3" -> "strict::import";
+"FindBin::BEGIN@100" -> "File::Spec::Unix::BEGIN@4";
+"File::Spec::Unix::canonpath" -> "File::Spec::Unix::CORE:subst";
+"File::Temp::tempfile" -> "File::Spec::Unix::tmpdir";
+"File::Spec::Unix::BEGIN@149" -> "strict::unimport";
+"File::Spec::Unix::BEGIN@4" -> "vars::import";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::file_name_is_absolute";
+"IPC::Run::_search_path" -> "File::Spec::Unix::file_name_is_absolute";
+"Path::Class::Entity::is_absolute" -> "File::Spec::Unix::file_name_is_absolute";
+"File::Spec::Unix::rel2abs" -> "File::Spec::Unix::file_name_is_absolute";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::file_name_is_absolute";
+"FindBin::init" -> "File::Spec::Unix::file_name_is_absolute";
+"Bio::Phylo::Util::Logger::BEGIN@13" -> "File::Spec::Unix::splitpath";
+"Path::Class::Dir::new" -> "File::Spec::Unix::splitpath";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::splitpath";
+"File::Temp::_gettemp" -> "File::Spec::Unix::splitpath";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::splitpath";
+"Path::Class::File::new" -> "File::Spec::Unix::splitpath";
+"File::Spec::Unix::rel2abs" -> "File::Spec::Unix::_cwd";
+"File::Spec::Unix::_cwd" -> "Cwd::getcwd";
+"FindBin::BEGIN@100" -> "File::Spec::Unix::BEGIN@149";
+"FindBin::BEGIN@100" -> "File::Spec::Unix::BEGIN@3";
+"File::Spec::Unix::abs2rel" -> "File::Spec::Unix::_same";
+"Path::Class::Dir::parent" -> "File::Spec::Unix::updir";
+"Path::Class::File::BEGIN@8" -> "File::Spec::Unix::updir";
+"File::Which::which" -> "File::Spec::Unix::path";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::abs2rel";
+}

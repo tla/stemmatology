@@ -1,0 +1,137 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::create_arged_type_constraint";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::_try_delegate";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::new";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_call_builder";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::is_subtype_of";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@5";
+	"MooseX::Meta::TypeConstraint::Structured::_build_coercion";
+	"MooseX::Meta::TypeConstraint::Structured::parameterize";
+	"MooseX::Meta::TypeConstraint::Structured::constraint_generator";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@7";
+	"MooseX::Meta::TypeConstraint::Structured::has_constraint_generator";
+	"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for";
+	"MooseX::Meta::TypeConstraint::Structured::__infer_constraint_generator";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured {
+	label="MooseX::Meta::TypeCoercion::Structured";
+	"MooseX::Meta::TypeCoercion::Structured::meta";
+	"MooseX::Meta::TypeCoercion::Structured::BEGIN@5";
+}
+subgraph cluster_Devel_PartialDump {
+	label="Devel::PartialDump";
+	"Devel::PartialDump::BEGIN@21";
+	"Devel::PartialDump::BEGIN@7";
+	"Devel::PartialDump::BEGIN@4";
+	"Devel::PartialDump::BEGIN@13";
+	"Devel::PartialDump::BEGIN@6";
+	"Devel::PartialDump::BEGIN@9";
+	"Devel::PartialDump::BEGIN@128";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::new";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::name";
+	"Moose::Meta::TypeConstraint::is_subtype_of";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+	"MooseX::Types::Structured::BEGIN@13";
+}
+"Moose::Meta::Attribute::_call_builder" -> "MooseX::Meta::TypeConstraint::Structured::_build_coercion";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+"MooseX::Meta::TypeConstraint::Structured::is_subtype_of" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "Moose::extends";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@9";
+"MooseX::Meta::TypeConstraint::Structured::is_subtype_of" -> "Moose::Meta::TypeConstraint::is_subtype_of";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@4";
+"Class::MOP::Class:::around" -> "MooseX::Meta::TypeConstraint::Structured::generate_constraint_for";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@7";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "UNIVERSAL::import";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@21";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Moose::has";
+"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for" -> "MooseX::Meta::TypeConstraint::Structured::constraint_generator";
+"MooseX::Meta::TypeConstraint::Structured::__infer_constraint_generator" -> "MooseX::Meta::TypeConstraint::Structured::constraint_generator";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "MooseX::Meta::TypeConstraint::Structured::is_subtype_of";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Meta::TypeConstraint::Structured::_build_coercion" -> "Moose::Meta::TypeCoercion::new";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Moose::Object::new";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@128";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "MooseX::Meta::TypeCoercion::Structured::meta";
+"MooseX::Meta::TypeConstraint::Structured::parameterize" -> "MooseX::Meta::TypeConstraint::Structured::__infer_constraint_generator";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeConstraint::Structured::parameterize" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@7";
+"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for" -> "MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"MooseX::Meta::TypeConstraint::Structured::is_subtype_of" -> "UNIVERSAL::isa";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@5";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@6";
+"MooseX::Meta::TypeConstraint::Structured::__infer_constraint_generator" -> "MooseX::Meta::TypeConstraint::Structured::has_constraint_generator";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@13";
+"MooseX::Meta::TypeConstraint::Structured::parameterize" -> "Moose::Meta::TypeConstraint::name";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "MooseX::Meta::TypeCoercion::Structured::BEGIN@5";
+"MooseX::Meta::TypeConstraint::Structured::is_subtype_of" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"MooseX::Meta::TypeConstraint::Structured::parameterize" -> "Moose::Meta::TypeConstraint::new";
+"MooseX::Types::create_arged_type_constraint" -> "MooseX::Meta::TypeConstraint::Structured::parameterize";
+}

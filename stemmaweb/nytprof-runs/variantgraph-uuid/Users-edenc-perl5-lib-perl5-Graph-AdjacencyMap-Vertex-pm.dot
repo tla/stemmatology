@@ -1,0 +1,34 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_AdjacencyMap_Vertex {
+	label="Graph::AdjacencyMap::Vertex";
+	"Graph::AdjacencyMap::Vertex::BEGIN@15";
+	"Graph::AdjacencyMap::Vertex::BEGIN@13";
+	"Graph::AdjacencyMap::Vertex::BEGIN@12";
+	"Graph::AdjacencyMap::Vertex::BEGIN@7";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::BEGIN@15";
+}
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@13";
+"Graph::AdjacencyMap::Vertex::BEGIN@7" -> "strict::import";
+"Graph::AdjacencyMap::Vertex::BEGIN@12" -> "Exporter::import";
+"Graph::AdjacencyMap::Vertex::BEGIN@15" -> "Exporter::import";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@12";
+"Graph::AdjacencyMap::Vertex::BEGIN@13" -> "base::import";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@7";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@15";
+}

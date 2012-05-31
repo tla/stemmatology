@@ -1,0 +1,75 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_YAML_XS {
+	label="YAML::XS";
+	"YAML::XS::BEGIN@56";
+	"YAML::XS::BEGIN@19";
+	"YAML::XS::BEGIN@6";
+	"YAML::XS::BEGIN@101";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper";
+}
+subgraph cluster_YAML_XS_LibYAML {
+	label="YAML::XS::LibYAML";
+	"YAML::XS::LibYAML::Dump";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::make_entry";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@154";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@4";
+	"Text::Tradition::TypeMap::Entry::compile_refresh";
+	"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]";
+	"Text::Tradition::TypeMap::Entry::BEGIN@1";
+	"Text::Tradition::TypeMap::Entry::compile_expand";
+	"Text::Tradition::TypeMap::Entry::compile_collapse_body";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2.11";
+	"Text::Tradition::TypeMap::Entry::BEGIN@6";
+	"Text::Tradition::TypeMap::Entry::BEGIN@10";
+}
+"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]" -> "KiokuDB::Collapser::make_entry";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper" -> "Text::Tradition::TypeMap::Entry::compile_collapse_body";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@2";
+"Text::Tradition::TypeMap::Entry::BEGIN@6" -> "namespace::clean::import";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@19";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@4";
+"Text::Tradition::TypeMap::Entry::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "Text::Tradition::TypeMap::Entry::compile_refresh";
+"KiokuDB::Collapser::collapse_first_class" -> "Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@56";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "Text::Tradition::TypeMap::Entry::BEGIN@2.11";
+"Text::Tradition::TypeMap::Entry::BEGIN@4" -> "warnings::unimport";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@10";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "Text::Tradition::TypeMap::Entry::compile_expand";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@6";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@101";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@6";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "Text::Tradition::TypeMap::Entry::BEGIN@1";
+"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]" -> "YAML::XS::LibYAML::Dump";
+}

@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Plack_Util_IOWithPath {
+	label="Plack::Util::IOWithPath";
+	"Plack::Util::IOWithPath::BEGIN@352";
+}
+subgraph cluster_Plack_Loader {
+	label="Plack::Loader";
+	"Plack::Loader::BEGIN@3";
+	"Plack::Loader::BEGIN@5";
+	"Plack::Loader::BEGIN@2";
+	"Plack::Loader::BEGIN@4";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Plack_Util {
+	label="Plack::Util";
+	"Plack::Util::BEGIN@31";
+	"Plack::Util::BEGIN@3";
+	"Plack::Util::BEGIN@5";
+	"Plack::Util::BEGIN@2";
+	"Plack::Util::BEGIN@4";
+	"Plack::Util::BEGIN@6";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Plack::Loader::BEGIN@2";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@4";
+"Module::Runtime::require_module" -> "Plack::Loader::BEGIN@4";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@2";
+"Plack::Loader::BEGIN@2" -> "strict::import";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::IOWithPath::BEGIN@352";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@31";
+"Plack::Loader::BEGIN@5" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Plack::Loader::BEGIN@3";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@5";
+"Module::Runtime::require_module" -> "Plack::Loader::BEGIN@5";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@6";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@3";
+}

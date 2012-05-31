@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::BEGIN@12";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::req";
+	"Catalyst::get_action";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::new";
+	"Catalyst::DispatchType::Index::_is_low_precedence";
+	"Catalyst::DispatchType::Index::BEGIN@3";
+	"Catalyst::DispatchType::Index::__ANON__[Catalyst/DispatchType/Index.pm:31]";
+	"Catalyst::DispatchType::Index::_actions";
+	"Catalyst::DispatchType::Index::BEGIN@5";
+	"Catalyst::DispatchType::Index::match";
+	"Catalyst::DispatchType::Index::register";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::args";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::reverse";
+	"Catalyst::Action::name";
+	"Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Index::match";
+"Catalyst::DispatchType::Index::new" -> "Catalyst::DispatchType::Index::__ANON__[Catalyst/DispatchType/Index.pm:31]";
+"Catalyst::DispatchType::Index::BEGIN@5" -> "namespace::clean::import";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::Action::reverse";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::DispatchType::Index::_actions";
+"Catalyst::DispatchType::Index::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::get_action";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Index::register";
+"Catalyst::Dispatcher::BEGIN@12" -> "Catalyst::DispatchType::Index::BEGIN@3";
+"Catalyst::DispatchType::Index::register" -> "Catalyst::Action::name";
+"Catalyst::Dispatcher::BEGIN@12" -> "Catalyst::DispatchType::Index::BEGIN@5";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::Request::args";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Index::_is_low_precedence";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::req";
+}

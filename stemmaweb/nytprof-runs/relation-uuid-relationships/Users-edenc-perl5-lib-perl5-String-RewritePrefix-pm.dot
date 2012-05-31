@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_String_RewritePrefix {
+	label="String::RewritePrefix";
+	"String::RewritePrefix::CORE:sort";
+	"String::RewritePrefix::BEGIN@4";
+	"String::RewritePrefix::__ANON__[String/RewritePrefix.pm:57]";
+	"String::RewritePrefix::rewrite";
+	"String::RewritePrefix::_new_rewriter";
+	"String::RewritePrefix::BEGIN@11";
+	"String::RewritePrefix::BEGIN@7";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::BEGIN@11";
+	"Catalyst::Utils::BEGIN@2";
+	"Catalyst::Utils::BEGIN@1";
+	"Catalyst::Utils::resolve_namespace";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Utils::resolve_namespace" -> "String::RewritePrefix::rewrite";
+"String::RewritePrefix::rewrite" -> "String::RewritePrefix::__ANON__[String/RewritePrefix.pm:57]";
+"Catalyst::Utils::BEGIN@11" -> "Catalyst::Utils::BEGIN@2";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@4";
+"String::RewritePrefix::rewrite" -> "String::RewritePrefix::_new_rewriter";
+"String::RewritePrefix::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::Utils::BEGIN@1" -> "strict::import";
+"Catalyst::Utils::BEGIN@2" -> "warnings::import";
+"Catalyst::Utils::BEGIN@11" -> "Catalyst::Utils::BEGIN@1";
+"String::RewritePrefix::_new_rewriter" -> "String::RewritePrefix::CORE:sort";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@7";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@11";
+"String::RewritePrefix::BEGIN@11" -> "UNIVERSAL::VERSION";
+}

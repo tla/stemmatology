@@ -1,0 +1,81 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_MethodAttributes_Role {
+	label="MooseX::MethodAttributes::Role";
+	"MooseX::MethodAttributes::Role::BEGIN@2";
+	"MooseX::MethodAttributes::Role::BEGIN@10";
+	"MooseX::MethodAttributes::Role::BEGIN@15";
+	"MooseX::MethodAttributes::Role::BEGIN@12";
+	"MooseX::MethodAttributes::Role::BEGIN@13";
+	"MooseX::MethodAttributes::Role::BEGIN@11";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role {
+	label="MooseX::MethodAttributes::Role::Meta::Role";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@20";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@13";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@15";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@11";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@10";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::BEGIN@12";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::BEGIN@12";
+	"MooseX::MethodAttributes::BEGIN@11";
+	"MooseX::MethodAttributes::BEGIN@10";
+	"MooseX::MethodAttributes::BEGIN@13";
+	"MooseX::MethodAttributes::BEGIN@2";
+	"MooseX::MethodAttributes::BEGIN@15";
+}
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "Moose::Exporter::setup_import_methods";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "Moose::Exporter::setup_import_methods";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@2";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@10";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@11";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@11";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@12" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@2";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@20" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@13" -> "Exporter::import";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@13";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@10";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@15";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@13";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@13";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@20";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@15";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@2";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Role::BEGIN@15";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@11";
+}

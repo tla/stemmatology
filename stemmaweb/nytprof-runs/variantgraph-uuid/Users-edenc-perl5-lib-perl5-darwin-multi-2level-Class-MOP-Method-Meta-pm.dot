@@ -1,0 +1,97 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@12";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::meta";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Method_Meta {
+	label="Moose::Meta::Method::Meta";
+	"Moose::Meta::Method::Meta::_make_compatible_with";
+	"Moose::Meta::Method::Meta::wrap";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::BEGIN@3";
+	"Class::MOP::Method::Meta::BEGIN@18";
+	"Class::MOP::Method::Meta::BEGIN@11";
+	"Class::MOP::Method::Meta::wrap";
+	"Class::MOP::Method::Meta::BEGIN@10";
+	"Class::MOP::Method::Meta::BEGIN@14";
+	"Class::MOP::Method::Meta::BEGIN@16";
+	"Class::MOP::Method::Meta::_generate_meta_method";
+	"Class::MOP::Method::Meta::BEGIN@13";
+	"Class::MOP::Method::Meta::_make_compatible_with";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_real_ref_name";
+	"Class::MOP::Object::meta";
+	"Class::MOP::Object::_is_compatible_with";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::MOP::Method::Meta::_make_compatible_with" -> "Class::MOP::Object::_real_ref_name";
+"Class::MOP::Method::Meta::wrap" -> "Class::MOP::Method::wrap";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@14";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@10";
+"Class::MOP::Method::Meta::wrap" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+"Class::MOP::Method::Meta::BEGIN@16" -> "constant::import";
+"Class::MOP::Method::Meta::wrap" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+"Class::MOP::Method::Meta::BEGIN@10" -> "strict::import";
+"Class::MOP::Method::Meta::_make_compatible_with" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Method::Meta::BEGIN@14" -> "Exporter::import";
+"Class::MOP::Method::Meta::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@16";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@3";
+"Class::MOP::Method::Meta::BEGIN@18" -> "base::import";
+"Class::MOP::Method::Meta::BEGIN@11" -> "warnings::import";
+"Class::MOP::Method::Meta::wrap" -> "Class::MOP::Method::Meta::_generate_meta_method";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@11";
+"Class::MOP::Method::Meta::_generate_meta_method" -> "Scalar::Util::weaken";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@18";
+"Moose::Meta::Method::Meta::wrap" -> "Class::MOP::Method::Meta::wrap";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Method::Meta::wrap";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@13";
+"Class::MOP::Method::Meta::wrap" -> "Class::MOP::Object::meta";
+"Class::MOP::Method::Meta::wrap" -> "Moose::Meta::Role::meta";
+"Moose::Meta::Method::Meta::_make_compatible_with" -> "Class::MOP::Method::Meta::_make_compatible_with";
+}

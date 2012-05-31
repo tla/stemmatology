@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@7";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_TEI_Markup {
+	label="Text::TEI::Markup";
+	"Text::TEI::Markup::BEGIN@7";
+	"Text::TEI::Markup::BEGIN@433";
+	"Text::TEI::Markup::BEGIN@3";
+	"Text::TEI::Markup::BEGIN@6";
+	"Text::TEI::Markup::BEGIN@4";
+	"Text::TEI::Markup::BEGIN@8";
+	"Text::TEI::Markup::BEGIN@5";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@6";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@433";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@4";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@7";
+"Text::TEI::Markup::BEGIN@3" -> "strict::import";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@5";
+"Text::TEI::Markup::BEGIN@6" -> "Exporter::import";
+"Text::TEI::Markup::BEGIN@7" -> "Exporter::import";
+"Text::TEI::Markup::BEGIN@5" -> "Exporter::import";
+"Text::TEI::Markup::BEGIN@8" -> "XML::LibXML::import";
+"Text::TEI::Markup::BEGIN@4" -> "vars::import";
+"Text::TEI::Markup::BEGIN@433" -> "warnings::unimport";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@3";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@8";
+}

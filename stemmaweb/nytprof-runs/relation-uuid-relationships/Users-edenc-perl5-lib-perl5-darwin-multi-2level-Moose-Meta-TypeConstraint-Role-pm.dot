@@ -1,0 +1,87 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@15";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@11";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@17";
+	"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:56]";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@9";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@10";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@14";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@2";
+	"Moose::Meta::TypeConstraint::Role::_create_hand_optimized_type_constraint";
+	"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]";
+	"Moose::Meta::TypeConstraint::Role::role";
+	"Moose::Meta::TypeConstraint::Role::new";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@13";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_B {
+	label="B";
+	"B::perlstring";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::hand_optimized_type_constraint";
+	"Moose::Meta::TypeConstraint::check";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@37";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::create_role_type_constraint";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::TypeConstraint::Role::new" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@9";
+"Moose::Meta::TypeConstraint::Role::new" -> "Moose::Meta::TypeConstraint::Role::_create_hand_optimized_type_constraint";
+"Moose::Meta::TypeConstraint::check" -> "Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:56]";
+"Moose::Meta::TypeConstraint::Role::BEGIN@11" -> "metaclass::import";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@13";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@11";
+"Moose::Meta::TypeConstraint::Role::BEGIN@9" -> "strict::import";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@15";
+"Moose::Meta::TypeConstraint::Role::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::Role::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::Role::_create_hand_optimized_type_constraint" -> "Moose::Meta::TypeConstraint::hand_optimized_type_constraint";
+"Moose::Meta::TypeConstraint::Role::BEGIN@17" -> "base::import";
+"Moose::Meta::TypeConstraint::Role::BEGIN@10" -> "warnings::import";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@17";
+"Moose::Meta::TypeConstraint::_inline_check" -> "Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]";
+"Moose::Util::TypeConstraints::create_role_type_constraint" -> "Moose::Meta::TypeConstraint::Role::new";
+"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:56]" -> "Moose::Util::does_role";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@14";
+"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]" -> "B::perlstring";
+"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]" -> "Moose::Meta::TypeConstraint::Role::role";
+"Moose::Meta::TypeConstraint::Role::_create_hand_optimized_type_constraint" -> "Moose::Meta::TypeConstraint::Role::role";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@10";
+"Moose::Meta::TypeConstraint::Role::new" -> "Moose::Meta::TypeConstraint::compile_type_constraint";
+"Moose::Meta::TypeConstraint::Role::new" -> "Moose::Meta::TypeConstraint::new";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Moose::Meta::TypeConstraint::Role::BEGIN@2";
+}

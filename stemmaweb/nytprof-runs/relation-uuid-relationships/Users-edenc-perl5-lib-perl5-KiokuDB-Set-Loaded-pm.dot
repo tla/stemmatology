@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Set_Loaded {
+	label="KiokuDB::Set::Loaded";
+	"KiokuDB::Set::Loaded::BEGIN@8";
+	"KiokuDB::Set::Loaded::BEGIN@6";
+	"KiokuDB::Set::Loaded::BEGIN@4";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@8";
+}
+"KiokuDB::Set::Deferred::BEGIN@8" -> "KiokuDB::Set::Loaded::BEGIN@8";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "KiokuDB::Set::Loaded::BEGIN@4";
+"KiokuDB::Set::Loaded::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "KiokuDB::Set::Loaded::BEGIN@6";
+"KiokuDB::Set::Loaded::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Loaded::BEGIN@6" -> "Exporter::import";
+}

@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToInstance {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@2";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@11";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@10";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@5";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4";
+}
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@2";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@5";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@10";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@11" -> "namespace::autoclean::import";
+}

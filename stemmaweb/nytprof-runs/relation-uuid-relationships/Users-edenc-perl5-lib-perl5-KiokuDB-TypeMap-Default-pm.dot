@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_create_typemap";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_call_builder";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::reftype_entries";
+	"KiokuDB::TypeMap::Default::JSON::intrinsic_sets";
+}
+subgraph cluster_KiokuDB_TypeMap_Default {
+	label="KiokuDB::TypeMap::Default";
+	"KiokuDB::TypeMap::Default::BEGIN@4";
+	"KiokuDB::TypeMap::Default::_build_tie_typemap";
+	"KiokuDB::TypeMap::Default::_build_core_typemap";
+	"KiokuDB::TypeMap::Default::BEGIN@6";
+	"KiokuDB::TypeMap::Default::reftype_entries";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::_build_core_typemap";
+"KiokuDB::TypeMap::Default::BEGIN@6" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Default::BEGIN@6";
+"KiokuDB::TypeMap::Default::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::_build_tie_typemap";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Default::BEGIN@4";
+"KiokuDB::TypeMap::Default::_build_core_typemap" -> "KiokuDB::TypeMap::Default::JSON::intrinsic_sets";
+"KiokuDB::TypeMap::Default::_build_tie_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::_build_core_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::JSON::reftype_entries" -> "KiokuDB::TypeMap::Default::reftype_entries";
+"KiokuDB::TypeMap::Default::_build_core_typemap" -> "KiokuDB::TypeMap::Default::JSON::reftype_entries";
+}

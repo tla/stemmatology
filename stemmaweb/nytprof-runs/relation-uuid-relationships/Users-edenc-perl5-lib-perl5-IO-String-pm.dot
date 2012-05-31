@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Data {
+	label="PPI::Token::Data";
+	"PPI::Token::Data::BEGIN@31";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_IO_String {
+	label="IO::String";
+	"IO::String::BEGIN@9";
+	"IO::String::BEGIN@13";
+	"IO::String::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@9";
+"IO::String::BEGIN@9" -> "strict::import";
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@10";
+"IO::String::BEGIN@10" -> "vars::import";
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@13";
+}

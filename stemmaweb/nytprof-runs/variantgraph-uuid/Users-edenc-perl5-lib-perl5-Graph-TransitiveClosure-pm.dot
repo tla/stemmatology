@@ -1,0 +1,35 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_TransitiveClosure_Matrix {
+	label="Graph::TransitiveClosure::Matrix";
+	"Graph::TransitiveClosure::Matrix::BEGIN@3";
+	"Graph::TransitiveClosure::Matrix::BEGIN@5";
+	"Graph::TransitiveClosure::Matrix::BEGIN@6";
+}
+subgraph cluster_Graph_TransitiveClosure {
+	label="Graph::TransitiveClosure";
+	"Graph::TransitiveClosure::BEGIN@3";
+	"Graph::TransitiveClosure::BEGIN@9";
+	"Graph::TransitiveClosure::BEGIN@10";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@32";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::TransitiveClosure::BEGIN@10" -> "Graph::TransitiveClosure::Matrix::BEGIN@3";
+"Graph::TransitiveClosure::BEGIN@10" -> "Graph::TransitiveClosure::Matrix::BEGIN@5";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@9";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@10";
+"Graph::TransitiveClosure::BEGIN@3" -> "strict::import";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@3";
+"Graph::TransitiveClosure::BEGIN@9" -> "base::import";
+"Graph::TransitiveClosure::BEGIN@10" -> "Graph::TransitiveClosure::Matrix::BEGIN@6";
+}

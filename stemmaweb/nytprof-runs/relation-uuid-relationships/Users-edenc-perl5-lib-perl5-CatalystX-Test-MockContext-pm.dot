@@ -1,0 +1,71 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::prepare";
+}
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::mock_context";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]";
+	"CatalystX::Test::MockContext::BEGIN@10";
+	"CatalystX::Test::MockContext::BEGIN@4";
+	"CatalystX::Test::MockContext::BEGIN@5";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::test_psgi";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::test_psgi";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@1.12";
+	"main::BEGIN@12";
+	"main::BEGIN@2.13";
+	"main::RUNTIME";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]" -> "Catalyst::prepare";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@4";
+"CatalystX::Test::MockContext::mock_context" -> "Class::Load::load_class";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]" -> "Plack::Test::test_psgi";
+"CatalystX::Test::MockContext::BEGIN@10" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"main::RUNTIME" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]";
+"main::BEGIN@12" -> "main::BEGIN@2.13";
+"main::BEGIN@1.12" -> "strict::import";
+"Plack::Test::MockHTTP::test_psgi" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]";
+"CatalystX::Test::MockContext::BEGIN@4" -> "Exporter::import";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@5";
+"main::BEGIN@2.13" -> "warnings::import";
+"main::BEGIN@12" -> "main::BEGIN@1.12";
+"main::RUNTIME" -> "CatalystX::Test::MockContext::mock_context";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@10";
+}

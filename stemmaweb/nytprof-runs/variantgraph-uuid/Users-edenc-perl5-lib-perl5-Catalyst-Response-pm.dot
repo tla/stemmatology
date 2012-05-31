@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::finalize_headers";
+	"Catalyst::BEGIN@14";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::new";
+	"HTTP::Headers::scan";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:104]";
+}
+subgraph cluster_Eval_Closure_Sandbox_276 {
+	label="Eval::Closure::Sandbox_276";
+	"Eval::Closure::Sandbox_276::__ANON__[(eval 394)[Eval/Closure.pm:125]:11]";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::finalize_headers";
+	"Catalyst::Engine::write";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::process";
+}
+subgraph cluster_Plack_Util_Prototype {
+	label="Plack::Util::Prototype";
+	"Plack::Util::Prototype::AUTOLOAD";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::new";
+	"Catalyst::Response::write";
+	"Catalyst::Response::finalize_headers";
+	"Catalyst::Response::output";
+	"Catalyst::Response::location";
+	"Catalyst::Response::__ANON__[Catalyst/Response.pm:81]";
+	"Catalyst::Response::_has_response_cb";
+	"Catalyst::Response::_response_cb";
+	"Catalyst::Response::BEGIN@6";
+	"Catalyst::Response::DEMOLISH";
+	"Catalyst::Response::_writer";
+	"Catalyst::Response::__ANON__[Catalyst/Response.pm:31]";
+	"Catalyst::Response::_clear_response_cb";
+	"Catalyst::Response::BEGIN@5";
+	"Catalyst::Response::_set_writer";
+	"Catalyst::Response::BEGIN@3";
+	"Catalyst::Response::__ANON__[Catalyst/Response.pm:42]";
+	"Catalyst::Response::status";
+	"Catalyst::Response::redirect";
+	"Catalyst::Response::BEGIN@4";
+	"Catalyst::Response::headers";
+	"Catalyst::Response::body";
+	"Catalyst::Response::_has_writer";
+}
+"Catalyst::Response::write" -> "Catalyst::Response::finalize_headers";
+"Catalyst::Engine::finalize_headers" -> "Catalyst::Response::finalize_headers";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@5";
+"Catalyst::Response::write" -> "Plack::Util::Prototype::AUTOLOAD";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::headers";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@3";
+"Catalyst::Response::finalize_headers" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:104]";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::status";
+"Catalyst::Response::headers" -> "Catalyst::Response::__ANON__[Catalyst/Response.pm:42]";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::_has_writer";
+"Catalyst::Response::DEMOLISH" -> "Catalyst::Response::_has_writer";
+"Eval::Closure::Sandbox_276::__ANON__[(eval 394)[Eval/Closure.pm:125]:11]" -> "Catalyst::Response::DEMOLISH";
+"Catalyst::Response::write" -> "Catalyst::Response::_writer";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::_set_writer";
+"Catalyst::Response::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Response::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::View::SVG::process" -> "Catalyst::Response::output";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::_clear_response_cb";
+"Catalyst::finalize_headers" -> "Catalyst::Response::redirect";
+"Catalyst::Response::finalize_headers" -> "HTTP::Headers::scan";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::_has_response_cb";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@6";
+"Catalyst::Response::output" -> "Catalyst::Response::body";
+"HTTP::Headers::scan" -> "Catalyst::Response::__ANON__[Catalyst/Response.pm:81]";
+"Catalyst::Response::BEGIN@6" -> "namespace::autoclean::import";
+"Catalyst::Response::finalize_headers" -> "Catalyst::Response::_response_cb";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@4";
+"Catalyst::Engine::write" -> "Catalyst::Response::write";
+"Catalyst::Response::__ANON__[Catalyst/Response.pm:42]" -> "HTTP::Headers::new";
+"Catalyst::Response::redirect" -> "Catalyst::Response::location";
+"Catalyst::Response::new" -> "Catalyst::Response::__ANON__[Catalyst/Response.pm:31]";
+}

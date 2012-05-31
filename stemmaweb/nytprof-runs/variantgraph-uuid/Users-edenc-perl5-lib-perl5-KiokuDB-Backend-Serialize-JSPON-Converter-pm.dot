@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Converter {
+	label="KiokuDB::Backend::Serialize::JSPON::Converter";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::_jspon_fields";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::tied_field";
+	"KiokuDB::Serializer::JSON::deleted_field";
+	"KiokuDB::Serializer::JSON::class_field";
+	"KiokuDB::Serializer::JSON::inline_data";
+	"KiokuDB::Serializer::JSON::root_field";
+	"KiokuDB::Serializer::JSON::ref_field";
+	"KiokuDB::Serializer::JSON::class_meta_field";
+	"KiokuDB::Serializer::JSON::backend_data_field";
+	"KiokuDB::Serializer::JSON::class_version_field";
+	"KiokuDB::Serializer::JSON::_jspon_params";
+	"KiokuDB::Serializer::JSON::id_field";
+	"KiokuDB::Serializer::JSON::data_field";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::backend_data_field";
+"KiokuDB::Serializer::JSON::_jspon_params" -> "KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::class_version_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::data_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::ref_field";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@4";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::class_meta_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::root_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Backend::Serialize::JSPON::Converter::_jspon_fields";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Converter::_jspon_fields";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::inline_data";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::tied_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::id_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::class_field";
+"KiokuDB::Backend::Serialize::JSPON::Converter::_build__jspon_params" -> "KiokuDB::Serializer::JSON::deleted_field";
+}

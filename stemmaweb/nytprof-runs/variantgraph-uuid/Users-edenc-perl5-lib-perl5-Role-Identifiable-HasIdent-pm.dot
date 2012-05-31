@@ -1,0 +1,23 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Role_Identifiable_HasIdent {
+	label="Role::Identifiable::HasIdent";
+	"Role::Identifiable::HasIdent::BEGIN@15";
+	"Role::Identifiable::HasIdent::BEGIN@5";
+	"Role::Identifiable::HasIdent::BEGIN@2";
+}
+"Module::Runtime::require_module" -> "Role::Identifiable::HasIdent::BEGIN@2";
+"Role::Identifiable::HasIdent::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasIdent::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasIdent::BEGIN@5";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasIdent::BEGIN@15";
+}

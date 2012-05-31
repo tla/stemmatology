@@ -1,0 +1,56 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MIME_Type {
+	label="MIME::Type";
+	"MIME::Type::simplified";
+	"MIME::Type::CORE:match";
+	"MIME::Type::BEGIN@12";
+	"MIME::Type::mediaType";
+	"MIME::Type::system";
+	"MIME::Type::init";
+	"MIME::Type::BEGIN@18";
+	"MIME::Type::BEGIN@6";
+	"MIME::Type::BEGIN@10";
+	"MIME::Type::new";
+	"MIME::Type::extensions";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_MIME_Types {
+	label="MIME::Types";
+	"MIME::Types::create_type_index";
+	"MIME::Types::BEGIN@13";
+	"MIME::Types::init";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"MIME::Type::BEGIN@18" -> "overload::import";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@10";
+"MIME::Type::new" -> "MIME::Type::init";
+"MIME::Type::BEGIN@10" -> "strict::import";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@18";
+"MIME::Type::BEGIN@12" -> "Exporter::import";
+"MIME::Type::BEGIN@6" -> "vars::import";
+"MIME::Types::create_type_index" -> "MIME::Type::extensions";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@12";
+"MIME::Type::simplified" -> "MIME::Type::CORE:match";
+"MIME::Type::mediaType" -> "MIME::Type::CORE:match";
+"MIME::Type::init" -> "MIME::Type::simplified";
+"MIME::Types::init" -> "MIME::Type::simplified";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@6";
+"MIME::Types::init" -> "MIME::Type::new";
+"MIME::Types::create_type_index" -> "MIME::Type::system";
+"MIME::Type::init" -> "MIME::Type::mediaType";
+}

@@ -1,0 +1,109 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::find_files";
+	"Catalyst::Plugin::ConfigLoader::_fix_syntax";
+	"Catalyst::Plugin::ConfigLoader::setup";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@6";
+}
+subgraph cluster_Config_Any_JSON {
+	label="Config::Any::JSON";
+	"Config::Any::JSON::extensions";
+}
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::extensions";
+	"Config::Any::General::load";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Config_Any_Perl {
+	label="Config::Any::Perl";
+	"Config::Any::Perl::extensions";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::new";
+	"Module::Pluggable::Object::plugins";
+}
+subgraph cluster_Config_Any_INI {
+	label="Config::Any::INI";
+	"Config::Any::INI::extensions";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::CORE:regcomp";
+	"Config::Any::CORE:match";
+	"Config::Any::plugins";
+	"Config::Any::BEGIN@4";
+	"Config::Any::_load";
+	"Config::Any::load_files";
+	"Config::Any::BEGIN@7";
+	"Config::Any::BEGIN@6";
+	"Config::Any::finder";
+	"Config::Any::BEGIN@3";
+	"Config::Any::CORE:ftfile";
+	"Config::Any::extensions";
+}
+subgraph cluster_Config_Any_YAML {
+	label="Config::Any::YAML";
+	"Config::Any::YAML::extensions";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::is_supported";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Config_Any_XML {
+	label="Config::Any::XML";
+	"Config::Any::XML::extensions";
+}
+"Config::Any::load_files" -> "Config::Any::_load";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@4";
+"Config::Any::_load" -> "Config::Any::Base::is_supported";
+"Config::Any::_load" -> "Config::Any::CORE:match";
+"Config::Any::_load" -> "Catalyst::Plugin::ConfigLoader::_fix_syntax";
+"Config::Any::BEGIN@3" -> "strict::import";
+"Config::Any::_load" -> "Config::Any::YAML::extensions";
+"Config::Any::extensions" -> "Config::Any::YAML::extensions";
+"Config::Any::plugins" -> "Module::Pluggable::Object::plugins";
+"Config::Any::_load" -> "Config::Any::XML::extensions";
+"Config::Any::extensions" -> "Config::Any::XML::extensions";
+"Config::Any::BEGIN@6" -> "Exporter::import";
+"Config::Any::_load" -> "Config::Any::General::extensions";
+"Config::Any::extensions" -> "Config::Any::General::extensions";
+"Config::Any::BEGIN@4" -> "warnings::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@3";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@7";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Config::Any::extensions";
+"Config::Any::_load" -> "Config::Any::JSON::extensions";
+"Config::Any::extensions" -> "Config::Any::JSON::extensions";
+"Config::Any::plugins" -> "UNIVERSAL::isa";
+"Config::Any::_load" -> "Config::Any::CORE:ftfile";
+"Config::Any::finder" -> "Module::Pluggable::Object::new";
+"Config::Any::_load" -> "Config::Any::Perl::extensions";
+"Config::Any::extensions" -> "Config::Any::Perl::extensions";
+"Config::Any::_load" -> "Config::Any::CORE:regcomp";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@6";
+"Config::Any::_load" -> "Config::Any::plugins";
+"Config::Any::extensions" -> "Config::Any::plugins";
+"Config::Any::_load" -> "Config::Any::General::load";
+"Config::Any::plugins" -> "Config::Any::finder";
+"Config::Any::_load" -> "Config::Any::INI::extensions";
+"Config::Any::extensions" -> "Config::Any::INI::extensions";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Config::Any::load_files";
+}

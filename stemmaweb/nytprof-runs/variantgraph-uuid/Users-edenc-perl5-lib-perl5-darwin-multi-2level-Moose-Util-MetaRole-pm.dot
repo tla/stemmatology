@@ -1,0 +1,172 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::first";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::reinitialize";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::reinitialize";
+	"Moose::Meta::Role::application_to_role_class";
+	"Moose::Meta::Role::application_to_class_class";
+	"Moose::Meta::Role::meta";
+	"Moose::Meta::Role::application_to_instance_class";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_attribute_by_name";
+	"Class::MOP::Class::create_anon_class";
+	"Class::MOP::Class::initialize";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::init_meta";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::init_arg";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::BEGIN@15";
+	"Moose::Util::MetaRole::_make_new_metaclass";
+	"Moose::Util::MetaRole::BEGIN@16";
+	"Moose::Util::MetaRole::BEGIN@11";
+	"Moose::Util::MetaRole::BEGIN@10";
+	"Moose::Util::MetaRole::apply_base_class_roles";
+	"Moose::Util::MetaRole::BEGIN@14";
+	"Moose::Util::MetaRole::_metathing_for";
+	"Moose::Util::MetaRole::_make_new_class";
+	"Moose::Util::MetaRole::apply_metaroles";
+	"Moose::Util::MetaRole::BEGIN@13";
+	"Moose::Util::MetaRole::BEGIN@17";
+	"Moose::Util::MetaRole::BEGIN@9";
+	"Moose::Util::MetaRole::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_1 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::1";
+	"Moose::Meta::Class::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::get_read_method";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@15";
+	"Moose::Exporter::_apply_metaroles";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::init_meta";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Class::find_attribute_by_name";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Moose::Util::MetaRole::_metathing_for" -> "Scalar::Util::blessed";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Scalar::Util::blessed";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@17";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Role::application_to_class_class";
+"Moose::Util::MetaRole::apply_metaroles" -> "Moose::Util::MetaRole::_metathing_for";
+"Moose::Util::MetaRole::apply_base_class_roles" -> "Moose::Util::MetaRole::_metathing_for";
+"Moose::Util::MetaRole::apply_metaroles" -> "Moose::Util::MetaRole::_make_new_metaclass";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@14";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Util::MetaRole::_make_new_class";
+"Moose::Util::MetaRole::apply_base_class_roles" -> "Moose::Util::MetaRole::_make_new_class";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@10";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@9";
+"Moose::Util::MetaRole::BEGIN@9" -> "strict::import";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Attribute::get_read_method";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Class::reinitialize";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@2";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@15";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "List::Util::first";
+"Moose::Util::MetaRole::BEGIN@17" -> "Exporter::import";
+"Moose::Util::MetaRole::BEGIN@11" -> "Exporter::import";
+"Moose::Util::MetaRole::BEGIN@14" -> "Exporter::import";
+"Moose::Util::MetaRole::BEGIN@13" -> "Exporter::import";
+"Moose::Util::MetaRole::BEGIN@15" -> "Exporter::import";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Role::application_to_role_class";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Class::__ANON__::SERIAL::1::meta";
+"Moose::Util::MetaRole::_make_new_class" -> "UNIVERSAL::can";
+"Moose::Util::MetaRole::BEGIN@10" -> "warnings::import";
+"Moose::Util::MetaRole::apply_base_class_roles" -> "Moose::Meta::Class::superclasses";
+"Moose::Util::MetaRole::BEGIN@16" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Role::application_to_instance_class";
+"Moose::Util::MetaRole::_make_new_class" -> "Class::MOP::Class::initialize";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Moose::Util::MetaRole::_metathing_for" -> "UNIVERSAL::isa";
+"Moose::Util::MetaRole::apply_base_class_roles" -> "UNIVERSAL::isa";
+"Moose::Util::MetaRole::apply_metaroles" -> "UNIVERSAL::isa";
+"Moose::Util::MetaRole::_make_new_class" -> "List::MoreUtils::all";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@11";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Object::meta";
+"Moose::Util::MetaRole::_metathing_for" -> "Class::MOP::class_of";
+"Moose::Util::MetaRole::_make_new_class" -> "Class::MOP::Class::create_anon_class";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@13";
+"Moose::Util::MetaRole::apply_base_class_roles" -> "Class::MOP::Package::name";
+"Moose::Util::MetaRole::_make_new_class" -> "Class::MOP::Package::name";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@16";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::MetaRole::apply_base_class_roles";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Role::meta";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Moose::Meta::Role::reinitialize";
+"MooseX::Role::WithOverloading::init_meta" -> "Moose::Util::MetaRole::apply_metaroles";
+"Moose::Exporter::_apply_metaroles" -> "Moose::Util::MetaRole::apply_metaroles";
+"Class::MOP::Class:::around" -> "Moose::Util::MetaRole::apply_metaroles";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::MetaRole::apply_metaroles";
+}

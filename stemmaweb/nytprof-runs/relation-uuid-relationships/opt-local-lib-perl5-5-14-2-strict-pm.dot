@@ -1,0 +1,2717 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::BEGIN@45";
+	"Config::BEGIN@9";
+}
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::BEGIN@30";
+}
+subgraph cluster_URI__punycode {
+	label="URI::_punycode";
+	"URI::_punycode::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::BEGIN@3";
+}
+subgraph cluster_DBIx_Class_Carp {
+	label="DBIx::Class::Carp";
+	"DBIx::Class::Carp::BEGIN@3";
+	"DBIx::Class::Carp::BEGIN@75";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@9";
+}
+subgraph cluster_URI__query {
+	label="URI::_query";
+	"URI::_query::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Regexp {
+	label="PPI::Token::Regexp";
+	"PPI::Token::Regexp::BEGIN@45";
+}
+subgraph cluster_File_Spec_Functions {
+	label="File::Spec::Functions";
+	"File::Spec::Functions::BEGIN@42";
+	"File::Spec::Functions::BEGIN@4";
+}
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@5";
+}
+subgraph cluster_PPI_Structure_List {
+	label="PPI::Structure::List";
+	"PPI::Structure::List::BEGIN@38";
+}
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@69";
+}
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@12";
+}
+subgraph cluster_PPI_Token_Label {
+	label="PPI::Token::Label";
+	"PPI::Token::Label::BEGIN@31";
+}
+subgraph cluster_HTTP_Body_UrlEncoded {
+	label="HTTP::Body::UrlEncoded";
+	"HTTP::Body::UrlEncoded::BEGIN@6";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Instance {
+	label="Moose::Meta::Instance";
+	"Moose::Meta::Instance::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Constructor {
+	label="Moose::Meta::Method::Constructor";
+	"Moose::Meta::Method::Constructor::BEGIN@10";
+}
+subgraph cluster_Opcode {
+	label="Opcode";
+	"Opcode::BEGIN@5";
+}
+subgraph cluster_File_Copy {
+	label="File::Copy";
+	"File::Copy::BEGIN@11";
+}
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::BEGIN@23";
+}
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::BEGIN@58";
+}
+subgraph cluster_PPI_Token_Regexp_Substitute {
+	label="PPI::Token::Regexp::Substitute";
+	"PPI::Token::Regexp::Substitute::BEGIN@35";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::BEGIN@2";
+	"MRO::Compat::BEGIN@225";
+	"MRO::Compat::BEGIN@116";
+	"MRO::Compat::BEGIN@256";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@1";
+	"TryCatch::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@9";
+}
+subgraph cluster_Eval_Closure {
+	label="Eval::Closure";
+	"Eval::Closure::BEGIN@2";
+	"Eval::Closure::BEGIN@5";
+}
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::BEGIN@648";
+	"HTTP::Message::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::BEGIN@10";
+}
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::BEGIN@1";
+	"Path::Class::BEGIN@10";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@1";
+}
+subgraph cluster_URI__idna {
+	label="URI::_idna";
+	"URI::_idna::BEGIN@6";
+}
+subgraph cluster_Graph_AdjacencyMap_Heavy {
+	label="Graph::AdjacencyMap::Heavy";
+	"Graph::AdjacencyMap::Heavy::BEGIN@7";
+}
+subgraph cluster_PPI_Token_Cast {
+	label="PPI::Token::Cast";
+	"PPI::Token::Cast::BEGIN@34";
+}
+subgraph cluster_XML_Easy_Syntax {
+	label="XML::Easy::Syntax";
+	"XML::Easy::Syntax::BEGIN@27";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@9";
+}
+subgraph cluster_PPI_Token_QuoteLike_Words {
+	label="PPI::Token::QuoteLike::Words";
+	"PPI::Token::QuoteLike::Words::BEGIN@28";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::BEGIN@2";
+}
+subgraph cluster_HTTP_Body_OctetStream {
+	label="HTTP::Body::OctetStream";
+	"HTTP::Body::OctetStream::BEGIN@6";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@3";
+}
+subgraph cluster_IO {
+	label="IO";
+	"IO::BEGIN@7";
+}
+subgraph cluster_PPI_Token__QuoteEngine_Full {
+	label="PPI::Token::_QuoteEngine::Full";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@5";
+}
+subgraph cluster_PPI_Structure_Unknown {
+	label="PPI::Structure::Unknown";
+	"PPI::Structure::Unknown::BEGIN@42";
+}
+subgraph cluster_PPI_Statement_UnmatchedBrace {
+	label="PPI::Statement::UnmatchedBrace";
+	"PPI::Statement::UnmatchedBrace::BEGIN@47";
+}
+subgraph cluster_PPI_Statement_When {
+	label="PPI::Statement::When";
+	"PPI::Statement::When::BEGIN@44";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::BEGIN@122";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::BEGIN@3";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::BEGIN@2";
+}
+subgraph cluster_SelfLoader {
+	label="SelfLoader";
+	"SelfLoader::BEGIN@158";
+	"SelfLoader::BEGIN@3";
+	"SelfLoader::BEGIN@91";
+	"SelfLoader::BEGIN@73";
+	"SelfLoader::BEGIN@93";
+}
+subgraph cluster_KiokuDB_LiveObjects_Guard {
+	label="KiokuDB::LiveObjects::Guard";
+	"KiokuDB::LiveObjects::Guard::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Quote_Literal {
+	label="PPI::Token::Quote::Literal";
+	"PPI::Token::Quote::Literal::BEGIN@31";
+}
+subgraph cluster_File_chdir {
+	label="File::chdir";
+	"File::chdir::BEGIN@3";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@3";
+}
+subgraph cluster_PPI_Statement_Variable {
+	label="PPI::Statement::Variable";
+	"PPI::Statement::Variable::BEGIN@41";
+}
+subgraph cluster_Config_Any_JSON {
+	label="Config::Any::JSON";
+	"Config::Any::JSON::BEGIN@3";
+}
+subgraph cluster_PPI_Token_QuoteLike_Backtick {
+	label="PPI::Token::QuoteLike::Backtick";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@31";
+}
+subgraph cluster_PPI_Token_End {
+	label="PPI::Token::End";
+	"PPI::Token::End::BEGIN@43";
+}
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::BEGIN@4";
+	"Time::HiRes::BEGIN@43";
+}
+subgraph cluster_Catalyst_Runtime {
+	label="Catalyst::Runtime";
+	"Catalyst::Runtime::BEGIN@3";
+}
+subgraph cluster_Data_Dump {
+	label="Data::Dump";
+	"Data::Dump::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Overridden {
+	label="Moose::Meta::Method::Overridden";
+	"Moose::Meta::Method::Overridden::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Module {
+	label="Class::MOP::Module";
+	"Class::MOP::Module::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@9";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::BEGIN@6";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@9";
+}
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::BEGIN@9";
+}
+subgraph cluster_PPI_Token_Operator {
+	label="PPI::Token::Operator";
+	"PPI::Token::Operator::BEGIN@42";
+}
+subgraph cluster_DBIx_Class_Componentised {
+	label="DBIx::Class::Componentised";
+	"DBIx::Class::Componentised::BEGIN@4";
+	"DBIx::Class::Componentised::BEGIN@29";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@9";
+}
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::BEGIN@7";
+	"Class::Struct::BEGIN@108";
+	"Class::Struct::BEGIN@99";
+	"Class::Struct::BEGIN@188";
+}
+subgraph cluster_PPI_Token_Number {
+	label="PPI::Token::Number";
+	"PPI::Token::Number::BEGIN@32";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@9";
+}
+subgraph cluster_PPI_Token_Prototype {
+	label="PPI::Token::Prototype";
+	"PPI::Token::Prototype::BEGIN@49";
+}
+subgraph cluster_Bio_Phylo_Util_CONSTANT {
+	label="Bio::Phylo::Util::CONSTANT";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@2";
+}
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::BEGIN@113";
+	"Module::Implementation::BEGIN@6";
+}
+subgraph cluster_DBIx_Class_ResultSetColumn {
+	label="DBIx::Class::ResultSetColumn";
+	"DBIx::Class::ResultSetColumn::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@9";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::BEGIN@44";
+}
+subgraph cluster_Graph_Matrix {
+	label="Graph::Matrix";
+	"Graph::Matrix::BEGIN@6";
+}
+subgraph cluster_LWP_Protocol {
+	label="LWP::Protocol";
+	"LWP::Protocol::BEGIN@7";
+	"LWP::Protocol::BEGIN@62";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::BEGIN@9";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::BEGIN@4";
+}
+subgraph cluster_PPI_Statement_Sub {
+	label="PPI::Statement::Sub";
+	"PPI::Statement::Sub::BEGIN@33";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByPath {
+	label="Tree::Simple::Visitor::FindByPath";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@4";
+}
+subgraph cluster_PPI_Token_Number_Binary {
+	label="PPI::Token::Number::Binary";
+	"PPI::Token::Number::Binary::BEGIN@29";
+}
+subgraph cluster_PPI_Exception_ParserRejection {
+	label="PPI::Exception::ParserRejection";
+	"PPI::Exception::ParserRejection::BEGIN@3";
+}
+subgraph cluster_String_Formatter {
+	label="String::Formatter";
+	"String::Formatter::BEGIN@59";
+}
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::BEGIN@3";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Deprecated {
+	label="Class::MOP::Deprecated";
+	"Class::MOP::Deprecated::BEGIN@9";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::BEGIN@7";
+}
+subgraph cluster_JSON_Backend_XS_Supportable {
+	label="JSON::Backend::XS::Supportable";
+	"JSON::Backend::XS::Supportable::BEGIN@99";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::BEGIN@9";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::BEGIN@3";
+	"constant::BEGIN@114";
+	"constant::BEGIN@29";
+	"constant::BEGIN@52";
+}
+subgraph cluster_EVERY {
+	label="EVERY";
+	"EVERY::BEGIN@137";
+	"EVERY::BEGIN@116";
+}
+subgraph cluster_Moose_Meta_Role_Method_Conflicting {
+	label="Moose::Meta::Role::Method::Conflicting";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_keys {
+	label="Moose::Meta::Method::Accessor::Native::Hash::keys";
+	"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@9";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::BEGIN@27";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::BEGIN@9";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::BEGIN@1";
+}
+subgraph cluster_PPI_Statement_Scheduled {
+	label="PPI::Statement::Scheduled";
+	"PPI::Statement::Scheduled::BEGIN@56";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::BEGIN@3";
+}
+subgraph cluster_Graph_Reader {
+	label="Graph::Reader";
+	"Graph::Reader::BEGIN@6";
+}
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::BEGIN@2";
+}
+subgraph cluster_PPI_Token_Pod {
+	label="PPI::Token::Pod";
+	"PPI::Token::Pod::BEGIN@29";
+}
+subgraph cluster_Plack_Loader {
+	label="Plack::Loader";
+	"Plack::Loader::BEGIN@2";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::BEGIN@14";
+}
+subgraph cluster_HTML_Parser {
+	label="HTML::Parser";
+	"HTML::Parser::BEGIN@9";
+}
+subgraph cluster_PPI_Statement_Compound {
+	label="PPI::Statement::Compound";
+	"PPI::Statement::Compound::BEGIN@53";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::BEGIN@10";
+}
+subgraph cluster_XML_SAX_Exception {
+	label="XML::SAX::Exception";
+	"XML::SAX::Exception::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@9";
+}
+subgraph cluster_IPC_Run_IO {
+	label="IPC::Run::IO";
+	"IPC::Run::IO::BEGIN@65";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::BEGIN@66";
+}
+subgraph cluster_Template_VMethods {
+	label="Template::VMethods";
+	"Template::VMethods::BEGIN@24";
+}
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::BEGIN@5";
+}
+subgraph cluster_B_Deparse {
+	label="B::Deparse";
+	"B::Deparse::BEGIN@40";
+	"B::Deparse::BEGIN@30";
+	"B::Deparse::BEGIN@482";
+	"B::Deparse::BEGIN@3368";
+	"B::Deparse::BEGIN@688";
+}
+subgraph cluster_Package_Stash_XS {
+	label="Package::Stash::XS";
+	"Package::Stash::XS::BEGIN@5";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Number_Float {
+	label="PPI::Token::Number::Float";
+	"PPI::Token::Number::Float::BEGIN@31";
+}
+subgraph cluster_PPI_Normal {
+	label="PPI::Normal";
+	"PPI::Normal::BEGIN@83";
+	"PPI::Normal::BEGIN@260";
+	"PPI::Normal::BEGIN@37";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array {
+	label="Moose::Meta::Method::Accessor::Native::Array";
+	"Moose::Meta::Method::Accessor::Native::Array::BEGIN@9";
+}
+subgraph cluster_Graph_AdjacencyMap_Vertex {
+	label="Graph::AdjacencyMap::Vertex";
+	"Graph::AdjacencyMap::Vertex::BEGIN@7";
+}
+subgraph cluster_Plack_Component {
+	label="Plack::Component";
+	"Plack::Component::BEGIN@2";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::BEGIN@123";
+	"utf8::BEGIN@2";
+	"utf8::BEGIN@399";
+}
+subgraph cluster_Tree_Simple_Visitor {
+	label="Tree::Simple::Visitor";
+	"Tree::Simple::Visitor::BEGIN@4";
+}
+subgraph cluster_IO_Socket_UNIX {
+	label="IO::Socket::UNIX";
+	"IO::Socket::UNIX::BEGIN@9";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::BEGIN@3";
+}
+subgraph cluster_Time_Seconds {
+	label="Time::Seconds";
+	"Time::Seconds::BEGIN@2";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::BEGIN@10";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@11";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@10";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::BEGIN@10";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::BEGIN@5";
+	"Class::Load::BEGIN@1";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@4";
+	"namespace::clean::BEGIN@171";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@2";
+}
+subgraph cluster_Graph_TransitiveClosure_Matrix {
+	label="Graph::TransitiveClosure::Matrix";
+	"Graph::TransitiveClosure::Matrix::BEGIN@3";
+}
+subgraph cluster_HTTP_Status {
+	label="HTTP::Status";
+	"HTTP::Status::BEGIN@3";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::BEGIN@56";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_get {
+	label="Moose::Meta::Method::Accessor::Native::Array::get";
+	"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@9";
+}
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::BEGIN@38";
+}
+subgraph cluster_HTTP_Body {
+	label="HTTP::Body";
+	"HTTP::Body::BEGIN@6";
+}
+subgraph cluster_HTTP_Body_MultiPart {
+	label="HTTP::Body::MultiPart";
+	"HTTP::Body::MultiPart::BEGIN@6";
+}
+subgraph cluster_Devel_GlobalDestruction {
+	label="Devel::GlobalDestruction";
+	"Devel::GlobalDestruction::BEGIN@3";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@34";
+	"MooseX::Types::import";
+}
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::BEGIN@4";
+}
+subgraph cluster_File_Which {
+	label="File::Which";
+	"File::Which::BEGIN@4";
+}
+subgraph cluster_Moose_Error_Default {
+	label="Moose::Error::Default";
+	"Moose::Error::Default::BEGIN@9";
+}
+subgraph cluster_DBD___st {
+	label="DBD::_::st";
+	"DBD::_::st::BEGIN@1821";
+}
+subgraph cluster_Template_Stash {
+	label="Template::Stash";
+	"Template::Stash::BEGIN@22";
+}
+subgraph cluster_Graph_SPTHeapElem {
+	label="Graph::SPTHeapElem";
+	"Graph::SPTHeapElem::BEGIN@3";
+}
+subgraph cluster_Template_Document {
+	label="Template::Document";
+	"Template::Document::BEGIN@24";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@10";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::BEGIN@3";
+}
+subgraph cluster_DBD___common {
+	label="DBD::_::common";
+	"DBD::_::common::BEGIN@1343";
+}
+subgraph cluster_PPI_Token_Quote_Double {
+	label="PPI::Token::Quote::Double";
+	"PPI::Token::Quote::Double::BEGIN@34";
+}
+subgraph cluster_PPI_Statement_Null {
+	label="PPI::Statement::Null";
+	"PPI::Statement::Null::BEGIN@43";
+}
+subgraph cluster_PPI_Document_Fragment {
+	label="PPI::Document::Fragment";
+	"PPI::Document::Fragment::BEGIN@21";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::BEGIN@9";
+}
+subgraph cluster_Time_Local {
+	label="Time::Local";
+	"Time::Local::BEGIN@6";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@1";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::BEGIN@497";
+}
+subgraph cluster_Scope_Guard {
+	label="Scope::Guard";
+	"Scope::Guard::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::BEGIN@10";
+}
+subgraph cluster_MIME_Type {
+	label="MIME::Type";
+	"MIME::Type::BEGIN@10";
+}
+subgraph cluster_HTTP_Date {
+	label="HTTP::Date";
+	"HTTP::Date::BEGIN@10";
+}
+subgraph cluster_Encode_Alias {
+	label="Encode::Alias";
+	"Encode::Alias::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_elements {
+	label="Moose::Meta::Method::Accessor::Native::Array::elements";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@9";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::BEGIN@4";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::BEGIN@8";
+}
+subgraph cluster_PPI_Token_Quote_Single {
+	label="PPI::Token::Quote::Single";
+	"PPI::Token::Quote::Single::BEGIN@37";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@9";
+}
+subgraph cluster_Devel_Declare_Context_Simple {
+	label="Devel::Declare::Context::Simple";
+	"Devel::Declare::Context::Simple::BEGIN@3";
+}
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::BEGIN@261";
+	"IO::Handle::BEGIN@624";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@9";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@41";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@6";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Method_Augmented {
+	label="Moose::Meta::Method::Augmented";
+	"Moose::Meta::Method::Augmented::BEGIN@9";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@3";
+	"Time::Piece::BEGIN@121";
+}
+subgraph cluster_Bio_Phylo_Util_IDPool {
+	label="Bio::Phylo::Util::IDPool";
+	"Bio::Phylo::Util::IDPool::BEGIN@2";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::BEGIN@6";
+}
+subgraph cluster_Template_Filters {
+	label="Template::Filters";
+	"Template::Filters::BEGIN@22";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::BEGIN@5";
+}
+subgraph cluster_HTTP_Request_Common {
+	label="HTTP::Request::Common";
+	"HTTP::Request::Common::BEGIN@3";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::BEGIN@7";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::BEGIN@2";
+}
+subgraph cluster_Parse_Yapp_Driver {
+	label="Parse::Yapp::Driver";
+	"Parse::Yapp::Driver::BEGIN@201";
+	"Parse::Yapp::Driver::BEGIN@20";
+}
+subgraph cluster_PPI_Token_Quote {
+	label="PPI::Token::Quote";
+	"PPI::Token::Quote::BEGIN@48";
+}
+subgraph cluster_Template_Plugins {
+	label="Template::Plugins";
+	"Template::Plugins::BEGIN@26";
+}
+subgraph cluster_stemmaweb_View_JSON {
+	label="stemmaweb::View::JSON";
+	"stemmaweb::View::JSON::BEGIN@3";
+}
+subgraph cluster_Encode_Config {
+	label="Encode::Config";
+	"Encode::Config::BEGIN@7";
+}
+subgraph cluster_File_Temp_Dir {
+	label="File::Temp::Dir";
+	"File::Temp::Dir::BEGIN@2406";
+}
+subgraph cluster_PPI_Token_QuoteLike {
+	label="PPI::Token::QuoteLike";
+	"PPI::Token::QuoteLike::BEGIN@48";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::BEGIN@318";
+	"JSON::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::BEGIN@10";
+}
+subgraph cluster_CGI_Simple_Util {
+	label="CGI::Simple::Util";
+	"CGI::Simple::Util::BEGIN@2";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::BEGIN@2";
+	"Plack::Test::BEGIN@13";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::BEGIN@6";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@23";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::BEGIN@10";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::BEGIN@9";
+}
+subgraph cluster_NEXT {
+	label="NEXT";
+	"NEXT::BEGIN@25";
+	"NEXT::BEGIN@63";
+	"NEXT::BEGIN@93";
+	"NEXT::BEGIN@4";
+	"NEXT::BEGIN@101";
+	"NEXT::BEGIN@13";
+	"NEXT::BEGIN@37";
+}
+subgraph cluster_Template_Exception {
+	label="Template::Exception";
+	"Template::Exception::BEGIN@22";
+}
+subgraph cluster_Data_UUID {
+	label="Data::UUID";
+	"Data::UUID::BEGIN@3";
+}
+subgraph cluster_Graph_Traversal_DFS {
+	label="Graph::Traversal::DFS";
+	"Graph::Traversal::DFS::BEGIN@3";
+}
+subgraph cluster_File_Basename {
+	label="File::Basename";
+	"File::Basename::BEGIN@50";
+}
+subgraph cluster_PPI_Token_Regexp_Transliterate {
+	label="PPI::Token::Regexp::Transliterate";
+	"PPI::Token::Regexp::Transliterate::BEGIN@39";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_dec {
+	label="Moose::Meta::Method::Accessor::Native::Counter::dec";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@9";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::BEGIN@3";
+	"File::Spec::Unix::BEGIN@149";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@1";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@3";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BEGIN@85";
+	"Moose::Object::BEGIN@10";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::BEGIN@8";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_push {
+	label="Moose::Meta::Method::Accessor::Native::Array::push";
+	"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@9";
+}
+subgraph cluster_Heap071_Fibonacci {
+	label="Heap071::Fibonacci";
+	"Heap071::Fibonacci::BEGIN@3";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@1.12";
+	"main::BEGIN@2";
+	"main::BEGIN@1.1";
+}
+subgraph cluster_Graph_AdjacencyMap {
+	label="Graph::AdjacencyMap";
+	"Graph::AdjacencyMap::BEGIN@3";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::BEGIN@4";
+	"DBIx::Class::Storage::DBI::BEGIN@109";
+	"DBIx::Class::Storage::DBI::BEGIN@1407";
+}
+subgraph cluster_Class_XSAccessor_Heavy {
+	label="Class::XSAccessor::Heavy";
+	"Class::XSAccessor::Heavy::BEGIN@27";
+	"Class::XSAccessor::Heavy::BEGIN@5";
+}
+subgraph cluster_POSIX {
+	label="POSIX";
+	"POSIX::BEGIN@2";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@9";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::BEGIN@24";
+	"MooseX::Types::CheckedUtilExports::BEGIN@8";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@9";
+}
+subgraph cluster_aliased {
+	label="aliased";
+	"aliased::BEGIN@8";
+	"aliased::BEGIN@35";
+}
+subgraph cluster_URI_QueryParam {
+	label="URI::QueryParam";
+	"URI::QueryParam::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Class_Immutable_Trait {
+	label="Moose::Meta::Class::Immutable::Trait";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@9";
+}
+subgraph cluster_Graph_Attribute {
+	label="Graph::Attribute";
+	"Graph::Attribute::BEGIN@24";
+	"Graph::Attribute::BEGIN@14";
+	"Graph::Attribute::BEGIN@49";
+	"Graph::Attribute::BEGIN@3";
+}
+subgraph cluster_PPI_Exception_ParserTimeout {
+	label="PPI::Exception::ParserTimeout";
+	"PPI::Exception::ParserTimeout::BEGIN@3";
+}
+subgraph cluster_Plack_Util_Accessor {
+	label="Plack::Util::Accessor";
+	"Plack::Util::Accessor::BEGIN@14";
+	"Plack::Util::Accessor::BEGIN@2";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@13";
+}
+subgraph cluster_DBIx_Class_KiokuDB_EntryProxy {
+	label="DBIx::Class::KiokuDB::EntryProxy";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@9";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@200";
+	"File::stat::BEGIN@4";
+	"File::stat::BEGIN@35";
+}
+subgraph cluster_PPI_Token_Data {
+	label="PPI::Token::Data";
+	"PPI::Token::Data::BEGIN@30";
+}
+subgraph cluster_DBIx_Class_Storage_DBIHacks {
+	label="DBIx::Class::Storage::DBIHacks";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@10";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@609";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Hash::Writer";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@9";
+}
+subgraph cluster_Bio_Phylo_IO {
+	label="Bio::Phylo::IO";
+	"Bio::Phylo::IO::BEGIN@2";
+}
+subgraph cluster_PPI_Document_File {
+	label="PPI::Document::File";
+	"PPI::Document::File::BEGIN@20";
+}
+subgraph cluster_Socket {
+	label="Socket";
+	"Socket::BEGIN@3";
+	"Socket::BEGIN@869";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@8";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@1";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@10";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::BEGIN@3";
+}
+subgraph cluster_re {
+	label="re";
+	"re::BEGIN@4";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@149";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::BEGIN@10";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::BEGIN@24";
+}
+subgraph cluster_DBD___dr {
+	label="DBD::_::dr";
+	"DBD::_::dr::BEGIN@1449";
+}
+subgraph cluster_PPI_Token_Number_Octal {
+	label="PPI::Token::Number::Octal";
+	"PPI::Token::Number::Octal::BEGIN@29";
+}
+subgraph cluster_Clone {
+	label="Clone";
+	"Clone::BEGIN@4";
+}
+subgraph cluster_Graph_TransitiveClosure {
+	label="Graph::TransitiveClosure";
+	"Graph::TransitiveClosure::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Magic {
+	label="PPI::Token::Magic";
+	"PPI::Token::Magic::BEGIN@44";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::BEGIN@21";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Reader {
+	label="Moose::Meta::Method::Accessor::Native::Reader";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Exception {
+	label="DBIx::Class::Exception";
+	"DBIx::Class::Exception::BEGIN@3";
+}
+subgraph cluster_Errno {
+	label="Errno";
+	"Errno::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@9";
+}
+subgraph cluster_base {
+	label="base";
+	"base::BEGIN@3";
+	"base::BEGIN@1";
+}
+subgraph cluster_Class_MOP_Method_Generated {
+	label="Class::MOP::Method::Generated";
+	"Class::MOP::Method::Generated::BEGIN@10";
+}
+subgraph cluster_Moose_Error_Util {
+	label="Moose::Error::Util";
+	"Moose::Error::Util::BEGIN@4";
+}
+subgraph cluster_Data_Compare {
+	label="Data::Compare";
+	"Data::Compare::BEGIN@9";
+}
+subgraph cluster_PPI_Document_Normalized {
+	label="PPI::Document::Normalized";
+	"PPI::Document::Normalized::BEGIN@43";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::BEGIN@3";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::BEGIN@1";
+	"Module::Runtime::BEGIN@1.18";
+	"Module::Runtime::BEGIN@1.20";
+}
+subgraph cluster_AutoLoader {
+	label="AutoLoader";
+	"AutoLoader::BEGIN@138";
+	"AutoLoader::BEGIN@30";
+	"AutoLoader::BEGIN@186";
+	"AutoLoader::BEGIN@3";
+}
+subgraph cluster_PPI_Statement_Expression {
+	label="PPI::Statement::Expression";
+	"PPI::Statement::Expression::BEGIN@38";
+}
+subgraph cluster_Config_Any_Perl {
+	label="Config::Any::Perl";
+	"Config::Any::Perl::BEGIN@3";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::BEGIN@3";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::BEGIN@11";
+	"Module::Load::BEGIN@37";
+	"Module::Load::BEGIN@5";
+}
+subgraph cluster_Digest_base {
+	label="Digest::base";
+	"Digest::base::BEGIN@3";
+}
+subgraph cluster_stemmaweb_View_Plain {
+	label="stemmaweb::View::Plain";
+	"stemmaweb::View::Plain::BEGIN@3";
+}
+subgraph cluster_Plack_Middleware_IIS6ScriptNameFix {
+	label="Plack::Middleware::IIS6ScriptNameFix";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@3";
+}
+subgraph cluster_File_Spec {
+	label="File::Spec";
+	"File::Spec::BEGIN@3";
+}
+subgraph cluster_PPI_Structure_Block {
+	label="PPI::Structure::Block";
+	"PPI::Structure::Block::BEGIN@45";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::BEGIN@81";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::BEGIN@10";
+}
+subgraph cluster_PPI_Statement_Unknown {
+	label="PPI::Statement::Unknown";
+	"PPI::Statement::Unknown::BEGIN@35";
+}
+subgraph cluster_Moose_Deprecated {
+	label="Moose::Deprecated";
+	"Moose::Deprecated::BEGIN@9";
+}
+subgraph cluster_Plack_Middleware_ReverseProxy {
+	label="Plack::Middleware::ReverseProxy";
+	"Plack::Middleware::ReverseProxy::BEGIN@3";
+}
+subgraph cluster_PPI_Structure {
+	label="PPI::Structure";
+	"PPI::Structure::BEGIN@91";
+}
+subgraph cluster_IO_Socket_INET {
+	label="IO::Socket::INET";
+	"IO::Socket::INET::BEGIN@9";
+}
+subgraph cluster_Graph_AdjacencyMatrix {
+	label="Graph::AdjacencyMatrix";
+	"Graph::AdjacencyMatrix::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_inc {
+	label="Moose::Meta::Method::Accessor::Native::Counter::inc";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@9";
+}
+subgraph cluster_XML_LibXML_XPathContext {
+	label="XML::LibXML::XPathContext";
+	"XML::LibXML::XPathContext::BEGIN@141";
+	"XML::LibXML::XPathContext::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::BEGIN@9";
+}
+subgraph cluster_Template_Constants {
+	label="Template::Constants";
+	"Template::Constants::BEGIN@22";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::BEGIN@274";
+	"DBI::BEGIN@527";
+	"DBI::BEGIN@1030";
+	"DBI::BEGIN@862";
+	"DBI::BEGIN@797";
+	"DBI::BEGIN@831";
+	"DBI::BEGIN@684";
+	"DBI::BEGIN@959";
+	"DBI::BEGIN@270";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::BEGIN@3";
+	"Catalyst::Utils::BEGIN@1";
+}
+subgraph cluster_Class_MOP_Method_Overload {
+	label="Class::MOP::Method::Overload";
+	"Class::MOP::Method::Overload::BEGIN@10";
+}
+subgraph cluster_PPI_Token_ArrayIndex {
+	label="PPI::Token::ArrayIndex";
+	"PPI::Token::ArrayIndex::BEGIN@29";
+}
+subgraph cluster_URI_Escape {
+	label="URI::Escape";
+	"URI::Escape::BEGIN@2";
+}
+subgraph cluster_PPI_Token__QuoteEngine {
+	label="PPI::Token::_QuoteEngine";
+	"PPI::Token::_QuoteEngine::BEGIN@33";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::BEGIN@59";
+}
+subgraph cluster_XML_LibXML_Number {
+	label="XML::LibXML::Number";
+	"XML::LibXML::Number::BEGIN@13";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::BEGIN@3";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@9";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::BEGIN@9";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::BEGIN@3";
+}
+subgraph cluster_Tie_ToObject {
+	label="Tie::ToObject";
+	"Tie::ToObject::BEGIN@5";
+}
+subgraph cluster_PPI_Normal_Standard {
+	label="PPI::Normal::Standard";
+	"PPI::Normal::Standard::BEGIN@19";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::BEGIN@219";
+	"JSON::Any::BEGIN@4";
+}
+subgraph cluster_SQL_Abstract {
+	label="SQL::Abstract";
+	"SQL::Abstract::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::BEGIN@3";
+	"DBIx::Class::Schema::BEGIN@1516";
+	"DBIx::Class::Schema::BEGIN@920";
+	"DBIx::Class::Schema::BEGIN@1284";
+}
+subgraph cluster_PPI_Structure_Condition {
+	label="PPI::Structure::Condition";
+	"PPI::Structure::Condition::BEGIN@40";
+}
+subgraph cluster_YAML_XS_LibYAML {
+	label="YAML::XS::LibYAML";
+	"YAML::XS::LibYAML::BEGIN@3";
+}
+subgraph cluster_Benchmark {
+	label="Benchmark";
+	"Benchmark::BEGIN@426";
+	"Benchmark::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Regexp_Match {
+	label="PPI::Token::Regexp::Match";
+	"PPI::Token::Regexp::Match::BEGIN@45";
+}
+subgraph cluster_Config_Any_INI {
+	label="Config::Any::INI";
+	"Config::Any::INI::BEGIN@3";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::BEGIN@3";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::BEGIN@191";
+	"Safe::BEGIN@344";
+	"Safe::BEGIN@28";
+	"Safe::BEGIN@285";
+	"Safe::BEGIN@337";
+	"Safe::BEGIN@36";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::BEGIN@44";
+}
+subgraph cluster_IO_File {
+	label="IO::File";
+	"IO::File::BEGIN@128";
+}
+subgraph cluster_PPI_Structure_Constructor {
+	label="PPI::Structure::Constructor";
+	"PPI::Structure::Constructor::BEGIN@35";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::BEGIN@3";
+	"File::Find::BEGIN@349";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::BEGIN@1";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::BEGIN@10";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::BEGIN@4";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::BEGIN@4";
+	"Exporter::Heavy::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Number_Version {
+	label="PPI::Token::Number::Version";
+	"PPI::Token::Number::Version::BEGIN@33";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@142";
+	"File::Temp::BEGIN@241";
+	"File::Temp::BEGIN@271";
+}
+subgraph cluster_PPI_Statement_Data {
+	label="PPI::Statement::Data";
+	"PPI::Statement::Data::BEGIN@43";
+}
+subgraph cluster_CGI_Simple_Cookie {
+	label="CGI::Simple::Cookie";
+	"CGI::Simple::Cookie::BEGIN@13";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::BEGIN@99";
+	"Devel::Declare::BEGIN@1";
+	"Devel::Declare::BEGIN@3";
+	"Devel::Declare::BEGIN@109";
+	"Devel::Declare::BEGIN@29";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@199";
+	"Data::Visitor::Callback::BEGIN@52";
+}
+subgraph cluster_PPI_Exception {
+	label="PPI::Exception";
+	"PPI::Exception::BEGIN@3";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@3";
+}
+subgraph cluster_Digest_MD5 {
+	label="Digest::MD5";
+	"Digest::MD5::BEGIN@3";
+}
+subgraph cluster_Text_Balanced {
+	label="Text::Balanced";
+	"Text::Balanced::BEGIN@7";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@141";
+	"MooseX::Types::Base::BEGIN@151";
+	"MooseX::Types::Base::BEGIN@178";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@10";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::BEGIN@29";
+	"JSON::Backend::XS::BEGIN@42";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@10";
+}
+subgraph cluster_DBD___db {
+	label="DBD::_::db";
+	"DBD::_::db::BEGIN@1510";
+}
+subgraph cluster_File_Path {
+	label="File::Path";
+	"File::Path::BEGIN@4";
+	"File::Path::BEGIN@329";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@9";
+}
+subgraph cluster_PPI_Token__QuoteEngine_Simple {
+	label="PPI::Token::_QuoteEngine::Simple";
+	"PPI::Token::_QuoteEngine::Simple::BEGIN@5";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::BEGIN@18";
+	"DBIx::Class::AccessorGroup::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Comment {
+	label="PPI::Token::Comment";
+	"PPI::Token::Comment::BEGIN@61";
+}
+subgraph cluster_XML_LibXML_Boolean {
+	label="XML::LibXML::Boolean";
+	"XML::LibXML::Boolean::BEGIN@14";
+}
+subgraph cluster_XML_LibXML_Literal {
+	label="XML::LibXML::Literal";
+	"XML::LibXML::Literal::BEGIN@13";
+}
+subgraph cluster_PPI_Statement_Given {
+	label="PPI::Statement::Given";
+	"PPI::Statement::Given::BEGIN@36";
+}
+subgraph cluster_Plack_Middleware_Conditional {
+	label="Plack::Middleware::Conditional";
+	"Plack::Middleware::Conditional::BEGIN@2";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@178";
+	"Graph::BEGIN@3";
+}
+subgraph cluster_Heap071_Elem {
+	label="Heap071::Elem";
+	"Heap071::Elem::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Quote_Interpolate {
+	label="PPI::Token::Quote::Interpolate";
+	"PPI::Token::Quote::Interpolate::BEGIN@31";
+}
+subgraph cluster_FileHandle {
+	label="FileHandle";
+	"FileHandle::BEGIN@46";
+	"FileHandle::BEGIN@4";
+}
+subgraph cluster_Graph_Traversal {
+	label="Graph::Traversal";
+	"Graph::Traversal::BEGIN@3";
+}
+subgraph cluster_PPI_Statement_Package {
+	label="PPI::Statement::Package";
+	"PPI::Statement::Package::BEGIN@67";
+}
+subgraph cluster_PPI_Statement_Include_Perl6 {
+	label="PPI::Statement::Include::Perl6";
+	"PPI::Statement::Include::Perl6::BEGIN@41";
+}
+subgraph cluster_PPI_Token_Number_Hex {
+	label="PPI::Token::Number::Hex";
+	"PPI::Token::Number::Hex::BEGIN@29";
+}
+subgraph cluster_File_Glob {
+	label="File::Glob";
+	"File::Glob::BEGIN@3";
+}
+subgraph cluster_PPI_Token_DashedWord {
+	label="PPI::Token::DashedWord";
+	"PPI::Token::DashedWord::BEGIN@29";
+}
+subgraph cluster_PPI_Token_Attribute {
+	label="PPI::Token::Attribute";
+	"PPI::Token::Attribute::BEGIN@35";
+}
+subgraph cluster_Catalyst_View_Download_Plain {
+	label="Catalyst::View::Download::Plain";
+	"Catalyst::View::Download::Plain::BEGIN@3";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@3";
+	"LWP::UserAgent::BEGIN@374";
+}
+subgraph cluster_Moose_Meta_Method_Meta {
+	label="Moose::Meta::Method::Meta";
+	"Moose::Meta::Method::Meta::BEGIN@10";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::BEGIN@25";
+	"parent::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::BEGIN@9";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::BEGIN@51";
+}
+subgraph cluster_B {
+	label="B";
+	"B::BEGIN@9";
+	"B::BEGIN@254";
+}
+subgraph cluster_Plack_Util {
+	label="Plack::Util";
+	"Plack::Util::BEGIN@2";
+}
+subgraph cluster_XML_LibXML_AttributeHash {
+	label="XML::LibXML::AttributeHash";
+	"XML::LibXML::AttributeHash::BEGIN@3";
+}
+subgraph cluster_HTTP_Body_XFormsMultipart {
+	label="HTTP::Body::XFormsMultipart";
+	"HTTP::Body::XFormsMultipart::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@9";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@5";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::BEGIN@5";
+}
+subgraph cluster_PPI_Token_QuoteLike_Readline {
+	label="PPI::Token::QuoteLike::Readline";
+	"PPI::Token::QuoteLike::Readline::BEGIN@40";
+}
+subgraph cluster_PPI_Token_Unknown {
+	label="PPI::Token::Unknown";
+	"PPI::Token::Unknown::BEGIN@30";
+}
+subgraph cluster_IPC_Run_Timer {
+	label="IPC::Run::Timer";
+	"IPC::Run::Timer::BEGIN@159";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::BEGIN@5";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@15";
+}
+subgraph cluster_Devel_InnerPackage {
+	label="Devel::InnerPackage";
+	"Devel::InnerPackage::BEGIN@66";
+	"Devel::InnerPackage::BEGIN@3";
+	"Devel::InnerPackage::BEGIN@86";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::BEGIN@10";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::BEGIN@128";
+	"URI::BEGIN@3";
+}
+subgraph cluster_Text_SimpleTable {
+	label="Text::SimpleTable";
+	"Text::SimpleTable::BEGIN@5";
+}
+subgraph cluster_Plack_Middleware {
+	label="Plack::Middleware";
+	"Plack::Middleware::BEGIN@2";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@3";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::BEGIN@198";
+	"Class::C3::Componentised::BEGIN@133";
+	"Class::C3::Componentised::BEGIN@40";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_exists {
+	label="Moose::Meta::Method::Accessor::Native::Hash::exists";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@3";
+}
+subgraph cluster_Text_CSV_ErrorDiag {
+	label="Text::CSV::ErrorDiag";
+	"Text::CSV::ErrorDiag::BEGIN@977";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::BEGIN@10";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@11";
+	"XML::LibXML::Error::BEGIN@83";
+}
+subgraph cluster_Config_Any_YAML {
+	label="Config::Any::YAML";
+	"Config::Any::YAML::BEGIN@3";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::BEGIN@6";
+}
+subgraph cluster_Text_TEI_Markup {
+	label="Text::TEI::Markup";
+	"Text::TEI::Markup::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::BEGIN@10";
+}
+subgraph cluster_Class_Data_Inheritable {
+	label="Class::Data::Inheritable";
+	"Class::Data::Inheritable::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_StemmaUtil {
+	label="Text::Tradition::StemmaUtil";
+	"Text::Tradition::StemmaUtil::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::BEGIN@10";
+}
+subgraph cluster_MIME_Types {
+	label="MIME::Types";
+	"MIME::Types::BEGIN@11";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByUID {
+	label="Tree::Simple::Visitor::FindByUID";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@4";
+}
+subgraph cluster_PPI_Token_Separator {
+	label="PPI::Token::Separator";
+	"PPI::Token::Separator::BEGIN@35";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Trait {
+	label="Class::MOP::Class::Immutable::Trait";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@46";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@9";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@36";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::BEGIN@44";
+	"Template::Base::BEGIN@22";
+	"Template::Base::BEGIN@85";
+	"Template::Base::BEGIN@137";
+}
+subgraph cluster_Bio_Phylo_Mediators_TaxaMediator {
+	label="Bio::Phylo::Mediators::TaxaMediator";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@2";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::BEGIN@1048";
+	"IPC::Run::BEGIN@1237";
+	"IPC::Run::BEGIN@1013";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::BEGIN@3";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions {
+	label="Bio::Phylo::Util::Exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@2";
+}
+subgraph cluster_English {
+	label="English";
+	"English::BEGIN@1";
+}
+subgraph cluster_PPI_Token_BOM {
+	label="PPI::Token::BOM";
+	"PPI::Token::BOM::BEGIN@42";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::BEGIN@8";
+}
+subgraph cluster_PPI_Token_HereDoc {
+	label="PPI::Token::HereDoc";
+	"PPI::Token::HereDoc::BEGIN@87";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::BEGIN@294";
+	"Moose::Exporter::BEGIN@9";
+	"Moose::Exporter::BEGIN@698";
+	"Moose::Exporter::BEGIN@132";
+	"Moose::Exporter::import";
+	"Moose::Exporter::BEGIN@688";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@68";
+}
+subgraph cluster_Class_MOP_Method_Inlined {
+	label="Class::MOP::Method::Inlined";
+	"Class::MOP::Method::Inlined::BEGIN@9";
+}
+subgraph cluster_HTML_Entities {
+	label="HTML::Entities";
+	"HTML::Entities::BEGIN@138";
+}
+subgraph cluster_Template_Service {
+	label="Template::Service";
+	"Template::Service::BEGIN@23";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@1";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::BEGIN@398";
+	"Carp::BEGIN@413";
+	"Carp::BEGIN@4";
+	"Carp::BEGIN@67";
+	"Carp::BEGIN@18";
+	"Carp::BEGIN@8";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::BEGIN@4";
+	"Sub::Install::BEGIN@184";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::BEGIN@224";
+	"Carp::Clan::BEGIN@16";
+}
+subgraph cluster_Template_Timer {
+	label="Template::Timer";
+	"Template::Timer::BEGIN@4";
+	"Template::Timer::BEGIN@68";
+}
+subgraph cluster_Bio_Phylo_Util_StackTrace {
+	label="Bio::Phylo::Util::StackTrace";
+	"Bio::Phylo::Util::StackTrace::BEGIN@2";
+}
+subgraph cluster_IO_Seekable {
+	label="IO::Seekable";
+	"IO::Seekable::BEGIN@99";
+}
+subgraph cluster_Text_CSV {
+	label="Text::CSV";
+	"Text::CSV::BEGIN@4";
+	"Text::CSV::BEGIN@196";
+	"Text::CSV::BEGIN@136";
+}
+subgraph cluster_JSON_Backend_PP {
+	label="JSON::Backend::PP";
+	"JSON::Backend::PP::BEGIN@383";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_values {
+	label="Moose::Meta::Method::Accessor::Native::Hash::values";
+	"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@9";
+}
+subgraph cluster_stemmaweb_View_TT {
+	label="stemmaweb::View::TT";
+	"stemmaweb::View::TT::BEGIN@3";
+}
+subgraph cluster_Text_CSV_PP {
+	label="Text::CSV_PP";
+	"Text::CSV_PP::BEGIN@107";
+	"Text::CSV_PP::BEGIN@10";
+	"Text::CSV_PP::BEGIN@111";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::BEGIN@3";
+}
+subgraph cluster_IO_String {
+	label="IO::String";
+	"IO::String::BEGIN@9";
+}
+subgraph cluster_PPI_Structure_Subscript {
+	label="PPI::Structure::Subscript";
+	"PPI::Structure::Subscript::BEGIN@41";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::BEGIN@3";
+}
+subgraph cluster_PPI_Token_Number_Exp {
+	label="PPI::Token::Number::Exp";
+	"PPI::Token::Number::Exp::BEGIN@31";
+}
+subgraph cluster_Cwd {
+	label="Cwd";
+	"Cwd::BEGIN@818";
+	"Cwd::BEGIN@170";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@9";
+}
+subgraph cluster_Graph_MSTHeapElem {
+	label="Graph::MSTHeapElem";
+	"Graph::MSTHeapElem::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_count {
+	label="Moose::Meta::Method::Accessor::Native::Array::count";
+	"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@9";
+}
+subgraph cluster_PPI_Statement_Include {
+	label="PPI::Statement::Include";
+	"PPI::Statement::Include::BEGIN@47";
+}
+subgraph cluster_DBIx_Class_Optional_Dependencies {
+	label="DBIx::Class::Optional::Dependencies";
+	"DBIx::Class::Optional::Dependencies::BEGIN@4";
+}
+subgraph cluster_PPI_Token_QuoteLike_Regexp {
+	label="PPI::Token::QuoteLike::Regexp";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@32";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::BEGIN@9";
+}
+subgraph cluster_PPI_Statement_End {
+	label="PPI::Statement::End";
+	"PPI::Statement::End::BEGIN@47";
+}
+subgraph cluster_Graph_UnionFind {
+	label="Graph::UnionFind";
+	"Graph::UnionFind::BEGIN@3";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+	"strict::CORE:regcomp";
+	"strict::bits";
+	"strict::CORE:match";
+}
+subgraph cluster_Template_Stash_XS {
+	label="Template::Stash::XS";
+	"Template::Stash::XS::BEGIN@14";
+}
+subgraph cluster_PPI_Structure_Given {
+	label="PPI::Structure::Given";
+	"PPI::Structure::Given::BEGIN@36";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::BEGIN@5";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::BEGIN@10";
+}
+subgraph cluster_Config_Any_XML {
+	label="Config::Any::XML";
+	"Config::Any::XML::BEGIN@3";
+}
+subgraph cluster_PPI_Structure_For {
+	label="PPI::Structure::For";
+	"PPI::Structure::For::BEGIN@36";
+}
+subgraph cluster_HTTP_Body_XForms {
+	label="HTTP::Body::XForms";
+	"HTTP::Body::XForms::BEGIN@6";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2.11";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@6";
+}
+subgraph cluster_PPI_Token_QuoteLike_Command {
+	label="PPI::Token::QuoteLike::Command";
+	"PPI::Token::QuoteLike::Command::BEGIN@31";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@1";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::BEGIN@7";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::BEGIN@249";
+	"Class::Accessor::Grouped::BEGIN@297";
+	"Class::Accessor::Grouped::BEGIN@37";
+	"Class::Accessor::Grouped::BEGIN@744";
+	"Class::Accessor::Grouped::BEGIN@765";
+	"Class::Accessor::Grouped::BEGIN@2";
+}
+subgraph cluster_PPI_Statement_Break {
+	label="PPI::Statement::Break";
+	"PPI::Statement::Break::BEGIN@40";
+}
+subgraph cluster_Plack_Middleware_LighttpdScriptNameFix {
+	label="Plack::Middleware::LighttpdScriptNameFix";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@2";
+}
+subgraph cluster_PPI_Structure_When {
+	label="PPI::Structure::When";
+	"PPI::Structure::When::BEGIN@36";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_get {
+	label="Moose::Meta::Method::Accessor::Native::Hash::get";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::BEGIN@10";
+	"Class::MOP::Package::BEGIN@164";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@2";
+	"Bio::Phylo::BEGIN@867";
+	"Bio::Phylo::BEGIN@874";
+	"Bio::Phylo::BEGIN@895";
+	"Bio::Phylo::BEGIN@897";
+}
+subgraph cluster_Graph_Undirected {
+	label="Graph::Undirected";
+	"Graph::Undirected::BEGIN@5";
+}
+subgraph cluster_Graph_BitMatrix {
+	label="Graph::BitMatrix";
+	"Graph::BitMatrix::BEGIN@3";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@7";
+}
+subgraph cluster_Template {
+	label="Template";
+	"Template::BEGIN@22";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::BEGIN@9";
+}
+subgraph cluster_PPI_Token_Structure {
+	label="PPI::Token::Structure";
+	"PPI::Token::Structure::BEGIN@31";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Array::Writer";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@9";
+}
+"main::BEGIN@2" -> "strict::CORE:regcomp";
+"main::BEGIN@2" -> "strict::CORE:match";
+"main::BEGIN@2" -> "strict::bits";
+"strict::unimport" -> "strict::bits";
+"strict::import" -> "strict::bits";
+"LWP::Protocol::BEGIN@7" -> "strict::import";
+"Moose::Meta::Role::Application::ToInstance::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Delegation::BEGIN@10" -> "strict::import";
+"HTTP::Message::BEGIN@3" -> "strict::import";
+"PPI::Structure::When::BEGIN@36" -> "strict::import";
+"Graph::AdjacencyMap::Heavy::BEGIN@7" -> "strict::import";
+"Moose::Exporter::import" -> "strict::import";
+"Plack::Middleware::LighttpdScriptNameFix::BEGIN@2" -> "strict::import";
+"Graph::AdjacencyMap::Light::BEGIN@7" -> "strict::import";
+"Module::Pluggable::Object::BEGIN@3" -> "strict::import";
+"Socket::BEGIN@3" -> "strict::import";
+"Moose::Exporter::BEGIN@9" -> "strict::import";
+"Time::HiRes::BEGIN@4" -> "strict::import";
+"Class::MOP::Attribute::BEGIN@10" -> "strict::import";
+"File::Path::BEGIN@4" -> "strict::import";
+"stemmaweb::BEGIN@1" -> "strict::import";
+"Template::Base::BEGIN@22" -> "strict::import";
+"URI::_server::BEGIN@5" -> "strict::import";
+"Class::XSAccessor::BEGIN@3" -> "strict::import";
+"Variable::Magic::BEGIN@5" -> "strict::import";
+"Module::Runtime::BEGIN@1.20" -> "strict::import";
+"Devel::Declare::BEGIN@3" -> "strict::import";
+"PPI::Token::_QuoteEngine::BEGIN@33" -> "strict::import";
+"NEXT::BEGIN@4" -> "strict::import";
+"mro::BEGIN@10" -> "strict::import";
+"PPI::Token::QuoteLike::Regexp::BEGIN@32" -> "strict::import";
+"Path::Class::BEGIN@1" -> "strict::import";
+"PPI::Token::Number::Octal::BEGIN@29" -> "strict::import";
+"Module::Runtime::BEGIN@1.18" -> "strict::import";
+"Template::Config::BEGIN@21" -> "strict::import";
+"Package::Stash::BEGIN@5" -> "strict::import";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@10" -> "strict::import";
+"PPI::Token::Attribute::BEGIN@35" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@9" -> "strict::import";
+"HTTP::Body::MultiPart::BEGIN@6" -> "strict::import";
+"Module::Runtime::BEGIN@1" -> "strict::import";
+"Class::MOP::Method::BEGIN@10" -> "strict::import";
+"PPI::Token::Quote::Interpolate::BEGIN@31" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@9" -> "strict::import";
+"JSON::BEGIN@4" -> "strict::import";
+"PPI::Token::Word::BEGIN@38" -> "strict::import";
+"File::Temp::Dir::BEGIN@2406" -> "strict::import";
+"PPI::Token::ArrayIndex::BEGIN@29" -> "strict::import";
+"PPI::Token::Cast::BEGIN@34" -> "strict::import";
+"IPC::Run::BEGIN@1048" -> "strict::import";
+"Bio::Phylo::BEGIN@2" -> "strict::import";
+"Hash::Util::FieldHash::BEGIN@4" -> "strict::import";
+"MooseX::Traits::Util::BEGIN@2" -> "strict::import";
+"Encode::Config::BEGIN@7" -> "strict::import";
+"PPI::Lexer::BEGIN@56" -> "strict::import";
+"Graph::Matrix::BEGIN@6" -> "strict::import";
+"List::Util::BEGIN@11" -> "strict::import";
+"Class::MOP::Class::BEGIN@10" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@9" -> "strict::import";
+"Bio::Phylo::BEGIN@874" -> "strict::import";
+"Class::MOP::Package::BEGIN@10" -> "strict::import";
+"Class::MOP::BEGIN@10" -> "strict::import";
+"Benchmark::BEGIN@3" -> "strict::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@3" -> "strict::import";
+"DBIx::Class::Componentised::BEGIN@4" -> "strict::import";
+"PPI::Token::Number::Binary::BEGIN@29" -> "strict::import";
+"Config::Any::General::BEGIN@3" -> "strict::import";
+"Graph::TransitiveClosure::Matrix::BEGIN@3" -> "strict::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@9" -> "strict::import";
+"Graph::UnionFind::BEGIN@3" -> "strict::import";
+"Time::Seconds::BEGIN@2" -> "strict::import";
+"Class::MOP::Class::Immutable::Trait::BEGIN@9" -> "strict::import";
+"Tree::Simple::Visitor::BEGIN@4" -> "strict::import";
+"Class::Accessor::Grouped::BEGIN@2" -> "strict::import";
+"IPC::Run::Timer::BEGIN@159" -> "strict::import";
+"PPI::Statement::Compound::BEGIN@53" -> "strict::import";
+"Class::MOP::Method::Inlined::BEGIN@9" -> "strict::import";
+"PPI::Statement::End::BEGIN@47" -> "strict::import";
+"Text::Tradition::Directory::BEGIN@3" -> "strict::import";
+"Template::Filters::BEGIN@22" -> "strict::import";
+"Template::Constants::BEGIN@22" -> "strict::import";
+"Text::SimpleTable::BEGIN@5" -> "strict::import";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@9" -> "strict::import";
+"HTTP::Headers::BEGIN@3" -> "strict::import";
+"PPI::Token::End::BEGIN@43" -> "strict::import";
+"File::Spec::Unix::BEGIN@3" -> "strict::import";
+"PPI::Normal::BEGIN@37" -> "strict::import";
+"DBIx::Class::Carp::BEGIN@3" -> "strict::import";
+"Graph::Reader::Dot::BEGIN@12" -> "strict::import";
+"Moose::Meta::Role::Method::Required::BEGIN@10" -> "strict::import";
+"Moose::Meta::Mixin::AttributeCore::BEGIN@9" -> "strict::import";
+"Graph::Traversal::DFS::BEGIN@3" -> "strict::import";
+"PPI::Exception::ParserRejection::BEGIN@3" -> "strict::import";
+"Class::MOP::Mixin::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::BEGIN@9" -> "strict::import";
+"Template::Context::BEGIN@23" -> "strict::import";
+"DBIx::Class::Exception::BEGIN@3" -> "strict::import";
+"Config::Any::XML::BEGIN@3" -> "strict::import";
+"Sub::Name::BEGIN@44" -> "strict::import";
+"PPI::Statement::UnmatchedBrace::BEGIN@47" -> "strict::import";
+"Bio::Phylo::Util::CONSTANT::BEGIN@2" -> "strict::import";
+"MooseX::Types::TypeDecorator::BEGIN@8" -> "strict::import";
+"File::Find::BEGIN@3" -> "strict::import";
+"Scalar::Util::BEGIN@9" -> "strict::import";
+"PPI::Normal::Standard::BEGIN@19" -> "strict::import";
+"XML::LibXML::Error::BEGIN@11" -> "strict::import";
+"PPI::Token::Number::Exp::BEGIN@31" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@9" -> "strict::import";
+"PPI::Structure::Block::BEGIN@45" -> "strict::import";
+"Bio::Phylo::Util::Logger::BEGIN@2" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@9" -> "strict::import";
+"Data::Stream::Bulk::Util::BEGIN@9" -> "strict::import";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@10" -> "strict::import";
+"Package::DeprecationManager::BEGIN@6" -> "strict::import";
+"Heap071::Elem::BEGIN@3" -> "strict::import";
+"Opcode::BEGIN@5" -> "strict::import";
+"File::Glob::BEGIN@3" -> "strict::import";
+"URI::_punycode::BEGIN@3" -> "strict::import";
+"HTTP::Body::OctetStream::BEGIN@6" -> "strict::import";
+"DBD::_::db::BEGIN@1510" -> "strict::import";
+"B::Deparse::BEGIN@30" -> "strict::import";
+"main::BEGIN@1.1" -> "strict::import";
+"CGI::Simple::Cookie::BEGIN@13" -> "strict::import";
+"PPI::Structure::BEGIN@91" -> "strict::import";
+"Moose::Meta::TypeCoercion::BEGIN@10" -> "strict::import";
+"namespace::autoclean::BEGIN@1" -> "strict::import";
+"Moose::Meta::Class::BEGIN@10" -> "strict::import";
+"IO::String::BEGIN@9" -> "strict::import";
+"Moose::Meta::Role::BEGIN@9" -> "strict::import";
+"PPI::BEGIN@6" -> "strict::import";
+"URI::QueryParam::BEGIN@3" -> "strict::import";
+"Plack::Test::MockHTTP::BEGIN@2" -> "strict::import";
+"DBIx::Class::ResultSource::Table::BEGIN@3" -> "strict::import";
+"DBI::BEGIN@274" -> "strict::import";
+"Text::CSV_PP::BEGIN@10" -> "strict::import";
+"URI::http::BEGIN@6" -> "strict::import";
+"File::Temp::BEGIN@142" -> "strict::import";
+"PPI::Token::Number::Hex::BEGIN@29" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@9" -> "strict::import";
+"DBIx::Class::ResultSource::BEGIN@3" -> "strict::import";
+"URI::_query::BEGIN@3" -> "strict::import";
+"Encode::BEGIN@5" -> "strict::import";
+"Moose::Meta::TypeConstraint::Union::BEGIN@10" -> "strict::import";
+"MooseX::Types::UndefinedType::BEGIN@7" -> "strict::import";
+"Text::Balanced::BEGIN@7" -> "strict::import";
+"PPI::Statement::BEGIN@149" -> "strict::import";
+"LWP::UserAgent::BEGIN@3" -> "strict::import";
+"Devel::Declare::Context::Simple::BEGIN@3" -> "strict::import";
+"PPI::Document::Fragment::BEGIN@21" -> "strict::import";
+"Config::Any::YAML::BEGIN@3" -> "strict::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@9" -> "strict::import";
+"PPI::Token::BOM::BEGIN@42" -> "strict::import";
+"DBD::_::st::BEGIN@1821" -> "strict::import";
+"PPI::Statement::Variable::BEGIN@41" -> "strict::import";
+"SelfLoader::BEGIN@3" -> "strict::import";
+"HTML::Entities::BEGIN@138" -> "strict::import";
+"DBD::_::common::BEGIN@1343" -> "strict::import";
+"URI::BEGIN@3" -> "strict::import";
+"Data::Dump::BEGIN@3" -> "strict::import";
+"Moose::Object::BEGIN@10" -> "strict::import";
+"Class::MOP::Method::Generated::BEGIN@10" -> "strict::import";
+"IO::Socket::UNIX::BEGIN@9" -> "strict::import";
+"Carp::BEGIN@4" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@9" -> "strict::import";
+"Tree::Simple::BEGIN@6" -> "strict::import";
+"Tie::ToObject::BEGIN@5" -> "strict::import";
+"Text::Tradition::Error::BEGIN@3" -> "strict::import";
+"MooseX::StrictConstructor::BEGIN@6" -> "strict::import";
+"Safe::BEGIN@28" -> "strict::import";
+"Moose::Meta::TypeConstraint::Role::BEGIN@9" -> "strict::import";
+"Class::Struct::BEGIN@7" -> "strict::import";
+"PPI::Structure::List::BEGIN@38" -> "strict::import";
+"PPI::Exception::BEGIN@3" -> "strict::import";
+"FileHandle::BEGIN@4" -> "strict::import";
+"Plack::Middleware::IIS6ScriptNameFix::BEGIN@3" -> "strict::import";
+"SelfLoader::BEGIN@93" -> "strict::import";
+"PPI::Token::QuoteLike::Words::BEGIN@28" -> "strict::import";
+"Role::HasMessage::Errf::BEGIN@1" -> "strict::import";
+"IPC::Run::IO::BEGIN@65" -> "strict::import";
+"PPI::Document::File::BEGIN@20" -> "strict::import";
+"Text::Tradition::StemmaUtil::BEGIN@3" -> "strict::import";
+"Time::Piece::BEGIN@3" -> "strict::import";
+"Graph::AdjacencyMap::BEGIN@3" -> "strict::import";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@3" -> "strict::import";
+"TryCatch::BEGIN@1" -> "strict::import";
+"MIME::Type::BEGIN@10" -> "strict::import";
+"Moose::Util::MetaRole::BEGIN@9" -> "strict::import";
+"Moose::Role::BEGIN@8" -> "strict::import";
+"Catalyst::View::TT::BEGIN@3" -> "strict::import";
+"XML::LibXML::AttributeHash::BEGIN@3" -> "strict::import";
+"PPI::Token::Symbol::BEGIN@30" -> "strict::import";
+"utf8::BEGIN@2" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@9" -> "strict::import";
+"PPI::Token::Quote::Double::BEGIN@34" -> "strict::import";
+"stemmaweb::Model::Directory::BEGIN@2" -> "strict::import";
+"PPI::Token::BEGIN@23" -> "strict::import";
+"Config::Any::Perl::BEGIN@3" -> "strict::import";
+"KiokuDB::Util::BEGIN@5" -> "strict::import";
+"Catalyst::Action::RenderView::BEGIN@3" -> "strict::import";
+"PPI::Token::HereDoc::BEGIN@87" -> "strict::import";
+"Text::CSV::BEGIN@4" -> "strict::import";
+"PPI::Token::Whitespace::BEGIN@44" -> "strict::import";
+"Bio::Phylo::Util::StackTrace::BEGIN@2" -> "strict::import";
+"Scope::Upper::BEGIN@3" -> "strict::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@9" -> "strict::import";
+"Config::General::BEGIN@15" -> "strict::import";
+"PPI::Exception::ParserTimeout::BEGIN@3" -> "strict::import";
+"B::BEGIN@9" -> "strict::import";
+"main::BEGIN@2" -> "strict::import";
+"PPI::Token::QuoteLike::Readline::BEGIN@40" -> "strict::import";
+"PPI::Statement::When::BEGIN@44" -> "strict::import";
+"Moose::Error::Default::BEGIN@9" -> "strict::import";
+"Text::TEI::Markup::BEGIN@3" -> "strict::import";
+"Catalyst::Utils::BEGIN@3" -> "strict::import";
+"PPI::Token::Unknown::BEGIN@30" -> "strict::import";
+"Path::Class::File::BEGIN@1" -> "strict::import";
+"Moose::Meta::Method::Overridden::BEGIN@9" -> "strict::import";
+"Parse::Yapp::Driver::BEGIN@20" -> "strict::import";
+"YAML::XS::LibYAML::BEGIN@3" -> "strict::import";
+"PPI::Token::QuoteLike::Command::BEGIN@31" -> "strict::import";
+"constant::BEGIN@3" -> "strict::import";
+"DBIx::Class::AccessorGroup::BEGIN@3" -> "strict::import";
+"PPI::Token::Comment::BEGIN@61" -> "strict::import";
+"Devel::Declare::BEGIN@1" -> "strict::import";
+"PPI::Token::Operator::BEGIN@42" -> "strict::import";
+"Data::Compare::BEGIN@9" -> "strict::import";
+"DBIx::Class::Optional::Dependencies::BEGIN@4" -> "strict::import";
+"Plack::Middleware::ReverseProxy::BEGIN@3" -> "strict::import";
+"Module::Load::BEGIN@5" -> "strict::import";
+"Class::MOP::Instance::BEGIN@10" -> "strict::import";
+"File::chdir::BEGIN@3" -> "strict::import";
+"PPI::Token::_QuoteEngine::Full::BEGIN@5" -> "strict::import";
+"URI::_generic::BEGIN@6" -> "strict::import";
+"Digest::MD5::BEGIN@3" -> "strict::import";
+"XML::LibXML::Number::BEGIN@13" -> "strict::import";
+"DBIx::Class::Storage::TxnScopeGuard::BEGIN@3" -> "strict::import";
+"PPI::Structure::Constructor::BEGIN@35" -> "strict::import";
+"File::Which::BEGIN@4" -> "strict::import";
+"Moose::Meta::Method::Augmented::BEGIN@9" -> "strict::import";
+"Text::Tradition::Parser::Self::BEGIN@3" -> "strict::import";
+"Plack::Util::BEGIN@2" -> "strict::import";
+"Text::Tradition::TypeMap::Entry::BEGIN@2.11" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@9" -> "strict::import";
+"DBIx::Class::Storage::BEGIN@3" -> "strict::import";
+"Template::Exception::BEGIN@22" -> "strict::import";
+"Plack::Loader::BEGIN@2" -> "strict::import";
+"Exporter::Heavy::BEGIN@3" -> "strict::import";
+"Package::Stash::XS::BEGIN@5" -> "strict::import";
+"DBD::_::dr::BEGIN@1449" -> "strict::import";
+"aliased::BEGIN@8" -> "strict::import";
+"HTTP::Status::BEGIN@3" -> "strict::import";
+"HTTP::Response::BEGIN@7" -> "strict::import";
+"PPI::Statement::Package::BEGIN@67" -> "strict::import";
+"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@9" -> "strict::import";
+"Plack::Component::BEGIN@2" -> "strict::import";
+"PPI::Util::BEGIN@5" -> "strict::import";
+"List::MoreUtils::BEGIN@4" -> "strict::import";
+"PPI::Structure::Given::BEGIN@36" -> "strict::import";
+"AutoLoader::BEGIN@3" -> "strict::import";
+"Encode::Alias::BEGIN@2" -> "strict::import";
+"Bio::Phylo::Mediators::TaxaMediator::BEGIN@2" -> "strict::import";
+"IO::Socket::BEGIN@14" -> "strict::import";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@9" -> "strict::import";
+"Class::MOP::Method::Constructor::BEGIN@10" -> "strict::import";
+"HTTP::Body::XFormsMultipart::BEGIN@6" -> "strict::import";
+"Moose::Meta::Role::Application::ToRole::BEGIN@9" -> "strict::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@9" -> "strict::import";
+"Graph::Undirected::BEGIN@5" -> "strict::import";
+"Template::VMethods::BEGIN@24" -> "strict::import";
+"File::Basename::BEGIN@50" -> "strict::import";
+"Moose::Meta::Attribute::BEGIN@10" -> "strict::import";
+"XML::LibXML::NodeList::BEGIN@12" -> "strict::import";
+"Class::MOP::Method::Meta::BEGIN@10" -> "strict::import";
+"metaclass::BEGIN@10" -> "strict::import";
+"URI::_idna::BEGIN@6" -> "strict::import";
+"Moose::Meta::Method::Destructor::BEGIN@10" -> "strict::import";
+"Tree::Simple::Visitor::FindByUID::BEGIN@4" -> "strict::import";
+"Moose::Meta::Method::Constructor::BEGIN@10" -> "strict::import";
+"MooseX::Types::import" -> "strict::import";
+"PPI::Node::BEGIN@51" -> "strict::import";
+"DBIx::Class::ResultSet::BEGIN@3" -> "strict::import";
+"Template::Provider::BEGIN@41" -> "strict::import";
+"Graph::Attribute::BEGIN@3" -> "strict::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@1" -> "strict::import";
+"Moose::Error::Util::BEGIN@4" -> "strict::import";
+"PPI::Token::Separator::BEGIN@35" -> "strict::import";
+"HTTP::Request::BEGIN@7" -> "strict::import";
+"namespace::clean::BEGIN@4" -> "strict::import";
+"PPI::Statement::Sub::BEGIN@33" -> "strict::import";
+"Class::MOP::Method::Overload::BEGIN@10" -> "strict::import";
+"Graph::AdjacencyMap::Vertex::BEGIN@7" -> "strict::import";
+"Bio::Phylo::BEGIN@897" -> "strict::import";
+"PPI::Token::QuoteLike::Backtick::BEGIN@31" -> "strict::import";
+"English::BEGIN@1" -> "strict::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@3" -> "strict::import";
+"Eval::Closure::BEGIN@5" -> "strict::import";
+"Params::Util::BEGIN@59" -> "strict::import";
+"Devel::InnerPackage::BEGIN@3" -> "strict::import";
+"PPI::Statement::Unknown::BEGIN@35" -> "strict::import";
+"Graph::SPTHeapElem::BEGIN@3" -> "strict::import";
+"PPI::Structure::Unknown::BEGIN@42" -> "strict::import";
+"Moose::Util::BEGIN@9" -> "strict::import";
+"Sub::Install::BEGIN@4" -> "strict::import";
+"SQL::Abstract::BEGIN@9" -> "strict::import";
+"Class::C3::Componentised::BEGIN@40" -> "strict::import";
+"Plack::Test::BEGIN@2" -> "strict::import";
+"Graph::Reader::BEGIN@6" -> "strict::import";
+"PPI::Token::Prototype::BEGIN@49" -> "strict::import";
+"Class::Load::BEGIN@5" -> "strict::import";
+"Class::MOP::Method::Wrapped::BEGIN@10" -> "strict::import";
+"Template::Stash::XS::BEGIN@14" -> "strict::import";
+"Graph::BitMatrix::BEGIN@3" -> "strict::import";
+"stemmaweb::View::Plain::BEGIN@3" -> "strict::import";
+"Class::MOP::Mixin::AttributeCore::BEGIN@9" -> "strict::import";
+"PPI::Statement::Given::BEGIN@36" -> "strict::import";
+"HTTP::Body::XForms::BEGIN@6" -> "strict::import";
+"File::stat::BEGIN@4" -> "strict::import";
+"main::BEGIN@1.12" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@9" -> "strict::import";
+"KiokuDB::LiveObjects::Guard::BEGIN@3" -> "strict::import";
+"TryCatch::BEGIN@3" -> "strict::import";
+"MooseX::Types::Util::BEGIN@9" -> "strict::import";
+"Try::Tiny::BEGIN@3" -> "strict::import";
+"PPI::Token::Regexp::Transliterate::BEGIN@39" -> "strict::import";
+"PPI::Statement::Data::BEGIN@43" -> "strict::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@10" -> "strict::import";
+"vars::BEGIN@8" -> "strict::import";
+"File::Copy::BEGIN@11" -> "strict::import";
+"attributes::BEGIN@9" -> "strict::import";
+"POSIX::BEGIN@2" -> "strict::import";
+"Text::CSV::ErrorDiag::BEGIN@977" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@9" -> "strict::import";
+"IO::Handle::BEGIN@261" -> "strict::import";
+"PPI::Statement::Expression::BEGIN@38" -> "strict::import";
+"Config::Any::BEGIN@3" -> "strict::import";
+"Fcntl::BEGIN@58" -> "strict::import";
+"Config::BEGIN@9" -> "strict::import";
+"PPI::Token::Number::BEGIN@32" -> "strict::import";
+"XML::LibXML::BEGIN@13" -> "strict::import";
+"HTTP::Request::Common::BEGIN@3" -> "strict::import";
+"Encode::Encoding::BEGIN@4" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@9" -> "strict::import";
+"Template::BEGIN@22" -> "strict::import";
+"Data::UUID::BEGIN@3" -> "strict::import";
+"Catalyst::View::Download::Plain::BEGIN@3" -> "strict::import";
+"Hash::Util::FieldHash::Compat::BEGIN@5" -> "strict::import";
+"PPI::Token::Magic::BEGIN@44" -> "strict::import";
+"Config::Any::Base::BEGIN@3" -> "strict::import";
+"Class::Load::BEGIN@1" -> "strict::import";
+"Bio::Phylo::IO::BEGIN@2" -> "strict::import";
+"DBIx::Class::Schema::BEGIN@3" -> "strict::import";
+"URI::Escape::BEGIN@2" -> "strict::import";
+"Graph::AdjacencyMatrix::BEGIN@3" -> "strict::import";
+"parent::BEGIN@2" -> "strict::import";
+"HTML::Parser::BEGIN@9" -> "strict::import";
+"Carp::Clan::BEGIN@16" -> "strict::import";
+"PPI::Element::BEGIN@24" -> "strict::import";
+"XML::LibXML::Literal::BEGIN@13" -> "strict::import";
+"PPI::Token::Regexp::BEGIN@45" -> "strict::import";
+"XML::SAX::Exception::BEGIN@6" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@9" -> "strict::import";
+"Moose::Util::TypeConstraints::Builtins::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::BEGIN@9" -> "strict::import";
+"DBIx::Class::Storage::DBI::SQLite::BEGIN@3" -> "strict::import";
+"Class::MOP::Module::BEGIN@10" -> "strict::import";
+"IO::Socket::INET::BEGIN@9" -> "strict::import";
+"HTTP::Date::BEGIN@10" -> "strict::import";
+"File::Find::BEGIN@349" -> "strict::import";
+"PPI::Document::BEGIN@66" -> "strict::import";
+"base::BEGIN@1" -> "strict::import";
+"PPI::Token::Number::Float::BEGIN@31" -> "strict::import";
+"DBIx::Class::Storage::DBI::BEGIN@4" -> "strict::import";
+"Plack::Util::Accessor::BEGIN@2" -> "strict::import";
+"PPI::Token::DashedWord::BEGIN@29" -> "strict::import";
+"DBIx::Class::BEGIN@3" -> "strict::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@3" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@9" -> "strict::import";
+"PPI::Statement::Break::BEGIN@40" -> "strict::import";
+"HTTP::Body::BEGIN@6" -> "strict::import";
+"PPI::Token::Number::Version::BEGIN@33" -> "strict::import";
+"PPI::Tokenizer::BEGIN@81" -> "strict::import";
+"PPI::Document::Normalized::BEGIN@43" -> "strict::import";
+"Scope::Guard::BEGIN@3" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@9" -> "strict::import";
+"base::BEGIN@3" -> "strict::import";
+"Template::Timer::BEGIN@4" -> "strict::import";
+"Class::XSAccessor::Heavy::BEGIN@5" -> "strict::import";
+"Module::Implementation::BEGIN@6" -> "strict::import";
+"Moose::Meta::Method::BEGIN@9" -> "strict::import";
+"IO::BEGIN@7" -> "strict::import";
+"Devel::GlobalDestruction::BEGIN@3" -> "strict::import";
+"HTTP::Message::PSGI::BEGIN@2" -> "strict::import";
+"Moose::Meta::Method::Accessor::BEGIN@10" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@9" -> "strict::import";
+"Throwable::X::BEGIN@1" -> "strict::import";
+"Class::MOP::Method::Accessor::BEGIN@10" -> "strict::import";
+"PPI::Statement::Null::BEGIN@43" -> "strict::import";
+"PPI::Structure::Subscript::BEGIN@41" -> "strict::import";
+"PPI::Token::QuoteLike::BEGIN@48" -> "strict::import";
+"Plack::Middleware::BEGIN@2" -> "strict::import";
+"Errno::BEGIN@9" -> "strict::import";
+"Graph::MSTHeapElem::BEGIN@3" -> "strict::import";
+"Time::Local::BEGIN@6" -> "strict::import";
+"File::Spec::Functions::BEGIN@4" -> "strict::import";
+"MIME::Types::BEGIN@11" -> "strict::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "strict::import";
+"Heap071::Fibonacci::BEGIN@3" -> "strict::import";
+"PPI::Token::Structure::BEGIN@31" -> "strict::import";
+"Class::MOP::Object::BEGIN@10" -> "strict::import";
+"Moose::Meta::TypeCoercion::Union::BEGIN@10" -> "strict::import";
+"Class::Data::Inheritable::BEGIN@3" -> "strict::import";
+"Template::Plugins::BEGIN@26" -> "strict::import";
+"PPI::Token::Regexp::Match::BEGIN@45" -> "strict::import";
+"XML::Easy::Syntax::BEGIN@27" -> "strict::import";
+"Moose::Meta::TypeConstraint::BEGIN@10" -> "strict::import";
+"Class::MOP::MiniTrait::BEGIN@9" -> "strict::import";
+"DBIx::Class::ResultSetColumn::BEGIN@3" -> "strict::import";
+"Config::Any::JSON::BEGIN@3" -> "strict::import";
+"Bio::Phylo::Util::Exceptions::BEGIN@2" -> "strict::import";
+"IO::File::BEGIN@128" -> "strict::import";
+"DBD::SQLite::BEGIN@4" -> "strict::import";
+"Catalyst::Utils::BEGIN@1" -> "strict::import";
+"Graph::Traversal::BEGIN@3" -> "strict::import";
+"IPC::Run::BEGIN@1013" -> "strict::import";
+"Bio::Phylo::Util::IDPool::BEGIN@2" -> "strict::import";
+"PPI::Statement::Include::Perl6::BEGIN@41" -> "strict::import";
+"Moose::Meta::Method::Meta::BEGIN@10" -> "strict::import";
+"Class::Load::XS::BEGIN@6" -> "strict::import";
+"stemmaweb::View::SVG::BEGIN@3" -> "strict::import";
+"Digest::base::BEGIN@3" -> "strict::import";
+"Template::Document::BEGIN@24" -> "strict::import";
+"PPI::Structure::Condition::BEGIN@40" -> "strict::import";
+"stemmaweb::View::TT::BEGIN@3" -> "strict::import";
+"XML::LibXML::Boolean::BEGIN@14" -> "strict::import";
+"PPI::Token::Quote::BEGIN@48" -> "strict::import";
+"PPI::Token::Label::BEGIN@31" -> "strict::import";
+"stemmaweb::View::JSON::BEGIN@3" -> "strict::import";
+"Class::MOP::Mixin::HasAttributes::BEGIN@9" -> "strict::import";
+"MRO::Compat::BEGIN@2" -> "strict::import";
+"Template::Service::BEGIN@23" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@9" -> "strict::import";
+"PPI::Token::Pod::BEGIN@29" -> "strict::import";
+"JSON::Any::BEGIN@4" -> "strict::import";
+"Clone::BEGIN@4" -> "strict::import";
+"Moose::Meta::Role::Application::ToClass::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@9" -> "strict::import";
+"Moose::Meta::Role::Method::BEGIN@10" -> "strict::import";
+"PPI::Token::Quote::Literal::BEGIN@31" -> "strict::import";
+"PPI::Token::Data::BEGIN@30" -> "strict::import";
+"Text::Tradition::Parser::GraphML::BEGIN@3" -> "strict::import";
+"CGI::Simple::Util::BEGIN@2" -> "strict::import";
+"PPI::Structure::For::BEGIN@36" -> "strict::import";
+"Config::Any::INI::BEGIN@3" -> "strict::import";
+"Tree::Simple::Visitor::FindByPath::BEGIN@4" -> "strict::import";
+"Moose::Meta::Role::Attribute::BEGIN@9" -> "strict::import";
+"Moose::Meta::Role::Composite::BEGIN@9" -> "strict::import";
+"IPC::Run::Debug::BEGIN@69" -> "strict::import";
+"Cwd::BEGIN@170" -> "strict::import";
+"Moose::Meta::Role::Application::BEGIN@9" -> "strict::import";
+"Eval::Closure::BEGIN@2" -> "strict::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@8" -> "strict::import";
+"String::Errf::BEGIN@1" -> "strict::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@9" -> "strict::import";
+"Moose::Meta::TypeConstraint::Class::BEGIN@9" -> "strict::import";
+"Moose::Deprecated::BEGIN@9" -> "strict::import";
+"MooseX::Types::Moose::BEGIN@9" -> "strict::import";
+"IO::Dir::BEGIN@11" -> "strict::import";
+"PPI::Statement::Scheduled::BEGIN@56" -> "strict::import";
+"Moose::BEGIN@8" -> "strict::import";
+"Plack::Middleware::Conditional::BEGIN@2" -> "strict::import";
+"Graph::BEGIN@3" -> "strict::import";
+"PPI::Token::Quote::Single::BEGIN@37" -> "strict::import";
+"File::Spec::BEGIN@3" -> "strict::import";
+"Template::Stash::BEGIN@22" -> "strict::import";
+"Set::Object::BEGIN@497" -> "strict::import";
+"Graph::TransitiveClosure::BEGIN@3" -> "strict::import";
+"IO::Seekable::BEGIN@99" -> "strict::import";
+"XML::LibXML::XPathContext::BEGIN@12" -> "strict::import";
+"Class::MOP::Deprecated::BEGIN@9" -> "strict::import";
+"re::BEGIN@4" -> "strict::import";
+"HTTP::Body::UrlEncoded::BEGIN@6" -> "strict::import";
+"Moose::Meta::Instance::BEGIN@10" -> "strict::import";
+"Catalyst::Runtime::BEGIN@3" -> "strict::import";
+"Catalyst::Component::BEGIN@1" -> "strict::import";
+"Text::Tradition::Analysis::BEGIN@3" -> "strict::import";
+"PPI::Token::Regexp::Substitute::BEGIN@35" -> "strict::import";
+"Catalyst::View::JSON::BEGIN@3" -> "strict::import";
+"PPI::Statement::Include::BEGIN@47" -> "strict::import";
+"PPI::Token::_QuoteEngine::Simple::BEGIN@5" -> "strict::import";
+"Class::Accessor::Grouped::BEGIN@249" -> "strict::unimport";
+"JSON::Backend::XS::BEGIN@42" -> "strict::unimport";
+"AutoLoader::BEGIN@138" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@37" -> "strict::unimport";
+"Graph::Attribute::BEGIN@49" -> "strict::unimport";
+"DBIx::Class::Storage::DBI::BEGIN@1407" -> "strict::unimport";
+"File::Spec::Unix::BEGIN@149" -> "strict::unimport";
+"Class::XSAccessor::Heavy::BEGIN@27" -> "strict::unimport";
+"Graph::Attribute::BEGIN@24" -> "strict::unimport";
+"Plack::Util::Accessor::BEGIN@14" -> "strict::unimport";
+"utf8::BEGIN@123" -> "strict::unimport";
+"String::Formatter::BEGIN@59" -> "strict::unimport";
+"B::Deparse::BEGIN@688" -> "strict::unimport";
+"DBIx::Class::Schema::BEGIN@1284" -> "strict::unimport";
+"Moose::Exporter::BEGIN@698" -> "strict::unimport";
+"Bio::Phylo::BEGIN@867" -> "strict::unimport";
+"PPI::Normal::BEGIN@260" -> "strict::unimport";
+"FileHandle::BEGIN@46" -> "strict::unimport";
+"aliased::BEGIN@35" -> "strict::unimport";
+"File::Temp::BEGIN@271" -> "strict::unimport";
+"Text::CSV::BEGIN@136" -> "strict::unimport";
+"parent::BEGIN@25" -> "strict::unimport";
+"SelfLoader::BEGIN@158" -> "strict::unimport";
+"HTTP::Message::BEGIN@648" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@744" -> "strict::unimport";
+"Moose::Exporter::BEGIN@294" -> "strict::unimport";
+"Class::Struct::BEGIN@99" -> "strict::unimport";
+"Bio::Phylo::BEGIN@895" -> "strict::unimport";
+"B::BEGIN@254" -> "strict::unimport";
+"Module::Implementation::BEGIN@113" -> "strict::unimport";
+"Catalyst::ClassData::BEGIN@27" -> "strict::unimport";
+"DBIx::Class::Carp::BEGIN@75" -> "strict::unimport";
+"Class::C3::Componentised::BEGIN@198" -> "strict::unimport";
+"Module::Load::BEGIN@37" -> "strict::unimport";
+"Template::Base::BEGIN@137" -> "strict::unimport";
+"Exporter::Heavy::BEGIN@4" -> "strict::unimport";
+"Safe::BEGIN@285" -> "strict::unimport";
+"File::Path::BEGIN@329" -> "strict::unimport";
+"Config::BEGIN@45" -> "strict::unimport";
+"Class::MOP::Class::Immutable::Trait::BEGIN@36" -> "strict::unimport";
+"Template::Base::BEGIN@85" -> "strict::unimport";
+"Template::Timer::BEGIN@68" -> "strict::unimport";
+"Devel::InnerPackage::BEGIN@86" -> "strict::unimport";
+"Safe::BEGIN@36" -> "strict::unimport";
+"Class::Struct::BEGIN@188" -> "strict::unimport";
+"constant::BEGIN@52" -> "strict::unimport";
+"DBI::BEGIN@862" -> "strict::unimport";
+"Carp::Clan::BEGIN@224" -> "strict::unimport";
+"Template::Base::BEGIN@44" -> "strict::unimport";
+"DBI::BEGIN@797" -> "strict::unimport";
+"utf8::BEGIN@399" -> "strict::unimport";
+"XML::LibXML::XPathContext::BEGIN@141" -> "strict::unimport";
+"Parse::Yapp::Driver::BEGIN@201" -> "strict::unimport";
+"Class::C3::Componentised::BEGIN@133" -> "strict::unimport";
+"B::Deparse::BEGIN@3368" -> "strict::unimport";
+"namespace::clean::BEGIN@171" -> "strict::unimport";
+"JSON::Backend::PP::BEGIN@383" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@178" -> "strict::unimport";
+"PPI::Normal::BEGIN@83" -> "strict::unimport";
+"constant::BEGIN@114" -> "strict::unimport";
+"EVERY::BEGIN@116" -> "strict::unimport";
+"SelfLoader::BEGIN@73" -> "strict::unimport";
+"DBIx::Class::Schema::BEGIN@920" -> "strict::unimport";
+"Carp::BEGIN@413" -> "strict::unimport";
+"DBI::BEGIN@1030" -> "strict::unimport";
+"LWP::UserAgent::BEGIN@374" -> "strict::unimport";
+"LWP::Protocol::BEGIN@62" -> "strict::unimport";
+"Data::Visitor::Callback::BEGIN@52" -> "strict::unimport";
+"DBI::BEGIN@270" -> "strict::unimport";
+"DBIx::Class::Componentised::BEGIN@29" -> "strict::unimport";
+"Text::CSV_PP::BEGIN@107" -> "strict::unimport";
+"Carp::BEGIN@18" -> "strict::unimport";
+"Socket::BEGIN@869" -> "strict::unimport";
+"MRO::Compat::BEGIN@116" -> "strict::unimport";
+"Module::Load::BEGIN@11" -> "strict::unimport";
+"DBIx::Class::Schema::BEGIN@1516" -> "strict::unimport";
+"B::Deparse::BEGIN@482" -> "strict::unimport";
+"NEXT::BEGIN@13" -> "strict::unimport";
+"constant::BEGIN@29" -> "strict::unimport";
+"Class::MOP::Package::BEGIN@164" -> "strict::unimport";
+"Data::Visitor::Callback::BEGIN@199" -> "strict::unimport";
+"EVERY::BEGIN@137" -> "strict::unimport";
+"File::stat::BEGIN@200" -> "strict::unimport";
+"Moose::Exporter::BEGIN@132" -> "strict::unimport";
+"Cwd::BEGIN@818" -> "strict::unimport";
+"Class::MOP::Class::Immutable::Trait::BEGIN@46" -> "strict::unimport";
+"Moose::Exporter::BEGIN@688" -> "strict::unimport";
+"Graph::BEGIN@178" -> "strict::unimport";
+"JSON::Any::BEGIN@219" -> "strict::unimport";
+"File::Temp::BEGIN@241" -> "strict::unimport";
+"File::Spec::Functions::BEGIN@42" -> "strict::unimport";
+"Plack::Test::BEGIN@13" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@297" -> "strict::unimport";
+"File::stat::BEGIN@35" -> "strict::unimport";
+"MRO::Compat::BEGIN@256" -> "strict::unimport";
+"Text::CSV::BEGIN@196" -> "strict::unimport";
+"SelfLoader::BEGIN@91" -> "strict::unimport";
+"JSON::Backend::XS::Supportable::BEGIN@99" -> "strict::unimport";
+"DBI::BEGIN@527" -> "strict::unimport";
+"Carp::BEGIN@67" -> "strict::unimport";
+"Safe::BEGIN@344" -> "strict::unimport";
+"MooseX::Types::BEGIN@34" -> "strict::unimport";
+"DBIx::Class::Storage::DBIHacks::BEGIN@609" -> "strict::unimport";
+"MRO::Compat::BEGIN@225" -> "strict::unimport";
+"IO::Handle::BEGIN@624" -> "strict::unimport";
+"DBI::BEGIN@959" -> "strict::unimport";
+"IPC::Run::BEGIN@1237" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@141" -> "strict::unimport";
+"AutoLoader::BEGIN@186" -> "strict::unimport";
+"URI::BEGIN@128" -> "strict::unimport";
+"Sub::Install::BEGIN@184" -> "strict::unimport";
+"Text::CSV_PP::BEGIN@111" -> "strict::unimport";
+"Benchmark::BEGIN@426" -> "strict::unimport";
+"Devel::Declare::BEGIN@109" -> "strict::unimport";
+"DBI::BEGIN@831" -> "strict::unimport";
+"DBI::BEGIN@684" -> "strict::unimport";
+"Devel::InnerPackage::BEGIN@66" -> "strict::unimport";
+"Graph::Attribute::BEGIN@14" -> "strict::unimport";
+"Path::Class::BEGIN@10" -> "strict::unimport";
+"NEXT::BEGIN@93" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@765" -> "strict::unimport";
+"JSON::Backend::XS::BEGIN@29" -> "strict::unimport";
+"NEXT::BEGIN@25" -> "strict::unimport";
+"NEXT::BEGIN@63" -> "strict::unimport";
+"NEXT::BEGIN@101" -> "strict::unimport";
+"XML::LibXML::Error::BEGIN@83" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@151" -> "strict::unimport";
+"Devel::Declare::BEGIN@99" -> "strict::unimport";
+"MooseX::Types::CheckedUtilExports::BEGIN@24" -> "strict::unimport";
+"Devel::Declare::BEGIN@29" -> "strict::unimport";
+"Time::Piece::BEGIN@121" -> "strict::unimport";
+"Carp::BEGIN@398" -> "strict::unimport";
+"DBIx::Class::AccessorGroup::BEGIN@18" -> "strict::unimport";
+"B::Deparse::BEGIN@40" -> "strict::unimport";
+"JSON::BEGIN@318" -> "strict::unimport";
+"Carp::BEGIN@8" -> "strict::unimport";
+"Time::HiRes::BEGIN@43" -> "strict::unimport";
+"Safe::BEGIN@337" -> "strict::unimport";
+"Moose::Object::BEGIN@85" -> "strict::unimport";
+"Safe::BEGIN@191" -> "strict::unimport";
+"KiokuDB::TypeMap::Entry::Closure::BEGIN@122" -> "strict::unimport";
+"Class::Struct::BEGIN@108" -> "strict::unimport";
+"AutoLoader::BEGIN@30" -> "strict::unimport";
+"DBIx::Class::Storage::DBI::BEGIN@109" -> "strict::unimport";
+"NEXT::BEGIN@37" -> "strict::unimport";
+"Moose::Util::TypeConstraints::BEGIN@68" -> "strict::unimport";
+}

@@ -1,0 +1,54 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_locale {
+	label="locale";
+	"locale::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Filters {
+	label="Template::Filters";
+	"Template::Filters::_init";
+	"Template::Filters::BEGIN@23";
+	"Template::Filters::BEGIN@27";
+	"Template::Filters::BEGIN@25";
+	"Template::Filters::BEGIN@24";
+	"Template::Filters::BEGIN@22";
+	"Template::Filters::BEGIN@26";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::load";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Config::load" -> "Template::Filters::BEGIN@26";
+"Template::Config::load" -> "Template::Filters::BEGIN@23";
+"Template::Base::new" -> "Template::Filters::_init";
+"Template::Config::load" -> "Template::Filters::BEGIN@22";
+"Template::Filters::BEGIN@24" -> "locale::import";
+"Template::Filters::BEGIN@22" -> "strict::import";
+"Template::Filters::BEGIN@26" -> "Exporter::import";
+"Template::Filters::BEGIN@27" -> "Exporter::import";
+"Template::Filters::BEGIN@25" -> "base::import";
+"Template::Filters::BEGIN@23" -> "warnings::import";
+"Template::Config::load" -> "Template::Filters::BEGIN@24";
+"Template::Config::load" -> "Template::Filters::BEGIN@25";
+"Template::Config::load" -> "Template::Filters::BEGIN@27";
+}

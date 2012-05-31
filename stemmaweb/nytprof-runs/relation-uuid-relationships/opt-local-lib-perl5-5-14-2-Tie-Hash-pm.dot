@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@2";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@17";
+}
+subgraph cluster_Tie_StdHash {
+	label="Tie::StdHash";
+	"Tie::StdHash::TIEHASH";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Tie_Hash {
+	label="Tie::Hash";
+	"Tie::Hash::BEGIN@188";
+	"Tie::Hash::BEGIN@189";
+}
+"IO::Dir::BEGIN@17" -> "Tie::Hash::BEGIN@189";
+"Tie::Hash::BEGIN@188" -> "Exporter::import";
+"Tie::Hash::BEGIN@189" -> "warnings::register::import";
+"IO::Dir::BEGIN@17" -> "Tie::Hash::BEGIN@188";
+"IPC::Run::Debug::BEGIN@2" -> "Tie::StdHash::TIEHASH";
+}

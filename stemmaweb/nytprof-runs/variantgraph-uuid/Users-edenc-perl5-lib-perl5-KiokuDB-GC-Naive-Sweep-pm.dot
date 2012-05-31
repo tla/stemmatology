@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_GC_Naive_Sweep_Results {
+	label="KiokuDB::GC::Naive::Sweep::Results";
+	"KiokuDB::GC::Naive::Sweep::Results::BEGIN@14";
+	"KiokuDB::GC::Naive::Sweep::Results::BEGIN@12";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@7";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@4";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::BEGIN@4";
+"KiokuDB::GC::Naive::Sweep::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::Sweep::Results::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Sweep::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Sweep::Results::BEGIN@14" -> "Exporter::import";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::Results::BEGIN@14";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::Results::BEGIN@12";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::BEGIN@6";
+}

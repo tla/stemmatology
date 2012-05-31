@@ -1,0 +1,30 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@60";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_PPI_Token_QuoteLike_Regexp {
+	label="PPI::Token::QuoteLike::Regexp";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@37";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@32";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@34";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@36";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@33";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@32";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@37";
+"PPI::Token::QuoteLike::Regexp::BEGIN@32" -> "strict::import";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@34";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@33";
+"PPI::Token::QuoteLike::Regexp::BEGIN@36" -> "vars::import";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@36";
+}

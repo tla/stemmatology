@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Storable {
+	label="Storable";
+	"Storable::BEGIN@22";
+	"Storable::BEGIN@51";
+	"Storable::BEGIN@26";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+"main::BEGIN@7" -> "Storable::BEGIN@26";
+"Storable::BEGIN@51" -> "Exporter::import";
+"Storable::BEGIN@22" -> "vars::import";
+"main::BEGIN@7" -> "Storable::BEGIN@51";
+"main::BEGIN@7" -> "Storable::BEGIN@22";
+}

@@ -1,0 +1,254 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_25 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::25";
+	"Moose::Meta::Class::__ANON__::SERIAL::25::_get_value";
+	"Moose::Meta::Class::__ANON__::SERIAL::25::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_process_arguments";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::inline_get_is_lvalue";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_18 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::18";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::_get_value";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::type_constraint";
+	"Moose::Meta::Mixin::AttributeCore::should_coerce";
+	"Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_curried_arguments";
+	"Moose::Meta::Method::Accessor::Native::_initialize_body";
+	"Moose::Meta::Method::Accessor::Native::_slot_access_can_be_inlined";
+	"Moose::Meta::Method::Accessor::Native::root_types";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_20 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::20";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_get_value";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_check_argument_count";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+	"Moose::Meta::Method::Accessor::_inline_trigger";
+	"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Method::Accessor::_inline_check_lazy";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::any";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::associated_attribute";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::instance_metaclass";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_dec {
+	label="Moose::Meta::Method::Accessor::Native::Counter::dec";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::_inline_optimized_set_new_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_push {
+	label="Moose::Meta::Method::Accessor::Native::Array::push";
+	"Moose::Meta::Method::Accessor::Native::Array::push::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Array::push::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Array::push::_potential_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_return_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_10 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::10";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::_get_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_return_value";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_24 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::24";
+	"Moose::Meta::Class::__ANON__::SERIAL::24::_get_value";
+	"Moose::Meta::Class::__ANON__::SERIAL::24::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_inc {
+	label="Moose::Meta::Method::Accessor::Native::Counter::inc";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::_potential_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_11 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::11";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::_get_value";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_generate_method";
+	"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@167";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_check_arguments";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_process_arguments";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_capture_return_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_writer_value_needs_copy";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_coerce_new_values";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@14";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::associated_class";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::name";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Counter::dec::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::_slot_access_can_be_inlined";
+"Moose::Meta::Method::Accessor::Native::Writer::_writer_value_needs_copy" -> "Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_process_arguments";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value" -> "Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::25::_inline_tc_code";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@9";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::24::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Array::push::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Counter::dec::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::18::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::20::_get_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::_inline_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::push::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_trigger";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::11::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::_initialize_body" -> "Moose::Meta::Method::Accessor::Native::Writer::_generate_method";
+"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Counter::inc::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@167" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::11::_get_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@12" -> "Exporter::import";
+"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue" -> "Class::MOP::Class::instance_metaclass";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_capture_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type" -> "Moose::Meta::Method::Accessor::Native::root_types";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Writer::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value" -> "Moose::Meta::Method::Accessor::Native::Writer::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::20::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue" -> "Class::MOP::Instance::inline_get_is_lvalue";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Counter::inc::_potential_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::25::_get_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::10::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_process_arguments";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Method::Accessor::Native::_inline_curried_arguments";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::push::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::24::_get_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type" -> "List::MoreUtils::any";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_coerce_new_values";
+"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked" -> "Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Class::__ANON__::SERIAL::20::_inline_check_argument_count";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::10::_get_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::18::_get_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@14";
+"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type" -> "Moose::Meta::TypeConstraint::name";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_return_value";
+"Moose::Meta::Method::Accessor::Native::_inline_return_value" -> "Moose::Meta::Method::Accessor::Native::Writer::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Writer::_inline_check_arguments";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Writer::BEGIN@167";
+"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values";
+}

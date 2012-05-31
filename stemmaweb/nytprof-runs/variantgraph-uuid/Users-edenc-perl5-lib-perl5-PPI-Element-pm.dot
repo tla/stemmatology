@@ -1,0 +1,187 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::symbol";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::parse_proto_using_pms";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_lex_statement";
+	"PPI::Lexer::_lex_document";
+}
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::__TOKENIZER__commit";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::_param_opt_or_req";
+	"Parse::Method::Signatures::_ident";
+	"Parse::Method::Signatures::tc";
+	"Parse::Method::Signatures::consume_token";
+	"Parse::Method::Signatures::_build_ppi";
+	"Parse::Method::Signatures::_param_variable";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::firstidx";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::DESTROY";
+	"PPI::Element::BEGIN@33";
+	"PPI::Element::BEGIN@44";
+	"PPI::Element::snext_sibling";
+	"PPI::Element::BEGIN@41";
+	"PPI::Element::BEGIN@25";
+	"PPI::Element::class";
+	"PPI::Element::next_sibling";
+	"PPI::Element::significant";
+	"PPI::Element::BEGIN@43";
+	"PPI::Element::BEGIN@42";
+	"PPI::Element::first_token";
+	"PPI::Element::BEGIN@32";
+	"PPI::Element::BEGIN@45";
+	"PPI::Element::BEGIN@27";
+	"PPI::Element::BEGIN@28";
+	"PPI::Element::BEGIN@46";
+	"PPI::Element::BEGIN@30";
+	"PPI::Element::BEGIN@29";
+	"PPI::Element::clone";
+	"PPI::Element::BEGIN@24";
+	"PPI::Element::parent";
+	"PPI::Element::BEGIN@26";
+	"PPI::Element::next_token";
+}
+subgraph cluster_Clone {
+	label="Clone";
+	"Clone::BEGIN@6";
+	"Clone::clone";
+	"Clone::BEGIN@5";
+	"Clone::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::BEGIN@59";
+	"PPI::Node::BEGIN@55";
+	"PPI::Node::BEGIN@54";
+	"PPI::Node::BEGIN@58";
+	"PPI::Node::BEGIN@53";
+	"PPI::Node::BEGIN@56";
+	"PPI::Node::first_element";
+	"PPI::Node::schild";
+	"PPI::Node::DESTROY";
+	"PPI::Node::BEGIN@51";
+	"PPI::Node::BEGIN@52";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@19";
+}
+"Parse::Method::Signatures::_param_opt_or_req" -> "PPI::Element::class";
+"Parse::Method::Signatures::_ident" -> "PPI::Element::class";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::class";
+"Parse::Method::Signatures::_build_ppi" -> "PPI::Element::class";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Element::class";
+"Parse::Method::Signatures::tc" -> "PPI::Element::clone";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@30";
+"PPI::Element::next_token" -> "PPI::Element::next_sibling";
+"PPI::Element::next_token" -> "PPI::Element::parent";
+"PPI::Element::BEGIN@41" -> "overload::import";
+"PPI::Element::BEGIN@43" -> "overload::import";
+"PPI::Element::BEGIN@46" -> "overload::import";
+"PPI::Element::BEGIN@44" -> "overload::import";
+"PPI::Element::BEGIN@42" -> "overload::import";
+"PPI::Element::BEGIN@45" -> "overload::import";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@41";
+"Parse::Method::Signatures::_build_ppi" -> "PPI::Element::first_token";
+"PPI::Element::next_token" -> "PPI::Element::first_token";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@43";
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@4";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@53";
+"PPI::Token::Symbol::symbol" -> "PPI::Element::snext_sibling";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@44";
+"PPI::Element::snext_sibling" -> "List::MoreUtils::firstidx";
+"PPI::Element::next_sibling" -> "List::MoreUtils::firstidx";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@26";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@59";
+"PPI::Element::BEGIN@24" -> "strict::import";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@32";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@45";
+"PPI::Element::first_token" -> "PPI::Util::TRUE";
+"PPI::Element::snext_sibling" -> "PPI::Util::TRUE";
+"PPI::Element::next_sibling" -> "PPI::Util::TRUE";
+"PPI::Element::next_token" -> "PPI::Util::TRUE";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@28";
+"PPI::Element::clone" -> "Clone::clone";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@56";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@54";
+"PPI::Element::BEGIN@26" -> "Exporter::import";
+"PPI::Element::BEGIN@27" -> "Exporter::import";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@46";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::next_token";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@29";
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@5";
+"PPI::Element::BEGIN@32" -> "vars::import";
+"PPI::Node::schild" -> "PPI::Element::significant";
+"PPI::Lexer::_lex_statement" -> "PPI::Element::significant";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::significant";
+"PPI::Lexer::_lex_document" -> "PPI::Element::significant";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@51";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@24";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@42";
+"PPI::Element::first_token" -> "UNIVERSAL::isa";
+"PPI::Element::next_token" -> "UNIVERSAL::isa";
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@6";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@58";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@52";
+"PPI::Element::first_token" -> "PPI::Node::first_element";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@25";
+"PPI::Element::BEGIN@25" -> "DynaLoader::bootstrap";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@27";
+"PPI::Element::snext_sibling" -> "Scalar::Util::refaddr";
+"PPI::Element::DESTROY" -> "Scalar::Util::refaddr";
+"PPI::Element::next_sibling" -> "Scalar::Util::refaddr";
+"PPI::Element::parent" -> "Scalar::Util::refaddr";
+"PPI::BEGIN@19" -> "PPI::Element::BEGIN@33";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@55";
+"PPI::Node::DESTROY" -> "PPI::Element::DESTROY";
+"TryCatch::parse_proto_using_pms" -> "PPI::Element::DESTROY";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Element::DESTROY";
+}

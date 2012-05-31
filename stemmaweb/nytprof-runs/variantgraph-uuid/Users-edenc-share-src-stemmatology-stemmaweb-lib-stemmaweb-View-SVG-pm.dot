@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::stash";
+	"Catalyst::res";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::execute";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::BEGIN@3";
+	"stemmaweb::View::SVG::BEGIN@5";
+	"stemmaweb::View::SVG::process";
+	"stemmaweb::View::SVG::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::decode_utf8";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::content_encoding";
+	"Catalyst::Response::output";
+	"Catalyst::Response::content_type";
+}
+"stemmaweb::View::SVG::process" -> "Catalyst::Response::content_type";
+"stemmaweb::View::SVG::process" -> "Catalyst::res";
+"stemmaweb::View::SVG::process" -> "Encode::decode_utf8";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@4";
+"stemmaweb::View::SVG::process" -> "Catalyst::stash";
+"Catalyst::Action::execute" -> "stemmaweb::View::SVG::process";
+"stemmaweb::View::SVG::BEGIN@3" -> "strict::import";
+"stemmaweb::View::SVG::process" -> "Catalyst::Response::output";
+"stemmaweb::View::SVG::BEGIN@5" -> "Exporter::import";
+"stemmaweb::View::SVG::BEGIN@4" -> "base::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@3";
+"stemmaweb::View::SVG::process" -> "Catalyst::Response::content_encoding";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@5";
+}

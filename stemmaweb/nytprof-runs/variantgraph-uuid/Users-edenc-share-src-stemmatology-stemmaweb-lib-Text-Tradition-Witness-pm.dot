@@ -1,0 +1,110 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@7";
+	"Text::Tradition::Witness::BEGIN@783";
+	"Text::Tradition::Witness::BEGIN@9";
+	"Text::Tradition::Witness::BEGIN@6";
+	"Text::Tradition::Witness::CORE:regcomp";
+	"Text::Tradition::Witness::BEGIN@355";
+	"Text::Tradition::Witness::BEGIN@3";
+	"Text::Tradition::Witness::BUILD";
+	"Text::Tradition::Witness::BEGIN@4";
+	"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:193]";
+	"Text::Tradition::Witness::CORE:match";
+	"Text::Tradition::Witness::BEGIN@353";
+	"Text::Tradition::Witness::has_string";
+	"Text::Tradition::Witness::has_file";
+	"Text::Tradition::Witness::BEGIN@5";
+	"Text::Tradition::Witness::new";
+	"Text::Tradition::Witness::has_object";
+	"Text::Tradition::Witness::has_source";
+	"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]";
+	"Text::Tradition::Witness::BEGIN@8";
+	"Text::Tradition::Witness::BEGIN@201";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@8";
+}
+subgraph cluster_Text_TEI_Markup {
+	label="Text::TEI::Markup";
+	"Text::TEI::Markup::BEGIN@7";
+	"Text::TEI::Markup::BEGIN@433";
+	"Text::TEI::Markup::BEGIN@3";
+	"Text::TEI::Markup::BEGIN@6";
+	"Text::TEI::Markup::BEGIN@4";
+	"Text::TEI::Markup::BEGIN@8";
+	"Text::TEI::Markup::BEGIN@5";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::Sigil";
+	"Moose::Meta::TypeConstraint::SourceType";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Text::Tradition::Witness::has_source" -> "Text::Tradition::Witness::has_object";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@7";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@6";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@201";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@433";
+"Text::Tradition::Witness::has_source" -> "Text::Tradition::Witness::has_string";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@9";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@4";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@7";
+"Text::Tradition::Witness::BEGIN@8" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Witness::BEGIN@4" -> "JSON::import";
+"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:193]" -> "Text::Tradition::Witness::CORE:match";
+"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]" -> "Text::Tradition::Witness::CORE:match";
+"Moose::Meta::TypeConstraint::SourceType" -> "Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:193]";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@5";
+"Text::Tradition::Witness::BEGIN@783" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Witness::BEGIN@201" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Witness::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Witness::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Witness::BEGIN@355" -> "TryCatch::inject_scope";
+"Text::Tradition::Witness::BEGIN@353" -> "TryCatch::inject_scope";
+"Text::Tradition::Witness::new" -> "Text::Tradition::Witness::BUILD";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@4";
+"Text::Tradition::Witness::BEGIN@7" -> "Exporter::import";
+"Text::Tradition::Witness::BEGIN@9" -> "Exporter::import";
+"Text::Tradition::Witness::has_source" -> "Text::Tradition::Witness::has_file";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@355";
+"Text::Tradition::Witness::BEGIN@3" -> "vars::import";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@6";
+"Moose::Meta::TypeConstraint::Sigil" -> "Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@353";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@783";
+"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]" -> "Text::Tradition::Witness::CORE:regcomp";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@3";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@8";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@3";
+"Text::Tradition::Witness::BUILD" -> "Text::Tradition::Witness::has_source";
+"Text::Tradition::Witness::BEGIN@7" -> "Text::TEI::Markup::BEGIN@8";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@5";
+}

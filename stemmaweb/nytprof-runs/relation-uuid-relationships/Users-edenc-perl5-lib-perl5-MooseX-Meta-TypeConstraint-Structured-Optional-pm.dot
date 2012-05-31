@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured_Optional {
+	label="MooseX::Meta::TypeCoercion::Structured::Optional";
+	"MooseX::Meta::TypeCoercion::Structured::Optional::meta";
+	"MooseX::Meta::TypeCoercion::Structured::Optional::BEGIN@4";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@14";
+}
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "Moose::extends";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "UNIVERSAL::import";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "MooseX::Meta::TypeCoercion::Structured::Optional::meta";
+"MooseX::Types::Structured::BEGIN@14" -> "MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4";
+"MooseX::Types::Structured::BEGIN@14" -> "MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "Class::MOP::Class::make_immutable";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "MooseX::Meta::TypeCoercion::Structured::Optional::BEGIN@4";
+}

@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@33";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@5";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::BEGIN@147";
+	"utf8::AUTOLOAD";
+	"utf8::BEGIN@2";
+	"utf8::BEGIN@460";
+	"utf8::BEGIN@3";
+	"utf8::BEGIN@399";
+	"utf8::import";
+	"utf8::BEGIN@123";
+	"utf8::BEGIN@135";
+	"utf8::BEGIN@117";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@16";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::CORE:regcomp";
+}
+"utf8::AUTOLOAD" -> "utf8::BEGIN@3";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@460";
+"Safe::CORE:regcomp" -> "utf8::AUTOLOAD";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@135";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@2";
+"Catalyst::BEGIN@33" -> "utf8::import";
+"Catalyst::Request::BEGIN@5" -> "utf8::import";
+"Catalyst::Engine::BEGIN@16" -> "utf8::import";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@123";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@117";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@399";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@147";
+}

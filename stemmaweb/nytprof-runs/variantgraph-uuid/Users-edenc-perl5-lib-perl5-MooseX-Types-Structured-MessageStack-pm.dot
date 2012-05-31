@@ -1,0 +1,21 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Structured_MessageStack {
+	label="MooseX::Types::Structured::MessageStack";
+	"MooseX::Types::Structured::MessageStack::BEGIN@4";
+	"MooseX::Types::Structured::MessageStack::BEGIN@43";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@16";
+}
+"MooseX::Types::Structured::BEGIN@16" -> "MooseX::Types::Structured::MessageStack::BEGIN@43";
+"MooseX::Types::Structured::MessageStack::BEGIN@43" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Types::Structured::MessageStack::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Structured::BEGIN@16" -> "MooseX::Types::Structured::MessageStack::BEGIN@4";
+}

@@ -1,0 +1,95 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_GC_Naive_Sweep_Results {
+	label="KiokuDB::GC::Naive::Sweep::Results";
+	"KiokuDB::GC::Naive::Sweep::Results::BEGIN@14";
+	"KiokuDB::GC::Naive::Sweep::Results::meta";
+	"KiokuDB::GC::Naive::Sweep::Results::BEGIN@12";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+	"KiokuDB::GC::Naive::CORE:qr";
+	"KiokuDB::GC::Naive::BEGIN@4";
+	"KiokuDB::GC::Naive::BEGIN@9";
+	"KiokuDB::GC::Naive::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::meta";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@4";
+	"KiokuDB::GC::Naive::Sweep::CORE:qr";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@6";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+	"KiokuDB::GC::Naive::Mark::Results::meta";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@12";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::BEGIN@4";
+	"KiokuDB::GC::Naive::Mark::BEGIN@6";
+	"KiokuDB::GC::Naive::Mark::meta";
+}
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::BEGIN@4";
+"KiokuDB::GC::Naive::BEGIN@7" -> "UNIVERSAL::import";
+"KiokuDB::GC::Naive::BEGIN@6" -> "UNIVERSAL::import";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::BEGIN@4";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Moose::has";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Moose::has";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::meta";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@7";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::CORE:qr";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::BEGIN@6";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::CORE:qr";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::Results::meta";
+"KiokuDB::GC::Naive::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::GC::Naive::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Moose::with";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@9";
+"KiokuDB::GC::Naive::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@6";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::Results::BEGIN@14";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::Results::BEGIN@12";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::BEGIN@6";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::meta";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::Results::BEGIN@12";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@4";
+"KiokuDB::GC::Naive::BEGIN@7" -> "KiokuDB::GC::Naive::Sweep::Results::meta";
+}

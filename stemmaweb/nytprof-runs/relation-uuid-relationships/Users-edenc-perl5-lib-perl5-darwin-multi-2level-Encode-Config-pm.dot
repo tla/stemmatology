@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@3";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Encode_Config {
+	label="Encode::Config";
+	"Encode::Config::BEGIN@7";
+	"Encode::Config::BEGIN@8";
+	"Encode::Config::CORE:match";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Encode::Config::BEGIN@7" -> "strict::import";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::CORE:match";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::BEGIN@8";
+"Encode::Config::BEGIN@8" -> "warnings::import";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::BEGIN@7";
+}

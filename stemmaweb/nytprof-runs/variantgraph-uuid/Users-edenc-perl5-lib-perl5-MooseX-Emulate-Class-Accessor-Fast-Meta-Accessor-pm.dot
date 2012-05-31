@@ -1,0 +1,29 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::associated_attribute";
+	"Class::MOP::Method::Accessor::_initialize_body";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Accessor {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::_generate_accessor_method";
+}
+"Class::MOP::Method::Accessor::_initialize_body" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::_generate_accessor_method";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::_generate_accessor_method" -> "Class::MOP::Method::Accessor::associated_attribute";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3";
+}

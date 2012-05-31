@@ -1,0 +1,140 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::__TOKENIZER__on_char";
+}
+subgraph cluster_PPI_Exception_ParserRejection {
+	label="PPI::Exception::ParserRejection";
+	"PPI::Exception::ParserRejection::BEGIN@4";
+	"PPI::Exception::ParserRejection::BEGIN@7";
+	"PPI::Exception::ParserRejection::BEGIN@6";
+	"PPI::Exception::ParserRejection::BEGIN@3";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_get_token";
+	"PPI::Lexer::lex_source";
+}
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::__TOKENIZER__commit";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::any";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::new";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_new_token";
+	"PPI::Tokenizer::_process_next_char";
+	"PPI::Tokenizer::get_token";
+	"PPI::Tokenizer::new";
+	"PPI::Tokenizer::BEGIN@86";
+	"PPI::Tokenizer::_process_next_line";
+	"PPI::Tokenizer::_finalize_token";
+	"PPI::Tokenizer::_fill_line";
+	"PPI::Tokenizer::CORE:match";
+	"PPI::Tokenizer::BEGIN@91";
+	"PPI::Tokenizer::BEGIN@84";
+	"PPI::Tokenizer::BEGIN@87";
+	"PPI::Tokenizer::_clean_eof";
+	"PPI::Tokenizer::BEGIN@88";
+	"PPI::Tokenizer::_get_line";
+	"PPI::Tokenizer::BEGIN@82";
+	"PPI::Tokenizer::BEGIN@85";
+	"PPI::Tokenizer::BEGIN@81";
+	"PPI::Tokenizer::_previous_significant_tokens";
+	"PPI::Tokenizer::BEGIN@83";
+	"PPI::Tokenizer::BEGIN@90";
+	"PPI::Tokenizer::CORE:subst";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_SCALAR0";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::null";
+	"PPI::Token::Whitespace::__TOKENIZER__on_char";
+	"PPI::Token::Whitespace::__TOKENIZER__on_line_end";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_PPI_Token_Unknown {
+	label="PPI::Token::Unknown";
+	"PPI::Token::Unknown::__TOKENIZER__on_char";
+}
+subgraph cluster_PPI_Token_BOM {
+	label="PPI::Token::BOM";
+	"PPI::Token::BOM::__TOKENIZER__on_line_start";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@28";
+}
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@88";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Unknown::__TOKENIZER__on_char";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@86";
+"PPI::Tokenizer::new" -> "PPI::Tokenizer::CORE:subst";
+"PPI::Tokenizer::_fill_line" -> "PPI::Tokenizer::_get_line";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@81";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@6";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Tokenizer::_new_token";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_new_token";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Token::BOM::__TOKENIZER__on_line_start";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Tokenizer::_fill_line";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@7";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Token::Whitespace::__TOKENIZER__on_line_end";
+"PPI::Token::Symbol::__TOKENIZER__on_char" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Tokenizer::_new_token" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Token::Whitespace::__TOKENIZER__on_line_end" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Tokenizer::BEGIN@81" -> "strict::import";
+"PPI::Tokenizer::get_token" -> "PPI::Tokenizer::_process_next_line";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@91";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@84";
+"PPI::Tokenizer::get_token" -> "PPI::Util::TRUE";
+"PPI::Tokenizer::new" -> "Params::Util::_SCALAR0";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@4";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_previous_significant_tokens";
+"PPI::Tokenizer::BEGIN@82" -> "Exporter::import";
+"PPI::Tokenizer::_new_token" -> "PPI::Token::new";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::new";
+"PPI::Tokenizer::new" -> "PPI::Tokenizer::CORE:match";
+"List::MoreUtils::any" -> "PPI::Tokenizer::CORE:match";
+"PPI::Tokenizer::BEGIN@90" -> "vars::import";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@82";
+"PPI::Lexer::lex_source" -> "PPI::Tokenizer::new";
+"PPI::Tokenizer::_previous_significant_tokens" -> "PPI::Token::Whitespace::null";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@87";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Symbol::__TOKENIZER__on_char";
+"PPI::Tokenizer::new" -> "List::MoreUtils::any";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@3";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Tokenizer::_clean_eof";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Tokenizer::_process_next_char";
+"PPI::Lexer::_get_token" -> "PPI::Tokenizer::get_token";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@85";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@83";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+"PPI::BEGIN@28" -> "PPI::Tokenizer::BEGIN@90";
+}

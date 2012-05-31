@@ -1,0 +1,60 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_AutoLoader {
+	label="AutoLoader";
+	"AutoLoader::BEGIN@138";
+	"AutoLoader::BEGIN@4";
+	"AutoLoader::BEGIN@30";
+	"AutoLoader::BEGIN@3";
+	"AutoLoader::BEGIN@186";
+	"AutoLoader::BEGIN@13";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@34";
+}
+subgraph cluster_Heap071_Elem {
+	label="Heap071::Elem";
+	"Heap071::Elem::BEGIN@3";
+	"Heap071::Elem::BEGIN@4";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Graph_MSTHeapElem {
+	label="Graph::MSTHeapElem";
+	"Graph::MSTHeapElem::BEGIN@4";
+	"Graph::MSTHeapElem::BEGIN@5";
+	"Graph::MSTHeapElem::BEGIN@3";
+	"Graph::MSTHeapElem::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::MSTHeapElem::BEGIN@5" -> "Heap071::Elem::BEGIN@4";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@186";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@30";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@5";
+"Graph::MSTHeapElem::BEGIN@3" -> "strict::import";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@3";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@7";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@3";
+"Graph::MSTHeapElem::BEGIN@5" -> "Exporter::import";
+"Graph::MSTHeapElem::BEGIN@7" -> "base::import";
+"Graph::MSTHeapElem::BEGIN@4" -> "vars::import";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@138";
+"Graph::MSTHeapElem::BEGIN@5" -> "Heap071::Elem::BEGIN@3";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@13";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@4";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@4";
+}

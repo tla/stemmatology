@@ -1,0 +1,74 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@2";
+}
+subgraph cluster_POSIX_SigRt {
+	label="POSIX::SigRt";
+	"POSIX::SigRt::BEGIN@58";
+	"POSIX::SigRt::BEGIN@56";
+	"POSIX::SigRt::BEGIN@60";
+}
+subgraph cluster_POSIX_SigAction {
+	label="POSIX::SigAction";
+	"POSIX::SigAction::BEGIN@52";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_POSIX {
+	label="POSIX";
+	"POSIX::BEGIN@39";
+	"POSIX::load_imports";
+	"POSIX::BEGIN@2";
+	"POSIX::BEGIN@13";
+	"POSIX::import";
+	"POSIX::AUTOLOAD";
+	"POSIX::CORE:match";
+	"POSIX::BEGIN@9";
+	"POSIX::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_AutoLoader {
+	label="AutoLoader";
+	"AutoLoader::import";
+	"AutoLoader::AUTOLOAD";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::BEGIN@9";
+"POSIX::AUTOLOAD" -> "POSIX::CORE:match";
+"POSIX::import" -> "AutoLoader::AUTOLOAD";
+"POSIX::BEGIN@2" -> "strict::import";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::BEGIN@2";
+"POSIX::import" -> "POSIX::AUTOLOAD";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::import";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::SigRt::BEGIN@60";
+"POSIX::import" -> "Exporter::import";
+"POSIX::BEGIN@13" -> "Exporter::import";
+"POSIX::SigRt::BEGIN@56" -> "AutoLoader::import";
+"POSIX::SigAction::BEGIN@52" -> "AutoLoader::import";
+"POSIX::BEGIN@9" -> "AutoLoader::import";
+"POSIX::BEGIN@3" -> "warnings::import";
+"POSIX::SigRt::BEGIN@60" -> "vars::import";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::SigAction::BEGIN@52";
+"POSIX::BEGIN@39" -> "warnings::unimport";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::SigRt::BEGIN@56";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::BEGIN@39";
+"POSIX::import" -> "POSIX::load_imports";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::SigRt::BEGIN@58";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::BEGIN@3";
+"IPC::Run::Debug::BEGIN@2" -> "POSIX::BEGIN@13";
+}

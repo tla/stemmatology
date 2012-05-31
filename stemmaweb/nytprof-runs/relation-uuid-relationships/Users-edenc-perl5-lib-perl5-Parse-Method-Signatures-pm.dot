@@ -1,0 +1,355 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::raw_type";
+	"PPI::Token::Symbol::symbol_type";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::parse_proto_using_pms";
+	"TryCatch::BEGIN@11";
+}
+subgraph cluster_PPI_Statement_Expression_TCUnion {
+	label="PPI::Statement::Expression::TCUnion";
+	"PPI::Statement::Expression::TCUnion::BEGIN@831";
+}
+subgraph cluster_PPI_Statement_Expression_TCParams {
+	label="PPI::Statement::Expression::TCParams";
+	"PPI::Statement::Expression::TCParams::BEGIN@871";
+	"PPI::Statement::Expression::TCParams::BEGIN@842";
+	"PPI::Statement::Expression::TCParams::BEGIN@841";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::ArrayRef";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::from_namespace";
+	"Parse::Method::Signatures::_param_where";
+	"Parse::Method::Signatures::_param_constraint_or_traits";
+	"Parse::Method::Signatures::tc";
+	"Parse::Method::Signatures::consume_token";
+	"Parse::Method::Signatures::input";
+	"Parse::Method::Signatures::_build_ppi";
+	"Parse::Method::Signatures::BEGIN@10";
+	"Parse::Method::Signatures::new";
+	"Parse::Method::Signatures::ppi_doc";
+	"Parse::Method::Signatures::BEGIN@9";
+	"Parse::Method::Signatures::offset";
+	"Parse::Method::Signatures::BEGIN@15";
+	"Parse::Method::Signatures::_param_default";
+	"Parse::Method::Signatures::_param_named";
+	"Parse::Method::Signatures::BEGIN@17";
+	"Parse::Method::Signatures::BEGIN@4";
+	"Parse::Method::Signatures::_replace_regexps";
+	"Parse::Method::Signatures::_param_typed";
+	"Parse::Method::Signatures::_param_traits";
+	"Parse::Method::Signatures::__ANON__[Parse/Method/Signatures.pm:122]";
+	"Parse::Method::Signatures::_param_variable";
+	"Parse::Method::Signatures::type_constraint_callback";
+	"Parse::Method::Signatures::_param_labeled";
+	"Parse::Method::Signatures::_fixup_hex";
+	"Parse::Method::Signatures::signature_class";
+	"Parse::Method::Signatures::parse";
+	"Parse::Method::Signatures::_tc_union";
+	"Parse::Method::Signatures::BEGIN@11";
+	"Parse::Method::Signatures::_set_ppi";
+	"Parse::Method::Signatures::_replace_magic";
+	"Parse::Method::Signatures::has_type_constraint_callback";
+	"Parse::Method::Signatures::bracketed";
+	"Parse::Method::Signatures::has_from_namespace";
+	"Parse::Method::Signatures::BEGIN@8";
+	"Parse::Method::Signatures::create_param";
+	"Parse::Method::Signatures::BUILDARGS";
+	"Parse::Method::Signatures::BEGIN@3";
+	"Parse::Method::Signatures::ppi";
+	"Parse::Method::Signatures::param_class";
+	"Parse::Method::Signatures::_replace_labels";
+	"Parse::Method::Signatures::_param_opt_or_req";
+	"Parse::Method::Signatures::_ident";
+	"Parse::Method::Signatures::remaining_input";
+	"Parse::Method::Signatures::type_constraint_class";
+	"Parse::Method::Signatures::param";
+	"Parse::Method::Signatures::BUILD";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::new";
+}
+subgraph cluster_PPI_Token_StringifiedWord {
+	label="PPI::Token::StringifiedWord";
+	"PPI::Token::StringifiedWord::BEGIN@887";
+	"PPI::Token::StringifiedWord::BEGIN@889";
+	"PPI::Token::StringifiedWord::BEGIN@897";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::content";
+	"PPI::Token::new";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@3";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@7";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@4";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::new_with_traits";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::super";
+	"Moose::has";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::first_token";
+	"PPI::Element::significant";
+	"PPI::Element::clone";
+	"PPI::Element::class";
+	"PPI::Element::next_token";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Token_LexSymbol {
+	label="PPI::Token::LexSymbol";
+	"PPI::Token::LexSymbol::BEGIN@876";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::significant";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster___TYPE___Parse_Method_Signatures_Types {
+	label="__TYPE__::Parse::Method::Signatures::Types";
+	"__TYPE__::Parse::Method::Signatures::Types::Param";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::add_element";
+	"PPI::Node::find";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@17";
+	"PPI::BEGIN@9";
+	"PPI::BEGIN@18";
+	"PPI::BEGIN@24";
+	"PPI::BEGIN@5";
+	"PPI::BEGIN@19";
+	"PPI::BEGIN@26";
+	"PPI::BEGIN@10";
+	"PPI::BEGIN@20";
+	"PPI::BEGIN@25";
+	"PPI::BEGIN@27";
+	"PPI::BEGIN@23";
+	"PPI::CORE:match";
+	"PPI::BEGIN@28";
+	"PPI::BEGIN@22";
+	"PPI::BEGIN@6";
+	"PPI::BEGIN@29";
+	"PPI::BEGIN@21";
+}
+"Parse::Method::Signatures::_param_opt_or_req" -> "PPI::Element::class";
+"Parse::Method::Signatures::_ident" -> "PPI::Element::class";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::class";
+"Parse::Method::Signatures::_build_ppi" -> "PPI::Element::class";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Element::class";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::input";
+"Parse::Method::Signatures::parse" -> "PPI::Document::new";
+"Parse::Method::Signatures::tc" -> "PPI::Element::clone";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::TypeConstraint::new";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::create_param";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@8";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::Symbol::raw_type";
+"Parse::Method::Signatures::param" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@23";
+"Parse::Method::Signatures::tc" -> "Parse::Method::Signatures::_tc_union";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@7";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@897";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::has_from_namespace";
+"Parse::Method::Signatures::_build_ppi" -> "PPI::Element::first_token";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::CORE:match";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::_replace_magic";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@10";
+"Parse::Method::Signatures::BEGIN@8" -> "UNIVERSAL::import";
+"Parse::Method::Signatures::BEGIN@10" -> "UNIVERSAL::import";
+"Parse::Method::Signatures::_param_constraint_or_traits" -> "Parse::Method::Signatures::_param_traits";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@28";
+"Parse::Method::Signatures::BEGIN@10" -> "__TYPE__::Parse::Method::Signatures::Types::Param";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::has_type_constraint_callback";
+"Parse::Method::Signatures::tc" -> "Parse::Method::Signatures::bracketed";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::param";
+"Parse::Method::Signatures::BEGIN@10" -> "Moose::has";
+"Parse::Method::Signatures::BEGIN@10" -> "__TYPE__::ArrayRef";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@5";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@889";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@4";
+"Parse::Method::Signatures::BUILD" -> "Class::Load::load_class";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::type_constraint_class";
+"Parse::Method::Signatures::BUILD" -> "Parse::Method::Signatures::type_constraint_class";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCUnion::BEGIN@831";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@26";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@15";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::_replace_regexps";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@3";
+"Parse::Method::Signatures::consume_token" -> "PPI::Token::Whitespace::significant";
+"Parse::Method::Signatures::BUILD" -> "PPI::Token::Whitespace::significant";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@20";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@871";
+"Parse::Method::Signatures::BEGIN@17" -> "namespace::clean::import";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@9";
+"Parse::Method::Signatures::_ident" -> "Parse::Method::Signatures::consume_token";
+"Parse::Method::Signatures::_param_variable" -> "Parse::Method::Signatures::consume_token";
+"Parse::Method::Signatures::BUILD" -> "Parse::Method::Signatures::consume_token";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::tc";
+"Parse::Method::Signatures::_replace_regexps" -> "PPI::Node::find";
+"Parse::Method::Signatures::_fixup_hex" -> "PPI::Node::find";
+"Parse::Method::Signatures::_replace_magic" -> "PPI::Node::find";
+"Parse::Method::Signatures::_replace_labels" -> "PPI::Node::find";
+"TryCatch::BEGIN@11" -> "PPI::Token::StringifiedWord::BEGIN@887";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::_replace_labels";
+"Parse::Method::Signatures::_param_labeled" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_default" -> "PPI::Token::content";
+"Parse::Method::Signatures::consume_token" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_named" -> "PPI::Token::content";
+"Parse::Method::Signatures::_tc_union" -> "PPI::Token::content";
+"Parse::Method::Signatures::bracketed" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::content";
+"Parse::Method::Signatures::tc" -> "PPI::Util::TRUE";
+"Parse::Method::Signatures::_param_typed" -> "PPI::Util::TRUE";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@5";
+"Parse::Method::Signatures::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::from_namespace";
+"PPI::Token::StringifiedWord::BEGIN@897" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"PPI::Statement::Expression::TCParams::BEGIN@871" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_named";
+"Parse::Method::Signatures::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"PPI::Statement::Expression::TCParams::BEGIN@842" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"PPI::Token::StringifiedWord::BEGIN@889" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@24";
+"Parse::Method::Signatures::BEGIN@11" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::BEGIN@4" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@18";
+"TryCatch::parse_proto_using_pms" -> "Parse::Method::Signatures::remaining_input";
+"Parse::Method::Signatures::BEGIN@15" -> "Exporter::import";
+"Parse::Method::Signatures::create_param" -> "MooseX::Traits::new_with_traits";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@22";
+"Parse::Method::Signatures::ppi" -> "Parse::Method::Signatures::_build_ppi";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::next_token";
+"Parse::Method::Signatures::BUILD" -> "Parse::Method::Signatures::signature_class";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@6";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@19";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@9";
+"Parse::Method::Signatures::parse" -> "PPI::Token::new";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::_fixup_hex";
+"PPI::Token::StringifiedWord::BEGIN@887" -> "base::import";
+"PPI::Statement::Expression::TCUnion::BEGIN@831" -> "base::import";
+"PPI::Statement::Expression::TCParams::BEGIN@841" -> "base::import";
+"PPI::Token::LexSymbol::BEGIN@876" -> "base::import";
+"Parse::Method::Signatures::tc" -> "Parse::Method::Signatures::_ident";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_typed";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_variable";
+"Parse::Method::Signatures::ppi_doc" -> "Parse::Method::Signatures::parse";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@11";
+"Parse::Method::Signatures::consume_token" -> "PPI::Element::significant";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@29";
+"Parse::Method::Signatures::__ANON__[Parse/Method/Signatures.pm:122]" -> "Moose::super";
+"Parse::Method::Signatures::_param_labeled" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_where" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_default" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::consume_token" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_named" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_tc_union" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_opt_or_req" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_traits" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_ident" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::remaining_input" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::bracketed" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::_param_variable" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::BUILD" -> "Parse::Method::Signatures::ppi";
+"Parse::Method::Signatures::parse" -> "Parse::Method::Signatures::offset";
+"Parse::Method::Signatures::_param_typed" -> "Parse::Method::Signatures::type_constraint_callback";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@842";
+"TryCatch::BEGIN@11" -> "PPI::Statement::Expression::TCParams::BEGIN@841";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_default";
+"Parse::Method::Signatures::consume_token" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::_param_traits" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::_param_where" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::remaining_input" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::Symbol::symbol_type";
+"Parse::Method::Signatures::_build_ppi" -> "Parse::Method::Signatures::ppi_doc";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@4";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@27";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_constraint_or_traits";
+"Parse::Method::Signatures::parse" -> "PPI::Node::add_element";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@21";
+"Parse::Method::Signatures::new" -> "Parse::Method::Signatures::BUILD";
+"Parse::Method::Signatures::_param_constraint_or_traits" -> "Parse::Method::Signatures::_param_where";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@25";
+"Parse::Method::Signatures::BUILDARGS" -> "Parse::Method::Signatures::__ANON__[Parse/Method/Signatures.pm:122]";
+"Parse::Method::Signatures::create_param" -> "Parse::Method::Signatures::param_class";
+"Parse::Method::Signatures::BUILD" -> "Parse::Method::Signatures::param_class";
+"Parse::Method::Signatures::BUILD" -> "Class::MOP::load_class";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@3";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_opt_or_req";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@17";
+"Parse::Method::Signatures::param" -> "Parse::Method::Signatures::_param_labeled";
+"Parse::Method::Signatures::BEGIN@8" -> "PPI::BEGIN@10";
+"Parse::Method::Signatures::consume_token" -> "Parse::Method::Signatures::_set_ppi";
+"TryCatch::BEGIN@11" -> "Parse::Method::Signatures::BEGIN@17";
+"TryCatch::BEGIN@11" -> "PPI::Token::LexSymbol::BEGIN@876";
+}

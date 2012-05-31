@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_real_ref_name";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Trait {
+	label="Class::MOP::Class::Immutable::Trait";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@46";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@12";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@2";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@36";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@15";
+	"Class::MOP::Class::Immutable::Trait::_get_mutable_metaclass_name";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@10";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@9";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@14";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@36";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@2";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@10";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@46";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@14";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@9";
+"Class::MOP::Class::Immutable::Trait::BEGIN@9" -> "strict::import";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@15";
+"Class::MOP::Class::Immutable::Trait::BEGIN@15" -> "Exporter::import";
+"Class::MOP::Class::Immutable::Trait::BEGIN@14" -> "Exporter::import";
+"Class::MOP::Class::Immutable::Trait::BEGIN@36" -> "strict::unimport";
+"Class::MOP::Class::Immutable::Trait::BEGIN@46" -> "strict::unimport";
+"Class::MOP::Class::Immutable::Trait::BEGIN@10" -> "warnings::import";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Trait::_get_mutable_metaclass_name";
+"Module::Runtime::require_module" -> "Class::MOP::Class::Immutable::Trait::BEGIN@12";
+}

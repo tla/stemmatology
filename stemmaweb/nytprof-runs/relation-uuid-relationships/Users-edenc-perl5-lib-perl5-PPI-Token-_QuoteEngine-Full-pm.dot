@@ -1,0 +1,32 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token__QuoteEngine_Full {
+	label="PPI::Token::_QuoteEngine::Full";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@5";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@7";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@10";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@6";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@8";
+	"PPI::Token::_QuoteEngine::Full::BEGIN@11";
+}
+subgraph cluster_PPI_Token_Quote_Literal {
+	label="PPI::Token::Quote::Literal";
+	"PPI::Token::Quote::Literal::BEGIN@33";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@11";
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@10";
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@5";
+"PPI::Token::_QuoteEngine::Full::BEGIN@5" -> "strict::import";
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@7";
+"PPI::Token::_QuoteEngine::Full::BEGIN@10" -> "vars::import";
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@6";
+"PPI::Token::Quote::Literal::BEGIN@33" -> "PPI::Token::_QuoteEngine::Full::BEGIN@8";
+}

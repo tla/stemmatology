@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Backend_Role_UnicodeSafe {
+	label="KiokuDB::Backend::Role::UnicodeSafe";
+	"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@4";
+	"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Role::UnicodeSafe::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Role::UnicodeSafe::BEGIN@6";
+}

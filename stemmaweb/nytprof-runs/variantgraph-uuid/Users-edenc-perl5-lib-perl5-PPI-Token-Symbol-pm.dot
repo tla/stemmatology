@@ -1,0 +1,77 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::BEGIN@30";
+	"PPI::Token::Symbol::symbol";
+	"PPI::Token::Symbol::BEGIN@34";
+	"PPI::Token::Symbol::CORE:subst";
+	"PPI::Token::Symbol::CORE:match";
+	"PPI::Token::Symbol::__TOKENIZER__on_char";
+	"PPI::Token::Symbol::raw_type";
+	"PPI::Token::Symbol::canonical";
+	"PPI::Token::Symbol::BEGIN@31";
+	"PPI::Token::Symbol::BEGIN@32";
+	"PPI::Token::Symbol::symbol_type";
+	"PPI::Token::Symbol::BEGIN@35";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::_param_variable";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@51";
+	"PPI::Token::content";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::snext_sibling";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_finalize_token";
+	"PPI::Tokenizer::_process_next_char";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_INSTANCE";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::__TOKENIZER__on_char";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::Symbol::raw_type";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@31";
+"PPI::Token::Symbol::symbol" -> "PPI::Element::snext_sibling";
+"PPI::Token::Symbol::symbol" -> "Params::Util::_INSTANCE";
+"PPI::Token::Symbol::__TOKENIZER__on_char" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@34";
+"PPI::Token::Symbol::BEGIN@30" -> "strict::import";
+"PPI::Token::Symbol::canonical" -> "PPI::Token::content";
+"PPI::Token::Symbol::raw_type" -> "PPI::Token::content";
+"PPI::Token::Symbol::symbol" -> "PPI::Token::Symbol::canonical";
+"PPI::Token::Symbol::BEGIN@31" -> "Exporter::import";
+"PPI::Token::Symbol::__TOKENIZER__on_char" -> "PPI::Token::Symbol::CORE:match";
+"PPI::Token::Symbol::canonical" -> "PPI::Token::Symbol::CORE:subst";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@35";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@30";
+"PPI::Token::Symbol::BEGIN@34" -> "vars::import";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@32";
+"PPI::Token::Symbol::symbol_type" -> "PPI::Token::Symbol::symbol";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::Symbol::symbol_type";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Symbol::__TOKENIZER__on_char";
+"PPI::Token::Symbol::__TOKENIZER__on_char" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+}

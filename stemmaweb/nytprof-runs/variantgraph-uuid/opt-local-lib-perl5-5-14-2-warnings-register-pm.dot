@@ -1,0 +1,62 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::BEGIN@8";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::BEGIN@4";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::register_categories";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::BEGIN@7";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@6";
+}
+subgraph cluster_Socket {
+	label="Socket";
+	"Socket::BEGIN@649";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::BEGIN@5";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::BEGIN@147";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::BEGIN@7";
+}
+subgraph cluster_Tie_Hash {
+	label="Tie::Hash";
+	"Tie::Hash::BEGIN@189";
+}
+subgraph cluster_Class_C3_Adopt_NEXT {
+	label="Class::C3::Adopt::NEXT";
+	"Class::C3::Adopt::NEXT::BEGIN@16";
+}
+"overload::BEGIN@147" -> "warnings::register::import";
+"constant::BEGIN@4" -> "warnings::register::import";
+"File::stat::BEGIN@6" -> "warnings::register::import";
+"Class::C3::Adopt::NEXT::BEGIN@16" -> "warnings::register::import";
+"File::Find::BEGIN@5" -> "warnings::register::import";
+"Socket::BEGIN@649" -> "warnings::register::import";
+"MooseX::Traits::BEGIN@7" -> "warnings::register::import";
+"Class::Struct::BEGIN@8" -> "warnings::register::import";
+"Tie::Hash::BEGIN@189" -> "warnings::register::import";
+"vars::BEGIN@7" -> "warnings::register::import";
+"warnings::register::import" -> "warnings::register_categories";
+}

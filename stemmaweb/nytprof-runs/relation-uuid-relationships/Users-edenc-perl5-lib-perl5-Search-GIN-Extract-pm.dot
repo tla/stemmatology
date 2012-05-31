@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Search_GIN_Extract {
+	label="Search::GIN::Extract";
+	"Search::GIN::Extract::BEGIN@9";
+	"Search::GIN::Extract::BEGIN@11";
+	"Search::GIN::Extract::BEGIN@4";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::BEGIN@1";
+	"Module::Runtime::require_module";
+	"Module::Runtime::BEGIN@2";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Search::GIN::Extract::BEGIN@11";
+"Module::Runtime::require_module" -> "Module::Runtime::BEGIN@2";
+"Module::Runtime::require_module" -> "Search::GIN::Extract::BEGIN@9";
+"Module::Runtime::require_module" -> "Module::Runtime::BEGIN@1";
+"Search::GIN::Extract::BEGIN@11" -> "namespace::clean::import";
+"Module::Runtime::BEGIN@1" -> "strict::import";
+"Search::GIN::Extract::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::BEGIN@2" -> "warnings::import";
+"Module::Runtime::require_module" -> "Search::GIN::Extract::BEGIN@4";
+}

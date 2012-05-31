@@ -1,0 +1,271 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::register";
+	"Catalyst::Dispatcher::setup_actions";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::forward";
+	"Catalyst::_dispatcher_accessor";
+	"Catalyst::namespace";
+	"Catalyst::BEGIN@16";
+	"Catalyst::action";
+	"Catalyst::get_actions";
+	"Catalyst::req";
+	"Catalyst::error";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::dispatch";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::config";
+	"Catalyst::Component::catalyst_component_name";
+	"Catalyst::Component::merge_config_hashes";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::action";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::body";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::new";
+	"Catalyst::Action::dispatch";
+	"Catalyst::Action::execute";
+	"Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_7 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::7";
+	"Moose::Meta::Class::__ANON__::SERIAL::7::attributes";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::uniq";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::new";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::BEGIN@9";
+	"attributes::import";
+	"attributes::CORE:qr";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::new";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::new";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::_build__all_actions_attributes";
+	"Catalyst::Controller::_controller_actions";
+	"Catalyst::Controller::BEGIN@11";
+	"Catalyst::Controller::_ACTION";
+	"Catalyst::Controller::get_action_methods";
+	"Catalyst::Controller::BEGIN@111";
+	"Catalyst::Controller::BUILD";
+	"Catalyst::Controller::_parse_attrs";
+	"Catalyst::Controller::_all_actions_attributes";
+	"Catalyst::Controller::_parse_ActionClass_attr";
+	"Catalyst::Controller::BEGIN@103";
+	"Catalyst::Controller::CORE:subst";
+	"Catalyst::Controller::action_class";
+	"Catalyst::Controller::BEGIN@8";
+	"Catalyst::Controller::_application";
+	"Catalyst::Controller::CORE:match";
+	"Catalyst::Controller::BEGIN@12";
+	"Catalyst::Controller::create_action";
+	"Catalyst::Controller::BEGIN@6";
+	"Catalyst::Controller::_BEGIN";
+	"Catalyst::Controller::CORE:substcont";
+	"Catalyst::Controller::register_actions";
+	"Catalyst::Controller::_END";
+	"Catalyst::Controller::__action_class_accessor";
+	"Catalyst::Controller::BEGIN@140";
+	"Catalyst::Controller::BEGIN@10";
+	"Catalyst::Controller::BEGIN@121";
+	"Catalyst::Controller::path_prefix";
+	"Catalyst::Controller::register_action_methods";
+	"Catalyst::Controller::action_namespace";
+	"Catalyst::Controller::BEGIN@3";
+	"Catalyst::Controller::BEGIN@5";
+	"Catalyst::Controller::_DISPATCH";
+	"Catalyst::Controller::BEGIN@132";
+	"Catalyst::Controller::_AUTO";
+	"Catalyst::Controller::__dispatch_steps_accessor";
+	"Catalyst::Controller::BEGIN@4";
+	"Catalyst::Controller::_parse_Chained_attr";
+	"Catalyst::Controller::_parse_Local_attr";
+	"Catalyst::Controller::_parse_Path_attr";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::resolve_namespace";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::new";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::find_meta";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+"Catalyst::Controller::_ACTION" -> "Catalyst::ActionChain::dispatch";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_parse_Local_attr";
+"Catalyst::Controller::register_action_methods" -> "Scalar::Util::blessed";
+"Catalyst::Controller::create_action" -> "Catalyst::Action::new";
+"Catalyst::Controller::BEGIN@8" -> "Moose::extends";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@4";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_parse_Path_attr";
+"Catalyst::Controller::_parse_Local_attr" -> "Catalyst::Controller::_parse_Path_attr";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_ACTION";
+"Catalyst::Controller::_ACTION" -> "Catalyst::error";
+"Catalyst::Controller::_END" -> "Catalyst::error";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@121";
+"Catalyst::Controller::get_action_methods" -> "List::MoreUtils::uniq";
+"Catalyst::Controller::BUILD" -> "Catalyst::Controller::_all_actions_attributes";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_all_actions_attributes";
+"Catalyst::Controller::BEGIN@103" -> "attributes::BEGIN@9";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@111";
+"Catalyst::Controller::create_action" -> "Catalyst::Component::config";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Component::catalyst_component_name";
+"Catalyst::Controller::BUILD" -> "Catalyst::Controller::_controller_actions";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_controller_actions";
+"Catalyst::Controller::_build__all_actions_attributes" -> "Catalyst::Controller::_controller_actions";
+"Catalyst::Controller::get_action_methods" -> "Catalyst::Controller::_controller_actions";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_parse_ActionClass_attr";
+"Catalyst::Controller::register_action_methods" -> "Moose::Meta::Class::__ANON__::SERIAL::7::attributes";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@6";
+"Catalyst::Controller::get_action_methods" -> "MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::CORE:substcont";
+"Catalyst::Controller::register_actions" -> "Catalyst::Controller::get_action_methods";
+"Catalyst::Controller::create_action" -> "Catalyst::Controller::action_class";
+"Catalyst::Controller::action_class" -> "Class::Load::load_class";
+"Catalyst::Controller::_parse_ActionClass_attr" -> "Catalyst::Controller::__action_class_accessor";
+"Catalyst::Controller::action_class" -> "Catalyst::Controller::__action_class_accessor";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@132";
+"Catalyst::Controller::_ACTION" -> "Catalyst::Request::action";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@103";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@12";
+"Catalyst::Controller::BEGIN@4" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_AUTO";
+"Catalyst::Controller::_DISPATCH" -> "Catalyst::forward";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@140";
+"Catalyst::Controller::BEGIN@6" -> "namespace::clean::import";
+"Catalyst::Controller::get_action_methods" -> "Moose::Util::find_meta";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Controller::create_action";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@10";
+"Catalyst::Controller::BEGIN@103" -> "XSLoader::load";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::Controller::_END" -> "Catalyst::Action::dispatch";
+"Catalyst::Controller::BEGIN@103" -> "attributes::CORE:qr";
+"Catalyst::Controller::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Controller::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Controller::register_actions";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_END";
+"Catalyst::Controller::register_action_methods" -> "Class::MOP::Method::body";
+"Catalyst::Controller::_BEGIN" -> "Catalyst::get_actions";
+"Catalyst::Controller::_AUTO" -> "Catalyst::get_actions";
+"Catalyst::Controller::_END" -> "Catalyst::get_actions";
+"Catalyst::Controller::BEGIN@5" -> "Exporter::import";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@8";
+"Catalyst::Controller::_END" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::_parse_Chained_attr";
+"stemmaweb::Controller::Microservice::new" -> "Catalyst::Controller::BUILD";
+"stemmaweb::Controller::Stexaminer::new" -> "Catalyst::Controller::BUILD";
+"stemmaweb::Controller::Root::new" -> "Catalyst::Controller::BUILD";
+"stemmaweb::Controller::Relation::new" -> "Catalyst::Controller::BUILD";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_BEGIN";
+"Catalyst::Controller::get_action_methods" -> "UNIVERSAL::can";
+"Catalyst::Controller::register_action_methods" -> "UNIVERSAL::can";
+"Catalyst::Controller::_ACTION" -> "UNIVERSAL::can";
+"Catalyst::Controller::_parse_attrs" -> "UNIVERSAL::can";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@3";
+"Catalyst::Controller::register_actions" -> "Catalyst::Controller::register_action_methods";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::CORE:match";
+"Catalyst::Controller::_parse_Chained_attr" -> "Catalyst::Controller::CORE:match";
+"Catalyst::Controller::_parse_Path_attr" -> "Catalyst::Controller::CORE:match";
+"Catalyst::Controller::_BEGIN" -> "Catalyst::namespace";
+"Catalyst::Controller::_AUTO" -> "Catalyst::namespace";
+"Catalyst::Controller::_END" -> "Catalyst::namespace";
+"Catalyst::Controller::_parse_ActionClass_attr" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::Controller::_ACTION" -> "Catalyst::action";
+"Catalyst::Controller::_parse_Chained_attr" -> "Catalyst::Controller::action_namespace";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Controller::action_namespace";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@11";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Dispatcher::register";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@5";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_DISPATCH";
+"Catalyst::Controller::register_action_methods" -> "Class::MOP::Method::name";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Controller::_parse_attrs";
+"Catalyst::Controller::_DISPATCH" -> "Catalyst::Controller::__dispatch_steps_accessor";
+"Catalyst::Controller::action_class" -> "Class::MOP::load_class";
+"Catalyst::Controller::_parse_attrs" -> "Catalyst::Controller::CORE:subst";
+"Catalyst::Controller::_parse_ActionClass_attr" -> "Catalyst::Controller::_application";
+"Catalyst::Controller::BEGIN@140" -> "attributes::import";
+"Catalyst::Controller::BEGIN@121" -> "attributes::import";
+"Catalyst::Controller::BEGIN@111" -> "attributes::import";
+"Catalyst::Controller::BEGIN@132" -> "attributes::import";
+"Catalyst::Controller::BEGIN@103" -> "attributes::import";
+"Catalyst::Controller::_all_actions_attributes" -> "Catalyst::Controller::_build__all_actions_attributes";
+"Catalyst::Controller::BUILD" -> "Catalyst::Component::merge_config_hashes";
+"Catalyst::Controller::_ACTION" -> "Catalyst::req";
+"Catalyst::Controller::_parse_Path_attr" -> "Catalyst::Controller::path_prefix";
+}

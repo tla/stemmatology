@@ -1,0 +1,72 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]";
+	"Module::Pluggable::Object::find_files";
+	"Module::Pluggable::Object::BEGIN@4";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::BEGIN@2";
+	"File::Find::BEGIN@3";
+	"File::Find::BEGIN@4";
+	"File::Find::CORE:open_dir";
+	"File::Find::CORE:readdir";
+	"File::Find::BEGIN@349";
+	"File::Find::CORE:match";
+	"File::Find::CORE:closedir";
+	"File::Find::_find_dir";
+	"File::Find::CORE:regcomp";
+	"File::Find::wrap_wanted";
+	"File::Find::BEGIN@5";
+	"File::Find::CORE:lstat";
+	"File::Find::CORE:subst";
+	"File::Find::CORE:ftdir";
+	"File::Find::find";
+	"File::Find::CORE:qr";
+	"File::Find::_find_opt";
+}
+subgraph cluster_Cwd {
+	label="Cwd";
+	"Cwd::getcwd";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@3";
+"File::Find::_find_dir" -> "File::Find::CORE:regcomp";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@5";
+"Module::Pluggable::Object::find_files" -> "File::Find::find";
+"File::Find::_find_dir" -> "File::Find::CORE:match";
+"File::Find::_find_dir" -> "File::Find::CORE:open_dir";
+"File::Find::BEGIN@3" -> "strict::import";
+"File::Find::BEGIN@349" -> "strict::import";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@2";
+"File::Find::_find_dir" -> "Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]";
+"File::Find::_find_dir" -> "File::Find::CORE:closedir";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@349";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::CORE:qr";
+"File::Find::BEGIN@5" -> "warnings::register::import";
+"File::Find::find" -> "File::Find::_find_opt";
+"File::Find::_find_dir" -> "File::Find::CORE:lstat";
+"File::Find::_find_opt" -> "File::Find::CORE:lstat";
+"File::Find::BEGIN@4" -> "warnings::import";
+"File::Find::find" -> "File::Find::wrap_wanted";
+"File::Find::_find_dir" -> "File::Find::CORE:ftdir";
+"File::Find::_find_opt" -> "File::Find::CORE:ftdir";
+"File::Find::_find_opt" -> "Cwd::getcwd";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@4";
+"File::Find::_find_dir" -> "File::Find::CORE:readdir";
+"File::Find::_find_opt" -> "File::Find::_find_dir";
+"File::Find::_find_opt" -> "File::Find::CORE:subst";
+}

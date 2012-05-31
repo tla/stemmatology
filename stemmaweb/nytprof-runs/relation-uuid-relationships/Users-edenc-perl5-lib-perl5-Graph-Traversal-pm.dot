@@ -1,0 +1,82 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Graph_Traversal_DFS {
+	label="Graph::Traversal::DFS";
+	"Graph::Traversal::DFS::current";
+	"Graph::Traversal::DFS::see";
+	"Graph::Traversal::DFS::BEGIN@5";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::successors";
+	"Graph::countedged";
+	"Graph::_next_random";
+	"Graph::multiedged";
+	"Graph::directed";
+	"Graph::add_edge";
+	"Graph::has_edge";
+	"Graph::has_a_cycle";
+	"Graph::vertices";
+	"Graph::new";
+}
+subgraph cluster_Graph_Traversal {
+	label="Graph::Traversal";
+	"Graph::Traversal::__ANON__[Graph/Traversal.pm:26]";
+	"Graph::Traversal::add_order";
+	"Graph::Traversal::visit_preorder";
+	"Graph::Traversal::terminate";
+	"Graph::Traversal::reset";
+	"Graph::Traversal::seeing";
+	"Graph::Traversal::next";
+	"Graph::Traversal::get_state";
+	"Graph::Traversal::_callbacks";
+	"Graph::Traversal::configure";
+	"Graph::Traversal::postorder";
+	"Graph::Traversal::new";
+	"Graph::Traversal::BEGIN@3";
+	"Graph::Traversal::_order";
+	"Graph::Traversal::visit";
+	"Graph::Traversal::graph";
+	"Graph::Traversal::visit_postorder";
+	"Graph::Traversal::has_a_cycle";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::Traversal::configure" -> "Graph::Traversal::graph";
+"Graph::Traversal::next" -> "Graph::_next_random";
+"Graph::Traversal::_order" -> "Graph::Traversal::next";
+"Graph::Traversal::next" -> "Graph::Traversal::seeing";
+"Graph::has_a_cycle" -> "Graph::Traversal::new";
+"Graph::Traversal::new" -> "Graph::Traversal::reset";
+"Graph::Traversal::reset" -> "Graph::directed";
+"Graph::Traversal::__ANON__[Graph/Traversal.pm:26]" -> "Graph::Traversal::DFS::see";
+"Graph::Traversal::BEGIN@3" -> "strict::import";
+"Graph::Traversal::next" -> "Graph::Traversal::_callbacks";
+"Graph::Traversal::next" -> "Graph::Traversal::DFS::current";
+"Graph::Traversal::new" -> "Graph::Traversal::configure";
+"Graph::Traversal::visit_postorder" -> "Graph::Traversal::__ANON__[Graph/Traversal.pm:26]";
+"Graph::Traversal::DFS::BEGIN@5" -> "Graph::Traversal::BEGIN@3";
+"Graph::Traversal::has_a_cycle" -> "Graph::Traversal::terminate";
+"Graph::Traversal::reset" -> "Graph::vertices";
+"Graph::Traversal::next" -> "Graph::add_edge";
+"Graph::has_a_cycle" -> "Graph::Traversal::get_state";
+"Graph::Traversal::next" -> "Graph::Traversal::visit_postorder";
+"Graph::Traversal::configure" -> "Graph::countedged";
+"Graph::Traversal::next" -> "Graph::Traversal::visit_preorder";
+"Graph::Traversal::_callbacks" -> "Graph::Traversal::has_a_cycle";
+"Graph::Traversal::new" -> "UNIVERSAL::isa";
+"Graph::Traversal::reset" -> "Graph::new";
+"Graph::Traversal::visit_preorder" -> "Graph::Traversal::visit";
+"Graph::Traversal::_callbacks" -> "Graph::has_edge";
+"Graph::Traversal::configure" -> "Graph::multiedged";
+"Graph::Traversal::visit" -> "Graph::Traversal::add_order";
+"Graph::Traversal::next" -> "Graph::successors";
+"Graph::has_a_cycle" -> "Graph::Traversal::postorder";
+"Graph::Traversal::postorder" -> "Graph::Traversal::_order";
+}

@@ -1,0 +1,296 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_MooseX_OneArgNew {
+	label="MooseX::OneArgNew";
+	"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BUILDARGS";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:156]";
+	"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:125]";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_eval_environment";
+	"Moose::Meta::Method::Accessor::_get_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::add_override_method_modifier";
+	"Moose::Meta::Role::add_required_methods";
+	"Moose::Meta::Role::add_attribute";
+	"Moose::Meta::Role::initialize";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@13";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::init_meta";
+	"MooseX::Role::WithOverloading::BEGIN@11";
+	"MooseX::Role::WithOverloading::BEGIN@1";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::BEGIN@13";
+	"Moose::Role::with";
+	"Moose::Role::BEGIN@11";
+	"Moose::Role::BEGIN@12";
+	"Moose::Role::around";
+	"Moose::Role::BEGIN@17";
+	"Moose::Role::has";
+	"Moose::Role::init_meta";
+	"Moose::Role::override";
+	"Moose::Role::BEGIN@22";
+	"Moose::Role::BEGIN@9";
+	"Moose::Role::BEGIN@2";
+	"Moose::Role::_add_method_modifier";
+	"Moose::Role::super";
+	"Moose::Role::BEGIN@20";
+	"Moose::Role::before";
+	"Moose::Role::after";
+	"Moose::Role::BEGIN@21";
+	"Moose::Role::BEGIN@15";
+	"Moose::Role::BEGIN@18";
+	"Moose::Role::BEGIN@8";
+	"Moose::Role::requires";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::wrap";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@6";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+	"MooseX::Role::Parameterized::init_meta";
+}
+subgraph cluster_Catalyst_Component_ApplicationAttribute {
+	label="Catalyst::Component::ApplicationAttribute";
+	"Catalyst::Component::ApplicationAttribute::__ANON__[Catalyst/Component/ApplicationAttribute.pm:18]";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@13";
+	"MooseX::Clone::BEGIN@12";
+	"MooseX::Clone::BEGIN@10";
+	"MooseX::Clone::BEGIN@11";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::BEGIN@12";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@10";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::import";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::role_type";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::apply_all_roles";
+	"Moose::Util::_caller_info";
+	"Moose::Util::add_method_modifier";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::get_metaclass_by_name";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::DESTROY";
+}
+"Moose::Role::with" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::has" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::around" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::requires" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::init_meta" -> "Moose::Util::TypeConstraints::role_type";
+"Moose::Role::init_meta" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@9";
+"Moose::Role::override" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::with" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::around" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::before" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::after" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::has" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::requires" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::with" -> "Class::MOP::Package::DESTROY";
+"Moose::Role::super" -> "Moose::Meta::Method::Accessor::_eval_environment";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@2";
+"Moose::Role::init_meta" -> "Class::MOP::Mixin::HasMethods::get_method";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@20";
+"Moose::Role::super" -> "Moose::Meta::Method::Accessor::_get_value";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@17";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::has";
+"Module::Runtime::require_module" -> "Moose::Role::has";
+"Moose::Role::has" -> "Moose::Role::has";
+"MooseX::Clone::BEGIN@10" -> "Moose::Role::has";
+"Text::Tradition::Error::BEGIN@9" -> "Moose::Role::has";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::has";
+"Moose::Role::with" -> "Moose::Util::apply_all_roles";
+"Moose::Role::init_meta" -> "Class::Load::XS::is_class_loaded";
+"Moose::Role::requires" -> "Moose::Meta::Role::add_required_methods";
+"Moose::Role::BEGIN@15" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@8";
+"Moose::Role::BEGIN@8" -> "strict::import";
+"Moose::Role::init_meta" -> "Moose::Meta::Role::initialize";
+"Moose::Role::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Role::super" -> "Class::MOP::Method::Wrapped::wrap";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Role::init_meta";
+"MooseX::Role::WithOverloading::init_meta" -> "Moose::Role::init_meta";
+"MooseX::Role::Parameterized::init_meta" -> "Moose::Role::init_meta";
+"Moose::Role::init_meta" -> "Class::MOP::get_metaclass_by_name";
+"Moose::Role::BEGIN@20" -> "Moose::Exporter::import";
+"Moose::Role::BEGIN@12" -> "Exporter::import";
+"Moose::Role::BEGIN@11" -> "Exporter::import";
+"Moose::Role::BEGIN@13" -> "Exporter::import";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@12";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "Moose::Role::after";
+"Moose::Role::after" -> "Moose::Role::after";
+"Module::Runtime::require_module" -> "Moose::Role::after";
+"Moose::Role::BEGIN@9" -> "warnings::import";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::requires";
+"KiokuDB::BEGIN@10" -> "Moose::Role::requires";
+"Module::Runtime::require_module" -> "Moose::Role::requires";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::requires";
+"KiokuDB::TypeMap::BEGIN@9" -> "Moose::Role::requires";
+"Moose::Role::requires" -> "Moose::Role::requires";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Role::requires";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@11";
+"Moose::Role::before" -> "Moose::Role::_add_method_modifier";
+"Moose::Role::after" -> "Moose::Role::_add_method_modifier";
+"Moose::Role::around" -> "Moose::Role::_add_method_modifier";
+"Moose::Role::_add_method_modifier" -> "Moose::Util::add_method_modifier";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@18";
+"Moose::Role::override" -> "Moose::Meta::Role::add_override_method_modifier";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "Moose::Role::around";
+"Module::Runtime::require_module" -> "Moose::Role::around";
+"MooseX::StrictConstructor::BEGIN@13" -> "Moose::Role::around";
+"Moose::Role::around" -> "Moose::Role::around";
+"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]" -> "Moose::Role::around";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "Moose::Role::around";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "Moose::Role::around";
+"Moose::Role::init_meta" -> "UNIVERSAL::isa";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@21";
+"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:156]" -> "Moose::Role::super";
+"Catalyst::Component::ApplicationAttribute::__ANON__[Catalyst/Component/ApplicationAttribute.pm:18]" -> "Moose::Role::super";
+"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:125]" -> "Moose::Role::super";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Moose::Role::super";
+"Moose::Role::super" -> "Catalyst::Component::BUILDARGS";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@13" -> "Moose::Role::with";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1" -> "Moose::Role::with";
+"Moose::Role::with" -> "Moose::Role::with";
+"Module::Runtime::require_module" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@10" -> "Moose::Role::with";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1" -> "Moose::Role::with";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::with";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "Moose::Role::with";
+"Text::Tradition::Error::BEGIN@9" -> "Moose::Role::with";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::with";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "Moose::Role::with";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@12" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@11" -> "Moose::Role::with";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Role::with";
+"Moose::Role::has" -> "Moose::Meta::Role::add_attribute";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@15";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@22";
+"Moose::Role::has" -> "Moose::Util::_caller_info";
+"Moose::Role::override" -> "Moose::Role::override";
+"Module::Runtime::require_module" -> "Moose::Role::override";
+"Moose::Role::init_meta" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Moose::Role::before" -> "Moose::Role::before";
+"Module::Runtime::require_module" -> "Moose::Role::before";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@13";
+"Moose::Role::init_meta" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+}

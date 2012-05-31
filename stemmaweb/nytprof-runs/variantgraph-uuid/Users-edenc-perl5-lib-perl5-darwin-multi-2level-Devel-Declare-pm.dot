@@ -1,0 +1,156 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@10";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@7";
+	"TryCatch::__ANON__[TryCatch.pm:50]";
+	"TryCatch::__ANON__[TryCatch.pm:44]";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::VERSION";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_B_Hooks_OP_Check {
+	label="B::Hooks::OP::Check";
+	"B::Hooks::OP::Check::BEGIN@7";
+}
+subgraph cluster_Devel_Declare_Context_Simple {
+	label="Devel::Declare::Context::Simple";
+	"Devel::Declare::Context::Simple::shadow";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::load";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::set_in_declare";
+	"Devel::Declare::BEGIN@11";
+	"Devel::Declare::CORE:subst";
+	"Devel::Declare::BEGIN@9";
+	"Devel::Declare::BEGIN@12";
+	"Devel::Declare::BEGIN@117";
+	"Devel::Declare::BEGIN@1";
+	"Devel::Declare::BEGIN@99";
+	"Devel::Declare::done_declare";
+	"Devel::Declare::BEGIN@4";
+	"Devel::Declare::BEGIN@16";
+	"Devel::Declare::shadow_sub";
+	"Devel::Declare::BEGIN@14";
+	"Devel::Declare::BEGIN@109";
+	"Devel::Declare::BEGIN@29";
+	"Devel::Declare::get_curstash_name";
+	"Devel::Declare::setup_for";
+	"Devel::Declare::BEGIN@102";
+	"Devel::Declare::BEGIN@3";
+	"Devel::Declare::CORE:match";
+	"Devel::Declare::linestr_callback";
+	"Devel::Declare::BEGIN@103";
+	"Devel::Declare::setup";
+	"Devel::Declare::BEGIN@2";
+	"Devel::Declare::BEGIN@10";
+	"Devel::Declare::BEGIN@17";
+	"Devel::Declare::BEGIN@5";
+	"Devel::Declare::BEGIN@15";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@8";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@9";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@17";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@15";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@12";
+"TryCatch::__ANON__[TryCatch.pm:50]" -> "Devel::Declare::setup_for";
+"Devel::Declare::setup_for" -> "Devel::Declare::setup";
+"Devel::Declare::BEGIN@17" -> "UNIVERSAL::import";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@10";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@109";
+"Devel::Declare::BEGIN@17" -> "B::Hooks::OP::Check::BEGIN@7";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@14";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@4";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@5";
+"Devel::Declare::BEGIN@9" -> "constant::import";
+"Devel::Declare::BEGIN@11" -> "constant::import";
+"Devel::Declare::BEGIN@10" -> "constant::import";
+"Devel::Declare::BEGIN@12" -> "constant::import";
+"Devel::Declare::linestr_callback" -> "Devel::Declare::get_curstash_name";
+"Devel::Declare::BEGIN@3" -> "strict::import";
+"Devel::Declare::done_declare" -> "Devel::Declare::CORE:subst";
+"Devel::Declare::BEGIN@17" -> "Devel::Declare::BEGIN@2";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@16";
+"Devel::Declare::Context::Simple::shadow" -> "Devel::Declare::shadow_sub";
+"Devel::Declare::BEGIN@16" -> "Exporter::import";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@103";
+"Devel::Declare::shadow_sub" -> "UNIVERSAL::can";
+"Devel::Declare::BEGIN@109" -> "strict::unimport";
+"Devel::Declare::BEGIN@99" -> "strict::unimport";
+"Devel::Declare::BEGIN@29" -> "strict::unimport";
+"Devel::Declare::BEGIN@15" -> "base::import";
+"Devel::Declare::BEGIN@4" -> "warnings::import";
+"Devel::Declare::BEGIN@14" -> "vars::import";
+"Catalyst::Utils::ensure_class_loaded" -> "Devel::Declare::done_declare";
+"Text::Tradition::BEGIN@8" -> "Devel::Declare::done_declare";
+"Module::Load::load" -> "Devel::Declare::done_declare";
+"Text::Tradition::Collation::BEGIN@10" -> "Devel::Declare::done_declare";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@99";
+"Devel::Declare::BEGIN@17" -> "Devel::Declare::BEGIN@1";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@29";
+"Devel::Declare::BEGIN@103" -> "warnings::unimport";
+"Devel::Declare::BEGIN@117" -> "warnings::unimport";
+"Devel::Declare::BEGIN@102" -> "warnings::unimport";
+"Devel::Declare::shadow_sub" -> "Devel::Declare::CORE:match";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@3";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@117";
+"Catalyst::Utils::ensure_class_loaded" -> "Devel::Declare::linestr_callback";
+"Text::Tradition::BEGIN@8" -> "Devel::Declare::linestr_callback";
+"Module::Load::load" -> "Devel::Declare::linestr_callback";
+"Text::Tradition::Collation::BEGIN@10" -> "Devel::Declare::linestr_callback";
+"Devel::Declare::linestr_callback" -> "TryCatch::__ANON__[TryCatch.pm:44]";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@102";
+"Devel::Declare::BEGIN@17" -> "UNIVERSAL::VERSION";
+"Devel::Declare::BEGIN@17" -> "DynaLoader::bootstrap";
+"TryCatch::BEGIN@7" -> "Devel::Declare::BEGIN@11";
+"Devel::Declare::done_declare" -> "Devel::Declare::set_in_declare";
+"Devel::Declare::shadow_sub" -> "Devel::Declare::set_in_declare";
+}

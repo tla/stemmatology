@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@22";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Method_Augmented {
+	label="Moose::Meta::Method::Augmented";
+	"Moose::Meta::Method::Augmented::BEGIN@12";
+	"Moose::Meta::Method::Augmented::BEGIN@9";
+	"Moose::Meta::Method::Augmented::BEGIN@2";
+	"Moose::Meta::Method::Augmented::BEGIN@10";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Class::BEGIN@22" -> "Moose::Meta::Method::Augmented::BEGIN@12";
+"Moose::Meta::Class::BEGIN@22" -> "Moose::Meta::Method::Augmented::BEGIN@9";
+"Moose::Meta::Method::Augmented::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::BEGIN@22" -> "Moose::Meta::Method::Augmented::BEGIN@10";
+"Moose::Meta::Class::BEGIN@22" -> "Moose::Meta::Method::Augmented::BEGIN@2";
+"Moose::Meta::Method::Augmented::BEGIN@12" -> "base::import";
+"Moose::Meta::Method::Augmented::BEGIN@10" -> "warnings::import";
+}

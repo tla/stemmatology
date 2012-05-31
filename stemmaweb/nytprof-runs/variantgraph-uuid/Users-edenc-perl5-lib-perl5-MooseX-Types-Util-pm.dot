@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::BEGIN@12";
+	"MooseX::Types::Util::filter_tags";
+	"MooseX::Types::Util::BEGIN@9";
+	"MooseX::Types::Util::BEGIN@8";
+	"MooseX::Types::Util::BEGIN@10";
+	"MooseX::Types::Util::CORE:match";
+	"MooseX::Types::Util::has_available_type_export";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@9";
+"MooseX::Types::import" -> "MooseX::Types::Util::filter_tags";
+"MooseX::Types::Util::BEGIN@9" -> "strict::import";
+"MooseX::Types::Util::BEGIN@10" -> "Exporter::import";
+"MooseX::Types::Util::has_available_type_export" -> "UNIVERSAL::can";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@10";
+"MooseX::Types::Util::BEGIN@12" -> "base::import";
+"MooseX::Types::Util::BEGIN@8" -> "warnings::import";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@8";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "MooseX::Types::Util::has_available_type_export";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@12";
+"MooseX::Types::Util::filter_tags" -> "MooseX::Types::Util::CORE:match";
+}

@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@68";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI_Token_Structure {
+	label="PPI::Token::Structure";
+	"PPI::Token::Structure::BEGIN@32";
+	"PPI::Token::Structure::BEGIN@31";
+	"PPI::Token::Structure::BEGIN@34";
+	"PPI::Token::Structure::BEGIN@42";
+	"PPI::Token::Structure::BEGIN@35";
+	"PPI::Token::Structure::BEGIN@43";
+}
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@43";
+"PPI::Token::Structure::BEGIN@31" -> "strict::import";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@35";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@34";
+"PPI::Token::Structure::BEGIN@42" -> "vars::import";
+"PPI::Token::Structure::BEGIN@34" -> "vars::import";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@31";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@32";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@42";
+}

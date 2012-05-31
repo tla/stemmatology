@@ -1,0 +1,27 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Catalyst_View_Download_Plain {
+	label="Catalyst::View::Download::Plain";
+	"Catalyst::View::Download::Plain::BEGIN@4";
+	"Catalyst::View::Download::Plain::BEGIN@3";
+	"Catalyst::View::Download::Plain::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"base::import" -> "Catalyst::View::Download::Plain::BEGIN@3";
+"Catalyst::View::Download::Plain::BEGIN@3" -> "strict::import";
+"base::import" -> "Catalyst::View::Download::Plain::BEGIN@5";
+"base::import" -> "Catalyst::View::Download::Plain::BEGIN@4";
+"Catalyst::View::Download::Plain::BEGIN@5" -> "base::import";
+"Catalyst::View::Download::Plain::BEGIN@4" -> "warnings::import";
+}

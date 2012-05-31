@@ -1,0 +1,12 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_common_sense {
+	label="common::sense";
+	"common::sense::import";
+}
+subgraph cluster_JSON_XS {
+	label="JSON::XS";
+	"JSON::XS::BEGIN@104";
+}
+"JSON::XS::BEGIN@104" -> "common::sense::import";
+}

@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@36";
+}
+subgraph cluster_Plack_Util_Accessor {
+	label="Plack::Util::Accessor";
+	"Plack::Util::Accessor::import";
+}
+subgraph cluster_Plack_Middleware_Conditional {
+	label="Plack::Middleware::Conditional";
+	"Plack::Middleware::Conditional::BEGIN@3";
+	"Plack::Middleware::Conditional::BEGIN@5";
+	"Plack::Middleware::Conditional::BEGIN@2";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@5";
+"Plack::Middleware::Conditional::BEGIN@2" -> "strict::import";
+"Plack::Middleware::Conditional::BEGIN@5" -> "Plack::Util::Accessor::import";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@2";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@3";
+"Plack::Middleware::Conditional::BEGIN@3" -> "parent::import";
+}

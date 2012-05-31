@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Devel_GlobalDestruction {
+	label="Devel::GlobalDestruction";
+	"Devel::GlobalDestruction::BEGIN@3";
+	"Devel::GlobalDestruction::BEGIN@8";
+	"Devel::GlobalDestruction::BEGIN@4";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::BEGIN@15";
+}
+"Class::MOP::Package::BEGIN@15" -> "Devel::GlobalDestruction::BEGIN@8";
+"Devel::GlobalDestruction::BEGIN@8" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Devel::GlobalDestruction::BEGIN@3" -> "strict::import";
+"Class::MOP::Package::BEGIN@15" -> "Devel::GlobalDestruction::BEGIN@3";
+"Devel::GlobalDestruction::BEGIN@4" -> "warnings::import";
+"Class::MOP::Package::BEGIN@15" -> "Devel::GlobalDestruction::BEGIN@4";
+}

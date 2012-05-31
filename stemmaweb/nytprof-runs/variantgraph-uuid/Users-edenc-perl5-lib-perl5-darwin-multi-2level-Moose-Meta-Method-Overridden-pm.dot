@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Overridden {
+	label="Moose::Meta::Method::Overridden";
+	"Moose::Meta::Method::Overridden::BEGIN@12";
+	"Moose::Meta::Method::Overridden::BEGIN@10";
+	"Moose::Meta::Method::Overridden::BEGIN@2";
+	"Moose::Meta::Method::Overridden::BEGIN@9";
+	"Moose::Meta::Method::Overridden::new";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::body";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::add_override_method_modifier";
+	"Moose::Meta::Class::BEGIN@21";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_next_method_by_name";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Moose::Meta::Method::Overridden::new" -> "Class::MOP::Method::wrap";
+"Moose::Meta::Class::BEGIN@21" -> "Moose::Meta::Method::Overridden::BEGIN@9";
+"Moose::Meta::Class::BEGIN@21" -> "Moose::Meta::Method::Overridden::BEGIN@2";
+"Moose::Meta::Method::Overridden::new" -> "Class::MOP::Class::find_next_method_by_name";
+"Moose::Meta::Class::add_override_method_modifier" -> "Moose::Meta::Method::Overridden::new";
+"Moose::Meta::Class::BEGIN@21" -> "Moose::Meta::Method::Overridden::BEGIN@12";
+"Moose::Meta::Method::Overridden::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::BEGIN@21" -> "Moose::Meta::Method::Overridden::BEGIN@10";
+"Moose::Meta::Method::Overridden::new" -> "Class::MOP::Method::body";
+"Moose::Meta::Method::Overridden::BEGIN@12" -> "base::import";
+"Moose::Meta::Method::Overridden::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Overridden::new" -> "Class::MOP::Package::name";
+}

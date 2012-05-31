@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@6";
+}
+subgraph cluster_B_Deparse {
+	label="B::Deparse";
+	"B::Deparse::BEGIN@2060";
+	"B::Deparse::BEGIN@2792";
+	"B::Deparse::CORE:qr";
+	"B::Deparse::BEGIN@482";
+	"B::Deparse::BEGIN@3629";
+	"B::Deparse::BEGIN@11";
+	"B::Deparse::BEGIN@1244";
+	"B::Deparse::BEGIN@3435";
+	"B::Deparse::BEGIN@688";
+	"B::Deparse::BEGIN@3368";
+	"B::Deparse::BEGIN@2791";
+	"B::Deparse::BEGIN@3369";
+	"B::Deparse::BEGIN@3436";
+	"B::Deparse::BEGIN@30";
+	"B::Deparse::BEGIN@40";
+	"B::Deparse::CORE:pack";
+	"B::Deparse::BEGIN@613";
+	"B::Deparse::BEGIN@12";
+	"B::Deparse::CORE:sort";
+	"B::Deparse::BEGIN@31";
+	"B::Deparse::BEGIN@34";
+	"B::Deparse::BEGIN@2789";
+	"B::Deparse::BEGIN@32";
+	"B::Deparse::BEGIN@2029";
+	"B::Deparse::BEGIN@2790";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_re {
+	label="re";
+	"re::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_B {
+	label="B";
+	"B::opnumber";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3436";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@40";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@688";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3368";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@11";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2060";
+"B::Deparse::BEGIN@3629" -> "B::Deparse::CORE:pack";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2792";
+"B::Deparse::BEGIN@30" -> "strict::import";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@31";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2029";
+"B::Deparse::BEGIN@12" -> "Exporter::import";
+"B::Deparse::BEGIN@11" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@613";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3435";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@32";
+"B::Deparse::BEGIN@688" -> "strict::unimport";
+"B::Deparse::BEGIN@3368" -> "strict::unimport";
+"B::Deparse::BEGIN@482" -> "strict::unimport";
+"B::Deparse::BEGIN@40" -> "strict::unimport";
+"B::Deparse::BEGIN@2792" -> "B::opnumber";
+"B::Deparse::BEGIN@2789" -> "B::opnumber";
+"B::Deparse::BEGIN@2790" -> "B::opnumber";
+"B::Deparse::BEGIN@2791" -> "B::opnumber";
+"B::Deparse::BEGIN@31" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@34";
+"B::Deparse::BEGIN@3369" -> "warnings::unimport";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@482";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2789";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@1244";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3629";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2791";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::CORE:sort";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3369";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@30";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2790";
+"B::Deparse::BEGIN@3435" -> "B::Deparse::CORE:qr";
+"B::Deparse::BEGIN@3436" -> "re::import";
+}

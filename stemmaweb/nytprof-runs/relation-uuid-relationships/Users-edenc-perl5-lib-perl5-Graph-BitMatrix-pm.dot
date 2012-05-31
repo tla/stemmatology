@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_AdjacencyMatrix {
+	label="Graph::AdjacencyMatrix";
+	"Graph::AdjacencyMatrix::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_BitMatrix {
+	label="Graph::BitMatrix";
+	"Graph::BitMatrix::BEGIN@3";
+}
+"Graph::BitMatrix::BEGIN@3" -> "strict::import";
+"Graph::AdjacencyMatrix::BEGIN@5" -> "Graph::BitMatrix::BEGIN@3";
+}

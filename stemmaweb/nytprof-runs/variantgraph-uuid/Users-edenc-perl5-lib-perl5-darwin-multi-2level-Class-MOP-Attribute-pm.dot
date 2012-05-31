@@ -1,0 +1,430 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::remove_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::store";
+	"KiokuX::Model::new_scope";
+	"KiokuX::Model::directory";
+	"KiokuX::Model::lookup";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::inline_is_slot_initialized";
+	"Class::MOP::Instance::get_slot_value";
+	"Class::MOP::Instance::inline_set_slot_value";
+	"Class::MOP::Instance::is_slot_initialized";
+	"Class::MOP::Instance::is_inlinable";
+	"Class::MOP::Instance::inline_deinitialize_slot";
+	"Class::MOP::Instance::inline_get_slot_value";
+	"Class::MOP::Instance::BUILDARGS";
+	"Class::MOP::Instance::set_slot_value";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::mk_accessors";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::has_trigger";
+	"Moose::Meta::Mixin::AttributeCore::should_auto_deref";
+	"Moose::Meta::Mixin::AttributeCore::is_required";
+	"Moose::Meta::Mixin::AttributeCore::has_handles";
+	"Moose::Meta::Mixin::AttributeCore::is_lazy";
+	"Moose::Meta::Mixin::AttributeCore::should_coerce";
+	"Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+	"Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_inline_init_attr_from_default";
+	"Moose::Meta::Class::_inline_init_attr_from_constructor";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::new";
+	"Moose::Meta::Method::Accessor::_get_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+	"Class::MOP::Method::Accessor::new";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_inline_init_attr_from_constructor";
+	"Class::MOP::Class::_attach_attribute";
+	"Class::MOP::Class::initialize";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+	"Class::MOP::Class::_inline_init_attr_from_default";
+	"Class::MOP::Class::remove_attribute";
+	"Class::MOP::Class::instance_metaclass";
+	"Class::MOP::Class::_fixup_attributes_after_rebless";
+	"Class::MOP::Class::_construct_instance";
+	"Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::new_object";
+	"Class::MOP::Class::_inline_accessors";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::definition_context";
+	"Class::MOP::Mixin::AttributeCore::has_writer";
+	"Class::MOP::Mixin::AttributeCore::predicate";
+	"Class::MOP::Mixin::AttributeCore::reader";
+	"Class::MOP::Mixin::AttributeCore::accessor";
+	"Class::MOP::Mixin::AttributeCore::default";
+	"Class::MOP::Mixin::AttributeCore::has_initializer";
+	"Class::MOP::Mixin::AttributeCore::has_clearer";
+	"Class::MOP::Mixin::AttributeCore::has_predicate";
+	"Class::MOP::Mixin::AttributeCore::has_accessor";
+	"Class::MOP::Mixin::AttributeCore::writer";
+	"Class::MOP::Mixin::AttributeCore::name";
+	"Class::MOP::Mixin::AttributeCore::clearer";
+	"Class::MOP::Mixin::AttributeCore::has_reader";
+	"Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@28";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::accessor_metaclass";
+	"Moose::Meta::Attribute::install_delegation";
+	"Moose::Meta::Attribute::initialize_instance_slot";
+	"Moose::Meta::Attribute::set_value";
+	"Moose::Meta::Attribute::_inline_init_slot";
+	"Moose::Meta::Attribute::_inline_check_lazy";
+	"Moose::Meta::Attribute::_new";
+	"Moose::Meta::Attribute::get_value";
+	"Moose::Meta::Attribute::new";
+	"Moose::Meta::Attribute::remove_accessors";
+	"Moose::Meta::Attribute::_process_accessors";
+	"Moose::Meta::Attribute::clone";
+	"Moose::Meta::Attribute::_inline_set_value";
+	"Moose::Meta::Attribute::install_accessors";
+	"Moose::Meta::Attribute::_inline_get_value";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_make_new_metaclass";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::_inline_clear_value";
+	"Class::MOP::Attribute::_inline_has_value";
+	"Class::MOP::Attribute::attach_to_class";
+	"Class::MOP::Attribute::BEGIN@19";
+	"Class::MOP::Attribute::_new";
+	"Class::MOP::Attribute::has_value";
+	"Class::MOP::Attribute::associate_method";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]";
+	"Class::MOP::Attribute::detach_from_class";
+	"Class::MOP::Attribute::BEGIN@10";
+	"Class::MOP::Attribute::new";
+	"Class::MOP::Attribute::set_value";
+	"Class::MOP::Attribute::BEGIN@15";
+	"Class::MOP::Attribute::BEGIN@11";
+	"Class::MOP::Attribute::_inline_instance_clear";
+	"Class::MOP::Attribute::install_accessors";
+	"Class::MOP::Attribute::_inline_instance_set";
+	"Class::MOP::Attribute::get_read_method_ref";
+	"Class::MOP::Attribute::remove_accessors";
+	"Class::MOP::Attribute::BEGIN@13";
+	"Class::MOP::Attribute::_inline_set_value";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+	"Class::MOP::Attribute::BEGIN@16";
+	"Class::MOP::Attribute::_inline_instance_get";
+	"Class::MOP::Attribute::BEGIN@17";
+	"Class::MOP::Attribute::set_initial_value";
+	"Class::MOP::Attribute::get_value";
+	"Class::MOP::Attribute::slots";
+	"Class::MOP::Attribute::BEGIN@3";
+	"Class::MOP::Attribute::associated_class";
+	"Class::MOP::Attribute::_inline_instance_has";
+	"Class::MOP::Attribute::set_raw_value";
+	"Class::MOP::Attribute::accessor_metaclass";
+	"Class::MOP::Attribute::_set_initial_slot_value";
+	"Class::MOP::Attribute::_accessor_description";
+	"Class::MOP::Attribute::get_raw_value";
+	"Class::MOP::Attribute::_process_accessors";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+	"Class::MOP::Attribute::initialize_instance_slot";
+	"Class::MOP::Attribute::get_read_method";
+	"Class::MOP::Attribute::_inline_get_value";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Role_Attribute {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::accessor_metaclass";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::BEGIN@27";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Class_MOP_Class {
+	label="Class::MOP::Class::Immutable::Class::MOP::Class";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::_get_delegate_accessor";
+}
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@19";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Method::wrap";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Method::wrap";
+"Class::MOP::Attribute::install_accessors" -> "Moose::Meta::Attribute::_process_accessors";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Instance::set_slot_value";
+"Class::MOP::Attribute::_set_initial_slot_value" -> "Class::MOP::Instance::set_slot_value";
+"Class::MOP::Attribute::attach_to_class" -> "Scalar::Util::blessed";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Instance::get_slot_value";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Attribute::_set_initial_slot_value";
+"Class::MOP::Attribute::initialize_instance_slot" -> "Class::MOP::Attribute::_set_initial_slot_value";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::initialize_instance_slot";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Attribute::initialize_instance_slot";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::accessor_metaclass";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]" -> "Moose::Meta::Attribute::get_value";
+"Class::MOP::Attribute::_new" -> "Class::MOP::Class::new_object";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Instance::inline_deinitialize_slot";
+"Moose::Meta::Attribute::set_value" -> "Class::MOP::Attribute::set_value";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::set_value";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::has_reader";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::has_reader";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Attribute::accessor_metaclass";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Class::MOP::Attribute::accessor_metaclass";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Class::_inline_init_attr_from_default" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Class::MOP::Attribute::_inline_set_value";
+"Moose::Meta::Attribute::_inline_set_value" -> "Class::MOP::Attribute::_inline_set_value";
+"Moose::Meta::Class::_inline_init_attr_from_constructor" -> "Class::MOP::Attribute::_inline_set_value";
+"Moose::Meta::Class::_inline_init_attr_from_default" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]" -> "Class::MOP::Attribute::_inline_get_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]" -> "Class::MOP::Attribute::_inline_get_value";
+"Class::MOP::Attribute::new" -> "Class::MOP::Attribute::_new";
+"Class::MOP::Attribute::_process_accessors" -> "Try::Tiny::try";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::has_clearer";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::has_clearer";
+"Class::MOP::Attribute::new" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::Attribute::_process_accessors" -> "Try::Tiny::catch";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Attribute::set_initial_value";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::set_initial_value";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::accessor";
+"Class::MOP::Attribute::get_read_method" -> "Class::MOP::Mixin::AttributeCore::accessor";
+"Class::MOP::Attribute::BEGIN@10" -> "strict::import";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Attribute::get_read_method";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Attribute::get_read_method";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Attribute::get_read_method";
+"Class::MOP::Class::remove_attribute" -> "Class::MOP::Attribute::detach_from_class";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Attribute::_process_accessors";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Attribute::_process_accessors";
+"Class::MOP::Attribute::_inline_clear_value" -> "Class::MOP::Attribute::_inline_instance_clear";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@16";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Moose::Meta::Method::Accessor::new";
+"Class::MOP::Attribute::get_value" -> "Class::MOP::Attribute::get_raw_value";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Class::MOP::Attribute::get_raw_value";
+"Try::Tiny::try" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]" -> "Class::MOP::Mixin::HasMethods::remove_method";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::slots" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_set_initial_slot_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::_accessor_description" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Instance::is_slot_initialized";
+"Moose::Meta::Attribute::remove_accessors" -> "Class::MOP::Attribute::remove_accessors";
+"Moose::Meta::Mixin::AttributeCore::should_auto_deref" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Mixin::AttributeCore::is_required" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Mixin::AttributeCore::should_coerce" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Mixin::AttributeCore::is_lazy" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Attribute::get_value";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Mixin::AttributeCore::is_weak_ref" -> "Class::MOP::Attribute::get_value";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Class::MOP::Method::Accessor::new";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@10";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@11";
+"Class::MOP::Attribute::BEGIN@15" -> "Exporter::import";
+"Class::MOP::Attribute::BEGIN@16" -> "Exporter::import";
+"Class::MOP::Attribute::BEGIN@17" -> "Exporter::import";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Instance::inline_is_slot_initialized";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::reader";
+"Class::MOP::Attribute::get_read_method" -> "Class::MOP::Mixin::AttributeCore::reader";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::reader";
+"Class::MOP::Attribute::BEGIN@19" -> "base::import";
+"Class::MOP::Attribute::BEGIN@11" -> "warnings::import";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::clearer";
+"Moose::Meta::Attribute::install_accessors" -> "Class::MOP::Attribute::install_accessors";
+"Class::MOP::Class::_inline_accessors" -> "Class::MOP::Attribute::install_accessors";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Class::MOP::Attribute::install_accessors";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Attribute::get_read_method_ref";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Attribute::get_read_method_ref";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance";
+"Class::MOP::Attribute::_new" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::predicate";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Instance::is_inlinable";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Attribute::_accessor_description";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Class::MOP::Attribute::_accessor_description";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Attribute::associate_method";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Attribute::associate_method";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Mixin::AttributeCore::definition_context";
+"Class::MOP::Attribute::attach_to_class" -> "Scalar::Util::weaken";
+"Class::MOP::Attribute::_set_initial_slot_value" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]" -> "UNIVERSAL::isa";
+"Class::MOP::Attribute::attach_to_class" -> "UNIVERSAL::isa";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Instance::inline_set_slot_value";
+"KiokuX::Model::store" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+"KiokuX::Model::new_scope" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+"KiokuX::Model::lookup" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+"KiokuX::Model::directory" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+"Class::MOP::Attribute::_inline_has_value" -> "Class::MOP::Attribute::_inline_instance_has";
+"Moose::Meta::Attribute::_inline_check_lazy" -> "Class::MOP::Attribute::_inline_instance_has";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Moose::Meta::Attribute::accessor_metaclass";
+"Class::MOP::Instance::BUILDARGS" -> "Class::MOP::Attribute::slots";
+"Class::MOP::Attribute::new" -> "Moose::Meta::Attribute::_new";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]" -> "Class::MOP::Attribute::_inline_has_value";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::has_accessor";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::has_accessor";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@15";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Package::name";
+"Class::MOP::Attribute::_accessor_description" -> "Class::MOP::Package::name";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Package::name";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Class::MOP::Package::name";
+"Moose::Meta::Mixin::AttributeCore::has_trigger" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Attribute::has_value";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::has_value";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Mixin::AttributeCore::has_handles" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Mixin::AttributeCore::has_type_constraint" -> "Class::MOP::Attribute::has_value";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::has_predicate";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::has_predicate";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@13";
+"Moose::Meta::Attribute::_inline_get_value" -> "Class::MOP::Attribute::_inline_instance_get";
+"Class::MOP::Attribute::_inline_get_value" -> "Class::MOP::Attribute::_inline_instance_get";
+"Moose::Meta::Method::Accessor::_get_value" -> "Class::MOP::Attribute::_inline_instance_get";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::writer";
+"Class::MOP::Attribute::set_value" -> "Class::MOP::Attribute::set_raw_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]" -> "Class::MOP::Attribute::_inline_clear_value";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::AttributeCore::has_writer";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Mixin::AttributeCore::has_writer";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@17";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::_accessor_description" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::remove_accessors" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Class::_attach_attribute" -> "Class::MOP::Attribute::attach_to_class";
+"Class::MOP::Mixin::HasAttributes::add_attribute" -> "Class::MOP::Attribute::new";
+"Moose::BEGIN@28" -> "Class::MOP::Attribute::new";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Attribute::new";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Attribute::new";
+"Moose::Meta::Attribute::_inline_init_slot" -> "Class::MOP::Attribute::_inline_instance_set";
+"Class::MOP::Attribute::_inline_set_value" -> "Class::MOP::Attribute::_inline_instance_set";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Instance::inline_get_slot_value";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@3";
+}

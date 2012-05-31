@@ -1,0 +1,66 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_POSIX_SigRt {
+	label="POSIX::SigRt";
+	"POSIX::SigRt::BEGIN@56";
+}
+subgraph cluster_POSIX_SigAction {
+	label="POSIX::SigAction";
+	"POSIX::SigAction::BEGIN@52";
+}
+subgraph cluster_POSIX {
+	label="POSIX";
+	"POSIX::import";
+	"POSIX::BEGIN@9";
+}
+subgraph cluster_AutoLoader {
+	label="AutoLoader";
+	"AutoLoader::BEGIN@138";
+	"AutoLoader::find_filename";
+	"AutoLoader::CORE:substcont";
+	"AutoLoader::CORE:subst";
+	"AutoLoader::BEGIN@186";
+	"AutoLoader::AUTOLOAD";
+	"AutoLoader::CORE:match";
+	"AutoLoader::CORE:fteread";
+	"AutoLoader::BEGIN@4";
+	"AutoLoader::BEGIN@30";
+	"AutoLoader::import";
+	"AutoLoader::CORE:regcomp";
+	"AutoLoader::BEGIN@3";
+	"AutoLoader::BEGIN@13";
+}
+subgraph cluster_Graph_MSTHeapElem {
+	label="Graph::MSTHeapElem";
+	"Graph::MSTHeapElem::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"AutoLoader::AUTOLOAD" -> "AutoLoader::find_filename";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@186";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@30";
+"POSIX::import" -> "AutoLoader::AUTOLOAD";
+"AutoLoader::BEGIN@3" -> "strict::import";
+"AutoLoader::find_filename" -> "AutoLoader::CORE:substcont";
+"AutoLoader::import" -> "AutoLoader::CORE:substcont";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@3";
+"AutoLoader::find_filename" -> "AutoLoader::CORE:subst";
+"AutoLoader::import" -> "AutoLoader::CORE:subst";
+"AutoLoader::BEGIN@138" -> "strict::unimport";
+"AutoLoader::BEGIN@186" -> "strict::unimport";
+"AutoLoader::BEGIN@30" -> "strict::unimport";
+"POSIX::SigRt::BEGIN@56" -> "AutoLoader::import";
+"POSIX::SigAction::BEGIN@52" -> "AutoLoader::import";
+"POSIX::BEGIN@9" -> "AutoLoader::import";
+"AutoLoader::find_filename" -> "AutoLoader::CORE:match";
+"AutoLoader::import" -> "AutoLoader::CORE:match";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@138";
+"AutoLoader::find_filename" -> "AutoLoader::CORE:regcomp";
+"AutoLoader::import" -> "AutoLoader::CORE:regcomp";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@13";
+"Graph::MSTHeapElem::BEGIN@5" -> "AutoLoader::BEGIN@4";
+"AutoLoader::find_filename" -> "AutoLoader::CORE:fteread";
+}

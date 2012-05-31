@@ -1,0 +1,55 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::_layersort_rel";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@13";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::test_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::related_readings";
+	"Text::Tradition::Collation::RelationshipStore::_make_equivalence";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::BEGIN@17";
+	"Scope::Upper::BEGIN@4";
+	"Scope::Upper::BEGIN@195";
+	"Scope::Upper::SUB";
+	"Scope::Upper::BEGIN@3";
+	"Scope::Upper::BEGIN@574";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@574";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Scope::Upper::SUB";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Scope::Upper::SUB";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Scope::Upper::SUB";
+"Text::Tradition::Parser::Self::_layersort_rel" -> "Scope::Upper::SUB";
+"Scope::Upper::BEGIN@3" -> "strict::import";
+"Scope::Upper::BEGIN@195" -> "XSLoader::load";
+"Scope::Upper::BEGIN@574" -> "base::import";
+"Scope::Upper::BEGIN@4" -> "warnings::import";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@3";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@195";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@4";
+"TryCatch::BEGIN@13" -> "Scope::Upper::BEGIN@17";
+}

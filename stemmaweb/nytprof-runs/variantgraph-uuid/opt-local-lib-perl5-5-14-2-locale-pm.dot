@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_locale {
+	label="locale";
+	"locale::unimport";
+	"locale::import";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::BEGIN@34";
+}
+subgraph cluster_Template_Filters {
+	label="Template::Filters";
+	"Template::Filters::BEGIN@24";
+}
+subgraph cluster_DBD_SQLite_dr {
+	label="DBD::SQLite::dr";
+	"DBD::SQLite::dr::BEGIN@178";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::BEGIN@174";
+}
+"DBIx::Class::Schema::BEGIN@174" -> "locale::unimport";
+"DBD::SQLite::BEGIN@34" -> "locale::import";
+"Template::Filters::BEGIN@24" -> "locale::import";
+"DBD::SQLite::dr::BEGIN@178" -> "locale::import";
+}

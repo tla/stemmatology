@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_UnmatchedBrace {
+	label="PPI::Statement::UnmatchedBrace";
+	"PPI::Statement::UnmatchedBrace::BEGIN@48";
+	"PPI::Statement::UnmatchedBrace::BEGIN@50";
+	"PPI::Statement::UnmatchedBrace::BEGIN@47";
+	"PPI::Statement::UnmatchedBrace::BEGIN@51";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@173";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@47";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@50";
+"PPI::Statement::UnmatchedBrace::BEGIN@47" -> "strict::import";
+"PPI::Statement::UnmatchedBrace::BEGIN@50" -> "vars::import";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@51";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@48";
+}

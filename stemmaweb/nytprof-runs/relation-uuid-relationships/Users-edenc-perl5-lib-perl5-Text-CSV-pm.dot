@@ -1,0 +1,71 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@8";
+}
+subgraph cluster_Text_CSV_ErrorDiag {
+	label="Text::CSV::ErrorDiag";
+	"Text::CSV::ErrorDiag::BEGIN@977";
+	"Text::CSV::ErrorDiag::BEGIN@978";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Text_CSV {
+	label="Text::CSV";
+	"Text::CSV::BEGIN@6";
+	"Text::CSV::BEGIN@196";
+	"Text::CSV::_load_pp";
+	"Text::CSV::_load_xs";
+	"Text::CSV::_set_methods";
+	"Text::CSV::import";
+	"Text::CSV::BEGIN@5";
+	"Text::CSV::BEGIN@8";
+	"Text::CSV::BEGIN@4";
+	"Text::CSV::BEGIN@1";
+	"Text::CSV::BEGIN@136";
+}
+subgraph cluster_Text_CSV_PP {
+	label="Text::CSV_PP";
+	"Text::CSV_PP::BEGIN@896";
+	"Text::CSV_PP::BEGIN@107";
+	"Text::CSV_PP::BEGIN@314";
+	"Text::CSV_PP::BEGIN@12";
+	"Text::CSV_PP::BEGIN@10";
+	"Text::CSV_PP::BEGIN@104";
+	"Text::CSV_PP::BEGIN@111";
+	"Text::CSV_PP::BEGIN@11";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::CSV::_load_pp" -> "Text::CSV::_set_methods";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@10";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@5";
+"Text::CSV::_load_pp" -> "Text::CSV::ErrorDiag::BEGIN@978";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@8";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@314";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@107";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::_load_xs";
+"Text::CSV::BEGIN@4" -> "strict::import";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@896";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@6";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@11";
+"Text::CSV::BEGIN@136" -> "strict::unimport";
+"Text::CSV::BEGIN@196" -> "strict::unimport";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@196";
+"Text::CSV::BEGIN@6" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::import";
+"Text::CSV::_load_pp" -> "Text::CSV::ErrorDiag::BEGIN@977";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@111";
+"Text::CSV::_load_xs" -> "Text::CSV::BEGIN@1";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@136";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::_load_pp";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@104";
+}

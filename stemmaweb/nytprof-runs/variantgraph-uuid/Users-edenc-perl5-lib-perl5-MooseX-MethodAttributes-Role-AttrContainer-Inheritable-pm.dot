@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer_Inheritable {
+	label="MooseX::MethodAttributes::Role::AttrContainer::Inheritable";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@14";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@12";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@2";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@11";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@14" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@11";
+"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@12";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@14";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@2";
+}

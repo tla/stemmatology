@@ -1,0 +1,204 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::relationships";
+	"Text::Tradition::Collation::get_relationship";
+	"Text::Tradition::Collation::paths";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::store";
+	"KiokuX::Model::new_scope";
+	"KiokuX::Model::directory";
+	"KiokuX::Model::lookup";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::kiokudb_entries_source_name";
+	"KiokuDB::Backend::DBI::serialize";
+	"KiokuDB::Backend::DBI::dbh_do";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::user_agent";
+	"Catalyst::Request::header";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_curried_arguments";
+	"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:156]";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::body";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array {
+	label="Moose::Meta::Method::Accessor::Native::Array";
+	"Moose::Meta::Method::Accessor::Native::Array::_inline_check_var_is_valid_index";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::relationships";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::directory";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::meta_type_constraint";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::has_read_method";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_make_delegation_method";
+	"Moose::Meta::Attribute::BEGIN@22";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::encode";
+	"KiokuDB::Serializer::JSON::collapse_jspon";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::id_method";
+	"KiokuDB::Collapser::collapse_method";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::get_read_method";
+	"Class::MOP::Attribute::get_read_method_ref";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::new_scope";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::content_length";
+	"Catalyst::Response::content_type";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::BEGIN@13";
+	"Moose::Meta::Method::Delegation::BEGIN@10";
+	"Moose::Meta::Method::Delegation::_new";
+	"Moose::Meta::Method::Delegation::new";
+	"Moose::Meta::Method::Delegation::BEGIN@14";
+	"Moose::Meta::Method::Delegation::curried_arguments";
+	"Moose::Meta::Method::Delegation::associated_attribute";
+	"Moose::Meta::Method::Delegation::BEGIN@3";
+	"Moose::Meta::Method::Delegation::BEGIN@11";
+	"Moose::Meta::Method::Delegation::_initialize_body";
+	"Moose::Meta::Method::Delegation::_get_delegate_accessor";
+	"Moose::Meta::Method::Delegation::delegate_to_method";
+	"Moose::Meta::Method::Delegation::BEGIN@16";
+}
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@10";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::Delegation::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@13";
+"Moose::Meta::Method::Delegation::_initialize_body" -> "Moose::Meta::Method::Delegation::_get_delegate_accessor";
+"Moose::Meta::Attribute::_make_delegation_method" -> "Moose::Meta::Method::Delegation::new";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@16";
+"Moose::Meta::Method::Delegation::BEGIN@10" -> "strict::import";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Attribute::get_read_method";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@3";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Method::body";
+"Moose::Meta::Method::Delegation::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::Method::Delegation::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::Method::Delegation::BEGIN@16" -> "base::import";
+"Moose::Meta::Method::Delegation::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Attribute::get_read_method_ref";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Moose::Meta::Method::Delegation::associated_attribute";
+"Moose::Meta::Method::Delegation::new" -> "Moose::Meta::Method::Delegation::_new";
+"KiokuDB::Serializer::JSON::encode" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuX::Model::lookup" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Backend::DBI::dbh_do" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Text::Tradition::Collation::paths" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Catalyst::Response::content_type" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Moose::Meta::Method::Accessor::Native::__ANON__[Moose/Meta/Method/Accessor/Native.pm:156]" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuX::Model::new_scope" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Collapser::id_method" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Backend::DBI::serialize" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Text::Tradition::Collation::get_relationship" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Text::Tradition::Collation::relationships" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuX::Model::directory" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Catalyst::Model::KiokuDB::directory" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Catalyst::Response::content_length" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Parse::Method::Signatures::Param::meta_type_constraint" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Text::Tradition::Collation::RelationshipStore::relationships" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Serializer::JSON::collapse_jspon" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Backend::DBI::kiokudb_entries_source_name" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Catalyst::Request::header" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuX::Model::store" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Moose::Meta::Method::Accessor::Native::_inline_curried_arguments" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Catalyst::Request::user_agent" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::new_scope" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Text::Tradition::Collation::RelationshipStore::add_reading" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"KiokuDB::Collapser::collapse_method" -> "Moose::Meta::Method::Delegation::curried_arguments";
+"Moose::Meta::Method::Delegation::new" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Delegation::new" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@14";
+"Moose::Meta::Method::Delegation::_initialize_body" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::Array::_inline_check_var_is_valid_index" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Delegation::_initialize_body" -> "Class::MOP::Method::name";
+"Moose::Meta::Method::Delegation::new" -> "Moose::Meta::Method::Delegation::_initialize_body";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Mixin::AttributeCore::has_read_method";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@11";
+}

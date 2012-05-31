@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Exception_ParserRejection {
+	label="PPI::Exception::ParserRejection";
+	"PPI::Exception::ParserRejection::BEGIN@4";
+	"PPI::Exception::ParserRejection::BEGIN@7";
+	"PPI::Exception::ParserRejection::BEGIN@6";
+	"PPI::Exception::ParserRejection::BEGIN@3";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::BEGIN@88";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@6";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@7";
+"PPI::Exception::ParserRejection::BEGIN@3" -> "strict::import";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@4";
+"PPI::Exception::ParserRejection::BEGIN@6" -> "vars::import";
+"PPI::Tokenizer::BEGIN@88" -> "PPI::Exception::ParserRejection::BEGIN@3";
+}

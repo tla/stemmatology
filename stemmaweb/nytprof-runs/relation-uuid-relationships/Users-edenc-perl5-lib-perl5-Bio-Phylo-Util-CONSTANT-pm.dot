@@ -1,0 +1,36 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Util_CONSTANT {
+	label="Bio::Phylo::Util::CONSTANT";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@3";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@5";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@4";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@2";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@7";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@14";
+}
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@2";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@5";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@4";
+"Bio::Phylo::Util::CONSTANT::BEGIN@2" -> "strict::import";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@7";
+"Bio::Phylo::Util::CONSTANT::BEGIN@5" -> "Exporter::import";
+"Bio::Phylo::Util::CONSTANT::BEGIN@4" -> "Exporter::import";
+"Bio::Phylo::Util::CONSTANT::BEGIN@3" -> "base::import";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@3";
+}

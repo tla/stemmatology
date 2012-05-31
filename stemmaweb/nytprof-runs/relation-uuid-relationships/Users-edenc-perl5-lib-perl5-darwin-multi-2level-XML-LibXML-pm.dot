@@ -1,0 +1,475 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@13";
+}
+subgraph cluster_XML_LibXML_Node {
+	label="XML::LibXML::Node";
+	"XML::LibXML::Node::string_value";
+	"XML::LibXML::Node::DESTROY";
+}
+subgraph cluster_XML_LibXML_DocumentFragment {
+	label="XML::LibXML::DocumentFragment";
+	"XML::LibXML::DocumentFragment::BEGIN@1463";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::_lookup_node_data";
+	"Text::Tradition::Parser::GraphML::graphml_parse";
+	"Text::Tradition::Parser::GraphML::BEGIN@8";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_XML_LibXML_Comment {
+	label="XML::LibXML::Comment";
+	"XML::LibXML::Comment::BEGIN@1788";
+}
+subgraph cluster_XML_SAX_Exception {
+	label="XML::SAX::Exception";
+	"XML::SAX::Exception::BEGIN@13";
+	"XML::SAX::Exception::BEGIN@6";
+	"XML::SAX::Exception::BEGIN@11";
+	"XML::SAX::Exception::BEGIN@8";
+	"XML::SAX::Exception::BEGIN@2";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@11";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XML_LibXML_CDATASection {
+	label="XML::LibXML::CDATASection";
+	"XML::LibXML::CDATASection::BEGIN@1795";
+}
+subgraph cluster_XML_LibXML_Dtd {
+	label="XML::LibXML::Dtd";
+	"XML::LibXML::Dtd::BEGIN@1826";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@16";
+	"XML::LibXML::NodeList::BEGIN@13";
+	"XML::LibXML::NodeList::BEGIN@15";
+	"XML::LibXML::NodeList::BEGIN@23";
+	"XML::LibXML::NodeList::BEGIN@19";
+	"XML::LibXML::NodeList::to_literal";
+	"XML::LibXML::NodeList::BEGIN@12";
+	"XML::LibXML::NodeList::BEGIN@17";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@178";
+	"XML::LibXML::BEGIN@21";
+	"XML::LibXML::expand_xinclude";
+	"XML::LibXML::read_callback";
+	"XML::LibXML::BEGIN@36";
+	"XML::LibXML::BEGIN@170";
+	"XML::LibXML::open_callback";
+	"XML::LibXML::BEGIN@166";
+	"XML::LibXML::_parse_file";
+	"XML::LibXML::_auto_expand";
+	"XML::LibXML::BEGIN@169";
+	"XML::LibXML::BEGIN@13";
+	"XML::LibXML::parse_file";
+	"XML::LibXML::BEGIN@19";
+	"XML::LibXML::BEGIN@164";
+	"XML::LibXML::BEGIN@165";
+	"XML::LibXML::_cleanup_callbacks";
+	"XML::LibXML::BEGIN@160";
+	"XML::LibXML::BEGIN@176";
+	"XML::LibXML::BEGIN@163";
+	"XML::LibXML::BEGIN@162";
+	"XML::LibXML::_init_callbacks";
+	"XML::LibXML::BEGIN@171";
+	"XML::LibXML::BEGIN@175";
+	"XML::LibXML::__parser_option";
+	"XML::LibXML::BEGIN@172";
+	"XML::LibXML::LIBXML_VERSION";
+	"XML::LibXML::close_callback";
+	"XML::LibXML::BEGIN@168";
+	"XML::LibXML::match_callback";
+	"XML::LibXML::END";
+	"XML::LibXML::BEGIN@14";
+	"XML::LibXML::CORE:match";
+	"XML::LibXML::BEGIN@24";
+	"XML::LibXML::import";
+	"XML::LibXML::BEGIN@161";
+	"XML::LibXML::BEGIN@179";
+	"XML::LibXML::BEGIN@22";
+	"XML::LibXML::BEGIN@25";
+	"XML::LibXML::LIBXML_RUNTIME_VERSION";
+	"XML::LibXML::BEGIN@26";
+	"XML::LibXML::BEGIN@235";
+	"XML::LibXML::BEGIN@27";
+	"XML::LibXML::BEGIN@173";
+	"XML::LibXML::BEGIN@177";
+	"XML::LibXML::bootstrap";
+	"XML::LibXML::BEGIN@174";
+	"XML::LibXML::new";
+	"XML::LibXML::BEGIN@167";
+	"XML::LibXML::BEGIN@29";
+}
+subgraph cluster_XML_LibXML_Attr {
+	label="XML::LibXML::Attr";
+	"XML::LibXML::Attr::BEGIN@1804";
+}
+subgraph cluster_XML_LibXML_InputCallback {
+	label="XML::LibXML::InputCallback";
+	"XML::LibXML::InputCallback::BEGIN@2149";
+	"XML::LibXML::InputCallback::_callback_match";
+	"XML::LibXML::InputCallback::new";
+	"XML::LibXML::InputCallback::cleanup_callbacks";
+	"XML::LibXML::InputCallback::lib_cleanup_callbacks";
+	"XML::LibXML::InputCallback::init_callbacks";
+	"XML::LibXML::InputCallback::lib_init_callbacks";
+	"XML::LibXML::InputCallback::BEGIN@2151";
+}
+subgraph cluster_XML_LibXML_Element {
+	label="XML::LibXML::Element";
+	"XML::LibXML::Element::BEGIN@1486";
+	"XML::LibXML::Element::__ANON__[XML/LibXML.pm:1496]";
+	"XML::LibXML::Element::BEGIN@1492";
+	"XML::LibXML::Element::BEGIN@1495";
+	"XML::LibXML::Element::_getAttribute";
+	"XML::LibXML::Element::__ANON__[XML/LibXML.pm:1543]";
+	"XML::LibXML::Element::getAttribute";
+	"XML::LibXML::Element::BEGIN@1535";
+	"XML::LibXML::Element::CORE:match";
+	"XML::LibXML::Element::BEGIN@1488";
+	"XML::LibXML::Element::BEGIN@1490";
+	"XML::LibXML::Element::BEGIN@1489";
+	"XML::LibXML::Element::DESTROY";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+	"Exporter::export_to_level";
+}
+subgraph cluster_XML_LibXML_Document {
+	label="XML::LibXML::Document";
+	"XML::LibXML::Document::documentElement";
+	"XML::LibXML::Document::BEGIN@1367";
+}
+subgraph cluster_XML_LibXML_XPathContext {
+	label="XML::LibXML::XPathContext";
+	"XML::LibXML::XPathContext::BEGIN@141";
+	"XML::LibXML::XPathContext::BEGIN@17";
+	"XML::LibXML::XPathContext::BEGIN@16";
+	"XML::LibXML::XPathContext::BEGIN@13";
+	"XML::LibXML::XPathContext::BEGIN@15";
+	"XML::LibXML::XPathContext::BEGIN@12";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_to_level";
+}
+subgraph cluster_XML_LibXML_AttributeHash {
+	label="XML::LibXML::AttributeHash";
+	"XML::LibXML::AttributeHash::BEGIN@5";
+	"XML::LibXML::AttributeHash::BEGIN@3";
+	"XML::LibXML::AttributeHash::BEGIN@13";
+	"XML::LibXML::AttributeHash::BEGIN@4";
+	"XML::LibXML::AttributeHash::BEGIN@9";
+	"XML::LibXML::AttributeHash::BEGIN@6";
+}
+subgraph cluster_XML_LibXML_PI {
+	label="XML::LibXML::PI";
+	"XML::LibXML::PI::BEGIN@1837";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@45";
+	"XML::LibXML::Error::BEGIN@12";
+	"XML::LibXML::Error::BEGIN@20";
+	"XML::LibXML::Error::BEGIN@56";
+	"XML::LibXML::Error::BEGIN@63";
+	"XML::LibXML::Error::BEGIN@57";
+	"XML::LibXML::Error::BEGIN@245";
+	"XML::LibXML::Error::BEGIN@40";
+	"XML::LibXML::Error::BEGIN@49";
+	"XML::LibXML::Error::BEGIN@19";
+	"XML::LibXML::Error::BEGIN@42";
+	"XML::LibXML::Error::BEGIN@41";
+	"XML::LibXML::Error::BEGIN@53";
+	"XML::LibXML::Error::BEGIN@36";
+	"XML::LibXML::Error::BEGIN@15";
+	"XML::LibXML::Error::BEGIN@34";
+	"XML::LibXML::Error::BEGIN@60";
+	"XML::LibXML::Error::BEGIN@50";
+	"XML::LibXML::Error::BEGIN@17";
+	"XML::LibXML::Error::BEGIN@61";
+	"XML::LibXML::Error::BEGIN@35";
+	"XML::LibXML::Error::BEGIN@51";
+	"XML::LibXML::Error::BEGIN@59";
+	"XML::LibXML::Error::BEGIN@11";
+	"XML::LibXML::Error::BEGIN@47";
+	"XML::LibXML::Error::BEGIN@48";
+	"XML::LibXML::Error::BEGIN@83";
+	"XML::LibXML::Error::BEGIN@37";
+	"XML::LibXML::Error::BEGIN@43";
+	"XML::LibXML::Error::BEGIN@55";
+	"XML::LibXML::Error::BEGIN@22";
+	"XML::LibXML::Error::BEGIN@65";
+	"XML::LibXML::Error::BEGIN@66";
+	"XML::LibXML::Error::BEGIN@257";
+	"XML::LibXML::Error::BEGIN@58";
+	"XML::LibXML::Error::BEGIN@64";
+	"XML::LibXML::Error::BEGIN@52";
+	"XML::LibXML::Error::BEGIN@44";
+	"XML::LibXML::Error::BEGIN@67";
+	"XML::LibXML::Error::BEGIN@62";
+	"XML::LibXML::Error::BEGIN@54";
+	"XML::LibXML::Error::BEGIN@39";
+	"XML::LibXML::Error::BEGIN@46";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_XML_LibXML__SAXParser {
+	label="XML::LibXML::_SAXParser";
+	"XML::LibXML::_SAXParser::BEGIN@2005";
+}
+subgraph cluster_Text_TEI_Markup {
+	label="Text::TEI::Markup";
+	"Text::TEI::Markup::BEGIN@8";
+}
+subgraph cluster_XML_LibXML_NamedNodeMap {
+	label="XML::LibXML::NamedNodeMap";
+	"XML::LibXML::NamedNodeMap::BEGIN@1903";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_XML_LibXML_Text {
+	label="XML::LibXML::Text";
+	"XML::LibXML::Text::BEGIN@1743";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1495";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1488";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@176";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@55";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@179";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@66";
+"XML::LibXML::_auto_expand" -> "XML::LibXML::expand_xinclude";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@40";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@49";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@11";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::CDATASection::BEGIN@1795";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@26";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@11";
+"XML::LibXML::Element::BEGIN@1495" -> "overload::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@20";
+"XML::LibXML::_cleanup_callbacks" -> "XML::LibXML::InputCallback::cleanup_callbacks";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@19";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@23";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@170";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@172";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@14";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::LIBXML_RUNTIME_VERSION";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@21";
+"XML::LibXML::parse_file" -> "XML::LibXML::_auto_expand";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@162";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@35";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@174";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::new";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@17";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@42";
+"XML::LibXML::BEGIN@24" -> "UNIVERSAL::import";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "UNIVERSAL::import";
+"XML::LibXML::BEGIN@26" -> "UNIVERSAL::import";
+"XML::LibXML::Element::BEGIN@1489" -> "UNIVERSAL::import";
+"XML::LibXML::BEGIN@25" -> "UNIVERSAL::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@53";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@52";
+"XML::LibXML::Element::getAttribute" -> "XML::LibXML::Element::CORE:match";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@51";
+"main::RUNTIME" -> "XML::LibXML::END";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::Node::DESTROY";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Node::DESTROY";
+"XML::LibXML::Element::DESTROY" -> "XML::LibXML::Node::DESTROY";
+"XML::LibXML::parse_file" -> "XML::LibXML::_init_callbacks";
+"XML::LibXML::_init_callbacks" -> "XML::LibXML::InputCallback::new";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@29";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::_SAXParser::BEGIN@2005";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@4";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@257";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@67";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@167";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::InputCallback::BEGIN@2151";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@169";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::parse_file";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@15";
+"XML::LibXML::BEGIN@21" -> "constant::import";
+"XML::LibXML::BEGIN@164" -> "constant::import";
+"XML::LibXML::BEGIN@176" -> "constant::import";
+"XML::LibXML::BEGIN@162" -> "constant::import";
+"XML::LibXML::BEGIN@179" -> "constant::import";
+"XML::LibXML::BEGIN@174" -> "constant::import";
+"XML::LibXML::BEGIN@160" -> "constant::import";
+"XML::LibXML::BEGIN@171" -> "constant::import";
+"XML::LibXML::BEGIN@175" -> "constant::import";
+"XML::LibXML::BEGIN@173" -> "constant::import";
+"XML::LibXML::BEGIN@177" -> "constant::import";
+"XML::LibXML::BEGIN@167" -> "constant::import";
+"XML::LibXML::BEGIN@178" -> "constant::import";
+"XML::LibXML::BEGIN@169" -> "constant::import";
+"XML::LibXML::BEGIN@165" -> "constant::import";
+"XML::LibXML::BEGIN@163" -> "constant::import";
+"XML::LibXML::BEGIN@168" -> "constant::import";
+"XML::LibXML::BEGIN@22" -> "constant::import";
+"XML::LibXML::BEGIN@161" -> "constant::import";
+"XML::LibXML::BEGIN@235" -> "constant::import";
+"XML::LibXML::BEGIN@170" -> "constant::import";
+"XML::LibXML::BEGIN@166" -> "constant::import";
+"XML::LibXML::BEGIN@172" -> "constant::import";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@22";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@235";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@46";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1492";
+"XML::LibXML::Element::__ANON__[XML/LibXML.pm:1543]" -> "XML::LibXML::Element::__ANON__[XML/LibXML.pm:1496]";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@83";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@58";
+"XML::LibXML::BEGIN@13" -> "strict::import";
+"XML::LibXML::_parse_file" -> "XML::LibXML::InputCallback::_callback_match";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Comment::BEGIN@1788";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::CORE:match";
+"XML::LibXML::import" -> "XML::LibXML::CORE:match";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@160";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@47";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@141";
+"DynaLoader::bootstrap" -> "XML::LibXML::bootstrap";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1490";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@2";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@15";
+"XML::LibXML::expand_xinclude" -> "XML::LibXML::__parser_option";
+"XML::LibXML::InputCallback::init_callbacks" -> "XML::LibXML::match_callback";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@22";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::InputCallback::BEGIN@2149";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@63";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@13";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@6";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@16";
+"XML::LibXML::BEGIN@19" -> "Exporter::import";
+"XML::LibXML::Element::BEGIN@1492" -> "Exporter::import";
+"XML::LibXML::BEGIN@27" -> "Exporter::import";
+"XML::LibXML::Element::BEGIN@1490" -> "Exporter::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@50";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::NamedNodeMap::BEGIN@1903";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@24";
+"XML::LibXML::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@171";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@17";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1486";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@178";
+"XML::LibXML::import" -> "Exporter::export_to_level";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@36";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@165";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@65";
+"XML::LibXML::NamedNodeMap::BEGIN@1903" -> "XML::LibXML::import";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::import";
+"Text::Tradition::Stemma::BEGIN@11" -> "XML::LibXML::import";
+"XML::LibXML::Element::BEGIN@1488" -> "XML::LibXML::import";
+"Text::Tradition::Parser::GraphML::BEGIN@8" -> "XML::LibXML::import";
+"Text::TEI::Markup::BEGIN@8" -> "XML::LibXML::import";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@15";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@56";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1489";
+"XML::LibXML::Text::BEGIN@1743" -> "vars::import";
+"XML::LibXML::PI::BEGIN@1837" -> "vars::import";
+"XML::LibXML::Comment::BEGIN@1788" -> "vars::import";
+"XML::LibXML::Document::BEGIN@1367" -> "vars::import";
+"XML::LibXML::Attr::BEGIN@1804" -> "vars::import";
+"XML::LibXML::CDATASection::BEGIN@1795" -> "vars::import";
+"XML::LibXML::Element::BEGIN@1486" -> "vars::import";
+"XML::LibXML::Dtd::BEGIN@1826" -> "vars::import";
+"XML::LibXML::InputCallback::BEGIN@2149" -> "vars::import";
+"XML::LibXML::BEGIN@36" -> "vars::import";
+"XML::LibXML::BEGIN@14" -> "vars::import";
+"XML::LibXML::DocumentFragment::BEGIN@1463" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::DocumentFragment::BEGIN@1463";
+"XML::LibXML::parse_file" -> "XML::LibXML::_parse_file";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Text::BEGIN@1743";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@12";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@13";
+"XML::LibXML::Element::getAttribute" -> "XML::LibXML::Element::_getAttribute";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@6";
+"XML::LibXML::Element::DESTROY" -> "XML::LibXML::Element::__ANON__[XML/LibXML.pm:1543]";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@177";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1535";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@62";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@19";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@41";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@168";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@44";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@54";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Element::DESTROY";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@36";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Document::documentElement";
+"XML::LibXML::parse_file" -> "XML::LibXML::_cleanup_callbacks";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@60";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@25";
+"XML::LibXML::InputCallback::init_callbacks" -> "XML::LibXML::read_callback";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@245";
+"XML::LibXML::InputCallback::init_callbacks" -> "XML::LibXML::open_callback";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::PI::BEGIN@1837";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@16";
+"XML::LibXML::InputCallback::init_callbacks" -> "XML::LibXML::close_callback";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@43";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@39";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Document::BEGIN@1367";
+"XML::LibXML::InputCallback::init_callbacks" -> "XML::LibXML::InputCallback::lib_init_callbacks";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@19";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@175";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@9";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@59";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@163";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@37";
+"XML::LibXML::Element::BEGIN@1489" -> "XML::LibXML::AttributeHash::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@166";
+"XML::LibXML::NodeList::to_literal" -> "XML::LibXML::Node::string_value";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@27";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@164";
+"XML::LibXML::InputCallback::cleanup_callbacks" -> "XML::LibXML::InputCallback::lib_cleanup_callbacks";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@61";
+"XML::LibXML::BEGIN@29" -> "DynaLoader::bootstrap";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@64";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@45";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Attr::BEGIN@1804";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@57";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@13";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@17";
+"XML::LibXML::_init_callbacks" -> "XML::LibXML::InputCallback::init_callbacks";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@173";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@34";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::LIBXML_VERSION";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@161";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Dtd::BEGIN@1826";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@48";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Element::getAttribute";
+}

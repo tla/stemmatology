@@ -1,0 +1,104 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Benchmark {
+	label="Benchmark";
+	"Benchmark::BEGIN@433";
+	"Benchmark::init";
+	"Benchmark::import";
+	"Benchmark::BEGIN@426";
+	"Benchmark::BEGIN@453";
+	"Benchmark::BEGIN@3";
+	"Benchmark::BEGIN@432";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@5";
+	"Text::Tradition::Analysis::BEGIN@12";
+	"Text::Tradition::Analysis::BEGIN@9";
+	"Text::Tradition::Analysis::BEGIN@6";
+	"Text::Tradition::Analysis::BEGIN@3";
+	"Text::Tradition::Analysis::BEGIN@8";
+	"Text::Tradition::Analysis::BEGIN@11";
+	"Text::Tradition::Analysis::BEGIN@14";
+	"Text::Tradition::Analysis::BEGIN@7";
+	"Text::Tradition::Analysis::BEGIN@10";
+	"Text::Tradition::Analysis::BEGIN@4";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@3";
+	"LWP::UserAgent::BEGIN@14";
+	"LWP::UserAgent::BEGIN@12";
+	"LWP::UserAgent::BEGIN@10";
+	"LWP::UserAgent::BEGIN@17";
+	"LWP::UserAgent::BEGIN@374";
+	"LWP::UserAgent::BEGIN@11";
+	"LWP::UserAgent::BEGIN@15";
+	"LWP::UserAgent::BEGIN@4";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@4";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@3";
+"Text::Tradition::Analysis::BEGIN@12" -> "UNIVERSAL::import";
+"Text::Tradition::Analysis::BEGIN@10" -> "UNIVERSAL::import";
+"Text::Tradition::Analysis::BEGIN@8" -> "UNIVERSAL::import";
+"Text::Tradition::Analysis::BEGIN@11" -> "UNIVERSAL::import";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@9";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@374";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@5";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@3";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@7";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@432";
+"Text::Tradition::Analysis::BEGIN@9" -> "JSON::import";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@11";
+"Text::Tradition::Analysis::BEGIN@3" -> "strict::import";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@11";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@3";
+"Text::Tradition::Analysis::BEGIN@7" -> "Exporter::import";
+"Text::Tradition::Analysis::BEGIN@6" -> "Exporter::import";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@17";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@10";
+"Text::Tradition::Analysis::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Analysis::BEGIN@14" -> "vars::import";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::import";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::init";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@14";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@15";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@12";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@10";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@14";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@453";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@6";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@433";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@4";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@12";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@426";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@8";
+}

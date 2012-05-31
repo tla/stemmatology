@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::new";
+}
+subgraph cluster_HTTP_Request_Common {
+	label="HTTP::Request::Common";
+	"HTTP::Request::Common::BEGIN@3";
+	"HTTP::Request::Common::BEGIN@4";
+	"HTTP::Request::Common::BEGIN@14";
+	"HTTP::Request::Common::_simple_req";
+	"HTTP::Request::Common::GET";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+	"main::RUNTIME";
+	"main::__ANON__[script/nytprof.pl:39]";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@3";
+"HTTP::Request::Common::BEGIN@3" -> "strict::import";
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@14";
+"HTTP::Request::Common::BEGIN@4" -> "vars::import";
+"HTTP::Request::Common::GET" -> "HTTP::Request::Common::_simple_req";
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@4";
+"HTTP::Request::Common::_simple_req" -> "HTTP::Request::new";
+"main::RUNTIME" -> "HTTP::Request::Common::GET";
+"main::__ANON__[script/nytprof.pl:39]" -> "HTTP::Request::Common::GET";
+}

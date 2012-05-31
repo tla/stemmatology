@@ -1,0 +1,147 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@9";
+	"Catalyst::Dispatcher::_invoke_as_path";
+	"Catalyst::Dispatcher::_do_forward";
+	"Catalyst::Dispatcher::_command2action";
+	"Catalyst::Dispatcher::dispatch";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::execute";
+	"Catalyst::req";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::dispatch";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::match";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::args";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::looks_like_number";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::process";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BEGIN@25";
+	"Catalyst::Action::attributes";
+	"Catalyst::Action::class";
+	"Catalyst::Action::BEGIN@22";
+	"Catalyst::Action::BEGIN@56";
+	"Catalyst::Action::dispatch";
+	"Catalyst::Action::BEGIN@23";
+	"Catalyst::Action::compare";
+	"Catalyst::Action::code";
+	"Catalyst::Action::number_of_captures";
+	"Catalyst::Action::match";
+	"Catalyst::Action::BEGIN@41";
+	"Catalyst::Action::execute";
+	"Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::execute";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::register";
+	"Catalyst::DispatchType::Chained::recurse_match";
+	"Catalyst::DispatchType::Chained::match";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::CORE:sort";
+	"Catalyst::DispatchType::Path::match";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::_BEGIN";
+	"Catalyst::Controller::_ACTION";
+	"Catalyst::Controller::_DISPATCH";
+	"Catalyst::Controller::_AUTO";
+	"Catalyst::Controller::_END";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::relationships";
+	"stemmaweb::Controller::Relation::end";
+	"stemmaweb::Controller::Relation::text";
+}
+"Catalyst::Action::execute" -> "Catalyst::Controller::_ACTION";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::Action::number_of_captures";
+"Catalyst::Action::BEGIN@41" -> "overload::import";
+"Catalyst::Action::execute" -> "Catalyst::Action::code";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@22";
+"Catalyst::Action::compare" -> "Scalar::Util::looks_like_number";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@41";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@25";
+"Catalyst::Action::dispatch" -> "Catalyst::execute";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_AUTO";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::text";
+"Catalyst::Action::BEGIN@25" -> "namespace::clean::import";
+"Catalyst::Action::execute" -> "Catalyst::View::JSON::process";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Action::dispatch";
+"Catalyst::Controller::_END" -> "Catalyst::Action::dispatch";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::Action::dispatch";
+"Catalyst::Action::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Action::dispatch" -> "Catalyst::Action::class";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_END";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::end";
+"Catalyst::Action::compare" -> "Catalyst::Action::attributes";
+"Catalyst::Action::number_of_captures" -> "Catalyst::Action::attributes";
+"Catalyst::Action::match" -> "Catalyst::Action::attributes";
+"Catalyst::Action::BEGIN@23" -> "Exporter::import";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Controller::_END" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_BEGIN";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@56";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::Action::match";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::Action::match";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::Action::execute";
+"Catalyst::execute" -> "Catalyst::Action::execute";
+"Catalyst::Action::BEGIN@56" -> "warnings::unimport";
+"Catalyst::DispatchType::Path::CORE:sort" -> "Catalyst::Action::compare";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@23";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::relationships";
+"Catalyst::Action::execute" -> "Catalyst::Controller::_DISPATCH";
+"Catalyst::Action::match" -> "Catalyst::Request::args";
+"Catalyst::Action::match" -> "Catalyst::req";
+}

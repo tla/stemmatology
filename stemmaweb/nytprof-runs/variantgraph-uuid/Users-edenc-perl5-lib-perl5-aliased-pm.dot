@@ -1,0 +1,78 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@13";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@14";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@1.8";
+	"MooseX::Role::WithOverloading::BEGIN@1.6";
+	"MooseX::Role::WithOverloading::BEGIN@14";
+	"MooseX::Role::WithOverloading::BEGIN@17";
+	"MooseX::Role::WithOverloading::BEGIN@1.7";
+	"MooseX::Role::WithOverloading::BEGIN@16";
+	"MooseX::Role::WithOverloading::BEGIN@15";
+	"MooseX::Role::WithOverloading::BEGIN@1";
+}
+subgraph cluster_aliased {
+	label="aliased";
+	"aliased::CORE:subst";
+	"aliased::_make_alias";
+	"aliased::BEGIN@8";
+	"aliased::_load_alias";
+	"aliased::_get_alias";
+	"aliased::BEGIN@35";
+	"aliased::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@11";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1";
+}
+"aliased::_get_alias" -> "aliased::CORE:subst";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@15" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@14" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@12" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@12" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@11" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@13" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@17" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@12" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@16" -> "aliased::import";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::BEGIN@1.7";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::BEGIN@1";
+"aliased::import" -> "aliased::_load_alias";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::BEGIN@35";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::BEGIN@1.6";
+"aliased::BEGIN@8" -> "strict::import";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::BEGIN@8";
+"aliased::import" -> "aliased::_make_alias";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5";
+"aliased::BEGIN@35" -> "strict::unimport";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::BEGIN@1.8";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@1";
+"aliased::_make_alias" -> "aliased::_get_alias";
+"aliased::_load_alias" -> "MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4";
+}

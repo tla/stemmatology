@@ -1,0 +1,72 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::BEGIN@4";
+	"Text::Tradition::Parser::Self::BEGIN@221";
+	"Text::Tradition::Parser::Self::BEGIN@5";
+	"Text::Tradition::Parser::Self::BEGIN@6";
+	"Text::Tradition::Parser::Self::BEGIN@3";
+	"Text::Tradition::Parser::Self::BEGIN@223";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::catfile";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::BEGIN@11";
+	"Module::Load::BEGIN@37";
+	"Module::Load::BEGIN@6";
+	"Module::Load::_to_file";
+	"Module::Load::_is_file";
+	"Module::Load::_who";
+	"Module::Load::CORE:match";
+	"Module::Load::import";
+	"Module::Load::load";
+	"Module::Load::BEGIN@5";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::done_declare";
+	"Devel::Declare::linestr_callback";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@4";
+	"Text::Tradition::BUILD";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Module::Load::import" -> "Module::Load::_who";
+"Module::Load::load" -> "Module::Load::_who";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@6";
+"Module::Load::_to_file" -> "File::Spec::Unix::catfile";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@3";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@11";
+"Module::Load::_is_file" -> "Module::Load::CORE:match";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@5";
+"Module::Load::BEGIN@5" -> "strict::import";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@223";
+"Module::Load::load" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@4";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@221";
+"Module::Load::BEGIN@37" -> "strict::unimport";
+"Module::Load::BEGIN@11" -> "strict::unimport";
+"Module::Load::load" -> "Module::Load::_is_file";
+"Module::Load::load" -> "Devel::Declare::done_declare";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@5";
+"Text::Tradition::BEGIN@4" -> "Module::Load::import";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@6";
+"Module::Load::load" -> "Devel::Declare::linestr_callback";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@37";
+"Module::Load::load" -> "Module::Load::_to_file";
+"Text::Tradition::BUILD" -> "Module::Load::load";
+}

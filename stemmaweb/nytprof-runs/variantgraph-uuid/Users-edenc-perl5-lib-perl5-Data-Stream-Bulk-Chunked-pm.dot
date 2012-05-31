@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_Chunked {
+	label="Data::Stream::Bulk::Chunked";
+	"Data::Stream::Bulk::Chunked::BEGIN@2";
+	"Data::Stream::Bulk::Chunked::BEGIN@11";
+	"Data::Stream::Bulk::Chunked::BEGIN@8";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Chunked::BEGIN@2";
+"Data::Stream::Bulk::Chunked::BEGIN@11" -> "namespace::clean::import";
+"Data::Stream::Bulk::Chunked::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Chunked::BEGIN@8";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Chunked::BEGIN@11";
+}

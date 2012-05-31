@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::BEGIN@86";
+}
+subgraph cluster_PPI_Document_Fragment {
+	label="PPI::Document::Fragment";
+	"PPI::Document::Fragment::BEGIN@21";
+	"PPI::Document::Fragment::BEGIN@25";
+	"PPI::Document::Fragment::BEGIN@22";
+	"PPI::Document::Fragment::BEGIN@24";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Document::BEGIN@86" -> "PPI::Document::Fragment::BEGIN@22";
+"PPI::Document::BEGIN@86" -> "PPI::Document::Fragment::BEGIN@21";
+"PPI::Document::BEGIN@86" -> "PPI::Document::Fragment::BEGIN@24";
+"PPI::Document::Fragment::BEGIN@21" -> "strict::import";
+"PPI::Document::Fragment::BEGIN@24" -> "vars::import";
+"PPI::Document::BEGIN@86" -> "PPI::Document::Fragment::BEGIN@25";
+}

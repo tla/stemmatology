@@ -1,0 +1,85 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@12";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@12";
+	"IO::Dir::BEGIN@13";
+	"IO::Dir::BEGIN@15";
+	"IO::Dir::BEGIN@42";
+	"IO::Dir::BEGIN@18";
+	"IO::Dir::BEGIN@19";
+	"IO::Dir::BEGIN@14";
+	"IO::Dir::BEGIN@17";
+	"IO::Dir::BEGIN@9";
+	"IO::Dir::BEGIN@11";
+}
+subgraph cluster_Symbol {
+	label="Symbol";
+	"Symbol::BEGIN@81";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_File {
+	label="IO::File";
+	"IO::File::BEGIN@128";
+	"IO::File::BEGIN@133";
+	"IO::File::BEGIN@130";
+	"IO::File::CORE:match";
+	"IO::File::BEGIN@131";
+	"IO::File::BEGIN@134";
+	"IO::File::BEGIN@132";
+	"IO::File::BEGIN@127";
+}
+subgraph cluster_Tie_Hash {
+	label="Tie::Hash";
+	"Tie::Hash::BEGIN@188";
+	"Tie::Hash::BEGIN@189";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@132";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@13";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@9";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@42";
+"IO::Dir::BEGIN@17" -> "Tie::Hash::BEGIN@189";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@127";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@130";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@128";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@11";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@18";
+"IO::Dir::BEGIN@11" -> "strict::import";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@134";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@133";
+"IO::Dir::BEGIN@15" -> "IO::File::CORE:match";
+"IO::Dir::BEGIN@14" -> "Exporter::import";
+"IO::Dir::BEGIN@13" -> "Exporter::import";
+"IO::Dir::BEGIN@12" -> "Exporter::import";
+"IO::Dir::BEGIN@18" -> "Exporter::import";
+"IO::Dir::BEGIN@15" -> "Exporter::import";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@14";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@131";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@19";
+"IO::Dir::BEGIN@13" -> "Symbol::BEGIN@81";
+"IO::Dir::BEGIN@42" -> "warnings::unimport";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@12";
+"IO::Dir::BEGIN@18" -> "File::stat::import";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@17";
+"IO::Dir::BEGIN@17" -> "Tie::Hash::BEGIN@188";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@15";
+}

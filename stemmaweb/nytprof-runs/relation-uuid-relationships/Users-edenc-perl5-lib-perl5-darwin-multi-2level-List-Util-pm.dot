@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::BEGIN@11";
+	"List::Util::first";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::columns_info";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@13";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::__is_a";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_make_new_metaclass";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::inject_base";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"List::Util::BEGIN@11" -> "strict::import";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "List::Util::first";
+"Class::C3::Componentised::inject_base" -> "List::Util::first";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "List::Util::first";
+"DBIx::Class::ResultSource::columns_info" -> "List::Util::first";
+"Data::OptList::__is_a" -> "List::Util::first";
+"Moose::BEGIN@13" -> "List::Util::BEGIN@11";
+"List::Util::first" -> "Data::OptList::__is_a";
+}

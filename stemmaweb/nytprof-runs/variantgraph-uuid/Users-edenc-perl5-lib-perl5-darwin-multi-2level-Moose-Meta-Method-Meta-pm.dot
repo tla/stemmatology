@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@27";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Moose_Meta_Method_Meta {
+	label="Moose::Meta::Method::Meta";
+	"Moose::Meta::Method::Meta::_make_compatible_with";
+	"Moose::Meta::Method::Meta::BEGIN@10";
+	"Moose::Meta::Method::Meta::wrap";
+	"Moose::Meta::Method::Meta::BEGIN@13";
+	"Moose::Meta::Method::Meta::BEGIN@3";
+	"Moose::Meta::Method::Meta::BEGIN@11";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::wrap";
+	"Class::MOP::Method::Meta::_make_compatible_with";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Class::BEGIN@27" -> "Moose::Meta::Method::Meta::BEGIN@10";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Moose::Meta::Method::Meta::wrap";
+"Moose::Meta::Method::Meta::BEGIN@10" -> "strict::import";
+"Moose::Meta::Class::BEGIN@27" -> "Moose::Meta::Method::Meta::BEGIN@11";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Moose::Meta::Method::Meta::_make_compatible_with";
+"Moose::Meta::Method::Meta::BEGIN@13" -> "base::import";
+"Moose::Meta::Method::Meta::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Meta::wrap" -> "Class::MOP::Method::Meta::wrap";
+"Moose::Meta::Class::BEGIN@27" -> "Moose::Meta::Method::Meta::BEGIN@3";
+"Moose::Meta::Class::BEGIN@27" -> "Moose::Meta::Method::Meta::BEGIN@13";
+"Moose::Meta::Method::Meta::_make_compatible_with" -> "Class::MOP::Method::Meta::_make_compatible_with";
+}

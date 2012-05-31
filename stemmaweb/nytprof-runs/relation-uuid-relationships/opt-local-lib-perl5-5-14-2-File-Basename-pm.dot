@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::init";
+	"FindBin::BEGIN@99";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_File_Basename {
+	label="File::Basename";
+	"File::Basename::BEGIN@52";
+	"File::Basename::BEGIN@371";
+	"File::Basename::BEGIN@50";
+	"File::Basename::fileparse_set_fstype";
+	"File::Basename::CORE:subst";
+	"File::Basename::BEGIN@42";
+	"File::Basename::fileparse";
+	"File::Basename::CORE:regcomp";
+	"File::Basename::CORE:match";
+	"File::Basename::BEGIN@51";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::search_paths";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"File::Basename::fileparse" -> "File::Basename::CORE:subst";
+"File::Basename::fileparse" -> "File::Basename::CORE:regcomp";
+"File::Basename::fileparse_set_fstype" -> "File::Basename::CORE:regcomp";
+"FindBin::BEGIN@99" -> "File::Basename::BEGIN@52";
+"File::Basename::BEGIN@50" -> "strict::import";
+"FindBin::BEGIN@99" -> "File::Basename::BEGIN@50";
+"Module::Pluggable::Object::search_paths" -> "File::Basename::fileparse";
+"FindBin::init" -> "File::Basename::fileparse";
+"FindBin::BEGIN@99" -> "File::Basename::BEGIN@371";
+"File::Basename::fileparse" -> "File::Basename::CORE:match";
+"File::Basename::fileparse_set_fstype" -> "File::Basename::CORE:match";
+"FindBin::BEGIN@99" -> "File::Basename::fileparse_set_fstype";
+"File::Basename::BEGIN@52" -> "warnings::import";
+"FindBin::BEGIN@99" -> "File::Basename::BEGIN@42";
+"FindBin::BEGIN@99" -> "File::Basename::BEGIN@51";
+}

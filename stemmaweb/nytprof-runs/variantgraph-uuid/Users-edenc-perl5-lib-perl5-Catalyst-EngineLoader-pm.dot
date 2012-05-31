@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@32";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::BEGIN@4";
+	"Catalyst::EngineLoader::application_name";
+	"Catalyst::EngineLoader::BEGIN@3";
+	"Catalyst::EngineLoader::BEGIN@2";
+	"Catalyst::EngineLoader::BEGIN@5";
+	"Catalyst::EngineLoader::has_requested_engine";
+	"Catalyst::EngineLoader::catalyst_engine_class";
+	"Catalyst::EngineLoader::_guess_catalyst_engine_class";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::env_value";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@2";
+"Catalyst::EngineLoader::_guess_catalyst_engine_class" -> "Catalyst::EngineLoader::has_requested_engine";
+"Catalyst::EngineLoader::catalyst_engine_class" -> "Catalyst::EngineLoader::_guess_catalyst_engine_class";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@4";
+"Catalyst::EngineLoader::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@3";
+"Catalyst::EngineLoader::BEGIN@5" -> "namespace::autoclean::import";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@5";
+"Catalyst::EngineLoader::_guess_catalyst_engine_class" -> "Catalyst::EngineLoader::application_name";
+"Catalyst::EngineLoader::_guess_catalyst_engine_class" -> "Catalyst::Utils::env_value";
+}

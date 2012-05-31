@@ -1,0 +1,158 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::BEGIN@15";
+}
+subgraph cluster_Time_Seconds {
+	label="Time::Seconds";
+	"Time::Seconds::BEGIN@33";
+	"Time::Seconds::BEGIN@23";
+	"Time::Seconds::BEGIN@28";
+	"Time::Seconds::BEGIN@29";
+	"Time::Seconds::BEGIN@31";
+	"Time::Seconds::BEGIN@36";
+	"Time::Seconds::BEGIN@30";
+	"Time::Seconds::BEGIN@3";
+	"Time::Seconds::BEGIN@27";
+	"Time::Seconds::BEGIN@40";
+	"Time::Seconds::BEGIN@32";
+	"Time::Seconds::BEGIN@25";
+	"Time::Seconds::BEGIN@2";
+	"Time::Seconds::BEGIN@37";
+	"Time::Seconds::BEGIN@24";
+	"Time::Seconds::BEGIN@26";
+}
+subgraph cluster_Time_Local {
+	label="Time::Local";
+	"Time::Local::BEGIN@8";
+	"Time::Local::BEGIN@5";
+	"Time::Local::BEGIN@28";
+	"Time::Local::_daygm";
+	"Time::Local::BEGIN@29";
+	"Time::Local::BEGIN@6";
+	"Time::Local::BEGIN@27";
+	"Time::Local::BEGIN@4";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@40";
+	"Time::Piece::BEGIN@510";
+	"Time::Piece::BEGIN@41";
+	"Time::Piece::BEGIN@8";
+	"Time::Piece::BEGIN@43";
+	"Time::Piece::BEGIN@7";
+	"Time::Piece::BEGIN@42";
+	"Time::Piece::BEGIN@39";
+	"Time::Piece::BEGIN@37";
+	"Time::Piece::BEGIN@9";
+	"Time::Piece::BEGIN@34";
+	"Time::Piece::BEGIN@533";
+	"Time::Piece::BEGIN@36";
+	"Time::Piece::bootstrap";
+	"Time::Piece::BEGIN@121";
+	"Time::Piece::BEGIN@35";
+	"Time::Piece::BEGIN@122";
+	"Time::Piece::BEGIN@575";
+	"Time::Piece::BEGIN@38";
+	"Time::Piece::BEGIN@3";
+	"Time::Piece::BEGIN@44";
+	"Time::Piece::BEGIN@422";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_integer {
+	label="integer";
+	"integer::import";
+}
+"Time::Piece::BEGIN@510" -> "overload::import";
+"Time::Piece::BEGIN@575" -> "overload::import";
+"Time::Piece::BEGIN@533" -> "overload::import";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@3";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@23";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@121";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@34";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@25";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@43";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@41";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@39";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@5";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@510";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@27";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@575";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@28";
+"Time::Piece::BEGIN@40" -> "constant::import";
+"Time::Piece::BEGIN@34" -> "constant::import";
+"Time::Piece::BEGIN@35" -> "constant::import";
+"Time::Piece::BEGIN@38" -> "constant::import";
+"Time::Piece::BEGIN@43" -> "constant::import";
+"Time::Piece::BEGIN@44" -> "constant::import";
+"Time::Piece::BEGIN@37" -> "constant::import";
+"Time::Piece::BEGIN@41" -> "constant::import";
+"Time::Piece::BEGIN@39" -> "constant::import";
+"Time::Piece::BEGIN@42" -> "constant::import";
+"Time::Piece::BEGIN@36" -> "constant::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@3";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@29";
+"Time::Piece::BEGIN@3" -> "strict::import";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@8";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@31";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@36";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@35";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@30";
+"Time::Piece::BEGIN@9" -> "Exporter::import";
+"Time::Piece::BEGIN@7" -> "Exporter::import";
+"Time::Piece::BEGIN@8" -> "Exporter::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@24";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@9";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@533";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@122";
+"Time::Piece::BEGIN@121" -> "strict::unimport";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@42";
+"DynaLoader::bootstrap" -> "Time::Piece::bootstrap";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@40";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@36";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@38";
+"Time::Piece::BEGIN@122" -> "warnings::unimport";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@7";
+"Time::Piece::BEGIN@9" -> "Time::Local::_daygm";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@6";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@26";
+"Time::Piece::BEGIN@422" -> "integer::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@27";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@4";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@2";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@8";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@40";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@422";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@33";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@29";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@32";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@28";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@44";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@37";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@37";
+}

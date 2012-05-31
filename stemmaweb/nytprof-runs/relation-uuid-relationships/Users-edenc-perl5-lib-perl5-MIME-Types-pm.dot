@@ -1,0 +1,83 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+}
+subgraph cluster_MIME_Type {
+	label="MIME::Type";
+	"MIME::Type::simplified";
+	"MIME::Type::BEGIN@12";
+	"MIME::Type::system";
+	"MIME::Type::BEGIN@18";
+	"MIME::Type::BEGIN@6";
+	"MIME::Type::BEGIN@10";
+	"MIME::Type::new";
+	"MIME::Type::extensions";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MIME_Types {
+	label="MIME::Types";
+	"MIME::Types::CORE:match";
+	"MIME::Types::CORE:subst";
+	"MIME::Types::CORE:readline";
+	"MIME::Types::BEGIN@13";
+	"MIME::Types::BEGIN@191";
+	"MIME::Types::CORE:regcomp";
+	"MIME::Types::CORE:tell";
+	"MIME::Types::BEGIN@138";
+	"MIME::Types::BEGIN@14";
+	"MIME::Types::CORE:qr";
+	"MIME::Types::CORE:seek";
+	"MIME::Types::create_type_index";
+	"MIME::Types::BEGIN@7";
+	"MIME::Types::new";
+	"MIME::Types::BEGIN@11";
+	"MIME::Types::init";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::MOP::Class:::before" -> "MIME::Types::create_type_index";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@138";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@10";
+"MIME::Types::create_type_index" -> "MIME::Types::CORE:match";
+"MIME::Types::BEGIN@11" -> "strict::import";
+"Class::MOP::Class:::before" -> "MIME::Types::new";
+"MIME::Types::create_type_index" -> "MIME::Types::CORE:regcomp";
+"MIME::Types::init" -> "MIME::Types::CORE:regcomp";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@18";
+"MIME::Types::BEGIN@14" -> "Exporter::import";
+"MIME::Types::BEGIN@191" -> "Exporter::import";
+"MIME::Types::BEGIN@138" -> "vars::import";
+"MIME::Types::BEGIN@7" -> "vars::import";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@7";
+"MIME::Types::init" -> "MIME::Types::CORE:qr";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@14";
+"MIME::Types::init" -> "MIME::Types::CORE:seek";
+"MIME::Types::create_type_index" -> "MIME::Type::extensions";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@191";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@12";
+"MIME::Types::init" -> "MIME::Type::simplified";
+"MIME::Types::init" -> "MIME::Types::CORE:subst";
+"MIME::Types::BEGIN@13" -> "MIME::Type::BEGIN@6";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@13";
+"MIME::Types::init" -> "MIME::Type::new";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@11";
+"MIME::Types::create_type_index" -> "MIME::Type::system";
+"MIME::Types::init" -> "MIME::Types::CORE:readline";
+"MIME::Types::init" -> "MIME::Types::CORE:tell";
+"MIME::Types::new" -> "MIME::Types::init";
+}

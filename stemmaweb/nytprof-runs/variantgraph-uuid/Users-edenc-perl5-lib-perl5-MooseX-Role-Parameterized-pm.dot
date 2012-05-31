@@ -1,0 +1,136 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@5";
+	"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::method_metaclass";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+	"Moose::Role::around";
+	"Moose::Role::requires";
+	"Moose::Role::init_meta";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@8";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::role_generator";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+	"MooseX::Role::Parameterized::current_metaclass";
+	"MooseX::Role::Parameterized::BEGIN@4";
+	"MooseX::Role::Parameterized::BEGIN@3";
+	"MooseX::Role::Parameterized::BEGIN@7";
+	"MooseX::Role::Parameterized::BEGIN@2";
+	"MooseX::Role::Parameterized::parameter";
+	"MooseX::Role::Parameterized::init_meta";
+	"MooseX::Role::Parameterized::method";
+	"MooseX::Role::Parameterized::BEGIN@5";
+	"MooseX::Role::Parameterized::role";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::_apply_metaroles";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Moose::Exporter::_apply_metaroles" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"MooseX::Role::Parameterized::method" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::with" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::has" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::around" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Role::requires" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"MooseX::Role::Parameterized::method" -> "Class::MOP::Method::wrap";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Moose::extends";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "MooseX::Role::Parameterized::method";
+"MooseX::Role::Parameterized::method" -> "MooseX::Role::Parameterized::method";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "MooseX::Role::Parameterized::method";
+"MooseX::Role::Parameterized::parameter" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter";
+"MooseX::Role::Parameterized::BEGIN@7" -> "UNIVERSAL::import";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Moose::has";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@2";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@4";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::Role::Parameterized::init_meta";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119";
+"MooseX::Role::Parameterized::init_meta" -> "Moose::Role::init_meta";
+"MooseX::Role::Parameterized::method" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@5";
+"MooseX::Role::Parameterized::BEGIN@4" -> "Moose::Exporter::import";
+"Module::Runtime::require_module" -> "MooseX::Role::Parameterized::role";
+"MooseX::Role::Parameterized::role" -> "MooseX::Role::Parameterized::role";
+"MooseX::Role::Parameterized::BEGIN@5" -> "Exporter::import";
+"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]" -> "MooseX::Role::Parameterized::current_metaclass";
+"MooseX::Role::Parameterized::parameter" -> "MooseX::Role::Parameterized::current_metaclass";
+"MooseX::Role::Parameterized::role" -> "MooseX::Role::Parameterized::current_metaclass";
+"MooseX::Role::Parameterized::role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::role_generator";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@7";
+"MooseX::Role::Parameterized::method" -> "Moose::Meta::Role::method_metaclass";
+"MooseX::Role::Parameterized::parameter" -> "MooseX::Role::Parameterized::parameter";
+"Module::Runtime::require_module" -> "MooseX::Role::Parameterized::parameter";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@3";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@8";
+"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]" -> "Class::MOP::class_of";
+"MooseX::Role::Parameterized::parameter" -> "Class::MOP::class_of";
+"MooseX::Role::Parameterized::role" -> "Class::MOP::class_of";
+"MooseX::Role::Parameterized::method" -> "Class::MOP::Package::name";
+}

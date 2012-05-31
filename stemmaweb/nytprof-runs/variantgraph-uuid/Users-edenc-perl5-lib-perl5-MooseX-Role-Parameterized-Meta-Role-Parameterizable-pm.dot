@@ -1,0 +1,124 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_OneArgNew {
+	label="MooseX::OneArgNew";
+	"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::create_anon_role";
+	"Moose::Meta::Role::apply";
+	"Moose::Meta::Role::combine";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::create_anon_class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::extends";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameterized_role_metaclass";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::has_role_generator";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply_parameterizable_role";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_metaclass";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@8";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::role_generator";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_class";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_role_for_combination";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+}
+subgraph cluster_MooseX_Role_Parameterized_Parameters {
+	label="MooseX::Role::Parameterized::Parameters";
+	"MooseX::Role::Parameterized::Parameters::meta";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::BEGIN@7";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::_apply_all_roles";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Moose::extends";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_role_for_combination" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameterized_role_metaclass";
+"Moose::Meta::Role::combine" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::_role_for_combination";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply_parameterizable_role";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@8" -> "UNIVERSAL::import";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "UNIVERSAL::import";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::has_role_generator";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply" -> "Moose::Meta::Role::apply";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply_parameterizable_role" -> "Moose::Meta::Role::apply";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Class::Load::load_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Moose::with";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass" -> "MooseX::Role::Parameterized::Parameters::meta";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Moose::Meta::Role::create_anon_role";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::role_generator";
+"Moose::Util::_apply_all_roles" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"MooseX::Role::Parameterized::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@8";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass" -> "Class::MOP::Class::create_anon_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_metaclass" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Class::MOP::load_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+}

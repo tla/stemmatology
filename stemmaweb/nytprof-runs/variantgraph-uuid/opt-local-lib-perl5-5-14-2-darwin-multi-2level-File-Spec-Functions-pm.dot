@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_File_Spec_Functions {
+	label="File::Spec::Functions";
+	"File::Spec::Functions::BEGIN@3";
+	"File::Spec::Functions::BEGIN@6";
+	"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+	"File::Spec::Functions::BEGIN@42";
+	"File::Spec::Functions::BEGIN@4";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::curdir";
+	"File::Spec::Unix::abs2rel";
+	"File::Spec::Unix::file_name_is_absolute";
+	"File::Spec::Unix::splitpath";
+	"File::Spec::Unix::catfile";
+	"File::Spec::Unix::catdir";
+	"File::Spec::Unix::catpath";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::search_paths";
+	"Module::Pluggable::Object::BEGIN@6";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::_open";
+	"Config::General::_process";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catpath";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catfile";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@4";
+"Module::Pluggable::Object::search_paths" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"Config::General::_open" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"Config::General::_process" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::curdir";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::catdir";
+"File::Spec::Functions::BEGIN@4" -> "strict::import";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@6";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@42";
+"File::Spec::Functions::BEGIN@42" -> "strict::unimport";
+"File::Spec::Functions::BEGIN@6" -> "vars::import";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::file_name_is_absolute";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::splitpath";
+"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]" -> "File::Spec::Unix::abs2rel";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@3";
+}

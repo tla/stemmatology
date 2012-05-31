@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_XML_SAX_Exception {
+	label="XML::SAX::Exception";
+	"XML::SAX::Exception::BEGIN@13";
+	"XML::SAX::Exception::BEGIN@6";
+	"XML::SAX::Exception::BEGIN@11";
+	"XML::SAX::Exception::BEGIN@8";
+	"XML::SAX::Exception::BEGIN@2";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_XML_LibXML__SAXParser {
+	label="XML::LibXML::_SAXParser";
+	"XML::LibXML::_SAXParser::BEGIN@2005";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@11";
+"XML::SAX::Exception::BEGIN@8" -> "overload::import";
+"XML::SAX::Exception::BEGIN@6" -> "strict::import";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@2";
+"XML::SAX::Exception::BEGIN@13" -> "Exporter::import";
+"XML::SAX::Exception::BEGIN@11" -> "vars::import";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@8";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@6";
+"XML::LibXML::_SAXParser::BEGIN@2005" -> "XML::SAX::Exception::BEGIN@13";
+}

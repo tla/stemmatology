@@ -1,0 +1,75 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::BEGIN@11";
+	"Config::BEGIN@45";
+	"Config::TIEHASH";
+	"Config::BEGIN@10";
+	"Config::BEGIN@9";
+	"Config::import";
+	"Config::FETCH";
+}
+subgraph cluster_File_Copy {
+	label="File::Copy";
+	"File::Copy::BEGIN@14";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::BEGIN@22";
+}
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::BEGIN@9";
+}
+subgraph cluster_Time_Local {
+	label="Time::Local";
+	"Time::Local::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Errno {
+	label="Errno";
+	"Errno::BEGIN@8";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::BEGIN@10";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::BEGIN@4";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@148";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Errno::BEGIN@8" -> "Config::TIEHASH";
+"Data::OptList::BEGIN@10" -> "Config::FETCH";
+"Module::Pluggable::Object::BEGIN@4" -> "Config::FETCH";
+"File::Temp::BEGIN@148" -> "Config::FETCH";
+"Errno::BEGIN@8" -> "Config::BEGIN@10";
+"Config::BEGIN@9" -> "strict::import";
+"Errno::BEGIN@8" -> "Config::BEGIN@45";
+"Config::BEGIN@45" -> "strict::unimport";
+"Config::BEGIN@10" -> "warnings::import";
+"Config::BEGIN@11" -> "vars::import";
+"Errno::BEGIN@8" -> "Config::BEGIN@9";
+"Time::Local::BEGIN@5" -> "Config::import";
+"Errno::BEGIN@8" -> "Config::import";
+"Bio::Phylo::Util::Logger::BEGIN@9" -> "Config::import";
+"DynaLoader::BEGIN@22" -> "Config::import";
+"File::Copy::BEGIN@14" -> "Config::import";
+"Errno::BEGIN@8" -> "Config::BEGIN@11";
+}

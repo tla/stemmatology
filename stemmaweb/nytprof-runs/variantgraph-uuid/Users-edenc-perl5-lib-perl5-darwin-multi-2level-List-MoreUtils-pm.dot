@@ -1,0 +1,229 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::new";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Eval_Closure_Sandbox_165 {
+	label="Eval::Closure::Sandbox_165";
+	"Eval::Closure::Sandbox_165::__ANON__[(eval 274)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_PPI_Normal {
+	label="PPI::Normal";
+	"PPI::Normal::register";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_eval_environment";
+	"Moose::Meta::Class::does_role";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::new";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::new";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+	"List::MoreUtils::BEGIN@6";
+	"List::MoreUtils::BEGIN@8";
+	"List::MoreUtils::bootstrap";
+	"List::MoreUtils::BEGIN@4";
+	"List::MoreUtils::uniq";
+	"List::MoreUtils::BEGIN@3";
+	"List::MoreUtils::any";
+	"List::MoreUtils::BEGIN@5";
+	"List::MoreUtils::firstidx";
+	"List::MoreUtils::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::text";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_check_metaclass_compatibility";
+	"Class::MOP::Class::instance_metaclass";
+	"Class::MOP::Class::destructor_class";
+	"Class::MOP::Class::constructor_class";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::has_initializer";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::all_isa_entry_classes";
+	"KiokuDB::TypeMap::includes";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::snext_sibling";
+	"PPI::Element::next_sibling";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::get_action_methods";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::new";
+	"PPI::Tokenizer::CORE:match";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::remove_delegation";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_make_new_class";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::new";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::new";
+}
+subgraph cluster_Plack_Util_Prototype {
+	label="Plack::Util::Prototype";
+	"Plack::Util::Prototype::can";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::is_same_as";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::new";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::new";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::_follow_also";
+	"Moose::Exporter::_strip_meta_name";
+	"Moose::Exporter::_strip_traits";
+	"Moose::Exporter::_strip_metaclass";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::_set_writer";
+}
+"List::MoreUtils::all" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"List::MoreUtils::all" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"List::MoreUtils::all" -> "Scalar::Util::blessed";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@5";
+"Moose::Exporter::_follow_also" -> "List::MoreUtils::uniq";
+"Catalyst::Controller::get_action_methods" -> "List::MoreUtils::uniq";
+"List::MoreUtils::all" -> "Moose::Meta::Class::does_role";
+"List::MoreUtils::all" -> "Class::MOP::Class::destructor_class";
+"PPI::Element::next_sibling" -> "List::MoreUtils::firstidx";
+"PPI::Element::snext_sibling" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_strip_meta_name" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_strip_traits" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_strip_metaclass" -> "List::MoreUtils::firstidx";
+"List::MoreUtils::BEGIN@4" -> "strict::import";
+"DynaLoader::bootstrap" -> "List::MoreUtils::bootstrap";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@3";
+"List::MoreUtils::all" -> "Class::MOP::Class::instance_metaclass";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@6";
+"List::MoreUtils::any" -> "PPI::Tokenizer::CORE:match";
+"List::MoreUtils::BEGIN@8" -> "vars::import";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@8";
+"List::MoreUtils::any" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"List::MoreUtils::all" -> "UNIVERSAL::isa";
+"List::MoreUtils::all" -> "Class::MOP::Class::constructor_class";
+"List::MoreUtils::all" -> "Moose::Util::does_role";
+"Text::Tradition::Collation::RelationshipStore::new" -> "List::MoreUtils::all";
+"KiokuDB::TypeMap::Shadow::new" -> "List::MoreUtils::all";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "List::MoreUtils::all";
+"Text::Tradition::Collation::Reading::new" -> "List::MoreUtils::all";
+"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map" -> "List::MoreUtils::all";
+"Text::Tradition::Collation::new" -> "List::MoreUtils::all";
+"KiokuDB::new" -> "List::MoreUtils::all";
+"Text::Tradition::Witness::text" -> "List::MoreUtils::all";
+"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list" -> "List::MoreUtils::all";
+"Catalyst::Response::_set_writer" -> "List::MoreUtils::all";
+"Text::Tradition::new" -> "List::MoreUtils::all";
+"KiokuDB::TypeMap::Entry::MOP::new" -> "List::MoreUtils::all";
+"Moose::Util::MetaRole::_make_new_class" -> "List::MoreUtils::all";
+"KiokuDB::TypeMap::all_isa_entry_classes" -> "List::MoreUtils::all";
+"KiokuDB::TypeMap::includes" -> "List::MoreUtils::all";
+"Eval::Closure::Sandbox_165::__ANON__[(eval 274)[Eval/Closure.pm:125]:3]" -> "List::MoreUtils::all";
+"KiokuDB::TypeMap::Default::JSON::new" -> "List::MoreUtils::all";
+"Moose::Meta::Role::Attribute::is_same_as" -> "List::MoreUtils::all";
+"Moose::Meta::Attribute::remove_delegation" -> "List::MoreUtils::any";
+"PPI::Tokenizer::new" -> "List::MoreUtils::any";
+"Class::MOP::Class:::before" -> "List::MoreUtils::any";
+"PPI::Normal::register" -> "List::MoreUtils::any";
+"Moose::Meta::Class::_eval_environment" -> "List::MoreUtils::any";
+"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type" -> "List::MoreUtils::any";
+"List::MoreUtils::all" -> "Plack::Util::Prototype::can";
+"List::MoreUtils::all" -> "Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@9";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@4";
+"List::MoreUtils::BEGIN@9" -> "DynaLoader::bootstrap";
+"List::MoreUtils::firstidx" -> "Scalar::Util::refaddr";
+}

@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::BEGIN@5";
+	"Variable::Magic::wizard";
+	"Variable::Magic::BEGIN@3";
+	"Variable::Magic::BEGIN@6";
+	"Variable::Magic::BEGIN@19";
+	"Variable::Magic::BEGIN@605";
+	"Variable::Magic::BEGIN@203";
+	"Variable::Magic::_wizard";
+	"Variable::Magic::cast";
+	"Variable::Magic::getdata";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@14";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:25]";
+	"B::Hooks::EndOfScope::BEGIN@14";
+	"B::Hooks::EndOfScope::on_scope_end";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"B::Hooks::EndOfScope::on_scope_end" -> "Variable::Magic::cast";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@203";
+"Variable::Magic::wizard" -> "Variable::Magic::_wizard";
+"B::Hooks::EndOfScope::on_scope_end" -> "Variable::Magic::getdata";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@6";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@19";
+"Variable::Magic::BEGIN@5" -> "strict::import";
+"Variable::Magic::BEGIN@203" -> "XSLoader::load";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@605";
+"namespace::autoclean::BEGIN@14" -> "Variable::Magic::wizard";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@3";
+"Variable::Magic::cast" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:25]";
+"Variable::Magic::BEGIN@605" -> "base::import";
+"Variable::Magic::BEGIN@6" -> "warnings::import";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@5";
+}

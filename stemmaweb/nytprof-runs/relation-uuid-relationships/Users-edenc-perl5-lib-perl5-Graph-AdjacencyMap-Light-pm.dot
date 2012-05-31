@@ -1,0 +1,131 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Graph_AdjacencyMap_Vertex {
+	label="Graph::AdjacencyMap::Vertex";
+	"Graph::AdjacencyMap::Vertex::BEGIN@15";
+	"Graph::AdjacencyMap::Vertex::BEGIN@13";
+	"Graph::AdjacencyMap::Vertex::BEGIN@12";
+	"Graph::AdjacencyMap::Vertex::BEGIN@7";
+}
+subgraph cluster_Graph_AdjacencyMap {
+	label="Graph::AdjacencyMap";
+	"Graph::AdjacencyMap::_del_id";
+	"Graph::AdjacencyMap::_set_path_attr";
+	"Graph::AdjacencyMap::_new";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::_stringify";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::successors";
+	"Graph::countedged";
+	"Graph::add_vertex";
+	"Graph::multiedged";
+	"Graph::delete_vertex";
+	"Graph::_edges";
+	"Graph::vertices05";
+	"Graph::add_edge";
+	"Graph::edges";
+	"Graph::new";
+	"Graph::BEGIN@29";
+	"Graph::countvertexed";
+	"Graph::_edges_id_path";
+	"Graph::add_edges";
+	"Graph::neighbours";
+	"Graph::edges05";
+	"Graph::_edges_at";
+	"Graph::delete_edge";
+	"Graph::predecessors";
+	"Graph::multivertexed";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::_get_id_path";
+	"Graph::AdjacencyMap::Light::_is_HYPER";
+	"Graph::AdjacencyMap::Light::_get_path_id";
+	"Graph::AdjacencyMap::Light::__attr";
+	"Graph::AdjacencyMap::Light::BEGIN@14";
+	"Graph::AdjacencyMap::Light::__predecessors";
+	"Graph::AdjacencyMap::Light::BEGIN@7";
+	"Graph::AdjacencyMap::Light::set_path";
+	"Graph::AdjacencyMap::Light::has_path";
+	"Graph::AdjacencyMap::Light::_is_COUNT";
+	"Graph::AdjacencyMap::Light::BEGIN@15";
+	"Graph::AdjacencyMap::Light::_is_MULTI";
+	"Graph::AdjacencyMap::Light::__successors";
+	"Graph::AdjacencyMap::Light::BEGIN@10";
+	"Graph::AdjacencyMap::Light::CORE:sort";
+	"Graph::AdjacencyMap::Light::_predecessors";
+	"Graph::AdjacencyMap::Light::BEGIN@12";
+	"Graph::AdjacencyMap::Light::_new";
+	"Graph::AdjacencyMap::Light::del_path";
+	"Graph::AdjacencyMap::Light::_successors";
+	"Graph::AdjacencyMap::Light::BEGIN@9";
+	"Graph::AdjacencyMap::Light::paths";
+}
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::Light::has_path";
+"Graph::vertices05" -> "Graph::AdjacencyMap::Light::_is_HYPER";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@12";
+"Graph::AdjacencyMap::_set_path_attr" -> "Graph::AdjacencyMap::Light::__attr";
+"Graph::AdjacencyMap::Light::set_path" -> "Graph::AdjacencyMap::Light::CORE:sort";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@13";
+"Graph::AdjacencyMap::_del_id" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::_edges_id_path" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::neighbours" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::edges05" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::_edges" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::_edges_at" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::delete_edge" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::add_vertex" -> "Graph::AdjacencyMap::Light::set_path";
+"Graph::add_edge" -> "Graph::AdjacencyMap::Light::set_path";
+"Graph::multiedged" -> "Graph::AdjacencyMap::Light::_is_MULTI";
+"Graph::multivertexed" -> "Graph::AdjacencyMap::Light::_is_MULTI";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@15";
+"Graph::AdjacencyMap::Light::BEGIN@7" -> "strict::import";
+"Graph::AdjacencyMap::Light::_predecessors" -> "Graph::AdjacencyMap::Light::__predecessors";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@9";
+"Graph::AdjacencyMap::Light::_successors" -> "Graph::AdjacencyMap::Light::__successors";
+"Graph::AdjacencyMap::Light::BEGIN@12" -> "Exporter::import";
+"Graph::AdjacencyMap::Light::BEGIN@14" -> "Exporter::import";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Exporter::import";
+"Graph::AdjacencyMap::Light::BEGIN@9" -> "Exporter::import";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@12";
+"Graph::AdjacencyMap::Light::BEGIN@10" -> "base::import";
+"Graph::AdjacencyMap::Light::_get_path_id" -> "Text::Tradition::Collation::Reading::_stringify";
+"Graph::predecessors" -> "Graph::AdjacencyMap::Light::_predecessors";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::AdjacencyMap::_new";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@7";
+"Graph::AdjacencyMap::Light::_new" -> "Scalar::Util::weaken";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::add_edges";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@7";
+"Graph::countedged" -> "Graph::AdjacencyMap::Light::_is_COUNT";
+"Graph::countvertexed" -> "Graph::AdjacencyMap::Light::_is_COUNT";
+"Graph::vertices05" -> "Graph::AdjacencyMap::Light::paths";
+"Graph::edges05" -> "Graph::AdjacencyMap::Light::paths";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@10";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@14";
+"Graph::new" -> "Graph::AdjacencyMap::Light::_new";
+"Graph::successors" -> "Graph::AdjacencyMap::Light::_successors";
+"Graph::AdjacencyMap::Light::BEGIN@15" -> "Graph::AdjacencyMap::Vertex::BEGIN@15";
+"Graph::AdjacencyMap::_del_id" -> "Graph::AdjacencyMap::Light::del_path";
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::Light::del_path";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::edges";
+}

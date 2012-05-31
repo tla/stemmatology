@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+	"Moose::Role::requires";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_27 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::27";
+	"Moose::Meta::Class::__ANON__::SERIAL::27::result_class";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+	"KiokuDB::Role::Scan::BEGIN@6";
+	"KiokuDB::Role::Scan::BEGIN@4";
+	"KiokuDB::Role::Scan::CORE:qr";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::method";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "KiokuDB::Role::Scan::BEGIN@6";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "MooseX::Role::Parameterized::method";
+"Module::Runtime::require_module" -> "KiokuDB::Role::Scan::BEGIN@4";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::has";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "KiokuDB::Role::Scan::CORE:qr";
+"KiokuDB::Role::Scan::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Role::Scan::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::requires";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Meta::Class::__ANON__::SERIAL::27::result_class";
+"KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]" -> "Moose::Role::with";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "KiokuDB::Role::Scan::__ANON__[KiokuDB/Role/Scan.pm:94]";
+}

@@ -1,0 +1,110 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_32 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::32";
+	"Moose::Meta::Class::__ANON__::SERIAL::32::_get_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_22 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::22";
+	"Moose::Meta::Class::__ANON__::SERIAL::22::_get_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_curried_arguments";
+	"Moose::Meta::Method::Accessor::Native::_initialize_body";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_9 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::9";
+	"Moose::Meta::Class::__ANON__::SERIAL::9::_get_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_get {
+	label="Moose::Meta::Method::Accessor::Native::Array::get";
+	"Moose::Meta::Method::Accessor::Native::Array::get::_inline_check_arguments";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_inline_check_lazy";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_26 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::26";
+	"Moose::Meta::Class::__ANON__::SERIAL::26::_get_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_19 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::19";
+	"Moose::Meta::Class::__ANON__::SERIAL::19::_get_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Reader {
+	label="Moose::Meta::Method::Accessor::Native::Reader";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Reader::_inline_process_arguments";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@50";
+	"Moose::Meta::Method::Accessor::Native::Reader::_generate_method";
+	"Moose::Meta::Method::Accessor::Native::Reader::_inline_check_arguments";
+	"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_12 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::12";
+	"Moose::Meta::Class::__ANON__::SERIAL::12::_get_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_21 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::21";
+	"Moose::Meta::Class::__ANON__::SERIAL::21::_get_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_exists {
+	label="Moose::Meta::Method::Accessor::Native::Hash::exists";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::_inline_check_arguments";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_get {
+	label="Moose::Meta::Method::Accessor::Native::Hash::get";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::_inline_check_arguments";
+}
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::Array::get::_inline_check_arguments";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::21::_get_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::32::_get_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::22::_get_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Reader::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::12::_get_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::26::_get_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Reader::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::Reader::_inline_process_arguments";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::_inline_return_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::9::_get_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::Hash::exists::_inline_check_arguments";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@50" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Class::__ANON__::SERIAL::19::_get_value";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::Hash::get::_inline_check_arguments";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Reader::BEGIN@9";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Reader::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@10" -> "warnings::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Reader::BEGIN@50";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Method::Accessor::Native::_inline_curried_arguments";
+"Moose::Meta::Method::Accessor::Native::_initialize_body" -> "Moose::Meta::Method::Accessor::Native::Reader::_generate_method";
+"Moose::Meta::Method::Accessor::Native::Reader::_generate_method" -> "Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::Native::Reader::_inline_check_arguments";
+}

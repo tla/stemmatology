@@ -1,0 +1,102 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_File_chdir {
+	label="File::chdir";
+	"File::chdir::BEGIN@12";
+	"File::chdir::BEGIN@4";
+	"File::chdir::BEGIN@14";
+	"File::chdir::BEGIN@2";
+	"File::chdir::BEGIN@13";
+	"File::chdir::BEGIN@3";
+}
+subgraph cluster_File_chdir_SCALAR {
+	label="File::chdir::SCALAR";
+	"File::chdir::SCALAR::TIESCALAR";
+	"File::chdir::SCALAR::BEGIN@53";
+	"File::chdir::SCALAR::BEGIN@55";
+}
+subgraph cluster_File_chdir_ARRAY {
+	label="File::chdir::ARRAY";
+	"File::chdir::ARRAY::BEGIN@83";
+	"File::chdir::ARRAY::TIEARRAY";
+	"File::chdir::ARRAY::BEGIN@81";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@10";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_Tradition_StemmaUtil {
+	label="Text::Tradition::StemmaUtil";
+	"Text::Tradition::StemmaUtil::BEGIN@9";
+	"Text::Tradition::StemmaUtil::BEGIN@12";
+	"Text::Tradition::StemmaUtil::BEGIN@15";
+	"Text::Tradition::StemmaUtil::BEGIN@10";
+	"Text::Tradition::StemmaUtil::BEGIN@6";
+	"Text::Tradition::StemmaUtil::BEGIN@3";
+	"Text::Tradition::StemmaUtil::BEGIN@5";
+	"Text::Tradition::StemmaUtil::BEGIN@11";
+	"Text::Tradition::StemmaUtil::BEGIN@14";
+	"Text::Tradition::StemmaUtil::BEGIN@13";
+	"Text::Tradition::StemmaUtil::BEGIN@7";
+	"Text::Tradition::StemmaUtil::BEGIN@4";
+	"Text::Tradition::StemmaUtil::BEGIN@8";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@6";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@3";
+"Text::Tradition::StemmaUtil::BEGIN@13" -> "UNIVERSAL::import";
+"Text::Tradition::StemmaUtil::BEGIN@15" -> "UNIVERSAL::import";
+"Text::Tradition::StemmaUtil::BEGIN@12" -> "UNIVERSAL::import";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@4";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::SCALAR::BEGIN@55";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@15";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::SCALAR::TIESCALAR";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@5";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@14";
+"Text::Tradition::StemmaUtil::BEGIN@3" -> "strict::import";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@13";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@2";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@4";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@8";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@12";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@9";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@5" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@14" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@7" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@10" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@8" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@11" -> "Exporter::import";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::ARRAY::BEGIN@83";
+"Text::Tradition::StemmaUtil::BEGIN@4" -> "warnings::import";
+"Text::Tradition::StemmaUtil::BEGIN@6" -> "vars::import";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@13";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@12";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::SCALAR::BEGIN@53";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@7";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@3";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@10";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::BEGIN@14";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::ARRAY::BEGIN@81";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@11";
+"Text::Tradition::StemmaUtil::BEGIN@9" -> "File::chdir::ARRAY::TIEARRAY";
+}

@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::clone";
+	"PPI::Element::BEGIN@25";
+}
+subgraph cluster_Clone {
+	label="Clone";
+	"Clone::BEGIN@6";
+	"Clone::clone";
+	"Clone::BEGIN@5";
+	"Clone::BEGIN@4";
+	"Clone::bootstrap";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::null";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@4";
+"DynaLoader::bootstrap" -> "Clone::bootstrap";
+"Clone::BEGIN@4" -> "strict::import";
+"PPI::Element::clone" -> "Clone::clone";
+"PPI::Token::Whitespace::null" -> "Clone::clone";
+"Clone::BEGIN@5" -> "Exporter::import";
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@5";
+"Clone::BEGIN@6" -> "vars::import";
+"PPI::Element::BEGIN@25" -> "Clone::BEGIN@6";
+}

@@ -1,0 +1,119 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::_build__tree";
+	"Catalyst::Dispatcher::_find_or_create_namespace_node";
+	"Catalyst::Dispatcher::BEGIN@15";
+	"Catalyst::Dispatcher::_find_or_create_action_container";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@26";
+	"Catalyst::__ANON__[Catalyst.pm:1966]";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::addChild";
+	"Tree::Simple::getDepth";
+	"Tree::Simple::getNodeValue";
+	"Tree::Simple::BEGIN@6";
+	"Tree::Simple::getWidth";
+	"Tree::Simple::_setParent";
+	"Tree::Simple::BEGIN@29";
+	"Tree::Simple::CORE:match";
+	"Tree::Simple::new";
+	"Tree::Simple::getHeight";
+	"Tree::Simple::import";
+	"Tree::Simple::BEGIN@4";
+	"Tree::Simple::getAllChildren";
+	"Tree::Simple::_init";
+	"Tree::Simple::_setWidth";
+	"Tree::Simple::BEGIN@11";
+	"Tree::Simple::getChildCount";
+	"Tree::Simple::_setHeight";
+	"Tree::Simple::BEGIN@7";
+	"Tree::Simple::DESTROY";
+	"Tree::Simple::_insertChildAt";
+	"Tree::Simple::isLeaf";
+	"Tree::Simple::isRoot";
+	"Tree::Simple::ROOT";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]";
+	"Catalyst::Stats::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@7";
+"Tree::Simple::_setWidth" -> "Tree::Simple::getWidth";
+"Tree::Simple::_insertChildAt" -> "Scalar::Util::blessed";
+"Tree::Simple::_init" -> "Scalar::Util::blessed";
+"Tree::Simple::_setParent" -> "Scalar::Util::blessed";
+"Tree::Simple::_setWidth" -> "Tree::Simple::getChildCount";
+"Tree::Simple::addChild" -> "Tree::Simple::getChildCount";
+"Tree::Simple::_insertChildAt" -> "Tree::Simple::getChildCount";
+"Tree::Simple::isLeaf" -> "Tree::Simple::getChildCount";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::getNodeValue";
+"Catalyst::Dispatcher::_find_or_create_action_container" -> "Tree::Simple::getNodeValue";
+"Catalyst::BEGIN@26" -> "Tree::Simple::import";
+"Catalyst::Stats::BEGIN@7" -> "Tree::Simple::import";
+"Catalyst::Dispatcher::BEGIN@15" -> "Tree::Simple::import";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@4";
+"Tree::Simple::BEGIN@29" -> "constant::import";
+"Catalyst::Dispatcher::_build__tree" -> "Tree::Simple::ROOT";
+"Tree::Simple::isRoot" -> "Tree::Simple::ROOT";
+"Tree::Simple::_setParent" -> "Tree::Simple::ROOT";
+"Tree::Simple::_init" -> "Tree::Simple::ROOT";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::getAllChildren";
+"Tree::Simple::BEGIN@6" -> "strict::import";
+"Tree::Simple::_insertChildAt" -> "Tree::Simple::isLeaf";
+"Tree::Simple::_insertChildAt" -> "Tree::Simple::_setParent";
+"Tree::Simple::_init" -> "Tree::Simple::_setParent";
+"Catalyst::Dispatcher::_build__tree" -> "Tree::Simple::new";
+"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]" -> "Tree::Simple::new";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::new";
+"Tree::Simple::_insertChildAt" -> "Tree::Simple::_setWidth";
+"Tree::Simple::_setWidth" -> "Tree::Simple::isRoot";
+"Tree::Simple::_setHeight" -> "Tree::Simple::isRoot";
+"Tree::Simple::_setHeight" -> "Tree::Simple::getHeight";
+"Tree::Simple::BEGIN@11" -> "Exporter::import";
+"Tree::Simple::_setParent" -> "Tree::Simple::getDepth";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@6";
+"Tree::Simple::BEGIN@7" -> "warnings::import";
+"Tree::Simple::new" -> "Tree::Simple::_init";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@11";
+"Tree::Simple::_init" -> "Tree::Simple::CORE:match";
+"Tree::Simple::_setParent" -> "Scalar::Util::weaken";
+"Tree::Simple::_setParent" -> "UNIVERSAL::isa";
+"Tree::Simple::_insertChildAt" -> "UNIVERSAL::isa";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::addChild";
+"Tree::Simple::_insertChildAt" -> "Tree::Simple::_setHeight";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::_insertChildAt";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@29";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Tree::Simple::DESTROY";
+}

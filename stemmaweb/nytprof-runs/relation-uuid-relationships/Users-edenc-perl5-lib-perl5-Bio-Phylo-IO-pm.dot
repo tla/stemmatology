@@ -1,0 +1,94 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::new";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@3";
+}
+subgraph cluster_Bio_Phylo_IO {
+	label="Bio::Phylo::IO";
+	"Bio::Phylo::IO::BEGIN@2";
+	"Bio::Phylo::IO::BEGIN@5";
+	"Bio::Phylo::IO::BEGIN@3";
+	"Bio::Phylo::IO::BEGIN@7";
+	"Bio::Phylo::IO::BEGIN@4";
+	"Bio::Phylo::IO::BEGIN@6";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Bio_Phylo_Mediators_TaxaMediator {
+	label="Bio::Phylo::Mediators::TaxaMediator";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@6";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@5";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@4";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@3";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@2";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@842";
+	"Bio::Phylo::BEGIN@15";
+	"Bio::Phylo::BEGIN@897";
+	"Bio::Phylo::BEGIN@3";
+	"Bio::Phylo::get_logger";
+	"Bio::Phylo::BEGIN@10";
+	"Bio::Phylo::BEGIN@2";
+	"Bio::Phylo::CORE:substcont";
+	"Bio::Phylo::BEGIN@18";
+	"Bio::Phylo::BEGIN@895";
+	"Bio::Phylo::BEGIN@17";
+	"Bio::Phylo::BEGIN@16";
+	"Bio::Phylo::BEGIN@874";
+	"Bio::Phylo::import";
+	"Bio::Phylo::BEGIN@867";
+	"Bio::Phylo::BEGIN@14";
+	"Bio::Phylo::CORE:subst";
+}
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@4";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@874";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@3";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Util::Logger::new";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::get_logger";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Mediators::TaxaMediator::BEGIN@6";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Mediators::TaxaMediator::BEGIN@3";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@14";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@10";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Mediators::TaxaMediator::BEGIN@4";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@2";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@895";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@15";
+"Bio::Phylo::IO::BEGIN@2" -> "strict::import";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Mediators::TaxaMediator::BEGIN@2";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@897";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::CORE:substcont";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@2";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@17";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::import";
+"Bio::Phylo::IO::BEGIN@7" -> "Exporter::import";
+"Bio::Phylo::IO::BEGIN@5" -> "Exporter::import";
+"Bio::Phylo::IO::BEGIN@6" -> "Exporter::import";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@7";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::CORE:subst";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@842";
+"Bio::Phylo::IO::BEGIN@3" -> "base::import";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@5";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Mediators::TaxaMediator::BEGIN@5";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@867";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@3";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@16";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@6";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@18";
+}

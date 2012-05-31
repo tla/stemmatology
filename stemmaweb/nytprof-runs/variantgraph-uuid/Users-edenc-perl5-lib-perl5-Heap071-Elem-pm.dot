@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Heap071_Elem {
+	label="Heap071::Elem";
+	"Heap071::Elem::BEGIN@3";
+	"Heap071::Elem::BEGIN@4";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Graph_MSTHeapElem {
+	label="Graph::MSTHeapElem";
+	"Graph::MSTHeapElem::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::MSTHeapElem::BEGIN@5" -> "Heap071::Elem::BEGIN@4";
+"Heap071::Elem::BEGIN@3" -> "strict::import";
+"Heap071::Elem::BEGIN@4" -> "vars::import";
+"Graph::MSTHeapElem::BEGIN@5" -> "Heap071::Elem::BEGIN@3";
+}

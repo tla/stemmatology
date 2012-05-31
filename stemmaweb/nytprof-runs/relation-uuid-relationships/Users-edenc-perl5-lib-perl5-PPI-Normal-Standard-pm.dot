@@ -1,0 +1,32 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Normal {
+	label="PPI::Normal";
+	"PPI::Normal::BEGIN@107";
+	"PPI::Normal::register";
+}
+subgraph cluster_PPI_Normal_Standard {
+	label="PPI::Normal::Standard";
+	"PPI::Normal::Standard::BEGIN@22";
+	"PPI::Normal::Standard::import";
+	"PPI::Normal::Standard::BEGIN@19";
+	"PPI::Normal::Standard::BEGIN@21";
+	"PPI::Normal::Standard::CORE:match";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::import";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@22";
+"PPI::Normal::Standard::BEGIN@19" -> "strict::import";
+"PPI::Normal::Standard::BEGIN@21" -> "vars::import";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@21";
+"PPI::Normal::Standard::import" -> "PPI::Normal::Standard::CORE:match";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@19";
+"PPI::Normal::Standard::import" -> "PPI::Normal::register";
+}

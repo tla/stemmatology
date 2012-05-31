@@ -1,0 +1,63 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@5";
+	"Throwable::X::__payload";
+	"Throwable::X::BEGIN@9";
+	"Throwable::X::BEGIN@14";
+	"Throwable::X::BEGIN@2";
+	"Throwable::X::BEGIN@1";
+	"Throwable::X::BEGIN@11";
+	"Throwable::X::BEGIN@2.9";
+}
+subgraph cluster_Throwable_X_Types {
+	label="Throwable::X::Types";
+	"Throwable::X::Types::BEGIN@10";
+	"Throwable::X::Types::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@9";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::where";
+	"Moose::Util::TypeConstraints::subtype";
+	"Moose::Util::TypeConstraints::as";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::default_generator";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Throwable::X::BEGIN@9" -> "Moose::Util::TypeConstraints::as";
+"Throwable::X::BEGIN@9" -> "UNIVERSAL::import";
+"Throwable::X::BEGIN@9" -> "Moose::Util::TypeConstraints::where";
+"Throwable::X::BEGIN@14" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@14";
+"Throwable::X::BEGIN@11" -> "namespace::clean::import";
+"Throwable::X::BEGIN@9" -> "Throwable::X::BEGIN@1";
+"Throwable::X::BEGIN@9" -> "Throwable::X::Types::BEGIN@10";
+"Throwable::X::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Throwable::X::BEGIN@9" -> "Moose::Util::TypeConstraints::subtype";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@11";
+"Sub::Exporter::default_generator" -> "Throwable::X::__payload";
+"Throwable::X::BEGIN@9" -> "Throwable::X::Types::BEGIN@4";
+"Throwable::X::BEGIN@9" -> "Throwable::X::BEGIN@2.9";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@5";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@9";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@2";
+}

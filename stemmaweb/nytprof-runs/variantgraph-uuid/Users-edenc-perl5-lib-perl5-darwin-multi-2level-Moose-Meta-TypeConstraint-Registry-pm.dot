@@ -1,0 +1,133 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@11";
+	"Moose::Meta::TypeConstraint::Registry::type_constraints";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@12";
+	"Moose::Meta::TypeConstraint::Registry::has_parent_registry";
+	"Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@3";
+	"Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+	"Moose::Meta::TypeConstraint::Registry::new";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@10";
+	"Moose::Meta::TypeConstraint::Registry::has_type_constraint";
+	"Moose::Meta::TypeConstraint::Registry::__ANON__[Moose/Meta/TypeConstraint/Registry.pm:27]";
+	"Moose::Meta::TypeConstraint::Registry::find_type_constraint";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@16";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@14";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::BEGIN@24";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::define_builtins";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::name";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::create_class_type_constraint";
+	"Moose::Util::TypeConstraints::BEGIN@42";
+	"Moose::Util::TypeConstraints::_create_type_constraint";
+	"Moose::Util::TypeConstraints::create_parameterized_type_constraint";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::create_role_type_constraint";
+	"Moose::Util::TypeConstraints::register_type_constraint";
+	"Moose::Util::TypeConstraints::find_or_parse_type_constraint";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@16";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "Scalar::Util::blessed";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@3";
+"Moose::Meta::TypeConstraint::Registry::has_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::type_constraints";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::type_constraints";
+"Moose::Meta::TypeConstraint::Registry::get_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::type_constraints";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Meta::TypeConstraint::Registry::new";
+"Moose::Util::TypeConstraints::create_class_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::Builtins::define_builtins" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::create_role_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::find_or_parse_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::register_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@11";
+"Moose::Meta::TypeConstraint::Registry::new" -> "Class::MOP::Object::_new";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@12" -> "metaclass::import";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Moose::Meta::TypeConstraint::Registry::find_type_constraint";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@10" -> "strict::import";
+"Moose::Meta::TypeConstraint::Registry::get_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@14" -> "Exporter::import";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@10";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@16" -> "base::import";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@11" -> "warnings::import";
+"Moose::Util::TypeConstraints::create_class_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Util::TypeConstraints::create_parameterized_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Meta::TypeConstraint::Registry::find_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Util::TypeConstraints::find_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Util::TypeConstraints::create_role_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Util::TypeConstraints::create_parameterized_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::has_type_constraint";
+"Moose::Meta::TypeConstraint::Registry::find_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::has_type_constraint";
+"Moose::Util::TypeConstraints::find_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::has_type_constraint";
+"Moose::Meta::TypeConstraint::Registry::find_type_constraint" -> "Moose::Meta::TypeConstraint::Registry::has_parent_registry";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@12";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "UNIVERSAL::isa";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Moose::Meta::TypeConstraint::Registry::BEGIN@14";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "Moose::Meta::TypeConstraint::name";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::TypeConstraint::Registry::__ANON__[Moose/Meta/TypeConstraint/Registry.pm:27]";
+}

@@ -1,0 +1,70 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::gettimeofday";
+	"Time::HiRes::BEGIN@4";
+	"Time::HiRes::BEGIN@3";
+	"Time::HiRes::import";
+	"Time::HiRes::BEGIN@43";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::import";
+	"Tree::Simple::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::new";
+	"Catalyst::Stats::BEGIN@5";
+	"Catalyst::Stats::BEGIN@6";
+	"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]";
+	"Catalyst::Stats::BEGIN@4";
+	"Catalyst::Stats::BEGIN@10";
+	"Catalyst::Stats::BEGIN@8";
+	"Catalyst::Stats::BEGIN@3";
+	"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:12]";
+	"Catalyst::Stats::BEGIN@7";
+}
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@4";
+"Catalyst::Stats::new" -> "Catalyst::Stats::__ANON__[Catalyst/Stats.pm:12]";
+"Catalyst::Stats::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::Stats::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@3";
+"Catalyst::Stats::BEGIN@7" -> "Tree::Simple::import";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@7";
+"Catalyst::Stats::BEGIN@10" -> "namespace::clean::import";
+"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]" -> "Tree::Simple::new";
+"Catalyst::Stats::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@5";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::import";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@4";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@3";
+"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]" -> "Time::HiRes::gettimeofday";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@10";
+"Catalyst::Stats::new" -> "Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]";
+"Catalyst::Stats::BEGIN@4" -> "DynaLoader::bootstrap";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@6";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@43";
+}

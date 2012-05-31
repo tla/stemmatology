@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::BEGIN@42";
+	"PPI::Token::Word::BEGIN@41";
+	"PPI::Token::Word::CORE:match";
+	"PPI::Token::Word::BEGIN@38";
+	"PPI::Token::Word::__TOKENIZER__commit";
+	"PPI::Token::Word::BEGIN@39";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@49";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::DESTROY";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_finalize_token";
+	"PPI::Tokenizer::_new_token";
+	"PPI::Tokenizer::_previous_significant_tokens";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::__TOKENIZER__on_char";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_new_token";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Token::Word::CORE:match";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@41";
+"PPI::Token::Word::BEGIN@38" -> "strict::import";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Tokenizer::_previous_significant_tokens";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@38";
+"PPI::Token::Word::BEGIN@41" -> "vars::import";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@42";
+"PPI::Token::Whitespace::__TOKENIZER__on_char" -> "PPI::Token::Word::__TOKENIZER__commit";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@39";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Element::DESTROY";
+}

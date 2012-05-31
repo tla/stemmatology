@@ -1,0 +1,86 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@13";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+	"MooseX::Types::TypeDecorator::new";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster___TYPE___KiokuDB_Backend_DBI {
+	label="__TYPE__::KiokuDB::Backend::DBI";
+	"__TYPE__::KiokuDB::Backend::DBI::SchemaProto";
+	"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName";
+}
+subgraph cluster___TYPE___Parse_Method_Signatures_Types {
+	label="__TYPE__::Parse::Method::Signatures::Types";
+	"__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+	"__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::VariableName";
+	"__TYPE__::Parse::Method::Signatures::Types::Param";
+	"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+	"__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@6";
+	"MooseX::Types::UndefinedType::new";
+	"MooseX::Types::UndefinedType::BEGIN@9";
+	"MooseX::Types::UndefinedType::DESTROY";
+	"MooseX::Types::UndefinedType::__ANON__[MooseX/Types/UndefinedType.pm:12]";
+	"MooseX::Types::UndefinedType::BEGIN@10";
+	"MooseX::Types::UndefinedType::name";
+	"MooseX::Types::UndefinedType::BEGIN@7";
+	"MooseX::Types::UndefinedType::BEGIN@12";
+}
+"MooseX::Types::TypeDecorator::new" -> "MooseX::Types::UndefinedType::__ANON__[MooseX/Types/UndefinedType.pm:12]";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@7";
+"MooseX::Types::UndefinedType::BEGIN@12" -> "overload::import";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@10";
+"MooseX::Types::UndefinedType::BEGIN@10" -> "Carp::Clan::import";
+"Module::Runtime::require_module" -> "MooseX::Types::UndefinedType::DESTROY";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::UndefinedType::DESTROY";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "MooseX::Types::UndefinedType::name";
+"MooseX::Types::UndefinedType::__ANON__[MooseX/Types/UndefinedType.pm:12]" -> "MooseX::Types::UndefinedType::name";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::UndefinedType::new";
+"MooseX::Types::UndefinedType::BEGIN@7" -> "strict::import";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@9";
+"MooseX::Types::UndefinedType::BEGIN@6" -> "warnings::import";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@6";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@12";
+}

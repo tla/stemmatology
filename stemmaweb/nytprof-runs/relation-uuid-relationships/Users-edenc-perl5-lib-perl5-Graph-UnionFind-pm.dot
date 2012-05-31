@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@31";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_UnionFind {
+	label="Graph::UnionFind";
+	"Graph::UnionFind::BEGIN@3";
+}
+"Graph::BEGIN@31" -> "Graph::UnionFind::BEGIN@3";
+"Graph::UnionFind::BEGIN@3" -> "strict::import";
+}

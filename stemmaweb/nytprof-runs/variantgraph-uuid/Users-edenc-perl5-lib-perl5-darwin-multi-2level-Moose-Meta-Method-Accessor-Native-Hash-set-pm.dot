@@ -1,0 +1,101 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@13";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@124";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@15";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_process_arguments";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_new_members";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_minimum_arguments";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_adds_members";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_maximum_arguments";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_potential_value";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::should_coerce";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::associated_attribute";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::delegate_to_method";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@12";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@9" -> "strict::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@124";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_new_members";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_maximum_arguments";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@124" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@13" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@13";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_return_value";
+"Moose::Meta::Method::Accessor::Native::_inline_return_value" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_return_value";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_inline_process_arguments";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_coerce_new_values" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_minimum_arguments";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_potential_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@15";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@2";
+}

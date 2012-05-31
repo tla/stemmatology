@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_AdjacencyMap_Heavy {
+	label="Graph::AdjacencyMap::Heavy";
+	"Graph::AdjacencyMap::Heavy::set_path";
+	"Graph::AdjacencyMap::Heavy::BEGIN@7";
+	"Graph::AdjacencyMap::Heavy::__set_path";
+	"Graph::AdjacencyMap::Heavy::__attr";
+	"Graph::AdjacencyMap::Heavy::__set_path_node";
+	"Graph::AdjacencyMap::Heavy::paths";
+	"Graph::AdjacencyMap::Heavy::BEGIN@12";
+	"Graph::AdjacencyMap::Heavy::BEGIN@13";
+	"Graph::AdjacencyMap::Heavy::CORE:sort";
+}
+subgraph cluster_Graph_AdjacencyMap {
+	label="Graph::AdjacencyMap";
+	"Graph::AdjacencyMap::_set_path_attr";
+	"Graph::AdjacencyMap::_new_node";
+	"Graph::AdjacencyMap::_get_path_attrs";
+	"Graph::AdjacencyMap::_get_path_attr";
+	"Graph::AdjacencyMap::_has_path_attr";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::add_edge";
+	"Graph::BEGIN@28";
+	"Graph::edges05";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@7";
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@12";
+"Graph::AdjacencyMap::Heavy::BEGIN@7" -> "strict::import";
+"Graph::AdjacencyMap::Heavy::set_path" -> "Graph::AdjacencyMap::Heavy::__set_path_node";
+"Graph::AdjacencyMap::Heavy::set_path" -> "Graph::AdjacencyMap::Heavy::__set_path";
+"Graph::AdjacencyMap::Heavy::__attr" -> "Graph::AdjacencyMap::Heavy::CORE:sort";
+"Graph::AdjacencyMap::Heavy::set_path" -> "Graph::AdjacencyMap::Heavy::CORE:sort";
+"Graph::add_edge" -> "Graph::AdjacencyMap::Heavy::set_path";
+"Graph::AdjacencyMap::Heavy::BEGIN@12" -> "Exporter::import";
+"Graph::AdjacencyMap::Heavy::BEGIN@13" -> "base::import";
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@13";
+"Graph::edges05" -> "Graph::AdjacencyMap::Heavy::paths";
+"Graph::AdjacencyMap::_set_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_get_path_attrs" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_get_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_has_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::Heavy::__set_path_node" -> "Graph::AdjacencyMap::_new_node";
+}

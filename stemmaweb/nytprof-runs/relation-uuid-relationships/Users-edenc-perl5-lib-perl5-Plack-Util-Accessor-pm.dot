@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Plack_Util_Accessor {
+	label="Plack::Util::Accessor";
+	"Plack::Util::Accessor::BEGIN@3";
+	"Plack::Util::Accessor::mk_accessors";
+	"Plack::Util::Accessor::BEGIN@14";
+	"Plack::Util::Accessor::import";
+	"Plack::Util::Accessor::BEGIN@2";
+}
+subgraph cluster_Plack_Middleware_Conditional {
+	label="Plack::Middleware::Conditional";
+	"Plack::Middleware::Conditional::BEGIN@5";
+}
+subgraph cluster_Plack_Middleware {
+	label="Plack::Middleware";
+	"Plack::Middleware::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Plack_Middleware_LighttpdScriptNameFix {
+	label="Plack::Middleware::LighttpdScriptNameFix";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@4";
+}
+"Plack::Middleware::BEGIN@7" -> "Plack::Util::Accessor::BEGIN@14";
+"Plack::Util::Accessor::import" -> "Plack::Util::Accessor::mk_accessors";
+"Plack::Middleware::BEGIN@7" -> "Plack::Util::Accessor::BEGIN@2";
+"Plack::Util::Accessor::BEGIN@2" -> "strict::import";
+"Plack::Middleware::BEGIN@7" -> "Plack::Util::Accessor::BEGIN@3";
+"Plack::Util::Accessor::BEGIN@14" -> "strict::unimport";
+"Plack::Util::Accessor::BEGIN@3" -> "warnings::import";
+"Plack::Middleware::BEGIN@7" -> "Plack::Util::Accessor::import";
+"Plack::Middleware::Conditional::BEGIN@5" -> "Plack::Util::Accessor::import";
+"Plack::Middleware::LighttpdScriptNameFix::BEGIN@4" -> "Plack::Util::Accessor::import";
+}

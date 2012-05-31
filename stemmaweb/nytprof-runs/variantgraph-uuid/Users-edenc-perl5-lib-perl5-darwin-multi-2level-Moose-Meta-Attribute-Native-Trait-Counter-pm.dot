@@ -1,0 +1,35 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Counter {
+	label="Moose::Meta::Attribute::Native::Trait::Counter";
+	"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@3";
+	"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@19";
+	"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@9";
+	"Moose::Meta::Attribute::Native::Trait::Counter::_helper_type";
+	"Moose::Meta::Attribute::Native::Trait::Counter::_root_types";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+}
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::Counter::_root_types";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@19";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@3";
+"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@19" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::Attribute::Native::Trait::Counter::_helper_type";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@9";
+}

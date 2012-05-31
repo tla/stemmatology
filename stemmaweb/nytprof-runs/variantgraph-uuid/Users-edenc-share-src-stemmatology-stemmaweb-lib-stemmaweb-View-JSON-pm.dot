@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_stemmaweb_View_JSON {
+	label="stemmaweb::View::JSON";
+	"stemmaweb::View::JSON::BEGIN@4";
+	"stemmaweb::View::JSON::BEGIN@3";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::JSON::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::JSON::BEGIN@3";
+"stemmaweb::View::JSON::BEGIN@3" -> "strict::import";
+"stemmaweb::View::JSON::BEGIN@4" -> "base::import";
+}

@@ -1,0 +1,89 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@14";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::as";
+	"MooseX::Types::CheckedUtilExports::BEGIN@15";
+	"MooseX::Types::CheckedUtilExports::role_type";
+	"MooseX::Types::CheckedUtilExports::BEGIN@10";
+	"MooseX::Types::CheckedUtilExports::BEGIN@24";
+	"MooseX::Types::CheckedUtilExports::from";
+	"MooseX::Types::CheckedUtilExports::BEGIN@11";
+	"MooseX::Types::CheckedUtilExports::BEGIN@13";
+	"MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+	"MooseX::Types::CheckedUtilExports::subtype";
+	"MooseX::Types::CheckedUtilExports::CORE:match";
+	"MooseX::Types::CheckedUtilExports::BEGIN@9";
+	"MooseX::Types::CheckedUtilExports::BEGIN@12";
+	"MooseX::Types::CheckedUtilExports::coerce";
+	"MooseX::Types::CheckedUtilExports::BEGIN@8";
+	"MooseX::Types::CheckedUtilExports::class_type";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::register_role_type";
+	"MooseX::Types::Base::register_class_type";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::role_type";
+	"Moose::Util::TypeConstraints::class_type";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"MooseX::Types::CheckedUtilExports::role_type" -> "Moose::Util::TypeConstraints::role_type";
+"MooseX::Types::CheckedUtilExports::class_type" -> "Moose::Util::TypeConstraints::class_type";
+"MooseX::Types::CheckedUtilExports::role_type" -> "MooseX::Types::Base::register_role_type";
+"MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]" -> "MooseX::Types::CheckedUtilExports::CORE:match";
+"MooseX::Types::CheckedUtilExports::role_type" -> "MooseX::Types::CheckedUtilExports::role_type";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::role_type";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@11";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@13";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@9";
+"MooseX::Types::CheckedUtilExports::BEGIN@15" -> "namespace::clean::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@8" -> "strict::import";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@12";
+"MooseX::Types::CheckedUtilExports::subtype" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::as" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::from" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::coerce" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::BEGIN@11" -> "Moose::Exporter::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@13" -> "Exporter::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@12" -> "Exporter::import";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@15";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@10";
+"MooseX::Types::CheckedUtilExports::BEGIN@24" -> "strict::unimport";
+"MooseX::Types::CheckedUtilExports::BEGIN@9" -> "warnings::import";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@24";
+"MooseX::Types::CheckedUtilExports::class_type" -> "MooseX::Types::CheckedUtilExports::class_type";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::class_type";
+"MooseX::Types::CheckedUtilExports::class_type" -> "MooseX::Types::Base::register_class_type";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@8";
+}

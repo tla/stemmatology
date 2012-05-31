@@ -1,0 +1,76 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_SelfLoader {
+	label="SelfLoader";
+	"SelfLoader::BEGIN@158";
+	"SelfLoader::BEGIN@2";
+	"SelfLoader::BEGIN@73";
+	"SelfLoader::BEGIN@91";
+	"SelfLoader::BEGIN@3";
+	"SelfLoader::BEGIN@10";
+	"SelfLoader::BEGIN@9";
+	"SelfLoader::BEGIN@4";
+	"SelfLoader::BEGIN@42";
+	"SelfLoader::BEGIN@93";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::BEGIN@8";
+}
+subgraph cluster_Text_Balanced {
+	label="Text::Balanced";
+	"Text::Balanced::BEGIN@11";
+	"Text::Balanced::BEGIN@8";
+	"Text::Balanced::BEGIN@343";
+	"Text::Balanced::BEGIN@12";
+	"Text::Balanced::BEGIN@885";
+	"Text::Balanced::BEGIN@7";
+	"Text::Balanced::BEGIN@9";
+	"Text::Balanced::BEGIN@6";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Text_Balanced_ErrorMsg {
+	label="Text::Balanced::ErrorMsg";
+	"Text::Balanced::ErrorMsg::BEGIN@1021";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@42";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@158";
+"Text::Balanced::ErrorMsg::BEGIN@1021" -> "overload::import";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::ErrorMsg::BEGIN@1021";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@343";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@9";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@6";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@10";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@885";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@4";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@7";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@93";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@2";
+"Text::Balanced::BEGIN@7" -> "strict::import";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@9";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@12";
+"Text::Balanced::BEGIN@343" -> "Exporter::import";
+"Text::Balanced::BEGIN@885" -> "Exporter::import";
+"Text::Balanced::BEGIN@9" -> "Exporter::import";
+"Text::Balanced::BEGIN@11" -> "vars::import";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@91";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@3";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@8";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@11";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@73";
+}

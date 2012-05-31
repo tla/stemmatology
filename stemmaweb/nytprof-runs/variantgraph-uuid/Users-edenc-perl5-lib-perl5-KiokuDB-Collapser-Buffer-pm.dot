@@ -1,0 +1,171 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::insert";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::id";
+	"KiokuDB::Reference::DESTROY";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::_entries";
+	"KiokuDB::Collapser::Buffer::insert";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:37]";
+	"KiokuDB::Collapser::Buffer::first_class";
+	"KiokuDB::Collapser::Buffer::BEGIN@4";
+	"KiokuDB::Collapser::Buffer::compact_data";
+	"KiokuDB::Collapser::Buffer::object_to_id";
+	"KiokuDB::Collapser::Buffer::live_objects";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:60]";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:75]";
+	"KiokuDB::Collapser::Buffer::BEGIN@5";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:43]";
+	"KiokuDB::Collapser::Buffer::_ids";
+	"KiokuDB::Collapser::Buffer::update_entries";
+	"KiokuDB::Collapser::Buffer::compact_entries";
+	"KiokuDB::Collapser::Buffer::_objects";
+	"KiokuDB::Collapser::Buffer::options";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:18]";
+	"KiokuDB::Collapser::Buffer::intrinsic";
+	"KiokuDB::Collapser::Buffer::new";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:100]";
+	"KiokuDB::Collapser::Buffer::simple_entries";
+	"KiokuDB::Collapser::Buffer::compact_entry";
+	"KiokuDB::Collapser::Buffer::intrinsic_entry";
+	"KiokuDB::Collapser::Buffer::BEGIN@7";
+	"KiokuDB::Collapser::Buffer::BEGIN@2";
+	"KiokuDB::Collapser::Buffer::entries";
+	"KiokuDB::Collapser::Buffer::merged_objects_to_ids";
+	"KiokuDB::Collapser::Buffer::_entry_args";
+	"KiokuDB::Collapser::Buffer::commit";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:92]";
+	"KiokuDB::Collapser::Buffer::insert_to_backend";
+	"KiokuDB::Collapser::Buffer::imply_root";
+	"KiokuDB::Collapser::Buffer::insert_entry";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::register_entry";
+	"KiokuDB::LiveObjects::object_to_id";
+	"KiokuDB::LiveObjects::update_object_entry";
+	"KiokuDB::LiveObjects::register_object";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::includes";
+	"Set::Object::new";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::make_entry";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::BEGIN@17";
+	"KiokuDB::Collapser::collapse";
+	"KiokuDB::Collapser::_ref_id";
+	"KiokuDB::Collapser::visit_seen";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::idhash";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::class";
+	"KiokuDB::Entry::tied";
+	"KiokuDB::Entry::root";
+	"KiokuDB::Entry::DESTROY";
+	"KiokuDB::Entry::data";
+	"KiokuDB::Entry::has_root";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::import";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::store_objects";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::merged_objects_to_ids";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Collapser::Buffer::simple_entries";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::compact_entries";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Collapser::Buffer::compact_data";
+"KiokuDB::Collapser::Buffer::compact_entry" -> "KiokuDB::Collapser::Buffer::compact_data";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:18]";
+"KiokuDB::Collapser::Buffer::imply_root" -> "KiokuDB::Entry::has_root";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Collapser::Buffer::compact_entry";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Collapser::Buffer::compact_entry";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:92]";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::LiveObjects::update_object_entry";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Collapser::Buffer::options";
+"KiokuDB::Collapser::Buffer::intrinsic_entry" -> "KiokuDB::Collapser::Buffer::intrinsic";
+"KiokuDB::store_objects" -> "KiokuDB::Collapser::Buffer::commit";
+"KiokuDB::Collapser::Buffer::BEGIN@7" -> "namespace::clean::import";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@7";
+"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:100]" -> "Set::Object::new";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:75]";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:43]";
+"KiokuDB::Collapser::Buffer::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "Set::Object::includes";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::Collapser::Buffer::_entry_args";
+"KiokuDB::store_objects" -> "KiokuDB::Collapser::Buffer::imply_root";
+"KiokuDB::Collapser::Buffer::BEGIN@4" -> "Exporter::import";
+"KiokuDB::Collapser::Buffer::BEGIN@5" -> "Exporter::import";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::LiveObjects::object_to_id";
+"KiokuDB::Collapser::Buffer::merged_objects_to_ids" -> "KiokuDB::Collapser::Buffer::object_to_id";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::Buffer::object_to_id";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Reference::DESTROY";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Entry::DESTROY";
+"KiokuDB::Collapser::Buffer::commit" -> "KiokuDB::Collapser::Buffer::update_entries";
+"KiokuDB::Collapser::Buffer::insert_to_backend" -> "KiokuDB::Backend::DBI::insert";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Reference::id";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@4";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:60]";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::LiveObjects::register_entry";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Collapser::Buffer::first_class";
+"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:75]" -> "Hash::Util::FieldHash::idhash";
+"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:18]" -> "Hash::Util::FieldHash::idhash";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:37]";
+"KiokuDB::Collapser::Buffer::new" -> "KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:100]";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::Buffer::insert";
+"KiokuDB::Collapser::Buffer::insert_entry" -> "KiokuDB::Collapser::Buffer::insert";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Collapser::Buffer::insert";
+"KiokuDB::Collapser::Buffer::imply_root" -> "KiokuDB::Entry::root";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::Collapser::Buffer::insert_entry";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@5";
+"KiokuDB::Collapser::Buffer::BEGIN@4" -> "Hash::Util::FieldHash::Compat::import";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::Buffer::intrinsic_entry";
+"KiokuDB::Collapser::Buffer::commit" -> "KiokuDB::Collapser::Buffer::insert_to_backend";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::Collapser::Buffer::_entries";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "KiokuDB::Collapser::Buffer::_entries";
+"KiokuDB::Collapser::Buffer::imply_root" -> "KiokuDB::Collapser::Buffer::_entries";
+"KiokuDB::Collapser::Buffer::insert_entry" -> "KiokuDB::Collapser::Buffer::_entries";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Entry::data";
+"KiokuDB::Collapser::Buffer::compact_entry" -> "KiokuDB::Entry::data";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Entry::tied";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@2";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::Collapser::Buffer::live_objects";
+"KiokuDB::Collapser::Buffer::merged_objects_to_ids" -> "KiokuDB::Collapser::Buffer::live_objects";
+"KiokuDB::Collapser::Buffer::commit" -> "KiokuDB::Collapser::Buffer::live_objects";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::Collapser::Buffer::_ids";
+"KiokuDB::Collapser::Buffer::insert" -> "KiokuDB::Collapser::Buffer::_ids";
+"KiokuDB::Collapser::Buffer::object_to_id" -> "KiokuDB::Collapser::Buffer::_objects";
+"KiokuDB::Collapser::Buffer::insert" -> "KiokuDB::Collapser::Buffer::_objects";
+"KiokuDB::Collapser::Buffer::insert_to_backend" -> "KiokuDB::Collapser::Buffer::entries";
+"KiokuDB::Collapser::Buffer::update_entries" -> "KiokuDB::LiveObjects::register_object";
+"KiokuDB::Collapser::Buffer::compact_data" -> "KiokuDB::Entry::class";
+}

@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Scope_Guard {
+	label="Scope::Guard";
+	"Scope::Guard::BEGIN@6";
+	"Scope::Guard::BEGIN@7";
+	"Scope::Guard::DESTROY";
+	"Scope::Guard::new";
+	"Scope::Guard::BEGIN@4";
+	"Scope::Guard::BEGIN@3";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:198]";
+	"Catalyst::Model::KiokuDB::setup_scope_guard";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::__ANON__[KiokuDB/Collapser.pm:84]";
+	"KiokuDB::Collapser::collapse";
+	"KiokuDB::Collapser::BEGIN@8";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Scope::Guard::DESTROY" -> "Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:198]";
+"KiokuDB::Collapser::collapse" -> "Scope::Guard::new";
+"Catalyst::Model::KiokuDB::setup_scope_guard" -> "Scope::Guard::new";
+"KiokuDB::Collapser::collapse" -> "Scope::Guard::DESTROY";
+"Try::Tiny::try" -> "Scope::Guard::DESTROY";
+"Scope::Guard::DESTROY" -> "KiokuDB::Collapser::__ANON__[KiokuDB/Collapser.pm:84]";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@7";
+"Scope::Guard::BEGIN@3" -> "strict::import";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@6";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@3";
+"Scope::Guard::BEGIN@6" -> "Exporter::import";
+"Scope::Guard::BEGIN@4" -> "warnings::import";
+"Scope::Guard::new" -> "UNIVERSAL::isa";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@4";
+}

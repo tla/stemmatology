@@ -1,0 +1,34 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+}
+subgraph cluster_HTTP_Status {
+	label="HTTP::Status";
+	"HTTP::Status::status_message";
+	"HTTP::Status::CORE:match";
+	"HTTP::Status::CORE:subst";
+	"HTTP::Status::BEGIN@3";
+	"HTTP::Status::BEGIN@6";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::BEGIN@8";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::BEGIN@3";
+"HTTP::Status::BEGIN@3" -> "strict::import";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Status::status_message";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::CORE:subst";
+"HTTP::Status::BEGIN@6" -> "vars::import";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::BEGIN@6";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::CORE:match";
+}

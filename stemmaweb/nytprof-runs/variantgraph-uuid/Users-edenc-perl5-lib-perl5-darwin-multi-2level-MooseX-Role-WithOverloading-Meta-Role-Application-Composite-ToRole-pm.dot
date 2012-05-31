@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@10";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@5";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@2";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@11";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@2";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@5";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@10";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@11" -> "namespace::autoclean::import";
+}

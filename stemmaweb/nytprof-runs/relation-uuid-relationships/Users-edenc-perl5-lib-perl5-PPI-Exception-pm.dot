@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Exception {
+	label="PPI::Exception";
+	"PPI::Exception::BEGIN@7";
+	"PPI::Exception::BEGIN@4";
+	"PPI::Exception::BEGIN@3";
+	"PPI::Exception::BEGIN@6";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@18";
+}
+"PPI::BEGIN@18" -> "PPI::Exception::BEGIN@3";
+"PPI::BEGIN@18" -> "PPI::Exception::BEGIN@6";
+"PPI::Exception::BEGIN@3" -> "strict::import";
+"PPI::Exception::BEGIN@4" -> "Exporter::import";
+"PPI::Exception::BEGIN@6" -> "vars::import";
+"PPI::BEGIN@18" -> "PPI::Exception::BEGIN@4";
+"PPI::BEGIN@18" -> "PPI::Exception::BEGIN@7";
+}

@@ -1,0 +1,177 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::_init";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Template_Constants {
+	label="Template::Constants";
+	"Template::Constants::BEGIN@27";
+	"Template::Constants::DEBUG_STASH";
+	"Template::Constants::BEGIN@66";
+	"Template::Constants::BEGIN@50";
+	"Template::Constants::DEBUG_SERVICE";
+	"Template::Constants::BEGIN@22";
+	"Template::Constants::BEGIN@79";
+	"Template::Constants::BEGIN@58";
+	"Template::Constants::BEGIN@67";
+	"Template::Constants::BEGIN@44";
+	"Template::Constants::BEGIN@60";
+	"Template::Constants::BEGIN@52";
+	"Template::Constants::DEBUG_CALLER";
+	"Template::Constants::BEGIN@72";
+	"Template::Constants::BEGIN@45";
+	"Template::Constants::DEBUG_PROVIDER";
+	"Template::Constants::DEBUG_VARS";
+	"Template::Constants::BEGIN@54";
+	"Template::Constants::BEGIN@49";
+	"Template::Constants::DEBUG_UNDEF";
+	"Template::Constants::DEBUG_ALL";
+	"Template::Constants::BEGIN@41";
+	"Template::Constants::BEGIN@48";
+	"Template::Constants::BEGIN@65";
+	"Template::Constants::DEBUG_PARSER";
+	"Template::Constants::BEGIN@76";
+	"Template::Constants::DEBUG_OFF";
+	"Template::Constants::BEGIN@71";
+	"Template::Constants::DEBUG_FILTERS";
+	"Template::Constants::BEGIN@28";
+	"Template::Constants::BEGIN@70";
+	"Template::Constants::DEBUG_CONTEXT";
+	"Template::Constants::BEGIN@24";
+	"Template::Constants::BEGIN@64";
+	"Template::Constants::BEGIN@57";
+	"Template::Constants::BEGIN@59";
+	"Template::Constants::BEGIN@80";
+	"Template::Constants::BEGIN@40";
+	"Template::Constants::BEGIN@69";
+	"Template::Constants::DEBUG_DIRS";
+	"Template::Constants::BEGIN@61";
+	"Template::Constants::BEGIN@75";
+	"Template::Constants::DEBUG_PLUGINS";
+	"Template::Constants::BEGIN@68";
+	"Template::Constants::BEGIN@43";
+	"Template::Constants::BEGIN@42";
+	"Template::Constants::BEGIN@73";
+	"Template::Constants::BEGIN@53";
+	"Template::Constants::BEGIN@51";
+	"Template::Constants::DEBUG_ON";
+	"Template::Constants::BEGIN@74";
+	"Template::Constants::BEGIN@23";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::BEGIN@24";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@41";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@67";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_CALLER";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@53";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@43";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_OFF";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_CONTEXT";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@71";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@65";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_PLUGINS";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@48";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_PARSER";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@24";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_DIRS";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_STASH";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@73";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@74";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@58";
+"Template::Constants::BEGIN@50" -> "constant::import";
+"Template::Constants::BEGIN@44" -> "constant::import";
+"Template::Constants::BEGIN@60" -> "constant::import";
+"Template::Constants::BEGIN@52" -> "constant::import";
+"Template::Constants::BEGIN@54" -> "constant::import";
+"Template::Constants::BEGIN@49" -> "constant::import";
+"Template::Constants::BEGIN@41" -> "constant::import";
+"Template::Constants::BEGIN@71" -> "constant::import";
+"Template::Constants::BEGIN@64" -> "constant::import";
+"Template::Constants::BEGIN@57" -> "constant::import";
+"Template::Constants::BEGIN@59" -> "constant::import";
+"Template::Constants::BEGIN@67" -> "constant::import";
+"Template::Constants::BEGIN@72" -> "constant::import";
+"Template::Constants::BEGIN@65" -> "constant::import";
+"Template::Constants::BEGIN@76" -> "constant::import";
+"Template::Constants::BEGIN@70" -> "constant::import";
+"Template::Constants::BEGIN@40" -> "constant::import";
+"Template::Constants::BEGIN@69" -> "constant::import";
+"Template::Constants::BEGIN@61" -> "constant::import";
+"Template::Constants::BEGIN@42" -> "constant::import";
+"Template::Constants::BEGIN@53" -> "constant::import";
+"Template::Constants::BEGIN@74" -> "constant::import";
+"Template::Constants::BEGIN@58" -> "constant::import";
+"Template::Constants::BEGIN@45" -> "constant::import";
+"Template::Constants::BEGIN@48" -> "constant::import";
+"Template::Constants::BEGIN@43" -> "constant::import";
+"Template::Constants::BEGIN@51" -> "constant::import";
+"Template::Constants::BEGIN@66" -> "constant::import";
+"Template::Constants::BEGIN@79" -> "constant::import";
+"Template::Constants::BEGIN@80" -> "constant::import";
+"Template::Constants::BEGIN@75" -> "constant::import";
+"Template::Constants::BEGIN@68" -> "constant::import";
+"Template::Constants::BEGIN@73" -> "constant::import";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@51";
+"Template::Constants::BEGIN@22" -> "strict::import";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@76";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@61";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_SERVICE";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@45";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_FILTERS";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@54";
+"Template::Constants::BEGIN@24" -> "Exporter::import";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_UNDEF";
+"Template::Context::_init" -> "Template::Constants::DEBUG_UNDEF";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@49";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@28";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@59";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_ON";
+"Template::Constants::BEGIN@23" -> "warnings::import";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@79";
+"Template::Constants::BEGIN@28" -> "vars::import";
+"Template::Constants::BEGIN@27" -> "vars::import";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_ALL";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@23";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@72";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@42";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_VARS";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@68";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@50";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@22";
+"Template::Base::BEGIN@24" -> "Template::Constants::DEBUG_PROVIDER";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@66";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@75";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@44";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@60";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@52";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@64";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@57";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@70";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@40";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@69";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@27";
+"Template::Base::BEGIN@24" -> "Template::Constants::BEGIN@80";
+}

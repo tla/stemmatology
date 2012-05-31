@@ -1,0 +1,81 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::type_storage";
+	"MooseX::Types::Moose::BEGIN@14";
+	"MooseX::Types::Moose::BEGIN@8";
+	"MooseX::Types::Moose::BEGIN@9";
+	"MooseX::Types::Moose::BEGIN@12";
+	"MooseX::Types::Moose::BEGIN@11";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@11";
+	"MooseX::Types::BEGIN@34";
+	"MooseX::Types::BEGIN@16";
+	"MooseX::Types::BEGIN@21";
+	"MooseX::Types::BEGIN@10";
+	"MooseX::Types::BEGIN@19";
+	"MooseX::Types::BEGIN@14";
+	"MooseX::Types::import";
+	"MooseX::Types::BEGIN@17";
+	"MooseX::Types::BEGIN@13";
+	"MooseX::Types::BEGIN@12";
+	"MooseX::Types::BEGIN@5";
+	"MooseX::Types::BEGIN@9";
+	"MooseX::Types::BEGIN@15";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::type_names";
+	"MooseX::Types::Base::get_type";
+	"MooseX::Types::Base::has_type";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@8";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@34";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@9";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@15";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@10";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@21";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@5";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@11";
+"MooseX::Types::Moose::BEGIN@14" -> "namespace::clean::import";
+"MooseX::Types::Moose::BEGIN@9" -> "strict::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@14";
+"MooseX::Types::Moose::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@13";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@12";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@16";
+"MooseX::Types::Moose::BEGIN@8" -> "warnings::import";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@12";
+"MooseX::Types::Base::type_names" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::Base::get_type" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::Base::has_type" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@17";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::import";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@14";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@19";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@9";
+}

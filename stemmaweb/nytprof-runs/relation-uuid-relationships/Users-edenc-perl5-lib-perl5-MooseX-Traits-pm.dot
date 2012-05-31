@@ -1,0 +1,125 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Traits___ANON___SERIAL_7 {
+	label="MooseX::Traits::__ANON__::SERIAL::7";
+	"MooseX::Traits::__ANON__::SERIAL::7::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_3 {
+	label="MooseX::Traits::__ANON__::SERIAL::3";
+	"MooseX::Traits::__ANON__::SERIAL::3::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_5 {
+	label="MooseX::Traits::__ANON__::SERIAL::5";
+	"MooseX::Traits::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_1 {
+	label="MooseX::Traits::__ANON__::SERIAL::1";
+	"MooseX::Traits::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::create_param";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::new_class_with_traits";
+	"MooseX::Traits::Util::BEGIN@5";
+	"MooseX::Traits::Util::BEGIN@3";
+	"MooseX::Traits::Util::BEGIN@2";
+	"MooseX::Traits::Util::BEGIN@9";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::new";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::constructor_name";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::BEGIN@6";
+	"MooseX::Traits::BEGIN@7";
+	"MooseX::Traits::with_traits";
+	"MooseX::Traits::new_with_traits";
+	"MooseX::Traits::BEGIN@2";
+	"MooseX::Traits::BEGIN@4";
+	"MooseX::Traits::BEGIN@86";
+	"MooseX::Traits::BEGIN@9";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_4 {
+	label="MooseX::Traits::__ANON__::SERIAL::4";
+	"MooseX::Traits::__ANON__::SERIAL::4::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_8 {
+	label="MooseX::Traits::__ANON__::SERIAL::8";
+	"MooseX::Traits::__ANON__::SERIAL::8::meta";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_6 {
+	label="MooseX::Traits::__ANON__::SERIAL::6";
+	"MooseX::Traits::__ANON__::SERIAL::6::meta";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_2 {
+	label="MooseX::Traits::__ANON__::SERIAL::2";
+	"MooseX::Traits::__ANON__::SERIAL::2::meta";
+}
+"MooseX::Traits::new_with_traits" -> "Parse::Method::Signatures::Param::new";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@86";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::1::meta";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@2";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@5";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@2";
+"MooseX::Traits::BEGIN@4" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::5::meta";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::8::meta";
+"MooseX::Traits::BEGIN@86" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Traits::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::2::meta";
+"MooseX::Traits::with_traits" -> "MooseX::Traits::Util::new_class_with_traits";
+"MooseX::Traits::new_with_traits" -> "Class::MOP::Class::constructor_name";
+"Parse::Method::Signatures::create_param" -> "MooseX::Traits::new_with_traits";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@9";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@7";
+"MooseX::Traits::BEGIN@7" -> "warnings::register::import";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::7::meta";
+"MooseX::Traits::BEGIN@6" -> "warnings::import";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@9";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::6::meta";
+"MooseX::Traits::BEGIN@9" -> "namespace::autoclean::import";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@6";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::with_traits";
+"Module::Runtime::require_module" -> "MooseX::Traits::BEGIN@4";
+"MooseX::Traits::with_traits" -> "Class::MOP::Package::name";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@3";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::4::meta";
+"MooseX::Traits::new_with_traits" -> "MooseX::Traits::__ANON__::SERIAL::3::meta";
+}

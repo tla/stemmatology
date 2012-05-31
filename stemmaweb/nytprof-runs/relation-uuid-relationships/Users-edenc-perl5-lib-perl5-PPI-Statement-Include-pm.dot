@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@167";
+}
+subgraph cluster_PPI_Statement_Include_Perl6 {
+	label="PPI::Statement::Include::Perl6";
+	"PPI::Statement::Include::Perl6::BEGIN@45";
+	"PPI::Statement::Include::Perl6::BEGIN@42";
+	"PPI::Statement::Include::Perl6::BEGIN@44";
+	"PPI::Statement::Include::Perl6::BEGIN@41";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_PPI_Statement_Include {
+	label="PPI::Statement::Include";
+	"PPI::Statement::Include::BEGIN@48";
+	"PPI::Statement::Include::BEGIN@49";
+	"PPI::Statement::Include::BEGIN@47";
+	"PPI::Statement::Include::BEGIN@52";
+	"PPI::Statement::Include::BEGIN@51";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@51";
+"PPI::Statement::Include::BEGIN@49" -> "PPI::Statement::Include::Perl6::BEGIN@44";
+"PPI::Statement::Include::BEGIN@49" -> "PPI::Statement::Include::Perl6::BEGIN@42";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@48";
+"PPI::Statement::Include::BEGIN@47" -> "strict::import";
+"PPI::Statement::Include::BEGIN@49" -> "PPI::Statement::Include::Perl6::BEGIN@45";
+"PPI::Statement::Include::BEGIN@51" -> "vars::import";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@52";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@49";
+"PPI::Statement::Include::BEGIN@49" -> "PPI::Statement::Include::Perl6::BEGIN@41";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@47";
+}

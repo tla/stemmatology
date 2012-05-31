@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Regexp {
+	label="PPI::Token::Regexp";
+	"PPI::Token::Regexp::BEGIN@49";
+	"PPI::Token::Regexp::BEGIN@46";
+	"PPI::Token::Regexp::BEGIN@48";
+	"PPI::Token::Regexp::BEGIN@45";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@63";
+}
+subgraph cluster_PPI_Token_Regexp_Match {
+	label="PPI::Token::Regexp::Match";
+	"PPI::Token::Regexp::Match::BEGIN@45";
+	"PPI::Token::Regexp::Match::BEGIN@46";
+	"PPI::Token::Regexp::Match::BEGIN@47";
+	"PPI::Token::Regexp::Match::BEGIN@49";
+	"PPI::Token::Regexp::Match::BEGIN@50";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@47";
+"PPI::Token::Regexp::Match::BEGIN@46" -> "PPI::Token::Regexp::BEGIN@48";
+"PPI::Token::Regexp::Match::BEGIN@45" -> "strict::import";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@50";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@45";
+"PPI::Token::Regexp::Match::BEGIN@46" -> "PPI::Token::Regexp::BEGIN@46";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@46";
+"PPI::Token::Regexp::Match::BEGIN@49" -> "vars::import";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@49";
+"PPI::Token::Regexp::Match::BEGIN@46" -> "PPI::Token::Regexp::BEGIN@49";
+"PPI::Token::Regexp::Match::BEGIN@46" -> "PPI::Token::Regexp::BEGIN@45";
+}

@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::BEGIN@74";
+}
+subgraph cluster_PPI_Exception_ParserTimeout {
+	label="PPI::Exception::ParserTimeout";
+	"PPI::Exception::ParserTimeout::BEGIN@6";
+	"PPI::Exception::ParserTimeout::BEGIN@4";
+	"PPI::Exception::ParserTimeout::BEGIN@3";
+	"PPI::Exception::ParserTimeout::BEGIN@7";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Document::BEGIN@74" -> "PPI::Exception::ParserTimeout::BEGIN@7";
+"PPI::Document::BEGIN@74" -> "PPI::Exception::ParserTimeout::BEGIN@3";
+"PPI::Exception::ParserTimeout::BEGIN@3" -> "strict::import";
+"PPI::Document::BEGIN@74" -> "PPI::Exception::ParserTimeout::BEGIN@6";
+"PPI::Exception::ParserTimeout::BEGIN@6" -> "vars::import";
+"PPI::Document::BEGIN@74" -> "PPI::Exception::ParserTimeout::BEGIN@4";
+}

@@ -1,0 +1,85 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::COMPONENT";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::BEGIN@5";
+	"Catalyst::View::JSON::BEGIN@8";
+	"Catalyst::View::JSON::json_dumper";
+	"Catalyst::View::JSON::CORE:match";
+	"Catalyst::View::JSON::expose_stash";
+	"Catalyst::View::JSON::new";
+	"Catalyst::View::JSON::BEGIN@10";
+	"Catalyst::View::JSON::BEGIN@7";
+	"Catalyst::View::JSON::CORE:subst";
+	"Catalyst::View::JSON::BEGIN@3";
+	"Catalyst::View::JSON::BEGIN@9";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::BEGIN@3";
+	"JSON::Any::new";
+	"JSON::Any::BEGIN@4";
+	"JSON::Any::BEGIN@25";
+	"JSON::Any::BEGIN@24";
+	"JSON::Any::import";
+	"JSON::Any::BEGIN@27";
+	"JSON::Any::BEGIN@23";
+	"JSON::Any::BEGIN@219";
+	"JSON::Any::BEGIN@5";
+	"JSON::Any::BEGIN@22";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::View::JSON::new" -> "JSON::Any::import";
+"base::import" -> "Catalyst::View::JSON::BEGIN@5";
+"Catalyst::View::JSON::BEGIN@10" -> "UNIVERSAL::import";
+"Catalyst::View::JSON::BEGIN@9" -> "UNIVERSAL::import";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@24";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@4";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@25";
+"Catalyst::View::JSON::BEGIN@3" -> "strict::import";
+"Catalyst::View::JSON::new" -> "Catalyst::View::new";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@23";
+"Catalyst::View::JSON::new" -> "Catalyst::View::JSON::expose_stash";
+"Catalyst::View::JSON::new" -> "UNIVERSAL::can";
+"Catalyst::View::JSON::BEGIN@7" -> "base::import";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@3";
+"base::import" -> "Catalyst::View::JSON::BEGIN@9";
+"Catalyst::View::JSON::new" -> "Catalyst::View::JSON::CORE:match";
+"base::import" -> "Catalyst::View::JSON::BEGIN@10";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@5";
+"Catalyst::View::JSON::new" -> "Catalyst::View::JSON::CORE:subst";
+"base::import" -> "Catalyst::View::JSON::BEGIN@3";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@22";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@219";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@27";
+"Catalyst::View::JSON::new" -> "Catalyst::View::JSON::json_dumper";
+"base::import" -> "Catalyst::View::JSON::BEGIN@8";
+"Catalyst::View::JSON::new" -> "JSON::Any::new";
+"Catalyst::Component::COMPONENT" -> "Catalyst::View::JSON::new";
+"Catalyst::View::JSON::new" -> "next::method";
+"base::import" -> "Catalyst::View::JSON::BEGIN@7";
+}

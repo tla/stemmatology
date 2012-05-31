@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@5";
+	"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@4";
+	"MooseX::Emulate::Class::Accessor::Fast::accessor_name_for";
+	"MooseX::Emulate::Class::Accessor::Fast::mk_accessors";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@3";
+	"MooseX::Emulate::Class::Accessor::Fast::mutator_name_for";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7";
+	"MooseX::Emulate::Class::Accessor::Fast::BUILD";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::add_attribute";
+	"Moose::Meta::Class::initialize";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_attribute_by_name";
+	"Class::MOP::Class::is_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::get_read_method_ref";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::get_metaclass_by_name";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Accessor {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3";
+}
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Class::find_attribute_by_name";
+"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]" -> "Scalar::Util::blessed";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Moose::extends";
+"Module::Runtime::require_module" -> "MooseX::Emulate::Class::Accessor::Fast::BEGIN@3";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "MooseX::Emulate::Class::Accessor::Fast::mutator_name_for";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Class::MOP::Mixin::HasMethods::get_method";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]";
+"Module::Runtime::require_module" -> "MooseX::Emulate::Class::Accessor::Fast::BEGIN@7";
+"Module::Runtime::require_module" -> "MooseX::Emulate::Class::Accessor::Fast::BEGIN@4";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Mixin::HasMethods::add_method";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Class::MOP::Mixin::HasMethods::add_method";
+"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]" -> "Class::MOP::get_metaclass_by_name";
+"base::import" -> "MooseX::Emulate::Class::Accessor::Fast::mk_accessors";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Moose::Meta::Class::add_attribute";
+"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]" -> "Moose::Meta::Class::initialize";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Attribute::get_read_method_ref";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "MooseX::Emulate::Class::Accessor::Fast::accessor_name_for";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48";
+"Module::Runtime::require_module" -> "MooseX::Emulate::Class::Accessor::Fast::BEGIN@5";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Class::is_immutable";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Mixin::HasMethods::has_method";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Package::name";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3";
+"Class::MOP::Class:::around" -> "MooseX::Emulate::Class::Accessor::Fast::BUILD";
+}

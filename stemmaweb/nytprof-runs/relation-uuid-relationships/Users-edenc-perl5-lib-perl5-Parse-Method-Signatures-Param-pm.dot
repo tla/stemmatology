@@ -1,0 +1,84 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@5";
+	"Parse::Method::Signatures::Param::BEGIN@4";
+	"Parse::Method::Signatures::Param::BEGIN@7";
+	"Parse::Method::Signatures::Param::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::get_type_constraint_registry";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::add_parameterizable_type";
+	"Moose::Util::TypeConstraints::register_type_constraint";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@12";
+	"MooseX::Types::Structured::BEGIN@18";
+	"MooseX::Types::Structured::BEGIN@13";
+	"MooseX::Types::Structured::BEGIN@19";
+	"MooseX::Types::Structured::BEGIN@16";
+	"MooseX::Types::Structured::BEGIN@20";
+	"MooseX::Types::Structured::BEGIN@10";
+	"MooseX::Types::Structured::BEGIN@14";
+	"MooseX::Types::Structured::BEGIN@17";
+	"MooseX::Types::Structured::BEGIN@2";
+	"MooseX::Types::Structured::BEGIN@15";
+}
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Util::TypeConstraints::add_parameterizable_type";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@15";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@13";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Param::BEGIN@3";
+"Parse::Method::Signatures::Param::BEGIN@7" -> "namespace::clean::import";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@2";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@12";
+"Parse::Method::Signatures::Param::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@17";
+"Parse::Method::Signatures::Param::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@19";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@10";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Param::BEGIN@7";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Util::TypeConstraints::get_type_constraint_registry";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@16";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Param::BEGIN@5";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@20";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@14";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Util::TypeConstraints::register_type_constraint";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Param::BEGIN@4";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "Moose::Meta::TypeConstraint::new";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@18";
+}

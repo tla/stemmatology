@@ -1,0 +1,155 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_native_type";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::calculate_all_roles";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::create_anon_class";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_native_type";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Hash {
+	label="Moose::Meta::Attribute::Native::Trait::Hash";
+	"Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::accessor_metaclass";
+	"Moose::Meta::Attribute::delegation_metaclass";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Counter {
+	label="Moose::Meta::Attribute::Native::Trait::Counter";
+	"Moose::Meta::Attribute::Native::Trait::Counter::_helper_type";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Array {
+	label="Moose::Meta::Attribute::Native::Trait::Array";
+	"Moose::Meta::Attribute::Native::Trait::Array::_helper_type";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::is_a_type_of";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_or_create_type_constraint";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@212";
+	"Moose::Meta::Attribute::Native::Trait::_check_handles_values";
+	"Moose::Meta::Attribute::Native::Trait::_build_native_type";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@13";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@3";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@12";
+	"Moose::Meta::Attribute::Native::Trait::CORE:match";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@9";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@213";
+	"Moose::Meta::Attribute::Native::Trait::_canonicalize_handles_value";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@11";
+	"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@14";
+	"Moose::Meta::Attribute::Native::Trait::_root_types";
+	"Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_native_type";
+}
+"Class::MOP::Class:::before" -> "Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@13";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@212";
+"Moose::Meta::Attribute::Native::Trait::_check_handles_values" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+"Moose::Meta::Class::__ANON__::SERIAL::17::_native_type" -> "Moose::Meta::Attribute::Native::Trait::_build_native_type";
+"Moose::Meta::Class::__ANON__::SERIAL::8::_native_type" -> "Moose::Meta::Attribute::Native::Trait::_build_native_type";
+"Moose::Meta::Class::__ANON__::SERIAL::23::_native_type" -> "Moose::Meta::Attribute::Native::Trait::_build_native_type";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::TypeConstraint::is_a_type_of";
+"Moose::Meta::Attribute::Native::Trait::_check_handles_values" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@11";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_native_type";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Class::Load::load_class";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_canonicalize_handles_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@213";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@212" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@213" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@13" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::_root_types" -> "Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@11" -> "Exporter::import";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@12" -> "Exporter::import";
+"Moose::Meta::Attribute::Native::Trait::_check_handles_values" -> "UNIVERSAL::can";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@14" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Moose::Meta::Attribute::Native::Trait::CORE:match";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@3";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Util::TypeConstraints::find_or_create_type_constraint";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Attribute::delegation_metaclass";
+"Moose::Meta::Attribute::Native::Trait::_check_handles_values" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@9";
+"Moose::Meta::Attribute::Native::Trait::_check_handles_values" -> "Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Attribute::accessor_metaclass";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@14";
+"Moose::Meta::Attribute::Native::Trait::_root_types" -> "Moose::Meta::Attribute::Native::Trait::Array::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::Attribute::Native::Trait::Array::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Class::MOP::Class::create_anon_class";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Class::MOP::Package::name";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Class::MOP::Package::name";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::BEGIN@12";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Moose::Meta::Class::calculate_all_roles";
+"Class::MOP::Class:::before" -> "Moose::Meta::Attribute::Native::Trait::_check_handles_values";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::Attribute::Native::Trait::Counter::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::_build_native_type" -> "Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_native_type";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_native_type";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_root_types";
+}

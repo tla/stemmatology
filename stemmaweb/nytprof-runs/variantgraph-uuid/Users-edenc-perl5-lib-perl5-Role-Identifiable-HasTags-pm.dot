@@ -1,0 +1,29 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Role_Identifiable_HasTags {
+	label="Role::Identifiable::HasTags";
+	"Role::Identifiable::HasTags::BEGIN@2";
+	"Role::Identifiable::HasTags::BEGIN@5";
+	"Role::Identifiable::HasTags::BEGIN@9";
+	"Role::Identifiable::HasTags::BEGIN@63";
+	"Role::Identifiable::HasTags::BEGIN@64";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Module::Runtime::require_module" -> "Role::Identifiable::HasTags::BEGIN@9";
+"Role::Identifiable::HasTags::BEGIN@64" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasTags::BEGIN@63" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasTags::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::Identifiable::HasTags::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasTags::BEGIN@64";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasTags::BEGIN@5";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasTags::BEGIN@63";
+"Module::Runtime::require_module" -> "Role::Identifiable::HasTags::BEGIN@2";
+}

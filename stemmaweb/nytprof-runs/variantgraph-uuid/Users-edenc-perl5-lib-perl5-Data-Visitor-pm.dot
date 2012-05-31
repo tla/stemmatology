@@ -1,0 +1,183 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::reftype";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_optional_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Tie_ToObject {
+	label="Tie::ToObject";
+	"Tie::ToObject::BEGIN@11";
+	"Tie::ToObject::BEGIN@8";
+	"Tie::ToObject::BEGIN@5";
+	"Tie::ToObject::BEGIN@10";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::visit_ref_data";
+	"KiokuDB::Collapser::BEGIN@20";
+	"KiokuDB::Collapser::retain_magic";
+	"KiokuDB::Collapser::weaken";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::visit_object";
+	"KiokuDB::Collapser::collapse";
+	"KiokuDB::Collapser::visit_ref";
+	"KiokuDB::Collapser::visit_seen";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::visit_hash";
+	"Data::Visitor::Callback::visit_value";
+	"Data::Visitor::Callback::visit_array";
+	"Data::Visitor::Callback::visit_hash_entry";
+	"Data::Visitor::Callback::visit_ref";
+	"Data::Visitor::Callback::visit";
+	"Data::Visitor::Callback::visit_object";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit_array_entry";
+	"Data::Visitor::visit_hash_entries";
+	"Data::Visitor::visit_ref";
+	"Data::Visitor::BEGIN@12";
+	"Data::Visitor::visit_value";
+	"Data::Visitor::BEGIN@13";
+	"Data::Visitor::visit_array_entries";
+	"Data::Visitor::visit_hash_value";
+	"Data::Visitor::BEGIN@2";
+	"Data::Visitor::CORE:match";
+	"Data::Visitor::visit_normal_array";
+	"Data::Visitor::BEGIN@23";
+	"Data::Visitor::BEGIN@15";
+	"Data::Visitor::visit_array";
+	"Data::Visitor::visit_hash";
+	"Data::Visitor::visit_hash_entry";
+	"Data::Visitor::BEGIN@376";
+	"Data::Visitor::BEGIN@16";
+	"Data::Visitor::visit_no_rec_check";
+	"Data::Visitor::BEGIN@25";
+	"Data::Visitor::_register_mapping";
+	"Data::Visitor::visit_normal_hash";
+	"Data::Visitor::BEGIN@11";
+	"Data::Visitor::BEGIN@20";
+	"Data::Visitor::visit_hash_key";
+	"Data::Visitor::BEGIN@18";
+	"Data::Visitor::retain_magic";
+	"Data::Visitor::visit";
+	"Data::Visitor::BEGIN@8";
+	"Data::Visitor::weaken";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Collapser::visit_ref_data" -> "Data::Visitor::visit_ref";
+"Data::Visitor::Callback::visit_ref" -> "Data::Visitor::visit_ref";
+"Data::Visitor::visit_no_rec_check" -> "KiokuDB::Collapser::visit_object";
+"Data::Visitor::retain_magic" -> "Scalar::Util::blessed";
+"Data::Visitor::visit_no_rec_check" -> "Scalar::Util::blessed";
+"Data::Visitor::BEGIN@16" -> "Tie::ToObject::BEGIN@11";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@16";
+"Data::Visitor::visit_array_entry" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::visit_hash_value" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::visit_hash_key" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::BEGIN@16" -> "Tie::ToObject::BEGIN@5";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@25";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_ref";
+"Data::Visitor::BEGIN@16" -> "UNIVERSAL::import";
+"Data::Visitor::visit_hash_entries" -> "Data::Visitor::visit_hash_entry";
+"Data::Visitor::Callback::visit_hash_entry" -> "Data::Visitor::visit_hash_entry";
+"Data::Visitor::visit_array" -> "Data::Visitor::visit_normal_array";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@23";
+"Data::Visitor::visit_no_rec_check" -> "KiokuDB::Collapser::visit_ref";
+"Data::Visitor::BEGIN@23" -> "constant::import";
+"Data::Visitor::BEGIN@25" -> "constant::import";
+"Data::Visitor::BEGIN@20" -> "namespace::clean::import";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@2";
+"Data::Visitor::visit_ref" -> "Data::Visitor::Callback::visit_array";
+"Data::Visitor::visit_normal_hash" -> "Data::Visitor::visit_hash_entries";
+"Data::Visitor::visit_normal_hash" -> "KiokuDB::Collapser::retain_magic";
+"Data::Visitor::visit_normal_array" -> "KiokuDB::Collapser::retain_magic";
+"Data::Visitor::visit" -> "KiokuDB::Collapser::visit_seen";
+"Data::Visitor::visit_hash_entries" -> "Data::Visitor::Callback::visit_hash_entry";
+"Data::Visitor::visit" -> "Data::Visitor::visit_no_rec_check";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@11";
+"Data::Visitor::visit_hash" -> "Data::Visitor::visit_normal_hash";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::visit_value";
+"Data::Visitor::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Visitor::visit_ref" -> "Data::Visitor::Callback::visit_hash";
+"Data::Visitor::visit_hash_entry" -> "Data::Visitor::visit_hash_value";
+"Data::Visitor::BEGIN@15" -> "Exporter::import";
+"Data::Visitor::BEGIN@11" -> "Exporter::import";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@15";
+"Data::Visitor::visit_ref" -> "UNIVERSAL::can";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_object";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@18";
+"Data::Visitor::BEGIN@25" -> "Class::Load::load_optional_class";
+"Data::Visitor::BEGIN@376" -> "warnings::unimport";
+"Data::Visitor::BEGIN@18" -> "warnings::unimport";
+"Data::Visitor::visit_array_entry" -> "Data::Visitor::visit";
+"Data::Visitor::visit_hash_value" -> "Data::Visitor::visit";
+"KiokuDB::Collapser::collapse" -> "Data::Visitor::visit";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Data::Visitor::visit";
+"Data::Visitor::visit_hash_key" -> "Data::Visitor::visit";
+"Data::Visitor::Callback::visit" -> "Data::Visitor::visit";
+"Data::Visitor::visit_ref" -> "Scalar::Util::reftype";
+"Data::Visitor::visit_ref" -> "Data::Visitor::CORE:match";
+"Data::Visitor::visit_normal_array" -> "Data::Visitor::visit_array_entries";
+"Data::Visitor::visit_ref" -> "Data::Visitor::visit_hash";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::visit_hash";
+"Data::Visitor::visit_normal_hash" -> "Data::Visitor::retain_magic";
+"Data::Visitor::visit_normal_array" -> "Data::Visitor::retain_magic";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@8";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_value";
+"Data::Visitor::visit_ref" -> "Data::Visitor::visit_array";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::visit_array";
+"Data::Visitor::visit_hash_entry" -> "Data::Visitor::visit_hash_key";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@12";
+"Data::Visitor::visit_array_entries" -> "Data::Visitor::visit_array_entry";
+"Data::Visitor::visit" -> "Data::Visitor::weaken";
+"Data::Visitor::BEGIN@16" -> "Tie::ToObject::BEGIN@10";
+"Data::Visitor::_register_mapping" -> "Scalar::Util::refaddr";
+"Data::Visitor::visit" -> "Scalar::Util::refaddr";
+"Data::Visitor::visit" -> "KiokuDB::Collapser::weaken";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@20";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@13";
+"Data::Visitor::BEGIN@16" -> "Tie::ToObject::BEGIN@8";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@376";
+"KiokuDB::Collapser::collapse_first_class" -> "Data::Visitor::_register_mapping";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::_register_mapping";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::_register_mapping";
+"Data::Visitor::visit_normal_hash" -> "Data::Visitor::_register_mapping";
+"Data::Visitor::visit_normal_array" -> "Data::Visitor::_register_mapping";
+}

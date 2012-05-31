@@ -1,0 +1,163 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::S_IFCHR";
+	"Fcntl::S_IFDIR";
+	"Fcntl::S_IFSOCK";
+	"Fcntl::S_ISGID";
+	"Fcntl::S_IFREG";
+	"Fcntl::BEGIN@58";
+	"Fcntl::S_IFLNK";
+	"Fcntl::S_IFFIFO";
+	"Fcntl::S_ISVTX";
+	"Fcntl::S_ISUID";
+	"Fcntl::S_IFBLK";
+}
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@4";
+}
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::BEGIN@5";
+	"Class::Struct::BEGIN@188";
+	"Class::Struct::BEGIN@11";
+	"Class::Struct::import";
+	"Class::Struct::BEGIN@7";
+	"Class::Struct::BEGIN@108";
+	"Class::Struct::BEGIN@8";
+	"Class::Struct::BEGIN@99";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+	"constant::BEGIN@4";
+	"constant::BEGIN@3";
+	"constant::BEGIN@25";
+	"constant::BEGIN@114";
+	"constant::BEGIN@29";
+	"constant::BEGIN@52";
+	"constant::CORE:regcomp";
+	"constant::CORE:qr";
+	"constant::BEGIN@2";
+	"constant::BEGIN@6";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@18";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@16";
+	"File::stat::BEGIN@5";
+	"File::stat::BEGIN@4";
+	"File::stat::BEGIN@9";
+	"File::stat::BEGIN@6";
+	"File::stat::BEGIN@143";
+	"File::stat::BEGIN@35";
+	"File::stat::BEGIN@7";
+	"File::stat::BEGIN@30";
+	"File::stat::BEGIN@32";
+	"File::stat::BEGIN@173";
+	"File::stat::BEGIN@28";
+	"File::stat::BEGIN@147";
+	"File::stat::BEGIN@200";
+	"File::stat::BEGIN@17";
+	"File::stat::BEGIN@2";
+	"File::stat::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::BEGIN@147";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@7";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@28";
+"File::stat::BEGIN@32" -> "Fcntl::S_ISVTX";
+"File::stat::BEGIN@143" -> "constant::BEGIN@4";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@147";
+"File::stat::BEGIN@147" -> "overload::import";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFDIR";
+"File::stat::BEGIN@147" -> "overload::BEGIN@147";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@11";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@4";
+"File::stat::BEGIN@30" -> "Fcntl::BEGIN@58";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@5";
+"File::stat::BEGIN@143" -> "constant::BEGIN@6";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@35";
+"File::stat::BEGIN@143" -> "constant::BEGIN@114";
+"File::stat::BEGIN@143" -> "constant::BEGIN@29";
+"File::stat::BEGIN@143" -> "constant::import";
+"File::stat::BEGIN@4" -> "strict::import";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@143";
+"File::stat::BEGIN@143" -> "constant::CORE:regcomp";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@99";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@188";
+"File::stat::BEGIN@30" -> "XSLoader::load";
+"File::stat::BEGIN@173" -> "Class::Struct::import";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFLNK";
+"File::stat::BEGIN@7" -> "Exporter::import";
+"File::stat::BEGIN@30" -> "Exporter::import";
+"File::stat::BEGIN@143" -> "constant::BEGIN@25";
+"File::stat::BEGIN@32" -> "Fcntl::S_ISGID";
+"File::stat::BEGIN@6" -> "warnings::register::import";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFCHR";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@200";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@6";
+"File::stat::BEGIN@200" -> "strict::unimport";
+"File::stat::BEGIN@35" -> "strict::unimport";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@7";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@17";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@8";
+"File::stat::BEGIN@5" -> "warnings::import";
+"File::stat::BEGIN@28" -> "vars::import";
+"File::stat::BEGIN@143" -> "constant::BEGIN@3";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@108";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@173";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@5";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFBLK";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFSOCK";
+"File::stat::BEGIN@143" -> "constant::CORE:qr";
+"Catalyst::Plugin::Static::Simple::BEGIN@4" -> "File::stat::import";
+"IO::Dir::BEGIN@18" -> "File::stat::import";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFREG";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFFIFO";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@2";
+"File::stat::BEGIN@32" -> "Fcntl::S_ISUID";
+"File::stat::BEGIN@143" -> "constant::BEGIN@52";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@16";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@9";
+"File::stat::BEGIN@143" -> "constant::BEGIN@2";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@30";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@32";
+}

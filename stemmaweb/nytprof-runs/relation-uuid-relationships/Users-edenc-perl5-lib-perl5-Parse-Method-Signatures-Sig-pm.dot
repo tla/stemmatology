@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::BEGIN@3";
+	"Parse::Method::Signatures::Sig::BEGIN@5";
+	"Parse::Method::Signatures::Sig::BEGIN@8";
+	"Parse::Method::Signatures::Sig::BEGIN@4";
+	"Parse::Method::Signatures::Sig::BEGIN@6";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Sig::BEGIN@4";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Sig::BEGIN@6";
+"Parse::Method::Signatures::Sig::BEGIN@8" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Sig::BEGIN@8";
+"Parse::Method::Signatures::Sig::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Sig::BEGIN@4" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Sig::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Sig::BEGIN@6" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Sig::BEGIN@5";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::Sig::BEGIN@3";
+}

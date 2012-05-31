@@ -1,0 +1,65 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_YAML_XS {
+	label="YAML::XS";
+	"YAML::XS::BEGIN@56";
+	"YAML::XS::BEGIN@19";
+	"YAML::XS::BEGIN@6";
+	"YAML::XS::BEGIN@101";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_YAML_XS_LibYAML {
+	label="YAML::XS::LibYAML";
+	"YAML::XS::LibYAML::BEGIN@8";
+	"YAML::XS::LibYAML::BEGIN@3";
+	"YAML::XS::LibYAML::BEGIN@6";
+	"YAML::XS::LibYAML::BEGIN@4";
+	"YAML::XS::LibYAML::BEGIN@2";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2.11";
+	"Text::Tradition::TypeMap::Entry::BEGIN@10";
+	"Text::Tradition::TypeMap::Entry::BEGIN@1";
+}
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@6";
+"YAML::XS::BEGIN@56" -> "UNIVERSAL::import";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@4";
+"YAML::XS::BEGIN@101" -> "constant::import";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@3";
+"Text::Tradition::TypeMap::Entry::BEGIN@2.11" -> "strict::import";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@19";
+"YAML::XS::BEGIN@19" -> "XSLoader::load";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@8";
+"YAML::XS::BEGIN@19" -> "Exporter::import";
+"YAML::XS::BEGIN@6" -> "base::import";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@56";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "Text::Tradition::TypeMap::Entry::BEGIN@2.11";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@2";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@101";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "YAML::XS::BEGIN@6";
+"Text::Tradition::TypeMap::Entry::BEGIN@10" -> "Text::Tradition::TypeMap::Entry::BEGIN@1";
+}

@@ -1,0 +1,171 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Util_Exceptions_Deprecated {
+	label="Bio::Phylo::Util::Exceptions::Deprecated";
+	"Bio::Phylo::Util::Exceptions::Deprecated::description";
+	"Bio::Phylo::Util::Exceptions::Deprecated::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Identifiable {
+	label="Bio::Phylo::Identifiable";
+	"Bio::Phylo::Identifiable::BEGIN@3";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_NotImplemented {
+	label="Bio::Phylo::Util::Exceptions::NotImplemented";
+	"Bio::Phylo::Util::Exceptions::NotImplemented::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::NotImplemented::description";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_OddHash {
+	label="Bio::Phylo::Util::Exceptions::OddHash";
+	"Bio::Phylo::Util::Exceptions::OddHash::description";
+	"Bio::Phylo::Util::Exceptions::OddHash::BEGIN@2";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_BadArgs {
+	label="Bio::Phylo::Util::Exceptions::BadArgs";
+	"Bio::Phylo::Util::Exceptions::BadArgs::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::BadArgs::description";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_BadFormat {
+	label="Bio::Phylo::Util::Exceptions::BadFormat";
+	"Bio::Phylo::Util::Exceptions::BadFormat::description";
+	"Bio::Phylo::Util::Exceptions::BadFormat::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_Generic {
+	label="Bio::Phylo::Util::Exceptions::Generic";
+	"Bio::Phylo::Util::Exceptions::Generic::description";
+	"Bio::Phylo::Util::Exceptions::Generic::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_API {
+	label="Bio::Phylo::Util::Exceptions::API";
+	"Bio::Phylo::Util::Exceptions::API::description";
+	"Bio::Phylo::Util::Exceptions::API::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_NetworkError {
+	label="Bio::Phylo::Util::Exceptions::NetworkError";
+	"Bio::Phylo::Util::Exceptions::NetworkError::description";
+	"Bio::Phylo::Util::Exceptions::NetworkError::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_BadNumber {
+	label="Bio::Phylo::Util::Exceptions::BadNumber";
+	"Bio::Phylo::Util::Exceptions::BadNumber::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::BadNumber::description";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_FileError {
+	label="Bio::Phylo::Util::Exceptions::FileError";
+	"Bio::Phylo::Util::Exceptions::FileError::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::FileError::description";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_System {
+	label="Bio::Phylo::Util::Exceptions::System";
+	"Bio::Phylo::Util::Exceptions::System::description";
+	"Bio::Phylo::Util::Exceptions::System::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_OutOfBounds {
+	label="Bio::Phylo::Util::Exceptions::OutOfBounds";
+	"Bio::Phylo::Util::Exceptions::OutOfBounds::description";
+	"Bio::Phylo::Util::Exceptions::OutOfBounds::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_BadString {
+	label="Bio::Phylo::Util::Exceptions::BadString";
+	"Bio::Phylo::Util::Exceptions::BadString::description";
+	"Bio::Phylo::Util::Exceptions::BadString::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_InvalidData {
+	label="Bio::Phylo::Util::Exceptions::InvalidData";
+	"Bio::Phylo::Util::Exceptions::InvalidData::description";
+	"Bio::Phylo::Util::Exceptions::InvalidData::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_ExtensionError {
+	label="Bio::Phylo::Util::Exceptions::ExtensionError";
+	"Bio::Phylo::Util::Exceptions::ExtensionError::description";
+	"Bio::Phylo::Util::Exceptions::ExtensionError::BEGIN@2";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions {
+	label="Bio::Phylo::Util::Exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@5";
+	"Bio::Phylo::Util::Exceptions::_make_exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::BEGIN@4";
+	"Bio::Phylo::Util::Exceptions::BEGIN@3";
+	"Bio::Phylo::Util::Exceptions::BEGIN@6";
+}
+subgraph cluster_Bio_Phylo_Util_StackTrace {
+	label="Bio::Phylo::Util::StackTrace";
+	"Bio::Phylo::Util::StackTrace::BEGIN@2";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_UnknownMethod {
+	label="Bio::Phylo::Util::Exceptions::UnknownMethod";
+	"Bio::Phylo::Util::Exceptions::UnknownMethod::description";
+	"Bio::Phylo::Util::Exceptions::UnknownMethod::BEGIN@2";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions_ObjectMismatch {
+	label="Bio::Phylo::Util::Exceptions::ObjectMismatch";
+	"Bio::Phylo::Util::Exceptions::ObjectMismatch::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::ObjectMismatch::description";
+}
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadArgs::BEGIN@2";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@4";
+"Bio::Phylo::Util::Exceptions::BEGIN@6" -> "overload::import";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::ExtensionError::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::OddHash::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::NetworkError::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::BEGIN@4" -> "UNIVERSAL::import";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadNumber::description";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::OddHash::description";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::_make_exceptions";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadArgs::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadFormat::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::API::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::OutOfBounds::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::BEGIN@4" -> "Bio::Phylo::Util::StackTrace::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::System::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::NetworkError::description";
+"Bio::Phylo::Util::Exceptions::BEGIN@2" -> "strict::import";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@5";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::ExtensionError::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::API::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::InvalidData::BEGIN@2";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@6";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadFormat::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadString::description";
+"Bio::Phylo::Util::Exceptions::BEGIN@5" -> "Exporter::import";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::NotImplemented::BEGIN@2";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@3";
+"Bio::Phylo::Util::Exceptions::BEGIN@3" -> "base::import";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::Generic::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::ObjectMismatch::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::InvalidData::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::FileError::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::NotImplemented::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::Deprecated::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::UnknownMethod::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::UnknownMethod::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::Deprecated::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::OutOfBounds::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::FileError::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::System::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::ObjectMismatch::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadString::BEGIN@2";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::Generic::description";
+"Bio::Phylo::Util::Exceptions::_make_exceptions" -> "Bio::Phylo::Util::Exceptions::BadNumber::BEGIN@2";
+}

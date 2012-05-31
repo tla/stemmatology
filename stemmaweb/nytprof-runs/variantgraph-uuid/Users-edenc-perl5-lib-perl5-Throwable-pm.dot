@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Throwable {
+	label="Throwable";
+	"Throwable::BEGIN@2";
+	"Throwable::BEGIN@5";
+	"Throwable::BEGIN@31";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Module::Runtime::require_module" -> "Throwable::BEGIN@5";
+"Throwable::BEGIN@31" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Throwable::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Throwable::BEGIN@31";
+"Module::Runtime::require_module" -> "Throwable::BEGIN@2";
+"Throwable::BEGIN@5" -> "UNIVERSAL::VERSION";
+}

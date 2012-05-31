@@ -1,0 +1,92 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@18";
+	"KiokuDB::Linker::__ANON__[KiokuDB/Linker.pm:57]";
+	"KiokuDB::Linker::get_or_load_object";
+	"KiokuDB::Linker::BEGIN@14";
+	"KiokuDB::Linker::get_or_load_objects";
+	"KiokuDB::Linker::BEGIN@13";
+	"KiokuDB::Linker::BEGIN@15";
+	"KiokuDB::Linker::live_objects";
+	"KiokuDB::Linker::BEGIN@16";
+	"KiokuDB::Linker::BEGIN@4";
+	"KiokuDB::Linker::__ANON__[KiokuDB/Linker.pm:51]";
+	"KiokuDB::Linker::BEGIN@20";
+	"KiokuDB::Linker::new";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::id_to_object";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::BEGIN@2";
+	"KiokuDB::Error::MissingObjects::BEGIN@4";
+	"KiokuDB::Error::MissingObjects::meta";
+	"KiokuDB::Error::MissingObjects::BEGIN@6";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::__ANON__[KiokuDB.pm:320]";
+	"KiokuDB::BEGIN@12";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@4";
+"KiokuDB::Linker::new" -> "KiokuDB::Linker::__ANON__[KiokuDB/Linker.pm:51]";
+"KiokuDB::Linker::BEGIN@16" -> "UNIVERSAL::import";
+"KiokuDB::Linker::BEGIN@18" -> "UNIVERSAL::import";
+"KiokuDB::Linker::BEGIN@18" -> "Moose::has";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::meta";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@13";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@6";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@16";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@4";
+"KiokuDB::Linker::BEGIN@20" -> "namespace::clean::import";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@14";
+"KiokuDB::Linker::BEGIN@18" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Linker::BEGIN@18" -> "Moose::with";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@2";
+"KiokuDB::Linker::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@20";
+"KiokuDB::Linker::BEGIN@15" -> "Exporter::import";
+"KiokuDB::Linker::BEGIN@13" -> "Exporter::import";
+"KiokuDB::Linker::BEGIN@14" -> "Exporter::import";
+"KiokuDB::Linker::get_or_load_objects" -> "KiokuDB::Linker::get_or_load_object";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@15";
+"KiokuDB::__ANON__[KiokuDB.pm:320]" -> "KiokuDB::Linker::get_or_load_objects";
+"KiokuDB::Linker::BEGIN@18" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Linker::get_or_load_object" -> "KiokuDB::LiveObjects::id_to_object";
+"KiokuDB::Linker::get_or_load_object" -> "KiokuDB::Linker::live_objects";
+"KiokuDB::BEGIN@12" -> "KiokuDB::Linker::BEGIN@18";
+"KiokuDB::Linker::new" -> "KiokuDB::Linker::__ANON__[KiokuDB/Linker.pm:57]";
+}

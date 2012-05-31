@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Storage_DBIHacks {
+	label="DBIx::Class::Storage::DBIHacks";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@13";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@609";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@16";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@10";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@19";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@17";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@18";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@14";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@11";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"DBIx::Class::Storage::DBIHacks::BEGIN@14" -> "mro::import";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@19";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@16";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@14";
+"DBIx::Class::Storage::DBIHacks::BEGIN@19" -> "namespace::clean::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@10" -> "strict::import";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@18";
+"DBIx::Class::Storage::DBIHacks::BEGIN@16" -> "Exporter::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@17" -> "Exporter::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@18" -> "Exporter::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@609" -> "strict::unimport";
+"DBIx::Class::Storage::DBIHacks::BEGIN@13" -> "base::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@11" -> "warnings::import";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@11";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@13";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@609";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@17";
+"base::import" -> "DBIx::Class::Storage::DBIHacks::BEGIN@10";
+}

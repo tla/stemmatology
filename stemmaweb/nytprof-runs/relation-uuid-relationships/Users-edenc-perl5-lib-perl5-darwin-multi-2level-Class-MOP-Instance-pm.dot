@@ -1,0 +1,138 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Instance {
+	label="Moose::Meta::Instance";
+	"Moose::Meta::Instance::_new";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::inline_is_slot_initialized";
+	"Class::MOP::Instance::_class_name";
+	"Class::MOP::Instance::is_dependent_on_superclasses";
+	"Class::MOP::Instance::inline_weaken_slot_value";
+	"Class::MOP::Instance::BEGIN@11";
+	"Class::MOP::Instance::is_inlinable";
+	"Class::MOP::Instance::new";
+	"Class::MOP::Instance::inline_get_slot_value";
+	"Class::MOP::Instance::BUILDARGS";
+	"Class::MOP::Instance::BEGIN@3";
+	"Class::MOP::Instance::_set_mop_slot";
+	"Class::MOP::Instance::set_slot_value";
+	"Class::MOP::Instance::BEGIN@10";
+	"Class::MOP::Instance::rebless_instance_structure";
+	"Class::MOP::Instance::_new";
+	"Class::MOP::Instance::create_instance";
+	"Class::MOP::Instance::get_slot_value";
+	"Class::MOP::Instance::weaken_slot_value";
+	"Class::MOP::Instance::inline_set_slot_value";
+	"Class::MOP::Instance::inline_get_is_lvalue";
+	"Class::MOP::Instance::is_slot_initialized";
+	"Class::MOP::Instance::inline_deinitialize_slot";
+	"Class::MOP::Instance::inline_create_instance";
+	"Class::MOP::Instance::BEGIN@15";
+	"Class::MOP::Instance::BEGIN@13";
+	"Class::MOP::Instance::inline_slot_access";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_instance_is_inlinable";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_create_meta_instance";
+	"Class::MOP::Class::_inline_create_instance";
+	"Class::MOP::Class::_force_rebless_instance";
+	"Class::MOP::Class::BEGIN@13";
+	"Class::MOP::Class::_construct_instance";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_weaken_value";
+	"Moose::Meta::Attribute::_inline_weaken_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::_inline_instance_has";
+	"Class::MOP::Attribute::_inline_instance_clear";
+	"Class::MOP::Attribute::set_raw_value";
+	"Class::MOP::Attribute::_inline_instance_get";
+	"Class::MOP::Attribute::_set_initial_slot_value";
+	"Class::MOP::Attribute::has_value";
+	"Class::MOP::Attribute::_inline_instance_set";
+	"Class::MOP::Attribute::get_raw_value";
+	"Class::MOP::Attribute::_process_accessors";
+	"Class::MOP::Attribute::slots";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Instance::set_slot_value";
+"Class::MOP::Instance::_set_mop_slot" -> "Class::MOP::Instance::set_slot_value";
+"Class::MOP::Attribute::_set_initial_slot_value" -> "Class::MOP::Instance::set_slot_value";
+"Class::MOP::Instance::BUILDARGS" -> "Scalar::Util::blessed";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Instance::get_slot_value";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@15";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@10";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Instance::inline_deinitialize_slot";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Instance::new";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@13";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Instance::create_instance";
+"Class::MOP::Instance::new" -> "Moose::Meta::Instance::_new";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@3";
+"Class::MOP::Instance::BEGIN@10" -> "strict::import";
+"Class::MOP::Instance::new" -> "Class::MOP::Instance::_new";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Instance::is_slot_initialized";
+"Class::MOP::Instance::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Instance::inline_is_slot_initialized" -> "Class::MOP::Instance::inline_slot_access";
+"Class::MOP::Instance::inline_deinitialize_slot" -> "Class::MOP::Instance::inline_slot_access";
+"Class::MOP::Instance::inline_get_slot_value" -> "Class::MOP::Instance::inline_slot_access";
+"Class::MOP::Instance::inline_set_slot_value" -> "Class::MOP::Instance::inline_slot_access";
+"Class::MOP::Instance::inline_weaken_slot_value" -> "Class::MOP::Instance::inline_slot_access";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Instance::inline_is_slot_initialized";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Instance::_set_mop_slot";
+"Class::MOP::Instance::BEGIN@15" -> "base::import";
+"Class::MOP::Instance::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Writer::_get_is_lvalue" -> "Class::MOP::Instance::inline_get_is_lvalue";
+"Class::MOP::Attribute::_process_accessors" -> "Class::MOP::Instance::is_inlinable";
+"Moose::Meta::Method::Accessor::_instance_is_inlinable" -> "Class::MOP::Instance::is_inlinable";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Instance::inline_weaken_slot_value";
+"Class::MOP::Instance::new" -> "Class::MOP::Instance::BUILDARGS";
+"Class::MOP::Instance::new" -> "Scalar::Util::weaken";
+"Class::MOP::Instance::weaken_slot_value" -> "Scalar::Util::weaken";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Instance::is_dependent_on_superclasses";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Instance::inline_set_slot_value";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@11";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Instance::rebless_instance_structure";
+"Class::MOP::Instance::BUILDARGS" -> "Class::MOP::Attribute::slots";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Instance::weaken_slot_value";
+"Class::MOP::Class::_inline_create_instance" -> "Class::MOP::Instance::inline_create_instance";
+"Class::MOP::Instance::create_instance" -> "Class::MOP::Instance::_class_name";
+"Class::MOP::Instance::rebless_instance_structure" -> "Class::MOP::Package::name";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Instance::inline_get_slot_value";
+}

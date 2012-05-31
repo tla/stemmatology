@@ -1,0 +1,102 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::parse";
+	"Text::Tradition::Parser::Self::BEGIN@5";
+}
+subgraph cluster_XML_LibXML_Node {
+	label="XML::LibXML::Node";
+	"XML::LibXML::Node::DESTROY";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::BEGIN@4";
+	"Text::Tradition::Parser::GraphML::BEGIN@3";
+	"Text::Tradition::Parser::GraphML::BEGIN@9";
+	"Text::Tradition::Parser::GraphML::_lookup_node_data";
+	"Text::Tradition::Parser::GraphML::graphml_parse";
+	"Text::Tradition::Parser::GraphML::BEGIN@8";
+	"Text::Tradition::Parser::GraphML::BEGIN@6";
+	"Text::Tradition::Parser::GraphML::BEGIN@5";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::size";
+	"XML::LibXML::NodeList::to_literal";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::parse_file";
+	"XML::LibXML::new";
+	"XML::LibXML::import";
+}
+subgraph cluster_XML_LibXML_Element {
+	label="XML::LibXML::Element";
+	"XML::LibXML::Element::getAttribute";
+	"XML::LibXML::Element::DESTROY";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_XML_LibXML_Document {
+	label="XML::LibXML::Document";
+	"XML::LibXML::Document::documentElement";
+}
+subgraph cluster_XML_LibXML_XPathContext {
+	label="XML::LibXML::XPathContext";
+	"XML::LibXML::XPathContext::find";
+	"XML::LibXML::XPathContext::registerNs";
+	"XML::LibXML::XPathContext::findnodes";
+	"XML::LibXML::XPathContext::new";
+}
+subgraph cluster_XML_LibXML_Literal {
+	label="XML::LibXML::Literal";
+	"XML::LibXML::Literal::value";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::new";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::new";
+"Text::Tradition::Parser::GraphML::BEGIN@9" -> "UNIVERSAL::import";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "Text::Tradition::Parser::GraphML::_lookup_node_data";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::Node::DESTROY";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Node::DESTROY";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Parser::GraphML::graphml_parse";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@6";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::Literal::value";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::findnodes";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::parse_file";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::XPathContext::find";
+"Text::Tradition::Parser::GraphML::BEGIN@3" -> "strict::import";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::NodeList::size";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@4";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::NodeList::to_literal";
+"Text::Tradition::Parser::GraphML::BEGIN@5" -> "Exporter::import";
+"Text::Tradition::Parser::GraphML::BEGIN@8" -> "XML::LibXML::import";
+"Text::Tradition::Parser::GraphML::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Parser::GraphML::BEGIN@6" -> "vars::import";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@9";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::registerNs";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Element::DESTROY";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Document::documentElement";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@8";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@3";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@5";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::Element::getAttribute";
+}

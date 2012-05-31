@@ -1,0 +1,130 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::_unique_constraints";
+	"DBIx::Class::ResultSource::_columns";
+	"DBIx::Class::ResultSource::_ordered_columns";
+	"DBIx::Class::ResultSource::_primaries";
+	"DBIx::Class::ResultSource::_relationships";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::on_connect_call";
+	"DBIx::Class::Storage::DBI::auto_savepoint";
+	"DBIx::Class::Storage::DBI::_driver_determined";
+	"DBIx::Class::Storage::DBI::_dbh_details";
+	"DBIx::Class::Storage::DBI::_connect_info";
+	"DBIx::Class::Storage::DBI::on_connect_do";
+	"DBIx::Class::Storage::DBI::_dbh";
+	"DBIx::Class::Storage::DBI::_dbh_autocommit";
+	"DBIx::Class::Storage::DBI::_dbic_connect_attributes";
+	"DBIx::Class::Storage::DBI::_dbi_connect_info";
+	"DBIx::Class::Storage::DBI::unsafe";
+	"DBIx::Class::Storage::DBI::_sql_maker";
+	"DBIx::Class::Storage::DBI::_conn_pid";
+	"DBIx::Class::Storage::DBI::_sql_maker_opts";
+}
+subgraph cluster_Class_XSAccessor_Heavy {
+	label="Class::XSAccessor::Heavy";
+	"Class::XSAccessor::Heavy::BEGIN@27";
+	"Class::XSAccessor::Heavy::BEGIN@7";
+	"Class::XSAccessor::Heavy::BEGIN@5";
+	"Class::XSAccessor::Heavy::BEGIN@6";
+	"Class::XSAccessor::Heavy::BEGIN@4";
+	"Class::XSAccessor::Heavy::BEGIN@30";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::schema";
+	"DBIx::Class::Storage::debug";
+	"DBIx::Class::Storage::transaction_depth";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::BEGIN@3";
+	"Class::XSAccessor::_generate_method";
+	"Class::XSAccessor::BEGIN@4";
+	"Class::XSAccessor::import";
+	"Class::XSAccessor::BEGIN@7";
+	"Class::XSAccessor::BEGIN@6";
+	"Class::XSAccessor::BEGIN@5";
+	"Class::XSAccessor::_make_hash";
+	"Class::XSAccessor::END";
+	"Class::XSAccessor::BEGIN@2";
+	"Class::XSAccessor::BEGIN@80";
+	"Class::XSAccessor::newxs_accessor";
+	"Class::XSAccessor::CORE:match";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::BEGIN@529";
+}
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@6";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@5";
+"Class::XSAccessor::BEGIN@6" -> "UNIVERSAL::import";
+"Class::XSAccessor::BEGIN@7" -> "UNIVERSAL::import";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::debug" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_relationships" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::transaction_depth" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_primaries" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::schema" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_columns" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::unsafe" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Class::XSAccessor::import";
+"Class::XSAccessor::import" -> "Class::XSAccessor::_make_hash";
+"Class::XSAccessor::_generate_method" -> "Class::XSAccessor::CORE:match";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@4";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@7";
+"Class::XSAccessor::BEGIN@3" -> "strict::import";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@27";
+"Class::XSAccessor::BEGIN@5" -> "Exporter::import";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@7";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@80";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@30";
+"Class::XSAccessor::BEGIN@4" -> "warnings::import";
+"Class::XSAccessor::import" -> "Class::XSAccessor::_generate_method";
+"Class::XSAccessor::BEGIN@80" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@6";
+"main::RUNTIME" -> "Class::XSAccessor::END";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@5";
+"Class::XSAccessor::_generate_method" -> "Class::XSAccessor::newxs_accessor";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@3";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@2";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@4";
+}

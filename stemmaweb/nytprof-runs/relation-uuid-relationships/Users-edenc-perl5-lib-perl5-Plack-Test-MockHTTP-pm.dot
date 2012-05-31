@@ -1,0 +1,121 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+	"Plack::Test::MockHTTP::BEGIN@7";
+	"Plack::Test::MockHTTP::BEGIN@6";
+	"Plack::Test::MockHTTP::test_psgi";
+	"Plack::Test::MockHTTP::BEGIN@8";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+	"Plack::Test::MockHTTP::BEGIN@9";
+	"Plack::Test::MockHTTP::BEGIN@2";
+	"Plack::Test::MockHTTP::BEGIN@5";
+	"Plack::Test::MockHTTP::BEGIN@3";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::to_psgi";
+	"HTTP::Request::uri";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@9";
+	"HTTP::Message::PSGI::BEGIN@11";
+	"HTTP::Message::PSGI::BEGIN@8";
+	"HTTP::Message::PSGI::BEGIN@10";
+	"HTTP::Message::PSGI::BEGIN@7";
+	"HTTP::Message::PSGI::BEGIN@2";
+	"HTTP::Message::PSGI::BEGIN@3";
+	"HTTP::Message::PSGI::BEGIN@4";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::host";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::request";
+	"HTTP::Response::from_psgi";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::__ANON__[Catalyst/Engine.pm:684]";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::test_psgi";
+}
+subgraph cluster_main {
+	label="main";
+	"main::__ANON__[script/nytprof.pl:40]";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::scheme";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@10";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@5";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@8";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@3";
+"Plack::Test::MockHTTP::BEGIN@6" -> "UNIVERSAL::import";
+"Plack::Test::MockHTTP::BEGIN@7" -> "UNIVERSAL::import";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Request::to_psgi";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@11";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "Try::Tiny::try";
+"Try::Tiny::try" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "Try::Tiny::catch";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@4";
+"Plack::Test::MockHTTP::BEGIN@2" -> "strict::import";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@9";
+"Plack::Test::MockHTTP::test_psgi" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]" -> "Catalyst::Engine::__ANON__[Catalyst/Engine.pm:684]";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@9";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "URI::_server::host";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@7";
+"Plack::Test::MockHTTP::BEGIN@5" -> "Exporter::import";
+"Plack::Test::MockHTTP::BEGIN@8" -> "Exporter::import";
+"Plack::Test::MockHTTP::BEGIN@9" -> "Exporter::import";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Request::uri";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@2";
+"Plack::Test::MockHTTP::test_psgi" -> "main::__ANON__[script/nytprof.pl:40]";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@7";
+"Plack::Test::MockHTTP::BEGIN@3" -> "warnings::import";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::test_psgi";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@2";
+"main::__ANON__[script/nytprof.pl:40]" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:30]" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]" -> "HTTP::Response::from_psgi";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@8";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@3";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@6";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Response::request";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "URI::scheme";
+}

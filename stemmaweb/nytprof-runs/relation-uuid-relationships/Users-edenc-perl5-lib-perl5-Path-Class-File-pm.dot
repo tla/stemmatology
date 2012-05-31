@@ -1,0 +1,108 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::path_to";
+}
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::BEGIN@1";
+	"Path::Class::BEGIN@17";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::find_files";
+	"Catalyst::Plugin::ConfigLoader::CORE:match";
+	"Catalyst::Plugin::ConfigLoader::CORE:ftdir";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@14";
+	"Path::Class::Dir::file";
+	"Path::Class::Dir::BEGIN@8";
+	"Path::Class::Dir::BEGIN@10";
+	"Path::Class::Dir::stringify";
+	"Path::Class::Dir::new";
+	"Path::Class::Dir::BEGIN@12";
+	"Path::Class::Dir::BEGIN@13";
+	"Path::Class::Dir::BEGIN@9";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::_spec";
+	"Path::Class::Entity::new";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::curdir";
+	"File::Spec::Unix::splitpath";
+	"File::Spec::Unix::catfile";
+	"File::Spec::Unix::updir";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::CORE:ftfile";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::BEGIN@12";
+	"Path::Class::File::BEGIN@53";
+	"Path::Class::File::stringify";
+	"Path::Class::File::BEGIN@8";
+	"Path::Class::File::new";
+	"Path::Class::File::BEGIN@9";
+	"Path::Class::File::dir_class";
+	"Path::Class::File::BEGIN@10";
+	"Path::Class::File::BEGIN@1";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Path::Class::File::new" -> "Path::Class::File::dir_class";
+"Path::Class::File::stringify" -> "Path::Class::Dir::stringify";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@10";
+"Path::Class::File::stringify" -> "Path::Class::Entity::_spec";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Entity::_spec";
+"Path::Class::File::new" -> "Path::Class::Entity::_spec";
+"Path::Class::File::stringify" -> "File::Spec::Unix::catfile";
+"Path::Class::Dir::file" -> "Path::Class::File::new";
+"Catalyst::path_to" -> "Path::Class::File::new";
+"Path::Class::File::new" -> "Path::Class::Dir::new";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@13";
+"Path::Class::File::BEGIN@8" -> "File::Spec::Unix::curdir";
+"Path::Class::File::BEGIN@8" -> "Path::Class::File::BEGIN@1";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@8";
+"Path::Class::BEGIN@1" -> "strict::import";
+"Path::Class::File::BEGIN@10" -> "Exporter::import";
+"Path::Class::BEGIN@17" -> "Path::Class::BEGIN@1";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@12";
+"Path::Class::File::BEGIN@9" -> "base::import";
+"Path::Class::File::new" -> "Path::Class::Entity::new";
+"Path::Class::File::new" -> "File::Spec::Unix::splitpath";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@14";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@8";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@9";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@53";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@9";
+"Catalyst::Utils::CORE:ftfile" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::CORE:match" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::CORE:ftdir" -> "Path::Class::File::stringify";
+"main::RUNTIME" -> "Path::Class::File::stringify";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@12";
+"Path::Class::File::BEGIN@8" -> "File::Spec::Unix::updir";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@10";
+}

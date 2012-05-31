@@ -1,0 +1,21 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::BEGIN@3";
+	"Catalyst::ActionChain::BEGIN@7";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::BEGIN@7";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@3";
+"Catalyst::ActionChain::BEGIN@7" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::ActionChain::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@7";
+}

@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_Carp {
+	label="DBIx::Class::Carp";
+	"DBIx::Class::Carp::import";
+}
+subgraph cluster_DBIx_Class_ResultSetColumn {
+	label="DBIx::Class::ResultSetColumn";
+	"DBIx::Class::ResultSetColumn::BEGIN@4";
+	"DBIx::Class::ResultSetColumn::BEGIN@7";
+	"DBIx::Class::ResultSetColumn::BEGIN@6";
+	"DBIx::Class::ResultSetColumn::BEGIN@11";
+	"DBIx::Class::ResultSetColumn::BEGIN@8";
+	"DBIx::Class::ResultSetColumn::BEGIN@3";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@8";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@6";
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@4";
+"DBIx::Class::ResultSetColumn::BEGIN@8" -> "UNIVERSAL::import";
+"DBIx::Class::ResultSetColumn::BEGIN@3" -> "strict::import";
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@8";
+"DBIx::Class::ResultSetColumn::BEGIN@6" -> "base::import";
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@7";
+"DBIx::Class::ResultSetColumn::BEGIN@4" -> "warnings::import";
+"DBIx::Class::ResultSetColumn::BEGIN@7" -> "DBIx::Class::Carp::import";
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@3";
+"DBIx::Class::ResultSet::BEGIN@8" -> "DBIx::Class::ResultSetColumn::BEGIN@11";
+}

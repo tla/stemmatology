@@ -1,0 +1,50 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::new";
+	"HTTP::Message::_elem";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::uri";
+	"HTTP::Request::BEGIN@7";
+	"HTTP::Request::new";
+	"HTTP::Request::method";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+}
+subgraph cluster_HTTP_Request_Common {
+	label="HTTP::Request::Common";
+	"HTTP::Request::Common::_simple_req";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"HTTP::Request::uri" -> "URI::new";
+"HTTP::Request::BEGIN@7" -> "strict::import";
+"main::BEGIN@7" -> "HTTP::Request::BEGIN@7";
+"HTTP::Request::method" -> "HTTP::Message::_elem";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Request::uri";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Request::uri";
+"HTTP::Request::new" -> "HTTP::Request::uri";
+"HTTP::Request::new" -> "HTTP::Message::new";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Request::method";
+"HTTP::Request::new" -> "HTTP::Request::method";
+"HTTP::Request::Common::_simple_req" -> "HTTP::Request::new";
+}

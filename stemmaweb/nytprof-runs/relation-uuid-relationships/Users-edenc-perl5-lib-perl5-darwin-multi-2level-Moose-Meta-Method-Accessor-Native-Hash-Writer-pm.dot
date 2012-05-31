@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Hash::Writer";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@14";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@31";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@9";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@12" -> "UNIVERSAL::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@9" -> "strict::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@14";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@31" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@10" -> "warnings::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@2";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@31";
+}

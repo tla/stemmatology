@@ -1,0 +1,35 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Pod {
+	label="PPI::Token::Pod";
+	"PPI::Token::Pod::BEGIN@33";
+	"PPI::Token::Pod::BEGIN@29";
+	"PPI::Token::Pod::BEGIN@34";
+	"PPI::Token::Pod::BEGIN@31";
+	"PPI::Token::Pod::BEGIN@30";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@41";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@30";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@34";
+"PPI::Token::Pod::BEGIN@29" -> "strict::import";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@31";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@29";
+"PPI::Token::Pod::BEGIN@30" -> "Exporter::import";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@33";
+"PPI::Token::Pod::BEGIN@33" -> "vars::import";
+}

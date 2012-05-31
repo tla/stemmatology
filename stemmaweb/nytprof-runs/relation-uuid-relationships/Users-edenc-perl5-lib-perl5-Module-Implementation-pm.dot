@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::BEGIN@113";
+	"Module::Implementation::__ANON__[Module/Implementation.pm:44]";
+	"Module::Implementation::build_loader_sub";
+	"Module::Implementation::BEGIN@7";
+	"Module::Implementation::BEGIN@9";
+	"Module::Implementation::CORE:subst";
+	"Module::Implementation::_build_loader";
+	"Module::Implementation::BEGIN@114";
+	"Module::Implementation::BEGIN@6";
+	"Module::Implementation::_load_implementation";
+	"Module::Implementation::__ANON__[Module/Implementation.pm:87]";
+	"Module::Implementation::BEGIN@10";
+	"Module::Implementation::_copy_symbols";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::BEGIN@6";
+	"Try::Tiny::catch";
+	"Try::Tiny::BEGIN@3";
+	"Try::Tiny::BEGIN@8";
+	"Try::Tiny::try";
+	"Try::Tiny::BEGIN@46";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@15";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::CORE:regcomp";
+	"Module::Runtime::BEGIN@116";
+	"Module::Runtime::import";
+	"Module::Runtime::BEGIN@120";
+	"Module::Runtime::require_module";
+	"Module::Runtime::CORE:qr";
+	"Module::Runtime::BEGIN@296";
+	"Module::Runtime::BEGIN@289";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::BEGIN@296";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::import";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::BEGIN@120";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@114";
+"Module::Implementation::build_loader_sub" -> "Module::Implementation::_build_loader";
+"Module::Implementation::__ANON__[Module/Implementation.pm:44]" -> "Module::Implementation::_copy_symbols";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@6";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@8";
+"Module::Implementation::_load_implementation" -> "Try::Tiny::try";
+"Module::Implementation::_load_implementation" -> "Try::Tiny::catch";
+"Try::Tiny::try" -> "Module::Implementation::__ANON__[Module/Implementation.pm:87]";
+"Module::Implementation::__ANON__[Module/Implementation.pm:44]" -> "Module::Implementation::_load_implementation";
+"Moose::BEGIN@15" -> "Module::Implementation::build_loader_sub";
+"Module::Implementation::BEGIN@6" -> "strict::import";
+"Moose::BEGIN@15" -> "Module::Implementation::__ANON__[Module/Implementation.pm:44]";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@6";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@46";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::BEGIN@116";
+"Module::Implementation::BEGIN@10" -> "Exporter::import";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@113";
+"Module::Implementation::_build_loader" -> "Module::Implementation::CORE:subst";
+"Module::Implementation::_copy_symbols" -> "Module::Implementation::CORE:subst";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@9";
+"Module::Implementation::BEGIN@113" -> "strict::unimport";
+"Module::Implementation::BEGIN@7" -> "warnings::import";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::BEGIN@289";
+"Module::Implementation::BEGIN@114" -> "warnings::unimport";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@7";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::CORE:qr";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@3";
+"Module::Implementation::BEGIN@9" -> "Module::Runtime::CORE:regcomp";
+"Module::Implementation::__ANON__[Module/Implementation.pm:87]" -> "Module::Runtime::require_module";
+"Module::Implementation::BEGIN@9" -> "UNIVERSAL::VERSION";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@10";
+}

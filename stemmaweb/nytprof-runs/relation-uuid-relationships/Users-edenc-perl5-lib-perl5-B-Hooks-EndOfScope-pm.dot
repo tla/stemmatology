@@ -1,0 +1,445 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@9";
+	"Catalyst::Dispatcher::BEGIN@12";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@10";
+	"Catalyst::BEGIN@13";
+	"Catalyst::BEGIN@32";
+	"Catalyst::BEGIN@15";
+	"Catalyst::BEGIN@9";
+	"Catalyst::BEGIN@16";
+	"Catalyst::BEGIN@14";
+	"Catalyst::BEGIN@8";
+	"Catalyst::BEGIN@12";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@10";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@7";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::__ANON__[TryCatch.pm:118]";
+	"TryCatch::BEGIN@11";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@18";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@8";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@7";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@30";
+	"KiokuDB::Backend::DBI::BEGIN@21";
+	"KiokuDB::Backend::DBI::BEGIN@26";
+	"KiokuDB::Backend::DBI::BEGIN@28";
+	"KiokuDB::Backend::DBI::BEGIN@29";
+	"KiokuDB::Backend::DBI::BEGIN@31";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@11";
+}
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::BEGIN@5";
+	"Variable::Magic::BEGIN@3";
+	"Variable::Magic::BEGIN@6";
+	"Variable::Magic::BEGIN@19";
+	"Variable::Magic::BEGIN@605";
+	"Variable::Magic::BEGIN@203";
+	"Variable::Magic::cast";
+	"Variable::Magic::getdata";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@8";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@14";
+	"KiokuDB::LiveObjects::BEGIN@13";
+	"KiokuDB::LiveObjects::BEGIN@7";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::__ANON__[namespace/clean.pm:311]";
+	"namespace::clean::import";
+	"namespace::clean::__ANON__[namespace/clean.pm:338]";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@11";
+	"MooseX::Types::BEGIN@14";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@10";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@14";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+	"KiokuDB::GC::Naive::BEGIN@7";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@14";
+	"MooseX::StrictConstructor::BEGIN@13";
+}
+subgraph cluster_Search_GIN_Driver {
+	label="Search::GIN::Driver";
+	"Search::GIN::Driver::BEGIN@11";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@1";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@9";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@10";
+	"KiokuDB::TypeMap::BEGIN@9";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default_JSON {
+	label="KiokuDB::Backend::TypeMap::Default::JSON";
+	"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@14";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::BEGIN@6";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::load";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@9";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@17";
+	"KiokuDB::Collapser::BEGIN@15";
+	"KiokuDB::Collapser::BEGIN@14";
+	"KiokuDB::Collapser::BEGIN@20";
+	"KiokuDB::Collapser::BEGIN@16";
+	"KiokuDB::Collapser::BEGIN@18";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std {
+	label="KiokuDB::TypeMap::Entry::Std";
+	"KiokuDB::TypeMap::Entry::Std::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@13";
+	"MooseX::Clone::BEGIN@12";
+	"MooseX::Clone::BEGIN@10";
+	"MooseX::Clone::BEGIN@11";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@8";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::BEGIN@12";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::BEGIN@17";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+	"Text::Tradition::Directory::BEGIN@154";
+	"Text::Tradition::Directory::BEGIN@10";
+	"Text::Tradition::Directory::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@9";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@13";
+	"KiokuDB::BEGIN@11";
+	"KiokuDB::connect";
+	"KiokuDB::BEGIN@16";
+	"KiokuDB::BEGIN@10";
+	"KiokuDB::BEGIN@12";
+	"KiokuDB::BEGIN@17";
+	"KiokuDB::BEGIN@15";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@1";
+	"namespace::autoclean::BEGIN@14";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+	"namespace::autoclean::BEGIN@2";
+	"namespace::autoclean::import";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::BEGIN@16";
+	"B::Hooks::EndOfScope::BEGIN@13";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:25]";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+	"B::Hooks::EndOfScope::BEGIN@5";
+	"B::Hooks::EndOfScope::on_scope_end";
+	"B::Hooks::EndOfScope::BEGIN@14";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@9";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@19";
+	"stemmaweb::BEGIN@3";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1";
+}
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@13";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::clean::__ANON__[namespace/clean.pm:311]";
+"B::Hooks::EndOfScope::on_scope_end" -> "Variable::Magic::cast";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@203";
+"namespace::autoclean::BEGIN@14" -> "namespace::autoclean::BEGIN@2";
+"B::Hooks::EndOfScope::on_scope_end" -> "Variable::Magic::getdata";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@6";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@19";
+"B::Hooks::EndOfScope::BEGIN@16" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@16";
+"namespace::autoclean::BEGIN@1" -> "strict::import";
+"Catalyst::Utils::ensure_class_loaded" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"stemmaweb::BEGIN@19" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Error::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.5" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@15" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuX::Model::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::ResultSource::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::Storage::BEGIN@17" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@20" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@32" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Module::Runtime::require_module" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::StrictConstructor::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::GC::Naive::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"base::import" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::ResultSet::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@1.3" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::LiveObjects::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@16" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Linker::BEGIN@18" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::Std::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Module::Load::load" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Collation::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::MethodAttributes::Inheritable::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::LiveObjects::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@17" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::ResultSource::Table::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Parse::Method::Signatures::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"TryCatch::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@16" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Search::GIN::Driver::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::connect" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@1.4" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@16" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::GC::Naive::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::Moose::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@15" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"stemmaweb::BEGIN@3" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@17" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Class::C3::Componentised::ensure_class_loaded" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Dispatcher::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::LiveObjects::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Dispatcher::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@15" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@18" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::StrictConstructor::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"main::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Exception::Basic::BEGIN@3" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@154" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::clean::__ANON__[namespace/clean.pm:338]";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@605";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@14";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Exporter::import";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@3";
+"Variable::Magic::cast" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:25]";
+"namespace::autoclean::BEGIN@14" -> "namespace::autoclean::BEGIN@1";
+"namespace::autoclean::BEGIN@2" -> "warnings::import";
+"namespace::clean::import" -> "B::Hooks::EndOfScope::on_scope_end";
+"TryCatch::inject_scope" -> "B::Hooks::EndOfScope::on_scope_end";
+"namespace::autoclean::import" -> "B::Hooks::EndOfScope::on_scope_end";
+"B::Hooks::EndOfScope::BEGIN@14" -> "Variable::Magic::BEGIN@5";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@5";
+"B::Hooks::EndOfScope::BEGIN@14" -> "UNIVERSAL::VERSION";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "TryCatch::__ANON__[TryCatch.pm:118]";
+}

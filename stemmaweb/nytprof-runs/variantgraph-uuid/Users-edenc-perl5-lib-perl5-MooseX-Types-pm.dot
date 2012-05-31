@@ -1,0 +1,283 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::BEGIN@10";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@14";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@11";
+}
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::filter_tags";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::CodeRef";
+	"__TYPE__::ArrayRef";
+	"__TYPE__::Bool";
+	"__TYPE__::Str";
+	"__TYPE__::Int";
+	"__TYPE__::ClassName";
+	"__TYPE__::Defined";
+	"__TYPE__::HashRef";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::create_base_type_constraint";
+	"MooseX::Types::BEGIN@16";
+	"MooseX::Types::BEGIN@10";
+	"MooseX::Types::BEGIN@19";
+	"MooseX::Types::coercion_export_generator";
+	"MooseX::Types::BEGIN@13";
+	"MooseX::Types::CORE:match";
+	"MooseX::Types::BEGIN@12";
+	"MooseX::Types::check_export_generator";
+	"MooseX::Types::BEGIN@5";
+	"MooseX::Types::BEGIN@9";
+	"MooseX::Types::BEGIN@15";
+	"MooseX::Types::BEGIN@11";
+	"MooseX::Types::BEGIN@34";
+	"MooseX::Types::create_type_decorator";
+	"MooseX::Types::BEGIN@21";
+	"MooseX::Types::BEGIN@14";
+	"MooseX::Types::type_export_generator";
+	"MooseX::Types::create_arged_type_constraint";
+	"MooseX::Types::import";
+	"MooseX::Types::BEGIN@17";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::BEGIN@8";
+	"MooseX::Types::TypeDecorator::BEGIN@12";
+	"MooseX::Types::TypeDecorator::BEGIN@11";
+	"MooseX::Types::TypeDecorator::new";
+	"MooseX::Types::TypeDecorator::BEGIN@13";
+	"MooseX::Types::TypeDecorator::BEGIN@14";
+	"MooseX::Types::TypeDecorator::BEGIN@16";
+	"MooseX::Types::TypeDecorator::BEGIN@9";
+}
+subgraph cluster___TYPE___MooseX_Types_Structured {
+	label="__TYPE__::MooseX::Types::Structured";
+	"__TYPE__::MooseX::Types::Structured::Tuple";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::BEGIN@15";
+	"MooseX::Types::CheckedUtilExports::BEGIN@9";
+	"MooseX::Types::CheckedUtilExports::BEGIN@12";
+	"MooseX::Types::CheckedUtilExports::BEGIN@8";
+	"MooseX::Types::CheckedUtilExports::BEGIN@10";
+	"MooseX::Types::CheckedUtilExports::BEGIN@24";
+	"MooseX::Types::CheckedUtilExports::BEGIN@11";
+	"MooseX::Types::CheckedUtilExports::BEGIN@13";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::parameterize";
+}
+subgraph cluster___TYPE___KiokuDB_Backend_DBI {
+	label="__TYPE__::KiokuDB::Backend::DBI";
+	"__TYPE__::KiokuDB::Backend::DBI::SchemaProto";
+	"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@14";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:68]";
+	"MooseX::Types::Base::BEGIN@11";
+	"MooseX::Types::Base::BEGIN@141";
+	"MooseX::Types::Base::BEGIN@5";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:60]";
+	"MooseX::Types::Base::add_type";
+	"MooseX::Types::Base::BEGIN@12";
+	"MooseX::Types::Base::BEGIN@9";
+	"MooseX::Types::Base::BEGIN@151";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:55]";
+	"MooseX::Types::Base::import";
+	"MooseX::Types::Base::BEGIN@10";
+	"MooseX::Types::Base::BEGIN@178";
+}
+subgraph cluster___TYPE___Parse_Method_Signatures_Types {
+	label="__TYPE__::Parse::Method::Signatures::Types";
+	"__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+	"__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::VariableName";
+	"__TYPE__::Parse::Method::Signatures::Types::Param";
+	"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+	"__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_or_create_type_constraint";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::import";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::parameterize";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@17";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@6";
+	"MooseX::Types::UndefinedType::BEGIN@10";
+	"MooseX::Types::UndefinedType::BEGIN@7";
+	"MooseX::Types::UndefinedType::BEGIN@9";
+	"MooseX::Types::UndefinedType::BEGIN@12";
+}
+"MooseX::Types::create_base_type_constraint" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@11";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@16";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:55]" -> "MooseX::Types::type_export_generator";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Str" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::ClassName" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::CodeRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Bool" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Int" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Defined" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::HashRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::create_base_type_constraint";
+"MooseX::Types::BEGIN@14" -> "Moose::Exporter::setup_import_methods";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@7";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@34";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@151";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@10";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@9";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@15";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@11";
+"MooseX::Types::BEGIN@15" -> "Carp::Clan::import";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@10";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@14";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@178";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@9";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@12";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@21";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:68]" -> "MooseX::Types::coercion_export_generator";
+"MooseX::Types::import" -> "MooseX::Types::Util::filter_tags";
+"MooseX::Types::create_type_decorator" -> "MooseX::Types::TypeDecorator::new";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@8";
+"MooseX::Types::import" -> "MooseX::Types::CORE:match";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@13";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@5";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@9";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@141";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@11";
+"MooseX::Types::create_arged_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterizable::parameterize";
+"MooseX::Types::BEGIN@19" -> "namespace::clean::import";
+"MooseX::Types::import" -> "strict::import";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@5";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@12";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:60]" -> "MooseX::Types::check_export_generator";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@9";
+"MooseX::Types::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@13";
+"MooseX::Types::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::import" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::import" -> "MooseX::Types::Base::import";
+"MooseX::Types::BEGIN@16" -> "Exporter::import";
+"MooseX::Types::BEGIN@12" -> "Exporter::import";
+"MooseX::Types::BEGIN@17" -> "Exporter::import";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@15";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@10";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@10";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@16";
+"MooseX::Types::BEGIN@34" -> "strict::unimport";
+"MooseX::Types::import" -> "warnings::import";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@9";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@24";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@6";
+"MooseX::Types::create_arged_type_constraint" -> "Moose::Util::TypeConstraints::find_or_create_type_constraint";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@12";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@13";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_arged_type_constraint";
+"__TYPE__::HashRef" -> "MooseX::Types::create_arged_type_constraint";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_arged_type_constraint";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@12";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@17";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@11";
+"KiokuDB::Backend::DBI::BEGIN@14" -> "MooseX::Types::import";
+"MooseX::Types::Structured::BEGIN@17" -> "MooseX::Types::import";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::import";
+"Parse::Method::Signatures::Types::BEGIN@10" -> "MooseX::Types::import";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@14";
+"MooseX::Types::Moose::BEGIN@11" -> "MooseX::Types::BEGIN@19";
+"MooseX::Types::import" -> "MooseX::Types::Base::add_type";
+"MooseX::Types::type_export_generator" -> "Sub::Name::subname";
+"MooseX::Types::create_arged_type_constraint" -> "MooseX::Meta::TypeConstraint::Structured::parameterize";
+"MooseX::Types::BEGIN@13" -> "MooseX::Types::UndefinedType::BEGIN@12";
+"MooseX::Types::BEGIN@14" -> "MooseX::Types::CheckedUtilExports::BEGIN@8";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@14";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Str" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::ClassName" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::CodeRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Bool" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Int" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::HashRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Defined" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::create_type_decorator";
+}

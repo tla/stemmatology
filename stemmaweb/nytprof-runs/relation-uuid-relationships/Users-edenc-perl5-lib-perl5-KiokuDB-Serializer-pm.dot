@@ -1,0 +1,34 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Serializer {
+	label="KiokuDB::Serializer";
+	"KiokuDB::Serializer::BEGIN@4";
+	"KiokuDB::Serializer::BEGIN@6";
+	"KiokuDB::Serializer::BEGIN@10";
+	"KiokuDB::Serializer::BEGIN@8";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Serializer::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Serializer::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Serializer::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Serializer::BEGIN@6" -> "Exporter::import";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@6";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@8";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@4";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@10";
+}

@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::BEGIN@9";
+	"Moose::Meta::Method::BEGIN@12";
+	"Moose::Meta::Method::BEGIN@10";
+	"Moose::Meta::Method::_inline_throw_error";
+	"Moose::Meta::Method::BEGIN@14";
+	"Moose::Meta::Method::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::associated_metaclass";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array {
+	label="Moose::Meta::Method::Accessor::Native::Array";
+	"Moose::Meta::Method::Accessor::Native::Array::_inline_check_var_is_valid_index";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_error_thrower";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_inline_throw_error";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint";
+}
+subgraph cluster_B {
+	label="B";
+	"B::perlstring";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Moose::Meta::Method::_inline_throw_error" -> "Moose::Meta::Attribute::_inline_throw_error";
+"Moose::Meta::Method::_inline_throw_error" -> "Class::MOP::Method::associated_metaclass";
+"Moose::Meta::Method::_inline_throw_error" -> "Moose::Meta::Method::Accessor::_error_thrower";
+"base::import" -> "Moose::Meta::Method::BEGIN@9";
+"base::import" -> "Moose::Meta::Method::BEGIN@2";
+"base::import" -> "Moose::Meta::Method::BEGIN@14";
+"Moose::Meta::Method::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Hash::set::_inline_check_arguments" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::_inline_throw_error";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key" -> "Moose::Meta::Method::_inline_throw_error";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Array::_inline_check_var_is_valid_index" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::_inline_throw_error" -> "UNIVERSAL::can";
+"Moose::Meta::Method::BEGIN@14" -> "base::import";
+"Moose::Meta::Method::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::_inline_throw_error" -> "B::perlstring";
+"base::import" -> "Moose::Meta::Method::BEGIN@10";
+"Moose::Meta::Method::_inline_throw_error" -> "Class::MOP::Method::name";
+"Moose::Meta::Method::_inline_throw_error" -> "Class::MOP::Package::name";
+"base::import" -> "Moose::Meta::Method::BEGIN@12";
+}

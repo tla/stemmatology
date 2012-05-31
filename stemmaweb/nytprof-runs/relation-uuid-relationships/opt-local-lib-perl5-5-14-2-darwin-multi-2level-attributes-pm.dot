@@ -1,0 +1,127 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@30";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::BEGIN@98";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::enabled";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@61";
+	"stemmaweb::Controller::Stexaminer::BEGIN@69";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::_modify_attrs_and_deprecate";
+	"attributes::CORE:regcomp";
+	"attributes::CORE:match";
+	"attributes::_modify_attrs";
+	"attributes::import";
+	"attributes::CORE:qr";
+	"attributes::BEGIN@9";
+	"attributes::reftype";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@131";
+	"stemmaweb::Controller::Root::BEGIN@148";
+	"stemmaweb::Controller::Root::BEGIN@102";
+	"stemmaweb::Controller::Root::BEGIN@55";
+	"stemmaweb::Controller::Root::BEGIN@160";
+	"stemmaweb::Controller::Root::BEGIN@168";
+	"stemmaweb::Controller::Root::BEGIN@36";
+	"stemmaweb::Controller::Root::BEGIN@74";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@56";
+	"stemmaweb::Controller::Microservice::BEGIN@177";
+	"stemmaweb::Controller::Microservice::BEGIN@193";
+	"stemmaweb::Controller::Microservice::BEGIN@159";
+	"stemmaweb::Controller::Microservice::BEGIN@79";
+	"stemmaweb::Controller::Microservice::BEGIN@222";
+	"stemmaweb::Controller::Microservice::BEGIN@210";
+	"stemmaweb::Controller::Microservice::BEGIN@98";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BEGIN@132";
+	"Catalyst::Controller::BEGIN@140";
+	"Catalyst::Controller::BEGIN@111";
+	"Catalyst::Controller::BEGIN@103";
+	"Catalyst::Controller::BEGIN@121";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::MODIFY_CODE_ATTRIBUTES";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@59";
+	"stemmaweb::Controller::Relation::BEGIN@133";
+	"stemmaweb::Controller::Relation::BEGIN@106";
+	"stemmaweb::Controller::Relation::BEGIN@201";
+	"stemmaweb::Controller::Relation::BEGIN@30";
+	"stemmaweb::Controller::Relation::BEGIN@43";
+	"stemmaweb::Controller::Relation::BEGIN@210";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Controller::BEGIN@103" -> "attributes::BEGIN@9";
+"attributes::import" -> "MooseX::MethodAttributes::Inheritable::MODIFY_CODE_ATTRIBUTES";
+"attributes::_modify_attrs_and_deprecate" -> "attributes::_modify_attrs";
+"attributes::BEGIN@9" -> "strict::import";
+"attributes::import" -> "attributes::reftype";
+"Catalyst::Controller::BEGIN@103" -> "attributes::CORE:qr";
+"attributes::import" -> "warnings::enabled";
+"attributes::import" -> "UNIVERSAL::can";
+"attributes::import" -> "attributes::_modify_attrs_and_deprecate";
+"attributes::_modify_attrs_and_deprecate" -> "attributes::CORE:match";
+"attributes::import" -> "attributes::CORE:match";
+"attributes::_modify_attrs_and_deprecate" -> "attributes::CORE:regcomp";
+"stemmaweb::Controller::Root::BEGIN@148" -> "attributes::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@61" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@55" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@43" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@30" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@210" -> "attributes::import";
+"Catalyst::Controller::BEGIN@111" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@59" -> "attributes::import";
+"Catalyst::Controller::BEGIN@103" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@159" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@210" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@168" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@106" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@133" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@177" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@193" -> "attributes::import";
+"DynaLoader::BEGIN@98" -> "attributes::import";
+"Catalyst::Controller::BEGIN@140" -> "attributes::import";
+"Catalyst::Controller::BEGIN@121" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@79" -> "attributes::import";
+"Catalyst::BEGIN@30" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@36" -> "attributes::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@69" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@131" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@56" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@102" -> "attributes::import";
+"Catalyst::Controller::BEGIN@132" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@160" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@222" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@201" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@98" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@74" -> "attributes::import";
+}

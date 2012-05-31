@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@14";
+}
+subgraph cluster_DBIx_Class_KiokuDB_EntryProxy {
+	label="DBIx::Class::KiokuDB::EntryProxy";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@12";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@14";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@10";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@9";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@2";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@12";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@14";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@12" -> "namespace::clean::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@9" -> "strict::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@14" -> "base::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@2";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@9";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@10";
+}

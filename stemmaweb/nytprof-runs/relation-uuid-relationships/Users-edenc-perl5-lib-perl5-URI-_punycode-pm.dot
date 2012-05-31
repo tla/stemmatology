@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__punycode {
+	label="URI::_punycode";
+	"URI::_punycode::BEGIN@15";
+	"URI::_punycode::CORE:qr";
+	"URI::_punycode::BEGIN@18";
+	"URI::_punycode::BEGIN@10";
+	"URI::_punycode::BEGIN@14";
+	"URI::_punycode::BEGIN@19";
+	"URI::_punycode::BEGIN@16";
+	"URI::_punycode::BEGIN@20";
+	"URI::_punycode::BEGIN@17";
+	"URI::_punycode::BEGIN@3";
+}
+subgraph cluster_URI__idna {
+	label="URI::_idna";
+	"URI::_idna::BEGIN@7";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_integer {
+	label="integer";
+	"integer::import";
+}
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@10";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@18";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@16";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::CORE:qr";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@3";
+"URI::_punycode::BEGIN@16" -> "constant::import";
+"URI::_punycode::BEGIN@15" -> "constant::import";
+"URI::_punycode::BEGIN@20" -> "constant::import";
+"URI::_punycode::BEGIN@19" -> "constant::import";
+"URI::_punycode::BEGIN@17" -> "constant::import";
+"URI::_punycode::BEGIN@14" -> "constant::import";
+"URI::_punycode::BEGIN@18" -> "constant::import";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@14";
+"URI::_punycode::BEGIN@3" -> "strict::import";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@19";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@17";
+"URI::_punycode::BEGIN@10" -> "integer::import";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@15";
+"URI::_idna::BEGIN@7" -> "URI::_punycode::BEGIN@20";
+}

@@ -1,0 +1,339 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::_setup_finished_accessor";
+	"Catalyst::_stats_class_accessor";
+	"Catalyst::_dispatcher_accessor";
+	"Catalyst::_engine_loader_accessor";
+	"Catalyst::_arguments_accessor";
+	"Catalyst::_engine_accessor";
+	"Catalyst::_context_class_accessor";
+	"Catalyst::_loading_psgi_file_accessor";
+	"Catalyst::_components_accessor";
+	"Catalyst::setup_plugins";
+	"Catalyst::_response_class_accessor";
+	"Catalyst::_dispatcher_class_accessor";
+	"Catalyst::_request_class_accessor";
+	"Catalyst::_log_accessor";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Counter {
+	label="Moose::Meta::Attribute::Custom::Trait::Counter";
+	"Moose::Meta::Attribute::Custom::Trait::Counter::register_implementation";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::new";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::__config_accessor";
+	"Catalyst::Component::__plugins_accessor";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:56]";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::new";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_KiokuDB_TypeMap {
+	label="Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap";
+	"Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap::register_implementation";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::VERSION";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::create";
+	"Moose::Meta::Class::BEGIN@28";
+	"Moose::Meta::Class::initialize";
+	"Moose::Meta::Class::does_role";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+	"Class::Load::load_first_existing_class";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::add_before_method_modifier";
+	"Moose::Meta::Role::add_after_method_modifier";
+	"Moose::Meta::Role::apply";
+	"Moose::Meta::Role::combine";
+	"Moose::Meta::Role::add_around_method_modifier";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::add_before_method_modifier";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::does";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+	"Moose::Role::_add_method_modifier";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Array {
+	label="Moose::Meta::Attribute::Custom::Trait::Array";
+	"Moose::Meta::Attribute::Custom::Trait::Array::register_implementation";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::before";
+	"Moose::with";
+	"Moose::has";
+	"Moose::around";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::__dispatch_steps_accessor";
+	"Catalyst::Controller::get_action_methods";
+	"Catalyst::Controller::__action_class_accessor";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::interpolate_class";
+	"Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::mkopt";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::default_typemap";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::new";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_NoClone {
+	label="Moose::Meta::Attribute::Custom::Trait::NoClone";
+	"Moose::Meta::Attribute::Custom::Trait::NoClone::register_implementation";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::add_around_method_modifier";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Hash {
+	label="Moose::Meta::Attribute::Custom::Trait::Hash";
+	"Moose::Meta::Attribute::Custom::Trait::Hash::register_implementation";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::new";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::new";
+	"KiokuDB::merged_typemap";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::__ANON__[Sub/Install.pm:284]";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::new";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+	"Moose::Util::BEGIN@13";
+	"Moose::Util::BEGIN@12";
+	"Moose::Util::resolve_metatrait_alias";
+	"Moose::Util::BEGIN@14";
+	"Moose::Util::BEGIN@10";
+	"Moose::Util::__ANON__[Moose/Util.pm:54]";
+	"Moose::Util::_build_alias_package_name";
+	"Moose::Util::__ANON__[Moose/Util.pm:121]";
+	"Moose::Util::_apply_all_roles";
+	"Moose::Util::_caller_info";
+	"Moose::Util::BEGIN@15";
+	"Moose::Util::BEGIN@21";
+	"Moose::Util::find_meta";
+	"Moose::Util::BEGIN@18";
+	"Moose::Util::apply_all_roles";
+	"Moose::Util::BEGIN@17";
+	"Moose::Util::BEGIN@20";
+	"Moose::Util::BEGIN@9";
+	"Moose::Util::BEGIN@2";
+	"Moose::Util::BEGIN@16";
+	"Moose::Util::add_method_modifier";
+	"Moose::Util::BEGIN@19";
+	"Moose::Util::resolve_metaclass_alias";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::init_meta";
+}
+"Moose::Util::apply_all_roles" -> "Moose::Util::_apply_all_roles";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@21";
+"Moose::Util::_apply_all_roles" -> "Scalar::Util::blessed";
+"Moose::Util::__ANON__[Moose/Util.pm:121]" -> "Scalar::Util::blessed";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap::register_implementation";
+"Moose::Util::does_role" -> "Moose::Meta::Class::does_role";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@16";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@18";
+"Moose::Util::_apply_all_roles" -> "Moose::Meta::Role::apply";
+"Moose::Util::does_role" -> "Try::Tiny::try";
+"Moose::Meta::Class::create" -> "Moose::Util::apply_all_roles";
+"Moose::with" -> "Moose::Util::apply_all_roles";
+"Catalyst::setup_plugins" -> "Moose::Util::apply_all_roles";
+"Moose::Role::with" -> "Moose::Util::apply_all_roles";
+"Moose::Util::_apply_all_roles" -> "Class::Load::load_class";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@17";
+"Try::Tiny::try" -> "Moose::Util::__ANON__[Moose/Util.pm:54]";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@12";
+"Moose::Util::BEGIN@15" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Moose::Util::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@14";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@19";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@9";
+"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES" -> "Moose::Util::find_meta";
+"Catalyst::_setup_finished_accessor" -> "Moose::Util::find_meta";
+"Moose::Util::does_role" -> "Moose::Util::find_meta";
+"Catalyst::_arguments_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_context_class_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_engine_accessor" -> "Moose::Util::find_meta";
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "Moose::Util::find_meta";
+"Catalyst::Controller::__action_class_accessor" -> "Moose::Util::find_meta";
+"Moose::Util::_apply_all_roles" -> "Moose::Util::find_meta";
+"Catalyst::_response_class_accessor" -> "Moose::Util::find_meta";
+"Catalyst::Controller::get_action_methods" -> "Moose::Util::find_meta";
+"Catalyst::_request_class_accessor" -> "Moose::Util::find_meta";
+"Catalyst::Component::__plugins_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_stats_class_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_dispatcher_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_engine_loader_accessor" -> "Moose::Util::find_meta";
+"Catalyst::Controller::__dispatch_steps_accessor" -> "Moose::Util::find_meta";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::find_meta";
+"Catalyst::Component::__config_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_components_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_loading_psgi_file_accessor" -> "Moose::Util::find_meta";
+"Catalyst::setup_plugins" -> "Moose::Util::find_meta";
+"Catalyst::_dispatcher_class_accessor" -> "Moose::Util::find_meta";
+"Catalyst::_log_accessor" -> "Moose::Util::find_meta";
+"Moose::Util::does_role" -> "Moose::Object::does";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@2";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::Array::register_implementation";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::Counter::register_implementation";
+"Moose::Meta::Attribute::interpolate_class" -> "Moose::Util::resolve_metatrait_alias";
+"Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]" -> "Moose::Util::resolve_metatrait_alias";
+"Moose::Util::BEGIN@16" -> "Exporter::import";
+"Moose::Util::BEGIN@18" -> "Exporter::import";
+"Moose::Util::BEGIN@17" -> "Exporter::import";
+"Moose::Util::BEGIN@20" -> "Exporter::import";
+"Moose::Util::BEGIN@12" -> "Exporter::import";
+"Moose::Util::BEGIN@14" -> "Exporter::import";
+"Moose::Util::resolve_metatrait_alias" -> "Moose::Util::resolve_metaclass_alias";
+"Moose::Util::add_method_modifier" -> "Class::MOP::Class::add_before_method_modifier";
+"Moose::Util::add_method_modifier" -> "Class::MOP::Class::add_around_method_modifier";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::NoClone::register_implementation";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@10";
+"Moose::Util::_apply_all_roles" -> "Moose::Meta::Class::initialize";
+"Moose::Util::add_method_modifier" -> "Moose::Meta::Role::add_around_method_modifier";
+"Moose::Util::add_method_modifier" -> "UNIVERSAL::can";
+"Moose::Util::resolve_metaclass_alias" -> "UNIVERSAL::can";
+"Moose::Util::does_role" -> "UNIVERSAL::can";
+"Moose::Util::BEGIN@13" -> "Sub::Install::__ANON__[Sub/Install.pm:284]";
+"Moose::Util::BEGIN@10" -> "warnings::import";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::Hash::register_implementation";
+"Moose::before" -> "Moose::Util::add_method_modifier";
+"Moose::Role::_add_method_modifier" -> "Moose::Util::add_method_modifier";
+"Moose::around" -> "Moose::Util::add_method_modifier";
+"Moose::Util::add_method_modifier" -> "Moose::Meta::Role::add_before_method_modifier";
+"Data::OptList::mkopt" -> "Moose::Util::__ANON__[Moose/Util.pm:121]";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@15";
+"Moose::Util::_apply_all_roles" -> "MooseX::Role::Parameterized::Meta::Role::Parameterizable::apply";
+"Moose::Util::add_method_modifier" -> "Moose::Meta::Class::__ANON__::SERIAL::5::add_around_method_modifier";
+"Moose::Util::_apply_all_roles" -> "UNIVERSAL::isa";
+"Moose::Util::__ANON__[Moose/Util.pm:54]" -> "UNIVERSAL::isa";
+"List::MoreUtils::all" -> "Moose::Util::does_role";
+"KiokuDB::TypeMap::Entry::Compiled::new" -> "Moose::Util::does_role";
+"KiokuDB::Serializer::JSON::default_typemap" -> "Moose::Util::does_role";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::does_role";
+"KiokuDB::TypeMap::Resolver::new" -> "Moose::Util::does_role";
+"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:56]" -> "Moose::Util::does_role";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Moose::Util::does_role";
+"KiokuDB::new" -> "Moose::Util::does_role";
+"KiokuDB::Backend::DBI::new" -> "Moose::Util::does_role";
+"KiokuDB::merged_typemap" -> "Moose::Util::does_role";
+"KiokuDB::Collapser::new" -> "Moose::Util::does_role";
+"Class::MOP::Class:::around" -> "Moose::Util::does_role";
+"KiokuDB::Linker::new" -> "Moose::Util::does_role";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Util::_build_alias_package_name";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@20";
+"Moose::Util::_apply_all_roles" -> "Class::MOP::class_of";
+"Moose::Util::find_meta" -> "Class::MOP::class_of";
+"Moose::Util::resolve_metaclass_alias" -> "Class::Load::load_first_existing_class";
+"Moose::Util::BEGIN@12" -> "UNIVERSAL::VERSION";
+"Moose::Role::has" -> "Moose::Util::_caller_info";
+"Moose::has" -> "Moose::Util::_caller_info";
+"Moose::Util::add_method_modifier" -> "Moose::Meta::Role::add_after_method_modifier";
+"Moose::Util::_apply_all_roles" -> "Data::OptList::mkopt";
+"Moose::Meta::Class::BEGIN@28" -> "Moose::Util::BEGIN@13";
+"Moose::Util::_apply_all_roles" -> "Moose::Meta::Role::combine";
+}

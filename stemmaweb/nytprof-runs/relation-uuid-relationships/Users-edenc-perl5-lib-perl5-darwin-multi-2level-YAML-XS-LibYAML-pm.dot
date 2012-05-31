@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_YAML_XS {
+	label="YAML::XS";
+	"YAML::XS::BEGIN@19";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_YAML_XS_LibYAML {
+	label="YAML::XS::LibYAML";
+	"YAML::XS::LibYAML::BEGIN@8";
+	"YAML::XS::LibYAML::BEGIN@3";
+	"YAML::XS::LibYAML::Dump";
+	"YAML::XS::LibYAML::BEGIN@6";
+	"YAML::XS::LibYAML::BEGIN@4";
+	"YAML::XS::LibYAML::BEGIN@2";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]";
+}
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@6";
+"YAML::XS::LibYAML::BEGIN@6" -> "UNIVERSAL::import";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@4";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@3";
+"YAML::XS::LibYAML::BEGIN@3" -> "strict::import";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@8";
+"YAML::XS::LibYAML::BEGIN@8" -> "base::import";
+"YAML::XS::LibYAML::BEGIN@4" -> "warnings::import";
+"YAML::XS::BEGIN@19" -> "YAML::XS::LibYAML::BEGIN@2";
+"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]" -> "YAML::XS::LibYAML::Dump";
+}

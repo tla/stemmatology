@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+	"Text::Tradition::Collation::RelationshipStore::create";
+	"Text::Tradition::Collation::RelationshipStore::_set_relationship";
+	"Text::Tradition::Collation::RelationshipStore::add_relationship";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::nonlocal";
+	"Text::Tradition::Collation::Relationship::BEGIN@4";
+	"Text::Tradition::Collation::Relationship::type";
+	"Text::Tradition::Collation::Relationship::scope";
+	"Text::Tradition::Collation::Relationship::CORE:match";
+	"Text::Tradition::Collation::Relationship::BEGIN@11";
+	"Text::Tradition::Collation::Relationship::BEGIN@148";
+	"Text::Tradition::Collation::Relationship::colocated";
+	"Text::Tradition::Collation::Relationship::BEGIN@3";
+}
+"Text::Tradition::Collation::Relationship::nonlocal" -> "Text::Tradition::Collation::Relationship::scope";
+"Text::Tradition::Collation::Relationship::colocated" -> "Text::Tradition::Collation::Relationship::type";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@11";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@148";
+"Text::Tradition::Collation::Relationship::BEGIN@148" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Relationship::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Relationship::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Relationship::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@4";
+"Text::Tradition::Collation::Relationship::colocated" -> "Text::Tradition::Collation::Relationship::CORE:match";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::Relationship::nonlocal";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Relationship::nonlocal";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Text::Tradition::Collation::Relationship::colocated";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Relationship::colocated";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@3";
+}

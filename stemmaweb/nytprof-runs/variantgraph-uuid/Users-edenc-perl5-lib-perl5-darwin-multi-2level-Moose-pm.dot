@@ -1,0 +1,956 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@9";
+	"Catalyst::Dispatcher::BEGIN@10";
+	"Catalyst::Dispatcher::BEGIN@11";
+	"Catalyst::Dispatcher::BEGIN@12";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@10";
+	"Catalyst::BEGIN@13";
+	"Catalyst::BEGIN@32";
+	"Catalyst::BEGIN@9";
+	"Catalyst::BEGIN@16";
+	"Catalyst::BEGIN@8";
+	"Catalyst::BEGIN@14";
+	"Catalyst::BEGIN@11";
+	"Catalyst::BEGIN@12";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@10";
+	"Text::Tradition::Collation::BEGIN@9";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Instance {
+	label="Moose::Meta::Instance";
+	"Moose::Meta::Instance::BEGIN@15";
+	"Moose::Meta::Instance::BEGIN@10";
+	"Moose::Meta::Instance::BEGIN@3";
+	"Moose::Meta::Instance::BEGIN@11";
+	"Moose::Meta::Instance::BEGIN@13";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::BEGIN@63";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@7";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@18";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@8";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@21";
+	"KiokuDB::Backend::DBI::BEGIN@26";
+	"KiokuDB::Backend::DBI::BEGIN@30";
+	"KiokuDB::Backend::DBI::BEGIN@28";
+	"KiokuDB::Backend::DBI::BEGIN@29";
+	"KiokuDB::Backend::DBI::BEGIN@31";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@2";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@9";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@11";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@17";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@10";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@15";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@13";
+	"Moose::Meta::Role::Application::RoleSummation::meta";
+}
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::__ANON__[Module/Implementation.pm:44]";
+	"Module::Implementation::build_loader_sub";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@11";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@10";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@17";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@2";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@9";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@15";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@13";
+	"Moose::Meta::Role::Application::ToClass::meta";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@14";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@14";
+	"KiokuDB::LiveObjects::BEGIN@13";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::add_override_method_modifier";
+	"Moose::Meta::Class::BEGIN@13";
+	"Moose::Meta::Class::initialize";
+	"Moose::Meta::Class::BEGIN@19";
+	"Moose::Meta::Class::BEGIN@28";
+	"Moose::Meta::Class::BEGIN@21";
+	"Moose::Meta::Class::BEGIN@14";
+	"Moose::Meta::Class::add_attribute";
+	"Moose::Meta::Class::BEGIN@15";
+	"Moose::Meta::Class::BEGIN@22";
+	"Moose::Meta::Class::BEGIN@16";
+	"Moose::Meta::Class::BEGIN@25";
+	"Moose::Meta::Class::BEGIN@23";
+	"Moose::Meta::Class::BEGIN@17";
+	"Moose::Meta::Class::BEGIN@24";
+	"Moose::Meta::Class::BEGIN@27";
+	"Moose::Meta::Class::superclasses";
+	"Moose::Meta::Class::BEGIN@3";
+	"Moose::Meta::Class::BEGIN@10";
+	"Moose::Meta::Class::BEGIN@18";
+	"Moose::Meta::Class::BEGIN@11";
+	"Moose::Meta::Class::BEGIN@31";
+	"Moose::Meta::Class::BEGIN@26";
+	"Moose::Meta::Class::BEGIN@29";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::BEGIN@5";
+	"Class::Load::BEGIN@9";
+	"Class::Load::BEGIN@6";
+	"Class::Load::BEGIN@10";
+	"Class::Load::BEGIN@7";
+	"Class::Load::BEGIN@16";
+	"Class::Load::BEGIN@8";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::__ANON__[Parse/Method/Signatures.pm:122]";
+	"Parse::Method::Signatures::BEGIN@10";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::apply";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::BEGIN@7";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+	"KiokuDB::GC::Naive::BEGIN@7";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@27";
+	"Moose::Meta::Role::BEGIN@18";
+	"Moose::Meta::Role::BEGIN@13";
+	"Moose::Meta::Role::BEGIN@21";
+	"Moose::Meta::Role::BEGIN@16";
+	"Moose::Meta::Role::BEGIN@20";
+	"Moose::Meta::Role::BEGIN@11";
+	"Moose::Meta::Role::BEGIN@10";
+	"Moose::Meta::Role::BEGIN@2";
+	"Moose::Meta::Role::BEGIN@25";
+	"Moose::Meta::Role::BEGIN@23";
+	"Moose::Meta::Role::meta";
+	"Moose::Meta::Role::BEGIN@22";
+	"Moose::Meta::Role::BEGIN@19";
+	"Moose::Meta::Role::BEGIN@15";
+	"Moose::Meta::Role::BEGIN@24";
+	"Moose::Meta::Role::BEGIN@9";
+	"Moose::Meta::Role::BEGIN@14";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@8";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_method_by_name";
+	"Class::MOP::Class::_real_ref_name";
+	"Class::MOP::Class::initialize";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@7";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BEGIN@17";
+	"Moose::Object::BEGIN@108";
+	"Moose::Object::BEGIN@13";
+	"Moose::Object::BEGIN@85";
+	"Moose::Object::BEGIN@11";
+	"Moose::Object::BEGIN@14";
+	"Moose::Object::BEGIN@16";
+	"Moose::Object::BEGIN@3";
+	"Moose::Object::BUILDARGS";
+	"Moose::Object::BEGIN@20";
+	"Moose::Object::BEGIN@19";
+	"Moose::Object::BEGIN@15";
+	"Moose::Object::BEGIN@10";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@10";
+	"main::BEGIN@9";
+	"main::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@2";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@10";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@11";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@13";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@9";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@15";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::init_meta";
+	"Moose::BEGIN@29";
+	"Moose::BEGIN@34";
+	"Moose::BEGIN@45";
+	"Moose::BEGIN@21";
+	"Moose::BEGIN@37";
+	"Moose::BEGIN@42";
+	"Moose::around";
+	"Moose::has";
+	"Moose::before";
+	"Moose::BEGIN@11";
+	"Moose::BEGIN@32";
+	"Moose::BEGIN@31";
+	"Moose::BEGIN@40";
+	"Moose::BEGIN@8";
+	"Moose::BEGIN@9";
+	"Moose::BEGIN@15";
+	"Moose::BEGIN@41";
+	"Moose::extends";
+	"Moose::super";
+	"Moose::override";
+	"Moose::BEGIN@39";
+	"Moose::BEGIN@36";
+	"Moose::BEGIN@28";
+	"Moose::with";
+	"Moose::BEGIN@14";
+	"Moose::BEGIN@44";
+	"Moose::BEGIN@19";
+	"Moose::BEGIN@38";
+	"Moose::BEGIN@30";
+	"Moose::BEGIN@18";
+	"Moose::BEGIN@23";
+	"Moose::BEGIN@2";
+	"Moose::BEGIN@13";
+	"Moose::BEGIN@47";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_linear_isa";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@10";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@11";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default_JSON {
+	label="KiokuDB::Backend::TypeMap::Default::JSON";
+	"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@14";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::new";
+}
+subgraph cluster_Moose_Deprecated {
+	label="Moose::Deprecated";
+	"Moose::Deprecated::BEGIN@12";
+	"Moose::Deprecated::BEGIN@10";
+	"Moose::Deprecated::BEGIN@9";
+	"Moose::Deprecated::BEGIN@2";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::BEGIN@10";
+	"Moose::Meta::Role::Composite::BEGIN@9";
+	"Moose::Meta::Role::Composite::meta";
+	"Moose::Meta::Role::Composite::BEGIN@11";
+	"Moose::Meta::Role::Composite::BEGIN@14";
+	"Moose::Meta::Role::Composite::BEGIN@2";
+	"Moose::Meta::Role::Composite::BEGIN@13";
+	"Moose::Meta::Role::Composite::BEGIN@16";
+}
+subgraph cluster_Moose_Meta_Attribute_Native {
+	label="Moose::Meta::Attribute::Native";
+	"Moose::Meta::Attribute::Native::BEGIN@2";
+	"Moose::Meta::Attribute::Native::BEGIN@9";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::BEGIN@7";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@17";
+	"KiokuDB::Collapser::BEGIN@15";
+	"KiokuDB::Collapser::BEGIN@14";
+	"KiokuDB::Collapser::BEGIN@20";
+	"KiokuDB::Collapser::BEGIN@16";
+	"KiokuDB::Collapser::BEGIN@18";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std {
+	label="KiokuDB::TypeMap::Entry::Std";
+	"KiokuDB::TypeMap::Entry::Std::BEGIN@6";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@7";
+	"Text::Tradition::BEGIN@8";
+	"Text::Tradition::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@10";
+	"Moose::Meta::TypeCoercion::BEGIN@12";
+	"Moose::Meta::TypeCoercion::BEGIN@14";
+	"Moose::Meta::TypeCoercion::BEGIN@3";
+	"Moose::Meta::TypeCoercion::BEGIN@11";
+	"Moose::Meta::TypeCoercion::BEGIN@15";
+	"Moose::Meta::TypeCoercion::meta";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@11";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@9";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@10";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@14";
+	"Moose::Meta::Role::Application::ToInstance::meta";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@16";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@2";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@13";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+	"Text::Tradition::Directory::BEGIN@154";
+	"Text::Tradition::Directory::BEGIN@10";
+	"Text::Tradition::Directory::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::new";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::BEGIN@26";
+	"Moose::Meta::TypeConstraint::meta";
+	"Moose::Meta::TypeConstraint::BEGIN@12";
+	"Moose::Meta::TypeConstraint::BEGIN@19";
+	"Moose::Meta::TypeConstraint::BEGIN@14";
+	"Moose::Meta::TypeConstraint::BEGIN@24";
+	"Moose::Meta::TypeConstraint::BEGIN@3";
+	"Moose::Meta::TypeConstraint::BEGIN@11";
+	"Moose::Meta::TypeConstraint::BEGIN@20";
+	"Moose::Meta::TypeConstraint::BEGIN@23";
+	"Moose::Meta::TypeConstraint::BEGIN@21";
+	"Moose::Meta::TypeConstraint::BEGIN@10";
+	"Moose::Meta::TypeConstraint::BEGIN@22";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@13";
+	"KiokuDB::BEGIN@16";
+	"KiokuDB::BEGIN@11";
+	"KiokuDB::BEGIN@12";
+	"KiokuDB::BEGIN@17";
+	"KiokuDB::BEGIN@15";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::BEGIN@18";
+	"Moose::Exporter::import";
+	"Moose::Exporter::BEGIN@2";
+	"Moose::Exporter::BEGIN@15";
+	"Moose::Exporter::BEGIN@9";
+	"Moose::Exporter::BEGIN@294";
+	"Moose::Exporter::BEGIN@14";
+	"Moose::Exporter::BEGIN@132";
+	"Moose::Exporter::BEGIN@17";
+	"Moose::Exporter::BEGIN@133";
+	"Moose::Exporter::BEGIN@698";
+	"Moose::Exporter::BEGIN@12";
+	"Moose::Exporter::BEGIN@16";
+	"Moose::Exporter::BEGIN@688";
+	"Moose::Exporter::BEGIN@10";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::class_type";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::apply_all_roles";
+	"Moose::Util::_caller_info";
+	"Moose::Util::add_method_modifier";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::_definition_context";
+	"Class::MOP::get_metaclass_by_name";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@16";
+	"MooseX::Types::Structured::BEGIN@14";
+	"MooseX::Types::Structured::BEGIN@15";
+	"MooseX::Types::Structured::BEGIN@13";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2";
+	"stemmaweb::BEGIN@19";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::meta";
+	"Moose::Meta::Role::Application::BEGIN@9";
+	"Moose::Meta::Role::Application::BEGIN@11";
+	"Moose::Meta::Role::Application::BEGIN@2";
+	"Moose::Meta::Role::Application::BEGIN@10";
+}
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@9";
+"Moose::BEGIN@38" -> "Moose::Meta::Role::Application::BEGIN@11";
+"Moose::before" -> "Moose::before";
+"KiokuDB::BEGIN@17" -> "Moose::before";
+"main::BEGIN@11" -> "Moose::before";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@11";
+"Moose::init_meta" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::init_meta" -> "Moose::Util::TypeConstraints::class_type";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@294";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@17";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@11";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@47";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@15";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@10";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@40";
+"Moose::BEGIN@13" -> "Scalar::Util::BEGIN@9";
+"Catalyst::Utils::ensure_class_loaded" -> "Moose::extends";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Moose::extends";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "Moose::extends";
+"Catalyst::Dispatcher::BEGIN@11" -> "Moose::extends";
+"Catalyst::Exception::BEGIN@63" -> "Moose::extends";
+"stemmaweb::BEGIN@19" -> "Moose::extends";
+"stemmaweb::Controller::Relation::BEGIN@6" -> "Moose::extends";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Moose::extends";
+"stemmaweb::Controller::Root::BEGIN@7" -> "Moose::extends";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "Moose::extends";
+"KiokuDB::BEGIN@11" -> "Moose::extends";
+"stemmaweb::Controller::Microservice::BEGIN@11" -> "Moose::extends";
+"stemmaweb::Controller::Stexaminer::BEGIN@8" -> "Moose::extends";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Moose::extends";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "Moose::extends";
+"Catalyst::Controller::BEGIN@8" -> "Moose::extends";
+"MooseX::Types::Structured::BEGIN@14" -> "Moose::extends";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6" -> "Moose::extends";
+"Catalyst::BEGIN@32" -> "Moose::extends";
+"Module::Runtime::require_module" -> "Moose::extends";
+"Moose::extends" -> "Moose::extends";
+"base::import" -> "Moose::extends";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "Moose::extends";
+"Catalyst::Dispatcher::BEGIN@12" -> "Moose::extends";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Moose::extends";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Moose::extends";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Moose::extends";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::extends";
+"main::BEGIN@9" -> "Moose::extends";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "Moose::extends";
+"main::BEGIN@11" -> "Moose::extends";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::extends";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@19";
+"Moose::init_meta" -> "Class::MOP::Class::_real_ref_name";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@39";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@15";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@12";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@15";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@10";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@9";
+"Moose::BEGIN@47" -> "Moose::Meta::Attribute::Native::BEGIN@2";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@26";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@10";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@2";
+"Moose::before" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::with" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::extends" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::override" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::around" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::has" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::BEGIN@29" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@37" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@39" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@36" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@28" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@42" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@38" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@30" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@40" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@3";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@9";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@28";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@44";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@10";
+"Moose::init_meta" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@24";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@8";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@23";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@2";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@31";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@21";
+"Catalyst::Utils::ensure_class_loaded" -> "Moose::has";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Moose::has";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Moose::has";
+"stemmaweb::BEGIN@19" -> "Moose::has";
+"Catalyst::BEGIN@12" -> "Moose::has";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Moose::has";
+"Text::Tradition::BEGIN@6" -> "Moose::has";
+"Moose::has" -> "Moose::has";
+"Text::Tradition::Directory::BEGIN@8" -> "Moose::has";
+"Text::Tradition::BEGIN@8" -> "Moose::has";
+"KiokuX::Model::BEGIN@7" -> "Moose::has";
+"Text::Tradition::Collation::BEGIN@9" -> "Moose::has";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6" -> "Moose::has";
+"Catalyst::BEGIN@32" -> "Moose::has";
+"Module::Runtime::require_module" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@20" -> "Moose::has";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Moose::has";
+"MooseX::Types::Structured::BEGIN@15" -> "Moose::has";
+"KiokuDB::BEGIN@16" -> "Moose::has";
+"KiokuDB::Linker::BEGIN@18" -> "Moose::has";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::Std::BEGIN@6" -> "Moose::has";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Moose::has";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::has";
+"MooseX::Types::Structured::BEGIN@16" -> "Moose::has";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Moose::has";
+"Text::Tradition::Collation::BEGIN@10" -> "Moose::has";
+"KiokuDB::LiveObjects::BEGIN@14" -> "Moose::has";
+"Catalyst::BEGIN@10" -> "Moose::has";
+"KiokuDB::BEGIN@17" -> "Moose::has";
+"KiokuDB::BEGIN@12" -> "Moose::has";
+"Catalyst::BEGIN@9" -> "Moose::has";
+"Parse::Method::Signatures::BEGIN@10" -> "Moose::has";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Moose::has";
+"TryCatch::BEGIN@11" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@16" -> "Moose::has";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Moose::has";
+"KiokuDB::BEGIN@11" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "Moose::has";
+"Catalyst::BEGIN@13" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@14" -> "Moose::has";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Moose::has";
+"Catalyst::BEGIN@16" -> "Moose::has";
+"Text::Tradition::Directory::BEGIN@9" -> "Moose::has";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Moose::has";
+"KiokuDB::BEGIN@15" -> "Moose::has";
+"main::BEGIN@10" -> "Moose::has";
+"Text::Tradition::BEGIN@7" -> "Moose::has";
+"KiokuDB::TypeMap::BEGIN@10" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@17" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@12" -> "Moose::has";
+"KiokuDB::LiveObjects::BEGIN@13" -> "Moose::has";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Moose::has";
+"KiokuDB::BEGIN@13" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@9" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@15" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@18" -> "Moose::has";
+"Catalyst::BEGIN@14" -> "Moose::has";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Moose::has";
+"Catalyst::BEGIN@11" -> "Moose::has";
+"main::BEGIN@11" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::has";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@17";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@12";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@22";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@10";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@14";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@11";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@14";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@133";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@11";
+"Moose::BEGIN@38" -> "Moose::Meta::Role::Application::BEGIN@9";
+"Moose::BEGIN@18" -> "Moose::Deprecated::BEGIN@9";
+"Moose::BEGIN@18" -> "Moose::Deprecated::BEGIN@2";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@24";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@85";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@9";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@22";
+"Moose::with" -> "Moose::Util::apply_all_roles";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@23";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@24";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@3";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@16";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@15";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@16";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@13";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@16";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::meta";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@29";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@16";
+"Moose::super" -> "Moose::Object::BUILDARGS";
+"Moose::init_meta" -> "Class::Load::XS::is_class_loaded";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@2";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@10";
+"Moose::BEGIN@18" -> "Moose::Deprecated::BEGIN@12";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@16";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@20";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@9";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@2";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@15";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@15";
+"Moose::BEGIN@30" -> "Moose::Meta::Attribute::new";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@2";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@14";
+"Moose::BEGIN@15" -> "Module::Implementation::build_loader_sub";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@19";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@16";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@18";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@11";
+"Moose::BEGIN@8" -> "strict::import";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@13";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@13";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@13";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@21";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@22";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@9";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@11";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@29";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::init_meta";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@14";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@3";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@14";
+"Moose::BEGIN@38" -> "Moose::Meta::Role::Application::meta";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@2";
+"Moose::BEGIN@13" -> "XSLoader::load";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@14";
+"Catalyst::BEGIN@10" -> "Moose::with";
+"KiokuDB::BEGIN@17" -> "Moose::with";
+"Catalyst::BEGIN@9" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Moose::with";
+"Catalyst::BEGIN@12" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@16" -> "Moose::with";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Moose::with";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@8" -> "Moose::with";
+"KiokuDB::BEGIN@11" -> "Moose::with";
+"Catalyst::BEGIN@13" -> "Moose::with";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@14" -> "Moose::with";
+"Catalyst::BEGIN@16" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@9" -> "Moose::with";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Moose::with";
+"KiokuX::Model::BEGIN@7" -> "Moose::with";
+"KiokuDB::BEGIN@15" -> "Moose::with";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Moose::with";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6" -> "Moose::with";
+"Module::Runtime::require_module" -> "Moose::with";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Moose::with";
+"Catalyst::BEGIN@8" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "Moose::with";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Moose::with";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Moose::with";
+"Catalyst::Dispatcher::BEGIN@9" -> "Moose::with";
+"KiokuDB::Linker::BEGIN@18" -> "Moose::with";
+"Moose::with" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@18" -> "Moose::with";
+"Catalyst::BEGIN@14" -> "Moose::with";
+"Catalyst::BEGIN@11" -> "Moose::with";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@154" -> "Moose::with";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@10" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "Moose::with";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::with";
+"Moose::BEGIN@15" -> "Module::Implementation::__ANON__[Module/Implementation.pm:44]";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@132";
+"Moose::BEGIN@47" -> "Class::MOP::Class::find_method_by_name";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@14";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@15";
+"Moose::BEGIN@44" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@10";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@7";
+"Moose::BEGIN@36" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::BEGIN@47" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@3";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@13";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@14";
+"Moose::init_meta" -> "Class::MOP::get_metaclass_by_name";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::meta";
+"Moose::has" -> "Moose::Meta::Class::add_attribute";
+"main::BEGIN@10" -> "Moose::around";
+"Module::Runtime::require_module" -> "Moose::around";
+"Catalyst::BEGIN@32" -> "Moose::around";
+"stemmaweb::BEGIN@19" -> "Moose::around";
+"Catalyst::BEGIN@12" -> "Moose::around";
+"Text::Tradition::BEGIN@6" -> "Moose::around";
+"Moose::around" -> "Moose::around";
+"Catalyst::BEGIN@16" -> "Moose::around";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::around";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::around";
+"Catalyst::BEGIN@11" -> "Moose::around";
+"Text::Tradition::BEGIN@8" -> "Moose::around";
+"MooseX::Types::Structured::BEGIN@14" -> "Moose::around";
+"Text::Tradition::Collation::BEGIN@9" -> "Moose::around";
+"Text::Tradition::Collation::BEGIN@10" -> "Moose::around";
+"main::BEGIN@11" -> "Moose::around";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@9";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@2";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@21";
+"Moose::BEGIN@19" -> "Moose::Exporter::import";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::BEGIN@10";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@27";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@11";
+"Moose::BEGIN@15" -> "Exporter::import";
+"Moose::BEGIN@14" -> "Exporter::import";
+"Moose::BEGIN@13" -> "Exporter::import";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@11";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@27";
+"Moose::override" -> "Moose::override";
+"TryCatch::BEGIN@11" -> "Moose::override";
+"Module::Runtime::require_module" -> "Moose::override";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::override";
+"Moose::BEGIN@13" -> "List::Util::BEGIN@11";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@19";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@9";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@45";
+"Moose::BEGIN@32" -> "Moose::Meta::Instance::BEGIN@13";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::meta";
+"Moose::BEGIN@32" -> "Moose::Meta::Instance::BEGIN@11";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@25";
+"Moose::override" -> "Moose::Meta::Class::add_override_method_modifier";
+"Moose::init_meta" -> "Moose::Meta::Class::initialize";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@31";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@20";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@18";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@14";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@36";
+"Moose::BEGIN@9" -> "warnings::import";
+"Moose::init_meta" -> "Moose::Meta::Class::superclasses";
+"Moose::extends" -> "Moose::Meta::Class::superclasses";
+"Moose::BEGIN@38" -> "Moose::Meta::Role::Application::BEGIN@10";
+"Moose::BEGIN@18" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@13";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@13";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@41";
+"Moose::BEGIN@47" -> "Class::MOP::Class::initialize";
+"Moose::BEGIN@42" -> "Moose::Meta::Role::Application::ToInstance::meta";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@108";
+"Moose::BEGIN@32" -> "Moose::Meta::Instance::BEGIN@3";
+"Moose::BEGIN@38" -> "Moose::Meta::Role::Application::BEGIN@2";
+"Moose::before" -> "Moose::Util::add_method_modifier";
+"Moose::around" -> "Moose::Util::add_method_modifier";
+"Parse::Method::Signatures::__ANON__[Parse/Method/Signatures.pm:122]" -> "Moose::super";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@13";
+"Moose::BEGIN@32" -> "Moose::Meta::Instance::BEGIN@15";
+"Moose::BEGIN@18" -> "Moose::Deprecated::BEGIN@10";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@19";
+"Moose::BEGIN@29" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@37" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@36" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@39" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@28" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@42" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@38" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@30" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@40" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@16";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::meta";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::BEGIN@12";
+"Moose::init_meta" -> "UNIVERSAL::isa";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@26";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@9";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@18";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@25";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@38";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@15";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@42";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@17";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@698";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@6";
+"Moose::BEGIN@30" -> "Moose::Meta::TypeCoercion::meta";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@21";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@11";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@18";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@15";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@10";
+"Moose::BEGIN@28" -> "Class::MOP::Object::meta";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@11";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@10";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@34";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@10";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@23";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@688";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@17";
+"Moose::BEGIN@41" -> "Moose::Meta::Role::Application::ToRole::BEGIN@2";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@10";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@37";
+"Moose::has" -> "Moose::Util::_caller_info";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@14";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::meta";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@5";
+"Moose::init_meta" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Moose::BEGIN@32" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@36" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@28" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@11";
+"Moose::BEGIN@40" -> "Moose::Meta::Role::Application::ToClass::BEGIN@17";
+"Moose::BEGIN@36" -> "Moose::Meta::Role::BEGIN@20";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@19";
+"Moose::BEGIN@34" -> "Moose::Object::BEGIN@13";
+"Moose::init_meta" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@32";
+"Moose::BEGIN@29" -> "Moose::Meta::TypeConstraint::BEGIN@23";
+"Moose::BEGIN@28" -> "Moose::Meta::Class::BEGIN@28";
+"Moose::BEGIN@28" -> "Class::MOP::Attribute::new";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@8";
+"Moose::BEGIN@47" -> "Moose::Meta::Attribute::Native::BEGIN@9";
+"Moose::init_meta" -> "mro::get_linear_isa";
+"Moose::BEGIN@32" -> "Moose::Meta::Instance::BEGIN@10";
+"Moose::BEGIN@37" -> "Moose::Meta::Role::Composite::BEGIN@13";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@30";
+}

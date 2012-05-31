@@ -1,0 +1,309 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@1683";
+	"Catalyst::BEGIN@10";
+	"Catalyst::BEGIN@9";
+	"Catalyst::BEGIN@1665";
+	"Catalyst::BEGIN@41";
+	"Catalyst::BEGIN@12";
+	"Catalyst::BEGIN@31";
+	"Catalyst::BEGIN@33";
+	"Catalyst::meta";
+	"Catalyst::_stats_class_accessor";
+	"Catalyst::BEGIN@13";
+	"Catalyst::BEGIN@15";
+	"Catalyst::BEGIN@16";
+	"Catalyst::BEGIN@36";
+	"Catalyst::BEGIN@37";
+	"Catalyst::_dispatcher_class_accessor";
+	"Catalyst::BEGIN@23";
+	"Catalyst::BEGIN@29";
+	"Catalyst::BEGIN@19";
+	"Catalyst::BEGIN@25";
+	"Catalyst::BEGIN@28";
+	"Catalyst::BEGIN@7";
+	"Catalyst::BEGIN@32";
+	"Catalyst::BEGIN@3427";
+	"Catalyst::BEGIN@27";
+	"Catalyst::BEGIN@8";
+	"Catalyst::BEGIN@22";
+	"Catalyst::BEGIN@3";
+	"Catalyst::_response_class_accessor";
+	"Catalyst::_request_class_accessor";
+	"Catalyst::BEGIN@24";
+	"Catalyst::BEGIN@18";
+	"Catalyst::BEGIN@30";
+	"Catalyst::BEGIN@358";
+	"Catalyst::BEGIN@17";
+	"Catalyst::BEGIN@39";
+	"Catalyst::BEGIN@1154";
+	"Catalyst::BEGIN@21";
+	"Catalyst::import";
+	"Catalyst::BEGIN@4";
+	"Catalyst::BEGIN@20";
+	"Catalyst::BEGIN@14";
+	"Catalyst::BEGIN@11";
+	"Catalyst::BEGIN@26";
+	"Catalyst::BEGIN@6";
+	"Catalyst::BEGIN@35";
+	"Catalyst::BEGIN@34";
+	"Catalyst::BEGIN@38";
+}
+subgraph cluster_Catalyst_Runtime {
+	label="Catalyst::Runtime";
+	"Catalyst::Runtime::BEGIN@6";
+	"Catalyst::Runtime::BEGIN@4";
+	"Catalyst::Runtime::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::meta";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::mk_classdata";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::meta";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::meta";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::meta";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::new";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::is_mutable";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::meta";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@9";
+	"Moose::BEGIN@41";
+	"Moose::BEGIN@15";
+	"Moose::extends";
+	"Moose::BEGIN@29";
+	"Moose::BEGIN@34";
+	"Moose::BEGIN@45";
+	"Moose::BEGIN@21";
+	"Moose::BEGIN@37";
+	"Moose::BEGIN@36";
+	"Moose::BEGIN@39";
+	"Moose::BEGIN@28";
+	"Moose::BEGIN@42";
+	"Moose::around";
+	"Moose::has";
+	"Moose::BEGIN@11";
+	"Moose::BEGIN@32";
+	"Moose::BEGIN@14";
+	"Moose::BEGIN@19";
+	"Moose::BEGIN@44";
+	"Moose::BEGIN@38";
+	"Moose::BEGIN@31";
+	"Moose::BEGIN@30";
+	"Moose::BEGIN@23";
+	"Moose::BEGIN@40";
+	"Moose::BEGIN@18";
+	"Moose::BEGIN@2";
+	"Moose::BEGIN@13";
+	"Moose::BEGIN@8";
+	"Moose::BEGIN@47";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::meta";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::new";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::meta";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::meta";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::meta";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@14";
+	"namespace::autoclean::BEGIN@15";
+	"namespace::autoclean::BEGIN@5";
+	"namespace::autoclean::import";
+	"namespace::autoclean::BEGIN@16";
+	"namespace::autoclean::BEGIN@13";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::meta";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2";
+	"stemmaweb::BEGIN@2.2";
+	"stemmaweb::BEGIN@1";
+	"stemmaweb::BEGIN@19";
+	"stemmaweb::BEGIN@3";
+	"stemmaweb::BEGIN@5";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::meta";
+}
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@11";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@35";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@47";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@40";
+"stemmaweb::BEGIN@19" -> "Moose::extends";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Application::ToRole::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@22";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@39";
+"stemmaweb::BEGIN@2" -> "Moose::Exporter::setup_import_methods";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@27";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@13";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@16";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@25";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@28";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@44";
+"stemmaweb::BEGIN@19" -> "Catalyst::import";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@33";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@8";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@39";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@20";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@23";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@2";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@19";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@21";
+"stemmaweb::BEGIN@19" -> "Moose::has";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@16";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@30";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@11";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@5";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Class::is_mutable";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Application::RoleSummation::meta";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@29";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@31";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@19";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@12";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@15";
+"stemmaweb::BEGIN@19" -> "Catalyst::_request_class_accessor";
+"stemmaweb::BEGIN@19" -> "Catalyst::_dispatcher_class_accessor";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@26";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@18";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@9";
+"stemmaweb::BEGIN@19" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"stemmaweb::BEGIN@3" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Application::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@24";
+"stemmaweb::BEGIN@5" -> "Catalyst::Runtime::BEGIN@4";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@41";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@36";
+"stemmaweb::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Mixin::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@3";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@13";
+"stemmaweb::BEGIN@19" -> "Catalyst::Exception::Detach::new";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Composite::meta";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@2";
+"stemmaweb::BEGIN@19" -> "Moose::around";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@29";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@18";
+"stemmaweb::BEGIN@3" -> "stemmaweb::BEGIN@1";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@28";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@358";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@9";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1665";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@45";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1154";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@14";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@15";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@31";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@36";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@34";
+"stemmaweb::BEGIN@3" -> "stemmaweb::BEGIN@2.2";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@41";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@15";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Application::ToInstance::meta";
+"stemmaweb::BEGIN@19" -> "Class::MOP::Class::make_immutable";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Class::make_immutable";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::TypeCoercion::Union::meta";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Application::ToClass::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@32";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::import";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@13";
+"stemmaweb::BEGIN@19" -> "Catalyst::_stats_class_accessor";
+"stemmaweb::BEGIN@5" -> "Catalyst::Runtime::BEGIN@6";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@7";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@38";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@6";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@38";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@42";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@23";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::TypeCoercion::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@10";
+"stemmaweb::BEGIN@19" -> "Catalyst::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::Exception::Go::new";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Object::meta";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@34";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@37";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@14";
+"stemmaweb::BEGIN@5" -> "UNIVERSAL::VERSION";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@37";
+"stemmaweb::BEGIN@19" -> "Catalyst::_response_class_accessor";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@14";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@21";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::meta";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@4";
+"stemmaweb::BEGIN@2" -> "Moose::Meta::Role::Method::Required::meta";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@5";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@3";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@17";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@19";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@32";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1683";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@8";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@3427";
+"stemmaweb::BEGIN@19" -> "Catalyst::ClassData::mk_classdata";
+"stemmaweb::BEGIN@5" -> "Catalyst::Runtime::BEGIN@3";
+"stemmaweb::BEGIN@2" -> "Moose::BEGIN@30";
+}

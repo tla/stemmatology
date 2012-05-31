@@ -1,0 +1,164 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@24";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@45";
+	"XML::LibXML::Error::BEGIN@12";
+	"XML::LibXML::Error::BEGIN@20";
+	"XML::LibXML::Error::BEGIN@56";
+	"XML::LibXML::Error::BEGIN@63";
+	"XML::LibXML::Error::BEGIN@57";
+	"XML::LibXML::Error::BEGIN@245";
+	"XML::LibXML::Error::BEGIN@40";
+	"XML::LibXML::Error::BEGIN@49";
+	"XML::LibXML::Error::BEGIN@19";
+	"XML::LibXML::Error::BEGIN@42";
+	"XML::LibXML::Error::BEGIN@41";
+	"XML::LibXML::Error::BEGIN@53";
+	"XML::LibXML::Error::BEGIN@36";
+	"XML::LibXML::Error::BEGIN@15";
+	"XML::LibXML::Error::BEGIN@34";
+	"XML::LibXML::Error::BEGIN@60";
+	"XML::LibXML::Error::BEGIN@50";
+	"XML::LibXML::Error::BEGIN@17";
+	"XML::LibXML::Error::BEGIN@61";
+	"XML::LibXML::Error::BEGIN@35";
+	"XML::LibXML::Error::BEGIN@51";
+	"XML::LibXML::Error::BEGIN@59";
+	"XML::LibXML::Error::BEGIN@11";
+	"XML::LibXML::Error::BEGIN@47";
+	"XML::LibXML::Error::BEGIN@48";
+	"XML::LibXML::Error::BEGIN@83";
+	"XML::LibXML::Error::BEGIN@37";
+	"XML::LibXML::Error::BEGIN@43";
+	"XML::LibXML::Error::BEGIN@55";
+	"XML::LibXML::Error::BEGIN@22";
+	"XML::LibXML::Error::BEGIN@65";
+	"XML::LibXML::Error::BEGIN@66";
+	"XML::LibXML::Error::BEGIN@257";
+	"XML::LibXML::Error::BEGIN@58";
+	"XML::LibXML::Error::BEGIN@64";
+	"XML::LibXML::Error::BEGIN@52";
+	"XML::LibXML::Error::BEGIN@44";
+	"XML::LibXML::Error::BEGIN@67";
+	"XML::LibXML::Error::BEGIN@62";
+	"XML::LibXML::Error::BEGIN@54";
+	"XML::LibXML::Error::BEGIN@39";
+	"XML::LibXML::Error::BEGIN@46";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@55";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@66";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@40";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@49";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@11";
+"XML::LibXML::Error::BEGIN@22" -> "overload::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@20";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@35";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@42";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@53";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@52";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@51";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@257";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@67";
+"XML::LibXML::Error::BEGIN@50" -> "constant::import";
+"XML::LibXML::Error::BEGIN@61" -> "constant::import";
+"XML::LibXML::Error::BEGIN@35" -> "constant::import";
+"XML::LibXML::Error::BEGIN@55" -> "constant::import";
+"XML::LibXML::Error::BEGIN@43" -> "constant::import";
+"XML::LibXML::Error::BEGIN@66" -> "constant::import";
+"XML::LibXML::Error::BEGIN@64" -> "constant::import";
+"XML::LibXML::Error::BEGIN@39" -> "constant::import";
+"XML::LibXML::Error::BEGIN@45" -> "constant::import";
+"XML::LibXML::Error::BEGIN@57" -> "constant::import";
+"XML::LibXML::Error::BEGIN@40" -> "constant::import";
+"XML::LibXML::Error::BEGIN@49" -> "constant::import";
+"XML::LibXML::Error::BEGIN@42" -> "constant::import";
+"XML::LibXML::Error::BEGIN@53" -> "constant::import";
+"XML::LibXML::Error::BEGIN@59" -> "constant::import";
+"XML::LibXML::Error::BEGIN@47" -> "constant::import";
+"XML::LibXML::Error::BEGIN@52" -> "constant::import";
+"XML::LibXML::Error::BEGIN@67" -> "constant::import";
+"XML::LibXML::Error::BEGIN@62" -> "constant::import";
+"XML::LibXML::Error::BEGIN@41" -> "constant::import";
+"XML::LibXML::Error::BEGIN@36" -> "constant::import";
+"XML::LibXML::Error::BEGIN@34" -> "constant::import";
+"XML::LibXML::Error::BEGIN@51" -> "constant::import";
+"XML::LibXML::Error::BEGIN@37" -> "constant::import";
+"XML::LibXML::Error::BEGIN@65" -> "constant::import";
+"XML::LibXML::Error::BEGIN@44" -> "constant::import";
+"XML::LibXML::Error::BEGIN@54" -> "constant::import";
+"XML::LibXML::Error::BEGIN@46" -> "constant::import";
+"XML::LibXML::Error::BEGIN@56" -> "constant::import";
+"XML::LibXML::Error::BEGIN@63" -> "constant::import";
+"XML::LibXML::Error::BEGIN@60" -> "constant::import";
+"XML::LibXML::Error::BEGIN@48" -> "constant::import";
+"XML::LibXML::Error::BEGIN@58" -> "constant::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@46";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@83";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@58";
+"XML::LibXML::Error::BEGIN@11" -> "strict::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@47";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@15";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@22";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@63";
+"XML::LibXML::Error::BEGIN@20" -> "Exporter::import";
+"XML::LibXML::Error::BEGIN@257" -> "Exporter::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@50";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@17";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@36";
+"XML::LibXML::Error::BEGIN@83" -> "strict::unimport";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@65";
+"XML::LibXML::Error::BEGIN@12" -> "warnings::import";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@56";
+"XML::LibXML::Error::BEGIN@19" -> "vars::import";
+"XML::LibXML::Error::BEGIN@245" -> "warnings::unimport";
+"XML::LibXML::Error::BEGIN@15" -> "warnings::unimport";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@62";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@19";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@41";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@44";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@54";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@12";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@60";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@245";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@43";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@39";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@59";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@37";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@61";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@64";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@45";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@57";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@34";
+"XML::LibXML::BEGIN@24" -> "XML::LibXML::Error::BEGIN@48";
+}

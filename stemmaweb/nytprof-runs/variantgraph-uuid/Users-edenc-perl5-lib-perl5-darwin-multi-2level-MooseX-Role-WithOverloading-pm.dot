@@ -1,0 +1,98 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@10";
+	"MooseX::Role::WithOverloading::init_meta";
+	"MooseX::Role::WithOverloading::BEGIN@14";
+	"MooseX::Role::WithOverloading::BEGIN@13";
+	"MooseX::Role::WithOverloading::BEGIN@15";
+	"MooseX::Role::WithOverloading::BEGIN@5";
+	"MooseX::Role::WithOverloading::BEGIN@12";
+	"MooseX::Role::WithOverloading::BEGIN@19";
+	"MooseX::Role::WithOverloading::BEGIN@17";
+	"MooseX::Role::WithOverloading::BEGIN@2";
+	"MooseX::Role::WithOverloading::BEGIN@11";
+	"MooseX::Role::WithOverloading::BEGIN@16";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::BEGIN@22";
+	"Moose::Role::BEGIN@13";
+	"Moose::Role::BEGIN@11";
+	"Moose::Role::BEGIN@12";
+	"Moose::Role::BEGIN@2";
+	"Moose::Role::BEGIN@9";
+	"Moose::Role::BEGIN@20";
+	"Moose::Role::BEGIN@17";
+	"Moose::Role::BEGIN@21";
+	"Moose::Role::BEGIN@15";
+	"Moose::Role::BEGIN@18";
+	"Moose::Role::BEGIN@8";
+	"Moose::Role::init_meta";
+}
+subgraph cluster_aliased {
+	label="aliased";
+	"aliased::BEGIN@8";
+	"aliased::BEGIN@35";
+	"aliased::import";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@3";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::apply_metaroles";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::DESTROY";
+}
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::Role::WithOverloading::init_meta";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@15" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@17" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@16" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@9";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Exporter::setup_import_methods";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@13";
+"MooseX::Role::WithOverloading::init_meta" -> "Class::MOP::Package::DESTROY";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@16";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@11";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::BEGIN@35";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@2";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@20";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@17";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@5";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@14";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@8";
+"MooseX::Role::WithOverloading::BEGIN@19" -> "namespace::clean::import";
+"MooseX::Role::WithOverloading::BEGIN@14" -> "aliased::BEGIN@8";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@12";
+"MooseX::Role::WithOverloading::init_meta" -> "Moose::Role::init_meta";
+"MooseX::Role::WithOverloading::BEGIN@12" -> "Moose::Exporter::import";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@12";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@2";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@10";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@19";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@11";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@18";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@21";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@17";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@15";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@22";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Role::BEGIN@13";
+"MooseX::Role::WithOverloading::init_meta" -> "Moose::Util::MetaRole::apply_metaroles";
+"Catalyst::Exception::Basic::BEGIN@3" -> "MooseX::Role::WithOverloading::BEGIN@15";
+}

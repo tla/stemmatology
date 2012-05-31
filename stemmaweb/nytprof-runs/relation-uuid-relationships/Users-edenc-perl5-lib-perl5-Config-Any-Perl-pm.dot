@@ -1,0 +1,39 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Config_Any_Perl {
+	label="Config::Any::Perl";
+	"Config::Any::Perl::extensions";
+	"Config::Any::Perl::BEGIN@3";
+	"Config::Any::Perl::BEGIN@6";
+	"Config::Any::Perl::BEGIN@4";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::_require";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::_load";
+	"Config::Any::extensions";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@4";
+"Config::Any::Perl::BEGIN@3" -> "strict::import";
+"Config::Any::Perl::BEGIN@6" -> "base::import";
+"Config::Any::Perl::BEGIN@4" -> "warnings::import";
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@3";
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@6";
+"Config::Any::_load" -> "Config::Any::Perl::extensions";
+"Config::Any::extensions" -> "Config::Any::Perl::extensions";
+}

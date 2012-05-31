@@ -1,0 +1,894 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::preload_dispatch_types";
+	"Catalyst::Dispatcher::postload_dispatch_types";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::remove_method";
+	"Class::MOP::Mixin::HasMethods::_get_local_methods";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::_build_directory";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::weaken_slot_value";
+	"Class::MOP::Instance::inline_weaken_slot_value";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_process_options";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+	"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::has_trigger";
+	"Moose::Meta::Mixin::AttributeCore::_is_metadata";
+	"Moose::Meta::Mixin::AttributeCore::should_auto_deref";
+	"Moose::Meta::Mixin::AttributeCore::type_constraint";
+	"Moose::Meta::Mixin::AttributeCore::is_required";
+	"Moose::Meta::Mixin::AttributeCore::should_coerce";
+	"Moose::Meta::Mixin::AttributeCore::has_handles";
+	"Moose::Meta::Mixin::AttributeCore::is_lazy";
+	"Moose::Meta::Mixin::AttributeCore::handles";
+	"Moose::Meta::Mixin::AttributeCore::_isa_metadata";
+	"Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+	"Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_build_includes";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::encoding";
+	"Catalyst::View::JSON::json_dumper";
+	"Catalyst::View::JSON::expose_stash";
+	"Catalyst::View::JSON::allow_callback";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::is_stub";
+	"Class::MOP::Method::package_name";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_methods";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_process_new_attribute";
+	"Moose::Meta::Class::add_attribute";
+	"Moose::Meta::Class::_inline_throw_error";
+	"Moose::Meta::Class::_process_inherited_attribute";
+	"Moose::Meta::Class::_inline_init_attr_from_default";
+	"Moose::Meta::Class::_inline_init_attr_from_constructor";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::BEGIN@11";
+	"Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+	"Moose::Meta::Method::Accessor::BEGIN@3";
+	"Moose::Meta::Method::Accessor::_eval_environment";
+	"Moose::Meta::Method::Accessor::BEGIN@15";
+	"Moose::Meta::Method::Accessor::_inline_check_lazy";
+	"Moose::Meta::Method::Accessor::BEGIN@10";
+	"Moose::Meta::Method::Accessor::BEGIN@13";
+	"Moose::Meta::Method::Accessor::_inline_trigger";
+	"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::any";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::AUTOLOAD";
+	"MooseX::Types::TypeDecorator::isa";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::get_required_method_list";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]";
+	"Class::MOP::Method::Accessor::associated_attribute";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_inline_init_attr_from_constructor";
+	"Class::MOP::Class::make_immutable";
+	"Class::MOP::Class::initialize";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+	"Class::MOP::Class::is_mutable";
+	"Class::MOP::Class::remove_attribute";
+	"Class::MOP::Class::get_all_attributes";
+	"Class::MOP::Class::create_anon_class";
+	"Class::MOP::Class::_fixup_attributes_after_rebless";
+	"Class::MOP::Class::_construct_instance";
+	"Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::get_all_methods";
+	"Class::MOP::Class::_inline_accessors";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::does";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::has_init_arg";
+	"Class::MOP::Mixin::AttributeCore::default";
+	"Class::MOP::Mixin::AttributeCore::has_builder";
+	"Class::MOP::Mixin::AttributeCore::has_initializer";
+	"Class::MOP::Mixin::AttributeCore::has_default";
+	"Class::MOP::Mixin::AttributeCore::name";
+	"Class::MOP::Mixin::AttributeCore::init_arg";
+	"Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+	"Class::MOP::Mixin::AttributeCore::builder";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@30";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::new";
+	"Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::expose_methods";
+	"Catalyst::View::TT::include_path";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_process_options";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_33 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::33";
+	"Moose::Meta::Class::__ANON__::SERIAL::33::meta";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_inline_throw_error";
+	"Moose::Meta::Attribute::_inline_generate_default";
+	"Moose::Meta::Attribute::_weaken_value";
+	"Moose::Meta::Attribute::_make_delegation_method";
+	"Moose::Meta::Attribute::_process_options";
+	"Moose::Meta::Attribute::_error_thrower";
+	"Moose::Meta::Attribute::_inline_return_auto_deref";
+	"Moose::Meta::Attribute::_process_lazy_option";
+	"Moose::Meta::Attribute::CORE:match";
+	"Moose::Meta::Attribute::_inline_copy_value";
+	"Moose::Meta::Attribute::BEGIN@20";
+	"Moose::Meta::Attribute::_get_delegate_method_list";
+	"Moose::Meta::Attribute::interpolate_class";
+	"Moose::Meta::Attribute::BEGIN@3";
+	"Moose::Meta::Attribute::install_delegation";
+	"Moose::Meta::Attribute::delegation_metaclass";
+	"Moose::Meta::Attribute::set_value";
+	"Moose::Meta::Attribute::BEGIN@10";
+	"Moose::Meta::Attribute::_process_required_option";
+	"Moose::Meta::Attribute::_check_associated_methods";
+	"Moose::Meta::Attribute::CORE:regcomp";
+	"Moose::Meta::Attribute::_writer_value_needs_copy";
+	"Moose::Meta::Attribute::_inline_set_value";
+	"Moose::Meta::Attribute::BEGIN@23";
+	"Moose::Meta::Attribute::_call_builder";
+	"Moose::Meta::Attribute::get_value";
+	"Moose::Meta::Attribute::_process_accessors";
+	"Moose::Meta::Attribute::BEGIN@11";
+	"Moose::Meta::Attribute::new";
+	"Moose::Meta::Attribute::_inline_init_from_default";
+	"Moose::Meta::Attribute::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Attribute::_process_trigger_option";
+	"Moose::Meta::Attribute::_process_lazy_build_option";
+	"Moose::Meta::Attribute::verify_against_type_constraint";
+	"Moose::Meta::Attribute::_process_is_option";
+	"Moose::Meta::Attribute::accessor_metaclass";
+	"Moose::Meta::Attribute::BEGIN@25";
+	"Moose::Meta::Attribute::BEGIN@14";
+	"Moose::Meta::Attribute::initialize_instance_slot";
+	"Moose::Meta::Attribute::_inline_check_coercion";
+	"Moose::Meta::Attribute::_inline_init_slot";
+	"Moose::Meta::Attribute::interpolate_class_and_new";
+	"Moose::Meta::Attribute::_process_isa_option";
+	"Moose::Meta::Attribute::_canonicalize_handles";
+	"Moose::Meta::Attribute::_auto_deref";
+	"Moose::Meta::Attribute::BEGIN@27";
+	"Moose::Meta::Attribute::illegal_options_for_inheritance";
+	"Moose::Meta::Attribute::_inline_tc_code";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::BEGIN@21";
+	"Moose::Meta::Attribute::BEGIN@13";
+	"Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]";
+	"Moose::Meta::Attribute::does";
+	"Moose::Meta::Attribute::BEGIN@24";
+	"Moose::Meta::Attribute::remove_delegation";
+	"Moose::Meta::Attribute::BEGIN@15";
+	"Moose::Meta::Attribute::BEGIN@16";
+	"Moose::Meta::Attribute::_inline_check_lazy";
+	"Moose::Meta::Attribute::applied_traits";
+	"Moose::Meta::Attribute::_process_does_option";
+	"Moose::Meta::Attribute::clone_and_inherit_options";
+	"Moose::Meta::Attribute::_inline_weaken_value";
+	"Moose::Meta::Attribute::_process_coerce_option";
+	"Moose::Meta::Attribute::_find_delegate_metaclass";
+	"Moose::Meta::Attribute::remove_accessors";
+	"Moose::Meta::Attribute::CORE:sort";
+	"Moose::Meta::Attribute::_inline_trigger";
+	"Moose::Meta::Attribute::install_accessors";
+	"Moose::Meta::Attribute::_inline_get_value";
+	"Moose::Meta::Attribute::_inline_check_constraint";
+	"Moose::Meta::Attribute::BEGIN@22";
+	"Moose::Meta::Attribute::BEGIN@17";
+	"Moose::Meta::Attribute::_coerce_and_verify";
+	"Moose::Meta::Attribute::_process_auto_deref_option";
+	"Moose::Meta::Attribute::clone";
+	"Moose::Meta::Attribute::BEGIN@18";
+	"Moose::Meta::Attribute::_inline_check_required";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::_build_coercion";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@12";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@9";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@13";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@10";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@14";
+	"Moose::Util::TypeConstraints::Builtins::define_builtins";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_31 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::31";
+	"Moose::Meta::Class::__ANON__::SERIAL::31::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::inline_environment";
+	"Moose::Meta::TypeConstraint::Union::has_coercion";
+	"Moose::Meta::TypeConstraint::Union::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Union::_inline_check";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@14";
+	"Moose::Meta::TypeCoercion::_compiled_type_coercion";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::_build_json_boolean_typemap";
+}
+subgraph cluster_KiokuDB_TypeMap_Default {
+	label="KiokuDB::TypeMap::Default";
+	"KiokuDB::TypeMap::Default::_build_tie_typemap";
+	"KiokuDB::TypeMap::Default::_build_core_typemap";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::attribute_for_class";
+}
+subgraph cluster_B {
+	label="B";
+	"B::BEGIN@9";
+	"B::BEGIN@17";
+	"B::perlstring";
+	"B::BEGIN@254";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::_build_overload_ops";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Moose {
+	label="Moose::Meta::Attribute::Custom::Moose";
+	"Moose::Meta::Attribute::Custom::Moose::BEGIN@1283";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]";
+	"Class::MOP::Attribute::_inline_instance_get";
+	"Class::MOP::Attribute::associated_methods";
+	"Class::MOP::Attribute::has_value";
+	"Class::MOP::Attribute::associate_method";
+	"Class::MOP::Attribute::set_initial_value";
+	"Class::MOP::Attribute::get_value";
+	"Class::MOP::Attribute::new";
+	"Class::MOP::Attribute::set_value";
+	"Class::MOP::Attribute::associated_class";
+	"Class::MOP::Attribute::_inline_instance_has";
+	"Class::MOP::Attribute::install_accessors";
+	"Class::MOP::Attribute::remove_accessors";
+	"Class::MOP::Attribute::_inline_instance_set";
+	"Class::MOP::Attribute::_process_accessors";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+	"Class::MOP::Attribute::_inline_set_value";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::name";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::message";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::has_coercion";
+	"Moose::Meta::TypeConstraint::coerce";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::check";
+	"Moose::Meta::TypeConstraint::_default_message";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+	"Moose::Meta::TypeConstraint::coercion";
+	"Moose::Meta::TypeConstraint::has_message";
+	"Moose::Meta::TypeConstraint::_compiled_type_constraint";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@39";
+	"Moose::Util::TypeConstraints::BEGIN@667";
+	"Moose::Util::TypeConstraints::BEGIN@614";
+	"Moose::Util::TypeConstraints::BEGIN@13";
+	"Moose::Util::TypeConstraints::BEGIN@38";
+	"Moose::Util::TypeConstraints::BEGIN@12";
+	"Moose::Util::TypeConstraints::BEGIN@673";
+	"Moose::Util::TypeConstraints::BEGIN@3";
+	"Moose::Util::TypeConstraints::BEGIN@694";
+	"Moose::Util::TypeConstraints::find_or_create_isa_type_constraint";
+	"Moose::Util::TypeConstraints::BEGIN@42";
+	"Moose::Util::TypeConstraints::BEGIN@11";
+	"Moose::Util::TypeConstraints::CORE:qr";
+	"Moose::Util::TypeConstraints::CORE:regcomp";
+	"Moose::Util::TypeConstraints::BEGIN@33";
+	"Moose::Util::TypeConstraints::BEGIN@35";
+	"Moose::Util::TypeConstraints::list_all_type_constraints";
+	"Moose::Util::TypeConstraints::BEGIN@36";
+	"Moose::Util::TypeConstraints::BEGIN@41";
+	"Moose::Util::TypeConstraints::BEGIN@34";
+	"Moose::Util::TypeConstraints::BEGIN@10";
+	"Moose::Util::TypeConstraints::BEGIN@37";
+	"Moose::Util::TypeConstraints::BEGIN@40";
+	"Moose::Util::TypeConstraints::BEGIN@32";
+	"Moose::Util::TypeConstraints::find_or_create_does_type_constraint";
+	"Moose::Util::TypeConstraints::BEGIN@68";
+	"Moose::Util::TypeConstraints::BEGIN@678";
+	"Moose::Util::TypeConstraints::BEGIN@31";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_Canonical {
+	label="KiokuDB::TypeMap::Default::Canonical";
+	"KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::resolve_metatrait_alias";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Class_MOP_Class {
+	label="Class::MOP::Class::Immutable::Class::MOP::Class";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_34 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::34";
+	"Moose::Meta::Class::__ANON__::SERIAL::34::meta";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+	"Class::MOP::Package::has_package_symbol";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_process_options";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::BEGIN@3";
+	"Moose::Meta::Method::Delegation::BEGIN@11";
+	"Moose::Meta::Method::Delegation::BEGIN@13";
+	"Moose::Meta::Method::Delegation::BEGIN@10";
+	"Moose::Meta::Method::Delegation::new";
+	"Moose::Meta::Method::Delegation::BEGIN@14";
+	"Moose::Meta::Method::Delegation::BEGIN@16";
+}
+"Moose::Meta::Attribute::_inline_generate_default" -> "Moose::Meta::Attribute::_inline_throw_error";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::Attribute::_inline_throw_error";
+"Moose::Meta::Method::_inline_throw_error" -> "Moose::Meta::Attribute::_inline_throw_error";
+"Moose::Meta::Attribute::_inline_check_required" -> "Moose::Meta::Attribute::_inline_throw_error";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@10";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@3";
+"Moose::Meta::Attribute::_call_builder" -> "MooseX::Meta::TypeConstraint::Structured::_build_coercion";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Mixin::AttributeCore::is_lazy";
+"Moose::Meta::Attribute::_inline_check_lazy" -> "Moose::Meta::Mixin::AttributeCore::is_lazy";
+"Moose::Meta::Attribute::get_value" -> "Moose::Meta::Mixin::AttributeCore::is_lazy";
+"Class::MOP::Attribute::install_accessors" -> "Moose::Meta::Attribute::_process_accessors";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@14";
+"Moose::Meta::Class::_process_new_attribute" -> "Moose::Meta::Attribute::interpolate_class_and_new";
+"Moose::Meta::Role::Attribute::attribute_for_class" -> "Moose::Meta::Attribute::interpolate_class_and_new";
+"Moose::Meta::Attribute::_process_does_option" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::Attribute::_process_isa_option" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@2";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@39";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_process_does_option" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_weaken_value" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_process_isa_option" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_inline_get_value" -> "Moose::Meta::Attribute::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::_inline_check_lazy" -> "Moose::Meta::Attribute::_inline_check_lazy";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_trigger";
+"Moose::Meta::Method::Accessor::_inline_trigger" -> "Moose::Meta::Attribute::_inline_trigger";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::coercion";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Exporter::setup_import_methods";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Package::has_package_symbol";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::list_all_type_constraints";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:198]" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::JSON::encoding" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::JSON::json_dumper" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::JSON::expose_stash" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::Dispatcher::postload_dispatch_types" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::TT::expose_methods" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::JSON::allow_callback" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::Dispatcher::preload_dispatch_types" -> "Moose::Meta::Attribute::get_value";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Moose::Meta::Attribute::get_value";
+"Catalyst::View::TT::include_path" -> "Moose::Meta::Attribute::get_value";
+"Moose::Meta::Attribute::_inline_check_lazy" -> "Moose::Meta::Attribute::_inline_init_from_default";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::Mixin::AttributeCore::has_trigger";
+"Moose::Meta::Attribute::set_value" -> "Moose::Meta::Mixin::AttributeCore::has_trigger";
+"Moose::Meta::Attribute::_inline_get_old_value_for_trigger" -> "Moose::Meta::Mixin::AttributeCore::has_trigger";
+"Moose::Meta::Attribute::_inline_trigger" -> "Moose::Meta::Mixin::AttributeCore::has_trigger";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::JSON::_build_json_boolean_typemap";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@16";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::inline_environment";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@10";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_does_option";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::_compiled_type_constraint";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Class::get_meta_instance";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@3";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@34";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_check_required";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@673";
+"Moose::Meta::Attribute::_inline_get_value" -> "Moose::Meta::Attribute::_inline_return_auto_deref";
+"Moose::Meta::Attribute::set_value" -> "Class::MOP::Attribute::set_value";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Meta::TypeConstraint::Registry::new";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_get_old_value_for_trigger";
+"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger" -> "Moose::Meta::Attribute::_inline_get_old_value_for_trigger";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@13";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Moose::Meta::Attribute::applied_traits";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Mixin::AttributeCore::handles";
+"Moose::Meta::Attribute::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::default";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::default";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Mixin::AttributeCore::default";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@17";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@10";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@12";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@10";
+"Moose::Meta::Method::Accessor::_writer_value_needs_copy" -> "Moose::Meta::Attribute::_writer_value_needs_copy";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_writer_value_needs_copy";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Role::get_required_method_list";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Attribute::_inline_check_coercion";
+"Moose::Meta::Attribute::_inline_tc_code" -> "Moose::Meta::Attribute::_inline_check_coercion";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_isa_option";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@41";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@27";
+"Moose::Meta::Attribute::interpolate_class" -> "Moose::Meta::Attribute::does";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Moose::Meta::Attribute::does";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles";
+"Moose::Meta::Attribute::_inline_set_value" -> "Class::MOP::Attribute::_inline_set_value";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@32";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+"Moose::Meta::Attribute::set_value" -> "Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+"Moose::Meta::Attribute::get_value" -> "Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Moose::Meta::Mixin::AttributeCore::is_weak_ref";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@614";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::_build_core_typemap";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeCoercion::_compiled_type_coercion";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_make_delegation_method";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@17";
+"Moose::Meta::Attribute::does" -> "Try::Tiny::try";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::Load::load_class";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@38";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@694";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@11";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::Class::is_mutable";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Moose::Meta::Attribute::_find_delegate_metaclass" -> "Class::Load::XS::is_class_loaded";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Attribute::_inline_weaken_value";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_weaken_value";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::CORE:regcomp";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_make_delegation_method";
+"Moose::Meta::Attribute::_check_associated_methods" -> "Moose::Meta::Mixin::AttributeCore::_is_metadata";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Mixin::AttributeCore::has_init_arg";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Attribute::_get_delegate_method_list";
+"Moose::Meta::Attribute::_make_delegation_method" -> "Moose::Meta::Method::Delegation::new";
+"Moose::BEGIN@30" -> "Moose::Meta::Attribute::new";
+"Moose::Meta::Attribute::clone" -> "Moose::Meta::Attribute::new";
+"Moose::Meta::Attribute::interpolate_class_and_new" -> "Moose::Meta::Attribute::new";
+"Try::Tiny::try" -> "Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@12";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@16";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Method::is_stub";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Attribute::CORE:sort";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Attribute::CORE:sort";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Attribute::set_initial_value";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::set_initial_value";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@13";
+"Moose::Meta::Attribute::install_accessors" -> "Moose::Meta::Mixin::AttributeCore::has_handles";
+"Moose::Meta::Attribute::remove_accessors" -> "Moose::Meta::Mixin::AttributeCore::has_handles";
+"Moose::Meta::Attribute::BEGIN@10" -> "strict::import";
+"Moose::Meta::Attribute::_inline_throw_error" -> "Moose::Meta::Attribute::_error_thrower";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Attribute::CORE:match";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Attribute::CORE:match";
+"Moose::Meta::Attribute::_process_lazy_build_option" -> "Moose::Meta::Attribute::CORE:match";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::verify_against_type_constraint" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::Mixin::AttributeCore::has_type_constraint";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@36";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Union::_inline_check";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::CORE:qr";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Moose::Meta::Attribute::initialize_instance_slot";
+"Class::MOP::Class::_construct_instance" -> "Moose::Meta::Attribute::initialize_instance_slot";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Attribute::_inline_init_slot";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Attribute::_process_accessors";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_tc_code";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::_default_message";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_coerce_option";
+"Moose::Meta::Attribute::verify_against_type_constraint" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::_auto_deref" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@3";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_process_options";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Moose::Meta::Attribute::_process_options";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Attribute::_process_options";
+"Moose::Meta::Attribute::does" -> "Moose::Object::does";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Role::Method::Required::name";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::34::meta";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@14";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Moose::Meta::Attribute::_process_coerce_option" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Moose::Meta::Attribute::illegal_options_for_inheritance";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::_build_tie_typemap";
+"Moose::Meta::Attribute::interpolate_class" -> "Moose::Util::resolve_metatrait_alias";
+"Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]" -> "Moose::Util::resolve_metatrait_alias";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@24";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Attribute::_writer_value_needs_copy" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Attribute::remove_delegation" -> "Class::MOP::Mixin::HasMethods::remove_method";
+"Moose::Meta::Attribute::_inline_throw_error" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::set_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_inline_check_required" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap";
+"Moose::Meta::Attribute::remove_accessors" -> "Class::MOP::Attribute::remove_accessors";
+"Moose::Meta::Attribute::_auto_deref" -> "Moose::Meta::Mixin::AttributeCore::should_auto_deref";
+"Moose::Meta::Attribute::get_value" -> "Moose::Meta::Mixin::AttributeCore::should_auto_deref";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Attribute::get_value";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_auto_deref_option";
+"Moose::Meta::Attribute::_process_does_option" -> "Moose::Util::TypeConstraints::find_or_create_does_type_constraint";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Moose::Meta::Attribute::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Moose::Meta::Attribute::interpolate_class";
+"Moose::Meta::Attribute::interpolate_class_and_new" -> "Moose::Meta::Attribute::interpolate_class";
+"Moose::Meta::Attribute::BEGIN@16" -> "Exporter::import";
+"Moose::Meta::Attribute::BEGIN@17" -> "Exporter::import";
+"Moose::Meta::Attribute::BEGIN@15" -> "Exporter::import";
+"Moose::Meta::Attribute::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::Class::add_attribute" -> "Moose::Meta::Attribute::_check_associated_methods";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::builder";
+"Moose::Meta::Attribute::_call_builder" -> "Class::MOP::Mixin::AttributeCore::builder";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@11";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@254";
+"Moose::Meta::Attribute::_inline_return_auto_deref" -> "Moose::Meta::Attribute::_auto_deref";
+"Moose::Meta::Method::Accessor::_eval_environment" -> "Moose::Meta::Attribute::_eval_environment";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@13";
+"Moose::Meta::Class::_process_inherited_attribute" -> "Moose::Meta::Attribute::clone_and_inherit_options";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::inline_environment";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Attribute::_inline_check_constraint";
+"Moose::Meta::Attribute::_inline_tc_code" -> "Moose::Meta::Attribute::_inline_check_constraint";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_process_options";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Moose::Meta::Attribute::clone";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuX::Model::_build_directory";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@13";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@35";
+"Catalyst::View::JSON::json_dumper" -> "Moose::Meta::Attribute::set_value";
+"Catalyst::View::JSON::expose_stash" -> "Moose::Meta::Attribute::set_value";
+"Catalyst::View::TT::expose_methods" -> "Moose::Meta::Attribute::set_value";
+"Catalyst::View::TT::include_path" -> "Moose::Meta::Attribute::set_value";
+"Moose::Meta::Attribute::_inline_throw_error" -> "UNIVERSAL::can";
+"Moose::Meta::Attribute::install_delegation" -> "UNIVERSAL::can";
+"Moose::Meta::Attribute::_call_builder" -> "UNIVERSAL::can";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "UNIVERSAL::can";
+"Moose::Meta::Attribute::BEGIN@27" -> "base::import";
+"Moose::Meta::Attribute::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+"Moose::Meta::Attribute::remove_delegation" -> "Moose::Meta::Attribute::_canonicalize_handles";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Attribute::_canonicalize_handles";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::has_coercion";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Mixin::AttributeCore::is_required";
+"Moose::Meta::Attribute::set_value" -> "Moose::Meta::Mixin::AttributeCore::is_required";
+"Moose::Meta::Attribute::_inline_check_required" -> "Moose::Meta::Mixin::AttributeCore::is_required";
+"Moose::Meta::Attribute::remove_accessors" -> "Moose::Meta::Attribute::remove_delegation";
+"Moose::Meta::Attribute::BEGIN@20" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Meta::Attribute::install_accessors" -> "Class::MOP::Attribute::install_accessors";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@9";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@40";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance";
+"Moose::Meta::Attribute::remove_delegation" -> "Class::MOP::Attribute::associated_methods";
+"Moose::Meta::Attribute::_check_associated_methods" -> "Class::MOP::Attribute::associated_methods";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Attribute::_find_delegate_metaclass" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@22";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Attribute::_coerce_and_verify";
+"Moose::Meta::Attribute::set_value" -> "Moose::Meta::Attribute::_coerce_and_verify";
+"Moose::Meta::Attribute::get_value" -> "Moose::Meta::Attribute::_coerce_and_verify";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Attribute::_weaken_value";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@20";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_required_option";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Moose::Meta::Attribute::CORE:regcomp";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Instance::inline_weaken_slot_value";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Moose::Meta::Attribute::_call_builder";
+"Moose::Meta::Attribute::get_value" -> "Moose::Meta::Attribute::_call_builder";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@25";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::message";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Attribute::associate_method";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]" -> "Moose::Meta::Attribute::_inline_get_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]" -> "Moose::Meta::Attribute::_inline_get_value";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@33";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::Custom::Moose::BEGIN@1283";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::Class::make_immutable";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Attribute::delegation_metaclass";
+"Moose::Meta::Attribute::_make_delegation_method" -> "Moose::Meta::Attribute::delegation_metaclass";
+"Moose::Meta::Attribute::_inline_throw_error" -> "Moose::Meta::Class::_inline_throw_error";
+"Moose::Meta::Attribute::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"Moose::Meta::Attribute::_inline_init_slot" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"Moose::Meta::Attribute::install_delegation" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::_process_accessors" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::_process_isa_option" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "UNIVERSAL::isa";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@667";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@14";
+"Moose::Meta::Attribute::_call_builder" -> "MooseX::Role::WithOverloading::Meta::Role::Application::_build_overload_ops";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Moose::Meta::Attribute::_find_delegate_metaclass";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@42";
+"Moose::Meta::Attribute::remove_delegation" -> "List::MoreUtils::any";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@18";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Attribute::_make_delegation_method";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::_inline_check";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "Moose::Meta::TypeConstraint::_inline_check";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Class::MOP::Method::package_name";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@23";
+"Moose::Meta::Attribute::_inline_check_lazy" -> "Class::MOP::Attribute::_inline_instance_has";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Moose::Meta::Attribute::accessor_metaclass";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Moose::Meta::Attribute::accessor_metaclass";
+"Moose::Meta::Attribute::_inline_throw_error" -> "B::perlstring";
+"Moose::Meta::Attribute::_inline_generate_default" -> "B::perlstring";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@15";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::define_builtins";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Object::meta";
+"Moose::Meta::Attribute::_process_isa_option" -> "Moose::Util::TypeConstraints::find_or_create_isa_type_constraint";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Instance::weaken_slot_value";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@37";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Moose::Meta::Attribute::_inline_generate_default";
+"Moose::Meta::Attribute::_inline_init_from_default" -> "Class::MOP::Mixin::AttributeCore::has_builder";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::has_builder";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::has_builder";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Mixin::AttributeCore::has_builder";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::remove_delegation" -> "Class::MOP::Method::name";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Class::MOP::Method::name";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Method::name";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_lazy_build_option";
+"Moose::Meta::Attribute::clone_and_inherit_options" -> "Moose::Meta::Attribute::_process_lazy_build_option";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_is_option";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@31";
+"Moose::Meta::Attribute::interpolate_class" -> "Class::MOP::Class::create_anon_class";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::Attribute::_inline_throw_error" -> "Class::MOP::Package::name";
+"Moose::Meta::Attribute::_make_delegation_method" -> "Class::MOP::Package::name";
+"Moose::Meta::Attribute::interpolate_class" -> "Class::MOP::Package::name";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Package::name";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@3";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Attribute::has_value";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_lazy_option";
+"Moose::Meta::Attribute::_inline_set_value" -> "Moose::Meta::Attribute::_inline_copy_value";
+"Moose::Meta::Attribute::install_accessors" -> "Moose::Meta::Attribute::install_delegation";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@10";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]" -> "Moose::Meta::Attribute::_inline_set_value";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]" -> "Moose::Meta::Attribute::_inline_set_value";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Moose::Meta::Attribute::_inline_set_value";
+"Moose::Meta::Class::_inline_init_attr_from_constructor" -> "Moose::Meta::Attribute::_inline_set_value";
+"Moose::Meta::Class::_inline_init_attr_from_default" -> "Moose::Meta::Attribute::_inline_set_value";
+"Moose::Meta::Attribute::_inline_get_value" -> "Class::MOP::Attribute::_inline_instance_get";
+"Moose::Meta::Attribute::verify_against_type_constraint" -> "Moose::Meta::TypeConstraint::check";
+"Moose::Meta::Attribute::_process_options" -> "Moose::Meta::Attribute::_process_trigger_option";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::TypeConstraint::coerce";
+"Moose::Meta::Attribute::install_delegation" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_make_delegation_method";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@21";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::has_message";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@15";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@11";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::Builtins::BEGIN@9";
+"Class::MOP::Class::remove_attribute" -> "Moose::Meta::Attribute::remove_accessors";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_process_options";
+"Moose::Meta::Attribute::_find_delegate_metaclass" -> "Moose::Meta::Mixin::AttributeCore::_isa_metadata";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_methods";
+"Moose::Meta::Attribute::BEGIN@22" -> "Moose::Meta::Method::Delegation::BEGIN@11";
+"Moose::Meta::Attribute::_inline_throw_error" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_eval_environment" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_make_delegation_method" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_error_thrower" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::remove_delegation" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Attribute::associated_class";
+"Moose::Meta::Attribute::_coerce_and_verify" -> "Moose::Meta::Attribute::verify_against_type_constraint";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Moose::Meta::Attribute::BEGIN@13";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Attribute::new";
+"Moose::Meta::Attribute::_inline_init_slot" -> "Class::MOP::Attribute::_inline_instance_set";
+"Moose::Meta::Attribute::_eval_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_process_coerce_option" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::verify_against_type_constraint" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_auto_deref" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_process_auto_deref_option" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::33::meta";
+"Moose::Meta::Attribute::new" -> "Moose::Meta::Class::__ANON__::SERIAL::31::meta";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Moose::Meta::Attribute::install_accessors";
+"Class::MOP::Class::_inline_accessors" -> "Moose::Meta::Attribute::install_accessors";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Moose::Meta::Attribute::install_accessors";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Class::MOP::Class::get_all_methods";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@678";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Util::TypeConstraints::BEGIN@68";
+}

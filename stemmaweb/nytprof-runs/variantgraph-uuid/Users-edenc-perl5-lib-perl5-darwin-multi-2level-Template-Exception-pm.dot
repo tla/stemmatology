@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Exception {
+	label="Template::Exception";
+	"Template::Exception::BEGIN@23";
+	"Template::Exception::BEGIN@27";
+	"Template::Exception::BEGIN@26";
+	"Template::Exception::BEGIN@25";
+	"Template::Exception::BEGIN@22";
+	"Template::Exception::BEGIN@24";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Template_Service {
+	label="Template::Service";
+	"Template::Service::BEGIN@27";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@24";
+"Template::Exception::BEGIN@27" -> "overload::import";
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@22";
+"Template::Exception::BEGIN@24" -> "constant::import";
+"Template::Exception::BEGIN@25" -> "constant::import";
+"Template::Exception::BEGIN@26" -> "constant::import";
+"Template::Exception::BEGIN@22" -> "strict::import";
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@26";
+"Template::Exception::BEGIN@23" -> "warnings::import";
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@25";
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@23";
+"Template::Service::BEGIN@27" -> "Template::Exception::BEGIN@27";
+}

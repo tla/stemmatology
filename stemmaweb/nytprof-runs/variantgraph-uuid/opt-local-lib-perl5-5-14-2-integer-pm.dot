@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__punycode {
+	label="URI::_punycode";
+	"URI::_punycode::BEGIN@10";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@422";
+}
+subgraph cluster_integer {
+	label="integer";
+	"integer::import";
+}
+"URI::_punycode::BEGIN@10" -> "integer::import";
+"Time::Piece::BEGIN@422" -> "integer::import";
+}

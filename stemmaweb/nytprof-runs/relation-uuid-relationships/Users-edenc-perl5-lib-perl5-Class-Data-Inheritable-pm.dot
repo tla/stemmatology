@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::encoding";
+}
+subgraph cluster_Class_Data_Inheritable {
+	label="Class::Data::Inheritable";
+	"Class::Data::Inheritable::mk_classdata";
+	"Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]";
+	"Class::Data::Inheritable::BEGIN@3";
+	"Class::Data::Inheritable::BEGIN@4";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]" -> "Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]";
+"Catalyst::Plugin::Unicode::Encoding::encoding" -> "Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]";
+"Class::Data::Inheritable::BEGIN@3" -> "strict::import";
+"base::import" -> "Class::Data::Inheritable::BEGIN@3";
+"Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]" -> "Class::Data::Inheritable::mk_classdata";
+"Module::Runtime::require_module" -> "Class::Data::Inheritable::mk_classdata";
+"Class::Data::Inheritable::BEGIN@4" -> "vars::import";
+"base::import" -> "Class::Data::Inheritable::BEGIN@4";
+}

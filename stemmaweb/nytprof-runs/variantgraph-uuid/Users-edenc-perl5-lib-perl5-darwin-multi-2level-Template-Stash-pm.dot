@@ -1,0 +1,70 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_VMethods {
+	label="Template::VMethods";
+	"Template::VMethods::BEGIN@121";
+	"Template::VMethods::BEGIN@24";
+	"Template::VMethods::BEGIN@439";
+	"Template::VMethods::BEGIN@115";
+	"Template::VMethods::BEGIN@466";
+	"Template::VMethods::BEGIN@27";
+	"Template::VMethods::BEGIN@472";
+	"Template::VMethods::BEGIN@25";
+	"Template::VMethods::BEGIN@26";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Template_Stash {
+	label="Template::Stash";
+	"Template::Stash::BEGIN@22";
+	"Template::Stash::BEGIN@23";
+	"Template::Stash::BEGIN@26";
+	"Template::Stash::new";
+	"Template::Stash::BEGIN@24";
+	"Template::Stash::BEGIN@25";
+	"Template::Stash::CORE:qr";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::stash";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Template_Stash_XS {
+	label="Template::Stash::XS";
+	"Template::Stash::XS::BEGIN@17";
+}
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::BEGIN@26";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@466";
+"Template::Stash::BEGIN@25" -> "UNIVERSAL::import";
+"Template::Stash::BEGIN@24" -> "UNIVERSAL::import";
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::CORE:qr";
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::BEGIN@23";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@26";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@439";
+"Template::Stash::BEGIN@22" -> "strict::import";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@24";
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::BEGIN@25";
+"Template::Stash::BEGIN@26" -> "Exporter::import";
+"Template::Stash::BEGIN@23" -> "warnings::import";
+"Template::Config::stash" -> "Template::Stash::new";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@27";
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::BEGIN@22";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@472";
+"Template::Stash::XS::BEGIN@17" -> "Template::Stash::BEGIN@24";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@25";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@115";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@121";
+}

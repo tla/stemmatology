@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::BEGIN@9";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Template_Timer {
+	label="Template::Timer";
+	"Template::Timer::BEGIN@3";
+	"Template::Timer::BEGIN@4";
+	"Template::Timer::BEGIN@60";
+	"Template::Timer::BEGIN@61";
+	"Template::Timer::BEGIN@68";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@4";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@68";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@61";
+"Template::Timer::BEGIN@4" -> "strict::import";
+"Template::Timer::BEGIN@68" -> "strict::unimport";
+"Template::Timer::BEGIN@60" -> "base::import";
+"Template::Timer::BEGIN@3" -> "warnings::import";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@3";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@60";
+}

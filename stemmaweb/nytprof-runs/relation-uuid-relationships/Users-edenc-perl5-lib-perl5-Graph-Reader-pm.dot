@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@346";
+}
+subgraph cluster_Graph_Reader {
+	label="Graph::Reader";
+	"Graph::Reader::BEGIN@6";
+	"Graph::Reader::BEGIN@7";
+	"Graph::Reader::BEGIN@12";
+	"Graph::Reader::BEGIN@11";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@7";
+"Graph::Reader::BEGIN@12" -> "UNIVERSAL::import";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@11";
+"Graph::Reader::BEGIN@6" -> "strict::import";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@6";
+"Graph::Reader::BEGIN@11" -> "Exporter::import";
+"Graph::Reader::BEGIN@7" -> "warnings::import";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@12";
+}

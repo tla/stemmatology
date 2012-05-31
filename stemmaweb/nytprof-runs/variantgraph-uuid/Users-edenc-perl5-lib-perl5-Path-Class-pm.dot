@@ -1,0 +1,60 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::BEGIN@1";
+	"Path::Class::BEGIN@16";
+	"Path::Class::dir";
+	"Path::Class::BEGIN@18";
+	"Path::Class::BEGIN@17";
+	"Path::Class::BEGIN@10";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::new";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+	"main::BEGIN@1.1";
+	"main::BEGIN@6";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::home";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::BEGIN@9";
+	"Path::Class::File::BEGIN@12";
+	"Path::Class::File::BEGIN@10";
+	"Path::Class::File::BEGIN@53";
+	"Path::Class::File::BEGIN@8";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@10";
+"main::BEGIN@6" -> "Path::Class::BEGIN@16";
+"main::BEGIN@6" -> "Path::Class::BEGIN@18";
+"Path::Class::dir" -> "Path::Class::Dir::new";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@8";
+"main::BEGIN@1.1" -> "strict::import";
+"Catalyst::Utils::home" -> "Path::Class::dir";
+"main::RUNTIME" -> "Path::Class::dir";
+"Path::Class::BEGIN@16" -> "Exporter::import";
+"Path::Class::BEGIN@17" -> "Path::Class::BEGIN@1";
+"main::BEGIN@6" -> "main::BEGIN@1.1";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@12";
+"Path::Class::BEGIN@10" -> "strict::unimport";
+"main::BEGIN@6" -> "Path::Class::BEGIN@10";
+"main::BEGIN@6" -> "Path::Class::BEGIN@17";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@9";
+"Path::Class::BEGIN@17" -> "Path::Class::File::BEGIN@53";
+}

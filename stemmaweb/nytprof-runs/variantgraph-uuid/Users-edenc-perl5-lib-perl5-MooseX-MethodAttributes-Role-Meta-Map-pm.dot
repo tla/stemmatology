@@ -1,0 +1,62 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@13";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes";
+	"MooseX::MethodAttributes::Role::Meta::Map::__ANON__[MooseX/MethodAttributes/Role/Meta/Map.pm:19]";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Map::get_method_attributes";
+	"MooseX::MethodAttributes::Role::Meta::Map::__ANON__[MooseX/MethodAttributes/Role/Meta/Map.pm:26]";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method {
+	label="MooseX::MethodAttributes::Role::Meta::Method";
+	"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes" -> "MooseX::MethodAttributes::Role::Meta::Map::get_method_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Map::BEGIN@2";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@13" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Map::BEGIN@13";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11" -> "MooseX::Types::Base::import";
+"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list" -> "MooseX::MethodAttributes::Role::Meta::Map::__ANON__[MooseX/MethodAttributes/Role/Meta/Map.pm:26]";
+"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map" -> "MooseX::MethodAttributes::Role::Meta::Map::__ANON__[MooseX/MethodAttributes/Role/Meta/Map.pm:19]";
+"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES" -> "MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Map::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes" -> "Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+"MooseX::MethodAttributes::Role::Meta::Map::get_method_attributes" -> "Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11" -> "UNIVERSAL::VERSION";
+"MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes" -> "Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list";
+}

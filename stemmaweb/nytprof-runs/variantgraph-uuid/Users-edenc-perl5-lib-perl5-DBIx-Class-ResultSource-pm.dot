@@ -1,0 +1,197 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_Carp {
+	label="DBIx::Class::Carp";
+	"DBIx::Class::Carp::import";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::first";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::columns_info";
+	"DBIx::Class::ResultSource::set_primary_key";
+	"DBIx::Class::ResultSource::_relationships";
+	"DBIx::Class::ResultSource::CORE:match";
+	"DBIx::Class::ResultSource::BEGIN@16";
+	"DBIx::Class::ResultSource::BEGIN@3";
+	"DBIx::Class::ResultSource::BEGIN@11";
+	"DBIx::Class::ResultSource::CORE:subst";
+	"DBIx::Class::ResultSource::END";
+	"DBIx::Class::ResultSource::BEGIN@4";
+	"DBIx::Class::ResultSource::BEGIN@9";
+	"DBIx::Class::ResultSource::new";
+	"DBIx::Class::ResultSource::BEGIN@6";
+	"DBIx::Class::ResultSource::unique_constraints";
+	"DBIx::Class::ResultSource::schema";
+	"DBIx::Class::ResultSource::add_unique_constraint";
+	"DBIx::Class::ResultSource::add_columns";
+	"DBIx::Class::ResultSource::_primaries";
+	"DBIx::Class::ResultSource::DESTROY";
+	"DBIx::Class::ResultSource::_ordered_columns";
+	"DBIx::Class::ResultSource::BEGIN@14";
+	"DBIx::Class::ResultSource::column_info";
+	"DBIx::Class::ResultSource::BEGIN@13";
+	"DBIx::Class::ResultSource::add_relationship";
+	"DBIx::Class::ResultSource::BEGIN@10";
+	"DBIx::Class::ResultSource::has_column";
+	"DBIx::Class::ResultSource::_unique_constraints";
+	"DBIx::Class::ResultSource::columns";
+	"DBIx::Class::ResultSource::_columns";
+	"DBIx::Class::ResultSource::BEGIN@12";
+	"DBIx::Class::ResultSource::BEGIN@7";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]";
+	"KiokuDB::Backend::DBI::_build_schema";
+	"KiokuDB::Backend::DBI::_build__columns";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::isweak";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::_unique_constraints";
+	"DBIx::Class::ResultSource::Table::_relationships";
+	"DBIx::Class::ResultSource::Table::_primaries";
+	"DBIx::Class::ResultSource::Table::_columns";
+	"DBIx::Class::ResultSource::Table::_ordered_columns";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::clone";
+	"DBIx::Class::Schema::_register_source";
+	"DBIx::Class::Schema::source_registrations";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@4";
+	"DBIx::Class::ResultSourceHandle::BEGIN@8";
+	"DBIx::Class::ResultSourceHandle::BEGIN@9";
+	"DBIx::Class::ResultSourceHandle::BEGIN@6";
+	"DBIx::Class::ResultSourceHandle::BEGIN@11";
+	"DBIx::Class::ResultSourceHandle::BEGIN@3";
+	"DBIx::Class::ResultSourceHandle::BEGIN@14";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::mk_group_accessors";
+}
+"DBIx::Class::Schema::clone" -> "DBIx::Class::ResultSource::new";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::new";
+"DBIx::Class::Schema::_register_source" -> "DBIx::Class::ResultSource::new";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::new";
+"DBIx::Class::ResultSource::add_relationship" -> "DBIx::Class::ResultSource::Table::_relationships";
+"DBIx::Class::ResultSource::has_column" -> "DBIx::Class::ResultSource::Table::_columns";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::Table::_columns";
+"DBIx::Class::ResultSource::columns_info" -> "DBIx::Class::ResultSource::Table::_columns";
+"DBIx::Class::ResultSource::column_info" -> "DBIx::Class::ResultSource::Table::_columns";
+"DBIx::Class::ResultSource::DESTROY" -> "Scalar::Util::isweak";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@11";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@14";
+"DBIx::Class::ResultSource::BEGIN@7" -> "UNIVERSAL::import";
+"DBIx::Class::ResultSource::BEGIN@6" -> "UNIVERSAL::import";
+"DBIx::Class::ResultSource::BEGIN@9" -> "UNIVERSAL::import";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@6";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@6";
+"KiokuDB::Backend::DBI::_build__columns" -> "DBIx::Class::ResultSource::column_info";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@13";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::_columns";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::Table::_ordered_columns";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::add_relationship";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@11";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::set_primary_key";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@9";
+"DBIx::Class::Schema::clone" -> "DBIx::Class::ResultSource::DESTROY";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::ResultSource::DESTROY";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::ResultSource::DESTROY";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@4";
+"DBIx::Class::ResultSource::BEGIN@14" -> "namespace::clean::import";
+"DBIx::Class::ResultSource::BEGIN@3" -> "strict::import";
+"DBIx::Class::ResultSource::add_unique_constraint" -> "DBIx::Class::ResultSource::has_column";
+"DBIx::Class::ResultSource::set_primary_key" -> "DBIx::Class::ResultSource::has_column";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBIx::Class::ResultSource::columns_info";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::add_columns";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::add_columns";
+"DBIx::Class::ResultSource::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@10";
+"DBIx::Class::ResultSource::columns_info" -> "List::Util::first";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@9";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::_ordered_columns";
+"DBIx::Class::ResultSource::BEGIN@11" -> "Exporter::import";
+"DBIx::Class::ResultSource::BEGIN@12" -> "Exporter::import";
+"DBIx::Class::ResultSource::BEGIN@13" -> "Exporter::import";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@7";
+"DBIx::Class::ResultSource::set_primary_key" -> "DBIx::Class::ResultSource::add_unique_constraint";
+"DBIx::Class::Schema::_register_source" -> "DBIx::Class::ResultSource::schema";
+"DBIx::Class::ResultSource::BEGIN@16" -> "base::import";
+"DBIx::Class::ResultSource::BEGIN@4" -> "warnings::import";
+"DBIx::Class::ResultSource::add_relationship" -> "DBIx::Class::ResultSource::CORE:match";
+"DBIx::Class::ResultSource::set_primary_key" -> "DBIx::Class::ResultSource::_primaries";
+"DBIx::Class::ResultSource::BEGIN@7" -> "Class::Accessor::Grouped::mk_group_accessors";
+"DBIx::Class::ResultSource::BEGIN@10" -> "DBIx::Class::Carp::import";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@12";
+"DBIx::Class::ResultSource::DESTROY" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::unique_constraints" -> "DBIx::Class::ResultSource::Table::_unique_constraints";
+"DBIx::Class::ResultSource::add_unique_constraint" -> "DBIx::Class::ResultSource::Table::_unique_constraints";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@14";
+"DBIx::Class::ResultSource::unique_constraints" -> "DBIx::Class::ResultSource::_unique_constraints";
+"DBIx::Class::ResultSource::set_primary_key" -> "DBIx::Class::ResultSource::Table::_primaries";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@3";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@4";
+"main::RUNTIME" -> "DBIx::Class::ResultSource::END";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::CORE:subst";
+"DBIx::Class::ResultSource::add_relationship" -> "DBIx::Class::ResultSource::_relationships";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@3";
+"KiokuDB::Backend::DBI::_build__columns" -> "DBIx::Class::ResultSource::columns";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@8";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@16";
+"DBIx::Class::ResultSource::add_unique_constraint" -> "DBIx::Class::ResultSource::unique_constraints";
+"DBIx::Class::ResultSource::DESTROY" -> "DBIx::Class::Schema::source_registrations";
+}

@@ -1,0 +1,106 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::symbol";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_statement";
+	"PPI::Lexer::lex_tokenizer";
+	"PPI::Lexer::lex_source";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::new";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::new";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::BEGIN@10";
+	"Data::OptList::mkopt";
+	"Data::OptList::__is_a";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::CORE:match";
+	"Params::Util::bootstrap";
+	"Params::Util::_ARRAYLIKE";
+	"Params::Util::BEGIN@65";
+	"Params::Util::BEGIN@58";
+	"Params::Util::_INSTANCE";
+	"Params::Util::_SCALAR0";
+	"Params::Util::_CODELIKE";
+	"Params::Util::_HASH0";
+	"Params::Util::_CLASS";
+	"Params::Util::_HASHLIKE";
+	"Params::Util::BEGIN@59";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::add_element";
+	"PPI::Node::_wanted";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::default_generator";
+	"Sub::Exporter::_expand_group";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:544]";
+	"Sub::Exporter::_do_import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Data::OptList::__is_a" -> "Params::Util::_ARRAYLIKE";
+"PPI::Token::Symbol::symbol" -> "Params::Util::_INSTANCE";
+"PPI::Node::add_element" -> "Params::Util::_INSTANCE";
+"PPI::Statement::new" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::_statement" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::lex_source" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::lex_tokenizer" -> "Params::Util::_INSTANCE";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@65";
+"Params::Util::BEGIN@59" -> "strict::import";
+"DynaLoader::bootstrap" -> "Params::Util::bootstrap";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@59";
+"PPI::Tokenizer::new" -> "Params::Util::_SCALAR0";
+"PPI::Document::new" -> "Params::Util::_SCALAR0";
+"Sub::Exporter::_expand_group" -> "Params::Util::_SCALAR0";
+"Sub::Exporter::__ANON__[Sub/Exporter.pm:544]" -> "Params::Util::_SCALAR0";
+"Data::OptList::__is_a" -> "Params::Util::_SCALAR0";
+"Package::DeprecationManager::import" -> "Params::Util::_HASH0";
+"Sub::Exporter::default_generator" -> "Params::Util::_CODELIKE";
+"Sub::Exporter::_expand_group" -> "Params::Util::_CODELIKE";
+"Data::OptList::__is_a" -> "Params::Util::_CODELIKE";
+"PPI::Node::_wanted" -> "Params::Util::_CODELIKE";
+"Sub::Exporter::_do_import" -> "Params::Util::_CODELIKE";
+"Params::Util::BEGIN@65" -> "vars::import";
+"Params::Util::_INSTANCE" -> "UNIVERSAL::isa";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@58";
+"Data::OptList::mkopt" -> "Params::Util::_HASHLIKE";
+"Data::OptList::__is_a" -> "Params::Util::_HASHLIKE";
+"Params::Util::_CLASS" -> "Params::Util::CORE:match";
+}

@@ -1,0 +1,1792 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::BEGIN@8";
+}
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@3";
+	"Catalyst::Dispatcher::BEGIN@692";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@3";
+	"Catalyst::BEGIN@3427";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@10";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer_Inheritable {
+	label="MooseX::MethodAttributes::Role::AttrContainer::Inheritable";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@124";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@15";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::BEGIN@3";
+	"Catalyst::ActionChain::BEGIN@7";
+}
+subgraph cluster_MooseX_OneArgNew {
+	label="MooseX::OneArgNew";
+	"MooseX::OneArgNew::BEGIN@5";
+	"MooseX::OneArgNew::BEGIN@9";
+}
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::BEGIN@6";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::BEGIN@3";
+}
+subgraph cluster_Catalyst_DispatchType {
+	label="Catalyst::DispatchType";
+	"Catalyst::DispatchType::BEGIN@5";
+	"Catalyst::DispatchType::BEGIN@3";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@15";
+	"Text::Tradition::Collation::BEGIN@1800";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Converter {
+	label="KiokuDB::Backend::Serialize::JSPON::Converter";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::BEGIN@2";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::BEGIN@58";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep_Results {
+	label="KiokuDB::GC::Naive::Sweep::Results";
+	"KiokuDB::GC::Naive::Sweep::Results::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Alias {
+	label="KiokuDB::TypeMap::Entry::Alias";
+	"KiokuDB::TypeMap::Entry::Alias::BEGIN@4";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role_Application {
+	label="MooseX::MethodAttributes::Role::Meta::Role::Application";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@10";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@2";
+	"KiokuX::Model::BEGIN@3";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@12";
+}
+subgraph cluster_Data_Stream_Bulk_Chunked {
+	label="Data::Stream::Bulk::Chunked";
+	"Data::Stream::Bulk::Chunked::BEGIN@8";
+}
+subgraph cluster_Parse_Method_Signatures_Param_Positional {
+	label="Parse::Method::Signatures::Param::Positional";
+	"Parse::Method::Signatures::Param::Positional::BEGIN@3";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_ID {
+	label="KiokuDB::TypeMap::Entry::Std::ID";
+	"KiokuDB::TypeMap::Entry::Std::ID::BEGIN@2";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Set_Loaded {
+	label="KiokuDB::Set::Loaded";
+	"KiokuDB::Set::Loaded::BEGIN@4";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@3";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::BEGIN@3";
+	"Catalyst::Request::Upload::BEGIN@46";
+}
+subgraph cluster_MooseX_Types_Structured_MessageStack {
+	label="MooseX::Types::Structured::MessageStack";
+	"MooseX::Types::Structured::MessageStack::BEGIN@4";
+	"MooseX::Types::Structured::MessageStack::BEGIN@43";
+}
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@3";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@11";
+}
+subgraph cluster_Data_Stream_Bulk_DoneFlag {
+	label="Data::Stream::Bulk::DoneFlag";
+	"Data::Stream::Bulk::DoneFlag::BEGIN@8";
+}
+subgraph cluster_PPI_Statement_Expression_TCParams {
+	label="PPI::Statement::Expression::TCParams";
+	"PPI::Statement::Expression::TCParams::BEGIN@871";
+	"PPI::Statement::Expression::TCParams::BEGIN@842";
+}
+subgraph cluster_Role_HasPayload_Meta_Attribute_Payload {
+	label="Role::HasPayload::Meta::Attribute::Payload";
+	"Role::HasPayload::Meta::Attribute::Payload::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::BEGIN@2";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@10";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::BEGIN@4";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured_Optional {
+	label="MooseX::Meta::TypeCoercion::Structured::Optional";
+	"MooseX::Meta::TypeCoercion::Structured::Optional::BEGIN@4";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@3";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone_Base {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone::Base";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::Base::BEGIN@4";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@10";
+	"KiokuDB::Backend::DBI::BEGIN@12";
+	"KiokuDB::Backend::DBI::BEGIN@18";
+}
+subgraph cluster_Throwable {
+	label="Throwable";
+	"Throwable::BEGIN@5";
+	"Throwable::BEGIN@31";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::BEGIN@4";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::set_prototype";
+}
+subgraph cluster_Data_Stream_Bulk_Nil {
+	label="Data::Stream::Bulk::Nil";
+	"Data::Stream::Bulk::Nil::BEGIN@8";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_Wrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::Wrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Deprecated {
+	label="Class::MOP::Deprecated";
+	"Class::MOP::Deprecated::BEGIN@9";
+	"Class::MOP::Deprecated::BEGIN@2";
+	"Class::MOP::Deprecated::BEGIN@10";
+	"Class::MOP::Deprecated::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Stream_Objects {
+	label="KiokuDB::Stream::Objects";
+	"KiokuDB::Stream::Objects::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Expand {
+	label="KiokuDB::TypeMap::Entry::Std::Expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@28";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_keys {
+	label="Moose::Meta::Method::Accessor::Native::Hash::keys";
+	"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@14";
+	"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@28";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::BEGIN@164";
+	"Moose::Meta::Method::Accessor::Native::BEGIN@15";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default {
+	label="KiokuDB::Backend::TypeMap::Default";
+	"KiokuDB::Backend::TypeMap::Default::BEGIN@4";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToClass {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToClass";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToClass::BEGIN@10";
+}
+subgraph cluster_KiokuDB_Set_Storage {
+	label="KiokuDB::Set::Storage";
+	"KiokuDB::Set::Storage::BEGIN@4";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToInstance {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry {
+	label="KiokuDB::TypeMap::Entry";
+	"KiokuDB::TypeMap::Entry::BEGIN@4";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BEGIN@22";
+}
+subgraph cluster_KiokuDB_Error {
+	label="KiokuDB::Error";
+	"KiokuDB::Error::BEGIN@2";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@12";
+	"Text::Tradition::Stemma::BEGIN@393";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Class {
+	label="MooseX::StrictConstructor::Trait::Class";
+	"MooseX::StrictConstructor::Trait::Class::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array {
+	label="Moose::Meta::Method::Accessor::Native::Array";
+	"Moose::Meta::Method::Accessor::Native::Array::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::BEGIN@30";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::BEGIN@2";
+}
+subgraph cluster_Role_HasPayload_Merged {
+	label="Role::HasPayload::Merged";
+	"Role::HasPayload::Merged::BEGIN@5";
+	"Role::HasPayload::Merged::BEGIN@41";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@4";
+	"KiokuDB::LiveObjects::BEGIN@16";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@10";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::VERSION";
+	"UNIVERSAL::can";
+}
+subgraph cluster_KiokuDB_Role_TypeMap {
+	label="KiokuDB::Role::TypeMap";
+	"KiokuDB::Role::TypeMap::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@1073";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@9";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::BEGIN@18";
+	"Catalyst::ActionContainer::BEGIN@30";
+}
+subgraph cluster_KiokuDB_Set_Base {
+	label="KiokuDB::Set::Base";
+	"KiokuDB::Set::Base::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_get {
+	label="Moose::Meta::Method::Accessor::Native::Array::get";
+	"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@14";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+	"MooseX::Types::BEGIN@5";
+	"MooseX::Types::BEGIN@14";
+	"MooseX::Types::BEGIN@9";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::BEGIN@4";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@3";
+	"Parse::Method::Signatures::BEGIN@9";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToClass {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass::BEGIN@10";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::BEGIN@3";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Serialize {
+	label="KiokuDB::Backend::Serialize";
+	"KiokuDB::Backend::Serialize::BEGIN@6";
+	"KiokuDB::Backend::Serialize::BEGIN@4";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::BEGIN@2";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Method_Constructor {
+	label="MooseX::StrictConstructor::Trait::Method::Constructor";
+	"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_elements {
+	label="Moose::Meta::Method::Accessor::Native::Array::elements";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@26";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::uniq";
+	"List::MoreUtils::firstidx";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone_Std {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone::Std";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::Std::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::BEGIN@3";
+	"Catalyst::DispatchType::Chained::BEGIN@33";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@4";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSource {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSource";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@14";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::BEGIN@2";
+}
+subgraph cluster_PPI_Token_StringifiedWord {
+	label="PPI::Token::StringifiedWord";
+	"PPI::Token::StringifiedWord::BEGIN@889";
+	"PPI::Token::StringifiedWord::BEGIN@897";
+}
+subgraph cluster_Search_GIN_Driver {
+	label="Search::GIN::Driver";
+	"Search::GIN::Driver::BEGIN@9";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::BEGIN@3";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@5";
+	"Text::Tradition::Witness::BEGIN@783";
+	"Text::Tradition::Witness::BEGIN@6";
+	"Text::Tradition::Witness::BEGIN@201";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::BEGIN@3";
+	"Catalyst::DispatchType::Path::BEGIN@17";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@3";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@3";
+}
+subgraph cluster_Data_Stream_Bulk {
+	label="Data::Stream::Bulk";
+	"Data::Stream::Bulk::BEGIN@8";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@2";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+	"Class::MOP::Class::get_meta_instance";
+}
+subgraph cluster_Data_Stream_Bulk_Cat {
+	label="Data::Stream::Bulk::Cat";
+	"Data::Stream::Bulk::Cat::BEGIN@8";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@2";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_dec {
+	label="Moose::Meta::Method::Accessor::Native::Counter::dec";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@41";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@12";
+	"MooseX::Role::WithOverloading::init_meta";
+	"MooseX::Role::WithOverloading::BEGIN@11";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@3";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::BEGIN@22";
+	"Moose::Role::override";
+	"Moose::Role::with";
+	"Moose::Role::around";
+	"Moose::Role::BEGIN@20";
+	"Moose::Role::before";
+	"Moose::Role::after";
+	"Moose::Role::has";
+	"Moose::Role::init_meta";
+	"Moose::Role::requires";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_push {
+	label="Moose::Meta::Method::Accessor::Native::Array::push";
+	"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@46";
+}
+subgraph cluster_KiokuDB_Backend_Role_Clear {
+	label="KiokuDB::Backend::Role::Clear";
+	"KiokuDB::Backend::Role::Clear::BEGIN@4";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_StrableClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::StrableClone";
+	"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Role_UUIDs {
+	label="KiokuDB::Role::UUIDs";
+	"KiokuDB::Role::UUIDs::BEGIN@4";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@39";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::BEGIN@2";
+	"MooseX::Traits::BEGIN@86";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Hash::Writer";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@14";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@31";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::before";
+	"Moose::with";
+	"Moose::BEGIN@44";
+	"Moose::BEGIN@19";
+	"Moose::init_meta";
+	"Moose::extends";
+	"Moose::override";
+	"Moose::has";
+	"Moose::around";
+}
+subgraph cluster_Search_GIN_Extract_Delegate {
+	label="Search::GIN::Extract::Delegate";
+	"Search::GIN::Extract::Delegate::BEGIN@9";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@5";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_NoClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::NoClone";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4";
+}
+subgraph cluster_Search_GIN_Extract {
+	label="Search::GIN::Extract";
+	"Search::GIN::Extract::BEGIN@9";
+}
+subgraph cluster_KiokuDB_Backend_Role_Concurrency_POSIX {
+	label="KiokuDB::Backend::Role::Concurrency::POSIX";
+	"KiokuDB::Backend::Role::Concurrency::POSIX::BEGIN@2";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@4";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@2";
+}
+subgraph cluster_KiokuDB_Entry_Skip {
+	label="KiokuDB::Entry::Skip";
+	"KiokuDB::Entry::Skip::BEGIN@4";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Reader {
+	label="Moose::Meta::Method::Accessor::Native::Reader";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@50";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@50";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default_JSON {
+	label="KiokuDB::Backend::TypeMap::Default::JSON";
+	"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@4";
+}
+subgraph cluster_MooseX_MethodAttributes_Role {
+	label="MooseX::MethodAttributes::Role";
+	"MooseX::MethodAttributes::Role::BEGIN@11";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::BEGIN@4";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Set_Stored {
+	label="KiokuDB::Set::Stored";
+	"KiokuDB::Set::Stored::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@2";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::BEGIN@17";
+	"Catalyst::DispatchType::Regex::BEGIN@3";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::BEGIN@4";
+}
+subgraph cluster_Data_Stream_Bulk_Filter {
+	label="Data::Stream::Bulk::Filter";
+	"Data::Stream::Bulk::Filter::BEGIN@8";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BEGIN@10";
+	"Catalyst::Controller::BEGIN@3";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Hash {
+	label="Moose::Meta::Attribute::Native::Trait::Hash";
+	"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@15";
+	"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@9";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::BEGIN@24";
+}
+subgraph cluster_MooseX_Role_Parameterized_Parameters {
+	label="MooseX::Role::Parameterized::Parameters";
+	"MooseX::Role::Parameterized::Parameters::BEGIN@7";
+	"MooseX::Role::Parameterized::Parameters::BEGIN@2";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@5";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4";
+}
+subgraph cluster_Catalyst_Exception_Interface {
+	label="Catalyst::Exception::Interface";
+	"Catalyst::Exception::Interface::BEGIN@3";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite_TypeMapAttr {
+	label="KiokuDB::TypeMap::Composite::TypeMapAttr";
+	"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_inc {
+	label="Moose::Meta::Method::Accessor::Native::Counter::inc";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@41";
+}
+subgraph cluster_KiokuDB_Set {
+	label="KiokuDB::Set";
+	"KiokuDB::Set::BEGIN@4";
+	"KiokuDB::Set::BEGIN@6";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::BEGIN@131";
+	"Catalyst::Log::BEGIN@3";
+}
+subgraph cluster_StackTrace_Auto {
+	label="StackTrace::Auto";
+	"StackTrace::Auto::BEGIN@10";
+	"StackTrace::Auto::BEGIN@83";
+	"StackTrace::Auto::BEGIN@5";
+	"StackTrace::Auto::BEGIN@30";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::BEGIN@10";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role {
+	label="MooseX::MethodAttributes::Role::Meta::Role";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@15";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17";
+}
+subgraph cluster_KiokuDB_Backend_Role_GC {
+	label="KiokuDB::Backend::Role::GC";
+	"KiokuDB::Backend::Role::GC::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+	"MooseX::Role::Parameterized::BEGIN@4";
+	"MooseX::Role::Parameterized::init_meta";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::BEGIN@15";
+	"Moose::Util::MetaRole::BEGIN@16";
+	"Moose::Util::MetaRole::BEGIN@11";
+	"Moose::Util::MetaRole::BEGIN@10";
+	"Moose::Util::MetaRole::BEGIN@14";
+	"Moose::Util::MetaRole::apply_metaroles";
+	"Moose::Util::MetaRole::BEGIN@17";
+	"Moose::Util::MetaRole::BEGIN@13";
+	"Moose::Util::MetaRole::BEGIN@9";
+	"Moose::Util::MetaRole::BEGIN@2";
+}
+subgraph cluster_Parse_Method_Signatures_Param_Bindable {
+	label="Parse::Method::Signatures::Param::Bindable";
+	"Parse::Method::Signatures::Param::Bindable::BEGIN@3";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::BEGIN@4";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@10";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_FixOverloadedRefs {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs::BEGIN@10";
+}
+subgraph cluster_Throwable_X_Types {
+	label="Throwable::X::Types";
+	"Throwable::X::Types::BEGIN@10";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::BEGIN@3";
+}
+subgraph cluster_Catalyst_Component_ApplicationAttribute {
+	label="Catalyst::Component::ApplicationAttribute";
+	"Catalyst::Component::ApplicationAttribute::BEGIN@3";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured {
+	label="MooseX::Meta::TypeCoercion::Structured";
+	"MooseX::Meta::TypeCoercion::Structured::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@4";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@10";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@4";
+}
+subgraph cluster_Devel_PartialDump {
+	label="Devel::PartialDump";
+	"Devel::PartialDump::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Role_TXN {
+	label="KiokuDB::Backend::Role::TXN";
+	"KiokuDB::Backend::Role::TXN::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std {
+	label="KiokuDB::TypeMap::Entry::Std";
+	"KiokuDB::TypeMap::Entry::Std::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Role_Query_Simple {
+	label="KiokuDB::Backend::Role::Query::Simple";
+	"KiokuDB::Backend::Role::Query::Simple::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@167";
+}
+subgraph cluster_Role_Identifiable_HasTags {
+	label="Role::Identifiable::HasTags";
+	"Role::Identifiable::HasTags::BEGIN@5";
+	"Role::Identifiable::HasTags::BEGIN@9";
+	"Role::Identifiable::HasTags::BEGIN@63";
+	"Role::Identifiable::HasTags::BEGIN@64";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@4";
+}
+subgraph cluster_Role_HasMessage {
+	label="Role::HasMessage";
+	"Role::HasMessage::BEGIN@5";
+	"Role::HasMessage::BEGIN@11";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@8";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::BEGIN@3";
+	"Catalyst::View::BEGIN@60";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@370";
+	"Text::Tradition::BEGIN@5";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@5";
+	"MooseX::Types::Base::BEGIN@12";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::BEGIN@14";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::BEGIN@4";
+}
+subgraph cluster_Catalyst_DispatchType_Default {
+	label="Catalyst::DispatchType::Default";
+	"Catalyst::DispatchType::Default::BEGIN@3";
+	"Catalyst::DispatchType::Default::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Counter {
+	label="Moose::Meta::Attribute::Native::Trait::Counter";
+	"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@19";
+	"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::BEGIN@3";
+	"Text::Tradition::Collation::Reading::BEGIN@331";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method {
+	label="MooseX::MethodAttributes::Role::Meta::Method";
+	"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@10";
+}
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@22";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@4";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Role_UUIDs_DataUUID {
+	label="KiokuDB::Role::UUIDs::DataUUID";
+	"KiokuDB::Role::UUIDs::DataUUID::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Default {
+	label="KiokuDB::TypeMap::Default";
+	"KiokuDB::TypeMap::Default::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Role_UnicodeSafe {
+	label="KiokuDB::Backend::Role::UnicodeSafe";
+	"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::BEGIN@6";
+	"KiokuDB::Entry::BEGIN@4";
+}
+subgraph cluster_Catalyst_Model {
+	label="Catalyst::Model";
+	"Catalyst::Model::BEGIN@6";
+	"Catalyst::Model::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@167";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@14";
+}
+subgraph cluster_Text_Tradition_Collation_Reading_Morphology {
+	label="Text::Tradition::Collation::Reading::Morphology";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@340";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@413";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::BEGIN@47";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Schema {
+	label="KiokuDB::TypeMap::Entry::DBIC::Schema";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@4";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Trait_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Trait::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@2";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@38";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_exists {
+	label="Moose::Meta::Method::Accessor::Native::Hash::exists";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@44";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@14";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToInstance {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Array {
+	label="Moose::Meta::Attribute::Native::Trait::Array";
+	"Moose::Meta::Attribute::Native::Trait::Array::BEGIN@9";
+	"Moose::Meta::Attribute::Native::Trait::Array::BEGIN@15";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@5";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@5";
+	"Text::Tradition::Error::BEGIN@17";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::new";
+}
+subgraph cluster_KiokuDB_Role_Verbosity {
+	label="KiokuDB::Role::Verbosity";
+	"KiokuDB::Role::Verbosity::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSON {
+	label="KiokuDB::Backend::Serialize::JSON";
+	"KiokuDB::Backend::Serialize::JSON::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::BEGIN@2";
+}
+subgraph cluster_KiokuDB_LiveObjects_TXNScope {
+	label="KiokuDB::LiveObjects::TXNScope";
+	"KiokuDB::LiveObjects::TXNScope::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Role_Attribute {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::BEGIN@2";
+}
+subgraph cluster_KiokuDB_Backend {
+	label="KiokuDB::Backend";
+	"KiokuDB::Backend::BEGIN@4";
+	"KiokuDB::Backend::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Serializer {
+	label="KiokuDB::Serializer";
+	"KiokuDB::Serializer::BEGIN@4";
+	"KiokuDB::Serializer::BEGIN@8";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Copy {
+	label="MooseX::Clone::Meta::Attribute::Trait::Copy";
+	"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@4";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@4";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::import";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:329]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:352]";
+	"Moose::Exporter::_strip_metaclass";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:750]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+	"Moose::Exporter::_parse_trait_aliases";
+	"Moose::Exporter::BEGIN@15";
+	"Moose::Exporter::BEGIN@9";
+	"Moose::Exporter::_make_import_sub";
+	"Moose::Exporter::setup_import_methods";
+	"Moose::Exporter::BEGIN@132";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:280]";
+	"Moose::Exporter::_curry_wrapper";
+	"Moose::Exporter::_sub_from_package";
+	"Moose::Exporter::BEGIN@133";
+	"Moose::Exporter::BEGIN@698";
+	"Moose::Exporter::BEGIN@16";
+	"Moose::Exporter::BEGIN@12";
+	"Moose::Exporter::BEGIN@688";
+	"Moose::Exporter::_flag_as_reexport";
+	"Moose::Exporter::_follow_also";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:42]";
+	"Moose::Exporter::_make_exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+	"Moose::Exporter::BEGIN@13";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::_export_is_flagged";
+	"Moose::Exporter::BEGIN@18";
+	"Moose::Exporter::_late_curry_wrapper";
+	"Moose::Exporter::_make_wrapped_sub_with_meta";
+	"Moose::Exporter::_remove_keywords";
+	"Moose::Exporter::BEGIN@2";
+	"Moose::Exporter::BEGIN@294";
+	"Moose::Exporter::BEGIN@14";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]";
+	"Moose::Exporter::BEGIN@17";
+	"Moose::Exporter::_make_unimport_sub";
+	"Moose::Exporter::_make_sub_exporter_params";
+	"Moose::Exporter::_get_caller";
+	"Moose::Exporter::_follow_also_real";
+	"Moose::Exporter::_collect_metaroles";
+	"Moose::Exporter::build_import_methods";
+	"Moose::Exporter::_make_init_meta";
+	"Moose::Exporter::BEGIN@10";
+	"Moose::Exporter::_strip_meta_name";
+	"Moose::Exporter::_apply_metaroles";
+	"Moose::Exporter::_strip_traits";
+	"Moose::Exporter::_make_wrapped_sub";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Backend_Role_Scan {
+	label="KiokuDB::Backend::Role::Scan";
+	"KiokuDB::Backend::Role::Scan::BEGIN@4";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@13";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@4";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@10";
+}
+subgraph cluster_KiokuDB_Backend_Role_Query_GIN {
+	label="KiokuDB::Backend::Role::Query::GIN";
+	"KiokuDB::Backend::Role::Query::GIN::BEGIN@4";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@2";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::BEGIN@3";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_Canonical {
+	label="KiokuDB::TypeMap::Default::Canonical";
+	"KiokuDB::TypeMap::Default::Canonical::BEGIN@4";
+}
+subgraph cluster_Role_Identifiable_HasIdent {
+	label="Role::Identifiable::HasIdent";
+	"Role::Identifiable::HasIdent::BEGIN@5";
+	"Role::Identifiable::HasIdent::BEGIN@15";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::BEGIN@4";
+	"Text::Tradition::Collation::Relationship::BEGIN@11";
+	"Text::Tradition::Collation::Relationship::BEGIN@148";
+	"Text::Tradition::Collation::Relationship::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_values {
+	label="Moose::Meta::Method::Accessor::Native::Hash::values";
+	"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@14";
+	"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@28";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Role_API {
+	label="KiokuDB::Role::API";
+	"KiokuDB::Role::API::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@212";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@13";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@9";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@213";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::meta";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::default_generator";
+	"Sub::Exporter::build_exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+	"Sub::Exporter::default_installer";
+	"Sub::Exporter::_do_import";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_count {
+	label="Moose::Meta::Method::Accessor::Native::Array::count";
+	"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@26";
+	"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@12";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::BEGIN@30";
+	"Class::MOP::BEGIN@24";
+	"Class::MOP::BEGIN@17";
+	"Class::MOP::BEGIN@3";
+	"Class::MOP::class_of";
+	"Class::MOP::BEGIN@23";
+	"Class::MOP::BEGIN@26";
+	"Class::MOP::BEGIN@18";
+	"Class::MOP::BEGIN@27";
+	"Class::MOP::BEGIN@19";
+	"Class::MOP::BEGIN@21";
+	"Class::MOP::BEGIN@28";
+	"Class::MOP::BEGIN@15";
+	"Class::MOP::BEGIN@20";
+	"Class::MOP::_definition_context";
+	"Class::MOP::BEGIN@10";
+	"Class::MOP::BEGIN@25";
+	"Class::MOP::BEGIN@11";
+	"Class::MOP::BEGIN@13";
+	"Class::MOP::get_code_info";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::BEGIN@11";
+	"MooseX::MethodAttributes::init_meta";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Backend_DBI_Schema {
+	label="KiokuDB::Backend::DBI::Schema";
+	"KiokuDB::Backend::DBI::Schema::BEGIN@10";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@2";
+}
+subgraph cluster_Data_Stream_Bulk_Array {
+	label="Data::Stream::Bulk::Array";
+	"Data::Stream::Bulk::Array::BEGIN@8";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_get {
+	label="Moose::Meta::Method::Accessor::Native::Hash::get";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@47";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@14";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::BEGIN@4";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::add_package_symbol";
+	"Class::MOP::Package::initialize";
+	"Class::MOP::Package::DESTROY";
+	"Class::MOP::Package::get_package_symbol";
+	"Class::MOP::Package::has_package_symbol";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::BEGIN@5";
+	"Catalyst::Response::BEGIN@3";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Accessor {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Array::Writer";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@12";
+}
+"Moose::Exporter::_apply_metaroles" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+"Sub::Exporter::default_generator" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:352]";
+"Moose::Exporter::_make_sub_exporter_params" -> "Moose::Exporter::_parse_trait_aliases";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@9";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::Role::WithOverloading::init_meta";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@294";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@17";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@10";
+"Moose::Exporter::_follow_also" -> "Moose::Exporter::_follow_also_real";
+"Moose::Exporter::_follow_also_real" -> "Moose::Exporter::_follow_also_real";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::_strip_meta_name";
+"Sub::Exporter::default_generator" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:329]";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@25";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_make_exporter";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@17";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@21";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:750]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "Moose::Exporter::setup_import_methods";
+"Role::HasMessage::Errf::BEGIN@5" -> "Moose::Exporter::setup_import_methods";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "Moose::Exporter::setup_import_methods";
+"Moose::Meta::Attribute::BEGIN@24" -> "Moose::Exporter::setup_import_methods";
+"MooseX::Types::BEGIN@14" -> "Moose::Exporter::setup_import_methods";
+"KiokuX::Model::BEGIN@3" -> "Moose::Exporter::setup_import_methods";
+"Catalyst::Exception::Basic::BEGIN@3" -> "Moose::Exporter::setup_import_methods";
+"stemmaweb::BEGIN@2" -> "Moose::Exporter::setup_import_methods";
+"MooseX::Role::WithOverloading::BEGIN@11" -> "Moose::Exporter::setup_import_methods";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "Class::MOP::Package::has_package_symbol";
+"Moose::Exporter::build_import_methods" -> "Class::MOP::Package::has_package_symbol";
+"Moose::Exporter::_follow_also" -> "List::MoreUtils::uniq";
+"Moose::Role::override" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::before" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::with" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::with" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::around" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::extends" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::before" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::override" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::after" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::has" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::has" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Role::requires" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::around" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Class::get_meta_instance";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::_definition_context";
+"Moose::Exporter::_apply_metaroles" -> "Class::MOP::Package::DESTROY";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@3";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@13";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@12";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@133";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_make_import_sub";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@14";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@10";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::_apply_metaroles";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@2";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Moose::Exporter::BEGIN@17" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@9";
+"Moose::Exporter::_strip_meta_name" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_strip_traits" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_strip_metaclass" -> "List::MoreUtils::firstidx";
+"Moose::Exporter::_make_sub_exporter_params" -> "Moose::Exporter::_make_wrapped_sub";
+"Moose::Exporter::_curry_wrapper" -> "Scalar::Util::set_prototype";
+"Moose::Exporter::import" -> "strict::import";
+"Moose::Exporter::BEGIN@9" -> "strict::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "strict::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::Role::Parameterized::init_meta";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::init_meta";
+"Sub::Exporter::default_generator" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:280]";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@2";
+"Moose::Exporter::build_import_methods" -> "Class::MOP::Package::initialize";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@14";
+"Moose::Exporter::BEGIN@13" -> "XSLoader::load";
+"MooseX::Role::Parameterized::Parameters::BEGIN@7" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@124" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@119" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::BEGIN@1800" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::HasMessage::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::View::BEGIN@60" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@46" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@212" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Regex::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::BEGIN@370" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@19" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Model::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@38" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Relationship::BEGIN@148" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@48" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@41" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@39" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::HasPayload::Merged::BEGIN@41" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@167" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Request::Upload::BEGIN@46" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasTags::BEGIN@64" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@41" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Reading::Morphology::BEGIN@413" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Stemma::BEGIN@393" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@213" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@167" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@50" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Reading::BEGIN@331" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Throwable::BEGIN@31" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@28" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Witness::BEGIN@783" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@44" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Path::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasTags::BEGIN@63" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::Identifiable::HasIdent::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"PPI::Token::StringifiedWord::BEGIN@897" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Traits::BEGIN@86" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::BEGIN@164" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@26" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Log::BEGIN@131" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Relationship::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"StackTrace::Auto::BEGIN@83" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Chained::BEGIN@33" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@47" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@1073" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"PPI::Statement::Expression::TCParams::BEGIN@871" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@50" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Types::Structured::MessageStack::BEGIN@43" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::BEGIN@3427" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::ActionContainer::BEGIN@30" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Default::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Error::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::BEGIN@30" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"StackTrace::Auto::BEGIN@30" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::ActionChain::BEGIN@7" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@28" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@28" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Types::Structured::OverflowHandler::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@26" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@31" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::Array::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Witness::BEGIN@201" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@132";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@15";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Regex::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Engine::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::TypeMap::Default::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Sweep::Results::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Entry::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Plugin::Static::Simple::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::Query::Simple::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Path::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Chained::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Entry::Skip::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Default::JSON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Detach::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Types::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::OneArgNew::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Default::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Stream::Objects::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Base::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::View::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::StrictConstructor::Trait::Class::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Stemma::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuX::Model::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Visitor::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Traits::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToClass::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::Concurrency::POSIX::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Linker::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::ClassData::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Response::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Basic::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Model::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Structured::OverflowHandler::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::OneArgNew::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Thunk::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@18" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::Identifiable::HasIdent::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"StackTrace::Auto::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::Filter::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Entry::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::BEGIN@692" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Request::Upload::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::ParamCollection::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Resolver::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::ActionChain::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Param::Bindable::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Alias::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::Cat::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Default::Canonical::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Reference::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Base::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Component::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::Identifiable::HasTags::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::DBI::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Param::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::Identifiable::HasTags::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Inheritable::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Loaded::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::UUIDs::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Throwable::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::Query::GIN::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Default::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::Scan::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuX::Model::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Compiled::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Controller::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@13" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Compile::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::TypeMap::Entry::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Serializer::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::EngineLoader::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Witness::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Devel::PartialDump::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Relationship::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Role::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Visitor::Callback::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Shadow::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Reading::Morphology::BEGIN@340" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::import" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Relation::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Model::Directory::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Serializer::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Directory::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Request::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Naive::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Search::GIN::Extract::Delegate::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"StackTrace::Auto::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::BEGIN@44" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Base::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Response::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Storage::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Sweep::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Reading::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeCoercion::Structured::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::Clear::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::ActionContainer::BEGIN@18" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Composite::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::TXNScope::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Index::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::TXN::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::HasMessage::Errf::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Microservice::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Log::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::Scan::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::Array::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::HasPayload::Merged::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::Verbosity::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Interface::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Controller::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Go::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::Array::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"PPI::Statement::Expression::TCParams::BEGIN@842" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Mark::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::Buffer::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Structured::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Error::MissingObjects::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::ID::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Witness::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Sig::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Stats::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Error::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Role::GC::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Action::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::BEGIN@16" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Stexaminer::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Callback::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::Nil::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Throwable::X::Types::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::API::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::Counter::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::Schema::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Relationship::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Error::UnknownObjects::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::Scope::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Param::Positional::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Parameters::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::Chunked::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Error::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Deferred::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::HasMessage::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"TryCatch::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::Base::BEGIN@47" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeCoercion::Structured::Optional::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Serializer::JSON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Throwable::X::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Closure::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::HasPayload::Meta::Attribute::Payload::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@14" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::Base::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Set::Stored::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Root::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Search::GIN::Extract::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Role::TypeMap::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"PPI::Token::StringifiedWord::BEGIN@889" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Component::ApplicationAttribute::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Stream::Bulk::DoneFlag::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Model::KiokuDB::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Search::GIN::Driver::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Structured::MessageStack::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::BEGIN@58" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::Std::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::meta";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@18";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Role::init_meta";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Deprecated::BEGIN@2";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Deprecated::BEGIN@9";
+"MooseX::Role::Parameterized::BEGIN@4" -> "Moose::Exporter::import";
+"Moose::Util::TypeConstraints::BEGIN@13" -> "Moose::Exporter::import";
+"Moose::BEGIN@19" -> "Moose::Exporter::import";
+"MooseX::StrictConstructor::BEGIN@10" -> "Moose::Exporter::import";
+"Moose::Role::BEGIN@20" -> "Moose::Exporter::import";
+"MooseX::Role::WithOverloading::BEGIN@12" -> "Moose::Exporter::import";
+"MooseX::MethodAttributes::BEGIN@11" -> "Moose::Exporter::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@11" -> "Moose::Exporter::import";
+"MooseX::MethodAttributes::Role::BEGIN@11" -> "Moose::Exporter::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "Sub::Exporter::default_installer";
+"Moose::Exporter::BEGIN@18" -> "Exporter::import";
+"Moose::Exporter::BEGIN@12" -> "Exporter::import";
+"Moose::Exporter::BEGIN@16" -> "Exporter::import";
+"Moose::Exporter::BEGIN@14" -> "Exporter::import";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_make_init_meta";
+"Sub::Exporter::_do_import" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:137]";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Deprecated::BEGIN@12";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "UNIVERSAL::can";
+"Moose::Exporter::_remove_keywords" -> "Moose::Exporter::_export_is_flagged";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@18";
+"Moose::Exporter::_make_sub_exporter_params" -> "Moose::Exporter::_make_wrapped_sub_with_meta";
+"Moose::Exporter::BEGIN@698" -> "strict::unimport";
+"Moose::Exporter::BEGIN@294" -> "strict::unimport";
+"Moose::Exporter::BEGIN@132" -> "strict::unimport";
+"Moose::Exporter::BEGIN@688" -> "strict::unimport";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@26";
+"Moose::Exporter::import" -> "warnings::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "warnings::import";
+"Moose::Exporter::BEGIN@10" -> "warnings::import";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@11";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::_strip_metaclass";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@13";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@20";
+"Moose::Exporter::_make_sub_exporter_params" -> "Class::MOP::get_code_info";
+"Moose::Exporter::BEGIN@133" -> "warnings::unimport";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@23";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@19";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@28";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_make_sub_exporter_params";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::_strip_traits";
+"Moose::Exporter::_make_sub_exporter_params" -> "Moose::Exporter::_sub_from_package";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Deprecated::BEGIN@10";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@15";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@16";
+"Moose::Exporter::build_import_methods" -> "Class::MOP::Package::add_package_symbol";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]" -> "Moose::Exporter::_remove_keywords";
+"Moose::Exporter::_apply_metaroles" -> "UNIVERSAL::isa";
+"Moose::Exporter::_make_exporter" -> "Sub::Exporter::build_exporter";
+"Moose::Exporter::_apply_metaroles" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:42]";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:42]";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:750]" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:42]";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@11";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@17";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@15";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:329]" -> "Moose::Exporter::_curry_wrapper";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@698";
+"Moose::Exporter::setup_import_methods" -> "Moose::Exporter::build_import_methods";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Object::meta";
+"Moose::Exporter::_apply_metaroles" -> "Moose::Exporter::_collect_metaroles";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:42]" -> "Class::MOP::class_of";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]" -> "Class::MOP::class_of";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@688";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@24";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@27";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "Moose::Exporter::_get_caller";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "Class::MOP::Package::get_package_symbol";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@13";
+"Moose::BEGIN@19" -> "Moose::Exporter::BEGIN@10";
+"Moose::Exporter::BEGIN@17" -> "UNIVERSAL::VERSION";
+"Moose::Exporter::BEGIN@15" -> "Moose::Util::MetaRole::BEGIN@16";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_follow_also";
+"Moose::Exporter::BEGIN@13" -> "DynaLoader::bootstrap";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::MethodAttributes::init_meta";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:329]" -> "Sub::Name::subname";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:352]" -> "Sub::Name::subname";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:137]" -> "Moose::Exporter::_flag_as_reexport";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@30";
+"Moose::Exporter::build_import_methods" -> "Moose::Exporter::_make_unimport_sub";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Moose::Exporter::_apply_metaroles" -> "Moose::Util::MetaRole::apply_metaroles";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Attribute::new";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:352]" -> "Moose::Exporter::_late_curry_wrapper";
+}

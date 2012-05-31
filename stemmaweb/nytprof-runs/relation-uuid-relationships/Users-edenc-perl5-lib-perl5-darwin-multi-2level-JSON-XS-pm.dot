@@ -1,0 +1,75 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::BEGIN@98";
+}
+subgraph cluster_JSON_Backend_XS_Supportable {
+	label="JSON::Backend::XS::Supportable";
+	"JSON::Backend::XS::Supportable::_encode";
+}
+subgraph cluster_common_sense {
+	label="common::sense";
+	"common::sense::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::BEGIN@2";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::__ANON__[JSON/Any.pm:108]";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+}
+subgraph cluster_JSON_XS_Boolean {
+	label="JSON::XS::Boolean";
+	"JSON::XS::Boolean::BEGIN@1477";
+}
+subgraph cluster_JSON_XS {
+	label="JSON::XS";
+	"JSON::XS::encode";
+	"JSON::XS::BEGIN@104";
+	"JSON::XS::new";
+	"JSON::XS::utf8";
+	"JSON::XS::BEGIN@121";
+	"JSON::XS::canonical";
+	"JSON::XS::BEGIN@122";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSON {
+	label="KiokuDB::Backend::Serialize::JSON";
+	"KiokuDB::Backend::Serialize::JSON::_build_json";
+}
+"JSON::Any::__ANON__[JSON/Any.pm:108]" -> "JSON::XS::utf8";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "JSON::XS::utf8";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "JSON::XS::canonical";
+"JSON::BEGIN@2" -> "JSON::XS::BEGIN@121";
+"JSON::XS::Boolean::BEGIN@1477" -> "overload::import";
+"JSON::BEGIN@2" -> "JSON::XS::BEGIN@104";
+"JSON::XS::BEGIN@104" -> "common::sense::import";
+"JSON::BEGIN@2" -> "JSON::XS::BEGIN@122";
+"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]" -> "JSON::XS::new";
+"JSON::XS::BEGIN@121" -> "Exporter::import";
+"XSLoader::load" -> "DynaLoader::BEGIN@98";
+"JSON::Backend::XS::Supportable::_encode" -> "JSON::XS::encode";
+"JSON::BEGIN@2" -> "JSON::XS::Boolean::BEGIN@1477";
+"DynaLoader::BEGIN@98" -> "attributes::import";
+}

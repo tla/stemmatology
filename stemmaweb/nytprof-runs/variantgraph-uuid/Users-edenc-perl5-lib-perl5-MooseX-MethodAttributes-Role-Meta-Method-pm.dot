@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::get_method_attributes";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::associated_metaclass";
+	"Class::MOP::Method::body";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_7 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::7";
+	"Moose::Meta::Class::__ANON__::SERIAL::7::attributes";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method {
+	label="MooseX::MethodAttributes::Role::Meta::Method";
+	"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes";
+	"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list";
+}
+"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes" -> "MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef";
+"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes" -> "Class::MOP::Method::associated_metaclass";
+"MooseX::MethodAttributes::Role::Meta::Method::_build_attributes" -> "MooseX::MethodAttributes::Role::Meta::Map::get_method_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::BEGIN@12";
+"Moose::Meta::Class::__ANON__::SERIAL::7::attributes" -> "MooseX::MethodAttributes::Role::Meta::Method::_build_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@12" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::BEGIN@2";
+"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef" -> "Class::MOP::Method::body";
+}

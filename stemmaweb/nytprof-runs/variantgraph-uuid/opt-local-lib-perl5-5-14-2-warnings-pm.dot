@@ -1,0 +1,1511 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@236";
+	"Catalyst::Dispatcher::BEGIN@256";
+}
+subgraph cluster_Config {
+	label="Config";
+	"Config::BEGIN@10";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@1665";
+	"Catalyst::BEGIN@1154";
+	"Catalyst::BEGIN@1683";
+	"Catalyst::BEGIN@358";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@10";
+}
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::BEGIN@4";
+}
+subgraph cluster_DBIx_Class_Carp {
+	label="DBIx::Class::Carp";
+	"DBIx::Class::Carp::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@10";
+}
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@6";
+}
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@13";
+}
+subgraph cluster_Moose_Meta_Method_Constructor {
+	label="Moose::Meta::Method::Constructor";
+	"Moose::Meta::Method::Constructor::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Instance {
+	label="Moose::Meta::Instance";
+	"Moose::Meta::Instance::BEGIN@11";
+}
+subgraph cluster_File_Copy {
+	label="File::Copy";
+	"File::Copy::BEGIN@12";
+}
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::BEGIN@24";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::BEGIN@226";
+	"MRO::Compat::BEGIN@39";
+	"MRO::Compat::BEGIN@3";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@4";
+	"TryCatch::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@10";
+}
+subgraph cluster_Eval_Closure {
+	label="Eval::Closure";
+	"Eval::Closure::BEGIN@3";
+	"Eval::Closure::BEGIN@6";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::BEGIN@11";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@10";
+}
+subgraph cluster_XML_Easy_Syntax {
+	label="XML::Easy::Syntax";
+	"XML::Easy::Syntax::BEGIN@26";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::BEGIN@3";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@4";
+}
+subgraph cluster_IO {
+	label="IO";
+	"IO::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::BEGIN@7";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::BEGIN@4";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::BEGIN@3";
+}
+subgraph cluster_KiokuDB_LiveObjects_Guard {
+	label="KiokuDB::LiveObjects::Guard";
+	"KiokuDB::LiveObjects::Guard::BEGIN@4";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@4";
+}
+subgraph cluster_Config_Any_JSON {
+	label="Config::Any::JSON";
+	"Config::Any::JSON::BEGIN@4";
+}
+subgraph cluster_Catalyst_Runtime {
+	label="Catalyst::Runtime";
+	"Catalyst::Runtime::BEGIN@4";
+}
+subgraph cluster_Data_Dump {
+	label="Data::Dump";
+	"Data::Dump::BEGIN@235";
+}
+subgraph cluster_Moose_Meta_Method_Overridden {
+	label="Moose::Meta::Method::Overridden";
+	"Moose::Meta::Method::Overridden::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Module {
+	label="Class::MOP::Module";
+	"Class::MOP::Module::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@10";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::BEGIN@7";
+}
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::BEGIN@8";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@8";
+}
+subgraph cluster_DBIx_Class_Componentised {
+	label="DBIx::Class::Componentised";
+	"DBIx::Class::Componentised::BEGIN@5";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@10";
+}
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::BEGIN@7";
+	"Module::Implementation::BEGIN@114";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_ResultSetColumn {
+	label="DBIx::Class::ResultSetColumn";
+	"DBIx::Class::ResultSetColumn::BEGIN@4";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::BEGIN@45";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByPath {
+	label="Tree::Simple::Visitor::FindByPath";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@5";
+}
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Deprecated {
+	label="Class::MOP::Deprecated";
+	"Class::MOP::Deprecated::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Expand {
+	label="KiokuDB::TypeMap::Entry::Std::Expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Role_Method_Conflicting {
+	label="Moose::Meta::Role::Method::Conflicting";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_keys {
+	label="Moose::Meta::Method::Accessor::Native::Hash::keys";
+	"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::BEGIN@10";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::BEGIN@2";
+}
+subgraph cluster_Graph_Reader {
+	label="Graph::Reader";
+	"Graph::Reader::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@10";
+}
+subgraph cluster_Template_VMethods {
+	label="Template::VMethods";
+	"Template::VMethods::BEGIN@472";
+	"Template::VMethods::BEGIN@25";
+	"Template::VMethods::BEGIN@121";
+	"Template::VMethods::BEGIN@439";
+	"Template::VMethods::BEGIN@466";
+	"Template::VMethods::BEGIN@115";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BEGIN@56";
+}
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::BEGIN@6";
+}
+subgraph cluster_B_Deparse {
+	label="B::Deparse";
+	"B::Deparse::BEGIN@3369";
+}
+subgraph cluster_Package_Stash_XS {
+	label="Package::Stash::XS";
+	"Package::Stash::XS::BEGIN@6";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array {
+	label="Moose::Meta::Method::Accessor::Native::Array";
+	"Moose::Meta::Method::Accessor::Native::Array::BEGIN@10";
+}
+subgraph cluster_Plack_Component {
+	label="Plack::Component";
+	"Plack::Component::BEGIN@3";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::BEGIN@117";
+	"utf8::BEGIN@460";
+	"utf8::BEGIN@3";
+}
+subgraph cluster_Tree_Simple_Visitor {
+	label="Tree::Simple::Visitor";
+	"Tree::Simple::Visitor::BEGIN@5";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@67";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::BEGIN@11";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@42";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@11";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::BEGIN@11";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::BEGIN@6";
+	"Class::Load::BEGIN@2";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@3";
+	"namespace::clean::BEGIN@467";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_get {
+	label="Moose::Meta::Method::Accessor::Native::Array::get";
+	"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@10";
+}
+subgraph cluster_Devel_GlobalDestruction {
+	label="Devel::GlobalDestruction";
+	"Devel::GlobalDestruction::BEGIN@4";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+}
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::BEGIN@6";
+}
+subgraph cluster_Moose_Error_Default {
+	label="Moose::Error::Default";
+	"Moose::Error::Default::BEGIN@10";
+}
+subgraph cluster_Template_Stash {
+	label="Template::Stash";
+	"Template::Stash::BEGIN@23";
+}
+subgraph cluster_Template_Document {
+	label="Template::Document";
+	"Template::Document::BEGIN@25";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@11";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::BEGIN@4";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::BEGIN@10";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@2.10";
+}
+subgraph cluster_Scope_Guard {
+	label="Scope::Guard";
+	"Scope::Guard::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::BEGIN@11";
+}
+subgraph cluster_Encode_Alias {
+	label="Encode::Alias";
+	"Encode::Alias::BEGIN@3";
+	"Encode::Alias::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_elements {
+	label="Moose::Meta::Method::Accessor::Native::Array::elements";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@10";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::_error_loc";
+	"warnings::register_categories";
+	"warnings::_mkMask";
+	"warnings::enabled";
+	"warnings::__chk";
+	"warnings::CORE:match";
+	"warnings::import";
+	"warnings::unimport";
+	"warnings::_bits";
+	"warnings::CORE:regcomp";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@10";
+}
+subgraph cluster_Devel_Declare_Context_Simple {
+	label="Devel::Declare::Context::Simple";
+	"Devel::Declare::Context::Simple::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@10";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@42";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@7";
+}
+subgraph cluster_Moose_Meta_Method_Augmented {
+	label="Moose::Meta::Method::Augmented";
+	"Moose::Meta::Method::Augmented::BEGIN@10";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@122";
+}
+subgraph cluster_Template_Filters {
+	label="Template::Filters";
+	"Template::Filters::BEGIN@23";
+}
+subgraph cluster_Search_GIN_Driver {
+	label="Search::GIN::Driver";
+	"Search::GIN::Driver::BEGIN@80";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::BEGIN@3";
+}
+subgraph cluster_Template_Plugins {
+	label="Template::Plugins";
+	"Template::Plugins::BEGIN@27";
+}
+subgraph cluster_Encode_Config {
+	label="Encode::Config";
+	"Encode::Config::BEGIN@8";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@64";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::BEGIN@11";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::BEGIN@3";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::BEGIN@11";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Template_Exception {
+	label="Template::Exception";
+	"Template::Exception::BEGIN@23";
+}
+subgraph cluster_File_Basename {
+	label="File::Basename";
+	"File::Basename::BEGIN@52";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_dec {
+	label="Moose::Meta::Method::Accessor::Native::Counter::dec";
+	"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@10";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@2";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@4";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BEGIN@11";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::BEGIN@9";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@13";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_push {
+	label="Moose::Meta::Method::Accessor::Native::Array::push";
+	"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@10";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@2.13";
+	"main::BEGIN@1";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::BEGIN@5";
+	"DBIx::Class::Storage::DBI::BEGIN@110";
+}
+subgraph cluster_Class_XSAccessor_Heavy {
+	label="Class::XSAccessor::Heavy";
+	"Class::XSAccessor::Heavy::BEGIN@6";
+	"Class::XSAccessor::Heavy::BEGIN@30";
+}
+subgraph cluster_POSIX {
+	label="POSIX";
+	"POSIX::BEGIN@39";
+	"POSIX::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@10";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@10";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Class_Immutable_Trait {
+	label="Moose::Meta::Class::Immutable::Trait";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@10";
+}
+subgraph cluster_Plack_Util_Accessor {
+	label="Plack::Util::Accessor";
+	"Plack::Util::Accessor::BEGIN@3";
+}
+subgraph cluster_DBIx_Class_KiokuDB_EntryProxy {
+	label="DBIx::Class::KiokuDB::EntryProxy";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@10";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@5";
+}
+subgraph cluster_DBIx_Class_Storage_DBIHacks {
+	label="DBIx::Class::Storage::DBIHacks";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Hash::Writer";
+	"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@10";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@9";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@2.9";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@11";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::BEGIN@4";
+}
+subgraph cluster_re {
+	label="re";
+	"re::BEGIN@5";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::BEGIN@11";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::BEGIN@22";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Reader {
+	label="Moose::Meta::Method::Accessor::Native::Reader";
+	"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_Exception {
+	label="DBIx::Class::Exception";
+	"DBIx::Class::Exception::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Method_Generated {
+	label="Class::MOP::Method::Generated";
+	"Class::MOP::Method::Generated::BEGIN@11";
+}
+subgraph cluster_Moose_Error_Util {
+	label="Moose::Error::Util";
+	"Moose::Error::Util::BEGIN@5";
+}
+subgraph cluster_Data_Compare {
+	label="Data::Compare";
+	"Data::Compare::BEGIN@10";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::BEGIN@2.19";
+	"Module::Runtime::BEGIN@2";
+	"Module::Runtime::BEGIN@2.21";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@4";
+}
+subgraph cluster_Config_Any_Perl {
+	label="Config::Any::Perl";
+	"Config::Any::Perl::BEGIN@4";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::BEGIN@11";
+}
+subgraph cluster_Moose_Deprecated {
+	label="Moose::Deprecated";
+	"Moose::Deprecated::BEGIN@10";
+}
+subgraph cluster_Plack_Middleware_ReverseProxy {
+	label="Plack::Middleware::ReverseProxy";
+	"Plack::Middleware::ReverseProxy::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Counter_inc {
+	label="Moose::Meta::Method::Accessor::Native::Counter::inc";
+	"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::BEGIN@10";
+}
+subgraph cluster_Template_Constants {
+	label="Template::Constants";
+	"Template::Constants::BEGIN@23";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::BEGIN@2";
+}
+subgraph cluster_Class_MOP_Method_Overload {
+	label="Class::MOP::Method::Overload";
+	"Class::MOP::Method::Overload::BEGIN@11";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::BEGIN@4";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::BEGIN@10";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::BEGIN@10";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::BEGIN@3";
+}
+subgraph cluster_SQL_Abstract {
+	label="SQL::Abstract";
+	"SQL::Abstract::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::BEGIN@240";
+	"DBIx::Class::Schema::BEGIN@242";
+	"DBIx::Class::Schema::BEGIN@943";
+	"DBIx::Class::Schema::BEGIN@916";
+	"DBIx::Class::Schema::BEGIN@378";
+	"DBIx::Class::Schema::BEGIN@380";
+	"DBIx::Class::Schema::BEGIN@4";
+	"DBIx::Class::Schema::BEGIN@918";
+}
+subgraph cluster_YAML_XS_LibYAML {
+	label="YAML::XS::LibYAML";
+	"YAML::XS::LibYAML::BEGIN@4";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::BEGIN@4";
+}
+subgraph cluster_Config_Any_INI {
+	label="Config::Any::INI";
+	"Config::Any::INI::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@6";
+}
+subgraph cluster_Devel_PartialDump {
+	label="Devel::PartialDump";
+	"Devel::PartialDump::BEGIN@21";
+	"Devel::PartialDump::BEGIN@128";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@10";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::BEGIN@5";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::BEGIN@11";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::BEGIN@197";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::BEGIN@4";
+	"Devel::Declare::BEGIN@102";
+	"Devel::Declare::BEGIN@103";
+	"Devel::Declare::BEGIN@117";
+	"Devel::Declare::BEGIN@2";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@130";
+	"Data::Visitor::Callback::BEGIN@8.16";
+	"Data::Visitor::Callback::BEGIN@270";
+	"Data::Visitor::Callback::BEGIN@227";
+	"Data::Visitor::Callback::BEGIN@8.15";
+	"Data::Visitor::Callback::BEGIN@193";
+	"Data::Visitor::Callback::BEGIN@177";
+	"Data::Visitor::Callback::BEGIN@16";
+	"Data::Visitor::Callback::BEGIN@8.17";
+	"Data::Visitor::Callback::BEGIN@8.14";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::BEGIN@4";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::BEGIN@376";
+	"Data::Visitor::BEGIN@18";
+}
+subgraph cluster_File_Glob {
+	label="File::Glob";
+	"File::Glob::BEGIN@50";
+}
+subgraph cluster_Catalyst_View_Download_Plain {
+	label="Catalyst::View::Download::Plain";
+	"Catalyst::View::Download::Plain::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Meta {
+	label="Moose::Meta::Method::Meta";
+	"Moose::Meta::Method::Meta::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::BEGIN@251";
+	"KiokuDB::Entry::BEGIN@182";
+	"KiokuDB::Entry::BEGIN@218";
+	"KiokuDB::Entry::BEGIN@139";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::BEGIN@10";
+}
+subgraph cluster_Plack_Util {
+	label="Plack::Util";
+	"Plack::Util::BEGIN@31";
+}
+subgraph cluster_XML_LibXML_AttributeHash {
+	label="XML::LibXML::AttributeHash";
+	"XML::LibXML::AttributeHash::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@10";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@6";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::BEGIN@6";
+	"Encode::BEGIN@242";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@16";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::BEGIN@11";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::BEGIN@11";
+}
+subgraph cluster_Text_SimpleTable {
+	label="Text::SimpleTable";
+	"Text::SimpleTable::BEGIN@6";
+}
+subgraph cluster_Plack_Middleware {
+	label="Plack::Middleware";
+	"Plack::Middleware::BEGIN@3";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::BEGIN@41";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_exists {
+	label="Moose::Meta::Method::Accessor::Native::Hash::exists";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@261";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@239";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@287";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::BEGIN@11";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@12";
+	"XML::LibXML::Error::BEGIN@245";
+	"XML::LibXML::Error::BEGIN@15";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::BEGIN@4";
+}
+subgraph cluster_Config_Any_YAML {
+	label="Config::Any::YAML";
+	"Config::Any::YAML::BEGIN@4";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::BEGIN@7";
+}
+subgraph cluster_Text_TEI_Markup {
+	label="Text::TEI::Markup";
+	"Text::TEI::Markup::BEGIN@433";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::BEGIN@11";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@10";
+}
+subgraph cluster_Text_Tradition_StemmaUtil {
+	label="Text::Tradition::StemmaUtil";
+	"Text::Tradition::StemmaUtil::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::BEGIN@11";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByUID {
+	label="Tree::Simple::Visitor::FindByUID";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@5";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Trait {
+	label="Class::MOP::Class::Immutable::Trait";
+	"Class::MOP::Class::Immutable::Trait::BEGIN@10";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::BEGIN@45";
+	"Template::Base::BEGIN@23";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::BEGIN@4";
+}
+subgraph cluster_English {
+	label="English";
+	"English::BEGIN@47";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@29";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::BEGIN@133";
+	"Moose::Exporter::BEGIN@10";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@667";
+	"Moose::Util::TypeConstraints::BEGIN@673";
+	"Moose::Util::TypeConstraints::BEGIN@694";
+	"Moose::Util::TypeConstraints::BEGIN@678";
+}
+subgraph cluster_Class_MOP_Method_Inlined {
+	label="Class::MOP::Method::Inlined";
+	"Class::MOP::Method::Inlined::BEGIN@10";
+}
+subgraph cluster_Template_Service {
+	label="Template::Service";
+	"Template::Service::BEGIN@24";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@2";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::BEGIN@399";
+	"Carp::BEGIN@406";
+	"Carp::BEGIN@5";
+	"Carp::short_error_loc";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::BEGIN@3";
+}
+subgraph cluster_Template_Timer {
+	label="Template::Timer";
+	"Template::Timer::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_values {
+	label="Moose::Meta::Method::Accessor::Native::Hash::values";
+	"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@10";
+}
+subgraph cluster_stemmaweb_View_TT {
+	label="stemmaweb::View::TT";
+	"stemmaweb::View::TT::BEGIN@4";
+}
+subgraph cluster_Class_C3_Adopt_NEXT {
+	label="Class::C3::Adopt::NEXT";
+	"Class::C3::Adopt::NEXT::BEGIN@27";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::BEGIN@4";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::BEGIN@4";
+	"Class::XSAccessor::BEGIN@80";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_count {
+	label="Moose::Meta::Method::Accessor::Native::Array::count";
+	"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@10";
+}
+subgraph cluster_DBIx_Class_Optional_Dependencies {
+	label="DBIx::Class::Optional::Dependencies";
+	"DBIx::Class::Optional::Dependencies::BEGIN@3";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::BEGIN@10";
+}
+subgraph cluster_Template_Stash_XS {
+	label="Template::Stash::XS";
+	"Template::Stash::XS::BEGIN@15";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::BEGIN@6";
+}
+subgraph cluster_Config_Any_XML {
+	label="Config::Any::XML";
+	"Config::Any::XML::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@4";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2.2";
+}
+subgraph cluster_Encode_MIME_Name {
+	label="Encode::MIME::Name";
+	"Encode::MIME::Name::BEGIN@3";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::BEGIN@250";
+	"Class::Accessor::Grouped::BEGIN@38";
+	"Class::Accessor::Grouped::BEGIN@766";
+	"Class::Accessor::Grouped::BEGIN@3";
+	"Class::Accessor::Grouped::BEGIN@793";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@4";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_get {
+	label="Moose::Meta::Method::Accessor::Native::Hash::get";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::BEGIN@11";
+	"Class::MOP::Package::BEGIN@95";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@842";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@6";
+}
+subgraph cluster_Template {
+	label="Template";
+	"Template::BEGIN@23";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Array::Writer";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@10";
+}
+"main::BEGIN@1" -> "warnings::CORE:match";
+"warnings::register_categories" -> "warnings::_mkMask";
+"warnings::enabled" -> "warnings::__chk";
+"warnings::__chk" -> "Carp::short_error_loc";
+"attributes::import" -> "warnings::enabled";
+"Template::Stash::BEGIN@23" -> "warnings::import";
+"Moose::Meta::Role::Attribute::BEGIN@10" -> "warnings::import";
+"Moose::Exporter::import" -> "warnings::import";
+"Devel::Declare::Context::Simple::BEGIN@4" -> "warnings::import";
+"DBIx::Class::Storage::DBI::BEGIN@5" -> "warnings::import";
+"Template::Document::BEGIN@25" -> "warnings::import";
+"Class::MOP::Mixin::BEGIN@10" -> "warnings::import";
+"Config::BEGIN@10" -> "warnings::import";
+"MooseX::StrictConstructor::BEGIN@7" -> "warnings::import";
+"namespace::autoclean::BEGIN@2" -> "warnings::import";
+"Class::MOP::Attribute::BEGIN@11" -> "warnings::import";
+"Catalyst::View::Download::Plain::BEGIN@4" -> "warnings::import";
+"Catalyst::Component::BEGIN@2" -> "warnings::import";
+"MooseX::Types::UndefinedType::BEGIN@6" -> "warnings::import";
+"DBIx::Class::Schema::BEGIN@242" -> "warnings::import";
+"Class::Load::BEGIN@6" -> "warnings::import";
+"Moose::Meta::Role::Application::ToInstance::BEGIN@10" -> "warnings::import";
+"Moose::Object::BEGIN@11" -> "warnings::import";
+"Class::MOP::MiniTrait::BEGIN@10" -> "warnings::import";
+"Tree::Simple::BEGIN@7" -> "warnings::import";
+"DBIx::Class::Storage::DBI::SQLite::BEGIN@4" -> "warnings::import";
+"Class::MOP::Object::BEGIN@11" -> "warnings::import";
+"MooseX::Types::import" -> "warnings::import";
+"Template::Base::BEGIN@23" -> "warnings::import";
+"Plack::Middleware::BEGIN@3" -> "warnings::import";
+"Moose::Meta::Method::Accessor::BEGIN@11" -> "warnings::import";
+"Moose::BEGIN@9" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::count::BEGIN@10" -> "warnings::import";
+"Class::MOP::Module::BEGIN@11" -> "warnings::import";
+"Module::Implementation::BEGIN@7" -> "warnings::import";
+"Catalyst::View::TT::BEGIN@4" -> "warnings::import";
+"Config::General::BEGIN@16" -> "warnings::import";
+"DBIx::Class::Optional::Dependencies::BEGIN@3" -> "warnings::import";
+"metaclass::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Attribute::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Meta::BEGIN@11" -> "warnings::import";
+"Class::MOP::Instance::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::Writer::BEGIN@10" -> "warnings::import";
+"HTTP::Message::PSGI::BEGIN@3" -> "warnings::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@10" -> "warnings::import";
+"Moose::Error::Default::BEGIN@10" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Union::BEGIN@11" -> "warnings::import";
+"Class::MOP::Method::Accessor::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Writer::BEGIN@10" -> "warnings::import";
+"Moose::Role::BEGIN@9" -> "warnings::import";
+"Moose::Meta::TypeCoercion::BEGIN@11" -> "warnings::import";
+"Carp::BEGIN@5" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@10" -> "warnings::import";
+"DBIx::Class::ResultSetColumn::BEGIN@4" -> "warnings::import";
+"Plack::Component::BEGIN@3" -> "warnings::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@10" -> "warnings::import";
+"Catalyst::Action::RenderView::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::get::BEGIN@10" -> "warnings::import";
+"Template::Constants::BEGIN@23" -> "warnings::import";
+"Text::Tradition::Parser::GraphML::BEGIN@4" -> "warnings::import";
+"Eval::Closure::BEGIN@6" -> "warnings::import";
+"Moose::Error::Util::BEGIN@5" -> "warnings::import";
+"String::Errf::BEGIN@2" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::push::BEGIN@10" -> "warnings::import";
+"Data::Stream::Bulk::Util::BEGIN@10" -> "warnings::import";
+"re::BEGIN@5" -> "warnings::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@11" -> "warnings::import";
+"Template::Service::BEGIN@24" -> "warnings::import";
+"Text::Tradition::Analysis::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Error::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Role::Application::ToClass::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Storage::TxnScopeGuard::BEGIN@4" -> "warnings::import";
+"DBIx::Class::Storage::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Method::Destructor::BEGIN@11" -> "warnings::import";
+"namespace::clean::BEGIN@3" -> "warnings::import";
+"Moose::Util::MetaRole::BEGIN@10" -> "warnings::import";
+"stemmaweb::View::TT::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@4" -> "warnings::import";
+"MRO::Compat::BEGIN@3" -> "warnings::import";
+"Encode::BEGIN@6" -> "warnings::import";
+"XML::LibXML::AttributeHash::BEGIN@4" -> "warnings::import";
+"MooseX::Types::Moose::BEGIN@8" -> "warnings::import";
+"Moose::Meta::TypeConstraint::BEGIN@11" -> "warnings::import";
+"Class::MOP::Class::Immutable::Trait::BEGIN@10" -> "warnings::import";
+"Class::MOP::Deprecated::BEGIN@10" -> "warnings::import";
+"Tree::Simple::Visitor::BEGIN@5" -> "warnings::import";
+"Config::Any::General::BEGIN@4" -> "warnings::import";
+"Catalyst::Utils::BEGIN@2" -> "warnings::import";
+"Moose::Meta::Role::Application::ToRole::BEGIN@10" -> "warnings::import";
+"File::stat::BEGIN@5" -> "warnings::import";
+"Config::Any::JSON::BEGIN@4" -> "warnings::import";
+"Moose::Util::BEGIN@10" -> "warnings::import";
+"Template::Filters::BEGIN@23" -> "warnings::import";
+"SQL::Abstract::BEGIN@10" -> "warnings::import";
+"Moose::Deprecated::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Instance::BEGIN@11" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@10" -> "warnings::import";
+"File::Basename::BEGIN@52" -> "warnings::import";
+"Catalyst::Runtime::BEGIN@4" -> "warnings::import";
+"main::BEGIN@1" -> "warnings::import";
+"Config::Any::INI::BEGIN@4" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Class::BEGIN@10" -> "warnings::import";
+"YAML::XS::LibYAML::BEGIN@4" -> "warnings::import";
+"utf8::BEGIN@3" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::exists::BEGIN@10" -> "warnings::import";
+"stemmaweb::Model::Directory::BEGIN@3" -> "warnings::import";
+"Scope::Upper::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Method::BEGIN@10" -> "warnings::import";
+"Tree::Simple::Visitor::FindByUID::BEGIN@5" -> "warnings::import";
+"Moose::Meta::Role::Composite::BEGIN@10" -> "warnings::import";
+"Class::MOP::Method::Generated::BEGIN@11" -> "warnings::import";
+"DBIx::Class::Carp::BEGIN@4" -> "warnings::import";
+"Moose::Util::TypeConstraints::Builtins::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Componentised::BEGIN@5" -> "warnings::import";
+"Class::MOP::Method::Meta::BEGIN@11" -> "warnings::import";
+"Class::XSAccessor::BEGIN@4" -> "warnings::import";
+"Template::Config::BEGIN@22" -> "warnings::import";
+"Data::Compare::BEGIN@10" -> "warnings::import";
+"Devel::Declare::BEGIN@4" -> "warnings::import";
+"Class::C3::Componentised::BEGIN@41" -> "warnings::import";
+"mro::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@10" -> "warnings::import";
+"DBIx::Class::ResultSource::BEGIN@4" -> "warnings::import";
+"DBIx::Class::AccessorGroup::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::keys::BEGIN@10" -> "warnings::import";
+"Template::Timer::BEGIN@3" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::values::BEGIN@10" -> "warnings::import";
+"DBIx::Class::ResultSet::BEGIN@4" -> "warnings::import";
+"MooseX::Types::Util::BEGIN@8" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::get::BEGIN@10" -> "warnings::import";
+"Variable::Magic::BEGIN@6" -> "warnings::import";
+"Devel::Declare::BEGIN@2" -> "warnings::import";
+"Text::Tradition::Parser::Self::BEGIN@4" -> "warnings::import";
+"Encode::Alias::BEGIN@3" -> "warnings::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@2" -> "warnings::import";
+"DBIx::Class::BEGIN@4" -> "warnings::import";
+"Template::Provider::BEGIN@42" -> "warnings::import";
+"Package::DeprecationManager::BEGIN@7" -> "warnings::import";
+"Class::MOP::Method::Inlined::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Schema::BEGIN@918" -> "warnings::import";
+"Module::Runtime::BEGIN@2.21" -> "warnings::import";
+"Throwable::X::BEGIN@2.9" -> "warnings::import";
+"Config::Any::XML::BEGIN@4" -> "warnings::import";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "warnings::import";
+"Config::Any::Base::BEGIN@4" -> "warnings::import";
+"Eval::Closure::BEGIN@3" -> "warnings::import";
+"XML::LibXML::NodeList::BEGIN@13" -> "warnings::import";
+"Moose::Meta::Role::Method::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Overridden::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@10" -> "warnings::import";
+"Encode::Config::BEGIN@8" -> "warnings::import";
+"Package::Stash::XS::BEGIN@6" -> "warnings::import";
+"Sub::Install::BEGIN@3" -> "warnings::import";
+"Moose::Meta::Method::Augmented::BEGIN@10" -> "warnings::import";
+"Class::MOP::Mixin::AttributeCore::BEGIN@10" -> "warnings::import";
+"Class::MOP::Method::Wrapped::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Counter::inc::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Delegation::BEGIN@11" -> "warnings::import";
+"Graph::Reader::BEGIN@7" -> "warnings::import";
+"Moose::Meta::Role::BEGIN@10" -> "warnings::import";
+"Class::Accessor::Grouped::BEGIN@3" -> "warnings::import";
+"Hash::Util::FieldHash::Compat::BEGIN@6" -> "warnings::import";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@10" -> "warnings::import";
+"Class::Load::BEGIN@2" -> "warnings::import";
+"Text::Tradition::StemmaUtil::BEGIN@4" -> "warnings::import";
+"MooseX::Types::TypeDecorator::BEGIN@9" -> "warnings::import";
+"JSON::Any::BEGIN@3" -> "warnings::import";
+"Tree::Simple::Visitor::FindByPath::BEGIN@5" -> "warnings::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@9" -> "warnings::import";
+"Scope::Guard::BEGIN@4" -> "warnings::import";
+"Template::Stash::XS::BEGIN@15" -> "warnings::import";
+"Class::MOP::Method::BEGIN@11" -> "warnings::import";
+"Config::Any::Perl::BEGIN@4" -> "warnings::import";
+"KiokuDB::Util::BEGIN@6" -> "warnings::import";
+"Moose::Meta::Role::Application::BEGIN@10" -> "warnings::import";
+"Class::MOP::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::BEGIN@10" -> "warnings::import";
+"Template::Plugins::BEGIN@27" -> "warnings::import";
+"Hash::Util::FieldHash::BEGIN@5" -> "warnings::import";
+"Class::MOP::Mixin::HasAttributes::BEGIN@10" -> "warnings::import";
+"Package::Stash::BEGIN@6" -> "warnings::import";
+"Class::MOP::Method::Constructor::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Counter::dec::BEGIN@10" -> "warnings::import";
+"XML::LibXML::Error::BEGIN@12" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@11" -> "warnings::import";
+"Role::HasMessage::Errf::BEGIN@2.10" -> "warnings::import";
+"Moose::Meta::TypeCoercion::Union::BEGIN@11" -> "warnings::import";
+"POSIX::BEGIN@3" -> "warnings::import";
+"Template::Exception::BEGIN@23" -> "warnings::import";
+"Plack::Util::Accessor::BEGIN@3" -> "warnings::import";
+"Devel::GlobalDestruction::BEGIN@4" -> "warnings::import";
+"Text::SimpleTable::BEGIN@6" -> "warnings::import";
+"Template::Context::BEGIN@24" -> "warnings::import";
+"MooseX::Traits::BEGIN@6" -> "warnings::import";
+"Text::Tradition::Directory::BEGIN@4" -> "warnings::import";
+"DBIx::Class::ResultSource::Table::BEGIN@4" -> "warnings::import";
+"XML::Easy::Syntax::BEGIN@26" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@10" -> "warnings::import";
+"TryCatch::BEGIN@2" -> "warnings::import";
+"DBIx::Class::Exception::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Array::BEGIN@10" -> "warnings::import";
+"Class::Load::XS::BEGIN@7" -> "warnings::import";
+"Module::Runtime::BEGIN@2.19" -> "warnings::import";
+"Moose::Meta::Mixin::AttributeCore::BEGIN@10" -> "warnings::import";
+"stemmaweb::BEGIN@2.2" -> "warnings::import";
+"Template::VMethods::BEGIN@25" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Role::BEGIN@10" -> "warnings::import";
+"Module::Runtime::BEGIN@2" -> "warnings::import";
+"Encode::MIME::Name::BEGIN@3" -> "warnings::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Constructor::BEGIN@11" -> "warnings::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@4" -> "warnings::import";
+"IO::BEGIN@8" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Reader::BEGIN@10" -> "warnings::import";
+"Class::MOP::Package::BEGIN@11" -> "warnings::import";
+"File::Copy::BEGIN@12" -> "warnings::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@10" -> "warnings::import";
+"File::Find::BEGIN@4" -> "warnings::import";
+"Class::XSAccessor::Heavy::BEGIN@6" -> "warnings::import";
+"DBIx::Class::Schema::BEGIN@4" -> "warnings::import";
+"Moose::Meta::Role::Method::Required::BEGIN@11" -> "warnings::import";
+"TryCatch::BEGIN@4" -> "warnings::import";
+"Plack::Test::BEGIN@3" -> "warnings::import";
+"Encode::Encoding::BEGIN@5" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::set::BEGIN@10" -> "warnings::import";
+"Plack::Test::MockHTTP::BEGIN@3" -> "warnings::import";
+"Sub::Name::BEGIN@45" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@10" -> "warnings::import";
+"main::BEGIN@2.13" -> "warnings::import";
+"Class::MOP::Method::Overload::BEGIN@11" -> "warnings::import";
+"Config::Any::YAML::BEGIN@4" -> "warnings::import";
+"MooseX::Traits::Util::BEGIN@3" -> "warnings::import";
+"DBIx::Class::Schema::BEGIN@380" -> "warnings::import";
+"KiokuDB::LiveObjects::Guard::BEGIN@4" -> "warnings::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@4" -> "warnings::import";
+"Config::Any::BEGIN@4" -> "warnings::import";
+"Graph::Reader::Dot::BEGIN@13" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@10" -> "warnings::import";
+"Moose::Exporter::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Class::BEGIN@11" -> "warnings::import";
+"Plack::Middleware::ReverseProxy::BEGIN@4" -> "warnings::import";
+"Class::MOP::Class::BEGIN@11" -> "warnings::import";
+"Template::BEGIN@23" -> "warnings::import";
+"Moose::Util::TypeConstraints::BEGIN@673" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@218" -> "warnings::unimport";
+"namespace::clean::BEGIN@467" -> "warnings::unimport";
+"KiokuDB::BEGIN@29" -> "warnings::unimport";
+"DBIx::Class::Storage::DBI::BEGIN@110" -> "warnings::unimport";
+"XML::LibXML::Error::BEGIN@245" -> "warnings::unimport";
+"File::Glob::BEGIN@50" -> "warnings::unimport";
+"Class::C3::Adopt::NEXT::BEGIN@27" -> "warnings::unimport";
+"XML::LibXML::Error::BEGIN@15" -> "warnings::unimport";
+"Devel::Declare::BEGIN@103" -> "warnings::unimport";
+"utf8::BEGIN@460" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@8.15" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@261" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@6" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@9" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@270" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@4" -> "warnings::unimport";
+"Encode::BEGIN@242" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@287" -> "warnings::unimport";
+"Bio::Phylo::BEGIN@842" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@227" -> "warnings::unimport";
+"Moose::Util::TypeConstraints::BEGIN@694" -> "warnings::unimport";
+"Template::VMethods::BEGIN@115" -> "warnings::unimport";
+"Devel::Declare::BEGIN@117" -> "warnings::unimport";
+"IO::Dir::BEGIN@42" -> "warnings::unimport";
+"KiokuDB::LiveObjects::BEGIN@67" -> "warnings::unimport";
+"Template::Base::BEGIN@45" -> "warnings::unimport";
+"DBIx::Class::Schema::BEGIN@378" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@139" -> "warnings::unimport";
+"Catalyst::BEGIN@358" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@8.16" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Closure::BEGIN@7" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@10" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Callback::BEGIN@6" -> "warnings::unimport";
+"Search::GIN::Driver::BEGIN@80" -> "warnings::unimport";
+"DBIx::Class::Schema::BEGIN@240" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@4" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@251" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@177" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@16" -> "warnings::unimport";
+"Catalyst::Dispatcher::BEGIN@256" -> "warnings::unimport";
+"Catalyst::BEGIN@1683" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@4" -> "warnings::unimport";
+"Moose::Util::TypeConstraints::BEGIN@667" -> "warnings::unimport";
+"Template::VMethods::BEGIN@439" -> "warnings::unimport";
+"MRO::Compat::BEGIN@39" -> "warnings::unimport";
+"Module::Implementation::BEGIN@114" -> "warnings::unimport";
+"English::BEGIN@47" -> "warnings::unimport";
+"Catalyst::BEGIN@1665" -> "warnings::unimport";
+"Carp::BEGIN@399" -> "warnings::unimport";
+"Catalyst::Engine::BEGIN@64" -> "warnings::unimport";
+"MRO::Compat::BEGIN@226" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@8.17" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@8.14" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Naive::BEGIN@6" -> "warnings::unimport";
+"B::Deparse::BEGIN@3369" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@250" -> "warnings::unimport";
+"Moose::Exporter::BEGIN@133" -> "warnings::unimport";
+"Devel::Declare::BEGIN@102" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@766" -> "warnings::unimport";
+"Carp::BEGIN@406" -> "warnings::unimport";
+"Text::Tradition::TypeMap::Entry::BEGIN@4" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@130" -> "warnings::unimport";
+"Plack::Util::BEGIN@31" -> "warnings::unimport";
+"Exporter::Heavy::BEGIN@197" -> "warnings::unimport";
+"Template::VMethods::BEGIN@121" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@11" -> "warnings::unimport";
+"DBIx::Class::Schema::BEGIN@916" -> "warnings::unimport";
+"Catalyst::Action::BEGIN@56" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@4" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Compiled::BEGIN@4" -> "warnings::unimport";
+"POSIX::BEGIN@39" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@193" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@38" -> "warnings::unimport";
+"Catalyst::Dispatcher::BEGIN@236" -> "warnings::unimport";
+"utf8::BEGIN@117" -> "warnings::unimport";
+"DBIx::Class::Schema::BEGIN@943" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@239" -> "warnings::unimport";
+"Data::Dump::BEGIN@235" -> "warnings::unimport";
+"Class::XSAccessor::BEGIN@80" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@793" -> "warnings::unimport";
+"Data::Visitor::BEGIN@376" -> "warnings::unimport";
+"Devel::PartialDump::BEGIN@21" -> "warnings::unimport";
+"Catalyst::BEGIN@1154" -> "warnings::unimport";
+"Time::Piece::BEGIN@122" -> "warnings::unimport";
+"Text::TEI::Markup::BEGIN@433" -> "warnings::unimport";
+"KiokuDB::Collapser::BEGIN@6" -> "warnings::unimport";
+"Class::MOP::Package::BEGIN@95" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@182" -> "warnings::unimport";
+"Template::VMethods::BEGIN@466" -> "warnings::unimport";
+"Data::Visitor::BEGIN@18" -> "warnings::unimport";
+"Devel::PartialDump::BEGIN@128" -> "warnings::unimport";
+"Template::VMethods::BEGIN@472" -> "warnings::unimport";
+"Encode::Alias::BEGIN@4" -> "warnings::unimport";
+"Moose::Util::TypeConstraints::BEGIN@678" -> "warnings::unimport";
+"Class::XSAccessor::Heavy::BEGIN@30" -> "warnings::unimport";
+"warnings::register::import" -> "warnings::register_categories";
+"main::BEGIN@1" -> "warnings::CORE:regcomp";
+"warnings::import" -> "warnings::_bits";
+"warnings::__chk" -> "warnings::_error_loc";
+}

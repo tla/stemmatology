@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::BEGIN@68";
+}
+subgraph cluster_DBIx_Class_Optional_Dependencies {
+	label="DBIx::Class::Optional::Dependencies";
+	"DBIx::Class::Optional::Dependencies::BEGIN@4";
+	"DBIx::Class::Optional::Dependencies::BEGIN@3";
+	"DBIx::Class::Optional::Dependencies::BEGIN@6";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@6";
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@4";
+"DBIx::Class::Optional::Dependencies::BEGIN@4" -> "strict::import";
+"DBIx::Class::Optional::Dependencies::BEGIN@3" -> "warnings::import";
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@3";
+}

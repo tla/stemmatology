@@ -1,0 +1,68 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@11";
+	"Catalyst::handle_request";
+	"Catalyst::setup";
+}
+subgraph cluster_Data_Dump {
+	label="Data::Dump";
+	"Data::Dump::BEGIN@15";
+	"Data::Dump::BEGIN@16";
+	"Data::Dump::BEGIN@5";
+	"Data::Dump::BEGIN@235";
+	"Data::Dump::BEGIN@4";
+	"Data::Dump::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::levels";
+	"Catalyst::Log::BEGIN@8";
+	"Catalyst::Log::_flush";
+	"Catalyst::Log::level";
+	"Catalyst::Log::BEGIN@3";
+	"Catalyst::Log::BEGIN@131";
+	"Catalyst::Log::BEGIN@7";
+	"Catalyst::Log::enable";
+	"Catalyst::Log::abort";
+	"Catalyst::Log::BEGIN@6";
+	"Catalyst::Log::_body";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::Log::_flush" -> "Catalyst::Log::abort";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@6";
+"Class::MOP::Class:::around" -> "Catalyst::Log::levels";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@131";
+"Catalyst::Log::levels" -> "Catalyst::Log::level";
+"Catalyst::Log::enable" -> "Catalyst::Log::level";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@3";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@4";
+"Catalyst::Log::_flush" -> "Catalyst::Log::_body";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@3";
+"Catalyst::Log::BEGIN@131" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Log::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Log::BEGIN@6" -> "Exporter::import";
+"Catalyst::Log::BEGIN@8" -> "Exporter::import";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@15";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@7";
+"Catalyst::handle_request" -> "Catalyst::Log::_flush";
+"Catalyst::setup" -> "Catalyst::Log::_flush";
+"Catalyst::Log::levels" -> "Catalyst::Log::enable";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@5";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@8";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@16";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@235";
+}

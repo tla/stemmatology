@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@7";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@4";
+	"DBIx::Class::ResultSourceHandle::BEGIN@8";
+	"DBIx::Class::ResultSourceHandle::BEGIN@9";
+	"DBIx::Class::ResultSourceHandle::BEGIN@6";
+	"DBIx::Class::ResultSourceHandle::BEGIN@11";
+	"DBIx::Class::ResultSourceHandle::BEGIN@3";
+	"DBIx::Class::ResultSourceHandle::BEGIN@14";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::ResultSourceHandle::BEGIN@14" -> "overload::import";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@14";
+"DBIx::Class::ResultSourceHandle::BEGIN@8" -> "UNIVERSAL::import";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@6";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@11";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@4";
+"DBIx::Class::ResultSourceHandle::BEGIN@11" -> "namespace::clean::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@3" -> "strict::import";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@9";
+"DBIx::Class::ResultSourceHandle::BEGIN@9" -> "Exporter::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@6" -> "base::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@4" -> "warnings::import";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@3";
+"DBIx::Class::ResultSource::BEGIN@7" -> "DBIx::Class::ResultSourceHandle::BEGIN@8";
+}

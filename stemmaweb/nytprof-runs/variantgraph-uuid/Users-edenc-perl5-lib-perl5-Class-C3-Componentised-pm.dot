@@ -1,0 +1,237 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::first";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::__ANON__[MRO/Compat.pm:41]";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@6";
+	"DBIx::Class::ResultSource::BEGIN@14";
+	"DBIx::Class::ResultSource::BEGIN@10";
+	"DBIx::Class::ResultSource::BEGIN@13";
+	"DBIx::Class::ResultSource::BEGIN@16";
+	"DBIx::Class::ResultSource::BEGIN@3";
+	"DBIx::Class::ResultSource::BEGIN@11";
+	"DBIx::Class::ResultSource::BEGIN@9";
+	"DBIx::Class::ResultSource::BEGIN@4";
+	"DBIx::Class::ResultSource::BEGIN@7";
+	"DBIx::Class::ResultSource::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@26";
+}
+subgraph cluster_DBIx_Class_Componentised {
+	label="DBIx::Class::Componentised";
+	"DBIx::Class::Componentised::inject_base";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@12";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@17";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@15";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@2";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@21";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@14";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@10";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@19";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@4";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@11";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@3";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@6";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@10";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@9";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@7";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::BEGIN@16";
+	"DBIx::Class::Storage::DBI::BEGIN@10";
+	"DBIx::Class::Storage::DBI::BEGIN@15";
+	"DBIx::Class::Storage::DBI::sql_limit_dialect";
+	"DBIx::Class::Storage::DBI::BEGIN@1407";
+	"DBIx::Class::Storage::DBI::sql_maker_class";
+	"DBIx::Class::Storage::DBI::BEGIN@5";
+	"DBIx::Class::Storage::DBI::BEGIN@4";
+	"DBIx::Class::Storage::DBI::BEGIN@110";
+	"DBIx::Class::Storage::DBI::BEGIN@14";
+	"DBIx::Class::Storage::DBI::datetime_parser_type";
+	"DBIx::Class::Storage::DBI::BEGIN@17";
+	"DBIx::Class::Storage::DBI::BEGIN@12";
+	"DBIx::Class::Storage::DBI::_use_join_optimizer";
+	"DBIx::Class::Storage::DBI::BEGIN@8";
+	"DBIx::Class::Storage::DBI::BEGIN@7";
+	"DBIx::Class::Storage::DBI::sql_name_sep";
+	"DBIx::Class::Storage::DBI::BEGIN@13";
+	"DBIx::Class::Storage::DBI::BEGIN@11";
+	"DBIx::Class::Storage::DBI::sql_quote_char";
+	"DBIx::Class::Storage::DBI::_determine_driver";
+	"DBIx::Class::Storage::DBI::BEGIN@109";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_linear_isa";
+	"mro::set_mro";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::mk_classdata";
+	"DBIx::Class::component_base_class";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:829]";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::get_component_class";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::cursor_class";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::inject_base";
+	"Class::C3::Componentised::load_components";
+	"Class::C3::Componentised::BEGIN@50";
+	"Class::C3::Componentised::BEGIN@198";
+	"Class::C3::Componentised::BEGIN@51";
+	"Class::C3::Componentised::__ANON__[Class/C3/Componentised.pm:199]";
+	"Class::C3::Componentised::BEGIN@40";
+	"Class::C3::Componentised::load_optional_class";
+	"Class::C3::Componentised::CORE:match";
+	"Class::C3::Componentised::CORE:qr";
+	"Class::C3::Componentised::_load_components";
+	"Class::C3::Componentised::BEGIN@48";
+	"Class::C3::Componentised::BEGIN@41";
+	"Class::C3::Componentised::ensure_class_loaded";
+	"Class::C3::Componentised::BEGIN@133";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::mk_group_accessors";
+}
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@12";
+"base::import" -> "Class::C3::Componentised::BEGIN@198";
+"base::import" -> "Class::C3::Componentised::BEGIN@48";
+"Class::C3::Componentised::_load_components" -> "Class::C3::Componentised::ensure_class_loaded";
+"DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:829]" -> "Class::C3::Componentised::ensure_class_loaded";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Class::C3::Componentised::ensure_class_loaded";
+"Class::C3::Componentised::load_optional_class" -> "Class::C3::Componentised::ensure_class_loaded";
+"base::import" -> "Class::C3::Componentised::BEGIN@50";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@11";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@6";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@4";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@9";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::datetime_parser_type";
+"Class::C3::Componentised::_load_components" -> "DBIx::Class::Componentised::inject_base";
+"Class::C3::Componentised::_load_components" -> "MRO::Compat::__ANON__[MRO/Compat.pm:41]";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@10";
+"Class::C3::Componentised::BEGIN@48" -> "UNIVERSAL::import";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@6";
+"Class::C3::Componentised::inject_base" -> "mro::set_mro";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@8";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@15";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_limit_dialect";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@13";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@17";
+"Class::C3::Componentised::inject_base" -> "Class::C3::Componentised::__ANON__[Class/C3/Componentised.pm:199]";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@7";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::cursor_class";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@9";
+"Class::C3::Componentised::BEGIN@40" -> "strict::import";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@10";
+"Class::C3::Componentised::ensure_class_loaded" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@110";
+"base::import" -> "Class::C3::Componentised::BEGIN@41";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@10";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@16";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::mk_classdata";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::_use_join_optimizer";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@12";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@21";
+"Class::C3::Componentised::inject_base" -> "List::Util::first";
+"base::import" -> "Class::C3::Componentised::BEGIN@51";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@5";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_name_sep";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@7";
+"DBIx::Class::Storage::DBI::_determine_driver" -> "Class::C3::Componentised::load_optional_class";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@11";
+"Class::C3::Componentised::ensure_class_loaded" -> "UNIVERSAL::can";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@19";
+"Class::C3::Componentised::BEGIN@198" -> "strict::unimport";
+"Class::C3::Componentised::BEGIN@133" -> "strict::unimport";
+"Class::C3::Componentised::BEGIN@41" -> "warnings::import";
+"Class::C3::Componentised::load_components" -> "DBIx::Class::component_base_class";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@9";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@109";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@14";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@10";
+"base::import" -> "Class::C3::Componentised::CORE:qr";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@14";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@7";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@13";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_quote_char";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@3";
+"Class::C3::Componentised::ensure_class_loaded" -> "Class::Accessor::Grouped::mk_group_accessors";
+"base::import" -> "Class::C3::Componentised::BEGIN@133";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@12";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_maker_class";
+"Class::C3::Componentised::inject_base" -> "UNIVERSAL::isa";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@2";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@14";
+"DBIx::Class::Componentised::inject_base" -> "Class::C3::Componentised::inject_base";
+"Class::C3::Componentised::load_components" -> "Class::C3::Componentised::CORE:match";
+"base::import" -> "Class::C3::Componentised::CORE:match";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@3";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@4";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@15";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@1407";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::SQLite::BEGIN@11";
+"base::import" -> "Class::C3::Componentised::BEGIN@40";
+"Class::C3::Componentised::ensure_class_loaded" -> "Sub::Name::subname";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@17";
+"Class::C3::Componentised::load_components" -> "Class::C3::Componentised::_load_components";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::BEGIN@4";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::ResultSource::BEGIN@16";
+"Class::C3::Componentised::inject_base" -> "mro::get_linear_isa";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "Class::C3::Componentised::load_components";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "Class::C3::Componentised::load_components";
+}

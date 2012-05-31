@@ -1,0 +1,247 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBI_db {
+	label="DBI::db";
+	"DBI::db::connected";
+	"DBI::db::begin_work";
+	"DBI::db::prepare";
+	"DBI::db::prepare_cached";
+}
+subgraph cluster_DBI_common {
+	label="DBI::common";
+	"DBI::common::STORE";
+	"DBI::common::FETCH";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::BEGIN@9";
+	"DBD::SQLite::BEGIN@34";
+	"DBD::SQLite::BEGIN@3";
+	"DBD::SQLite::BEGIN@4";
+	"DBD::SQLite::BEGIN@10";
+	"DBD::SQLite::BEGIN@6";
+	"DBD::SQLite::BEGIN@12";
+	"DBD::SQLite::BEGIN@30";
+	"DBD::SQLite::driver";
+	"DBD::SQLite::BEGIN@8";
+	"DBD::SQLite::BEGIN@5";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_DBI_var {
+	label="DBI::var";
+	"DBI::var::TIESCALAR";
+}
+subgraph cluster_DBD___st {
+	label="DBD::_::st";
+	"DBD::_::st::bind_param_array";
+	"DBD::_::st::BEGIN@1821";
+	"DBD::_::st::__ANON__[DBI.pm:1971]";
+	"DBD::_::st::execute_array";
+	"DBD::_::st::execute_for_fetch";
+}
+subgraph cluster_DBD___common {
+	label="DBD::_::common";
+	"DBD::_::common::BEGIN@1343";
+	"DBD::_::common::CORE:match";
+	"DBD::_::common::trace_msg";
+	"DBD::_::common::install_method";
+}
+subgraph cluster_DBD_SQLite_dr {
+	label="DBD::SQLite::dr";
+	"DBD::SQLite::dr::connect";
+	"DBD::SQLite::dr::BEGIN@178";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]";
+}
+subgraph cluster_DBD___dr {
+	label="DBD::_::dr";
+	"DBD::_::dr::default_user";
+	"DBD::_::dr::BEGIN@1449";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export_ok_tags";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::BEGIN@274";
+	"DBI::looks_like_number";
+	"DBI::BEGIN@797";
+	"DBI::BEGIN@161";
+	"DBI::BEGIN@159";
+	"DBI::bootstrap";
+	"DBI::setup_driver";
+	"DBI::BEGIN@527";
+	"DBI::CORE:match";
+	"DBI::BEGIN@158";
+	"DBI::BEGIN@157";
+	"DBI::BEGIN@831";
+	"DBI::BEGIN@684";
+	"DBI::_new_handle";
+	"DBI::_new_sth";
+	"DBI::END";
+	"DBI::_concat_hash_sorted";
+	"DBI::BEGIN@959";
+	"DBI::_install_method";
+	"DBI::_new_dbh";
+	"DBI::install_driver";
+	"DBI::BEGIN@1030";
+	"DBI::disconnect_all";
+	"DBI::BEGIN@862";
+	"DBI::BEGIN@13";
+	"DBI::CORE:subst";
+	"DBI::__ANON__[DBI.pm:725]";
+	"DBI::_new_drh";
+	"DBI::connect";
+	"DBI::BEGIN@270";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_ok_tags";
+}
+subgraph cluster_DBI_st {
+	label="DBI::st";
+	"DBI::st::execute_array";
+	"DBI::st::bind_param_array";
+	"DBI::st::execute_for_fetch";
+	"DBI::st::execute";
+}
+subgraph cluster_DBD___db {
+	label="DBD::_::db";
+	"DBD::_::db::begin_work";
+	"DBD::_::db::BEGIN@1510";
+	"DBD::_::db::prepare_cached";
+}
+subgraph cluster_DBD_SQLite_db {
+	label="DBD::SQLite::db";
+	"DBD::SQLite::db::prepare";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@6";
+}
+subgraph cluster_DBD_SQLite__WriteOnceHash {
+	label="DBD::SQLite::_WriteOnceHash";
+	"DBD::SQLite::_WriteOnceHash::STORE";
+	"DBD::SQLite::_WriteOnceHash::TIEHASH";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_DBI_dr {
+	label="DBI::dr";
+	"DBI::dr::disconnect_all";
+	"DBI::dr::default_user";
+	"DBI::dr::connect";
+}
+"DBI::db::prepare_cached" -> "DBD::_::db::prepare_cached";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@12";
+"DBD::SQLite::dr::connect" -> "DBI::_new_dbh";
+"DBI::st::execute_for_fetch" -> "DBD::_::st::execute_for_fetch";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::db::BEGIN@1510";
+"DBI::connect" -> "DBI::install_driver";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@9";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::_install_method";
+"DBD::_::common::install_method" -> "DBI::_install_method";
+"DBI::END" -> "DBD::_::common::trace_msg";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@684";
+"main::RUNTIME" -> "DBI::END";
+"DBI::connect" -> "DBI::dr::default_user";
+"DBI::install_driver" -> "DBD::SQLite::driver";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@831";
+"DBI::db::begin_work" -> "DBD::_::db::begin_work";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@157";
+"DBD::_::db::begin_work" -> "DBI::common::FETCH";
+"DBD::_::st::execute_array" -> "DBI::common::FETCH";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@5";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@797";
+"DBD::_::common::install_method" -> "DBD::_::common::CORE:match";
+"DBD::SQLite::db::prepare" -> "DBI::_new_sth";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@527";
+"DynaLoader::bootstrap" -> "DBI::bootstrap";
+"DBI::st::bind_param_array" -> "DBD::_::st::bind_param_array";
+"DBI::install_driver" -> "DBD::SQLite::_WriteOnceHash::TIEHASH";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@10";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::dr::connect";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@159";
+"DBD::_::st::execute_for_fetch" -> "DBI::st::execute";
+"DBD::_::db::BEGIN@1510" -> "strict::import";
+"DBI::BEGIN@274" -> "strict::import";
+"DBD::_::st::BEGIN@1821" -> "strict::import";
+"DBD::_::common::BEGIN@1343" -> "strict::import";
+"DBD::_::dr::BEGIN@1449" -> "strict::import";
+"DBD::_::db::begin_work" -> "DBI::common::STORE";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::common::STORE";
+"DBI::connect" -> "DBI::common::STORE";
+"DBI::BEGIN@161" -> "Exporter::Heavy::heavy_export_ok_tags";
+"DBD::_::st::execute_for_fetch" -> "DBD::_::st::__ANON__[DBI.pm:1971]";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@3";
+"DBI::install_driver" -> "DBD::SQLite::_WriteOnceHash::STORE";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@34";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@959";
+"DBD::_::st::bind_param_array" -> "DBI::looks_like_number";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::var::TIESCALAR";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@8";
+"DBI::BEGIN@161" -> "Exporter::export_ok_tags";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@270";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::db::connected";
+"DBI::dr::default_user" -> "DBD::_::dr::default_user";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::st::BEGIN@1821";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::common::BEGIN@1343";
+"DBI::BEGIN@862" -> "strict::unimport";
+"DBI::BEGIN@797" -> "strict::unimport";
+"DBI::BEGIN@1030" -> "strict::unimport";
+"DBI::BEGIN@270" -> "strict::unimport";
+"DBI::BEGIN@527" -> "strict::unimport";
+"DBI::BEGIN@959" -> "strict::unimport";
+"DBI::BEGIN@831" -> "strict::unimport";
+"DBI::BEGIN@684" -> "strict::unimport";
+"DBI::install_driver" -> "DBD::SQLite::dr::BEGIN@178";
+"DBD::_::st::execute_array" -> "DBI::st::execute_for_fetch";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@161";
+"DBD::SQLite::driver" -> "DBD::_::common::install_method";
+"DBI::connect" -> "DBI::__ANON__[DBI.pm:725]";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@862";
+"DBI::install_driver" -> "DBI::CORE:subst";
+"DBI::connect" -> "DBI::CORE:subst";
+"DBI::install_driver" -> "DBI::setup_driver";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::setup_driver";
+"DBD::SQLite::driver" -> "DBI::setup_driver";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@158";
+"DBI::setup_driver" -> "UNIVERSAL::isa";
+"DBI::END" -> "DBI::disconnect_all";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@13";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@30";
+"DBI::_new_dbh" -> "DBI::_new_handle";
+"DBI::_new_sth" -> "DBI::_new_handle";
+"DBI::_new_drh" -> "DBI::_new_handle";
+"DBI::disconnect_all" -> "DBI::dr::disconnect_all";
+"DBD::_::db::prepare_cached" -> "DBI::db::prepare";
+"DBD::_::db::prepare_cached" -> "DBI::_concat_hash_sorted";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@1030";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@274";
+"DBI::BEGIN@161" -> "DBI::CORE:match";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@6";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::dr::BEGIN@1449";
+"DBI::BEGIN@161" -> "DynaLoader::bootstrap";
+"DBI::install_driver" -> "DynaLoader::bootstrap";
+"DBD::SQLite::driver" -> "DBI::_new_drh";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@4";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]" -> "DBI::connect";
+"DBI::st::execute_array" -> "DBD::_::st::execute_array";
+}

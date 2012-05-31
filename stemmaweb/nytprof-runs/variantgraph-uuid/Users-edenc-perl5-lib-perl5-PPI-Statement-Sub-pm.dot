@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_Sub {
+	label="PPI::Statement::Sub";
+	"PPI::Statement::Sub::BEGIN@36";
+	"PPI::Statement::Sub::BEGIN@38";
+	"PPI::Statement::Sub::BEGIN@35";
+	"PPI::Statement::Sub::BEGIN@33";
+	"PPI::Statement::Sub::BEGIN@39";
+	"PPI::Statement::Sub::BEGIN@34";
+}
+subgraph cluster_PPI_Statement_Scheduled {
+	label="PPI::Statement::Scheduled";
+	"PPI::Statement::Scheduled::BEGIN@57";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@39";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@33";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@35";
+"PPI::Statement::Sub::BEGIN@33" -> "strict::import";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@36";
+"PPI::Statement::Sub::BEGIN@35" -> "Exporter::import";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@38";
+"PPI::Statement::Sub::BEGIN@38" -> "vars::import";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@34";
+}

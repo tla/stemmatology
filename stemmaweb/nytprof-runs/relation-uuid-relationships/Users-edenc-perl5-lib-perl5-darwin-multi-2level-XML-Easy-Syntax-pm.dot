@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@12";
+}
+subgraph cluster_XML_Easy_Syntax {
+	label="XML::Easy::Syntax";
+	"XML::Easy::Syntax::BEGIN@31";
+	"XML::Easy::Syntax::CORE:qr";
+	"XML::Easy::Syntax::BEGIN@26";
+	"XML::Easy::Syntax::BEGIN@25";
+	"XML::Easy::Syntax::BEGIN@27";
+	"XML::Easy::Syntax::CORE:regcomp";
+	"XML::Easy::Syntax::BEGIN@942";
+	"XML::Easy::Syntax::_charclass_regexp";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_re {
+	label="re";
+	"re::import";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::_charclass_regexp";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@25";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@26";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::CORE:regcomp";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::CORE:qr";
+"XML::Easy::Syntax::_charclass_regexp" -> "XML::Easy::Syntax::CORE:qr";
+"XML::Easy::Syntax::BEGIN@27" -> "strict::import";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@942";
+"XML::Easy::Syntax::BEGIN@26" -> "warnings::import";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@27";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@31";
+"XML::Easy::Syntax::BEGIN@31" -> "parent::import";
+"XML::Easy::Syntax::BEGIN@942" -> "re::import";
+}

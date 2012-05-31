@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::BEGIN@12";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Socket {
+	label="Socket";
+	"Socket::BEGIN@869";
+	"Socket::BEGIN@757";
+	"Socket::BEGIN@648";
+	"Socket::CORE:qr";
+	"Socket::BEGIN@649";
+	"Socket::CORE:match";
+	"Socket::BEGIN@3";
+	"Socket::BEGIN@4";
+	"Socket::CORE:regcomp";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"IO::Socket::BEGIN@12" -> "Socket::CORE:qr";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@648";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@3";
+"IO::Socket::BEGIN@12" -> "Socket::CORE:match";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@757";
+"Socket::BEGIN@3" -> "strict::import";
+"IO::Socket::BEGIN@12" -> "Socket::CORE:regcomp";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@4";
+"Socket::BEGIN@648" -> "Exporter::import";
+"Socket::BEGIN@649" -> "warnings::register::import";
+"Socket::BEGIN@869" -> "strict::unimport";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@649";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@869";
+}

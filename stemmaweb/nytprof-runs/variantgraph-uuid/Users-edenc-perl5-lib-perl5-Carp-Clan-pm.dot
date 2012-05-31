@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@15";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::BEGIN@11";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@9";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::BEGIN@224";
+	"Carp::Clan::BEGIN@17";
+	"Carp::Clan::CORE:regcomp";
+	"Carp::Clan::CORE:match";
+	"Carp::Clan::import";
+	"Carp::Clan::CORE:qr";
+	"Carp::Clan::BEGIN@16";
+	"Carp::Clan::BEGIN@18";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@10";
+}
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@224";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@18";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::import";
+"MooseX::Types::UndefinedType::BEGIN@10" -> "Carp::Clan::import";
+"MooseX::Types::BEGIN@15" -> "Carp::Clan::import";
+"MooseX::Types::Base::BEGIN@9" -> "Carp::Clan::import";
+"Carp::Clan::BEGIN@16" -> "strict::import";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@17";
+"Carp::Clan::BEGIN@224" -> "strict::unimport";
+"Carp::Clan::import" -> "Carp::Clan::CORE:qr";
+"Carp::Clan::BEGIN@17" -> "vars::import";
+"Carp::Clan::import" -> "Carp::Clan::CORE:match";
+"Carp::Clan::import" -> "Carp::Clan::CORE:regcomp";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@16";
+}

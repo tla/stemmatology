@@ -1,0 +1,502 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::add_reading";
+	"Text::Tradition::Collation::BEGIN@6";
+	"Text::Tradition::Collation::paths";
+	"Text::Tradition::Collation::path_witnesses";
+	"Text::Tradition::Collation::reading_witnesses";
+	"Text::Tradition::Collation::add_path";
+	"Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:20]";
+	"Text::Tradition::Collation::_find_linked_reading";
+}
+subgraph cluster_Graph_AdjacencyMap_Heavy {
+	label="Graph::AdjacencyMap::Heavy";
+	"Graph::AdjacencyMap::Heavy::set_path";
+	"Graph::AdjacencyMap::Heavy::paths";
+	"Graph::AdjacencyMap::Heavy::BEGIN@7";
+	"Graph::AdjacencyMap::Heavy::BEGIN@13";
+	"Graph::AdjacencyMap::Heavy::BEGIN@12";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::upgrade";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::test_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::related_readings";
+	"Text::Tradition::Collation::RelationshipStore::_make_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::relationships";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:80]";
+	"Text::Tradition::Collation::RelationshipStore::get_relationship";
+	"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:99]";
+	"Text::Tradition::Collation::RelationshipStore::_set_relationship";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+}
+subgraph cluster_Graph_SPTHeapElem {
+	label="Graph::SPTHeapElem";
+	"Graph::SPTHeapElem::BEGIN@3";
+	"Graph::SPTHeapElem::BEGIN@5";
+	"Graph::SPTHeapElem::BEGIN@7";
+	"Graph::SPTHeapElem::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Data_Dumper {
+	label="Data::Dumper";
+	"Data::Dumper::BEGIN@22";
+	"Data::Dumper::BEGIN@16";
+	"Data::Dumper::BEGIN@683";
+	"Data::Dumper::BEGIN@20";
+}
+subgraph cluster_Graph_Traversal_DFS {
+	label="Graph::Traversal::DFS";
+	"Graph::Traversal::DFS::BEGIN@6";
+	"Graph::Traversal::DFS::BEGIN@5";
+	"Graph::Traversal::DFS::BEGIN@3";
+}
+subgraph cluster_Heap071_Fibonacci {
+	label="Heap071::Fibonacci";
+	"Heap071::Fibonacci::BEGIN@3";
+	"Heap071::Fibonacci::BEGIN@4";
+}
+subgraph cluster_Graph_AdjacencyMap {
+	label="Graph::AdjacencyMap";
+	"Graph::AdjacencyMap::_get_path_attrs";
+	"Graph::AdjacencyMap::_get_path_attr";
+	"Graph::AdjacencyMap::_is_UNORD";
+	"Graph::AdjacencyMap::BEGIN@3";
+	"Graph::AdjacencyMap::_has_path_attr";
+	"Graph::AdjacencyMap::_is_COUNT";
+	"Graph::AdjacencyMap::_del_id";
+	"Graph::AdjacencyMap::_set_path_attr";
+	"Graph::AdjacencyMap::_is_MULTI";
+	"Graph::AdjacencyMap::BEGIN@6";
+	"Graph::AdjacencyMap::_ids";
+}
+subgraph cluster_Graph_Attribute {
+	label="Graph::Attribute";
+	"Graph::Attribute::BEGIN@24";
+	"Graph::Attribute::import";
+	"Graph::Attribute::BEGIN@14";
+	"Graph::Attribute::BEGIN@49";
+	"Graph::Attribute::BEGIN@3";
+}
+subgraph cluster_Graph_TransitiveClosure {
+	label="Graph::TransitiveClosure";
+	"Graph::TransitiveClosure::BEGIN@3";
+	"Graph::TransitiveClosure::BEGIN@9";
+	"Graph::TransitiveClosure::BEGIN@10";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::BEGIN@29";
+	"Safe::BEGIN@28";
+	"Safe::CORE:match";
+	"Safe::CORE:regcomp";
+	"Safe::CORE:pack";
+	"Safe::BEGIN@36";
+	"Safe::BEGIN@344";
+	"Safe::BEGIN@46";
+	"Safe::BEGIN@30";
+	"Safe::BEGIN@3";
+	"Safe::BEGIN@4";
+	"Safe::BEGIN@34";
+	"Safe::BEGIN@337";
+	"Safe::BEGIN@191";
+	"Safe::BEGIN@35";
+	"Safe::BEGIN@285";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::_stringify";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::add_vertex";
+	"Graph::_opt_get";
+	"Graph::_edges";
+	"Graph::BEGIN@28";
+	"Graph::get_edge_attribute";
+	"Graph::_edges_id_path";
+	"Graph::BEGIN@86";
+	"Graph::stringify";
+	"Graph::edges05";
+	"Graph::_add_edge";
+	"Graph::set_edge_attribute";
+	"Graph::has_edge";
+	"Graph::BEGIN@35";
+	"Graph::BEGIN@2155";
+	"Graph::BEGIN@178";
+	"Graph::_edges_at";
+	"Graph::_next_random";
+	"Graph::_vertex_ids";
+	"Graph::is_isolated_vertex";
+	"Graph::BEGIN@34";
+	"Graph::vertices05";
+	"Graph::BEGIN@36";
+	"Graph::edges";
+	"Graph::expect_non_multiedged";
+	"Graph::BEGIN@116";
+	"Graph::add_edges";
+	"Graph::neighbours";
+	"Graph::BEGIN@39";
+	"Graph::predecessors";
+	"Graph::has_a_cycle";
+	"Graph::multivertexed";
+	"Graph::multiedged";
+	"Graph::isolated_vertices";
+	"Graph::BEGIN@38";
+	"Graph::BEGIN@31";
+	"Graph::BEGIN@30";
+	"Graph::add_edge";
+	"Graph::BEGIN@55";
+	"Graph::new";
+	"Graph::BEGIN@15";
+	"Graph::get_edge_attributes";
+	"Graph::BEGIN@32";
+	"Graph::BEGIN@40";
+	"Graph::is_compat02";
+	"Graph::edges_from";
+	"Graph::expect_non_unionfind";
+	"Graph::countvertexed";
+	"Graph::has_edge_attribute";
+	"Graph::BEGIN@42";
+	"Graph::_opt_unknown";
+	"Graph::eq";
+	"Graph::edges_to";
+	"Graph::BEGIN@33";
+	"Graph::vertices";
+	"Graph::successors";
+	"Graph::countedged";
+	"Graph::BEGIN@3";
+	"Graph::omniedged";
+	"Graph::BEGIN@13";
+	"Graph::delete_vertex";
+	"Graph::directed";
+	"Graph::_edges_from";
+	"Graph::_get_options";
+	"Graph::BEGIN@29";
+	"Graph::BEGIN@1733";
+	"Graph::_opt";
+	"Graph::CORE:sort";
+	"Graph::BEGIN@5";
+	"Graph::has_union_find";
+	"Graph::_edges_to";
+	"Graph::delete_edge";
+}
+subgraph cluster_Graph_Traversal {
+	label="Graph::Traversal";
+	"Graph::Traversal::next";
+	"Graph::Traversal::configure";
+	"Graph::Traversal::postorder";
+	"Graph::Traversal::get_state";
+	"Graph::Traversal::new";
+	"Graph::Traversal::_callbacks";
+	"Graph::Traversal::reset";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Graph_MSTHeapElem {
+	label="Graph::MSTHeapElem";
+	"Graph::MSTHeapElem::BEGIN@4";
+	"Graph::MSTHeapElem::BEGIN@5";
+	"Graph::MSTHeapElem::BEGIN@3";
+	"Graph::MSTHeapElem::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Graph_UnionFind {
+	label="Graph::UnionFind";
+	"Graph::UnionFind::BEGIN@3";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::_get_id_path";
+	"Graph::AdjacencyMap::Light::_is_HYPER";
+	"Graph::AdjacencyMap::Light::_get_path_id";
+	"Graph::AdjacencyMap::Light::__attr";
+	"Graph::AdjacencyMap::Light::BEGIN@14";
+	"Graph::AdjacencyMap::Light::BEGIN@7";
+	"Graph::AdjacencyMap::Light::set_path";
+	"Graph::AdjacencyMap::Light::has_path";
+	"Graph::AdjacencyMap::Light::_is_COUNT";
+	"Graph::AdjacencyMap::Light::BEGIN@15";
+	"Graph::AdjacencyMap::Light::_is_MULTI";
+	"Graph::AdjacencyMap::Light::BEGIN@10";
+	"Graph::AdjacencyMap::Light::_predecessors";
+	"Graph::AdjacencyMap::Light::BEGIN@12";
+	"Graph::AdjacencyMap::Light::_new";
+	"Graph::AdjacencyMap::Light::del_path";
+	"Graph::AdjacencyMap::Light::_successors";
+	"Graph::AdjacencyMap::Light::BEGIN@9";
+	"Graph::AdjacencyMap::Light::paths";
+}
+subgraph cluster_Graph_Undirected {
+	label="Graph::Undirected";
+	"Graph::Undirected::BEGIN@3";
+	"Graph::Undirected::BEGIN@5";
+	"Graph::Undirected::BEGIN@4";
+}
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@7";
+"Graph::BEGIN@42" -> "Safe::BEGIN@30";
+"Graph::edges" -> "Graph::edges05";
+"Graph::stringify" -> "Graph::edges05";
+"Graph::BEGIN@42" -> "Safe::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@38";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::delete_vertex";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::delete_vertex";
+"Graph::edges_from" -> "Graph::_edges_from";
+"Graph::neighbours" -> "Graph::_edges_from";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@5";
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@5";
+"Graph::Traversal::next" -> "Graph::_next_random";
+"Graph::countedged" -> "Graph::AdjacencyMap::_is_COUNT";
+"Graph::BEGIN@116" -> "overload::import";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@31";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@32";
+"Graph::delete_edge" -> "Graph::expect_non_unionfind";
+"Graph::delete_vertex" -> "Graph::expect_non_unionfind";
+"Graph::BEGIN@42" -> "Safe::BEGIN@35";
+"Graph::BEGIN@42" -> "Safe::CORE:pack";
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::Light::has_path";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@28";
+"Graph::vertices05" -> "Graph::AdjacencyMap::Light::_is_HYPER";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@34";
+"Graph::BEGIN@42" -> "Safe::BEGIN@285";
+"Text::Tradition::Collation::RelationshipStore::get_relationship" -> "Graph::has_edge_attribute";
+"Text::Tradition::Collation::_find_linked_reading" -> "Graph::has_edge_attribute";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@12";
+"Graph::has_edge" -> "Graph::CORE:sort";
+"Graph::stringify" -> "Graph::CORE:sort";
+"Graph::has_a_cycle" -> "Graph::Traversal::new";
+"Graph::BEGIN@13" -> "Graph::AdjacencyMap::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@178";
+"Graph::_edges_id_path" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::edges05" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::neighbours" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::set_edge_attribute" -> "Graph::AdjacencyMap::_set_path_attr";
+"Graph::stringify" -> "Graph::isolated_vertices";
+"Text::Tradition::Collation::reading_witnesses" -> "Graph::get_edge_attributes";
+"Text::Tradition::Collation::path_witnesses" -> "Graph::get_edge_attributes";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@14";
+"Graph::Traversal::reset" -> "Graph::directed";
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@1733";
+"Graph::BEGIN@42" -> "Safe::BEGIN@191";
+"Graph::_edges" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::_edges_at" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::delete_edge" -> "Graph::AdjacencyMap::Light::_get_path_id";
+"Graph::add_vertex" -> "Graph::AdjacencyMap::Light::set_path";
+"Graph::add_edge" -> "Graph::AdjacencyMap::Light::set_path";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@9";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@5";
+"Graph::BEGIN@31" -> "Graph::UnionFind::BEGIN@3";
+"Graph::add_vertex" -> "Graph::multivertexed";
+"Graph::vertices" -> "Graph::multivertexed";
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@4";
+"Graph::vertices" -> "Graph::countvertexed";
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@3";
+"Graph::_edges" -> "Graph::omniedged";
+"Graph::has_a_cycle" -> "Graph::omniedged";
+"Graph::stringify" -> "Graph::omniedged";
+"Graph::multiedged" -> "Graph::AdjacencyMap::Light::_is_MULTI";
+"Graph::multivertexed" -> "Graph::AdjacencyMap::Light::_is_MULTI";
+"Graph::get_edge_attribute" -> "Graph::_vertex_ids";
+"Graph::get_edge_attributes" -> "Graph::_vertex_ids";
+"Graph::set_edge_attribute" -> "Graph::_vertex_ids";
+"Graph::delete_edge" -> "Graph::_vertex_ids";
+"Graph::has_edge_attribute" -> "Graph::_vertex_ids";
+"Graph::BEGIN@42" -> "Safe::BEGIN@28";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@40";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@10";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@15";
+"Graph::BEGIN@3" -> "strict::import";
+"Text::Tradition::Collation::add_path" -> "Graph::set_edge_attribute";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Graph::set_edge_attribute";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@36";
+"Graph::BEGIN@42" -> "utf8::upgrade";
+"Graph::has_edge_attribute" -> "Graph::AdjacencyMap::_has_path_attr";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@30";
+"Graph::BEGIN@28" -> "XSLoader::load";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@4";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@7";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@3";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@9";
+"Graph::add_edge" -> "Graph::AdjacencyMap::Heavy::set_path";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@3";
+"Graph::BEGIN@32" -> "Graph::TransitiveClosure::BEGIN@3";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@24";
+"Graph::BEGIN@38" -> "Heap071::Fibonacci::BEGIN@4";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::stringify";
+"Graph::eq" -> "Graph::stringify";
+"Graph::BEGIN@38" -> "Exporter::import";
+"Graph::BEGIN@29" -> "Exporter::import";
+"Graph::BEGIN@28" -> "Exporter::import";
+"Graph::BEGIN@34" -> "Exporter::import";
+"Graph::BEGIN@39" -> "Exporter::import";
+"Graph::BEGIN@35" -> "Exporter::import";
+"Graph::BEGIN@40" -> "Exporter::import";
+"Graph::BEGIN@30" -> "Exporter::import";
+"Graph::BEGIN@13" -> "Exporter::import";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@16";
+"Graph::BEGIN@42" -> "Safe::BEGIN@36";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@33";
+"Graph::Traversal::reset" -> "Graph::vertices";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@22";
+"Graph::BEGIN@178" -> "strict::unimport";
+"Graph::BEGIN@13" -> "Graph::AdjacencyMap::BEGIN@3";
+"Graph::BEGIN@42" -> "Safe::BEGIN@4";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@20";
+"Graph::BEGIN@15" -> "vars::import";
+"Graph::BEGIN@1733" -> "vars::import";
+"Graph::get_edge_attributes" -> "Graph::is_compat02";
+"Graph::edges" -> "Graph::is_compat02";
+"Graph::vertices" -> "Graph::is_compat02";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@5";
+"Graph::_edges" -> "Text::Tradition::Collation::Reading::_stringify";
+"Graph::BEGIN@42" -> "Safe::CORE:regcomp";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@29";
+"Graph::predecessors" -> "Graph::AdjacencyMap::Light::_predecessors";
+"Graph::BEGIN@42" -> "Safe::BEGIN@337";
+"Graph::multiedged" -> "Graph::AdjacencyMap::_is_MULTI";
+"Graph::edges_to" -> "Graph::_edges_to";
+"Graph::neighbours" -> "Graph::_edges_to";
+"Graph::new" -> "Graph::_opt_get";
+"Graph::directed" -> "Graph::AdjacencyMap::_is_UNORD";
+"Graph::omniedged" -> "Graph::AdjacencyMap::_is_UNORD";
+"Text::Tradition::Collation::RelationshipStore::get_relationship" -> "Graph::get_edge_attribute";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@7";
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@5";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@3";
+"Graph::get_edge_attribute" -> "Graph::AdjacencyMap::_get_path_attr";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@39";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::has_a_cycle";
+"Graph::Traversal::next" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::add_edge";
+"Text::Tradition::Collation::add_path" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge" -> "Graph::add_edge";
+"Graph::add_edges" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Graph::add_edge";
+"Graph::has_a_cycle" -> "Graph::Traversal::get_state";
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@6";
+"Graph::BEGIN@28" -> "Graph::AdjacencyMap::Heavy::BEGIN@13";
+"Graph::Traversal::configure" -> "Graph::countedged";
+"Graph::edges" -> "Graph::countedged";
+"Graph::BEGIN@86" -> "Graph::Attribute::import";
+"Graph::edges_from" -> "Graph::_edges_id_path";
+"Graph::edges_to" -> "Graph::_edges_id_path";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@2155";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@35";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::add_edges";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@55";
+"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:99]" -> "Graph::new";
+"Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:20]" -> "Graph::new";
+"Graph::Traversal::reset" -> "Graph::new";
+"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:80]" -> "Graph::new";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@42";
+"Graph::delete_edge" -> "Graph::AdjacencyMap::_del_id";
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::_del_id";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::eq";
+"Graph::add_vertex" -> "Graph::has_union_find";
+"Graph::add_edge" -> "Graph::has_union_find";
+"Graph::expect_non_unionfind" -> "Graph::has_union_find";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::add_vertex";
+"Class::MOP::Class:::around" -> "Graph::add_vertex";
+"Text::Tradition::Collation::add_reading" -> "Graph::add_vertex";
+"Graph::_add_edge" -> "Graph::add_vertex";
+"Text::Tradition::Collation::RelationshipStore::add_reading" -> "Graph::add_vertex";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@7";
+"Graph::countedged" -> "Graph::AdjacencyMap::Light::_is_COUNT";
+"Graph::countvertexed" -> "Graph::AdjacencyMap::Light::_is_COUNT";
+"Graph::delete_vertex" -> "Graph::_edges_at";
+"Graph::vertices05" -> "Graph::AdjacencyMap::Light::paths";
+"Graph::edges05" -> "Graph::AdjacencyMap::Light::paths";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Graph::neighbours";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@683";
+"Graph::edges05" -> "Graph::AdjacencyMap::Heavy::paths";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@10";
+"Graph::BEGIN@29" -> "Graph::AdjacencyMap::Light::BEGIN@14";
+"Graph::new" -> "Graph::_opt";
+"Graph::BEGIN@42" -> "Safe::BEGIN@34";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::delete_edge";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@86";
+"Graph::set_edge_attribute" -> "Graph::has_edge";
+"Graph::get_edge_attribute" -> "Graph::has_edge";
+"Graph::get_edge_attributes" -> "Graph::has_edge";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::has_edge";
+"Text::Tradition::Collation::add_path" -> "Graph::has_edge";
+"Graph::has_edge_attribute" -> "Graph::has_edge";
+"Graph::Traversal::_callbacks" -> "Graph::has_edge";
+"Graph::get_edge_attributes" -> "Graph::AdjacencyMap::_get_path_attrs";
+"Graph::isolated_vertices" -> "Graph::is_isolated_vertex";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@116";
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@3";
+"Graph::add_edge" -> "Graph::multiedged";
+"Graph::Traversal::configure" -> "Graph::multiedged";
+"Graph::expect_non_multiedged" -> "Graph::multiedged";
+"Graph::edges" -> "Graph::multiedged";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@15";
+"Text::Tradition::Collation::reading_witnesses" -> "Graph::edges_to";
+"Graph::new" -> "Graph::_get_options";
+"Graph::new" -> "Graph::AdjacencyMap::Light::_new";
+"Graph::successors" -> "Graph::AdjacencyMap::Light::_successors";
+"Graph::_edges" -> "Graph::AdjacencyMap::_ids";
+"Graph::_edges_at" -> "Graph::AdjacencyMap::_ids";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@49";
+"Graph::BEGIN@42" -> "Safe::BEGIN@29";
+"Graph::isolated_vertices" -> "Graph::vertices05";
+"Graph::vertices" -> "Graph::vertices05";
+"Graph::set_edge_attribute" -> "Graph::expect_non_multiedged";
+"Graph::get_edge_attributes" -> "Graph::expect_non_multiedged";
+"Graph::get_edge_attribute" -> "Graph::expect_non_multiedged";
+"Graph::has_edge_attribute" -> "Graph::expect_non_multiedged";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@3";
+"Graph::new" -> "Graph::_opt_unknown";
+"Graph::Traversal::next" -> "Graph::successors";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::successors";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::successors";
+"Graph::is_isolated_vertex" -> "Graph::successors";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@13";
+"Graph::BEGIN@42" -> "Safe::CORE:match";
+"Graph::BEGIN@34" -> "Graph::MSTHeapElem::BEGIN@4";
+"Graph::edges_from" -> "Graph::_edges";
+"Graph::edges_to" -> "Graph::_edges";
+"Graph::neighbours" -> "Graph::_edges";
+"Graph::add_edge" -> "Graph::_add_edge";
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::Light::del_path";
+"Graph::BEGIN@38" -> "Heap071::Fibonacci::BEGIN@3";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::edges";
+"Text::Tradition::Collation::RelationshipStore::relationships" -> "Graph::edges";
+"Text::Tradition::Collation::paths" -> "Graph::edges";
+"Graph::BEGIN@42" -> "Safe::BEGIN@344";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::predecessors";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::predecessors";
+"Graph::is_isolated_vertex" -> "Graph::predecessors";
+"Graph::BEGIN@42" -> "Safe::BEGIN@46";
+"Graph::has_a_cycle" -> "Graph::Traversal::postorder";
+"Text::Tradition::Collation::_find_linked_reading" -> "Graph::edges_from";
+}

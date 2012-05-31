@@ -1,0 +1,54 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@15";
+}
+subgraph cluster_XML_LibXML_Number {
+	label="XML::LibXML::Number";
+	"XML::LibXML::Number::BEGIN@15";
+	"XML::LibXML::Number::BEGIN@13";
+	"XML::LibXML::Number::BEGIN@12";
+	"XML::LibXML::Number::BEGIN@19";
+	"XML::LibXML::Number::BEGIN@11";
+}
+subgraph cluster_XML_LibXML_Boolean {
+	label="XML::LibXML::Boolean";
+	"XML::LibXML::Boolean::BEGIN@13";
+	"XML::LibXML::Boolean::BEGIN@16";
+	"XML::LibXML::Boolean::BEGIN@21";
+	"XML::LibXML::Boolean::BEGIN@12";
+	"XML::LibXML::Boolean::BEGIN@14";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"XML::LibXML::Boolean::BEGIN@21" -> "overload::import";
+"XML::LibXML::Boolean::BEGIN@12" -> "XML::LibXML::Number::BEGIN@12";
+"XML::LibXML::Boolean::BEGIN@13" -> "UNIVERSAL::import";
+"XML::LibXML::Boolean::BEGIN@12" -> "UNIVERSAL::import";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@13";
+"XML::LibXML::Boolean::BEGIN@14" -> "strict::import";
+"XML::LibXML::Boolean::BEGIN@16" -> "vars::import";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@16";
+"XML::LibXML::Boolean::BEGIN@12" -> "XML::LibXML::Number::BEGIN@11";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@12";
+"XML::LibXML::Boolean::BEGIN@12" -> "XML::LibXML::Number::BEGIN@13";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@21";
+"XML::LibXML::Boolean::BEGIN@12" -> "XML::LibXML::Number::BEGIN@15";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@14";
+"XML::LibXML::Boolean::BEGIN@12" -> "XML::LibXML::Number::BEGIN@19";
+}

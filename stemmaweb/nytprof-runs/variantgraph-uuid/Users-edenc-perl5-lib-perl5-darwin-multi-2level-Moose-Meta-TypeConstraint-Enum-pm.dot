@@ -1,0 +1,74 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@14";
+	"Moose::Meta::TypeConstraint::Enum::_inline_var_name";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@9";
+	"Moose::Meta::TypeConstraint::Enum::constraint";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@16";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@13";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@10";
+	"Moose::Meta::TypeConstraint::Enum::__ANON__[Moose/Meta/TypeConstraint/Enum.pm:35]";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@2";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@11";
+	"Moose::Meta::TypeConstraint::Enum::new";
+	"Moose::Meta::TypeConstraint::Enum::values";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::_has_compiled_type_constraint";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::create_enum_type_constraint";
+	"Moose::Util::TypeConstraints::BEGIN@38";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::TypeConstraint::Enum::new" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@2";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@13";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@11";
+"Moose::Util::TypeConstraints::create_enum_type_constraint" -> "Moose::Meta::TypeConstraint::Enum::new";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@9" -> "strict::import";
+"Moose::Meta::TypeConstraint::Enum::constraint" -> "Moose::Meta::TypeConstraint::Enum::values";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@16";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@13" -> "Exporter::import";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@14";
+"Moose::Meta::TypeConstraint::_inline_check" -> "Moose::Meta::TypeConstraint::Enum::constraint";
+"Moose::Meta::TypeConstraint::inline_environment" -> "Moose::Meta::TypeConstraint::Enum::constraint";
+"Moose::Meta::TypeConstraint::can_be_inlined" -> "Moose::Meta::TypeConstraint::Enum::constraint";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@16" -> "base::import";
+"Moose::Meta::TypeConstraint::_inline_check" -> "Moose::Meta::TypeConstraint::Enum::__ANON__[Moose/Meta/TypeConstraint/Enum.pm:35]";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@10" -> "warnings::import";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@9";
+"Moose::Meta::TypeConstraint::Enum::new" -> "Moose::Meta::TypeConstraint::_has_compiled_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Moose::Meta::TypeConstraint::Enum::BEGIN@10";
+"Moose::Meta::TypeConstraint::Enum::__ANON__[Moose/Meta/TypeConstraint/Enum.pm:35]" -> "Moose::Meta::TypeConstraint::Enum::_inline_var_name";
+"Moose::Meta::TypeConstraint::Enum::new" -> "Moose::Meta::TypeConstraint::new";
+}

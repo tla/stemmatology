@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_Role_Parameterized_Parameters {
+	label="MooseX::Role::Parameterized::Parameters";
+	"MooseX::Role::Parameterized::Parameters::BEGIN@7";
+	"MooseX::Role::Parameterized::Parameters::meta";
+	"MooseX::Role::Parameterized::Parameters::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Trait_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Trait::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@38";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@2";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Module::Runtime::require_module" -> "MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6";
+"Module::Runtime::require_module" -> "MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@2";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "UNIVERSAL::import";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "MooseX::Role::Parameterized::Parameters::BEGIN@7";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@38" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@38";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "MooseX::Role::Parameterized::Parameters::meta";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "MooseX::Role::Parameterized::Parameters::BEGIN@2";
+}

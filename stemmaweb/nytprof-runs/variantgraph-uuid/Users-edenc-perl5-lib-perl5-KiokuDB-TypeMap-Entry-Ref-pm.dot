@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::compile_refresh";
+	"KiokuDB::TypeMap::Entry::Ref::compile_expand";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::Ref::compile_collapse";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Ref::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::Ref::compile_collapse";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::Ref::compile_refresh";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Ref::BEGIN@2";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@6" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Ref::BEGIN@4";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@4" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::Ref::compile_expand";
+}

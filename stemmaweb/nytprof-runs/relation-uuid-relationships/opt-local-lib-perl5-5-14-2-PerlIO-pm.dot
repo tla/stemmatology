@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@41";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_PerlIO {
+	label="PerlIO";
+	"PerlIO::import";
+}
+"PerlIO::import" -> "XSLoader::load";
+"HTTP::Message::PSGI::BEGIN@41" -> "PerlIO::import";
+}

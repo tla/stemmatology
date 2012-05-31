@@ -1,0 +1,208 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::FETCH";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::as_svg";
+}
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::O_TEMPORARY";
+	"Fcntl::O_LARGEFILE";
+	"Fcntl::O_NOINHERIT";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@14";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_File_Temp_Dir {
+	label="File::Temp::Dir";
+	"File::Temp::Dir::BEGIN@2405";
+	"File::Temp::Dir::BEGIN@2407";
+	"File::Temp::Dir::BEGIN@2406";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::splitpath";
+	"File::Spec::Unix::tmpdir";
+	"File::Spec::Unix::catfile";
+	"File::Spec::Unix::catpath";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_Errno {
+	label="Errno";
+	"Errno::BEGIN@9";
+	"Errno::BEGIN@8";
+	"Errno::TIEHASH";
+	"Errno::BEGIN@21";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::DESTROY";
+	"File::Temp::BEGIN@230";
+	"File::Temp::BEGIN@144";
+	"File::Temp::CORE:chmod";
+	"File::Temp::BEGIN@142";
+	"File::Temp::CORE:close";
+	"File::Temp::cmpstat";
+	"File::Temp::CORE:subst";
+	"File::Temp::_replace_XX";
+	"File::Temp::CORE:ftdir";
+	"File::Temp::BEGIN@147";
+	"File::Temp::tempfile";
+	"File::Temp::BEGIN@229";
+	"File::Temp::CORE:substcont";
+	"File::Temp::filename";
+	"File::Temp::CORE:ftfile";
+	"File::Temp::safe_level";
+	"File::Temp::CORE:regcomp";
+	"File::Temp::cleanup";
+	"File::Temp::__ANON__[File/Temp.pm:245]";
+	"File::Temp::BEGIN@166";
+	"File::Temp::BEGIN@220";
+	"File::Temp::BEGIN@228";
+	"File::Temp::CORE:stat";
+	"File::Temp::END";
+	"File::Temp::BEGIN@241";
+	"File::Temp::BEGIN@145";
+	"File::Temp::unlink_on_destroy";
+	"File::Temp::BEGIN@271";
+	"File::Temp::CORE:sysopen";
+	"File::Temp::CORE:unlink";
+	"File::Temp::__ANON__[File/Temp.pm:275]";
+	"File::Temp::BEGIN@224";
+	"File::Temp::BEGIN@162";
+	"File::Temp::BEGIN@217";
+	"File::Temp::BEGIN@141";
+	"File::Temp::BEGIN@148";
+	"File::Temp::BEGIN@163";
+	"File::Temp::new";
+	"File::Temp::BEGIN@143";
+	"File::Temp::CORE:ftis";
+	"File::Temp::BEGIN@146";
+	"File::Temp::BEGIN@173";
+	"File::Temp::_gettemp";
+	"File::Temp::unlink1";
+	"File::Temp::_force_writable";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"File::Temp::_gettemp" -> "File::Temp::CORE:chmod";
+"File::Temp::_force_writable" -> "File::Temp::CORE:chmod";
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@8";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@228";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@271";
+"File::Temp::_replace_XX" -> "File::Temp::CORE:subst";
+"File::Temp::DESTROY" -> "File::Temp::_force_writable";
+"File::Temp::unlink1" -> "File::Temp::_force_writable";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@142";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2405";
+"File::Temp::BEGIN@163" -> "overload::import";
+"File::Temp::Dir::BEGIN@2407" -> "overload::import";
+"File::Temp::_gettemp" -> "File::Spec::Unix::catpath";
+"File::Temp::BEGIN@148" -> "Config::FETCH";
+"File::Temp::tempfile" -> "File::Spec::Unix::catfile";
+"File::Temp::cmpstat" -> "File::Temp::CORE:ftfile";
+"Fcntl::O_NOINHERIT" -> "File::Temp::__ANON__[File/Temp.pm:245]";
+"Fcntl::O_LARGEFILE" -> "File::Temp::__ANON__[File/Temp.pm:245]";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@144";
+"File::Temp::BEGIN@148" -> "Errno::TIEHASH";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@166";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@141";
+"File::Temp::unlink1" -> "File::Temp::cmpstat";
+"Text::Tradition::Collation::as_svg" -> "File::Temp::new";
+"File::Temp::DESTROY" -> "File::Temp::filename";
+"Text::Tradition::Collation::as_svg" -> "File::Temp::filename";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@241";
+"File::Temp::BEGIN@229" -> "constant::import";
+"File::Temp::BEGIN@228" -> "constant::import";
+"File::Temp::BEGIN@230" -> "constant::import";
+"File::Temp::BEGIN@220" -> "constant::import";
+"File::Temp::BEGIN@224" -> "constant::import";
+"File::Temp::BEGIN@217" -> "constant::import";
+"Fcntl::O_TEMPORARY" -> "File::Temp::__ANON__[File/Temp.pm:275]";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2407";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@146";
+"File::Temp::Dir::BEGIN@2406" -> "strict::import";
+"File::Temp::BEGIN@142" -> "strict::import";
+"main::RUNTIME" -> "File::Temp::END";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@143";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@173";
+"File::Temp::tempfile" -> "File::Temp::_gettemp";
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@9";
+"File::Temp::tempfile" -> "File::Spec::Unix::tmpdir";
+"File::Temp::BEGIN@145" -> "Exporter::import";
+"File::Temp::Dir::BEGIN@2405" -> "Exporter::import";
+"File::Temp::BEGIN@147" -> "Exporter::import";
+"File::Temp::BEGIN@148" -> "Exporter::import";
+"File::Temp::BEGIN@146" -> "Exporter::import";
+"File::Temp::BEGIN@143" -> "Exporter::import";
+"File::Temp::new" -> "File::Temp::unlink_on_destroy";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@145";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2406";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@162";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@230";
+"File::Temp::unlink1" -> "File::Temp::CORE:close";
+"File::Temp::BEGIN@271" -> "strict::unimport";
+"File::Temp::BEGIN@241" -> "strict::unimport";
+"File::Temp::BEGIN@162" -> "base::import";
+"File::Temp::BEGIN@173" -> "base::import";
+"File::Temp::BEGIN@166" -> "vars::import";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@220";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@217";
+"File::Temp::_gettemp" -> "File::Temp::CORE:ftdir";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@147";
+"File::Temp::_gettemp" -> "File::Temp::CORE:sysopen";
+"File::Temp::_gettemp" -> "File::Spec::Unix::splitpath";
+"File::Temp::unlink1" -> "File::Temp::CORE:unlink";
+"File::Temp::_gettemp" -> "File::Temp::_replace_XX";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@224";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@148";
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@21";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@229";
+"File::Temp::DESTROY" -> "File::Temp::unlink1";
+"File::Temp::_replace_XX" -> "File::Temp::CORE:substcont";
+"File::Temp::_gettemp" -> "File::Temp::CORE:ftis";
+"File::Temp::BEGIN@144" -> "UNIVERSAL::VERSION";
+"File::Temp::BEGIN@146" -> "UNIVERSAL::VERSION";
+"File::Temp::_replace_XX" -> "File::Temp::CORE:regcomp";
+"File::Temp::cmpstat" -> "File::Temp::CORE:stat";
+"Text::Tradition::Collation::as_svg" -> "File::Temp::DESTROY";
+"File::Temp::new" -> "File::Temp::tempfile";
+"File::Temp::_gettemp" -> "File::Temp::safe_level";
+"File::Temp::END" -> "File::Temp::cleanup";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@163";
+}

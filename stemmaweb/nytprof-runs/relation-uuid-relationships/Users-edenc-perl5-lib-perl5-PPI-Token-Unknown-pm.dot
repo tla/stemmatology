@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::set_class";
+}
+subgraph cluster_PPI_Token_Magic {
+	label="PPI::Token::Magic";
+	"PPI::Token::Magic::BEGIN@46";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_process_next_char";
+}
+subgraph cluster_PPI_Token_Unknown {
+	label="PPI::Token::Unknown";
+	"PPI::Token::Unknown::BEGIN@32";
+	"PPI::Token::Unknown::BEGIN@35";
+	"PPI::Token::Unknown::CORE:match";
+	"PPI::Token::Unknown::CORE:qr";
+	"PPI::Token::Unknown::BEGIN@34";
+	"PPI::Token::Unknown::__TOKENIZER__on_char";
+	"PPI::Token::Unknown::BEGIN@30";
+	"PPI::Token::Unknown::BEGIN@31";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Unknown::__TOKENIZER__on_char";
+"PPI::Token::Unknown::__TOKENIZER__on_char" -> "PPI::Token::set_class";
+"PPI::Token::Magic::BEGIN@46" -> "PPI::Token::Unknown::BEGIN@35";
+"PPI::Token::Unknown::BEGIN@30" -> "strict::import";
+"PPI::Token::Unknown::BEGIN@34" -> "vars::import";
+"PPI::Token::Magic::BEGIN@46" -> "PPI::Token::Unknown::BEGIN@30";
+"PPI::Token::Magic::BEGIN@46" -> "PPI::Token::Unknown::BEGIN@32";
+"PPI::Token::Magic::BEGIN@46" -> "PPI::Token::Unknown::BEGIN@34";
+"PPI::Token::Unknown::__TOKENIZER__on_char" -> "PPI::Token::Unknown::CORE:match";
+"PPI::Token::Magic::BEGIN@46" -> "PPI::Token::Unknown::BEGIN@31";
+"PPI::Token::Unknown::BEGIN@35" -> "PPI::Token::Unknown::CORE:qr";
+}

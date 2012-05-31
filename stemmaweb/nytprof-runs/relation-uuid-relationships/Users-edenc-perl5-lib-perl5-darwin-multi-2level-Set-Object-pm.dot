@@ -1,0 +1,87 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:100]";
+	"KiokuDB::Collapser::Buffer::compact_entries";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::new_scope";
+	"KiokuDB::LiveObjects::remove_scope";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::includes";
+	"Set::Object::insert";
+	"Set::Object::remove";
+	"Set::Object::new";
+	"Set::Object::DESTROY";
+	"Set::Object::BEGIN@497";
+	"Set::Object::weak_pkg";
+	"Set::Object::_weaken";
+	"Set::Object::BEGIN@712";
+	"Set::Object::weaken";
+	"Set::Object::size";
+	"Set::Object::BEGIN@499";
+	"Set::Object::bootstrap";
+	"Set::Object::BEGIN@498";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::collapse";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::store_objects";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Set_Object_Weak {
+	label="Set::Object::Weak";
+	"Set::Object::Weak::new";
+}
+"DynaLoader::bootstrap" -> "Set::Object::bootstrap";
+"Set::Object::BEGIN@712" -> "overload::import";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@499";
+"KiokuDB::store_objects" -> "Set::Object::DESTROY";
+"Set::Object::weaken" -> "Set::Object::weak_pkg";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@712";
+"KiokuDB::LiveObjects::new_scope" -> "Set::Object::insert";
+"Set::Object::Weak::new" -> "Set::Object::insert";
+"KiokuDB::Collapser::collapse" -> "Set::Object::insert";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@497";
+"Set::Object::Weak::new" -> "Set::Object::weaken";
+"Set::Object::BEGIN@497" -> "strict::import";
+"KiokuDB::LiveObjects::remove_scope" -> "Set::Object::remove";
+"Set::Object::Weak::new" -> "Set::Object::new";
+"KiokuDB::Collapser::Buffer::__ANON__[KiokuDB/Collapser/Buffer.pm:100]" -> "Set::Object::new";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@498";
+"KiokuDB::Collapser::Buffer::compact_entries" -> "Set::Object::includes";
+"Set::Object::BEGIN@498" -> "Exporter::import";
+"Set::Object::BEGIN@499" -> "vars::import";
+"Set::Object::weaken" -> "Set::Object::_weaken";
+"KiokuDB::LiveObjects::remove_scope" -> "Set::Object::size";
+}

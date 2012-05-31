@@ -1,0 +1,149 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::prepare_body";
+	"Catalyst::__ANON__[Catalyst.pm:1155]";
+	"Catalyst::finalize_headers";
+	"Catalyst::finalize";
+	"Catalyst::config";
+	"Catalyst::res";
+	"Catalyst::response";
+	"Catalyst::prepare_uploads";
+	"Catalyst::request";
+	"Catalyst::req";
+	"Catalyst::prepare_action";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::setup";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::uploads";
+	"Catalyst::Request::arguments";
+	"Catalyst::Request::captures";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::mime_name";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::encode_xs";
+	"Encode::utf8::decode_xs";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::find_encoding";
+	"Encode::is_utf8";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@10";
+	"Catalyst::Plugin::Unicode::Encoding::setup";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@8";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_action";
+	"Catalyst::Plugin::Unicode::Encoding::encoding";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@4";
+	"Catalyst::Plugin::Unicode::Encoding::CORE:match";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@3";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@6";
+	"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_uploads";
+	"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]";
+	"Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+	"Catalyst::Plugin::Unicode::Encoding::BEGIN@7";
+}
+subgraph cluster_Class_Data_Inheritable {
+	label="Class::Data::Inheritable";
+	"Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::body";
+	"Catalyst::Response::content_type";
+}
+"Catalyst::Plugin::Unicode::Encoding::encoding" -> "Class::Data::Inheritable::__ANON__[Class/Data/Inheritable.pm:23]";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "Catalyst::config";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::Response::content_type";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "Catalyst::prepare_uploads";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@10";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@7";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::res";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::Plugin::Unicode::Encoding::CORE:match";
+"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]" -> "Encode::utf8::decode_xs";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "Catalyst::Plugin::Unicode::Encoding::encoding";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "Catalyst::Plugin::Unicode::Encoding::encoding";
+"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding" -> "Catalyst::Plugin::Unicode::Encoding::encoding";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::Plugin::Unicode::Encoding::encoding";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "Catalyst::__ANON__[Catalyst.pm:1155]";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::prepare_action";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "Catalyst::request";
+"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding" -> "Try::Tiny::try";
+"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding" -> "Try::Tiny::catch";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@3";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@3" -> "strict::import";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Encode::utf8::encode_xs";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::response";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Encode::Encoding::mime_name";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@8" -> "Exporter::import";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::Plugin::Unicode::Encoding::prepare_action";
+"Catalyst::prepare_body" -> "Catalyst::Plugin::Unicode::Encoding::prepare_uploads";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@6";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@4" -> "base::import";
+"Catalyst::finalize" -> "Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "Catalyst::Request::uploads";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@8";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::Response::body";
+"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]" -> "Encode::is_utf8";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::Unicode::Encoding::setup";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::Request::arguments";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding";
+"Try::Tiny::try" -> "Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]";
+"Catalyst::Plugin::Unicode::Encoding::BEGIN@10" -> "UNIVERSAL::VERSION";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Unicode::Encoding::BEGIN@4";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::finalize_headers";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::Request::captures";
+"Catalyst::Plugin::Unicode::Encoding::encoding" -> "Encode::find_encoding";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::req";
+}

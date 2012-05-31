@@ -1,0 +1,32 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_LWP_Protocol {
+	label="LWP::Protocol";
+	"LWP::Protocol::BEGIN@10";
+	"LWP::Protocol::BEGIN@7";
+	"LWP::Protocol::BEGIN@8";
+	"LWP::Protocol::BEGIN@9";
+	"LWP::Protocol::BEGIN@62";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@15";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"LWP::Protocol::BEGIN@10" -> "UNIVERSAL::import";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@9";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@8";
+"LWP::Protocol::BEGIN@7" -> "strict::import";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@7";
+"LWP::Protocol::BEGIN@62" -> "strict::unimport";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@10";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@62";
+}

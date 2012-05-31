@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_NoClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::NoClone";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_NoClone {
+	label="Moose::Meta::Attribute::Custom::Trait::NoClone";
+	"Moose::Meta::Attribute::Custom::Trait::NoClone::register_implementation";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::resolve_metaclass_alias";
+}
+"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::NoClone::register_implementation";
+"MooseX::Clone::BEGIN@12" -> "MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6";
+"MooseX::Clone::BEGIN@12" -> "MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4";
+}

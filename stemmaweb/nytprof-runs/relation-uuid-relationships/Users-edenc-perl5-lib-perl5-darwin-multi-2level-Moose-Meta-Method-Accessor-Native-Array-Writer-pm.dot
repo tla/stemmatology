@@ -1,0 +1,39 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Array::Writer";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::_new_members";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@10" -> "warnings::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@2";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::_new_members";
+}

@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@70";
+	"IPC::Run::Debug::BEGIN@69";
+	"IPC::Run::Debug::BEGIN@72";
+	"IPC::Run::Debug::BEGIN@71";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::BEGIN@1049";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@72";
+"IPC::Run::Debug::BEGIN@69" -> "strict::import";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@70";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@69";
+"IPC::Run::Debug::BEGIN@70" -> "Exporter::import";
+"IPC::Run::Debug::BEGIN@71" -> "vars::import";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@71";
+}

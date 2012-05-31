@@ -1,0 +1,21 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Model {
+	label="Catalyst::Model";
+	"Catalyst::Model::BEGIN@6";
+	"Catalyst::Model::BEGIN@3";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::Model::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Model::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Catalyst::Model::BEGIN@3";
+"Module::Runtime::require_module" -> "Catalyst::Model::BEGIN@6";
+}

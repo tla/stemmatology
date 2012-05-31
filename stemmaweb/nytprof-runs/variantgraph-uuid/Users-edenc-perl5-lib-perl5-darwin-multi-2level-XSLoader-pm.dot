@@ -1,0 +1,172 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@11";
+}
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@2";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@3";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::BEGIN@10";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::BEGIN@98";
+}
+subgraph cluster_YAML_XS {
+	label="YAML::XS";
+	"YAML::XS::BEGIN@19";
+}
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::BEGIN@98";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::BEGIN@12";
+}
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::BEGIN@203";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::BEGIN@266";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@9";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::BEGIN@2";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@30";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@13";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@3";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BEGIN@103";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::BEGIN@46";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::_ob_reg";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@28";
+}
+subgraph cluster_B {
+	label="B";
+	"B::BEGIN@17";
+}
+subgraph cluster_PerlIO {
+	label="PerlIO";
+	"PerlIO::import";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@8";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::BEGIN@7";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::define_encoding";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@22";
+}
+subgraph cluster_English {
+	label="English";
+	"English::BEGIN@148";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@614";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::BEGIN@195";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::BEGIN@529";
+}
+"IO::Socket::BEGIN@12" -> "XSLoader::load";
+"Config::General::BEGIN@22" -> "XSLoader::load";
+"PPI::Util::BEGIN@7" -> "XSLoader::load";
+"FindBin::BEGIN@98" -> "XSLoader::load";
+"Moose::Util::TypeConstraints::BEGIN@614" -> "XSLoader::load";
+"B::BEGIN@17" -> "XSLoader::load";
+"Module::Runtime::require_module" -> "XSLoader::load";
+"YAML::XS::BEGIN@19" -> "XSLoader::load";
+"File::stat::BEGIN@30" -> "XSLoader::load";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "XSLoader::load";
+"Catalyst::Engine::BEGIN@9" -> "XSLoader::load";
+"Scope::Upper::BEGIN@195" -> "XSLoader::load";
+"PerlIO::import" -> "XSLoader::load";
+"Package::Stash::BEGIN@11" -> "XSLoader::load";
+"Graph::BEGIN@28" -> "XSLoader::load";
+"English::BEGIN@148" -> "XSLoader::load";
+"Safe::BEGIN@46" -> "XSLoader::load";
+"Text::Tradition::Collation::BEGIN@3" -> "XSLoader::load";
+"main::BEGIN@7" -> "XSLoader::load";
+"IO::Handle::BEGIN@266" -> "XSLoader::load";
+"Class::Accessor::Grouped::BEGIN@529" -> "XSLoader::load";
+"Catalyst::Controller::BEGIN@103" -> "XSLoader::load";
+"IPC::Run::Debug::BEGIN@2" -> "XSLoader::load";
+"Catalyst::Exception::Basic::BEGIN@3" -> "XSLoader::load";
+"MRO::Compat::BEGIN@10" -> "XSLoader::load";
+"Variable::Magic::BEGIN@203" -> "XSLoader::load";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "XSLoader::load";
+"Moose::BEGIN@13" -> "XSLoader::load";
+"Moose::Exporter::BEGIN@13" -> "XSLoader::load";
+"JSON::BEGIN@2" -> "XSLoader::load";
+"XSLoader::load" -> "DynaLoader::BEGIN@98";
+"XSLoader::load" -> "Hash::Util::FieldHash::_ob_reg";
+"XSLoader::load" -> "Encode::define_encoding";
+}

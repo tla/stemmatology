@@ -1,0 +1,331 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::reading";
+	"Text::Tradition::Collation::add_relationship";
+	"Text::Tradition::Collation::readings";
+	"Text::Tradition::Collation::tradition";
+	"Text::Tradition::Collation::reading_witnesses";
+	"Text::Tradition::Collation::add_path";
+	"Text::Tradition::Collation::get_relationship";
+	"Text::Tradition::Collation::BEGIN@10";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@17";
+	"TryCatch::BEGIN@8";
+	"TryCatch::BEGIN@14";
+	"TryCatch::BEGIN@3";
+	"TryCatch::BEGIN@30";
+	"TryCatch::BEGIN@10";
+	"TryCatch::inject_scope";
+	"TryCatch::BEGIN@13";
+	"TryCatch::BEGIN@4";
+	"TryCatch::BEGIN@15";
+	"TryCatch::BEGIN@7";
+	"TryCatch::BEGIN@9";
+	"TryCatch::BEGIN@12";
+	"TryCatch::BEGIN@11";
+	"TryCatch::BEGIN@32";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::SWASHNEW";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::new";
+	"Text::Tradition::Collation::RelationshipStore::scoped_relationship";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:99]";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:508]";
+	"Text::Tradition::Collation::RelationshipStore::add_relationship";
+	"Text::Tradition::Collation::RelationshipStore::scopedrels";
+	"Text::Tradition::Collation::RelationshipStore::_make_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@4";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:74]";
+	"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship";
+	"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:80]";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+	"Text::Tradition::Collation::RelationshipStore::_set_relationship";
+	"Text::Tradition::Collation::RelationshipStore::eqreadings";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+	"Text::Tradition::Collation::RelationshipStore::_restore_collations";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@1073";
+	"Text::Tradition::Collation::RelationshipStore::graph";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@635";
+	"Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+	"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge";
+	"Text::Tradition::Collation::RelationshipStore::equivalence";
+	"Text::Tradition::Collation::RelationshipStore::CORE:sort";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@632";
+	"Text::Tradition::Collation::RelationshipStore::test_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::related_readings";
+	"Text::Tradition::Collation::RelationshipStore::relationship_valid";
+	"Text::Tradition::Collation::RelationshipStore::_find_applicable";
+	"Text::Tradition::Collation::RelationshipStore::collation";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@3";
+	"Text::Tradition::Collation::RelationshipStore::set_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@9";
+	"Text::Tradition::Collation::RelationshipStore::get_relationship";
+	"Text::Tradition::Collation::RelationshipStore::create";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::language";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::has_rank";
+	"Text::Tradition::Collation::Reading::text";
+	"Text::Tradition::Collation::Reading::_stringify";
+	"Text::Tradition::Collation::Reading::is_meta";
+	"Text::Tradition::Collation::Reading::rank";
+	"Text::Tradition::Collation::Reading::id";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::successors";
+	"Graph::get_edge_attribute";
+	"Graph::add_vertex";
+	"Graph::has_edge_attribute";
+	"Graph::delete_vertex";
+	"Graph::neighbours";
+	"Graph::stringify";
+	"Graph::set_edge_attribute";
+	"Graph::has_edge";
+	"Graph::add_edge";
+	"Graph::eq";
+	"Graph::predecessors";
+	"Graph::delete_edge";
+	"Graph::has_a_cycle";
+	"Graph::new";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@6";
+	"Text::Tradition::Error::meta";
+	"Text::Tradition::Error::BEGIN@5";
+	"Text::Tradition::Error::BEGIN@3";
+	"Text::Tradition::Error::BEGIN@9";
+	"Text::Tradition::Error::BEGIN@17";
+	"Text::Tradition::Error::BEGIN@4";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::enum";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::relationships";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::new";
+	"Text::Tradition::Collation::Relationship::nonlocal";
+	"Text::Tradition::Collation::Relationship::BEGIN@4";
+	"Text::Tradition::Collation::Relationship::type";
+	"Text::Tradition::Collation::Relationship::reading_b";
+	"Text::Tradition::Collation::Relationship::reading_a";
+	"Text::Tradition::Collation::Relationship::meta";
+	"Text::Tradition::Collation::Relationship::BEGIN@11";
+	"Text::Tradition::Collation::Relationship::BEGIN@148";
+	"Text::Tradition::Collation::Relationship::colocated";
+	"Text::Tradition::Collation::Relationship::BEGIN@3";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::unwind";
+	"Scope::Upper::SUB";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::delete_vertex";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::delete_vertex";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Text::Tradition::Collation::RelationshipStore::equivalence";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Text::Tradition::Collation::RelationshipStore::equivalence";
+"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge" -> "Text::Tradition::Collation::RelationshipStore::equivalence";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::RelationshipStore::test_equivalence";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Reading::text";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Reading::text";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@9";
+"Text::Tradition::Collation::RelationshipStore::new" -> "Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:80]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@30";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::RelationshipStore::scoped_relationship";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::scoped_relationship";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::RelationshipStore::scoped_relationship";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@7";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::RelationshipStore::related_readings";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::RelationshipStore::get_relationship" -> "Graph::has_edge_attribute";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge" -> "Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@5";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Moose::has";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@12";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::meta";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::tradition";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::readings";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Text::Tradition::Collation::RelationshipStore::eqreadings";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Relationship::type";
+"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:508]" -> "Text::Tradition::Collation::Relationship::type";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::Relationship::type";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::Relationship::new";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Scope::Upper::SUB";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Scope::Upper::SUB";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Scope::Upper::SUB";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Relationship::reading_a";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::Relationship::reading_a";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@11";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@11";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@3" -> "strict::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::meta";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Graph::set_edge_attribute";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@148";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Text::Tradition::Collation::RelationshipStore::set_equivalence";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@4";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::Reading::has_rank";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "XSLoader::load";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Moose::with";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@1073" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::RelationshipStore::new" -> "Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:99]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@635";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "utf8::SWASHNEW";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@13";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::RelationshipStore::graph";
+"Text::Tradition::Collation::RelationshipStore::get_relationship" -> "Text::Tradition::Collation::RelationshipStore::graph";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Text::Tradition::Collation::RelationshipStore::graph";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@635" -> "TryCatch::inject_scope";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@632" -> "TryCatch::inject_scope";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::stringify";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::reading_witnesses";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@3";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"Text::Tradition::Collation::get_relationship" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@10";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@17";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@9";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@632";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Reading::is_meta";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::language";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::RelationshipStore::collation";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::RelationshipStore::collation";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::RelationshipStore::collation";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::collation";
+"Text::Tradition::Collation::RelationshipStore::get_relationship" -> "Graph::get_edge_attribute";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::Relationship::nonlocal";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Relationship::nonlocal";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::has_a_cycle";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@3";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge" -> "Graph::add_edge";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Graph::add_edge";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@4";
+"Text::Tradition::Collation::RelationshipStore::new" -> "Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:74]";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Scope::Upper::unwind";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Scope::Upper::unwind";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Scope::Upper::unwind";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Text::Tradition::Collation::Relationship::colocated";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Relationship::colocated";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Moose::Util::TypeConstraints::enum";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@17";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:508]";
+"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:99]" -> "Graph::new";
+"Text::Tradition::Collation::RelationshipStore::__ANON__[lib/Text/Tradition/Collation/RelationshipStore.pm:80]" -> "Graph::new";
+"Text::Tradition::Collation::RelationshipStore::_set_relationship" -> "Text::Tradition::Collation::RelationshipStore::_make_equivalence";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::eq";
+"Text::Tradition::Collation::RelationshipStore::scoped_relationship" -> "Text::Tradition::Collation::RelationshipStore::CORE:sort";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::RelationshipStore::CORE:sort";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::relationship_valid";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::add_vertex";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@6";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::_find_applicable";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Graph::neighbours";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Relationship::reading_b";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::Relationship::reading_b";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@9";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::delete_edge";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@15";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::has_edge";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@3";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@14";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::Reading::rank";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Reading::rank";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@32";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@7" -> "TryCatch::BEGIN@4";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Text::Tradition::Collation::Relationship::BEGIN@3";
+"Text::Tradition::Collation::RelationshipStore::scoped_relationship" -> "Text::Tradition::Collation::RelationshipStore::scopedrels";
+"Text::Tradition::Collation::RelationshipStore::add_scoped_relationship" -> "Text::Tradition::Collation::RelationshipStore::scopedrels";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::successors";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::successors";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::_restore_collations";
+"Text::Tradition::Collation::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::add_relationship";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::add_relationship";
+"Text::Tradition::Collation::RelationshipStore::create" -> "Text::Tradition::Collation::RelationshipStore::add_scoped_relationship";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::_set_relationship";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Graph::predecessors";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Graph::predecessors";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@1073";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::RelationshipStore::add_equivalence_edge";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::create";
+}

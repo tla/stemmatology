@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@6";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@22";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@4";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@15";
+}
+"MooseX::Types::Structured::OverflowHandler::BEGIN@6" -> "overload::import";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@22";
+"MooseX::Types::Structured::OverflowHandler::BEGIN@22" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Types::Structured::OverflowHandler::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@4";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@6";
+}

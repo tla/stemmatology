@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::BEGIN@11";
+}
+subgraph cluster_Catalyst_DispatchType_Default {
+	label="Catalyst::DispatchType::Default";
+	"Catalyst::DispatchType::Default::BEGIN@3";
+	"Catalyst::DispatchType::Default::match";
+	"Catalyst::DispatchType::Default::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::Dispatcher::BEGIN@11" -> "Catalyst::DispatchType::Default::BEGIN@6";
+"Catalyst::DispatchType::Default::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Default::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::BEGIN@11" -> "Catalyst::DispatchType::Default::BEGIN@3";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Default::match";
+}

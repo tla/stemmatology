@@ -1,0 +1,91 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::attributes";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::match";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export_ok_tags";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::new";
+	"Catalyst::DispatchType::Regex::register";
+	"Catalyst::DispatchType::Regex::BEGIN@17";
+	"Catalyst::DispatchType::Regex::BEGIN@3";
+	"Catalyst::DispatchType::Regex::match";
+	"Catalyst::DispatchType::Regex::_compiled";
+	"Catalyst::DispatchType::Regex::BEGIN@7";
+	"Catalyst::DispatchType::Regex::__ANON__[Catalyst/DispatchType/Regex.pm:14]";
+	"Catalyst::DispatchType::Regex::BEGIN@8";
+	"Catalyst::DispatchType::Regex::BEGIN@6";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_ok_tags";
+}
+subgraph cluster_Text_Balanced {
+	label="Text::Balanced";
+	"Text::Balanced::BEGIN@11";
+	"Text::Balanced::BEGIN@8";
+	"Text::Balanced::BEGIN@343";
+	"Text::Balanced::BEGIN@12";
+	"Text::Balanced::BEGIN@885";
+	"Text::Balanced::BEGIN@7";
+	"Text::Balanced::BEGIN@9";
+	"Text::Balanced::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Text_Balanced_ErrorMsg {
+	label="Text::Balanced::ErrorMsg";
+	"Text::Balanced::ErrorMsg::BEGIN@1021";
+}
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Regex::BEGIN@8";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::ErrorMsg::BEGIN@1021";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Regex::register";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@343";
+"Catalyst::DispatchType::Regex::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Regex::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Regex::match";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@6";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@885";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@7";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Regex::BEGIN@17";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Exporter::Heavy::heavy_export_ok_tags";
+"Catalyst::DispatchType::Regex::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Regex::BEGIN@7";
+"Catalyst::DispatchType::Regex::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@9";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@12";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Regex::BEGIN@3";
+"Catalyst::DispatchType::Regex::register" -> "Catalyst::Action::attributes";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Exporter::export_ok_tags";
+"Catalyst::DispatchType::Regex::match" -> "Catalyst::DispatchType::Path::match";
+"Catalyst::DispatchType::Regex::new" -> "Catalyst::DispatchType::Regex::__ANON__[Catalyst/DispatchType/Regex.pm:14]";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@8";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Regex::BEGIN@6";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Text::Balanced::BEGIN@11";
+"Catalyst::DispatchType::Regex::match" -> "Catalyst::DispatchType::Regex::_compiled";
+}

@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Date {
+	label="HTTP::Date";
+	"HTTP::Date::BEGIN@13";
+	"HTTP::Date::BEGIN@10";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@12";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"HTTP::Date::BEGIN@10" -> "strict::import";
+"LWP::UserAgent::BEGIN@12" -> "HTTP::Date::BEGIN@13";
+"HTTP::Date::BEGIN@13" -> "vars::import";
+"LWP::UserAgent::BEGIN@12" -> "HTTP::Date::BEGIN@10";
+}

@@ -1,0 +1,85 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::BEGIN@29";
+	"Template::Context::BEGIN@25";
+	"Template::Context::BEGIN@28";
+	"Template::Context::BEGIN@33";
+	"Template::Context::_init";
+	"Template::Context::BEGIN@34";
+	"Template::Context::BEGIN@27";
+	"Template::Context::BEGIN@23";
+	"Template::Context::BEGIN@35";
+	"Template::Context::BEGIN@31";
+	"Template::Context::BEGIN@30";
+	"Template::Context::BEGIN@24";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::filters";
+	"Template::Config::provider";
+	"Template::Config::stash";
+	"Template::Config::plugins";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Template_Constants {
+	label="Template::Constants";
+	"Template::Constants::DEBUG_UNDEF";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Context::_init" -> "Template::Config::filters";
+"base::import" -> "Template::Context::BEGIN@29";
+"Template::Context::BEGIN@28" -> "UNIVERSAL::import";
+"Template::Context::BEGIN@30" -> "UNIVERSAL::import";
+"Template::Context::BEGIN@27" -> "UNIVERSAL::import";
+"base::import" -> "Template::Context::BEGIN@30";
+"base::import" -> "Template::Context::BEGIN@31";
+"base::import" -> "Template::Context::BEGIN@34";
+"Template::Context::BEGIN@34" -> "constant::import";
+"Template::Context::BEGIN@35" -> "constant::import";
+"Template::Context::BEGIN@33" -> "constant::import";
+"base::import" -> "Template::Context::BEGIN@24";
+"Template::Context::BEGIN@23" -> "strict::import";
+"Template::Base::new" -> "Template::Context::_init";
+"base::import" -> "Template::Context::BEGIN@35";
+"Template::Context::_init" -> "Template::Config::plugins";
+"base::import" -> "Template::Context::BEGIN@27";
+"Template::Context::BEGIN@29" -> "Exporter::import";
+"Template::Context::BEGIN@31" -> "Exporter::import";
+"Template::Context::_init" -> "Template::Constants::DEBUG_UNDEF";
+"Template::Context::_init" -> "Template::Config::stash";
+"Template::Context::BEGIN@25" -> "base::import";
+"Template::Context::BEGIN@24" -> "warnings::import";
+"Template::Context::_init" -> "Template::Config::provider";
+"base::import" -> "Template::Context::BEGIN@23";
+"base::import" -> "Template::Context::BEGIN@33";
+"base::import" -> "Template::Context::BEGIN@25";
+"base::import" -> "Template::Context::BEGIN@28";
+}

@@ -1,0 +1,77 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@3";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Class {
+	label="MooseX::StrictConstructor::Trait::Class";
+	"MooseX::StrictConstructor::Trait::Class::BEGIN@10";
+	"MooseX::StrictConstructor::Trait::Class::BEGIN@6";
+	"MooseX::StrictConstructor::Trait::Class::BEGIN@8";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Method_Constructor {
+	label="MooseX::StrictConstructor::Trait::Method::Constructor";
+	"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@6";
+	"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@8";
+	"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@10";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@14";
+	"MooseX::StrictConstructor::BEGIN@11";
+	"MooseX::StrictConstructor::BEGIN@7";
+	"MooseX::StrictConstructor::BEGIN@13";
+	"MooseX::StrictConstructor::BEGIN@9";
+	"MooseX::StrictConstructor::BEGIN@10";
+	"MooseX::StrictConstructor::BEGIN@6";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::around";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::import";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"MooseX::StrictConstructor::BEGIN@13" -> "MooseX::StrictConstructor::Trait::Class::BEGIN@8";
+"MooseX::StrictConstructor::BEGIN@11" -> "UNIVERSAL::import";
+"MooseX::StrictConstructor::BEGIN@14" -> "UNIVERSAL::import";
+"MooseX::StrictConstructor::BEGIN@13" -> "UNIVERSAL::import";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@9";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@14";
+"MooseX::StrictConstructor::BEGIN@13" -> "MooseX::StrictConstructor::Trait::Class::BEGIN@6";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@6";
+"MooseX::StrictConstructor::BEGIN@14" -> "MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@8";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@10";
+"MooseX::StrictConstructor::BEGIN@6" -> "strict::import";
+"MooseX::StrictConstructor::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::StrictConstructor::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::StrictConstructor::BEGIN@14" -> "MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@6";
+"MooseX::StrictConstructor::BEGIN@10" -> "Moose::Exporter::import";
+"MooseX::StrictConstructor::BEGIN@7" -> "warnings::import";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@11";
+"MooseX::StrictConstructor::BEGIN@13" -> "Moose::Role::around";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@13";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@7";
+"MooseX::StrictConstructor::BEGIN@14" -> "MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@10";
+"MooseX::StrictConstructor::BEGIN@9" -> "UNIVERSAL::VERSION";
+"MooseX::StrictConstructor::BEGIN@13" -> "MooseX::StrictConstructor::Trait::Class::BEGIN@10";
+}

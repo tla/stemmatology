@@ -1,0 +1,184 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::is_inlinable";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_initialize_body";
+	"Moose::Meta::Method::Accessor::Native::_slot_access_can_be_inlined";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::BEGIN@11";
+	"Moose::Meta::Method::Accessor::_error_thrower";
+	"Moose::Meta::Method::Accessor::_generate_reader_method";
+	"Moose::Meta::Method::Accessor::_eval_environment";
+	"Moose::Meta::Method::Accessor::_compile_code";
+	"Moose::Meta::Method::Accessor::_inline_check_lazy";
+	"Moose::Meta::Method::Accessor::_instance_is_inlinable";
+	"Moose::Meta::Method::Accessor::BEGIN@13";
+	"Moose::Meta::Method::Accessor::_inline_trigger";
+	"Moose::Meta::Method::Accessor::BEGIN@10";
+	"Moose::Meta::Method::Accessor::__ANON__[Moose/Meta/Method/Accessor.pm:39]";
+	"Moose::Meta::Method::Accessor::_generate_writer_method";
+	"Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+	"Moose::Meta::Method::Accessor::BEGIN@3";
+	"Moose::Meta::Method::Accessor::new";
+	"Moose::Meta::Method::Accessor::_generate_clearer_method";
+	"Moose::Meta::Method::Accessor::_generate_predicate_method";
+	"Moose::Meta::Method::Accessor::BEGIN@15";
+	"Moose::Meta::Method::Accessor::_new";
+	"Moose::Meta::Method::Accessor::_generate_accessor_method";
+	"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Method::Accessor::_get_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::_generate_accessor_method_inline";
+	"Class::MOP::Method::Accessor::_generate_writer_method_inline";
+	"Class::MOP::Method::Accessor::_initialize_body";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]";
+	"Class::MOP::Method::Accessor::_generate_clearer_method_inline";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]";
+	"Class::MOP::Method::Accessor::_generate_reader_method_inline";
+	"Class::MOP::Method::Accessor::associated_attribute";
+	"Class::MOP::Method::Accessor::new";
+	"Class::MOP::Method::Accessor::_generate_predicate_method_inline";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::instance_metaclass";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::super";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Reader {
+	label="Moose::Meta::Method::Accessor::Native::Reader";
+	"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Class_MOP_Method_Generated {
+	label="Class::MOP::Method::Generated";
+	"Class::MOP::Method::Generated::_compile_code";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Attribute::_inline_trigger";
+	"Moose::Meta::Attribute::BEGIN@21";
+	"Moose::Meta::Attribute::_writer_value_needs_copy";
+	"Moose::Meta::Attribute::_inline_check_lazy";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+	"Class::MOP::Attribute::_inline_instance_get";
+	"Class::MOP::Attribute::associated_class";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Method::Accessor::_generate_accessor_method" -> "Class::MOP::Method::Accessor::_generate_accessor_method_inline";
+"Moose::Meta::Method::Accessor::_inline_check_lazy" -> "Moose::Meta::Attribute::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::_inline_trigger" -> "Moose::Meta::Attribute::_inline_trigger";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_copy_native_value" -> "Moose::Meta::Method::Accessor::_writer_value_needs_copy";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@3";
+"Class::MOP::Method::Accessor::new" -> "Moose::Meta::Method::Accessor::_new";
+"Class::MOP::Method::Generated::_compile_code" -> "Moose::Meta::Method::Accessor::_eval_environment";
+"Moose::Role::super" -> "Moose::Meta::Method::Accessor::_eval_environment";
+"Moose::Meta::Method::Accessor::_generate_writer_method" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::Native::_slot_access_can_be_inlined" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::_generate_clearer_method" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::_generate_reader_method" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::_generate_predicate_method" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::_generate_accessor_method" -> "Moose::Meta::Method::Accessor::_instance_is_inlinable";
+"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger" -> "Moose::Meta::Attribute::_inline_get_old_value_for_trigger";
+"Moose::Role::super" -> "Moose::Meta::Method::Accessor::_get_value";
+"Moose::Meta::Method::_inline_throw_error" -> "Moose::Meta::Method::Accessor::_error_thrower";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@10";
+"Moose::Meta::Method::Accessor::_writer_value_needs_copy" -> "Moose::Meta::Attribute::_writer_value_needs_copy";
+"Moose::Meta::Method::Accessor::_generate_predicate_method" -> "Class::MOP::Method::Accessor::_generate_predicate_method_inline";
+"Moose::Meta::Method::Accessor::_compile_code" -> "Try::Tiny::try";
+"Moose::Meta::Method::Accessor::_generate_reader_method" -> "Class::MOP::Method::Accessor::_generate_reader_method_inline";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Moose::Meta::Method::Accessor::Native::_initialize_body" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]" -> "Moose::Meta::Method::Accessor::_compile_code";
+"Class::MOP::Method::Accessor::_initialize_body" -> "Moose::Meta::Method::Accessor::_generate_predicate_method";
+"Moose::Meta::Method::Accessor::_compile_code" -> "Try::Tiny::catch";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger";
+"Moose::Meta::Method::Accessor::_generate_clearer_method" -> "Class::MOP::Method::Accessor::_generate_clearer_method_inline";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_trigger";
+"Class::MOP::Method::Accessor::_initialize_body" -> "Moose::Meta::Method::Accessor::_generate_reader_method";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@13";
+"Moose::Meta::Method::Accessor::BEGIN@10" -> "strict::import";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "Moose::Meta::Method::Accessor::new";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::new";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::Native::Reader::_inline_reader_core" -> "Moose::Meta::Method::Accessor::_inline_check_lazy";
+"Moose::Meta::Method::Accessor::__ANON__[Moose/Meta/Method/Accessor.pm:39]" -> "Class::MOP::Method::Generated::_compile_code";
+"Moose::Meta::Method::Accessor::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::Method::Accessor::_instance_is_inlinable" -> "Class::MOP::Class::instance_metaclass";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@11";
+"Moose::Meta::Method::Accessor::_eval_environment" -> "Moose::Meta::Attribute::_eval_environment";
+"Moose::Meta::Method::Accessor::BEGIN@15" -> "base::import";
+"Moose::Meta::Method::Accessor::BEGIN@11" -> "warnings::import";
+"Class::MOP::Method::Accessor::_initialize_body" -> "Moose::Meta::Method::Accessor::_generate_writer_method";
+"Class::MOP::Method::Accessor::_initialize_body" -> "Moose::Meta::Method::Accessor::_generate_accessor_method";
+"Moose::Meta::Method::Accessor::_instance_is_inlinable" -> "Class::MOP::Instance::is_inlinable";
+"Moose::Meta::Attribute::BEGIN@21" -> "Moose::Meta::Method::Accessor::BEGIN@15";
+"Moose::Meta::Method::Accessor::_generate_writer_method" -> "Class::MOP::Method::Accessor::_generate_writer_method_inline";
+"Moose::Meta::Method::Accessor::_error_thrower" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_eval_environment" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_instance_is_inlinable" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_inline_check_lazy" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_inline_trigger" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_writer_value_needs_copy" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_inline_get_old_value_for_trigger" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::_get_value" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Try::Tiny::try" -> "Moose::Meta::Method::Accessor::__ANON__[Moose/Meta/Method/Accessor.pm:39]";
+"Moose::Meta::Method::Accessor::_get_value" -> "Class::MOP::Attribute::_inline_instance_get";
+"Moose::Meta::Method::Accessor::_instance_is_inlinable" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Method::Accessor::_initialize_body" -> "Moose::Meta::Method::Accessor::_generate_clearer_method";
+}

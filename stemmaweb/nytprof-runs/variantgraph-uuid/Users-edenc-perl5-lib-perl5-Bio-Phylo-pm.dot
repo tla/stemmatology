@@ -1,0 +1,118 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Util_CONSTANT {
+	label="Bio::Phylo::Util::CONSTANT";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@3";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@5";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@4";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@2";
+	"Bio::Phylo::Util::CONSTANT::BEGIN@7";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::looks_like_number";
+}
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::BEGIN@13";
+	"Bio::Phylo::Util::Logger::BEGIN@4";
+	"Bio::Phylo::Util::Logger::BEGIN@7";
+	"Bio::Phylo::Util::Logger::BEGIN@9";
+	"Bio::Phylo::Util::Logger::BEGIN@8";
+	"Bio::Phylo::Util::Logger::BEGIN@3";
+	"Bio::Phylo::Util::Logger::BEGIN@2";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Bio_Phylo_IO {
+	label="Bio::Phylo::IO";
+	"Bio::Phylo::IO::BEGIN@4";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Bio_Phylo_Mediators_TaxaMediator {
+	label="Bio::Phylo::Mediators::TaxaMediator";
+	"Bio::Phylo::Mediators::TaxaMediator::BEGIN@4";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@842";
+	"Bio::Phylo::BEGIN@15";
+	"Bio::Phylo::BEGIN@897";
+	"Bio::Phylo::BEGIN@3";
+	"Bio::Phylo::get_logger";
+	"Bio::Phylo::BEGIN@10";
+	"Bio::Phylo::BEGIN@2";
+	"Bio::Phylo::CORE:substcont";
+	"Bio::Phylo::BEGIN@18";
+	"Bio::Phylo::BEGIN@895";
+	"Bio::Phylo::BEGIN@17";
+	"Bio::Phylo::BEGIN@16";
+	"Bio::Phylo::BEGIN@874";
+	"Bio::Phylo::import";
+	"Bio::Phylo::BEGIN@867";
+	"Bio::Phylo::BEGIN@14";
+	"Bio::Phylo::CORE:subst";
+}
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@874";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@2";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@3";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@2";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@8";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@5";
+"Bio::Phylo::BEGIN@15" -> "UNIVERSAL::import";
+"Bio::Phylo::BEGIN@16" -> "UNIVERSAL::import";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::get_logger";
+"Bio::Phylo::BEGIN@14" -> "Scalar::Util::looks_like_number";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@14";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@10";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@2";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@4";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@895";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@4";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@15";
+"Bio::Phylo::BEGIN@2" -> "strict::import";
+"Bio::Phylo::BEGIN@874" -> "strict::import";
+"Bio::Phylo::BEGIN@897" -> "strict::import";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@897";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::CORE:substcont";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@17";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@7";
+"Bio::Phylo::Mediators::TaxaMediator::BEGIN@4" -> "Bio::Phylo::import";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::import";
+"Bio::Phylo::BEGIN@14" -> "Exporter::import";
+"Bio::Phylo::BEGIN@10" -> "Exporter::import";
+"Bio::Phylo::BEGIN@17" -> "Exporter::import";
+"Bio::Phylo::BEGIN@18" -> "Exporter::import";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@9";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::CORE:subst";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@842";
+"Bio::Phylo::BEGIN@867" -> "strict::unimport";
+"Bio::Phylo::BEGIN@895" -> "strict::unimport";
+"Bio::Phylo::BEGIN@3" -> "base::import";
+"Bio::Phylo::BEGIN@842" -> "warnings::unimport";
+"Bio::Phylo::BEGIN@14" -> "Bio::Phylo::Util::CONSTANT::BEGIN@3";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@7";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@3";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@867";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@13";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@16";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::BEGIN@18";
+}

@@ -1,0 +1,73 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::path";
+	"Catalyst::Request::BEGIN@6";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::downgrade";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::canonical";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::_check_path";
+	"URI::_generic::BEGIN@6";
+	"URI::_generic::CORE:subst";
+	"URI::_generic::_no_scheme_ok";
+	"URI::_generic::CORE:match";
+	"URI::_generic::BEGIN@8";
+	"URI::_generic::path_query";
+	"URI::_generic::path";
+	"URI::_generic::CORE:regcomp";
+	"URI::_generic::authority";
+	"URI::_generic::BEGIN@7";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::_port";
+	"URI::_server::host";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::_init";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@8";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_generic::path";
+"Catalyst::Request::path" -> "URI::_generic::path";
+"URI::http::canonical" -> "URI::_generic::path";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@6";
+"URI::_generic::BEGIN@6" -> "strict::import";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_generic::path_query";
+"URI::_init" -> "URI::_generic::_no_scheme_ok";
+"URI::_generic::authority" -> "URI::_generic::CORE:subst";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::CORE:subst";
+"URI::_generic::BEGIN@7" -> "Exporter::import";
+"URI::_generic::authority" -> "URI::_generic::CORE:regcomp";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@7";
+"URI::_server::_port" -> "URI::_generic::authority";
+"URI::_server::host" -> "URI::_generic::authority";
+"URI::http::canonical" -> "URI::_generic::authority";
+"URI::_generic::authority" -> "URI::_generic::_check_path";
+"URI::_generic::_check_path" -> "URI::_generic::CORE:match";
+"URI::_generic::path_query" -> "URI::_generic::CORE:match";
+"URI::_generic::path" -> "URI::_generic::CORE:match";
+"URI::_generic::authority" -> "URI::_generic::CORE:match";
+"URI::_generic::authority" -> "utf8::downgrade";
+}

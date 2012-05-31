@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role_Application {
+	label="MooseX::MethodAttributes::Role::Meta::Role::Application";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@13";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@14";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@11";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@14";
+"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@14" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@11";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@12";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@10";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@13";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@2";
+}

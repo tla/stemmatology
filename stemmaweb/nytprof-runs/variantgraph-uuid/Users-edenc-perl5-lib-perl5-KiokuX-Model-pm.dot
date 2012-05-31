@@ -1,0 +1,147 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::_build_directory";
+	"KiokuX::Model::BEGIN@5";
+	"KiokuX::Model::BEGIN@2";
+	"KiokuX::Model::_build__connect_args";
+	"KiokuX::Model::extra_args";
+	"KiokuX::Model::dsn";
+	"KiokuX::Model::BEGIN@3";
+	"KiokuX::Model::has_extra_args";
+	"KiokuX::Model::_connect_args";
+	"KiokuX::Model::BEGIN@7";
+	"KiokuX::Model::directory";
+	"KiokuX::Model::BEGIN@9";
+	"KiokuX::Model::BUILD";
+	"KiokuX::Model::has_typemap";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::execute";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_StrictConstructor {
+	label="MooseX::StrictConstructor";
+	"MooseX::StrictConstructor::BEGIN@14";
+	"MooseX::StrictConstructor::BEGIN@11";
+	"MooseX::StrictConstructor::BEGIN@7";
+	"MooseX::StrictConstructor::BEGIN@13";
+	"MooseX::StrictConstructor::BEGIN@9";
+	"MooseX::StrictConstructor::BEGIN@10";
+	"MooseX::StrictConstructor::BEGIN@6";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_call_builder";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::typemap";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@12";
+	"KiokuDB::BEGIN@17";
+	"KiokuDB::BEGIN@14";
+	"KiokuDB::BEGIN@19";
+	"KiokuDB::BEGIN@21";
+	"KiokuDB::BEGIN@23";
+	"KiokuDB::BEGIN@29";
+	"KiokuDB::meta";
+	"KiokuDB::BEGIN@4";
+	"KiokuDB::BEGIN@22";
+	"KiokuDB::BEGIN@13";
+	"KiokuDB::BEGIN@16";
+	"KiokuDB::BEGIN@11";
+	"KiokuDB::connect";
+	"KiokuDB::BEGIN@25";
+	"KiokuDB::BEGIN@8";
+	"KiokuDB::BEGIN@10";
+	"KiokuDB::BEGIN@15";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"Module::Runtime::require_module" -> "KiokuX::Model::BEGIN@7";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@17";
+"KiokuX::Model::_build__connect_args" -> "KiokuX::Model::has_extra_args";
+"KiokuX::Model::BEGIN@3" -> "Moose::Exporter::setup_import_methods";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@21";
+"KiokuX::Model::_build__connect_args" -> "KiokuX::Model::dsn";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@19";
+"KiokuX::Model::BEGIN@7" -> "UNIVERSAL::import";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@9";
+"KiokuX::Model::BUILD" -> "KiokuX::Model::directory";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@14";
+"KiokuX::Model::_connect_args" -> "KiokuX::Model::_build__connect_args";
+"KiokuX::Model::BEGIN@7" -> "Moose::has";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@10";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@23";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@29";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@6";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@12";
+"Module::Runtime::require_module" -> "KiokuX::Model::BEGIN@2";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@10";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@25";
+"KiokuX::Model::BEGIN@9" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "KiokuX::Model::BEGIN@9";
+"KiokuX::Model::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuX::Model::BEGIN@7" -> "Moose::with";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::meta";
+"KiokuX::Model::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuX::Model::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@14";
+"KiokuX::Model::BEGIN@5" -> "Exporter::import";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@16";
+"KiokuX::Model::_build_directory" -> "KiokuX::Model::_connect_args";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@22";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuX::Model::_build_directory";
+"KiokuX::Model::_build__connect_args" -> "KiokuX::Model::has_typemap";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@4";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@11";
+"KiokuX::Model::_build_directory" -> "KiokuDB::connect";
+"KiokuX::Model::_build__connect_args" -> "Text::Tradition::Directory::typemap";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@11";
+"KiokuX::Model::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@13";
+"KiokuX::Model::BEGIN@3" -> "MooseX::StrictConstructor::BEGIN@7";
+"KiokuX::Model::_build__connect_args" -> "KiokuX::Model::extra_args";
+"Module::Runtime::require_module" -> "KiokuX::Model::BEGIN@3";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@13";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@8";
+"Module::Runtime::require_module" -> "KiokuX::Model::BEGIN@5";
+"KiokuX::Model::BEGIN@7" -> "KiokuDB::BEGIN@15";
+"Class::MOP::Method::execute" -> "KiokuX::Model::BUILD";
+}

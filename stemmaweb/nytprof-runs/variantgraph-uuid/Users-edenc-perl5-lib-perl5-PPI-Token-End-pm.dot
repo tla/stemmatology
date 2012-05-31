@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_End {
+	label="PPI::Token::End";
+	"PPI::Token::End::BEGIN@46";
+	"PPI::Token::End::BEGIN@44";
+	"PPI::Token::End::BEGIN@43";
+	"PPI::Token::End::BEGIN@47";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@73";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@44";
+"PPI::Token::End::BEGIN@43" -> "strict::import";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@47";
+"PPI::Token::End::BEGIN@46" -> "vars::import";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@43";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@46";
+}

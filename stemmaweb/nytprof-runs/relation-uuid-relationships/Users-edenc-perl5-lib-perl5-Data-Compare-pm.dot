@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@11";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Data_Compare {
+	label="Data::Compare";
+	"Data::Compare::BEGIN@12";
+	"Data::Compare::BEGIN@9";
+	"Data::Compare::BEGIN@14";
+	"Data::Compare::BEGIN@24";
+	"Data::Compare::BEGIN@15";
+	"Data::Compare::BEGIN@13";
+	"Data::Compare::BEGIN@10";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@15";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@12";
+"Data::Compare::BEGIN@9" -> "strict::import";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@10";
+"Data::Compare::BEGIN@15" -> "Exporter::import";
+"Data::Compare::BEGIN@14" -> "Exporter::import";
+"Data::Compare::BEGIN@13" -> "Exporter::import";
+"Data::Compare::BEGIN@24" -> "Exporter::import";
+"Data::Compare::BEGIN@10" -> "warnings::import";
+"Data::Compare::BEGIN@12" -> "vars::import";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@14";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@13";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@24";
+"DBIx::Class::ResultSet::BEGIN@11" -> "Data::Compare::BEGIN@9";
+}

@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@36";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_Undirected {
+	label="Graph::Undirected";
+	"Graph::Undirected::BEGIN@3";
+	"Graph::Undirected::BEGIN@5";
+	"Graph::Undirected::BEGIN@4";
+}
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@4";
+"Graph::Undirected::BEGIN@5" -> "strict::import";
+"Graph::Undirected::BEGIN@4" -> "base::import";
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@5";
+"Graph::BEGIN@36" -> "Graph::Undirected::BEGIN@3";
+}

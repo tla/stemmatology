@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@10";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@6";
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@6" -> "Exporter::import";
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4";
+}

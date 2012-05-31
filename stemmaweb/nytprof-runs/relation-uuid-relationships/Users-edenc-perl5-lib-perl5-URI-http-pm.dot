@@ -1,0 +1,43 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@6";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::BEGIN@6";
+	"URI::http::default_port";
+	"URI::http::canonical";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::path";
+	"URI::_generic::authority";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::port";
+	"URI::_server::canonical";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::prepare_path";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Request::BEGIN@6" -> "URI::http::BEGIN@6";
+"URI::http::canonical" -> "URI::_generic::path";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::http::default_port";
+"URI::_server::port" -> "URI::http::default_port";
+"URI::http::BEGIN@6" -> "strict::import";
+"URI::http::canonical" -> "URI::_generic::authority";
+"URI::http::canonical" -> "URI::_server::canonical";
+"Catalyst::Engine::prepare_path" -> "URI::http::canonical";
+}

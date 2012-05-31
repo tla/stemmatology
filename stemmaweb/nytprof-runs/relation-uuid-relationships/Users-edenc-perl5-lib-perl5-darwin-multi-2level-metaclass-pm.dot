@@ -1,0 +1,166 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::BEGIN@11";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::BEGIN@14";
+	"metaclass::BEGIN@18";
+	"metaclass::BEGIN@3";
+	"metaclass::BEGIN@15";
+	"metaclass::BEGIN@13";
+	"metaclass::BEGIN@11";
+	"metaclass::BEGIN@10";
+	"metaclass::import";
+	"metaclass::BEGIN@16";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::initialize";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@12";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@11";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::initialize";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BEGIN@20";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::BEGIN@12";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::BEGIN@11";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@11";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::BEGIN@11";
+}
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@15";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@10";
+"metaclass::import" -> "Class::Load::load_class";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeCoercion::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::Role::Application::ToRole::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Union::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::Role::BEGIN@11" -> "metaclass::import";
+"Moose::Object::BEGIN@20" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::Role::Application::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Role::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::Role::Application::ToInstance::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::Role::Application::ToClass::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::Role::Method::Required::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Registry::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::Role::Composite::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Enum::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeCoercion::Union::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Class::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@11" -> "metaclass::import";
+"metaclass::BEGIN@10" -> "strict::import";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@14";
+"metaclass::BEGIN@16" -> "Exporter::import";
+"metaclass::BEGIN@15" -> "Exporter::import";
+"metaclass::BEGIN@14" -> "Exporter::import";
+"metaclass::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@16";
+"metaclass::import" -> "Moose::Meta::Class::initialize";
+"metaclass::BEGIN@11" -> "warnings::import";
+"metaclass::import" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@18";
+"metaclass::import" -> "UNIVERSAL::isa";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@3";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@11";
+"metaclass::import" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Moose::Meta::TypeConstraint::BEGIN@12" -> "metaclass::BEGIN@13";
+}

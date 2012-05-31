@@ -1,0 +1,227 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::parse";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@5";
+	"Text::Tradition::Collation::new";
+	"Text::Tradition::Collation::BEGIN@1800";
+	"Text::Tradition::Collation::BEGIN@14";
+	"Text::Tradition::Collation::BEGIN@7";
+	"Text::Tradition::Collation::BEGIN@11";
+	"Text::Tradition::Collation::BEGIN@13";
+	"Text::Tradition::Collation::BEGIN@12";
+	"Text::Tradition::Collation::BEGIN@3";
+	"Text::Tradition::Collation::BEGIN@8";
+	"Text::Tradition::Collation::BEGIN@15";
+	"Text::Tradition::Collation::BEGIN@6";
+	"Text::Tradition::Collation::meta";
+	"Text::Tradition::Collation::BEGIN@9";
+	"Text::Tradition::Collation::BEGIN@10";
+	"Text::Tradition::Collation::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@3";
+	"Text::Tradition::Stemma::BEGIN@12";
+	"Text::Tradition::Stemma::BEGIN@6";
+	"Text::Tradition::Stemma::BEGIN@393";
+	"Text::Tradition::Stemma::meta";
+	"Text::Tradition::Stemma::BEGIN@8";
+	"Text::Tradition::Stemma::BEGIN@4";
+	"Text::Tradition::Stemma::BEGIN@11";
+	"Text::Tradition::Stemma::BEGIN@5";
+	"Text::Tradition::Stemma::BEGIN@9";
+	"Text::Tradition::Stemma::BEGIN@10";
+	"Text::Tradition::Stemma::BEGIN@7";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@7";
+	"Text::Tradition::Witness::BEGIN@783";
+	"Text::Tradition::Witness::BEGIN@353";
+	"Text::Tradition::Witness::meta";
+	"Text::Tradition::Witness::BEGIN@9";
+	"Text::Tradition::Witness::BEGIN@6";
+	"Text::Tradition::Witness::BEGIN@355";
+	"Text::Tradition::Witness::BEGIN@5";
+	"Text::Tradition::Witness::BEGIN@3";
+	"Text::Tradition::Witness::BEGIN@4";
+	"Text::Tradition::Witness::BEGIN@8";
+	"Text::Tradition::Witness::BEGIN@201";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::BEGIN@5";
+	"JSON::BEGIN@318";
+	"JSON::import";
+	"JSON::BEGIN@9";
+	"JSON::BEGIN@6";
+	"JSON::BEGIN@4";
+	"JSON::_load_xs";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@10";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::around";
+	"Moose::has";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::import";
+	"Module::Load::BEGIN@11";
+	"Module::Load::load";
+	"Module::Load::BEGIN@37";
+	"Module::Load::BEGIN@6";
+	"Module::Load::BEGIN@5";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::done_declare";
+	"Devel::Declare::linestr_callback";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@7";
+	"Text::Tradition::_save_collation";
+	"Text::Tradition::BEGIN@370";
+	"Text::Tradition::__ANON__[lib/Text/Tradition.pm:29]";
+	"Text::Tradition::new";
+	"Text::Tradition::BEGIN@5";
+	"Text::Tradition::BEGIN@10";
+	"Text::Tradition::BEGIN@4";
+	"Text::Tradition::BEGIN@8";
+	"Text::Tradition::BEGIN@3";
+	"Text::Tradition::BEGIN@6";
+	"Text::Tradition::__ANON__[lib/Text/Tradition.pm:54]";
+	"Text::Tradition::BUILD";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::where";
+	"Moose::Util::TypeConstraints::subtype";
+	"Moose::Util::TypeConstraints::as";
+	"Moose::Util::TypeConstraints::message";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_JSON_Backend_PP {
+	label="JSON::Backend::PP";
+	"JSON::Backend::PP::BEGIN@383";
+}
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@6";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@8";
+"Text::Tradition::BEGIN@8" -> "Moose::Util::TypeConstraints::as";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@7";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@201";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@15";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@7";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@6";
+"Text::Tradition::BEGIN@8" -> "UNIVERSAL::import";
+"Text::Tradition::BEGIN@6" -> "UNIVERSAL::import";
+"Text::Tradition::BEGIN@7" -> "UNIVERSAL::import";
+"Text::Tradition::BEGIN@3" -> "JSON::_load_xs";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@11";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@6";
+"Text::Tradition::BEGIN@6" -> "Moose::has";
+"Text::Tradition::BEGIN@8" -> "Moose::has";
+"Text::Tradition::BEGIN@7" -> "Moose::has";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@1800";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@6";
+"Text::Tradition::BEGIN@8" -> "Moose::Util::TypeConstraints::where";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@9";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::meta";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@9";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@9";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@11";
+"Text::Tradition::BEGIN@3" -> "JSON::import";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@11";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@4";
+"Text::Tradition::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::BEGIN@370" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@4";
+"Text::Tradition::BEGIN@6" -> "Moose::around";
+"Text::Tradition::BEGIN@8" -> "Moose::around";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@4";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@8";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@4";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@12";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@9";
+"Text::Tradition::new" -> "Text::Tradition::__ANON__[lib/Text/Tradition.pm:29]";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@5";
+"Text::Tradition::BEGIN@8" -> "Moose::Util::TypeConstraints::subtype";
+"Text::Tradition::BUILD" -> "UNIVERSAL::can";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@6";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@355";
+"Text::Tradition::BEGIN@10" -> "vars::import";
+"Text::Tradition::BUILD" -> "Text::Tradition::Parser::Self::parse";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@7";
+"Text::Tradition::BEGIN@8" -> "Devel::Declare::done_declare";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@5";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@318";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@6";
+"Text::Tradition::BEGIN@4" -> "Module::Load::import";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@10";
+"Text::Tradition::new" -> "Text::Tradition::BUILD";
+"Text::Tradition::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@4";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@353";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@7";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@783";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@13";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::meta";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@14";
+"Text::Tradition::BUILD" -> "Text::Tradition::_save_collation";
+"Text::Tradition::BEGIN@8" -> "Moose::Util::TypeConstraints::message";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@3";
+"Text::Tradition::BEGIN@8" -> "Devel::Declare::linestr_callback";
+"Text::Tradition::BEGIN@4" -> "Module::Load::BEGIN@37";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@12";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@8";
+"Text::Tradition::BEGIN@3" -> "JSON::Backend::PP::BEGIN@383";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@370";
+"Text::Tradition::BUILD" -> "Module::Load::load";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@5";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@5";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@10";
+"Text::Tradition::BUILD" -> "Text::Tradition::Collation::new";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@10";
+"Text::Tradition::BEGIN@8" -> "Text::Tradition::Witness::BEGIN@5";
+"Text::Tradition::new" -> "Text::Tradition::__ANON__[lib/Text/Tradition.pm:54]";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@3";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::meta";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@3";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@3";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@8";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@393";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@5";
+}

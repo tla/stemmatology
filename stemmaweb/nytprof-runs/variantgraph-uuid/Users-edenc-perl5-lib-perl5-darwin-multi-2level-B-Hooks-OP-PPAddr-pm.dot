@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@9";
+	"TryCatch::BEGIN@1";
+	"TryCatch::BEGIN@2";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_B_Hooks_OP_PPAddr {
+	label="B::Hooks::OP::PPAddr";
+	"B::Hooks::OP::PPAddr::END";
+	"B::Hooks::OP::PPAddr::BEGIN@6";
+	"B::Hooks::OP::PPAddr::dl_load_flags";
+	"B::Hooks::OP::PPAddr::bootstrap";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"main::RUNTIME" -> "B::Hooks::OP::PPAddr::END";
+"DynaLoader::bootstrap" -> "B::Hooks::OP::PPAddr::dl_load_flags";
+"DynaLoader::bootstrap" -> "B::Hooks::OP::PPAddr::bootstrap";
+"TryCatch::BEGIN@1" -> "strict::import";
+"TryCatch::BEGIN@9" -> "TryCatch::BEGIN@2";
+"TryCatch::BEGIN@2" -> "warnings::import";
+"TryCatch::BEGIN@9" -> "TryCatch::BEGIN@1";
+"B::Hooks::OP::PPAddr::BEGIN@6" -> "parent::import";
+"TryCatch::BEGIN@9" -> "B::Hooks::OP::PPAddr::BEGIN@6";
+}

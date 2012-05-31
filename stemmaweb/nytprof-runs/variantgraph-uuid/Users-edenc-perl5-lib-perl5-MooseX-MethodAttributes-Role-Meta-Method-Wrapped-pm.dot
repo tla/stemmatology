@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_Wrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::Wrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@2";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@2";
+}

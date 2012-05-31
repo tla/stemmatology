@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_inline_create_error";
+	"Moose::Meta::Class::BEGIN@23";
+}
+subgraph cluster_Moose_Error_Default {
+	label="Moose::Error::Default";
+	"Moose::Error::Default::BEGIN@12";
+	"Moose::Error::Default::BEGIN@10";
+	"Moose::Error::Default::_inline_new";
+	"Moose::Error::Default::BEGIN@13";
+	"Moose::Error::Default::BEGIN@15";
+	"Moose::Error::Default::BEGIN@9";
+	"Moose::Error::Default::BEGIN@2";
+	"Moose::Error::Default::BEGIN@17";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Moose_Error_Util {
+	label="Moose::Error::Util";
+	"Moose::Error::Util::BEGIN@4";
+	"Moose::Error::Util::BEGIN@5";
+	"Moose::Error::Util::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@17";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@10";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@2";
+"Moose::Error::Default::BEGIN@15" -> "Moose::Error::Util::BEGIN@4";
+"Moose::Error::Default::BEGIN@15" -> "Moose::Error::Util::BEGIN@10";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@12";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@9";
+"Moose::Error::Default::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@13";
+"Moose::Error::Default::BEGIN@17" -> "base::import";
+"Moose::Error::Default::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Class::BEGIN@23" -> "Moose::Error::Default::BEGIN@15";
+"Moose::Meta::Class::_inline_create_error" -> "Moose::Error::Default::_inline_new";
+"Moose::Error::Default::BEGIN@15" -> "Moose::Error::Util::BEGIN@5";
+}

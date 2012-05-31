@@ -1,0 +1,21 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@2";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "MooseX::Role::Parameterized::Meta::Role::Parameterized::BEGIN@9";
+}

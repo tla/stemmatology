@@ -1,0 +1,67 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_String_Formatter {
+	label="String::Formatter";
+	"String::Formatter::BEGIN@239";
+	"String::Formatter::BEGIN@4";
+	"String::Formatter::BEGIN@13";
+	"String::Formatter::CORE:qr";
+	"String::Formatter::__closure_replace";
+	"String::Formatter::BEGIN@12";
+	"String::Formatter::new";
+	"String::Formatter::BEGIN@51";
+	"String::Formatter::codes";
+	"String::Formatter::BEGIN@59";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::default_hunk_formatter";
+	"String::Errf::default_string_replacer";
+	"String::Errf::BEGIN@2";
+	"String::Errf::default_input_processor";
+	"String::Errf::__ANON__[String/Errf.pm:24]";
+	"String::Errf::BEGIN@1";
+	"String::Errf::BEGIN@7";
+	"String::Errf::default_codes";
+	"String::Errf::default_format_hunker";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@4";
+"String::Formatter::new" -> "String::Errf::default_input_processor";
+"String::Errf::__ANON__[String/Errf.pm:24]" -> "String::Formatter::new";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@12";
+"String::Formatter::new" -> "String::Errf::default_hunk_formatter";
+"String::Formatter::new" -> "String::Errf::default_codes";
+"String::Formatter::new" -> "String::Errf::default_format_hunker";
+"String::Formatter::BEGIN@13" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@51";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@239";
+"String::Errf::BEGIN@1" -> "strict::import";
+"String::Errf::BEGIN@7" -> "String::Errf::BEGIN@1";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@59";
+"String::Formatter::new" -> "UNIVERSAL::can";
+"String::Formatter::BEGIN@59" -> "strict::unimport";
+"String::Errf::BEGIN@2" -> "warnings::import";
+"String::Formatter::BEGIN@239" -> "String::Formatter::__closure_replace";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@13";
+"String::Formatter::new" -> "String::Formatter::codes";
+"String::Errf::BEGIN@7" -> "String::Errf::BEGIN@2";
+"String::Errf::BEGIN@7" -> "String::Formatter::CORE:qr";
+"String::Formatter::new" -> "String::Errf::default_string_replacer";
+}

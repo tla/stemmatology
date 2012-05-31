@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::__ANON__[KiokuDB/LiveObjects.pm:166]";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::insert";
+	"Set::Object::new";
+	"Set::Object::weaken";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+}
+subgraph cluster_Set_Object_Weak {
+	label="Set::Object::Weak";
+	"Set::Object::Weak::BEGIN@28";
+	"Set::Object::Weak::new";
+	"Set::Object::Weak::BEGIN@30";
+	"Set::Object::Weak::BEGIN@32";
+	"Set::Object::Weak::BEGIN@31";
+}
+"KiokuDB::LiveObjects::__ANON__[KiokuDB/LiveObjects.pm:166]" -> "Set::Object::Weak::new";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@32";
+"Set::Object::Weak::new" -> "Set::Object::insert";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@28";
+"Set::Object::Weak::new" -> "Set::Object::weaken";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@30";
+"Set::Object::Weak::new" -> "Set::Object::new";
+"Set::Object::Weak::BEGIN@32" -> "Exporter::import";
+"Set::Object::Weak::BEGIN@30" -> "base::import";
+"Set::Object::Weak::BEGIN@28" -> "base::import";
+"Set::Object::Weak::BEGIN@31" -> "vars::import";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@31";
+}

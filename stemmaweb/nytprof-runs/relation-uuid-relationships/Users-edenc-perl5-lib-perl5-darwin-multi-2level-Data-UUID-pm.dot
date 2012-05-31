@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Data_UUID {
+	label="Data::UUID";
+	"Data::UUID::BEGIN@3";
+	"Data::UUID::bootstrap";
+	"Data::UUID::BEGIN@6";
+	"Data::UUID::create_str";
+	"Data::UUID::BEGIN@5";
+	"Data::UUID::new";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Role_UUIDs_DataUUID {
+	label="KiokuDB::Role::UUIDs::DataUUID";
+	"KiokuDB::Role::UUIDs::DataUUID::generate_uuid";
+	"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Data::UUID::new";
+"Data::UUID::BEGIN@3" -> "strict::import";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6" -> "Data::UUID::BEGIN@5";
+"KiokuDB::Role::UUIDs::DataUUID::generate_uuid" -> "Data::UUID::create_str";
+"Data::UUID::BEGIN@5" -> "Exporter::import";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6" -> "Data::UUID::BEGIN@6";
+"Data::UUID::BEGIN@6" -> "vars::import";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6" -> "Data::UUID::BEGIN@3";
+"DynaLoader::bootstrap" -> "Data::UUID::bootstrap";
+}

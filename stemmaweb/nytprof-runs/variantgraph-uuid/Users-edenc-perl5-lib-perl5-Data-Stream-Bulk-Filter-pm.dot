@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Data_Stream_Bulk_Filter {
+	label="Data::Stream::Bulk::Filter";
+	"Data::Stream::Bulk::Filter::BEGIN@13";
+	"Data::Stream::Bulk::Filter::BEGIN@2";
+	"Data::Stream::Bulk::Filter::BEGIN@8";
+	"Data::Stream::Bulk::Filter::BEGIN@11";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Data::Stream::Bulk::Filter::BEGIN@11" -> "UNIVERSAL::import";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Filter::BEGIN@13";
+"Data::Stream::Bulk::Filter::BEGIN@13" -> "namespace::clean::import";
+"Data::Stream::Bulk::Filter::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Filter::BEGIN@11";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Filter::BEGIN@2";
+"Module::Runtime::require_module" -> "Data::Stream::Bulk::Filter::BEGIN@8";
+}

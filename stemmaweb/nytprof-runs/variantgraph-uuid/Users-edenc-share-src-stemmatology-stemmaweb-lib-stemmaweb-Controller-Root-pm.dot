@@ -1,0 +1,127 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::forward";
+	"Catalyst::stash";
+	"Catalyst::model";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::as_svg";
+	"Text::Tradition::Collation::has_cached_svg";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::execute";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@3";
+	"stemmaweb::Controller::Root::BEGIN@131";
+	"stemmaweb::Controller::Root::BEGIN@148";
+	"stemmaweb::Controller::Root::BEGIN@4";
+	"stemmaweb::Controller::Root::BEGIN@102";
+	"stemmaweb::Controller::Root::BEGIN@55";
+	"stemmaweb::Controller::Root::end";
+	"stemmaweb::Controller::Root::BEGIN@160";
+	"stemmaweb::Controller::Root::variantgraph";
+	"stemmaweb::Controller::Root::BEGIN@2";
+	"stemmaweb::Controller::Root::BEGIN@7";
+	"stemmaweb::Controller::Root::BEGIN@168";
+	"stemmaweb::Controller::Root::BEGIN@36";
+	"stemmaweb::Controller::Root::BEGIN@74";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::collation";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@5";
+	"Text::Tradition::Analysis::BEGIN@12";
+	"Text::Tradition::Analysis::BEGIN@9";
+	"Text::Tradition::Analysis::BEGIN@6";
+	"Text::Tradition::Analysis::BEGIN@3";
+	"Text::Tradition::Analysis::BEGIN@8";
+	"Text::Tradition::Analysis::BEGIN@11";
+	"Text::Tradition::Analysis::BEGIN@14";
+	"Text::Tradition::Analysis::BEGIN@7";
+	"Text::Tradition::Analysis::BEGIN@10";
+	"Text::Tradition::Analysis::BEGIN@4";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::tradition";
+	"Text::Tradition::Directory::save";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@4";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Root::end";
+"stemmaweb::Controller::Root::BEGIN@7" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@160";
+"stemmaweb::Controller::Root::variantgraph" -> "Text::Tradition::collation";
+"stemmaweb::Controller::Root::variantgraph" -> "Catalyst::model";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@9";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@5";
+"stemmaweb::Controller::Root::variantgraph" -> "Catalyst::stash";
+"stemmaweb::Controller::Root::variantgraph" -> "Text::Tradition::Collation::has_cached_svg";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Root::variantgraph";
+"stemmaweb::Controller::Root::variantgraph" -> "Text::Tradition::Collation::as_svg";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@7";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@11";
+"stemmaweb::Controller::Root::variantgraph" -> "Catalyst::forward";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@55";
+"stemmaweb::Controller::Root::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@2";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@3";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Exporter::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@102";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@168";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@148";
+"stemmaweb::Controller::Root::variantgraph" -> "Text::Tradition::Directory::tradition";
+"stemmaweb::Controller::Root::BEGIN@3" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@14";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@7";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@12";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@10";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@131";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@74";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@6";
+"stemmaweb::Controller::Root::BEGIN@148" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@55" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@36" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@131" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@102" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@160" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@168" -> "attributes::import";
+"stemmaweb::Controller::Root::BEGIN@74" -> "attributes::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@36";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@3";
+"stemmaweb::Controller::Root::variantgraph" -> "Text::Tradition::Directory::save";
+"stemmaweb::Controller::Root::BEGIN@4" -> "Text::Tradition::Analysis::BEGIN@8";
+}

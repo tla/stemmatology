@@ -1,0 +1,144 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::FETCH";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::setup_plugins";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::first";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::BEGIN@18";
+	"DynaLoader::BEGIN@22";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_anon_cache_key";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_first_existing_class";
+	"Class::Load::BEGIN@2";
+	"Class::Load::BEGIN@8";
+	"Class::Load::BEGIN@1";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::mkopt_hash";
+	"Data::OptList::BEGIN@100";
+	"Data::OptList::mkopt";
+	"Data::OptList::BEGIN@4";
+	"Data::OptList::BEGIN@15";
+	"Data::OptList::__ANON__[Data/OptList.pm:54]";
+	"Data::OptList::BEGIN@10";
+	"Data::OptList::BEGIN@11";
+	"Data::OptList::BEGIN@9";
+	"Data::OptList::__is_a";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_CODELIKE";
+	"Params::Util::_SCALAR0";
+	"Params::Util::_ARRAYLIKE";
+	"Params::Util::_HASHLIKE";
+	"Params::Util::BEGIN@65";
+	"Params::Util::BEGIN@58";
+	"Params::Util::BEGIN@59";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::exporter";
+	"Sub::Install::BEGIN@148";
+	"Sub::Install::BEGIN@4";
+	"Sub::Install::BEGIN@3";
+	"Sub::Install::BEGIN@6";
+	"Sub::Install::BEGIN@184";
+	"Sub::Install::BEGIN@287";
+	"Sub::Install::BEGIN@139";
+	"Sub::Install::BEGIN@190";
+	"Sub::Install::BEGIN@7";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::_rewrite_build_config";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+	"Sub::Exporter::_expand_group";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::_apply_all_roles";
+	"Moose::Util::__ANON__[Moose/Util.pm:121]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@11";
+"Class::Load::BEGIN@8" -> "Class::Load::BEGIN@2";
+"Data::OptList::__is_a" -> "Params::Util::_ARRAYLIKE";
+"Data::OptList::BEGIN@10" -> "Config::FETCH";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@287";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@100";
+"Data::OptList::BEGIN@10" -> "DynaLoader::BEGIN@18";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@65";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@184";
+"Class::Load::BEGIN@1" -> "strict::import";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@4";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@59";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@4";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@148";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@139";
+"Data::OptList::__is_a" -> "Params::Util::_SCALAR0";
+"Data::OptList::__is_a" -> "List::Util::first";
+"Data::OptList::BEGIN@10" -> "Exporter::import";
+"Data::OptList::BEGIN@100" -> "Sub::Install::exporter";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@15";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@190";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@9";
+"Class::Load::BEGIN@2" -> "warnings::import";
+"Data::OptList::__is_a" -> "Params::Util::_CODELIKE";
+"Data::OptList::mkopt" -> "Moose::Util::__ANON__[Moose/Util.pm:121]";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@6";
+"Data::OptList::mkopt" -> "Data::OptList::__ANON__[Data/OptList.pm:54]";
+"List::Util::first" -> "Data::OptList::__is_a";
+"Data::OptList::mkopt" -> "Data::OptList::__is_a";
+"Data::OptList::BEGIN@10" -> "Params::Util::BEGIN@58";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@7";
+"Data::OptList::BEGIN@11" -> "UNIVERSAL::VERSION";
+"Data::OptList::BEGIN@10" -> "DynaLoader::bootstrap";
+"Data::OptList::mkopt" -> "Params::Util::_HASHLIKE";
+"Data::OptList::__is_a" -> "Params::Util::_HASHLIKE";
+"Class::Load::BEGIN@8" -> "Class::Load::BEGIN@1";
+"Data::OptList::mkopt_hash" -> "Data::OptList::mkopt";
+"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]" -> "Data::OptList::mkopt";
+"Sub::Exporter::_expand_group" -> "Data::OptList::mkopt";
+"Moose::Meta::Class::superclasses" -> "Data::OptList::mkopt";
+"Moose::Util::_apply_all_roles" -> "Data::OptList::mkopt";
+"Catalyst::setup_plugins" -> "Data::OptList::mkopt";
+"Class::Load::load_first_existing_class" -> "Data::OptList::mkopt";
+"Moose::Meta::Class::_anon_cache_key" -> "Data::OptList::mkopt";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@10";
+"Data::OptList::BEGIN@11" -> "Sub::Install::BEGIN@3";
+"Sub::Exporter::_rewrite_build_config" -> "Data::OptList::mkopt_hash";
+"Data::OptList::BEGIN@10" -> "DynaLoader::BEGIN@22";
+}

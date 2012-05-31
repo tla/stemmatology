@@ -1,0 +1,301 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::BEGIN@6";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::reftype";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::BEGIN@21";
+}
+subgraph cluster_XML_SAX_Exception {
+	label="XML::SAX::Exception";
+	"XML::SAX::Exception::BEGIN@8";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::BEGIN@77";
+	"PPI::Document::BEGIN@76";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BEGIN@41";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@25";
+}
+subgraph cluster_Plack_Component {
+	label="Plack::Component";
+	"Plack::Component::BEGIN@6";
+}
+subgraph cluster_Time_Seconds {
+	label="Time::Seconds";
+	"Time::Seconds::BEGIN@40";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::BEGIN@14";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::BEGIN@32";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::BEGIN@712";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::save_scope";
+}
+subgraph cluster_MIME_Type {
+	label="MIME::Type";
+	"MIME::Type::BEGIN@18";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::BEGIN@16";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@510";
+	"Time::Piece::BEGIN@575";
+	"Time::Piece::BEGIN@533";
+}
+subgraph cluster_File_Temp_Dir {
+	label="File::Temp::Dir";
+	"File::Temp::Dir::BEGIN@2407";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Template_Exception {
+	label="Template::Exception";
+	"Template::Exception::BEGIN@27";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@23";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@147";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_linear_isa";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::BEGIN@45";
+	"PPI::Element::BEGIN@44";
+	"PPI::Element::BEGIN@41";
+	"PPI::Element::BEGIN@43";
+	"PPI::Element::BEGIN@42";
+	"PPI::Element::BEGIN@46";
+}
+subgraph cluster_DBIx_Class_Exception {
+	label="DBIx::Class::Exception";
+	"DBIx::Class::Exception::BEGIN@9";
+}
+subgraph cluster_PPI_Document_Normalized {
+	label="PPI::Document::Normalized";
+	"PPI::Document::Normalized::BEGIN@54";
+	"PPI::Document::Normalized::BEGIN@53";
+}
+subgraph cluster_XML_LibXML_Element {
+	label="XML::LibXML::Element";
+	"XML::LibXML::Element::BEGIN@1495";
+}
+subgraph cluster_Catalyst_Exception_Interface {
+	label="Catalyst::Exception::Interface";
+	"Catalyst::Exception::Interface::BEGIN@7";
+}
+subgraph cluster_XML_LibXML_Number {
+	label="XML::LibXML::Number";
+	"XML::LibXML::Number::BEGIN@19";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@163";
+}
+subgraph cluster_CGI_Simple_Cookie {
+	label="CGI::Simple::Cookie";
+	"CGI::Simple::Cookie::BEGIN@17";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::BEGIN@4";
+}
+subgraph cluster_XML_LibXML_Boolean {
+	label="XML::LibXML::Boolean";
+	"XML::LibXML::Boolean::BEGIN@21";
+}
+subgraph cluster_XML_LibXML_Literal {
+	label="XML::LibXML::Literal";
+	"XML::LibXML::Literal::BEGIN@19";
+}
+subgraph cluster_JSON_XS_Boolean {
+	label="JSON::XS::Boolean";
+	"JSON::XS::Boolean::BEGIN@3";
+	"JSON::XS::Boolean::BEGIN@1477";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@116";
+}
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::BEGIN@6";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::BEGIN@24";
+}
+subgraph cluster_Text_CSV_ErrorDiag {
+	label="Text::CSV::ErrorDiag";
+	"Text::CSV::ErrorDiag::BEGIN@978";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@6";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@22";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::BEGIN@147";
+	"overload::mycan";
+	"overload::OVERLOAD";
+	"overload::AddrRef";
+	"overload::Method";
+	"overload::import";
+	"overload::ov_method";
+	"overload::CORE:match";
+	"overload::Overloaded";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::BEGIN@14";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::BEGIN@14";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@14";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions {
+	label="Bio::Phylo::Util::Exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@6";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::format_arg";
+}
+subgraph cluster_Text_Balanced_ErrorMsg {
+	label="Text::Balanced::ErrorMsg";
+	"Text::Balanced::ErrorMsg::BEGIN@1021";
+}
+subgraph cluster_JSON_PP_Boolean {
+	label="JSON::PP::Boolean";
+	"JSON::PP::Boolean::BEGIN@3";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::BEGIN@12";
+}
+"overload::AddrRef" -> "Scalar::Util::blessed";
+"XML::LibXML::Element::BEGIN@1495" -> "overload::import";
+"PPI::Element::BEGIN@41" -> "overload::import";
+"PPI::Document::Normalized::BEGIN@54" -> "overload::import";
+"Time::Piece::BEGIN@510" -> "overload::import";
+"XML::LibXML::NodeList::BEGIN@23" -> "overload::import";
+"DBIx::Class::Exception::BEGIN@9" -> "overload::import";
+"PPI::Element::BEGIN@43" -> "overload::import";
+"Catalyst::ActionContainer::BEGIN@32" -> "overload::import";
+"XML::LibXML::Number::BEGIN@19" -> "overload::import";
+"Path::Class::Entity::BEGIN@14" -> "overload::import";
+"Time::Piece::BEGIN@575" -> "overload::import";
+"Catalyst::Exception::Interface::BEGIN@7" -> "overload::import";
+"PPI::Element::BEGIN@46" -> "overload::import";
+"Text::Tradition::Error::BEGIN@6" -> "overload::import";
+"Template::Exception::BEGIN@27" -> "overload::import";
+"File::stat::BEGIN@147" -> "overload::import";
+"Set::Object::BEGIN@712" -> "overload::import";
+"Catalyst::Action::BEGIN@41" -> "overload::import";
+"JSON::XS::Boolean::BEGIN@1477" -> "overload::import";
+"PPI::Document::BEGIN@76" -> "overload::import";
+"Text::Balanced::ErrorMsg::BEGIN@1021" -> "overload::import";
+"CGI::Simple::Cookie::BEGIN@17" -> "overload::import";
+"PPI::Element::BEGIN@44" -> "overload::import";
+"MIME::Type::BEGIN@18" -> "overload::import";
+"MooseX::Types::Structured::OverflowHandler::BEGIN@6" -> "overload::import";
+"JSON::PP::Boolean::BEGIN@3" -> "overload::import";
+"MooseX::Types::TypeDecorator::BEGIN@16" -> "overload::import";
+"JSON::XS::Boolean::BEGIN@3" -> "overload::import";
+"KiokuDB::Error::UnknownObjects::BEGIN@6" -> "overload::import";
+"DBIx::Class::ResultSet::BEGIN@25" -> "overload::import";
+"XML::LibXML::Error::BEGIN@22" -> "overload::import";
+"XML::SAX::Exception::BEGIN@8" -> "overload::import";
+"Text::CSV::ErrorDiag::BEGIN@978" -> "overload::import";
+"URI::BEGIN@24" -> "overload::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@14" -> "overload::import";
+"PPI::Element::BEGIN@42" -> "overload::import";
+"Time::Piece::BEGIN@533" -> "overload::import";
+"KiokuDB::Error::MissingObjects::BEGIN@6" -> "overload::import";
+"Graph::BEGIN@116" -> "overload::import";
+"Class::MOP::Method::BEGIN@21" -> "overload::import";
+"PPI::Element::BEGIN@45" -> "overload::import";
+"File::Temp::BEGIN@163" -> "overload::import";
+"Moose::Meta::Role::Method::Required::BEGIN@14" -> "overload::import";
+"Text::Tradition::Collation::Reading::BEGIN@4" -> "overload::import";
+"XML::LibXML::Boolean::BEGIN@21" -> "overload::import";
+"PPI::Document::BEGIN@77" -> "overload::import";
+"Moose::Meta::TypeConstraint::BEGIN@14" -> "overload::import";
+"Plack::Component::BEGIN@6" -> "overload::import";
+"Time::Seconds::BEGIN@40" -> "overload::import";
+"PPI::Document::Normalized::BEGIN@53" -> "overload::import";
+"File::Temp::Dir::BEGIN@2407" -> "overload::import";
+"XML::LibXML::Literal::BEGIN@19" -> "overload::import";
+"Bio::Phylo::Util::Exceptions::BEGIN@6" -> "overload::import";
+"MooseX::Types::UndefinedType::BEGIN@12" -> "overload::import";
+"File::stat::BEGIN@147" -> "overload::BEGIN@147";
+"overload::OVERLOAD" -> "overload::CORE:match";
+"overload::Method" -> "overload::ov_method";
+"overload::BEGIN@147" -> "warnings::register::import";
+"overload::import" -> "overload::OVERLOAD";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "overload::Method";
+"overload::Overloaded" -> "UNIVERSAL::can";
+"Catalyst::Model::KiokuDB::save_scope" -> "overload::AddrRef";
+"Carp::format_arg" -> "overload::AddrRef";
+"overload::AddrRef" -> "Scalar::Util::reftype";
+"overload::AddrRef" -> "Scalar::Util::refaddr";
+"overload::ov_method" -> "Scalar::Util::refaddr";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "overload::Overloaded";
+"overload::Method" -> "overload::mycan";
+"overload::mycan" -> "mro::get_linear_isa";
+}

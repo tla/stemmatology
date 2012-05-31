@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Body_UrlEncoded {
+	label="HTTP::Body::UrlEncoded";
+	"HTTP::Body::UrlEncoded::BEGIN@8";
+}
+subgraph cluster_HTTP_Body_OctetStream {
+	label="HTTP::Body::OctetStream";
+	"HTTP::Body::OctetStream::BEGIN@8";
+}
+subgraph cluster_HTTP_Body_MultiPart {
+	label="HTTP::Body::MultiPart";
+	"HTTP::Body::MultiPart::BEGIN@8";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@1089";
+}
+subgraph cluster_Data_Dumper {
+	label="Data::Dumper";
+	"Data::Dumper::BEGIN@683";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::BEGIN@325";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_HTTP_Body_XFormsMultipart {
+	label="HTTP::Body::XFormsMultipart";
+	"HTTP::Body::XFormsMultipart::BEGIN@8";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::BEGIN@2";
+}
+subgraph cluster_Text_CSV_PP {
+	label="Text::CSV_PP";
+	"Text::CSV_PP::BEGIN@314";
+}
+subgraph cluster_HTTP_Body_XForms {
+	label="HTTP::Body::XForms";
+	"HTTP::Body::XForms::BEGIN@8";
+}
+"HTTP::Body::XForms::BEGIN@8" -> "bytes::import";
+"Data::Dumper::BEGIN@683" -> "bytes::import";
+"HTTP::Body::MultiPart::BEGIN@8" -> "bytes::import";
+"IPC::Run::BEGIN@2" -> "bytes::import";
+"HTTP::Body::UrlEncoded::BEGIN@8" -> "bytes::import";
+"HTTP::Body::OctetStream::BEGIN@8" -> "bytes::import";
+"Template::Provider::BEGIN@1089" -> "bytes::import";
+"Text::CSV_PP::BEGIN@314" -> "bytes::import";
+"HTTP::Body::XFormsMultipart::BEGIN@8" -> "bytes::import";
+"Encode::utf8::BEGIN@325" -> "bytes::import";
+}

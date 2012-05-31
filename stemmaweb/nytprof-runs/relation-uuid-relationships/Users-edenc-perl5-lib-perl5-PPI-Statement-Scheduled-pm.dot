@@ -1,0 +1,43 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_Sub {
+	label="PPI::Statement::Sub";
+	"PPI::Statement::Sub::BEGIN@36";
+	"PPI::Statement::Sub::BEGIN@38";
+	"PPI::Statement::Sub::BEGIN@35";
+	"PPI::Statement::Sub::BEGIN@33";
+	"PPI::Statement::Sub::BEGIN@39";
+	"PPI::Statement::Sub::BEGIN@34";
+}
+subgraph cluster_PPI_Statement_Scheduled {
+	label="PPI::Statement::Scheduled";
+	"PPI::Statement::Scheduled::BEGIN@59";
+	"PPI::Statement::Scheduled::BEGIN@57";
+	"PPI::Statement::Scheduled::BEGIN@60";
+	"PPI::Statement::Scheduled::BEGIN@56";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@170";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@39";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@57";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@33";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@35";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@59";
+"PPI::Statement::Scheduled::BEGIN@56" -> "strict::import";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@36";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@38";
+"PPI::Statement::Scheduled::BEGIN@59" -> "vars::import";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@56";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@60";
+"PPI::Statement::Scheduled::BEGIN@57" -> "PPI::Statement::Sub::BEGIN@34";
+}

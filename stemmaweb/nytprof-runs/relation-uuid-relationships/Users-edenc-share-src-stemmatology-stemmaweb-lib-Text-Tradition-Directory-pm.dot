@@ -1,0 +1,236 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::lookup";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_DBD___st {
+	label="DBD::_::st";
+	"DBD::_::st::BEGIN@1821";
+}
+subgraph cluster_DBI_var {
+	label="DBI::var";
+	"DBI::var::TIESCALAR";
+}
+subgraph cluster_DBD___common {
+	label="DBD::_::common";
+	"DBD::_::common::BEGIN@1343";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+	"KiokuDB::GC::Naive::CORE:qr";
+	"KiokuDB::GC::Naive::BEGIN@4";
+	"KiokuDB::GC::Naive::BEGIN@9";
+	"KiokuDB::GC::Naive::meta";
+	"KiokuDB::GC::Naive::BEGIN@7";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::new";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Naive::meta";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@6";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+	"main::BEGIN@11";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@7";
+	"KiokuDB::TypeMap::new";
+	"KiokuDB::TypeMap::BEGIN@12";
+	"KiokuDB::TypeMap::meta";
+	"KiokuDB::TypeMap::BEGIN@6";
+	"KiokuDB::TypeMap::BEGIN@9";
+	"KiokuDB::TypeMap::BEGIN@10";
+	"KiokuDB::TypeMap::BEGIN@4";
+}
+subgraph cluster_DBD___dr {
+	label="DBD::_::dr";
+	"DBD::_::dr::BEGIN@1449";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::BEGIN@274";
+	"DBI::BEGIN@797";
+	"DBI::BEGIN@161";
+	"DBI::BEGIN@959";
+	"DBI::BEGIN@159";
+	"DBI::_install_method";
+	"DBI::BEGIN@1030";
+	"DBI::setup_driver";
+	"DBI::BEGIN@862";
+	"DBI::BEGIN@527";
+	"DBI::BEGIN@13";
+	"DBI::BEGIN@158";
+	"DBI::BEGIN@157";
+	"DBI::BEGIN@831";
+	"DBI::BEGIN@684";
+	"DBI::BEGIN@270";
+}
+subgraph cluster_DBD___db {
+	label="DBD::_::db";
+	"DBD::_::db::BEGIN@1510";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+	"Text::Tradition::Directory::BEGIN@4";
+	"Text::Tradition::Directory::BEGIN@7";
+	"Text::Tradition::Directory::BEGIN@3";
+	"Text::Tradition::Directory::BEGIN@5";
+	"Text::Tradition::Directory::BEGIN@9";
+	"Text::Tradition::Directory::BEGIN@6";
+	"Text::Tradition::Directory::BEGIN@154";
+	"Text::Tradition::Directory::BEGIN@11";
+	"Text::Tradition::Directory::tradition";
+	"Text::Tradition::Directory::store";
+	"Text::Tradition::Directory::save";
+	"Text::Tradition::Directory::BEGIN@10";
+	"Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::text";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@6";
+	"Text::Tradition::TypeMap::Entry::BEGIN@4";
+	"Text::Tradition::TypeMap::Entry::meta";
+	"Text::Tradition::TypeMap::Entry::new";
+	"Text::Tradition::TypeMap::Entry::BEGIN@10";
+	"Text::Tradition::TypeMap::Entry::BEGIN@2";
+}
+"Class::MOP::Mixin::AttributeCore::default" -> "Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::db::BEGIN@1510";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@7";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::_install_method";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@12";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@684";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@5";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@10";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@4";
+"Text::Tradition::Directory::BEGIN@8" -> "UNIVERSAL::import";
+"Text::Tradition::Directory::BEGIN@10" -> "UNIVERSAL::import";
+"Text::Tradition::Directory::BEGIN@9" -> "UNIVERSAL::import";
+"Text::Tradition::Directory::BEGIN@154" -> "UNIVERSAL::import";
+"Text::Tradition::Directory::BEGIN@11" -> "UNIVERSAL::import";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@9";
+"Text::Tradition::Directory::save" -> "Text::Tradition::Directory::store";
+"Text::Tradition::Directory::BEGIN@8" -> "Moose::has";
+"Text::Tradition::Directory::BEGIN@9" -> "Moose::has";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@831";
+"Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]" -> "KiokuDB::TypeMap::new";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::meta";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@8";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@7";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::CORE:qr";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@157";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@797";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@527";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@159";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@2";
+"Text::Tradition::Directory::BEGIN@3" -> "strict::import";
+"Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]" -> "KiokuDB::TypeMap::Entry::Naive::new";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@4";
+"Text::Tradition::Directory::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@154" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@10";
+"Text::Tradition::Directory::BEGIN@8" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@9" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@154" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@10" -> "Moose::with";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@9";
+"Text::Tradition::Directory::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@959";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::meta";
+"Text::Tradition::Directory::BEGIN@10" -> "KiokuDB::TypeMap::Entry::Naive::BEGIN@6";
+"Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]" -> "Text::Tradition::TypeMap::Entry::new";
+"Text::Tradition::Directory::BEGIN@7" -> "Exporter::import";
+"Text::Tradition::Directory::BEGIN@6" -> "Exporter::import";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::var::TIESCALAR";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@270";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::st::BEGIN@1821";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@6";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::common::BEGIN@1343";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@11";
+"Text::Tradition::Directory::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@7";
+"Text::Tradition::Directory::tradition" -> "KiokuX::Model::lookup";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Directory::tradition";
+"Text::Tradition::Directory::BEGIN@10" -> "KiokuDB::TypeMap::Entry::Naive::meta";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@161";
+"Text::Tradition::Directory::BEGIN@10" -> "KiokuDB::TypeMap::Entry::Naive::BEGIN@4";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@6";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@862";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::setup_driver";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@158";
+"Text::Tradition::Directory::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@154" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@6" -> "Scalar::Util::weaken";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@9";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@4";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@13";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@10";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@3";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@1030";
+"Text::Tradition::Directory::BEGIN@6" -> "DBI::BEGIN@274";
+"Text::Tradition::Directory::BEGIN@154" -> "Text::Tradition::TypeMap::Entry::BEGIN@6";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::meta";
+"Text::Tradition::Directory::BEGIN@6" -> "DBD::_::dr::BEGIN@1449";
+"Text::Tradition::Directory::BEGIN@10" -> "KiokuDB::TypeMap::Entry::Naive::BEGIN@8";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@154";
+"Text::Tradition::Directory::BEGIN@9" -> "KiokuDB::TypeMap::BEGIN@6";
+"main::RUNTIME" -> "Text::Tradition::Directory::save";
+"Text::Tradition::Directory::BEGIN@8" -> "KiokuDB::GC::Naive::BEGIN@4";
+}

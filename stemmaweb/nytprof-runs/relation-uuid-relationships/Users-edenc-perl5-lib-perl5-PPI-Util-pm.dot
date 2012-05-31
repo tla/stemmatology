@@ -1,0 +1,119 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::new";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_add_element";
+	"PPI::Lexer::_get_token";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::_param_typed";
+	"Parse::Method::Signatures::tc";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::new";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::next_sibling";
+	"PPI::Element::first_token";
+	"PPI::Element::snext_sibling";
+	"PPI::Element::next_token";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Digest_base {
+	label="Digest::base";
+	"Digest::base::BEGIN@3";
+	"Digest::base::BEGIN@4";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::get_token";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::null";
+	"PPI::Token::Whitespace::__TOKENIZER__on_line_end";
+}
+subgraph cluster_Digest_MD5 {
+	label="Digest::MD5";
+	"Digest::MD5::BEGIN@3";
+	"Digest::MD5::BEGIN@4";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::add_element";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::BEGIN@7";
+	"PPI::Util::TRUE";
+	"PPI::Util::BEGIN@11";
+	"PPI::Util::BEGIN@8";
+	"PPI::Util::BEGIN@22";
+	"PPI::Util::BEGIN@18";
+	"PPI::Util::BEGIN@5";
+	"PPI::Util::BEGIN@10";
+	"PPI::Util::BEGIN@6";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@17";
+}
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@22";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@11";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@5";
+"PPI::Util::BEGIN@22" -> "constant::import";
+"PPI::Util::BEGIN@18" -> "constant::import";
+"PPI::Util::BEGIN@7" -> "Digest::MD5::BEGIN@3";
+"PPI::Util::BEGIN@5" -> "strict::import";
+"PPI::Element::snext_sibling" -> "PPI::Util::TRUE";
+"PPI::Element::first_token" -> "PPI::Util::TRUE";
+"PPI::Node::add_element" -> "PPI::Util::TRUE";
+"Parse::Method::Signatures::tc" -> "PPI::Util::TRUE";
+"PPI::Lexer::_get_token" -> "PPI::Util::TRUE";
+"PPI::Lexer::_add_element" -> "PPI::Util::TRUE";
+"PPI::Token::Whitespace::__TOKENIZER__on_line_end" -> "PPI::Util::TRUE";
+"PPI::Tokenizer::get_token" -> "PPI::Util::TRUE";
+"PPI::Element::next_sibling" -> "PPI::Util::TRUE";
+"Parse::Method::Signatures::_param_typed" -> "PPI::Util::TRUE";
+"PPI::Document::new" -> "PPI::Util::TRUE";
+"PPI::Statement::new" -> "PPI::Util::TRUE";
+"PPI::Token::Whitespace::null" -> "PPI::Util::TRUE";
+"PPI::Element::next_token" -> "PPI::Util::TRUE";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@7";
+"PPI::Util::BEGIN@7" -> "XSLoader::load";
+"PPI::Util::BEGIN@8" -> "Exporter::import";
+"PPI::Util::BEGIN@10" -> "vars::import";
+"PPI::Util::BEGIN@7" -> "Digest::MD5::BEGIN@4";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@10";
+"PPI::Util::BEGIN@7" -> "Digest::base::BEGIN@3";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@8";
+"PPI::Util::BEGIN@7" -> "Digest::base::BEGIN@4";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@18";
+"PPI::BEGIN@17" -> "PPI::Util::BEGIN@6";
+}

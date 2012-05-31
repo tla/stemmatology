@@ -1,0 +1,94 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::create";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::new_class_with_traits";
+	"MooseX::Traits::Util::BEGIN@3";
+	"MooseX::Traits::Util::CORE:match";
+	"MooseX::Traits::Util::BEGIN@5";
+	"MooseX::Traits::Util::transform_trait";
+	"MooseX::Traits::Util::check_class";
+	"MooseX::Traits::Util::BEGIN@2";
+	"MooseX::Traits::Util::BEGIN@9";
+	"MooseX::Traits::Util::resolve_traits";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::meta";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_attribute_by_name";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::does";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::has_default";
+	"Class::MOP::Mixin::AttributeCore::default";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::with_traits";
+	"MooseX::Traits::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"MooseX::Traits::Util::transform_trait" -> "Class::MOP::Class::find_attribute_by_name";
+"MooseX::Traits::Util::transform_trait" -> "Class::MOP::Mixin::AttributeCore::default";
+"MooseX::Traits::Util::resolve_traits" -> "Class::Load::load_class";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@2";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@5";
+"MooseX::Traits::Util::BEGIN@5" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Traits::Util::BEGIN@2" -> "strict::import";
+"MooseX::Traits::Util::transform_trait" -> "Parse::Method::Signatures::Param::meta";
+"MooseX::Traits::Util::new_class_with_traits" -> "Parse::Method::Signatures::Param::meta";
+"MooseX::Traits::Util::resolve_traits" -> "MooseX::Traits::Util::transform_trait";
+"MooseX::Traits::Util::new_class_with_traits" -> "MooseX::Traits::Util::check_class";
+"MooseX::Traits::Util::transform_trait" -> "MooseX::Traits::Util::check_class";
+"MooseX::Traits::Util::resolve_traits" -> "MooseX::Traits::Util::check_class";
+"MooseX::Traits::Util::check_class" -> "Moose::Object::does";
+"MooseX::Traits::Util::transform_trait" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"MooseX::Traits::with_traits" -> "MooseX::Traits::Util::new_class_with_traits";
+"MooseX::Traits::Util::BEGIN@9" -> "Exporter::import";
+"MooseX::Traits::Util::BEGIN@3" -> "warnings::import";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@9";
+"MooseX::Traits::Util::new_class_with_traits" -> "Class::MOP::Package::name";
+"MooseX::Traits::BEGIN@4" -> "MooseX::Traits::Util::BEGIN@3";
+"MooseX::Traits::Util::resolve_traits" -> "Class::MOP::load_class";
+"MooseX::Traits::Util::new_class_with_traits" -> "MooseX::Traits::Util::resolve_traits";
+"MooseX::Traits::Util::transform_trait" -> "MooseX::Traits::Util::CORE:match";
+"MooseX::Traits::Util::new_class_with_traits" -> "Moose::Meta::Class::create";
+}

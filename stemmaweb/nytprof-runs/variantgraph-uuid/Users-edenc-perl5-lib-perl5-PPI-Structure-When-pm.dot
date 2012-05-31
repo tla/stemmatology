@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Structure {
+	label="PPI::Structure";
+	"PPI::Structure::BEGIN@112";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI_Structure_When {
+	label="PPI::Structure::When";
+	"PPI::Structure::When::BEGIN@39";
+	"PPI::Structure::When::BEGIN@36";
+	"PPI::Structure::When::BEGIN@37";
+	"PPI::Structure::When::BEGIN@40";
+}
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@40";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@39";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@36";
+"PPI::Structure::When::BEGIN@36" -> "strict::import";
+"PPI::Structure::When::BEGIN@39" -> "vars::import";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@37";
+}

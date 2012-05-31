@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Module {
+	label="Class::MOP::Module";
+	"Class::MOP::Module::_instantiate_module";
+	"Class::MOP::Module::BEGIN@14";
+	"Class::MOP::Module::BEGIN@11";
+	"Class::MOP::Module::BEGIN@10";
+	"Class::MOP::Module::BEGIN@3";
+	"Class::MOP::Module::BEGIN@16";
+	"Class::MOP::Module::create";
+	"Class::MOP::Module::BEGIN@13";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::create";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::create";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+	"Class::MOP::Package::create";
+}
+"Class::MOP::Module::create" -> "Class::MOP::Package::create";
+"base::import" -> "Class::MOP::Module::BEGIN@3";
+"base::import" -> "Class::MOP::Module::BEGIN@13";
+"Moose::Meta::Role::create" -> "Class::MOP::Module::create";
+"Class::MOP::Class::create" -> "Class::MOP::Module::create";
+"Class::MOP::Module::BEGIN@10" -> "strict::import";
+"base::import" -> "Class::MOP::Module::BEGIN@11";
+"Class::MOP::Module::create" -> "Class::MOP::Module::_instantiate_module";
+"Class::MOP::Module::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Module::BEGIN@14" -> "Exporter::import";
+"Class::MOP::Module::BEGIN@16" -> "base::import";
+"Class::MOP::Module::BEGIN@11" -> "warnings::import";
+"base::import" -> "Class::MOP::Module::BEGIN@14";
+"Class::MOP::Module::_instantiate_module" -> "Class::MOP::Package::name";
+"base::import" -> "Class::MOP::Module::BEGIN@16";
+"base::import" -> "Class::MOP::Module::BEGIN@10";
+}

@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::BEGIN@98";
+	"FindBin::cwd2";
+	"FindBin::init";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::_cwd";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::_find_opt";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Cwd {
+	label="Cwd";
+	"Cwd::BEGIN@818";
+	"Cwd::BEGIN@170";
+	"Cwd::CORE:fteexec";
+	"Cwd::BEGIN@171";
+	"Cwd::getcwd";
+	"Cwd::BEGIN@209";
+	"Cwd::CORE:regcomp";
+	"Cwd::BEGIN@172";
+	"Cwd::abs_path";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"FindBin::BEGIN@98" -> "Cwd::BEGIN@172";
+"FindBin::BEGIN@98" -> "Cwd::BEGIN@209";
+"FindBin::BEGIN@98" -> "Cwd::BEGIN@818";
+"Cwd::BEGIN@170" -> "strict::import";
+"FindBin::BEGIN@98" -> "Cwd::CORE:fteexec";
+"FindBin::BEGIN@98" -> "Cwd::BEGIN@170";
+"Cwd::BEGIN@171" -> "Exporter::import";
+"FindBin::BEGIN@98" -> "Cwd::CORE:regcomp";
+"Cwd::BEGIN@818" -> "strict::unimport";
+"Cwd::BEGIN@172" -> "vars::import";
+"FindBin::init" -> "Cwd::abs_path";
+"File::Spec::Unix::_cwd" -> "Cwd::getcwd";
+"FindBin::cwd2" -> "Cwd::getcwd";
+"File::Find::_find_opt" -> "Cwd::getcwd";
+"FindBin::BEGIN@98" -> "Cwd::BEGIN@171";
+}

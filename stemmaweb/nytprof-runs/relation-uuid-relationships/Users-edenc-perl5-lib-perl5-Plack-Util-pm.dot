@@ -1,0 +1,80 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Plack_Util_IOWithPath {
+	label="Plack::Util::IOWithPath";
+	"Plack::Util::IOWithPath::BEGIN@352";
+}
+subgraph cluster_Plack_Loader {
+	label="Plack::Loader";
+	"Plack::Loader::BEGIN@4";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+	"HTTP::Message::PSGI::_res_from_psgi";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:138]";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::finalize_body";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Plack_Util_Prototype {
+	label="Plack::Util::Prototype";
+	"Plack::Util::Prototype::can";
+	"Plack::Util::Prototype::CORE:subst";
+	"Plack::Util::Prototype::AUTOLOAD";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_Plack_Util {
+	label="Plack::Util";
+	"Plack::Util::BEGIN@31";
+	"Plack::Util::BEGIN@3";
+	"Plack::Util::BEGIN@5";
+	"Plack::Util::inline_object";
+	"Plack::Util::BEGIN@2";
+	"Plack::Util::BEGIN@4";
+	"Plack::Util::BEGIN@6";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::write";
+}
+"Plack::Util::Prototype::AUTOLOAD" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+"Catalyst::Response::write" -> "Plack::Util::Prototype::AUTOLOAD";
+"Catalyst::Engine::finalize_body" -> "Plack::Util::Prototype::AUTOLOAD";
+"HTTP::Message::PSGI::_res_from_psgi" -> "Plack::Util::inline_object";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@4";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@2";
+"Plack::Util::BEGIN@2" -> "strict::import";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::IOWithPath::BEGIN@352";
+"Plack::Util::Prototype::AUTOLOAD" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:138]";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@31";
+"Plack::Util::BEGIN@5" -> "Exporter::import";
+"Plack::Util::BEGIN@4" -> "Exporter::import";
+"Plack::Util::Prototype::AUTOLOAD" -> "Plack::Util::Prototype::CORE:subst";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@5";
+"Plack::Util::BEGIN@31" -> "warnings::unimport";
+"List::MoreUtils::all" -> "Plack::Util::Prototype::can";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@6";
+"Plack::Util::IOWithPath::BEGIN@352" -> "parent::import";
+"Plack::Loader::BEGIN@4" -> "Plack::Util::BEGIN@3";
+}

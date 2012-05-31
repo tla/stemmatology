@@ -1,0 +1,55 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@48";
+	"Package::Stash::BEGIN@6";
+	"Package::Stash::BEGIN@11";
+	"Package::Stash::BEGIN@5";
+}
+subgraph cluster_Package_Stash_XS {
+	label="Package::Stash::XS";
+	"Package::Stash::XS::get_all_symbols";
+	"Package::Stash::XS::new";
+	"Package::Stash::XS::BEGIN@2";
+	"Package::Stash::XS::BEGIN@6";
+	"Package::Stash::XS::add_symbol";
+	"Package::Stash::XS::BEGIN@9";
+	"Package::Stash::XS::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::BEGIN@16";
+}
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::new";
+"Package::Stash::BEGIN@5" -> "strict::import";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@5";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::get_all_symbols";
+"Package::Stash::BEGIN@11" -> "XSLoader::load";
+"Class::MOP::Package::BEGIN@16" -> "Package::Stash::BEGIN@5";
+"Package::Stash::BEGIN@6" -> "warnings::import";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@2";
+"Package::Stash::BEGIN@48" -> "Package::DeprecationManager::import";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@9";
+"Class::MOP::Package::BEGIN@16" -> "Package::Stash::BEGIN@48";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::add_symbol";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@6";
+"Class::MOP::Package::BEGIN@16" -> "Package::Stash::BEGIN@11";
+"Class::MOP::Package::BEGIN@16" -> "Package::Stash::BEGIN@6";
+}

@@ -1,0 +1,254 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@7";
+	"DBIx::Class::ResultSource::sqlt_deploy_callback";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::reftype";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::sql_quote_char";
+	"DBIx::Class::Storage::DBI::sql_name_sep";
+	"DBIx::Class::Storage::DBI::set_use_dbms_capability";
+	"DBIx::Class::Storage::DBI::sql_limit_dialect";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_linear_isa";
+	"mro::get_pkg_gen";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::BEGIN@6";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::_skip_namespace_frames";
+	"DBIx::Class::mk_classaccessor";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::class_mappings";
+	"DBIx::Class::Schema::storage_type";
+	"DBIx::Class::Schema::storage";
+	"DBIx::Class::Schema::source_registrations";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::set_component_class";
+	"DBIx::Class::AccessorGroup::get_component_class";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::BEGIN@3";
+	"Class::XSAccessor::BEGIN@6";
+	"Class::XSAccessor::BEGIN@5";
+	"Class::XSAccessor::BEGIN@4";
+	"Class::XSAccessor::BEGIN@2";
+	"Class::XSAccessor::BEGIN@80";
+	"Class::XSAccessor::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::__ANON__[(eval 1821)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::make_group_accessor";
+	"Class::Accessor::Grouped::BEGIN@249";
+	"Class::Accessor::Grouped::BEGIN@37";
+	"Class::Accessor::Grouped::_mk_group_accessors";
+	"Class::Accessor::Grouped::__ANON__[(eval 1594)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1580)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1820)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1585)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1598)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1824)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1581)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::get_super_paths";
+	"Class::Accessor::Grouped::CORE:subst";
+	"Class::Accessor::Grouped::__ANON__[(eval 1584)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1831)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1826)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1825)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@21";
+	"Class::Accessor::Grouped::BEGIN@4";
+	"Class::Accessor::Grouped::BEGIN@250";
+	"Class::Accessor::Grouped::__ANON__[(eval 1829)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@529";
+	"Class::Accessor::Grouped::__ANON__[(eval 1822)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@765";
+	"Class::Accessor::Grouped::get_inherited";
+	"Class::Accessor::Grouped::__ANON__[(eval 1596)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@7";
+	"Class::Accessor::Grouped::__ANON__[(eval 1582)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@766";
+	"Class::Accessor::Grouped::__ANON__[(eval 1819)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1587)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::CORE:match";
+	"Class::Accessor::Grouped::BEGIN@297";
+	"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:606]";
+	"Class::Accessor::Grouped::BEGIN@744";
+	"Class::Accessor::Grouped::set_inherited";
+	"Class::Accessor::Grouped::__ANON__[(eval 1583)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::mk_group_accessors";
+	"Class::Accessor::Grouped::__ANON__[(eval 1818)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@38";
+	"Class::Accessor::Grouped::BEGIN@3";
+	"Class::Accessor::Grouped::__ANON__[(eval 1828)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@793";
+	"Class::Accessor::Grouped::__ANON__[(eval 1817)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1830)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1823)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@5";
+	"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1595)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1586)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1832)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::__ANON__[(eval 1827)[Class/Accessor/Grouped.pm:807]:5]";
+	"Class::Accessor::Grouped::BEGIN@2";
+}
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1584)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1824)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::set_inherited" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::get_inherited" -> "Scalar::Util::blessed";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@250";
+"DBIx::Class::_skip_namespace_frames" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::class_mappings" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_name_sep" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::storage" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::set_use_dbms_capability" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_limit_dialect" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_quote_char" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::AccessorGroup::set_component_class" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::mk_classaccessor" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::ResultSource::sqlt_deploy_callback" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::source_registrations" -> "Class::Accessor::Grouped::set_inherited";
+"Class::Accessor::Grouped::make_group_accessor" -> "Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1587)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1827)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:606]" -> "Class::Accessor::Grouped::CORE:subst";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@5";
+"Class::Accessor::Grouped::get_inherited" -> "Class::Accessor::Grouped::get_super_paths";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@4";
+"DBIx::Class::Schema::class_mappings" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::storage" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::storage_type" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::source_registrations" -> "Class::Accessor::Grouped::get_inherited";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1818)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@793";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1822)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1598)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1825)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@249";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1826)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:606]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1828)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@4";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@3";
+"Class::Accessor::Grouped::BEGIN@2" -> "strict::import";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1817)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@766";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@38";
+"Class::Accessor::Grouped::BEGIN@529" -> "XSLoader::load";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1596)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1581)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1831)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@744";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1820)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@7";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@80";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1832)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::mk_group_accessors" -> "Class::Accessor::Grouped::_mk_group_accessors";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1585)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@21";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "UNIVERSAL::can";
+"Class::Accessor::Grouped::BEGIN@249" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@37" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@744" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@297" -> "strict::unimport";
+"Class::Accessor::Grouped::BEGIN@765" -> "strict::unimport";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1823)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@3" -> "warnings::import";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@529";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1582)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1819)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::get_inherited" -> "mro::get_pkg_gen";
+"Class::Accessor::Grouped::BEGIN@250" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@766" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@38" -> "warnings::unimport";
+"Class::Accessor::Grouped::BEGIN@793" -> "warnings::unimport";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1594)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@6";
+"DBIx::Class::mk_classaccessor" -> "Class::Accessor::Grouped::mk_group_accessors";
+"Class::C3::Componentised::ensure_class_loaded" -> "Class::Accessor::Grouped::mk_group_accessors";
+"DBIx::Class::ResultSource::Table::BEGIN@6" -> "Class::Accessor::Grouped::mk_group_accessors";
+"DBIx::Class::ResultSource::BEGIN@7" -> "Class::Accessor::Grouped::mk_group_accessors";
+"base::import" -> "Class::Accessor::Grouped::mk_group_accessors";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Scalar::Util::weaken";
+"Class::Accessor::Grouped::set_inherited" -> "Scalar::Util::reftype";
+"Class::Accessor::Grouped::get_inherited" -> "Scalar::Util::reftype";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@5";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1580)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@3";
+"base::import" -> "Class::Accessor::Grouped::CORE:match";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1583)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1595)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@2";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1830)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::BEGIN@529" -> "UNIVERSAL::VERSION";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "Class::Accessor::Grouped::make_group_accessor";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@37";
+"Class::Accessor::Grouped::BEGIN@529" -> "Class::XSAccessor::BEGIN@2";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1586)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1821)[Class/Accessor/Grouped.pm:807]:5]";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "Sub::Name::subname";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@7";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@297";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Class::Accessor::Grouped::__ANON__[(eval 1829)[Class/Accessor/Grouped.pm:807]:5]";
+"base::import" -> "Class::Accessor::Grouped::BEGIN@765";
+"Class::Accessor::Grouped::get_super_paths" -> "mro::get_linear_isa";
+}

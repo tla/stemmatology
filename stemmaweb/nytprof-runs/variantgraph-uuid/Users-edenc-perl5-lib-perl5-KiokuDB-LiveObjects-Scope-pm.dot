@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::remove_scope";
+	"KiokuDB::LiveObjects::BEGIN@13";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:198]";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::remove";
+	"KiokuDB::LiveObjects::Scope::live_objects";
+	"KiokuDB::LiveObjects::Scope::DEMOLISH";
+	"KiokuDB::LiveObjects::Scope::__ANON__[KiokuDB/LiveObjects/Scope.pm:11]";
+	"KiokuDB::LiveObjects::Scope::_clear_live_objects";
+	"KiokuDB::LiveObjects::Scope::new";
+	"KiokuDB::LiveObjects::Scope::BEGIN@6";
+	"KiokuDB::LiveObjects::Scope::BEGIN@4";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Eval_Closure_Sandbox_990 {
+	label="Eval::Closure::Sandbox_990";
+	"Eval::Closure::Sandbox_990::__ANON__[(eval 1205)[Eval/Closure.pm:125]:11]";
+}
+"KiokuDB::LiveObjects::Scope::DEMOLISH" -> "KiokuDB::LiveObjects::Scope::remove";
+"Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:198]" -> "KiokuDB::LiveObjects::Scope::remove";
+"Eval::Closure::Sandbox_990::__ANON__[(eval 1205)[Eval/Closure.pm:125]:11]" -> "KiokuDB::LiveObjects::Scope::DEMOLISH";
+"KiokuDB::LiveObjects::Scope::remove" -> "KiokuDB::LiveObjects::remove_scope";
+"KiokuDB::LiveObjects::Scope::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::Scope::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::BEGIN@13" -> "KiokuDB::LiveObjects::Scope::BEGIN@4";
+"KiokuDB::LiveObjects::Scope::new" -> "KiokuDB::LiveObjects::Scope::__ANON__[KiokuDB/LiveObjects/Scope.pm:11]";
+"KiokuDB::LiveObjects::BEGIN@13" -> "KiokuDB::LiveObjects::Scope::BEGIN@6";
+"KiokuDB::LiveObjects::Scope::remove" -> "KiokuDB::LiveObjects::Scope::_clear_live_objects";
+"KiokuDB::LiveObjects::Scope::remove" -> "KiokuDB::LiveObjects::Scope::live_objects";
+}

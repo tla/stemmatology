@@ -1,0 +1,146 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Structured_MessageStack {
+	label="MooseX::Types::Structured::MessageStack";
+	"MooseX::Types::Structured::MessageStack::BEGIN@4";
+	"MooseX::Types::Structured::MessageStack::BEGIN@43";
+	"MooseX::Types::Structured::MessageStack::meta";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+	"MooseX::Types::TypeDecorator::isa";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::override";
+	"Moose::around";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@7";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+	"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@5";
+	"MooseX::Meta::TypeConstraint::Structured::meta";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+}
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@6";
+	"MooseX::Types::Structured::OverflowHandler::meta";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@22";
+	"MooseX::Types::Structured::OverflowHandler::BEGIN@4";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::meta";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@12";
+	"MooseX::Types::Structured::BEGIN@18";
+	"MooseX::Types::Structured::BEGIN@13";
+	"MooseX::Types::Structured::BEGIN@19";
+	"MooseX::Types::Structured::BEGIN@20";
+	"MooseX::Types::Structured::BEGIN@16";
+	"MooseX::Types::Structured::BEGIN@10";
+	"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+	"MooseX::Types::Structured::BEGIN@14";
+	"MooseX::Types::Structured::BEGIN@17";
+	"MooseX::Types::Structured::BEGIN@2";
+	"MooseX::Types::Structured::BEGIN@15";
+}
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "MooseX::Types::TypeDecorator::isa";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "Scalar::Util::blessed";
+"MooseX::Types::Structured::BEGIN@16" -> "MooseX::Types::Structured::MessageStack::BEGIN@43";
+"MooseX::Types::Structured::BEGIN@14" -> "Moose::extends";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::extends";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@15";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@22";
+"MooseX::Types::Structured::BEGIN@15" -> "UNIVERSAL::import";
+"MooseX::Types::Structured::BEGIN@13" -> "UNIVERSAL::import";
+"MooseX::Types::Structured::BEGIN@16" -> "UNIVERSAL::import";
+"MooseX::Types::Structured::BEGIN@14" -> "UNIVERSAL::import";
+"MooseX::Types::Structured::BEGIN@15" -> "Moose::has";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::has";
+"MooseX::Types::Structured::BEGIN@16" -> "Moose::has";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@13";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::meta";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+"MooseX::Types::Structured::BEGIN@18" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Types::Structured::BEGIN@19" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@2";
+"MooseX::Types::Structured::BEGIN@14" -> "MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@4";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@12";
+"MooseX::Types::Structured::BEGIN@14" -> "MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+"MooseX::Types::Structured::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@17";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::around";
+"MooseX::Types::Structured::BEGIN@14" -> "Moose::around";
+"MooseX::Types::Structured::BEGIN@16" -> "MooseX::Types::Structured::MessageStack::BEGIN@4";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@19";
+"MooseX::Types::Structured::BEGIN@14" -> "MooseX::Meta::TypeConstraint::Structured::Optional::meta";
+"MooseX::Types::Structured::BEGIN@20" -> "Exporter::import";
+"MooseX::Types::Structured::BEGIN@13" -> "Moose::override";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@10";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@4";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@7";
+"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for" -> "MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+"MooseX::Types::Structured::BEGIN@16" -> "MooseX::Types::Structured::MessageStack::meta";
+"MooseX::Types::Structured::BEGIN@15" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@16";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::BEGIN@5";
+"MooseX::Types::Structured::BEGIN@15" -> "MooseX::Types::Structured::OverflowHandler::BEGIN@6";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@20";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@14";
+"MooseX::Types::Structured::BEGIN@18" -> "UNIVERSAL::VERSION";
+"MooseX::Types::Structured::BEGIN@19" -> "UNIVERSAL::VERSION";
+"MooseX::Types::Structured::BEGIN@17" -> "UNIVERSAL::VERSION";
+"MooseX::Types::Structured::BEGIN@12" -> "UNIVERSAL::VERSION";
+"MooseX::Types::Structured::BEGIN@17" -> "MooseX::Types::import";
+"Parse::Method::Signatures::Param::BEGIN@4" -> "MooseX::Types::Structured::BEGIN@18";
+"MooseX::Types::Structured::BEGIN@13" -> "MooseX::Meta::TypeConstraint::Structured::meta";
+}

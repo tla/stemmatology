@@ -1,0 +1,43 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Dump {
+	label="Data::Dump";
+	"Data::Dump::BEGIN@15";
+	"Data::Dump::BEGIN@16";
+	"Data::Dump::BEGIN@5";
+	"Data::Dump::BEGIN@235";
+	"Data::Dump::BEGIN@4";
+	"Data::Dump::BEGIN@3";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::BEGIN@6";
+}
+subgraph cluster_subs {
+	label="subs";
+	"subs::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@3";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@4";
+"Data::Dump::BEGIN@3" -> "strict::import";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@15";
+"Data::Dump::BEGIN@5" -> "subs::import";
+"Data::Dump::BEGIN@16" -> "vars::import";
+"Data::Dump::BEGIN@4" -> "vars::import";
+"Data::Dump::BEGIN@235" -> "warnings::unimport";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@5";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@16";
+"Catalyst::Log::BEGIN@6" -> "Data::Dump::BEGIN@235";
+}

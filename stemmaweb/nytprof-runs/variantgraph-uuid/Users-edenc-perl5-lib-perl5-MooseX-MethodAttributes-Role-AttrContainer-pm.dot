@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@13";
+	"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@10";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@11";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@2";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::find_meta";
+}
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::BEGIN@10";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@13" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::BEGIN@13";
+"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES" -> "Moose::Util::find_meta";
+"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::BEGIN@11";
+"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES" -> "MooseX::MethodAttributes::Role::Meta::Map::register_method_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::AttrContainer::BEGIN@2";
+}

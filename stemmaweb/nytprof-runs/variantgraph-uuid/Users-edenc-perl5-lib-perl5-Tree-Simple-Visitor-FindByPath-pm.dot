@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@16";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByPath {
+	label="Tree::Simple::Visitor::FindByPath";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@9";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@5";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@11";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@4";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@9";
+"Tree::Simple::Visitor::FindByPath::BEGIN@4" -> "strict::import";
+"Tree::Simple::Visitor::FindByPath::BEGIN@9" -> "Exporter::import";
+"Tree::Simple::Visitor::FindByPath::BEGIN@11" -> "base::import";
+"Tree::Simple::Visitor::FindByPath::BEGIN@5" -> "warnings::import";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@11";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@5";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@4";
+}

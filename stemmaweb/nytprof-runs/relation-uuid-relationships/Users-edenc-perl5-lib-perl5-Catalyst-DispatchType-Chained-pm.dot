@@ -1,0 +1,140 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::namespace";
+	"Catalyst::request";
+	"Catalyst::req";
+	"Catalyst::action";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::BEGIN@3";
+	"Catalyst::ActionChain::BEGIN@7";
+	"Catalyst::ActionChain::meta";
+	"Catalyst::ActionChain::from_chain";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::args";
+	"Catalyst::Request::action";
+	"Catalyst::Request::captures";
+	"Catalyst::Request::match";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::looks_like_number";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::namespace";
+	"Catalyst::Action::attributes";
+	"Catalyst::Action::reverse";
+	"Catalyst::Action::match";
+	"Catalyst::Action::name";
+	"Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:23]";
+	"Catalyst::DispatchType::Chained::_actions";
+	"Catalyst::DispatchType::Chained::recurse_match";
+	"Catalyst::DispatchType::Chained::BEGIN@6";
+	"Catalyst::DispatchType::Chained::BEGIN@8";
+	"Catalyst::DispatchType::Chained::BEGIN@9";
+	"Catalyst::DispatchType::Chained::CORE:sort";
+	"Catalyst::DispatchType::Chained::BEGIN@7";
+	"Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:30]";
+	"Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:16]";
+	"Catalyst::DispatchType::Chained::BEGIN@10";
+	"Catalyst::DispatchType::Chained::match";
+	"Catalyst::DispatchType::Chained::new";
+	"Catalyst::DispatchType::Chained::_endpoints";
+	"Catalyst::DispatchType::Chained::register";
+	"Catalyst::DispatchType::Chained::BEGIN@3";
+	"Catalyst::DispatchType::Chained::CORE:match";
+	"Catalyst::DispatchType::Chained::_children_of";
+	"Catalyst::DispatchType::Chained::BEGIN@33";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Moose::extends";
+"Catalyst::DispatchType::Chained::new" -> "Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:16]";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@9";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::DispatchType::Chained::CORE:sort";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Chained::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Chained::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Chained::BEGIN@9" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::DispatchType::Chained::_endpoints";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Moose::has";
+"Catalyst::DispatchType::Chained::register" -> "Scalar::Util::looks_like_number";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::request";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Request::action";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@3";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::DispatchType::Chained::CORE:match";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@8";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::Action::reverse";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::Action::reverse";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::DispatchType::Chained::recurse_match";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::DispatchType::Chained::recurse_match";
+"Catalyst::DispatchType::Chained::BEGIN@33" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Chained::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Chained::match";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::Action::attributes";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::Action::attributes";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@3";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::DispatchType::Chained::_actions";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::meta";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@6";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@7";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Request::match";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::Action::match";
+"Catalyst::DispatchType::Chained::recurse_match" -> "UNIVERSAL::can";
+"Catalyst::DispatchType::Chained::new" -> "Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:30]";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::ActionChain::from_chain";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@33";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::namespace";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::action";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@7";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Chained::BEGIN@10";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Action::namespace";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::Action::name";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::Request::args";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Request::args";
+"Catalyst::DispatchType::Chained::register" -> "Catalyst::DispatchType::Chained::_children_of";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::DispatchType::Chained::_children_of";
+"Catalyst::DispatchType::Chained::new" -> "Catalyst::DispatchType::Chained::__ANON__[Catalyst/DispatchType/Chained.pm:23]";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Request::captures";
+"Catalyst::DispatchType::Chained::recurse_match" -> "Catalyst::req";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Chained::register";
+}
