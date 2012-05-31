@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@3";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::import";
+}
+subgraph cluster_IO_Socket_UNIX {
+	label="IO::Socket::UNIX";
+	"IO::Socket::UNIX::BEGIN@11";
+	"IO::Socket::UNIX::BEGIN@9";
+	"IO::Socket::UNIX::BEGIN@12";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::Socket::UNIX::BEGIN@9" -> "strict::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@12";
+"IO::Socket::UNIX::BEGIN@12" -> "Exporter::import";
+"IO::Socket::UNIX::BEGIN@11" -> "IO::Socket::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@9";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@11";
+}

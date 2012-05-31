@@ -1,0 +1,60 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Encode_Alias {
+	label="Encode::Alias";
+	"Encode::Alias::BEGIN@6";
+	"Encode::Alias::BEGIN@8";
+	"Encode::Alias::CORE:regcomp";
+	"Encode::Alias::CORE:qr";
+	"Encode::Alias::undef_aliases";
+	"Encode::Alias::BEGIN@3";
+	"Encode::Alias::CORE:match";
+	"Encode::Alias::BEGIN@4";
+	"Encode::Alias::define_alias";
+	"Encode::Alias::find_alias";
+	"Encode::Alias::init_aliases";
+	"Encode::Alias::BEGIN@2";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::find_encoding";
+	"Encode::getEncoding";
+	"Encode::BEGIN@48";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@6";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@4";
+"Encode::Alias::BEGIN@6" -> "constant::import";
+"Encode::Alias::BEGIN@2" -> "strict::import";
+"Encode::Alias::init_aliases" -> "Encode::Alias::undef_aliases";
+"Encode::BEGIN@48" -> "Encode::Alias::init_aliases";
+"Encode::Alias::BEGIN@8" -> "base::import";
+"Encode::Alias::BEGIN@3" -> "warnings::import";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@2";
+"Encode::Alias::BEGIN@4" -> "warnings::unimport";
+"Encode::Alias::init_aliases" -> "Encode::Alias::define_alias";
+"Encode::getEncoding" -> "Encode::Alias::find_alias";
+"Encode::Alias::find_alias" -> "Encode::Alias::CORE:match";
+"Encode::BEGIN@48" -> "Encode::Alias::CORE:match";
+"Encode::Alias::init_aliases" -> "Encode::Alias::CORE:qr";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@3";
+"Encode::Alias::find_alias" -> "Encode::Alias::CORE:regcomp";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@8";
+"Encode::Alias::find_alias" -> "Encode::find_encoding";
+}

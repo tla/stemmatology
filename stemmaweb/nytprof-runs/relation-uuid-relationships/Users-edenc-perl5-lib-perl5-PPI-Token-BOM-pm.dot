@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@38";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_process_next_line";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::__TOKENIZER__on_line_start";
+}
+subgraph cluster_PPI_Token_BOM {
+	label="PPI::Token::BOM";
+	"PPI::Token::BOM::BEGIN@43";
+	"PPI::Token::BOM::BEGIN@46";
+	"PPI::Token::BOM::CORE:match";
+	"PPI::Token::BOM::BEGIN@42";
+	"PPI::Token::BOM::BEGIN@45";
+	"PPI::Token::BOM::__TOKENIZER__on_line_start";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@43";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Token::BOM::__TOKENIZER__on_line_start";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@42";
+"PPI::Token::BOM::BEGIN@42" -> "strict::import";
+"PPI::Token::BOM::__TOKENIZER__on_line_start" -> "PPI::Token::Whitespace::__TOKENIZER__on_line_start";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@45";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@46";
+"PPI::Token::BOM::BEGIN@45" -> "vars::import";
+"PPI::Token::BOM::__TOKENIZER__on_line_start" -> "PPI::Token::BOM::CORE:match";
+}

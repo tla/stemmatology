@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Hash {
+	label="Moose::Meta::Attribute::Native::Trait::Hash";
+	"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@3";
+	"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@15";
+	"Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+	"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@9";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_root_types";
+	"Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@9";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@3";
+"Module::Runtime::require_module" -> "Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@15";
+"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Attribute::Native::Trait::Hash::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::Native::Trait::_root_types" -> "Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+"Moose::Meta::Attribute::Native::Trait::_check_helper_type" -> "Moose::Meta::Attribute::Native::Trait::Hash::_helper_type";
+}

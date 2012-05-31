@@ -1,0 +1,82 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::result_class";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::datetime_parser_type";
+	"DBIx::Class::Storage::DBI::sql_maker_class";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::BEGIN@7";
+	"DBIx::Class::AccessorGroup::BEGIN@18";
+	"DBIx::Class::AccessorGroup::BEGIN@8";
+	"DBIx::Class::AccessorGroup::BEGIN@6";
+	"DBIx::Class::AccessorGroup::BEGIN@3";
+	"DBIx::Class::AccessorGroup::set_component_class";
+	"DBIx::Class::AccessorGroup::get_component_class";
+	"DBIx::Class::AccessorGroup::BEGIN@4";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::cursor_class";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::set_inherited";
+	"Class::Accessor::Grouped::get_inherited";
+}
+"DBIx::Class::AccessorGroup::set_component_class" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Class::C3::Componentised::ensure_class_loaded";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Class::Accessor::Grouped::get_inherited";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@7";
+"DBIx::Class::AccessorGroup::BEGIN@8" -> "namespace::clean::import";
+"DBIx::Class::AccessorGroup::BEGIN@3" -> "strict::import";
+"DBIx::Class::AccessorGroup::BEGIN@7" -> "Exporter::import";
+"DBIx::Class::AccessorGroup::BEGIN@18" -> "strict::unimport";
+"DBIx::Class::AccessorGroup::BEGIN@6" -> "base::import";
+"DBIx::Class::AccessorGroup::BEGIN@4" -> "warnings::import";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@8";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@3";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Scalar::Util::weaken";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@6";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@4";
+"base::import" -> "DBIx::Class::AccessorGroup::BEGIN@18";
+"DBIx::Class::ResultSource::result_class" -> "DBIx::Class::AccessorGroup::get_component_class";
+"DBIx::Class::Storage::cursor_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::Storage::DBI::datetime_parser_type" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::ResultSource::result_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::Storage::DBI::sql_maker_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+}

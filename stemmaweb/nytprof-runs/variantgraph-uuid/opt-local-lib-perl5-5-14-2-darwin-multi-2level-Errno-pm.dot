@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::BEGIN@11";
+	"Config::BEGIN@45";
+	"Config::TIEHASH";
+	"Config::BEGIN@10";
+	"Config::BEGIN@9";
+	"Config::import";
+}
+subgraph cluster_Errno {
+	label="Errno";
+	"Errno::BEGIN@9";
+	"Errno::BEGIN@8";
+	"Errno::TIEHASH";
+	"Errno::BEGIN@21";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@148";
+}
+subgraph cluster_version {
+	label="version";
+	"version::(bool";
+	"version::(cmp";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@8";
+"Errno::BEGIN@8" -> "Config::TIEHASH";
+"Errno::BEGIN@8" -> "Config::BEGIN@10";
+"File::Temp::BEGIN@148" -> "Errno::TIEHASH";
+"Errno::BEGIN@8" -> "version::(cmp";
+"Errno::BEGIN@9" -> "strict::import";
+"Errno::BEGIN@8" -> "version::(bool";
+"Errno::BEGIN@8" -> "Config::BEGIN@45";
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@9";
+"Errno::BEGIN@8" -> "Config::BEGIN@9";
+"File::Temp::BEGIN@148" -> "Errno::BEGIN@21";
+"Errno::BEGIN@8" -> "Config::import";
+"Errno::BEGIN@8" -> "Config::BEGIN@11";
+}

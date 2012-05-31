@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@10";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_HTTP_Body_XFormsMultipart {
+	label="HTTP::Body::XFormsMultipart";
+	"HTTP::Body::XFormsMultipart::BEGIN@11";
+	"HTTP::Body::XFormsMultipart::BEGIN@8";
+	"HTTP::Body::XFormsMultipart::BEGIN@6";
+	"HTTP::Body::XFormsMultipart::BEGIN@10";
+	"HTTP::Body::XFormsMultipart::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::XFormsMultipart::BEGIN@8";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::XFormsMultipart::BEGIN@10";
+"HTTP::Body::XFormsMultipart::BEGIN@6" -> "strict::import";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::XFormsMultipart::BEGIN@7";
+"HTTP::Body::XFormsMultipart::BEGIN@11" -> "Exporter::import";
+"HTTP::Body::XFormsMultipart::BEGIN@10" -> "Exporter::import";
+"HTTP::Body::XFormsMultipart::BEGIN@7" -> "base::import";
+"HTTP::Body::XFormsMultipart::BEGIN@8" -> "bytes::import";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::XFormsMultipart::BEGIN@11";
+"HTTP::Body::XFormsMultipart::BEGIN@11" -> "UNIVERSAL::VERSION";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::XFormsMultipart::BEGIN@6";
+}

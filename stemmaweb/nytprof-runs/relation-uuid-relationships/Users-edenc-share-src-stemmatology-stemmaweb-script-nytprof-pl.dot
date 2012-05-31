@@ -1,0 +1,1540 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::_setup_finished_accessor";
+	"Catalyst::stash";
+	"Catalyst::dispatch";
+	"Catalyst::psgi_app";
+	"Catalyst::path_to";
+	"Catalyst::debug";
+	"Catalyst::import";
+	"Catalyst::config";
+	"Catalyst::res";
+	"Catalyst::req";
+	"Catalyst::setup";
+	"Catalyst::model";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_25 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::25";
+	"Moose::Meta::Class::__ANON__::SERIAL::25::new";
+}
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::_layersort_rel";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_method_map";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::__ANON__[Parse/Method/Signatures/Types.pm:22]";
+	"Parse::Method::Signatures::Types::VariableName";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::_stringify_args";
+	"Text::Tradition::Collation::get_relationship";
+}
+subgraph cluster_DBI_db {
+	label="DBI::db";
+	"DBI::db::connected";
+	"DBI::db::sqlite_create_function";
+	"DBI::db::begin_work";
+	"DBI::db::sqlite_collation_needed";
+	"DBI::db::sqlite_register_fts3_perl_tokenizer";
+	"DBI::db::prepare";
+	"DBI::db::prepare_cached";
+	"DBI::db::commit";
+}
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::O_TEMPORARY";
+	"Fcntl::S_IFFIFO";
+	"Fcntl::O_LARGEFILE";
+	"Fcntl::O_NOINHERIT";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::new_scope";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@11";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_DBD_SQLite_st {
+	label="DBD::SQLite::st";
+	"DBD::SQLite::st::_prepare";
+}
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::mock_context";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]";
+	"CatalystX::Test::MockContext::BEGIN@10";
+	"CatalystX::Test::MockContext::BEGIN@4";
+	"CatalystX::Test::MockContext::BEGIN@5";
+}
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::BEGIN@648";
+	"HTTP::Message::BEGIN@3";
+	"HTTP::Message::BEGIN@4";
+}
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::BEGIN@16";
+	"Path::Class::dir";
+	"Path::Class::BEGIN@18";
+	"Path::Class::BEGIN@17";
+	"Path::Class::BEGIN@10";
+}
+subgraph cluster_DBI_common {
+	label="DBI::common";
+	"DBI::common::STORE";
+	"DBI::common::FETCH";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::config";
+	"Catalyst::Component::catalyst_component_name";
+}
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::CORE:match";
+	"Catalyst::Plugin::Static::Simple::CORE:subst";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::test_psgi";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::unique_constraints";
+	"DBIx::Class::ResultSource::add_columns";
+	"DBIx::Class::ResultSource::DESTROY";
+	"DBIx::Class::ResultSource::_primaries";
+	"DBIx::Class::ResultSource::_ordered_columns";
+	"DBIx::Class::ResultSource::set_primary_key";
+	"DBIx::Class::ResultSource::add_relationship";
+	"DBIx::Class::ResultSource::_relationships";
+	"DBIx::Class::ResultSource::_unique_constraints";
+	"DBIx::Class::ResultSource::_columns";
+	"DBIx::Class::ResultSource::result_class";
+	"DBIx::Class::ResultSource::END";
+	"DBIx::Class::ResultSource::sqlt_deploy_callback";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_32 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::32";
+	"Moose::Meta::Class::__ANON__::SERIAL::32::new";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::BUILD";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_used_default_is";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::prepare_insert";
+	"KiokuDB::Backend::DBI::ValidColumnName";
+	"KiokuDB::Backend::DBI::_build_schema";
+	"KiokuDB::Backend::DBI::kiokudb_entries_source_name";
+	"KiokuDB::Backend::DBI::SchemaProto";
+	"KiokuDB::Backend::DBI::new";
+	"KiokuDB::Backend::DBI::_build_storage";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:54]";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]";
+	"KiokuDB::Backend::DBI::prepare_update";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_22 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::22";
+	"Moose::Meta::Class::__ANON__::SERIAL::22::new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_18 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::18";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::_eval_environment";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::parameters";
+	"Catalyst::Request::path";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::handles";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::reftype";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::BEGIN@95";
+	"FindBin::BEGIN@98";
+	"FindBin::BEGIN@205";
+	"FindBin::BEGIN@99";
+	"FindBin::BEGIN@100";
+}
+subgraph cluster_TryCatch_XS {
+	label="TryCatch::XS";
+	"TryCatch::XS::install_op_checks";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::BEGIN@3";
+	"HTTP::Headers::BEGIN@4";
+	"HTTP::Headers::BEGIN@6";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::BEGIN@7";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_9 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::9";
+	"Moose::Meta::Class::__ANON__::SERIAL::9::new";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Class {
+	label="MooseX::StrictConstructor::Trait::Class";
+	"MooseX::StrictConstructor::Trait::Class::CORE:sort";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles_with_inheritance";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::parent";
+	"Path::Class::Dir::BEGIN@14";
+	"Path::Class::Dir::file";
+	"Path::Class::Dir::subdir";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_20 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::20";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_eval_environment";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::new";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::new_object";
+	"Moose::Meta::Class::_inline_BUILDALL";
+	"Moose::Meta::Class::_eval_environment";
+	"Moose::Meta::Class::calculate_all_roles_with_inheritance";
+	"Moose::Meta::Class::calculate_all_roles";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::set_eqreadings";
+	"Text::Tradition::Collation::RelationshipStore::test_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::related_readings";
+	"Text::Tradition::Collation::RelationshipStore::_make_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::set_equivalence";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+	"Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@41";
+	"HTTP::Message::PSGI::CORE:open";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::CodeRef";
+	"__TYPE__::ArrayRef";
+	"__TYPE__::Bool";
+	"__TYPE__::Str";
+	"__TYPE__::Int";
+	"__TYPE__::ClassName";
+	"__TYPE__::HashRef";
+	"__TYPE__::Defined";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::create_arged_type_constraint";
+	"MooseX::Types::create_base_type_constraint";
+	"MooseX::Types::create_type_decorator";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@10";
+}
+subgraph cluster_DBD___st {
+	label="DBD::_::st";
+	"DBD::_::st::bind_param_array";
+	"DBD::_::st::execute_array";
+	"DBD::_::st::execute_for_fetch";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::after";
+	"Class::MOP::Class:::before";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_B_SV {
+	label="B::SV";
+	"B::SV::REFCNT";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::new";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::any";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::CORE:regcomp";
+	"warnings::CORE:match";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+	"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource";
+	"DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_HTTP_Request_Common {
+	label="HTTP::Request::Common";
+	"HTTP::Request::Common::BEGIN@3";
+	"HTTP::Request::Common::BEGIN@4";
+	"HTTP::Request::Common::BEGIN@14";
+	"HTTP::Request::Common::GET";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::new";
+	"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:193]";
+	"Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]";
+	"Text::Tradition::Witness::sigil";
+}
+subgraph cluster___TYPE___MooseX_Types_Structured {
+	label="__TYPE__::MooseX::Types::Structured";
+	"__TYPE__::MooseX::Types::Structured::Tuple";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::new";
+}
+subgraph cluster_Internals {
+	label="Internals";
+	"Internals::SvREADONLY";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::BEGIN@2";
+	"Plack::Test::BEGIN@4";
+	"Plack::Test::BEGIN@13";
+	"Plack::Test::BEGIN@3";
+	"Plack::Test::test_psgi";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_26 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::26";
+	"Moose::Meta::Class::__ANON__::SERIAL::26::new";
+}
+subgraph cluster_DBD_SQLite_dr {
+	label="DBD::SQLite::dr";
+	"DBD::SQLite::dr::connect";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::linearized_isa";
+	"Class::MOP::Class::class_precedence_list";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::make_immutable";
+	"Class::MOP::Class::get_all_attributes";
+	"Class::MOP::Class::superclasses";
+	"Class::MOP::Class::add_before_method_modifier";
+	"Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::get_all_methods";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::_dbh_autocommit";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BUILDARGS";
+	"Moose::Object::new";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@10";
+	"main::BEGIN@1.12";
+	"main::BEGIN@2.13";
+	"main::BEGIN@7";
+	"main::BEGIN@1";
+	"main::__ANON__[script/nytprof.pl:40]";
+	"main::BEGIN@1.1";
+	"main::BEGIN@6";
+	"main::BEGIN@9";
+	"main::BEGIN@2";
+	"main::BEGIN@12";
+	"main::BEGIN@4";
+	"main::RUNTIME";
+	"main::BEGIN@5";
+	"main::BEGIN@11";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::_exec_txn_commit";
+	"DBIx::Class::Storage::DBI::_populate_dbh";
+	"DBIx::Class::Storage::DBI::auto_savepoint";
+	"DBIx::Class::Storage::DBI::_verify_pid";
+	"DBIx::Class::Storage::DBI::sql_limit_dialect";
+	"DBIx::Class::Storage::DBI::sql_maker_class";
+	"DBIx::Class::Storage::DBI::on_connect_do";
+	"DBIx::Class::Storage::DBI::_dbh_autocommit";
+	"DBIx::Class::Storage::DBI::_dbic_connect_attributes";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]";
+	"DBIx::Class::Storage::DBI::txn_begin";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1339]";
+	"DBIx::Class::Storage::DBI::_run_connection_actions";
+	"DBIx::Class::Storage::DBI::sql_name_sep";
+	"DBIx::Class::Storage::DBI::connect_info";
+	"DBIx::Class::Storage::DBI::set_use_dbms_capability";
+	"DBIx::Class::Storage::DBI::_connect_info";
+	"DBIx::Class::Storage::DBI::sql_quote_char";
+	"DBIx::Class::Storage::DBI::unsafe";
+	"DBIx::Class::Storage::DBI::_determine_driver";
+	"DBIx::Class::Storage::DBI::_sql_maker_opts";
+	"DBIx::Class::Storage::DBI::new";
+	"DBIx::Class::Storage::DBI::_driver_determined";
+	"DBIx::Class::Storage::DBI::txn_commit";
+	"DBIx::Class::Storage::DBI::_dbh";
+	"DBIx::Class::Storage::DBI::datetime_parser_type";
+	"DBIx::Class::Storage::DBI::_use_join_optimizer";
+	"DBIx::Class::Storage::DBI::on_connect_call";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1298]";
+	"DBIx::Class::Storage::DBI::_dbh_details";
+	"DBIx::Class::Storage::DBI::_get_dbh";
+	"DBIx::Class::Storage::DBI::_seems_connected";
+	"DBIx::Class::Storage::DBI::_parse_connect_do";
+	"DBIx::Class::Storage::DBI::END";
+	"DBIx::Class::Storage::DBI::_dbi_connect_info";
+	"DBIx::Class::Storage::DBI::_sql_maker";
+	"DBIx::Class::Storage::DBI::_conn_pid";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::definition_context";
+	"Class::MOP::Mixin::AttributeCore::name";
+	"Class::MOP::Mixin::AttributeCore::init_arg";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_19 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::19";
+	"Moose::Meta::Class::__ANON__::SERIAL::19::new";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::as";
+	"MooseX::Types::CheckedUtilExports::subtype";
+	"MooseX::Types::CheckedUtilExports::from";
+	"MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+	"MooseX::Types::CheckedUtilExports::coerce";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::apply";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::END";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@32";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::before";
+	"Moose::around";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_10 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::10";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::_eval_environment";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_used_default_is";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+	"Class::MOP::Method::Wrapped::get_original_method";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]";
+}
+subgraph cluster_DBD___dr {
+	label="DBD::_::dr";
+	"DBD::_::dr::default_user";
+}
+subgraph cluster_Errno {
+	label="Errno";
+	"Errno::BEGIN@8";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::DESTROY";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::has_path_prefix";
+	"Catalyst::Controller::path_prefix";
+	"Catalyst::Controller::has_action_namespace";
+	"Catalyst::Controller::action_namespace";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_24 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::24";
+	"Moose::Meta::Class::__ANON__::SERIAL::24::new";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::generate_constraint_for";
+	"MooseX::Meta::TypeConstraint::Structured::type_constraints";
+	"MooseX::Meta::TypeConstraint::Structured::has_type_constraints";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::levels";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::name";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::disconnect_all";
+	"DBI::__ANON__[DBI.pm:725]";
+	"DBI::END";
+	"DBI::connect";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::class2prefix";
+	"Catalyst::Utils::merge_hashes";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::_skip_namespace_frames";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:193]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:70]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:202]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:62]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:76]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::apply_metaroles";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::clone";
+	"DBIx::Class::Schema::DESTROY";
+	"DBIx::Class::Schema::class_mappings";
+	"DBIx::Class::Schema::storage_type";
+	"DBIx::Class::Schema::storage";
+	"DBIx::Class::Schema::END";
+	"DBIx::Class::Schema::txn_scope_guard";
+	"DBIx::Class::Schema::_register_source";
+	"DBIx::Class::Schema::sources";
+	"DBIx::Class::Schema::connection";
+	"DBIx::Class::Schema::source";
+	"DBIx::Class::Schema::source_registrations";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_12 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::12";
+	"Moose::Meta::Class::__ANON__::SERIAL::12::new";
+}
+subgraph cluster_ArrayRef_HashRef_KiokuDB_Backend_DBI {
+	label="ArrayRef[HashRef|KiokuDB::Backend::DBI";
+	"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+}
+subgraph cluster___TYPE___KiokuDB_Backend_DBI {
+	label="__TYPE__::KiokuDB::Backend::DBI";
+	"__TYPE__::KiokuDB::Backend::DBI::SchemaProto";
+	"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_DBI_st {
+	label="DBI::st";
+	"DBI::st::execute_array";
+	"DBI::st::bind_param_array";
+	"DBI::st::execute_for_fetch";
+	"DBI::st::execute";
+	"DBI::st::finish";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::END";
+	"File::Temp::__ANON__[File/Temp.pm:245]";
+	"File::Temp::__ANON__[File/Temp.pm:275]";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::callback_and_reg";
+	"Data::Visitor::Callback::visit_hash";
+	"Data::Visitor::Callback::visit_array";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_21 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::21";
+	"Moose::Meta::Class::__ANON__::SERIAL::21::new";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@7";
+	"Text::Tradition::add_witness";
+	"Text::Tradition::BEGIN@370";
+	"Text::Tradition::new";
+	"Text::Tradition::BEGIN@5";
+	"Text::Tradition::language";
+	"Text::Tradition::BEGIN@10";
+	"Text::Tradition::BEGIN@4";
+	"Text::Tradition::BEGIN@8";
+	"Text::Tradition::meta";
+	"Text::Tradition::BEGIN@3";
+	"Text::Tradition::BEGIN@6";
+}
+subgraph cluster___TYPE___Parse_Method_Signatures_Types {
+	label="__TYPE__::Parse::Method::Signatures::Types";
+	"__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+	"__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::VariableName";
+	"__TYPE__::Parse::Method::Signatures::Types::Param";
+	"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+	"__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+}
+subgraph cluster_DBD___db {
+	label="DBD::_::db";
+	"DBD::_::db::begin_work";
+	"DBD::_::db::prepare_cached";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::set_component_class";
+	"DBIx::Class::AccessorGroup::get_component_class";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait_Counter {
+	label="Moose::Meta::Attribute::Native::Trait::Counter";
+	"Moose::Meta::Attribute::Native::Trait::Counter::_root_types";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_11 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::11";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::_eval_environment";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::add_vertex";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit_ref";
+	"Data::Visitor::visit_hash";
+	"Data::Visitor::_register_mapping";
+	"Data::Visitor::visit_array";
+}
+subgraph cluster_version {
+	label="version";
+	"version::(bool";
+	"version::(cmp";
+}
+subgraph cluster_B {
+	label="B";
+	"B::perlstring";
+}
+subgraph cluster_PerlIO {
+	label="PerlIO";
+	"PerlIO::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading";
+}
+subgraph cluster_DBD_SQLite_db {
+	label="DBD::SQLite::db";
+	"DBD::SQLite::db::prepare";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::cursor_class";
+	"DBIx::Class::Storage::set_schema";
+	"DBIx::Class::Storage::schema";
+	"DBIx::Class::Storage::debug";
+	"DBIx::Class::Storage::txn_begin";
+	"DBIx::Class::Storage::transaction_depth";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::BEGIN@21";
+	"URI::BEGIN@7";
+	"URI::BEGIN@128";
+	"URI::BEGIN@22";
+	"URI::BEGIN@13";
+	"URI::BEGIN@24";
+	"URI::BEGIN@3";
+	"URI::BEGIN@4";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+	"Text::Tradition::Directory::BEGIN@4";
+	"Text::Tradition::Directory::BEGIN@7";
+	"Text::Tradition::Directory::BEGIN@3";
+	"Text::Tradition::Directory::BEGIN@5";
+	"Text::Tradition::Directory::BEGIN@9";
+	"Text::Tradition::Directory::CORE:match";
+	"Text::Tradition::Directory::BEGIN@6";
+	"Text::Tradition::Directory::BEGIN@154";
+	"Text::Tradition::Directory::BEGIN@11";
+	"Text::Tradition::Directory::save";
+	"Text::Tradition::Directory::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::associated_class";
+}
+subgraph cluster_B_Hooks_OP_PPAddr {
+	label="B::Hooks::OP::PPAddr";
+	"B::Hooks::OP::PPAddr::END";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::has_coercion";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::check";
+	"Moose::Meta::TypeConstraint::_default_message";
+	"Moose::Meta::TypeConstraint::Sigil";
+	"Moose::Meta::TypeConstraint::has_message";
+	"Moose::Meta::TypeConstraint::_set_constraint";
+	"Moose::Meta::TypeConstraint::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::_compiled_type_constraint";
+	"Moose::Meta::TypeConstraint::SourceType";
+}
+subgraph cluster_MIME_Types {
+	label="MIME::Types";
+	"MIME::Types::create_type_index";
+	"MIME::Types::new";
+}
+subgraph cluster_Storable {
+	label="Storable";
+	"Storable::BEGIN@22";
+	"Storable::BEGIN@51";
+	"Storable::BEGIN@26";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::subtype";
+	"Moose::Util::TypeConstraints::as";
+	"Moose::Util::TypeConstraints::coerce";
+	"Moose::Util::TypeConstraints::from";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::unwind";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+	"Moose::Meta::Attribute::Native::Trait::_check_handles_values";
+	"Moose::Meta::Attribute::Native::Trait::_root_types";
+	"Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+	"Moose::Meta::Attribute::Native::Trait::_canonicalize_handles_value";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::END";
+	"Class::XSAccessor::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_get_compatible_metaclass";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+	"strict::CORE:regcomp";
+	"strict::bits";
+	"strict::CORE:match";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::init_meta";
+}
+subgraph cluster_DBI_dr {
+	label="DBI::dr";
+	"DBI::dr::disconnect_all";
+	"DBI::dr::default_user";
+	"DBI::dr::connect";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2";
+	"stemmaweb::BEGIN@19";
+	"stemmaweb::BEGIN@3";
+	"stemmaweb::BEGIN@5";
+	"stemmaweb::_static_file";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::set_inherited";
+	"Class::Accessor::Grouped::get_inherited";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::status";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_used_default_is";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::new";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::delegate_to_method";
+}
+"Text::Tradition::Witness::new" -> "Moose::Meta::TypeConstraint::Sigil";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::_dbic_connect_attributes";
+"main::BEGIN@11" -> "Moose::before";
+"Class::MOP::Class:::after" -> "Moose::Meta::Class::__ANON__::SERIAL::23::_used_default_is";
+"Class::MOP::Class:::before" -> "MIME::Types::create_type_index";
+"DBI::db::prepare_cached" -> "DBD::_::db::prepare_cached";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class:::before" -> "Moose::Meta::Attribute::Native::Trait::_check_helper_type";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::unsafe" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Scalar::Util::blessed";
+"Class::MOP::Class:::around" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::transaction_depth" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::debug" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_relationships" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_primaries" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::schema" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_columns" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Scalar::Util::blessed";
+"Class::MOP::Class:::around" -> "Catalyst::Utils::class2prefix";
+"MooseX::Types::CheckedUtilExports::as" -> "Moose::Util::TypeConstraints::as";
+"DBI::st::execute_for_fetch" -> "DBD::_::st::execute_for_fetch";
+"DBIx::Class::_skip_namespace_frames" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_name_sep" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::class_mappings" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::storage" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_limit_dialect" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Storage::DBI::sql_quote_char" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::Schema::source_registrations" -> "Class::Accessor::Grouped::set_inherited";
+"DBIx::Class::ResultSource::sqlt_deploy_callback" -> "Class::Accessor::Grouped::set_inherited";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::20::_eval_environment";
+"main::BEGIN@9" -> "Moose::extends";
+"main::BEGIN@11" -> "Moose::extends";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::_eval_environment";
+"Class::MOP::Class:::before" -> "Catalyst::config";
+"main::BEGIN@9" -> "Catalyst::config";
+"Class::MOP::Class:::around" -> "Catalyst::config";
+"main::RUNTIME" -> "Catalyst::config";
+"Class::MOP::Class:::around" -> "Catalyst::Controller::has_path_prefix";
+"Module::Runtime::require_module" -> "__TYPE__::HashRef";
+"main::RUNTIME" -> "main::BEGIN@4";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]" -> "Class::MOP::Class:::around";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::11::new";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Str" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::ClassName" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::CodeRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Bool" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Int" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Defined" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::HashRef" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::create_base_type_constraint";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::create_base_type_constraint";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@7";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::RelationshipStore::set_eqreadings";
+"main::BEGIN@7" -> "URI::BEGIN@3";
+"main::BEGIN@1" -> "warnings::CORE:match";
+"Class::MOP::Class:::around" -> "Text::Tradition::Directory::CORE:match";
+"DBD::SQLite::db::prepare" -> "DBD::SQLite::st::_prepare";
+"main::BEGIN@2" -> "strict::CORE:regcomp";
+"Class::MOP::Class:::around" -> "stemmaweb::_static_file";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::sqlt_deploy_callback";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::sqlt_deploy_callback";
+"Class::MOP::Class:::around" -> "Catalyst::Request::parameters";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::inline_environment";
+"main::BEGIN@7" -> "URI::BEGIN@22";
+"Class::MOP::Class:::around" -> "Catalyst::Controller::has_action_namespace";
+"main::RUNTIME" -> "B::Hooks::OP::PPAddr::END";
+"Module::Runtime::require_module" -> "__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+"Class::MOP::Class:::around" -> "Catalyst::res";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::_compiled_type_constraint";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::Counter::_root_types";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::linearized_isa";
+"Class::MOP::Class:::around" -> "MooseX::Meta::TypeConstraint::Structured::generate_constraint_for";
+"main::BEGIN@2" -> "strict::CORE:match";
+"Fcntl::O_NOINHERIT" -> "File::Temp::__ANON__[File/Temp.pm:245]";
+"Fcntl::O_LARGEFILE" -> "File::Temp::__ANON__[File/Temp.pm:245]";
+"main::RUNTIME" -> "DBI::END";
+"DBI::connect" -> "DBI::dr::default_user";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::_stringify_args";
+"main::RUNTIME" -> "Catalyst::model";
+"DBIx::Class::Storage::DBI::_exec_txn_commit" -> "DBI::db::commit";
+"Moose::Meta::TypeConstraint::check" -> "KiokuDB::Backend::DBI::ValidColumnName";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::10::_eval_environment";
+"Parse::Method::Signatures::Types::VariableName" -> "Parse::Method::Signatures::Types::__ANON__[Parse/Method/Signatures/Types.pm:22]";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@5";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::datetime_parser_type";
+"main::BEGIN@9" -> "Catalyst::import";
+"main::RUNTIME" -> "main::BEGIN@6";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class:::around" -> "Class::MOP::Object::_get_compatible_metaclass";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:76]";
+"Moose::Meta::TypeConstraint::SourceType" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:76]";
+"Moose::Meta::TypeConstraint::Sigil" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:76]";
+"Parse::Method::Signatures::Types::VariableName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:76]";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@10";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::_set_constraint";
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@3";
+"Module::Runtime::require_module" -> "MooseX::Types::CheckedUtilExports::subtype";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::subtype";
+"main::BEGIN@11" -> "UNIVERSAL::import";
+"main::BEGIN@10" -> "UNIVERSAL::import";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::12::new";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::calculate_all_roles_with_inheritance";
+"DBIx::Class::Schema::class_mappings" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::storage_type" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::storage" -> "Class::Accessor::Grouped::get_inherited";
+"DBIx::Class::Schema::source_registrations" -> "Class::Accessor::Grouped::get_inherited";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@9";
+"Class::MOP::Class:::around" -> "Catalyst::Component::config";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+"Module::Runtime::require_module" -> "__TYPE__::Parse::Method::Signatures::Types::Param";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::Param";
+"Parse::Method::Signatures::BEGIN@10" -> "__TYPE__::Parse::Method::Signatures::Types::Param";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::debug" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_relationships" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::transaction_depth" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_primaries" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::schema" -> "Class::XSAccessor::import";
+"DBIx::Class::ResultSource::_columns" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::unsafe" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Class::XSAccessor::import";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Class::XSAccessor::import";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::RelationshipStore::equivalence_graph";
+"Class::MOP::Class:::around" -> "Moose::Meta::Mixin::AttributeCore::handles";
+"TryCatch::inject_scope" -> "TryCatch::XS::install_op_checks";
+"Class::MOP::Class:::around" -> "Catalyst::Component::catalyst_component_name";
+"Class::MOP::Class:::around" -> "Catalyst::Response::status";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::_sql_maker";
+"main::BEGIN@6" -> "Path::Class::BEGIN@16";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@19";
+"main::BEGIN@10" -> "Text::Tradition::meta";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@6";
+"main::BEGIN@10" -> "Moose::has";
+"main::BEGIN@11" -> "Moose::has";
+"Class::MOP::Class:::around" -> "Catalyst::Log::levels";
+"main::BEGIN@6" -> "Path::Class::BEGIN@18";
+"HTTP::Message::PSGI::CORE:open" -> "HTTP::Message::PSGI::BEGIN@41";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@13";
+"Module::Runtime::require_module" -> "__TYPE__::ArrayRef";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::ArrayRef";
+"Parse::Method::Signatures::BEGIN@10" -> "__TYPE__::ArrayRef";
+"main::RUNTIME" -> "XML::LibXML::END";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_limit_dialect";
+"main::RUNTIME" -> "main::BEGIN@12";
+"main::BEGIN@7" -> "URI::BEGIN@4";
+"Errno::BEGIN@8" -> "version::(cmp";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::_columns";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@4";
+"main::BEGIN@5" -> "FindBin::BEGIN@205";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles_with_inheritance";
+"Class::MOP::Class:::before" -> "Catalyst::debug";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::coerce";
+"DBI::db::begin_work" -> "DBD::_::db::begin_work";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@8";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Class::MOP::Class:::before";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Class::MOP::Class:::before";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@5";
+"Class::MOP::Class:::around" -> "Catalyst::stash";
+"Class::MOP::Class:::around" -> "Catalyst::dispatch";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_create_function";
+"main::RUNTIME" -> "DBIx::Class::Schema::END";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@6";
+"Class::MOP::Class:::before" -> "Catalyst::Request::path";
+"DBIx::Class::Storage::DBI::txn_begin" -> "DBIx::Class::Storage::DBI::_dbh_autocommit";
+"Class::MOP::Class:::around" -> "Moose::Object::BUILDARGS";
+"Module::Runtime::require_module" -> "__TYPE__::Bool";
+"DBD::_::db::begin_work" -> "DBI::common::FETCH";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]" -> "DBI::common::FETCH";
+"DBIx::Class::Storage::DBI::SQLite::_dbh_autocommit" -> "DBI::common::FETCH";
+"DBD::_::st::execute_array" -> "DBI::common::FETCH";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::superclasses";
+"DBIx::Class::Storage::DBI::_verify_pid" -> "DBIx::Class::Storage::DBI::_conn_pid";
+"main::BEGIN@5" -> "FindBin::BEGIN@100";
+"Class::MOP::Class:::after" -> "MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading";
+"main::RUNTIME" -> "Plack::Test::test_psgi";
+"main::BEGIN@2" -> "strict::bits";
+"Module::Runtime::require_module" -> "__TYPE__::Defined";
+"Module::Runtime::require_module" -> "MooseX::Types::CheckedUtilExports::as";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::as";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::cursor_class";
+"base::import" -> "DBIx::Class::Storage::cursor_class";
+"Fcntl::O_TEMPORARY" -> "File::Temp::__ANON__[File/Temp.pm:275]";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::UndefinedType::new";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::UndefinedType::new";
+"main::BEGIN@12" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::result_class";
+"DBIx::Class::Schema::_register_source" -> "DBIx::Class::ResultSource::result_class";
+"main::BEGIN@7" -> "URI::BEGIN@128";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::finish";
+"DBIx::Class::Schema::clone" -> "DBIx::Class::Schema::storage";
+"KiokuDB::Backend::DBI::_build_storage" -> "DBIx::Class::Schema::storage";
+"DBIx::Class::Schema::connection" -> "DBIx::Class::Schema::storage";
+"DBIx::Class::Schema::txn_scope_guard" -> "DBIx::Class::Schema::storage";
+"DBI::st::bind_param_array" -> "DBD::_::st::bind_param_array";
+"main::RUNTIME" -> "main::BEGIN@2";
+"main::RUNTIME" -> "CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::11::_eval_environment";
+"main::BEGIN@5" -> "FindBin::BEGIN@95";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::dr::connect";
+"Module::Runtime::require_module" -> "__TYPE__::MooseX::Types::Structured::Tuple";
+"DBD::_::st::execute_for_fetch" -> "DBI::st::execute";
+"Class::MOP::Class:::before" -> "Catalyst::Plugin::Static::Simple::CORE:subst";
+"main::BEGIN@12" -> "main::BEGIN@2.13";
+"main::RUNTIME" -> "KiokuDB::LiveObjects::Scope::DESTROY";
+"main::BEGIN@2" -> "strict::import";
+"Class::MOP::Class:::before" -> "MIME::Types::new";
+"DBD::_::db::begin_work" -> "DBI::common::STORE";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1298]" -> "DBI::common::STORE";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::common::STORE";
+"DBI::connect" -> "DBI::common::STORE";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_collation_needed";
+"Module::Runtime::require_module" -> "__TYPE__::Parse::Method::Signatures::Types::VariableName";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::VariableName";
+"Data::Visitor::visit_ref" -> "Data::Visitor::Callback::visit_array";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_canonicalize_handles_value";
+"main::RUNTIME" -> "File::Temp::END";
+"Class::MOP::Class:::around" -> "Moose::Object::new";
+"main::BEGIN@7" -> "HTTP::Request::BEGIN@7";
+"main::BEGIN@7" -> "Storable::BEGIN@26";
+"Moose::Meta::TypeConstraint::SourceType" -> "Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:193]";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@4";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::26::new";
+"Errno::BEGIN@8" -> "version::(bool";
+"main::RUNTIME" -> "Path::Class::dir";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::RelationshipStore::set_equivalence";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:54]";
+"base::import" -> "DBIx::Class::_skip_namespace_frames";
+"TryCatch::BEGIN@11" -> "__TYPE__::Str";
+"Module::Runtime::require_module" -> "__TYPE__::Str";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Str";
+"main::RUNTIME" -> "KiokuX::Model::new_scope";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::_connect_info";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::_default_message";
+"DBIx::Class::Storage::set_schema" -> "DBIx::Class::Storage::schema";
+"main::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::32::new";
+"Class::MOP::Class:::around" -> "MooseX::StrictConstructor::Trait::Class::CORE:sort";
+"main::BEGIN@7" -> "XSLoader::load";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::new";
+"Text::Tradition::Witness::new" -> "Moose::Meta::TypeConstraint::SourceType";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::Callback::callback_and_reg";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::Callback::callback_and_reg";
+"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:193]";
+"DBIx::Class::Storage::DBI::_exec_txn_commit" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::DBI::txn_commit" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::DBI::_populate_dbh" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::TxnScopeGuard::new" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::DBI::_get_dbh" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::DBI::_seems_connected" -> "DBIx::Class::Storage::DBI::_dbh";
+"DBIx::Class::Storage::DBI::_determine_driver" -> "DBIx::Class::Storage::DBI::_dbh";
+"MooseX::Types::CheckedUtilExports::subtype" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::as" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::from" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"MooseX::Types::CheckedUtilExports::coerce" -> "MooseX::Types::CheckedUtilExports::__ANON__[MooseX/Types/CheckedUtilExports.pm:38]";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@4";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_NOINHERIT";
+"main::BEGIN@5" -> "FindBin::BEGIN@99";
+"main::RUNTIME" -> "Catalyst::psgi_app";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@4";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@2";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::_inline_throw_error";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::AttributeCore::name";
+"main::BEGIN@10" -> "Moose::around";
+"main::BEGIN@11" -> "Moose::around";
+"Data::Visitor::visit_ref" -> "Data::Visitor::Callback::visit_hash";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::_use_join_optimizer";
+"TryCatch::BEGIN@11" -> "__TYPE__::Int";
+"Module::Runtime::require_module" -> "__TYPE__::Int";
+"DBIx::Class::Storage::DBI::_populate_dbh" -> "DBIx::Class::Storage::DBI::_dbi_connect_info";
+"DBIx::Class::Storage::DBI::_determine_driver" -> "DBIx::Class::Storage::DBI::_dbi_connect_info";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::_dbi_connect_info";
+"KiokuDB::Backend::DBI::SchemaProto" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+"Class::MOP::Class:::around" -> "Class::MOP::Method::Accessor::new";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@3";
+"KiokuDB::Backend::DBI::new" -> "ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_name_sep";
+"DBIx::Class::ResultSource::add_columns" -> "DBIx::Class::ResultSource::_ordered_columns";
+"main::BEGIN@4" -> "Exporter::import";
+"main::BEGIN@7" -> "Exporter::import";
+"main::BEGIN@5" -> "Exporter::import";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@8";
+"Class::MOP::Class:::around" -> "Text::Tradition::Witness::new";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]" -> "DBIx::Class::Storage::DBI::unsafe";
+"DBIx::Class::Storage::DBI::new" -> "DBIx::Class::Storage::DBI::_sql_maker_opts";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::_sql_maker_opts";
+"Class::MOP::Class:::around" -> "Text::Tradition::add_witness";
+"Class::MOP::Class:::after" -> "Moose::Meta::Class::__ANON__::SERIAL::17::_used_default_is";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::add_before_method_modifier";
+"main::BEGIN@7" -> "URI::BEGIN@24";
+"TryCatch::BEGIN@11" -> "__TYPE__::CodeRef";
+"Module::Runtime::require_module" -> "__TYPE__::CodeRef";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::add_around_method_modifier";
+"DBIx::Class::Schema::DESTROY" -> "B::SV::REFCNT";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::25::new";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@5";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::20::new";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@3";
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@14";
+"TryCatch::BEGIN@11" -> "__TYPE__::ClassName";
+"Module::Runtime::require_module" -> "__TYPE__::ClassName";
+"main::BEGIN@7" -> "URI::BEGIN@21";
+"main::BEGIN@6" -> "main::BEGIN@1.1";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::19::new";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::class_precedence_list";
+"DBI::__ANON__[DBI.pm:725]" -> "DBI::db::connected";
+"DBI::dr::default_user" -> "DBD::_::dr::default_user";
+"MooseX::Types::CheckedUtilExports::subtype" -> "Moose::Util::TypeConstraints::subtype";
+"main::RUNTIME" -> "main::BEGIN@7";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@6";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@11";
+"DBIx::Class::Storage::debug" -> "UNIVERSAL::can";
+"DBIx::Class::ResultSource::_relationships" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "UNIVERSAL::can";
+"DBIx::Class::ResultSource::_ordered_columns" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::unsafe" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "UNIVERSAL::can";
+"Class::MOP::Class:::before" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "UNIVERSAL::can";
+"DBIx::Class::ResultSource::_primaries" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_connect_info" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::schema" -> "UNIVERSAL::can";
+"DBIx::Class::ResultSource::_unique_constraints" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "UNIVERSAL::can";
+"Class::MOP::Class:::around" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_dbh" -> "UNIVERSAL::can";
+"DBIx::Class::ResultSource::_columns" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::transaction_depth" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "UNIVERSAL::can";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "UNIVERSAL::can";
+"Class::MOP::Class:::around" -> "Catalyst::_setup_finished_accessor";
+"DBIx::Class::Storage::DBI::_determine_driver" -> "DBIx::Class::Storage::DBI::_driver_determined";
+"DBIx::Class::Storage::DBI::txn_begin" -> "DBIx::Class::Storage::DBI::_driver_determined";
+"Plack::Test::MockHTTP::test_psgi" -> "main::__ANON__[script/nytprof.pl:40]";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::bind_param_array";
+"MooseX::Types::CheckedUtilExports::from" -> "Moose::Util::TypeConstraints::from";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::18::new";
+"main::BEGIN@1" -> "warnings::import";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::superclasses";
+"main::RUNTIME" -> "DBIx::Class::Storage::DBI::END";
+"DBD::_::st::execute_array" -> "DBI::st::execute_for_fetch";
+"main::BEGIN@6" -> "Path::Class::BEGIN@10";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@7";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::new_object";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::_inline_BUILDALL";
+"Class::MOP::Class:::around" -> "Text::Tradition::language";
+"DBIx::Class::Storage::txn_begin" -> "DBIx::Class::Storage::transaction_depth";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::22::new";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+"Class::MOP::Class:::around" -> "Class::MOP::Method::Wrapped::get_original_method";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"main::RUNTIME" -> "Catalyst::setup";
+"DBIx::Class::Storage::DBI::_populate_dbh" -> "DBIx::Class::Storage::DBI::_dbh_details";
+"DBIx::Class::Storage::DBI::new" -> "DBIx::Class::Storage::DBI::_dbh_details";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::18::_eval_environment";
+"Class::MOP::Class:::after" -> "Moose::Meta::Class::__ANON__::SERIAL::8::_used_default_is";
+"main::BEGIN@12" -> "main::BEGIN@1.12";
+"DBIx::Class::Storage::txn_begin" -> "DBIx::Class::Storage::DBI::auto_savepoint";
+"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"KiokuDB::Backend::DBI::SchemaProto" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"Moose::Meta::TypeConstraint::SourceType" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"Moose::Meta::TypeConstraint::Sigil" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"Parse::Method::Signatures::Types::VariableName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:27]";
+"main::RUNTIME" -> "Path::Class::Dir::parent";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::AttributeCore::definition_context";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::9::new";
+"DBIx::Class::ResultSource::set_primary_key" -> "DBIx::Class::ResultSource::_primaries";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_quote_char";
+"main::RUNTIME" -> "Class::XSAccessor::END";
+"Class::MOP::Class:::around" -> "Moose::Meta::Role::Composite::name";
+"KiokuDB::Backend::DBI::prepare_insert" -> "DBI::db::prepare_cached";
+"KiokuDB::Backend::DBI::prepare_update" -> "DBI::db::prepare_cached";
+"Text::Tradition::Collation::RelationshipStore::test_equivalence" -> "Scope::Upper::unwind";
+"Text::Tradition::Collation::RelationshipStore::_make_equivalence" -> "Scope::Upper::unwind";
+"Text::Tradition::Collation::RelationshipStore::related_readings" -> "Scope::Upper::unwind";
+"Text::Tradition::Parser::Self::_layersort_rel" -> "Scope::Upper::unwind";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::execute_array";
+"main::BEGIN@1" -> "warnings::CORE:regcomp";
+"main::RUNTIME" -> "main::BEGIN@11";
+"main::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Storage::DBI::sql_maker_class";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::21::new";
+"DBIx::Class::Storage::debug" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_relationships" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::unsafe" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_primaries" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_columns" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::schema" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::transaction_depth" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Scalar::Util::weaken";
+"Module::Runtime::require_module" -> "__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_TEMPORARY";
+"__TYPE__::ArrayRef" -> "Scalar::Util::reftype";
+"Data::Visitor::Callback::visit_hash" -> "Scalar::Util::reftype";
+"Data::Visitor::Callback::visit_array" -> "Scalar::Util::reftype";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "Scalar::Util::reftype";
+"__TYPE__::HashRef" -> "Scalar::Util::reftype";
+"Moose::Meta::TypeConstraint::Sigil" -> "Text::Tradition::Witness::__ANON__[lib/Text/Tradition/Witness.pm:198]";
+"main::BEGIN@7" -> "URI::BEGIN@7";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type";
+"Class::MOP::Class:::around" -> "Moose::Util::does_role";
+"main::RUNTIME" -> "CatalystX::Test::MockContext::mock_context";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1339]" -> "DBI::db::begin_work";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::get_relationship";
+"main::BEGIN@7" -> "Storable::BEGIN@51";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@4";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::24::new";
+"main::__ANON__[script/nytprof.pl:40]" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"KiokuDB::Backend::DBI::kiokudb_entries_source_name" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"DBIx::Class::Schema::KiokuDB::_kiokudb_handle" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"KiokuDB::Backend::DBI::new" -> "KiokuDB::Backend::DBI::SchemaProto";
+"Class::MOP::Class:::before" -> "List::MoreUtils::any";
+"Class::MOP::Class:::around" -> "Catalyst::Controller::action_namespace";
+"main::BEGIN@6" -> "Path::Class::BEGIN@17";
+"main::RUNTIME" -> "main::BEGIN@9";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Class::MOP::Class:::after";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]" -> "Class::MOP::Class:::after";
+"Class::MOP::Class:::around" -> "Graph::add_vertex";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_LARGEFILE";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"main::BEGIN@12" -> "CatalystX::Test::MockContext::BEGIN@10";
+"main::BEGIN@7" -> "Storable::BEGIN@22";
+"main::BEGIN@5" -> "FindBin::BEGIN@98";
+"DBI::disconnect_all" -> "DBI::dr::disconnect_all";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+"DBD::_::db::prepare_cached" -> "DBI::db::prepare";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::visit_hash";
+"constant::import" -> "Internals::SvREADONLY";
+"main::BEGIN@7" -> "HTTP::Request::Common::BEGIN@4";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFFIFO";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@3";
+"Class::MOP::Class:::around" -> "B::perlstring";
+"DBI::db::prepare" -> "DBD::SQLite::db::prepare";
+"Class::MOP::Class:::around" -> "Moose::Meta::Role::Application::ToRole::apply";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+"Class::MOP::Class:::before" -> "Catalyst::Plugin::Static::Simple::CORE:match";
+"main::RUNTIME" -> "main::BEGIN@1";
+"Module::Runtime::require_module" -> "__TYPE__::KiokuDB::Backend::DBI::SchemaProto";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_arged_type_constraint";
+"__TYPE__::HashRef" -> "MooseX::Types::create_arged_type_constraint";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_arged_type_constraint";
+"DBIx::Class::ResultSource::unique_constraints" -> "DBIx::Class::ResultSource::_unique_constraints";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::visit_array";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@370";
+"main::RUNTIME" -> "Path::Class::Dir::subdir";
+"Module::Runtime::require_module" -> "__TYPE__::KiokuDB::Backend::DBI::ValidColumnName";
+"Class::MOP::Class:::around" -> "Text::Tradition::Witness::sigil";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Class:::before" -> "Catalyst::Utils::merge_hashes";
+"DBIx::Class::Schema::connection" -> "DBIx::Class::Schema::storage_type";
+"Class::MOP::Class:::around" -> "Class::MOP::Package::name";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::RelationshipStore::add_reading";
+"main::RUNTIME" -> "main::BEGIN@10";
+"DBIx::Class::Schema::clone" -> "DBIx::Class::Schema::class_mappings";
+"HTTP::Message::PSGI::BEGIN@41" -> "PerlIO::import";
+"main::RUNTIME" -> "DBIx::Class::ResultSource::END";
+"DBIx::Class::Storage::DBI::_run_connection_actions" -> "DBIx::Class::Storage::DBI::on_connect_call";
+"DBIx::Class::Storage::DBI::connect_info" -> "DBIx::Class::Storage::DBI::on_connect_call";
+"main::RUNTIME" -> "Path::Class::File::stringify";
+"DBIx::Class::ResultSource::result_class" -> "DBIx::Class::AccessorGroup::get_component_class";
+"DBIx::Class::Storage::txn_begin" -> "DBIx::Class::Storage::debug";
+"DBIx::Class::ResultSource::add_relationship" -> "DBIx::Class::ResultSource::_relationships";
+"DBIx::Class::Storage::cursor_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::Storage::DBI::datetime_parser_type" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::ResultSource::result_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+"DBIx::Class::Storage::DBI::sql_maker_class" -> "DBIx::Class::AccessorGroup::set_component_class";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::calculate_all_roles";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:62]";
+"Moose::Meta::TypeConstraint::SourceType" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:62]";
+"Moose::Meta::TypeConstraint::Sigil" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:62]";
+"Parse::Method::Signatures::Types::VariableName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:62]";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::compile_type_constraint";
+"Class::MOP::Class:::around" -> "MooseX::Meta::TypeConstraint::Structured::type_constraints";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@648";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@5";
+"Class::MOP::Class:::before" -> "MooseX::MethodAttributes::init_meta";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@2";
+"Data::Visitor::Callback::visit_hash" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit_array" -> "Scalar::Util::refaddr";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Class::MOP::Class:::around" -> "Moose::Meta::TypeConstraint::has_message";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Sub::Name::subname";
+"DBIx::Class::Storage::debug" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_relationships" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_primaries" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Sub::Name::subname";
+"DBIx::Class::Storage::schema" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_columns" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::unsafe" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Sub::Name::subname";
+"DBIx::Class::Storage::transaction_depth" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Sub::Name::subname";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::from";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_register_fts3_perl_tokenizer";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+"Class::MOP::Class:::before" -> "Moose::Meta::Attribute::Native::Trait::_check_handles_values";
+"DBIx::Class::Storage::DBI::_use_join_optimizer" -> "DBIx::Class::Storage::DBI::set_use_dbms_capability";
+"Class::MOP::Class:::around" -> "MooseX::Meta::TypeConstraint::Structured::has_type_constraints";
+"main::BEGIN@9" -> "stemmaweb::BEGIN@3";
+"DBI::dr::connect" -> "DBD::SQLite::dr::connect";
+"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:70]";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@10";
+"main::BEGIN@11" -> "Text::Tradition::Directory::BEGIN@154";
+"MooseX::Types::CheckedUtilExports::coerce" -> "Moose::Util::TypeConstraints::coerce";
+"main::BEGIN@9" -> "Catalyst::path_to";
+"DBIx::Class::Storage::DBI::_parse_connect_do" -> "DBIx::Class::Storage::DBI::on_connect_do";
+"main::BEGIN@10" -> "Text::Tradition::BEGIN@3";
+"Moose::Meta::TypeConstraint::check" -> "Parse::Method::Signatures::Types::VariableName";
+"main::RUNTIME" -> "Text::Tradition::new";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@4";
+"Class::MOP::Class:::around" -> "Moose::Util::MetaRole::apply_metaroles";
+"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:202]";
+"main::BEGIN@7" -> "URI::BEGIN@13";
+"main::__ANON__[script/nytprof.pl:40]" -> "HTTP::Request::Common::GET";
+"main::RUNTIME" -> "HTTP::Request::Common::GET";
+"main::RUNTIME" -> "Text::Tradition::Directory::save";
+"Class::MOP::Class:::around" -> "Class::MOP::Attribute::associated_class";
+"Class::MOP::Class:::before" -> "Catalyst::req";
+"DBIx::Class::Schema::clone" -> "DBIx::Class::Schema::source_registrations";
+"DBIx::Class::Schema::_register_source" -> "DBIx::Class::Schema::source_registrations";
+"DBIx::Class::Schema::sources" -> "DBIx::Class::Schema::source_registrations";
+"DBIx::Class::Schema::DESTROY" -> "DBIx::Class::Schema::source_registrations";
+"DBIx::Class::ResultSource::DESTROY" -> "DBIx::Class::Schema::source_registrations";
+"DBIx::Class::Schema::source" -> "DBIx::Class::Schema::source_registrations";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@3";
+"Class::MOP::Class:::around" -> "Catalyst::Controller::path_prefix";
+"main::RUNTIME" -> "main::BEGIN@5";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_all_methods";
+"Class::MOP::Class:::around" -> "MooseX::Emulate::Class::Accessor::Fast::BUILD";
+"__TYPE__::ArrayRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::Param" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Str" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::ClassName" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::ParamCollection" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::PositionalParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::CodeRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::NamedParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::VariableName" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Bool" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::KiokuDB::Backend::DBI::SchemaProto" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Int" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::HashRef" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Defined" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam" -> "MooseX::Types::create_type_decorator";
+"__TYPE__::KiokuDB::Backend::DBI::ValidColumnName" -> "MooseX::Types::create_type_decorator";
+"main::RUNTIME" -> "Path::Class::Dir::file";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::_register_mapping";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::_register_mapping";
+"DBI::st::execute_array" -> "DBD::_::st::execute_array";
+"Class::MOP::Class:::around" -> "Moose::Meta::Class::__ANON__::SERIAL::10::new";
+"Class::MOP::Class:::around" -> "Moose::Meta::Attribute::Native::Trait::_root_types";
+"ArrayRef[HashRef|KiokuDB::Backend::DBI::ValidColumnName]" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+"KiokuDB::Backend::DBI::SchemaProto" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+"Moose::Meta::TypeConstraint::SourceType" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+"Moose::Meta::TypeConstraint::Sigil" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+"Parse::Method::Signatures::Types::VariableName" -> "Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:43]";
+}

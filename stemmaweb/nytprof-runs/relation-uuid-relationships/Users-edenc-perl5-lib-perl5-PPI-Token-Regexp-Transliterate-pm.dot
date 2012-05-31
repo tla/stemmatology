@@ -1,0 +1,30 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@65";
+}
+subgraph cluster_PPI_Token_Regexp_Transliterate {
+	label="PPI::Token::Regexp::Transliterate";
+	"PPI::Token::Regexp::Transliterate::BEGIN@44";
+	"PPI::Token::Regexp::Transliterate::BEGIN@41";
+	"PPI::Token::Regexp::Transliterate::BEGIN@39";
+	"PPI::Token::Regexp::Transliterate::BEGIN@43";
+	"PPI::Token::Regexp::Transliterate::BEGIN@40";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@40";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@41";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@43";
+"PPI::Token::Regexp::Transliterate::BEGIN@39" -> "strict::import";
+"PPI::Token::Regexp::Transliterate::BEGIN@43" -> "vars::import";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@44";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@39";
+}

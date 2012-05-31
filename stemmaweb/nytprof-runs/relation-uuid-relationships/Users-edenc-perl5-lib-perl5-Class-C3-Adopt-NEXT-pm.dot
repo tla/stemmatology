@@ -1,0 +1,95 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@28";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@2";
+	"Catalyst::Component::BEGIN@7";
+	"Catalyst::Component::BEGIN@1";
+}
+subgraph cluster_EVERY {
+	label="EVERY";
+	"EVERY::BEGIN@137";
+	"EVERY::BEGIN@116";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_NEXT {
+	label="NEXT";
+	"NEXT::BEGIN@3";
+	"NEXT::BEGIN@25";
+	"NEXT::BEGIN@63";
+	"NEXT::BEGIN@4";
+	"NEXT::BEGIN@93";
+	"NEXT::BEGIN@5";
+	"NEXT::BEGIN@101";
+	"NEXT::BEGIN@13";
+	"NEXT::BEGIN@37";
+}
+subgraph cluster_NEXT_ELSEWHERE {
+	label="NEXT::ELSEWHERE";
+	"NEXT::ELSEWHERE::buildAUTOLOAD";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_EVERY_ELSEWHERE {
+	label="EVERY::ELSEWHERE";
+	"EVERY::ELSEWHERE::buildAUTOLOAD";
+}
+subgraph cluster_Class_C3_Adopt_NEXT {
+	label="Class::C3::Adopt::NEXT";
+	"Class::C3::Adopt::NEXT::BEGIN@8";
+	"Class::C3::Adopt::NEXT::BEGIN@16";
+	"Class::C3::Adopt::NEXT::BEGIN@14";
+	"Class::C3::Adopt::NEXT::BEGIN@5";
+	"Class::C3::Adopt::NEXT::BEGIN@13";
+	"Class::C3::Adopt::NEXT::BEGIN@15";
+	"Class::C3::Adopt::NEXT::import";
+	"Class::C3::Adopt::NEXT::BEGIN@27";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::ELSEWHERE::buildAUTOLOAD";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@14";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@27";
+"Catalyst::Component::BEGIN@7" -> "Catalyst::Component::BEGIN@2";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@16";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "EVERY::BEGIN@137";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@5";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@25";
+"Catalyst::Component::BEGIN@1" -> "strict::import";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@13";
+"Catalyst::BEGIN@28" -> "Class::C3::Adopt::NEXT::import";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::import";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@93";
+"Catalyst::Component::BEGIN@7" -> "Catalyst::Component::BEGIN@1";
+"Class::C3::Adopt::NEXT::BEGIN@15" -> "Exporter::import";
+"Class::C3::Adopt::NEXT::BEGIN@16" -> "warnings::register::import";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@13";
+"Catalyst::Component::BEGIN@2" -> "warnings::import";
+"Class::C3::Adopt::NEXT::BEGIN@27" -> "warnings::unimport";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@3";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@8";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@101";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@15";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@4";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@5";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "EVERY::BEGIN@116";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@37";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "EVERY::ELSEWHERE::buildAUTOLOAD";
+"Class::C3::Adopt::NEXT::BEGIN@13" -> "NEXT::BEGIN@63";
+}

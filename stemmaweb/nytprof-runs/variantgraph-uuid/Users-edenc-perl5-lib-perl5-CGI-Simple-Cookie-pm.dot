@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@6";
+}
+subgraph cluster_CGI_Simple_Util {
+	label="CGI::Simple::Util";
+	"CGI::Simple::Util::BEGIN@238";
+	"CGI::Simple::Util::BEGIN@2";
+	"CGI::Simple::Util::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_CGI_Simple_Cookie {
+	label="CGI::Simple::Cookie";
+	"CGI::Simple::Cookie::BEGIN@17";
+	"CGI::Simple::Cookie::BEGIN@16";
+	"CGI::Simple::Cookie::BEGIN@14";
+	"CGI::Simple::Cookie::BEGIN@13";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"CGI::Simple::Cookie::BEGIN@17" -> "overload::import";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@238";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@3";
+"CGI::Simple::Cookie::BEGIN@13" -> "strict::import";
+"Catalyst::Engine::BEGIN@6" -> "CGI::Simple::Cookie::BEGIN@14";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@2";
+"CGI::Simple::Cookie::BEGIN@16" -> "Exporter::import";
+"Catalyst::Engine::BEGIN@6" -> "CGI::Simple::Cookie::BEGIN@17";
+"CGI::Simple::Cookie::BEGIN@14" -> "vars::import";
+"Catalyst::Engine::BEGIN@6" -> "CGI::Simple::Cookie::BEGIN@13";
+"Catalyst::Engine::BEGIN@6" -> "CGI::Simple::Cookie::BEGIN@16";
+}

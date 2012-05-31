@@ -1,0 +1,74 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Time_Seconds {
+	label="Time::Seconds";
+	"Time::Seconds::BEGIN@33";
+	"Time::Seconds::BEGIN@23";
+	"Time::Seconds::BEGIN@28";
+	"Time::Seconds::BEGIN@29";
+	"Time::Seconds::BEGIN@31";
+	"Time::Seconds::BEGIN@36";
+	"Time::Seconds::BEGIN@30";
+	"Time::Seconds::BEGIN@3";
+	"Time::Seconds::BEGIN@27";
+	"Time::Seconds::BEGIN@40";
+	"Time::Seconds::BEGIN@32";
+	"Time::Seconds::BEGIN@25";
+	"Time::Seconds::BEGIN@2";
+	"Time::Seconds::BEGIN@37";
+	"Time::Seconds::BEGIN@24";
+	"Time::Seconds::BEGIN@26";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@7";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Time::Seconds::BEGIN@40" -> "overload::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@23";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@25";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@28";
+"Time::Seconds::BEGIN@29" -> "constant::import";
+"Time::Seconds::BEGIN@36" -> "constant::import";
+"Time::Seconds::BEGIN@30" -> "constant::import";
+"Time::Seconds::BEGIN@27" -> "constant::import";
+"Time::Seconds::BEGIN@32" -> "constant::import";
+"Time::Seconds::BEGIN@25" -> "constant::import";
+"Time::Seconds::BEGIN@24" -> "constant::import";
+"Time::Seconds::BEGIN@28" -> "constant::import";
+"Time::Seconds::BEGIN@26" -> "constant::import";
+"Time::Seconds::BEGIN@31" -> "constant::import";
+"Time::Seconds::BEGIN@23" -> "constant::import";
+"Time::Seconds::BEGIN@33" -> "constant::import";
+"Time::Seconds::BEGIN@37" -> "constant::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@3";
+"Time::Seconds::BEGIN@2" -> "strict::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@31";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@30";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@24";
+"Time::Seconds::BEGIN@3" -> "vars::import";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@36";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@26";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@27";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@2";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@40";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@33";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@29";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@32";
+"Time::Piece::BEGIN@7" -> "Time::Seconds::BEGIN@37";
+}

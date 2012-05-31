@@ -1,0 +1,63 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::import";
+}
+subgraph cluster_Bio_Phylo_Util_Logger {
+	label="Bio::Phylo::Util::Logger";
+	"Bio::Phylo::Util::Logger::BEGIN@7";
+	"Bio::Phylo::Util::Logger::BEGIN@2";
+	"Bio::Phylo::Util::Logger::BEGIN@13";
+	"Bio::Phylo::Util::Logger::new";
+	"Bio::Phylo::Util::Logger::BEGIN@4";
+	"Bio::Phylo::Util::Logger::CORE:subst";
+	"Bio::Phylo::Util::Logger::BEGIN@8";
+	"Bio::Phylo::Util::Logger::BEGIN@9";
+	"Bio::Phylo::Util::Logger::BEGIN@3";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::splitpath";
+}
+subgraph cluster_Bio_Phylo_IO {
+	label="Bio::Phylo::IO";
+	"Bio::Phylo::IO::BEGIN@4";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@18";
+}
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@2";
+"Bio::Phylo::IO::BEGIN@4" -> "Bio::Phylo::Util::Logger::new";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@8";
+"Bio::Phylo::Util::Logger::BEGIN@13" -> "Bio::Phylo::Util::Logger::CORE:subst";
+"Bio::Phylo::Util::Logger::BEGIN@4" -> "UNIVERSAL::import";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@4";
+"Bio::Phylo::Util::Logger::BEGIN@2" -> "strict::import";
+"Bio::Phylo::Util::Logger::BEGIN@8" -> "Exporter::import";
+"Bio::Phylo::Util::Logger::BEGIN@7" -> "Exporter::import";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@9";
+"Bio::Phylo::Util::Logger::BEGIN@3" -> "base::import";
+"Bio::Phylo::Util::Logger::BEGIN@13" -> "File::Spec::Unix::splitpath";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@7";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@3";
+"Bio::Phylo::Util::Logger::BEGIN@9" -> "Config::import";
+"Bio::Phylo::BEGIN@18" -> "Bio::Phylo::Util::Logger::BEGIN@13";
+}

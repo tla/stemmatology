@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Digest_base {
+	label="Digest::base";
+	"Digest::base::BEGIN@3";
+	"Digest::base::BEGIN@4";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::BEGIN@7";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Digest::base::BEGIN@3" -> "strict::import";
+"Digest::base::BEGIN@4" -> "vars::import";
+"PPI::Util::BEGIN@7" -> "Digest::base::BEGIN@3";
+"PPI::Util::BEGIN@7" -> "Digest::base::BEGIN@4";
+}

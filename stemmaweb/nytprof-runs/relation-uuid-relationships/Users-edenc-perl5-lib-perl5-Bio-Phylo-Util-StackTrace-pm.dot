@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Util_Exceptions {
+	label="Bio::Phylo::Util::Exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@4";
+}
+subgraph cluster_Bio_Phylo_Util_StackTrace {
+	label="Bio::Phylo::Util::StackTrace";
+	"Bio::Phylo::Util::StackTrace::BEGIN@2";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Bio::Phylo::Util::Exceptions::BEGIN@4" -> "Bio::Phylo::Util::StackTrace::BEGIN@2";
+"Bio::Phylo::Util::StackTrace::BEGIN@2" -> "strict::import";
+}

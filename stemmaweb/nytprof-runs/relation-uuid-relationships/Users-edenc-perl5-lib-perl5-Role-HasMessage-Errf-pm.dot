@@ -1,0 +1,104 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::BEGIN@8";
+	"String::Errf::BEGIN@18";
+	"String::Errf::BEGIN@11";
+	"String::Errf::BEGIN@16";
+	"String::Errf::CORE:qr";
+	"String::Errf::BEGIN@7";
+	"String::Errf::BEGIN@15";
+	"String::Errf::BEGIN@14";
+	"String::Errf::BEGIN@4";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@1";
+	"Role::HasMessage::Errf::BEGIN@10";
+	"Role::HasMessage::Errf::BEGIN@2.10";
+	"Role::HasMessage::Errf::BEGIN@5";
+	"Role::HasMessage::Errf::BEGIN@2";
+	"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+	"Role::HasMessage::Errf::BEGIN@9";
+	"Role::HasMessage::Errf::BEGIN@12";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+	"Moose::Role::requires";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::BEGIN@2";
+	"MooseX::Role::Parameterized::BEGIN@4";
+	"MooseX::Role::Parameterized::BEGIN@3";
+	"MooseX::Role::Parameterized::method";
+	"MooseX::Role::Parameterized::BEGIN@7";
+	"MooseX::Role::Parameterized::BEGIN@5";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::setup_import_methods";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_13 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::13";
+	"Moose::Meta::Class::__ANON__::SERIAL::13::lazy";
+	"Moose::Meta::Class::__ANON__::SERIAL::13::default";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@7";
+"Module::Runtime::require_module" -> "Role::HasMessage::Errf::BEGIN@10";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Meta::Class::__ANON__::SERIAL::13::lazy";
+"Role::HasMessage::Errf::BEGIN@5" -> "Moose::Exporter::setup_import_methods";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "MooseX::Role::Parameterized::method";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@16";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@11";
+"Module::Runtime::require_module" -> "Role::HasMessage::Errf::BEGIN@5";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@18";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::has";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@2";
+"Module::Runtime::require_module" -> "Role::HasMessage::Errf::BEGIN@2";
+"Module::Runtime::require_module" -> "Role::HasMessage::Errf::BEGIN@9";
+"Role::HasMessage::Errf::BEGIN@9" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@4";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::CORE:qr";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@4";
+"Role::HasMessage::Errf::BEGIN@12" -> "namespace::clean::import";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@14";
+"Role::HasMessage::Errf::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@5";
+"Role::HasMessage::Errf::BEGIN@10" -> "Exporter::import";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@8";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::requires";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@7";
+"Role::HasMessage::Errf::BEGIN@9" -> "Role::HasMessage::Errf::BEGIN@2.10";
+"Role::HasMessage::Errf::BEGIN@5" -> "MooseX::Role::Parameterized::BEGIN@3";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Role::with";
+"Role::HasMessage::Errf::BEGIN@9" -> "Role::HasMessage::Errf::BEGIN@1";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@15";
+"Module::Runtime::require_module" -> "Role::HasMessage::Errf::BEGIN@12";
+"Role::HasMessage::Errf::__ANON__[Role/HasMessage/Errf.pm:59]" -> "Moose::Meta::Class::__ANON__::SERIAL::13::default";
+}

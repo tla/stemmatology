@@ -1,0 +1,218 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::setup_component";
+	"Catalyst::setup_components";
+	"Catalyst::config";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@4";
+	"Catalyst::Component::merge_config_hashes";
+	"Catalyst::Component::BEGIN@10";
+	"Catalyst::Component::expand_modules";
+	"Catalyst::Component::BEGIN@12";
+	"Catalyst::Component::COMPONENT";
+	"Catalyst::Component::BEGIN@6";
+	"Catalyst::Component::BEGIN@5";
+	"Catalyst::Component::BUILDARGS";
+	"Catalyst::Component::BEGIN@9";
+	"Catalyst::Component::BEGIN@2";
+	"Catalyst::Component::BEGIN@1";
+	"Catalyst::Component::BEGIN@8";
+	"Catalyst::Component::BEGIN@3";
+	"Catalyst::Component::config";
+	"Catalyst::Component::__config_accessor";
+	"Catalyst::Component::BEGIN@7";
+	"Catalyst::Component::BEGIN@11";
+}
+subgraph cluster_next {
+	label="next";
+	"next::can";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::new";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::new";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::new";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::new";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::super";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::import";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::new";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::new";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BUILD";
+	"Catalyst::Controller::create_action";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+	"Catalyst::Utils::merge_hashes";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::new";
+}
+subgraph cluster_Devel_InnerPackage {
+	label="Devel::InnerPackage";
+	"Devel::InnerPackage::BEGIN@66";
+	"Devel::InnerPackage::list_packages";
+	"Devel::InnerPackage::BEGIN@4";
+	"Devel::InnerPackage::BEGIN@5";
+	"Devel::InnerPackage::BEGIN@3";
+	"Devel::InnerPackage::BEGIN@86";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::new";
+}
+subgraph cluster_Class_C3_Adopt_NEXT {
+	label="Class::C3::Adopt::NEXT";
+	"Class::C3::Adopt::NEXT::BEGIN@8";
+	"Class::C3::Adopt::NEXT::BEGIN@16";
+	"Class::C3::Adopt::NEXT::BEGIN@14";
+	"Class::C3::Adopt::NEXT::BEGIN@5";
+	"Class::C3::Adopt::NEXT::BEGIN@13";
+	"Class::C3::Adopt::NEXT::BEGIN@15";
+	"Class::C3::Adopt::NEXT::import";
+	"Class::C3::Adopt::NEXT::BEGIN@27";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::is_class_loaded";
+	"Class::MOP::get_metaclass_by_name";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::get_or_add_package_symbol";
+}
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@5";
+"Catalyst::setup_components" -> "Catalyst::Component::expand_modules";
+"Catalyst::Component::BUILDARGS" -> "Scalar::Util::blessed";
+"Catalyst::Component::config" -> "Scalar::Util::blessed";
+"Catalyst::Component::BUILDARGS" -> "Catalyst::config";
+"Catalyst::Component::COMPONENT" -> "stemmaweb::Controller::Root::new";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@12";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@7";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@14";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@27";
+"Catalyst::Component::BEGIN@7" -> "Catalyst::Component::BEGIN@2";
+"Catalyst::Component::COMPONENT" -> "stemmaweb::Controller::Microservice::new";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@3";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@86";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Component::config";
+"Class::MOP::Class:::around" -> "Catalyst::Component::config";
+"Catalyst::View::TT::new" -> "Catalyst::Component::config";
+"Catalyst::Component::BUILDARGS" -> "Catalyst::Component::config";
+"Catalyst::Controller::create_action" -> "Catalyst::Component::config";
+"base::import" -> "Catalyst::Component::config";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@16";
+"Catalyst::setup_component" -> "Catalyst::Component::COMPONENT";
+"Catalyst::Component::BEGIN@10" -> "mro::import";
+"Catalyst::Component::expand_modules" -> "Devel::InnerPackage::list_packages";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@5";
+"Catalyst::Component::BUILDARGS" -> "Class::Load::XS::is_class_loaded";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@8";
+"Catalyst::Component::config" -> "Catalyst::Component::__config_accessor";
+"Catalyst::Component::BEGIN@12" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@6";
+"Catalyst::Component::COMPONENT" -> "Catalyst::Model::KiokuDB::new";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@13";
+"Catalyst::Component::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::import";
+"Catalyst::Component::COMPONENT" -> "Catalyst::View::new";
+"Catalyst::Component::config" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::Component::BEGIN@7" -> "Catalyst::Component::BEGIN@1";
+"Catalyst::Component::COMPONENT" -> "next::can";
+"Catalyst::Component::BEGIN@11" -> "Exporter::import";
+"Catalyst::Component::config" -> "Class::MOP::Package::get_or_add_package_symbol";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@4";
+"Catalyst::Component::BEGIN@7" -> "UNIVERSAL::can";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@3";
+"Catalyst::Component::COMPONENT" -> "Catalyst::View::TT::new";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@11";
+"Catalyst::Component::BUILDARGS" -> "Class::MOP::is_class_loaded";
+"Catalyst::Component::BUILDARGS" -> "UNIVERSAL::isa";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@4";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@8";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@15";
+"Catalyst::Component::BEGIN@7" -> "Class::C3::Adopt::NEXT::BEGIN@5";
+"Moose::Object::new" -> "Catalyst::Component::BUILDARGS";
+"Moose::Role::super" -> "Catalyst::Component::BUILDARGS";
+"Catalyst::Component::config" -> "Catalyst::Utils::merge_hashes";
+"Catalyst::Component::merge_config_hashes" -> "Catalyst::Utils::merge_hashes";
+"Catalyst::Component::COMPONENT" -> "stemmaweb::Controller::Stexaminer::new";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@10";
+"Catalyst::Controller::BUILD" -> "Catalyst::Component::merge_config_hashes";
+"Catalyst::Component::config" -> "Catalyst::Component::merge_config_hashes";
+"Catalyst::Component::BUILDARGS" -> "Catalyst::Component::merge_config_hashes";
+"Catalyst::Component::COMPONENT" -> "Catalyst::View::JSON::new";
+"Module::Runtime::require_module" -> "Catalyst::Component::BEGIN@9";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@66";
+"Catalyst::Component::COMPONENT" -> "stemmaweb::Controller::Relation::new";
+}

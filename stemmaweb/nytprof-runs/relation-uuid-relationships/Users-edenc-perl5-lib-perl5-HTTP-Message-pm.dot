@@ -1,0 +1,85 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::content";
+	"HTTP::Message::BEGIN@648";
+	"HTTP::Message::AUTOLOAD";
+	"HTTP::Message::protocol";
+	"HTTP::Message::BEGIN@3";
+	"HTTP::Message::_set_content";
+	"HTTP::Message::__ANON__[HTTP/Message.pm:649]";
+	"HTTP::Message::__ANON__[HTTP/Message.pm:18]";
+	"HTTP::Message::BEGIN@4";
+	"HTTP::Message::headers";
+	"HTTP::Message::new";
+	"HTTP::Message::_elem";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::content_length";
+	"HTTP::Headers::new";
+	"HTTP::Headers::header";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::new";
+	"HTTP::Request::method";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::downgrade";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::new";
+	"HTTP::Response::request";
+	"HTTP::Response::code";
+	"HTTP::Response::message";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"HTTP::Message::__ANON__[HTTP/Message.pm:649]" -> "HTTP::Headers::header";
+"HTTP::Message::BEGIN@3" -> "strict::import";
+"HTTP::Message::content" -> "HTTP::Message::_set_content";
+"HTTP::Message::protocol" -> "HTTP::Message::_elem";
+"HTTP::Response::request" -> "HTTP::Message::_elem";
+"HTTP::Response::code" -> "HTTP::Message::_elem";
+"HTTP::Request::method" -> "HTTP::Message::_elem";
+"HTTP::Response::message" -> "HTTP::Message::_elem";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@3";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::__ANON__[HTTP/Message.pm:649]";
+"HTTP::Message::_set_content" -> "HTTP::Message::__ANON__[HTTP/Message.pm:18]";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::headers";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Message::headers";
+"HTTP::Message::__ANON__[HTTP/Message.pm:649]" -> "HTTP::Message::headers";
+"HTTP::Message::BEGIN@648" -> "strict::unimport";
+"HTTP::Message::BEGIN@4" -> "vars::import";
+"HTTP::Response::new" -> "HTTP::Message::new";
+"HTTP::Request::new" -> "HTTP::Message::new";
+"HTTP::Message::__ANON__[HTTP/Message.pm:18]" -> "utf8::downgrade";
+"HTTP::Message::__ANON__[HTTP/Message.pm:649]" -> "HTTP::Headers::content_length";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::protocol";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@648";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::AUTOLOAD";
+"HTTP::Message::new" -> "HTTP::Headers::new";
+"main::BEGIN@7" -> "HTTP::Message::BEGIN@4";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::content";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Message::content";
+}

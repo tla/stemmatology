@@ -1,0 +1,269 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::prepare";
+	"Catalyst::handle_request";
+	"Catalyst::__ANON__[Catalyst.pm:1966]";
+	"Catalyst::__ANON__[Catalyst.pm:2032]";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+}
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::_load_implementation";
+	"Module::Implementation::__ANON__[Module/Implementation.pm:87]";
+	"Module::Implementation::BEGIN@10";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::finally";
+	"Try::Tiny::BEGIN@6";
+	"Try::Tiny::catch";
+	"Try::Tiny::BEGIN@3";
+	"Try::Tiny::BEGIN@8";
+	"Try::Tiny::try";
+	"Try::Tiny::BEGIN@46";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::_initialize_body";
+	"Moose::Meta::Method::Destructor::__ANON__[Moose/Meta/Method/Destructor.pm:99]";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::try_load_class";
+	"Class::Load::__ANON__[Class/Load.pm:183]";
+	"Class::Load::__ANON__[Class/Load.pm:180]";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:19]";
+}
+subgraph cluster_Scope_Guard {
+	label="Scope::Guard";
+	"Scope::Guard::DESTROY";
+}
+subgraph cluster_Moose_Meta_Method_Accessor {
+	label="Moose::Meta::Method::Accessor";
+	"Moose::Meta::Method::Accessor::_compile_code";
+	"Moose::Meta::Method::Accessor::__ANON__[Moose/Meta/Method/Accessor.pm:39]";
+}
+subgraph cluster_Eval_Closure_Sandbox_276 {
+	label="Eval::Closure::Sandbox_276";
+	"Eval::Closure::Sandbox_276::__ANON__[(eval 394)[Eval/Closure.pm:125]:11]";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::_generate_accessor_method_inline";
+	"Class::MOP::Method::Accessor::_generate_writer_method_inline";
+	"Class::MOP::Method::Accessor::_generate_clearer_method_inline";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]";
+	"Class::MOP::Method::Accessor::_generate_reader_method_inline";
+	"Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]";
+	"Class::MOP::Method::Accessor::_generate_predicate_method_inline";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_post_add_attribute";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::DESTROY";
+	"Moose::Object::__ANON__[Moose/Object.pm:99]";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::_connect";
+	"DBIx::Class::Storage::DBI::dbh_do";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:790]";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1306]";
+}
+subgraph cluster_KiokuDB_Role_UUIDs {
+	label="KiokuDB::Role::UUIDs";
+	"KiokuDB::Role::UUIDs::__ANON__[KiokuDB/Role/UUIDs.pm:13]";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::resolve";
+	"KiokuDB::TypeMap::__ANON__[KiokuDB/TypeMap.pm:56]";
+	"KiokuDB::TypeMap::__ANON__[KiokuDB/TypeMap.pm:58]";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::DESTROY";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]";
+	"Moose::Meta::Attribute::does";
+}
+subgraph cluster_Try_Tiny_ScopeGuard {
+	label="Try::Tiny::ScopeGuard";
+	"Try::Tiny::ScopeGuard::_new";
+	"Try::Tiny::ScopeGuard::DESTROY";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::_register_source";
+	"DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:829]";
+	"DBIx::Class::Schema::connection";
+	"DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:1378]";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::_generate_constructor_method_inline";
+	"Class::MOP::Method::Constructor::__ANON__[Class/MOP/Method/Constructor.pm:111]";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding";
+	"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::_process_accessors";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::lookup";
+	"KiokuDB::__ANON__[KiokuDB.pm:320]";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+	"Moose::Util::__ANON__[Moose/Util.pm:54]";
+}
+subgraph cluster_Eval_Closure_Sandbox_990 {
+	label="Eval::Closure::Sandbox_990";
+	"Eval::Closure::Sandbox_990::__ANON__[(eval 1205)[Eval/Closure.pm:125]:11]";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::DESTROY";
+}
+"Try::Tiny::try" -> "Eval::Closure::Sandbox_276::__ANON__[(eval 394)[Eval/Closure.pm:125]:11]";
+"Try::Tiny::try" -> "Scope::Guard::DESTROY";
+"Try::Tiny::try" -> "Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+"Try::Tiny::try" -> "Moose::Meta::Method::Destructor::__ANON__[Moose/Meta/Method/Destructor.pm:99]";
+"Try::Tiny::try" -> "Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:209]";
+"Try::Tiny::try" -> "KiokuDB::__ANON__[KiokuDB.pm:320]";
+"Try::Tiny::try" -> "Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:154]";
+"Try::Tiny::try" -> "Class::Load::__ANON__[Class/Load.pm:180]";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@8";
+"Try::Tiny::try" -> "Eval::Closure::Sandbox_990::__ANON__[(eval 1205)[Eval/Closure.pm:125]:11]";
+"Catalyst::Response::DESTROY" -> "Try::Tiny::try";
+"KiokuDB::lookup" -> "Try::Tiny::try";
+"Moose::Util::does_role" -> "Try::Tiny::try";
+"Module::Runtime::require_module" -> "Try::Tiny::try";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "Try::Tiny::try";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Try::Tiny::try";
+"Moose::Meta::Attribute::does" -> "Try::Tiny::try";
+"Class::MOP::Method::Accessor::_generate_clearer_method_inline" -> "Try::Tiny::try";
+"Moose::Meta::Method::Accessor::_compile_code" -> "Try::Tiny::try";
+"Catalyst::prepare" -> "Try::Tiny::try";
+"HTTP::Message::PSGI::req_to_psgi" -> "Try::Tiny::try";
+"DBIx::Class::Storage::DBI::_connect" -> "Try::Tiny::try";
+"Module::Implementation::_load_implementation" -> "Try::Tiny::try";
+"Class::Load::try_load_class" -> "Try::Tiny::try";
+"DBIx::Class::Schema::connection" -> "Try::Tiny::try";
+"Class::MOP::Method::Accessor::_generate_accessor_method_inline" -> "Try::Tiny::try";
+"Class::MOP::Method::Accessor::_generate_writer_method_inline" -> "Try::Tiny::try";
+"Moose::Object::DESTROY" -> "Try::Tiny::try";
+"DBIx::Class::Storage::DBI::dbh_do" -> "Try::Tiny::try";
+"Catalyst::handle_request" -> "Try::Tiny::try";
+"KiokuDB::LiveObjects::Scope::DESTROY" -> "Try::Tiny::try";
+"Class::MOP::Method::Constructor::_generate_constructor_method_inline" -> "Try::Tiny::try";
+"Class::MOP::Attribute::_process_accessors" -> "Try::Tiny::try";
+"DBIx::Class::Schema::_register_source" -> "Try::Tiny::try";
+"Class::MOP::Class::_post_add_attribute" -> "Try::Tiny::try";
+"Class::MOP::Method::Accessor::_generate_reader_method_inline" -> "Try::Tiny::try";
+"KiokuDB::TypeMap::resolve" -> "Try::Tiny::try";
+"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding" -> "Try::Tiny::try";
+"Class::MOP::Method::Accessor::_generate_predicate_method_inline" -> "Try::Tiny::try";
+"Try::Tiny::try" -> "KiokuDB::TypeMap::__ANON__[KiokuDB/TypeMap.pm:58]";
+"Try::Tiny::try" -> "Moose::Util::__ANON__[Moose/Util.pm:54]";
+"Try::Tiny::try" -> "Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+"Catalyst::Response::DESTROY" -> "Try::Tiny::catch";
+"KiokuDB::lookup" -> "Try::Tiny::catch";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "Try::Tiny::catch";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Try::Tiny::catch";
+"Class::MOP::Method::Accessor::_generate_clearer_method_inline" -> "Try::Tiny::catch";
+"Moose::Meta::Method::Accessor::_compile_code" -> "Try::Tiny::catch";
+"Catalyst::prepare" -> "Try::Tiny::catch";
+"Module::Implementation::_load_implementation" -> "Try::Tiny::catch";
+"DBIx::Class::Storage::DBI::_connect" -> "Try::Tiny::catch";
+"Class::Load::try_load_class" -> "Try::Tiny::catch";
+"DBIx::Class::Schema::connection" -> "Try::Tiny::catch";
+"Class::MOP::Method::Accessor::_generate_accessor_method_inline" -> "Try::Tiny::catch";
+"Class::MOP::Method::Accessor::_generate_writer_method_inline" -> "Try::Tiny::catch";
+"Moose::Object::DESTROY" -> "Try::Tiny::catch";
+"DBIx::Class::Storage::DBI::dbh_do" -> "Try::Tiny::catch";
+"Catalyst::handle_request" -> "Try::Tiny::catch";
+"KiokuDB::LiveObjects::Scope::DESTROY" -> "Try::Tiny::catch";
+"Class::MOP::Attribute::_process_accessors" -> "Try::Tiny::catch";
+"Class::MOP::Method::Constructor::_generate_constructor_method_inline" -> "Try::Tiny::catch";
+"Class::MOP::Class::_post_add_attribute" -> "Try::Tiny::catch";
+"KiokuDB::TypeMap::resolve" -> "Try::Tiny::catch";
+"Class::MOP::Method::Accessor::_generate_reader_method_inline" -> "Try::Tiny::catch";
+"Catalyst::Plugin::Unicode::Encoding::_handle_param_unicode_decoding" -> "Try::Tiny::catch";
+"Class::MOP::Method::Accessor::_generate_predicate_method_inline" -> "Try::Tiny::catch";
+"Try::Tiny::try" -> "Module::Implementation::__ANON__[Module/Implementation.pm:87]";
+"Try::Tiny::try" -> "Try::Tiny::ScopeGuard::DESTROY";
+"Try::Tiny::try" -> "Class::Load::__ANON__[Class/Load.pm:183]";
+"Try::Tiny::try" -> "Moose::Meta::Attribute::__ANON__[Moose/Meta/Attribute.pm:45]";
+"Try::Tiny::try" -> "Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:184]";
+"Try::Tiny::try" -> "KiokuDB::LiveObjects::Scope::DESTROY";
+"Try::Tiny::BEGIN@3" -> "strict::import";
+"Try::Tiny::try" -> "Try::Tiny::ScopeGuard::_new";
+"Try::Tiny::try" -> "Catalyst::__ANON__[Catalyst.pm:1966]";
+"Try::Tiny::try" -> "Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+"Try::Tiny::try" -> "Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:120]";
+"Try::Tiny::try" -> "Class::MOP::Method::Constructor::__ANON__[Class/MOP/Method/Constructor.pm:111]";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@6";
+"Try::Tiny::try" -> "Catalyst::Response::DESTROY";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@46";
+"Try::Tiny::BEGIN@46" -> "Exporter::import";
+"Try::Tiny::try" -> "DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:790]";
+"Try::Tiny::BEGIN@6" -> "vars::import";
+"Module::Implementation::BEGIN@10" -> "Try::Tiny::BEGIN@3";
+"DBIx::Class::Storage::DBI::_connect" -> "Try::Tiny::finally";
+"Try::Tiny::try" -> "KiokuDB::Role::UUIDs::__ANON__[KiokuDB/Role/UUIDs.pm:13]";
+"Try::Tiny::try" -> "DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:829]";
+"Try::Tiny::try" -> "Moose::Object::__ANON__[Moose/Object.pm:99]";
+"Try::Tiny::try" -> "Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]";
+"Try::Tiny::try" -> "Catalyst::__ANON__[Catalyst.pm:2032]";
+"Try::Tiny::ScopeGuard::DESTROY" -> "DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1306]";
+"Try::Tiny::try" -> "Class::MOP::Method::Accessor::__ANON__[Class/MOP/Method/Accessor.pm:234]";
+"Try::Tiny::try" -> "Moose::Meta::Method::Accessor::__ANON__[Moose/Meta/Method/Accessor.pm:39]";
+"Try::Tiny::try" -> "DBIx::Class::Schema::__ANON__[DBIx/Class/Schema.pm:1378]";
+"Try::Tiny::try" -> "KiokuDB::TypeMap::__ANON__[KiokuDB/TypeMap.pm:56]";
+"Try::Tiny::try" -> "DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1300]";
+"Try::Tiny::try" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:19]";
+}

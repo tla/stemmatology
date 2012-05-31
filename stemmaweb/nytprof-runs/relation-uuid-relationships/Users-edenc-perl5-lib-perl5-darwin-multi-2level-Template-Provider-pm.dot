@@ -1,0 +1,106 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Template_Document {
+	label="Template::Document";
+	"Template::Document::BEGIN@27";
+	"Template::Document::BEGIN@25";
+	"Template::Document::BEGIN@34";
+	"Template::Document::BEGIN@24";
+	"Template::Document::BEGIN@26";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@52";
+	"Template::Provider::BEGIN@44";
+	"Template::Provider::BEGIN@87";
+	"Template::Provider::BEGIN@45";
+	"Template::Provider::BEGIN@50";
+	"Template::Provider::BEGIN@53";
+	"Template::Provider::BEGIN@46";
+	"Template::Provider::BEGIN@1089";
+	"Template::Provider::_init";
+	"Template::Provider::BEGIN@43";
+	"Template::Provider::BEGIN@55";
+	"Template::Provider::BEGIN@54";
+	"Template::Provider::BEGIN@42";
+	"Template::Provider::BEGIN@41";
+	"Template::Provider::BEGIN@47";
+	"Template::Provider::BEGIN@51";
+	"Template::Provider::BEGIN@48";
+	"Template::Provider::CORE:qr";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Template {
+	label="Template";
+	"Template::BEGIN@29";
+}
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@48";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@34";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@1089";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@41";
+"Template::Base::new" -> "Template::Provider::_init";
+"Template::Provider::BEGIN@48" -> "UNIVERSAL::import";
+"Template::Provider::BEGIN@44" -> "UNIVERSAL::import";
+"Template::Provider::BEGIN@46" -> "UNIVERSAL::import";
+"Template::Provider::BEGIN@54" -> "constant::import";
+"Template::Provider::BEGIN@51" -> "constant::import";
+"Template::Provider::BEGIN@53" -> "constant::import";
+"Template::Provider::BEGIN@52" -> "constant::import";
+"Template::Provider::BEGIN@50" -> "constant::import";
+"Template::Provider::BEGIN@55" -> "constant::import";
+"Template::Provider::BEGIN@41" -> "strict::import";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@25";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@54";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@26";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@51";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@43";
+"Template::Provider::BEGIN@45" -> "Exporter::import";
+"Template::Provider::BEGIN@47" -> "Exporter::import";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@53";
+"Template::Provider::BEGIN@43" -> "base::import";
+"Template::Provider::BEGIN@42" -> "warnings::import";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@45";
+"Template::Provider::BEGIN@1089" -> "bytes::import";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@87";
+"Template::BEGIN@29" -> "Template::Provider::CORE:qr";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@42";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@47";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@55";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@44";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@50";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@27";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@46";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@24";
+"Template::BEGIN@29" -> "Template::Provider::BEGIN@52";
+}

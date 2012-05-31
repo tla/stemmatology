@@ -1,0 +1,12 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@14";
+}
+subgraph cluster_Carp_Heavy {
+	label="Carp::Heavy";
+	"Carp::Heavy::BEGIN@3";
+}
+"Path::Class::Dir::BEGIN@14" -> "Carp::Heavy::BEGIN@3";
+}

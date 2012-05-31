@@ -1,0 +1,90 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@3";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::BEGIN@12";
+	"IO::Socket::BEGIN@17";
+	"IO::Socket::CORE:pack";
+	"IO::Socket::BEGIN@11";
+	"IO::Socket::BEGIN@13";
+	"IO::Socket::import";
+	"IO::Socket::register_domain";
+	"IO::Socket::BEGIN@16";
+	"IO::Socket::BEGIN@14";
+}
+subgraph cluster_IO_Socket_UNIX {
+	label="IO::Socket::UNIX";
+	"IO::Socket::UNIX::BEGIN@11";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Socket {
+	label="Socket";
+	"Socket::BEGIN@869";
+	"Socket::BEGIN@757";
+	"Socket::BEGIN@648";
+	"Socket::CORE:qr";
+	"Socket::BEGIN@649";
+	"Socket::CORE:match";
+	"Socket::BEGIN@3";
+	"Socket::BEGIN@4";
+	"Socket::CORE:regcomp";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+	"Exporter::export";
+}
+subgraph cluster_IO_Socket_INET {
+	label="IO::Socket::INET";
+	"IO::Socket::INET::BEGIN@11";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::Socket::BEGIN@12" -> "Socket::CORE:qr";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@648";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@3";
+"IO::Socket::BEGIN@12" -> "Socket::CORE:match";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@757";
+"IO::Socket::BEGIN@14" -> "strict::import";
+"IO::Socket::BEGIN@12" -> "Socket::CORE:regcomp";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@13";
+"IO::Socket::BEGIN@12" -> "XSLoader::load";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@4";
+"IO::Socket::BEGIN@12" -> "Exporter::import";
+"IO::Socket::BEGIN@17" -> "Exporter::import";
+"IO::Socket::BEGIN@16" -> "Exporter::import";
+"IO::Socket::BEGIN@13" -> "Exporter::import";
+"IO::Socket::BEGIN@11" -> "Exporter::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@12";
+"IO::Socket::import" -> "Exporter::Heavy::heavy_export";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@14";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@649";
+"IO::Socket::UNIX::BEGIN@11" -> "IO::Socket::import";
+"IO::Socket::INET::BEGIN@11" -> "IO::Socket::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::register_domain";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@17";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@16";
+"IO::Socket::BEGIN@12" -> "Socket::BEGIN@869";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::CORE:pack";
+"IO::Socket::BEGIN@12" -> "UNIVERSAL::VERSION";
+"IO::Socket::import" -> "Exporter::export";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@11";
+}

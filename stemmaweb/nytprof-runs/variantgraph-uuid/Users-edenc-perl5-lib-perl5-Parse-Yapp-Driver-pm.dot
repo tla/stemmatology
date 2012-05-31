@@ -1,0 +1,35 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Parse_Yapp_Driver {
+	label="Parse::Yapp::Driver";
+	"Parse::Yapp::Driver::BEGIN@201";
+	"Parse::Yapp::Driver::BEGIN@22";
+	"Parse::Yapp::Driver::BEGIN@28";
+	"Parse::Yapp::Driver::BEGIN@20";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@201";
+"Parse::Yapp::Driver::BEGIN@20" -> "strict::import";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@28";
+"Parse::Yapp::Driver::BEGIN@28" -> "Exporter::import";
+"Parse::Yapp::Driver::BEGIN@201" -> "strict::unimport";
+"Parse::Yapp::Driver::BEGIN@22" -> "vars::import";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@20";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@22";
+}

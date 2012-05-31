@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::_lookup_node_data";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::to_literal";
+}
+subgraph cluster_XML_LibXML_Number {
+	label="XML::LibXML::Number";
+	"XML::LibXML::Number::BEGIN@12";
+}
+subgraph cluster_XML_LibXML_Literal {
+	label="XML::LibXML::Literal";
+	"XML::LibXML::Literal::BEGIN@11";
+	"XML::LibXML::Literal::value";
+	"XML::LibXML::Literal::new";
+	"XML::LibXML::Literal::BEGIN@19";
+	"XML::LibXML::Literal::BEGIN@12";
+	"XML::LibXML::Literal::BEGIN@15";
+	"XML::LibXML::Literal::BEGIN@13";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"XML::LibXML::Literal::BEGIN@19" -> "overload::import";
+"XML::LibXML::Number::BEGIN@12" -> "XML::LibXML::Literal::BEGIN@12";
+"XML::LibXML::Number::BEGIN@12" -> "XML::LibXML::Literal::BEGIN@19";
+"XML::LibXML::Literal::BEGIN@11" -> "UNIVERSAL::import";
+"XML::LibXML::Literal::BEGIN@12" -> "UNIVERSAL::import";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::Literal::value";
+"XML::LibXML::Number::BEGIN@12" -> "XML::LibXML::Literal::BEGIN@15";
+"XML::LibXML::Literal::BEGIN@13" -> "strict::import";
+"XML::LibXML::Number::BEGIN@12" -> "XML::LibXML::Literal::BEGIN@11";
+"XML::LibXML::Literal::BEGIN@15" -> "vars::import";
+"XML::LibXML::Number::BEGIN@12" -> "XML::LibXML::Literal::BEGIN@13";
+"XML::LibXML::NodeList::to_literal" -> "XML::LibXML::Literal::new";
+}

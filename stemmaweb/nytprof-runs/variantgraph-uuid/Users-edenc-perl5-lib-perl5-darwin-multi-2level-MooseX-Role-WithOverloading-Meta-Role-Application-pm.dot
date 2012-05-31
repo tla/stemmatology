@@ -1,0 +1,107 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@14";
+	"MooseX::Types::Moose::BEGIN@8";
+	"MooseX::Types::Moose::BEGIN@9";
+	"MooseX::Types::Moose::BEGIN@12";
+	"MooseX::Types::Moose::BEGIN@11";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::after";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_2 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::2";
+	"Moose::Meta::Class::__ANON__::SERIAL::2::overload_ops";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_call_builder";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_3 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::3";
+	"Moose::Meta::Class::__ANON__::SERIAL::3::overload_ops";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@2";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::_build_overload_ops";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@5";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@13";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@11";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::Method";
+	"overload::Overloaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::list_all_builtin_type_constraints";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::add_package_symbol";
+	"Class::MOP::Package::name";
+	"Class::MOP::Package::get_package_symbol";
+	"Class::MOP::Package::has_package_symbol";
+	"Class::MOP::Package::get_or_add_package_symbol";
+}
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@8";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Class::MOP::Package::has_package_symbol";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@13";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Moose::Meta::Class::__ANON__::SERIAL::3::overload_ops";
+"Class::MOP::Class:::after" -> "MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@11";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@14";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Base::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Class::MOP::Package::get_or_add_package_symbol";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@12";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "overload::Method";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@2";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "Moose::Util::TypeConstraints::list_all_builtin_type_constraints";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Class::MOP::Package::add_package_symbol";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@13" -> "namespace::autoclean::import";
+"Moose::Meta::Attribute::_call_builder" -> "MooseX::Role::WithOverloading::Meta::Role::Application::_build_overload_ops";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@5";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Class::MOP::Package::get_package_symbol";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Class::MOP::Package::name";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@10" -> "UNIVERSAL::VERSION";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "overload::Overloaded";
+"Module::Runtime::require_module" -> "MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Moose::BEGIN@9";
+"MooseX::Role::WithOverloading::Meta::Role::Application::apply_overloading" -> "Moose::Meta::Class::__ANON__::SERIAL::2::overload_ops";
+}

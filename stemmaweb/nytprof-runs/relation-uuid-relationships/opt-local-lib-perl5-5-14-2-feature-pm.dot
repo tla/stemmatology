@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_SelfLoader {
+	label="SelfLoader";
+	"SelfLoader::BEGIN@1.22";
+}
+subgraph cluster_File_Glob {
+	label="File::Glob";
+	"File::Glob::BEGIN@7";
+}
+subgraph cluster_feature {
+	label="feature";
+	"feature::import";
+}
+"SelfLoader::BEGIN@1.22" -> "feature::import";
+"File::Glob::BEGIN@7" -> "feature::import";
+}

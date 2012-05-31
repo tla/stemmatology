@@ -1,0 +1,85 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Search_GIN_Driver {
+	label="Search::GIN::Driver";
+	"Search::GIN::Driver::BEGIN@11";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@2";
+	"Data::Stream::Bulk::Util::BEGIN@16";
+	"Data::Stream::Bulk::Util::BEGIN@20";
+	"Data::Stream::Bulk::Util::BEGIN@10";
+	"Data::Stream::Bulk::Util::BEGIN@9";
+	"Data::Stream::Bulk::Util::BEGIN@14";
+	"Data::Stream::Bulk::Util::BEGIN@13";
+	"Data::Stream::Bulk::Util::BEGIN@18";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Data_Stream_Bulk_Array {
+	label="Data::Stream::Bulk::Array";
+	"Data::Stream::Bulk::Array::BEGIN@2";
+	"Data::Stream::Bulk::Array::BEGIN@11";
+	"Data::Stream::Bulk::Array::BEGIN@8";
+	"Data::Stream::Bulk::Array::meta";
+}
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@20";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Data::Stream::Bulk::Array::BEGIN@2";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "UNIVERSAL::import";
+"Data::Stream::Bulk::Util::BEGIN@13" -> "UNIVERSAL::import";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Moose::has";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@10";
+"Data::Stream::Bulk::Util::BEGIN@20" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Data::Stream::Bulk::Util::BEGIN@18" -> "namespace::clean::import";
+"Data::Stream::Bulk::Util::BEGIN@9" -> "strict::import";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Data::Stream::Bulk::Array::meta";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Moose::with";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@16";
+"Data::Stream::Bulk::Util::BEGIN@16" -> "Exporter::import";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@9";
+"Data::Stream::Bulk::Util::BEGIN@10" -> "warnings::import";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@14";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@2";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@18";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Data::Stream::Bulk::Array::BEGIN@8";
+"Search::GIN::Driver::BEGIN@11" -> "Data::Stream::Bulk::Util::BEGIN@13";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Data::Stream::Bulk::Array::BEGIN@11";
+}

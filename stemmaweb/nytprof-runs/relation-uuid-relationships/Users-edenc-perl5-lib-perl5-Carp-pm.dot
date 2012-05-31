@@ -1,0 +1,105 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::BEGIN@95";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::is_utf8";
+	"utf8::downgrade";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::_croak";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::__chk";
+	"warnings::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::AddrRef";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::BEGIN@4";
+	"Carp::BEGIN@18";
+	"Carp::short_error_loc";
+	"Carp::croak";
+	"Carp::BEGIN@399";
+	"Carp::shortmess";
+	"Carp::BEGIN@67";
+	"Carp::trusts";
+	"Carp::trusts_directly";
+	"Carp::format_arg";
+	"Carp::BEGIN@3";
+	"Carp::CORE:subst";
+	"Carp::BEGIN@398";
+	"Carp::shortmess_heavy";
+	"Carp::BEGIN@105";
+	"Carp::ret_summary";
+	"Carp::CORE:match";
+	"Carp::BEGIN@8";
+	"Carp::get_status";
+	"Carp::BEGIN@5";
+	"Carp::caller_info";
+	"Carp::BEGIN@17";
+	"Carp::BEGIN@413";
+	"Carp::BEGIN@7";
+	"Carp::str_len_trim";
+	"Carp::BEGIN@406";
+	"Carp::_cgc";
+	"Carp::get_subname";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"FindBin::BEGIN@95" -> "Carp::BEGIN@8";
+"Carp::croak" -> "Carp::shortmess";
+"Carp::format_arg" -> "Carp::CORE:match";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@406";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@4";
+"Carp::get_status" -> "Carp::trusts_directly";
+"Carp::shortmess_heavy" -> "Carp::short_error_loc";
+"warnings::__chk" -> "Carp::short_error_loc";
+"Carp::BEGIN@4" -> "strict::import";
+"Carp::caller_info" -> "Carp::get_subname";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@7";
+"Carp::BEGIN@413" -> "strict::unimport";
+"Carp::BEGIN@18" -> "strict::unimport";
+"Carp::BEGIN@67" -> "strict::unimport";
+"Carp::BEGIN@398" -> "strict::unimport";
+"Carp::BEGIN@8" -> "strict::unimport";
+"Carp::BEGIN@5" -> "warnings::import";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@398";
+"Carp::shortmess_heavy" -> "Carp::ret_summary";
+"Carp::trusts" -> "Carp::get_status";
+"Carp::ret_summary" -> "Carp::caller_info";
+"Carp::BEGIN@399" -> "warnings::unimport";
+"Carp::BEGIN@406" -> "warnings::unimport";
+"Carp::shortmess" -> "Carp::shortmess_heavy";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@5";
+"Carp::caller_info" -> "Carp::format_arg";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@17";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@413";
+"Carp::format_arg" -> "overload::AddrRef";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@67";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@105";
+"Carp::short_error_loc" -> "Carp::trusts";
+"Carp::format_arg" -> "utf8::downgrade";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@399";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@18";
+"Carp::format_arg" -> "utf8::is_utf8";
+"Carp::format_arg" -> "Carp::CORE:subst";
+"Class::Load::_croak" -> "Carp::croak";
+"Carp::format_arg" -> "Carp::str_len_trim";
+"Carp::shortmess" -> "Carp::_cgc";
+"Carp::caller_info" -> "Carp::_cgc";
+"Carp::short_error_loc" -> "Carp::_cgc";
+"FindBin::BEGIN@95" -> "Carp::BEGIN@3";
+}

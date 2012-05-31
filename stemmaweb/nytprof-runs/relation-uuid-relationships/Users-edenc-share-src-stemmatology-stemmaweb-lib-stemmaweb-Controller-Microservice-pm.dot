@@ -1,0 +1,118 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@177";
+	"stemmaweb::Controller::Microservice::BEGIN@193";
+	"stemmaweb::Controller::Microservice::BEGIN@79";
+	"stemmaweb::Controller::Microservice::BEGIN@5";
+	"stemmaweb::Controller::Microservice::BEGIN@8";
+	"stemmaweb::Controller::Microservice::BEGIN@72";
+	"stemmaweb::Controller::Microservice::BEGIN@56";
+	"stemmaweb::Controller::Microservice::BEGIN@11";
+	"stemmaweb::Controller::Microservice::BEGIN@2";
+	"stemmaweb::Controller::Microservice::BEGIN@6";
+	"stemmaweb::Controller::Microservice::BEGIN@137";
+	"stemmaweb::Controller::Microservice::BEGIN@53";
+	"stemmaweb::Controller::Microservice::BEGIN@149";
+	"stemmaweb::Controller::Microservice::BEGIN@159";
+	"stemmaweb::Controller::Microservice::BEGIN@4";
+	"stemmaweb::Controller::Microservice::BEGIN@146";
+	"stemmaweb::Controller::Microservice::BEGIN@222";
+	"stemmaweb::Controller::Microservice::BEGIN@9";
+	"stemmaweb::Controller::Microservice::BEGIN@210";
+	"stemmaweb::Controller::Microservice::BEGIN@98";
+	"stemmaweb::Controller::Microservice::BEGIN@74";
+	"stemmaweb::Controller::Microservice::BEGIN@3";
+	"stemmaweb::Controller::Microservice::BEGIN@135";
+	"stemmaweb::Controller::Microservice::BEGIN@50";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@135";
+"stemmaweb::Controller::Microservice::BEGIN@11" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@98";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@56";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@79";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@137";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@146";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@72";
+"stemmaweb::Controller::Microservice::BEGIN@8" -> "UNIVERSAL::import";
+"stemmaweb::Controller::Microservice::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@159";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@6";
+"stemmaweb::Controller::Microservice::BEGIN@5" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"stemmaweb::Controller::Microservice::BEGIN@4" -> "JSON::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@177";
+"stemmaweb::Controller::Microservice::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@222";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@11";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@193";
+"stemmaweb::Controller::Microservice::BEGIN@72" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@137" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@53" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@149" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@146" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@74" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@135" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@50" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Microservice::BEGIN@9" -> "Exporter::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@50";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@9";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@210";
+"stemmaweb::Controller::Microservice::BEGIN@3" -> "namespace::autoclean::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@74";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@53";
+"stemmaweb::Controller::Microservice::BEGIN@177" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@193" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@79" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@56" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@159" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@222" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@98" -> "attributes::import";
+"stemmaweb::Controller::Microservice::BEGIN@210" -> "attributes::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@149";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@5";
+}

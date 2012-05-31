@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_create_typemap";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_call_builder";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_Canonical {
+	label="KiokuDB::TypeMap::Default::Canonical";
+	"KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::BEGIN@6";
+	"KiokuDB::TypeMap::Default::Canonical::BEGIN@4";
+	"KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap";
+}
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap";
+"KiokuDB::TypeMap::Default::Canonical::BEGIN@6" -> "namespace::clean::import";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap";
+"KiokuDB::TypeMap::Default::Canonical::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap";
+"Moose::Meta::Attribute::_call_builder" -> "KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Default::Canonical::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Default::Canonical::BEGIN@6";
+}

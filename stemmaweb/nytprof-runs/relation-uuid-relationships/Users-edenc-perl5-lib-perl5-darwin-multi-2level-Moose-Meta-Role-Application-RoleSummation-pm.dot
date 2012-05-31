@@ -1,0 +1,186 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::_get_local_methods";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::check_required_methods";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@11";
+	"Moose::Meta::Role::Application::RoleSummation::apply_attributes";
+	"Moose::Meta::Role::Application::RoleSummation::check_required_attributes";
+	"Moose::Meta::Role::Application::RoleSummation::check_role_exclusions";
+	"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers";
+	"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@9";
+	"Moose::Meta::Role::Application::RoleSummation::apply_methods";
+	"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@10";
+	"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role";
+	"Moose::Meta::Role::Application::RoleSummation::is_aliased_method";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@17";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@13";
+	"Moose::Meta::Role::Application::RoleSummation::role_params";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@2";
+	"Moose::Meta::Role::Application::RoleSummation::BEGIN@15";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::body";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::get_required_method_list";
+	"Moose::Meta::Role::add_conflicting_method";
+	"Moose::Meta::Role::get_excluded_roles_list";
+	"Moose::Meta::Role::get_after_method_modifiers";
+	"Moose::Meta::Role::get_override_method_modifier";
+	"Moose::Meta::Role::add_around_method_modifier";
+	"Moose::Meta::Role::add_override_method_modifier";
+	"Moose::Meta::Role::get_method_modifier_list";
+	"Moose::Meta::Role::add_required_methods";
+	"Moose::Meta::Role::get_roles";
+	"Moose::Meta::Role::add_excluded_roles";
+	"Moose::Meta::Role::get_around_method_modifiers";
+	"Moose::Meta::Role::add_after_method_modifier";
+	"Moose::Meta::Role::add_attribute";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::name";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@39";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::add_method";
+	"Moose::Meta::Role::Composite::has_method";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::clone";
+	"Moose::Meta::Role::Attribute::is_same_as";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::name";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::get_attribute_list";
+	"Class::MOP::Mixin::HasAttributes::get_attribute";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::apply_before_method_modifiers";
+	"Moose::Meta::Role::Application::apply_around_method_modifiers";
+	"Moose::Meta::Role::Application::apply_after_method_modifiers";
+	"Moose::Meta::Role::Application::apply";
+}
+"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::check_required_attributes";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@2";
+"Moose::Meta::Role::Application::apply_before_method_modifiers" -> "Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers";
+"Moose::Meta::Role::Application::apply_after_method_modifiers" -> "Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers";
+"Moose::Meta::Role::Application::apply_around_method_modifiers" -> "Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Moose::Meta::Role::Composite::add_method";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Class::MOP::Mixin::HasAttributes::get_attribute";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::get_around_method_modifiers";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@17";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Moose::Meta::Role::get_required_method_list";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::apply_methods";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Moose::Meta::Role::Application::RoleSummation::is_aliased_method";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::get_after_method_modifiers";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@13";
+"Moose::Meta::Role::Application::RoleSummation::check_role_exclusions" -> "Moose::Meta::Role::get_excluded_roles_list";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Moose::Meta::Role::add_required_methods";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@15";
+"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers" -> "Moose::Meta::Role::get_method_modifier_list";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::get_method_modifier_list";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@9" -> "strict::import";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@11";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Moose::Meta::Role::Method::Required::name";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Moose::Meta::Role::Attribute::is_same_as";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Class::MOP::Mixin::AttributeCore::name";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Method::body";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::check_role_exclusions" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Moose::Meta::Role::get_roles";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@13" -> "Exporter::import";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@9";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::add_around_method_modifier";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@17" -> "base::import";
+"Moose::Meta::Role::Application::RoleSummation::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Role::Application::RoleSummation::check_role_exclusions" -> "Moose::Meta::Role::add_excluded_roles";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Moose::Meta::Role::add_conflicting_method";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::check_required_methods";
+"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers" -> "Moose::Meta::Role::add_override_method_modifier";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Moose::Meta::Role::Attribute::clone";
+"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers" -> "Moose::Meta::Role::Composite::has_method";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::check_role_exclusions";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "UNIVERSAL::isa";
+"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role" -> "Moose::Meta::Role::Application::RoleSummation::role_params";
+"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role" -> "Moose::Meta::Role::Application::RoleSummation::role_params";
+"Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers" -> "Moose::Meta::Role::get_override_method_modifier";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Class::MOP::Mixin::HasAttributes::get_attribute_list";
+"Moose::BEGIN@39" -> "Moose::Meta::Role::Application::RoleSummation::BEGIN@10";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Method::name";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Role::Application::RoleSummation::apply_attributes" -> "Moose::Meta::Role::add_attribute";
+"Moose::Meta::Role::Application::RoleSummation::check_role_exclusions" -> "Class::MOP::Package::name";
+"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role" -> "Class::MOP::Package::name";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Package::name";
+"Moose::Meta::Role::Application::RoleSummation::is_aliased_method" -> "Class::MOP::Package::name";
+"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role" -> "Class::MOP::Package::name";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::apply_attributes";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role";
+"Moose::Meta::Role::Application::RoleSummation::apply_method_modifiers" -> "Moose::Meta::Role::add_after_method_modifier";
+"Moose::Meta::Role::Application::RoleSummation::is_aliased_method" -> "Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role";
+"Moose::Meta::Role::Application::apply" -> "Moose::Meta::Role::Application::RoleSummation::apply_override_method_modifiers";
+}

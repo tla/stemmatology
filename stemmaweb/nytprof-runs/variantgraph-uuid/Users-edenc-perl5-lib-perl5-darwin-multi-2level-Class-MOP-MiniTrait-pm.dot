@@ -1,0 +1,89 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::clone";
+	"Class::MOP::Method::body";
+	"Class::MOP::Method::package_name";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@23";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::BEGIN@2";
+	"Class::MOP::MiniTrait::BEGIN@10";
+	"Class::MOP::MiniTrait::apply";
+	"Class::MOP::MiniTrait::BEGIN@12";
+	"Class::MOP::MiniTrait::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_method_by_name";
+	"Class::MOP::Class::_immutable_metaclass";
+	"Class::MOP::Class::BEGIN@17";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::initialize";
+	"Class::MOP::Class::get_all_methods";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@32";
+	"Moose::BEGIN@36";
+	"Moose::BEGIN@28";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::BEGIN@14";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::MOP::MiniTrait::apply" -> "Class::Load::load_class";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@12";
+"Class::MOP::MiniTrait::BEGIN@9" -> "strict::import";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::find_method_by_name";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Method::body";
+"Class::MOP::MiniTrait::BEGIN@12" -> "Exporter::import";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::add_around_method_modifier";
+"Class::MOP::MiniTrait::BEGIN@10" -> "warnings::import";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@10";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Method::clone";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Method::package_name";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Method::name";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@2";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@32" -> "Class::MOP::MiniTrait::apply";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@36" -> "Class::MOP::MiniTrait::apply";
+"Moose::Meta::Class::BEGIN@23" -> "Class::MOP::MiniTrait::apply";
+"Moose::BEGIN@28" -> "Class::MOP::MiniTrait::apply";
+"base::import" -> "Class::MOP::MiniTrait::apply";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@9";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::get_all_methods";
+}

@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::S_IFCHR";
+	"Fcntl::O_NOFOLLOW";
+	"Fcntl::O_EXLOCK";
+	"Fcntl::S_IFDIR";
+	"Fcntl::S_IFSOCK";
+	"Fcntl::O_BINARY";
+	"Fcntl::S_ISGID";
+	"Fcntl::S_IFREG";
+	"Fcntl::BEGIN@58";
+	"Fcntl::S_IFLNK";
+	"Fcntl::S_ISVTX";
+	"Fcntl::S_ISUID";
+	"Fcntl::S_IFBLK";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@14";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@30";
+	"File::stat::BEGIN@32";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"File::stat::BEGIN@32" -> "Fcntl::S_ISVTX";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFDIR";
+"File::stat::BEGIN@30" -> "Fcntl::BEGIN@58";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_EXLOCK";
+"Fcntl::BEGIN@58" -> "strict::import";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_NOFOLLOW";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFLNK";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_BINARY";
+"File::stat::BEGIN@32" -> "Fcntl::S_ISGID";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFCHR";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFBLK";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFSOCK";
+"File::stat::BEGIN@32" -> "Fcntl::S_IFREG";
+"File::stat::BEGIN@32" -> "Fcntl::S_ISUID";
+}

@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::BEGIN@4";
+	"KiokuDB::Thunk::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "KiokuDB::Thunk::BEGIN@6";
+"KiokuDB::Thunk::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Thunk::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "KiokuDB::Thunk::BEGIN@4";
+}

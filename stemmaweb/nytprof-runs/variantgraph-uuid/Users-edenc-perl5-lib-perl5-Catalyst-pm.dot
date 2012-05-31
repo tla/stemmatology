@@ -1,0 +1,1078 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::_invoke_as_path";
+	"Catalyst::Dispatcher::setup_actions";
+	"Catalyst::Dispatcher::get_actions";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::forward";
+	"Catalyst::Dispatcher::new";
+	"Catalyst::Dispatcher::get_action";
+	"Catalyst::Dispatcher::dispatch";
+	"Catalyst::Dispatcher::_find_component";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::path_to";
+	"Catalyst::_context_class_accessor";
+	"Catalyst::stats";
+	"Catalyst::state";
+	"Catalyst::_engine_accessor";
+	"Catalyst::prepare";
+	"Catalyst::setup_log";
+	"Catalyst::setup_stats";
+	"Catalyst::__ANON__[Catalyst.pm:44]";
+	"Catalyst::BEGIN@41";
+	"Catalyst::BEGIN@12";
+	"Catalyst::depth";
+	"Catalyst::log_request";
+	"Catalyst::finalize_headers";
+	"Catalyst::_engine_loader_accessor";
+	"Catalyst::BEGIN@15";
+	"Catalyst::prepare_request";
+	"Catalyst::handle_request";
+	"Catalyst::get_actions";
+	"Catalyst::DESTROY";
+	"Catalyst::BEGIN@36";
+	"Catalyst::_has_uploadtmp";
+	"Catalyst::BEGIN@37";
+	"Catalyst::prepare_uploads";
+	"Catalyst::execute";
+	"Catalyst::BEGIN@23";
+	"Catalyst::setup_components";
+	"Catalyst::model";
+	"Catalyst::error";
+	"Catalyst::_setup_finished_accessor";
+	"Catalyst::BEGIN@28";
+	"Catalyst::BEGIN@25";
+	"Catalyst::component";
+	"Catalyst::setup_engine";
+	"Catalyst::BEGIN@32";
+	"Catalyst::finalize";
+	"Catalyst::_filter_component";
+	"Catalyst::BEGIN@27";
+	"Catalyst::BEGIN@3";
+	"Catalyst::CORE:sort";
+	"Catalyst::_response_class_accessor";
+	"Catalyst::__ANON__[Catalyst.pm:43]";
+	"Catalyst::_request_class_accessor";
+	"Catalyst::setup";
+	"Catalyst::prepare_cookies";
+	"Catalyst::BEGIN@358";
+	"Catalyst::dispatch";
+	"Catalyst::BEGIN@21";
+	"Catalyst::import";
+	"Catalyst::BEGIN@4";
+	"Catalyst::_components_accessor";
+	"Catalyst::setup_plugins";
+	"Catalyst::BEGIN@35";
+	"Catalyst::BEGIN@34";
+	"Catalyst::locate_components";
+	"Catalyst::req";
+	"Catalyst::BEGIN@1683";
+	"Catalyst::BEGIN@10";
+	"Catalyst::stack";
+	"Catalyst::_register_plugin";
+	"Catalyst::psgi_app";
+	"Catalyst::__ANON__[Catalyst.pm:48]";
+	"Catalyst::BEGIN@9";
+	"Catalyst::prepare_path";
+	"Catalyst::CORE:match";
+	"Catalyst::finalize_uploads";
+	"Catalyst::BEGIN@1665";
+	"Catalyst::response";
+	"Catalyst::prepare_headers";
+	"Catalyst::use_stats";
+	"Catalyst::BEGIN@31";
+	"Catalyst::finalize_body";
+	"Catalyst::BEGIN@33";
+	"Catalyst::finalize_cookies";
+	"Catalyst::_stats_class_accessor";
+	"Catalyst::BEGIN@13";
+	"Catalyst::BEGIN@16";
+	"Catalyst::_loading_psgi_file_accessor";
+	"Catalyst::prepare_body_parameters";
+	"Catalyst::_dispatcher_class_accessor";
+	"Catalyst::BEGIN@29";
+	"Catalyst::BEGIN@19";
+	"Catalyst::_log_accessor";
+	"Catalyst::forward";
+	"Catalyst::prepare_body";
+	"Catalyst::__ANON__[Catalyst.pm:1155]";
+	"Catalyst::BEGIN@7";
+	"Catalyst::setup_component";
+	"Catalyst::_arguments_accessor";
+	"Catalyst::BEGIN@3427";
+	"Catalyst::prepare_parameters";
+	"Catalyst::__ANON__[Catalyst.pm:2032]";
+	"Catalyst::get_action";
+	"Catalyst::BEGIN@8";
+	"Catalyst::res";
+	"Catalyst::BEGIN@22";
+	"Catalyst::request";
+	"Catalyst::BEGIN@18";
+	"Catalyst::__ANON__[Catalyst.pm:1966]";
+	"Catalyst::BEGIN@24";
+	"Catalyst::BEGIN@30";
+	"Catalyst::prepare_action";
+	"Catalyst::__ANON__[Catalyst.pm:64]";
+	"Catalyst::BEGIN@17";
+	"Catalyst::BEGIN@1154";
+	"Catalyst::BEGIN@39";
+	"Catalyst::prepare_read";
+	"Catalyst::CORE:ftdir";
+	"Catalyst::_dispatcher_accessor";
+	"Catalyst::debug";
+	"Catalyst::setup_finalize";
+	"Catalyst::new";
+	"Catalyst::BEGIN@14";
+	"Catalyst::BEGIN@20";
+	"Catalyst::config";
+	"Catalyst::prepare_query_parameters";
+	"Catalyst::BEGIN@11";
+	"Catalyst::BEGIN@26";
+	"Catalyst::BEGIN@6";
+	"Catalyst::setup_dispatcher";
+	"Catalyst::setup_home";
+	"Catalyst::log_response";
+	"Catalyst::__ANON__[Catalyst.pm:56]";
+	"Catalyst::CORE:subst";
+	"Catalyst::BEGIN@38";
+	"Catalyst::prepare_connection";
+	"Catalyst::setup_actions";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::match";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::meta";
+	"Catalyst::Exception::BEGIN@63";
+	"Catalyst::Exception::BEGIN@61";
+	"Catalyst::Exception::BEGIN@58";
+	"Catalyst::Exception::BEGIN@59";
+}
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::expand_modules";
+	"Catalyst::Component::COMPONENT";
+	"Catalyst::Component::__plugins_accessor";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::BEGIN@8";
+	"Catalyst::Request::Upload::BEGIN@3";
+	"Catalyst::Request::Upload::BEGIN@7";
+	"Catalyst::Request::Upload::BEGIN@9";
+	"Catalyst::Request::Upload::BEGIN@46";
+	"Catalyst::Request::Upload::meta";
+	"Catalyst::Request::Upload::BEGIN@10";
+	"Catalyst::Request::Upload::BEGIN@6";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::get_config_path";
+	"Catalyst::Plugin::ConfigLoader::setup";
+	"Catalyst::Plugin::ConfigLoader::load_config";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::BEGIN@7";
+	"Tree::Simple::DESTROY";
+	"Tree::Simple::BEGIN@11";
+	"Tree::Simple::import";
+	"Tree::Simple::BEGIN@6";
+	"Tree::Simple::BEGIN@4";
+	"Tree::Simple::BEGIN@29";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::method";
+	"Catalyst::Request::meta";
+	"Catalyst::Request::BEGIN@6";
+	"Catalyst::Request::new";
+	"Catalyst::Request::BEGIN@3";
+	"Catalyst::Request::BEGIN@11";
+	"Catalyst::Request::BEGIN@5";
+	"Catalyst::Request::headers";
+	"Catalyst::Request::_has_body";
+	"Catalyst::Request::BEGIN@4";
+	"Catalyst::Request::BEGIN@13";
+	"Catalyst::Request::BEGIN@7";
+	"Catalyst::Request::cookies";
+	"Catalyst::Request::BEGIN@9";
+	"Catalyst::Request::args";
+	"Catalyst::Request::DESTROY";
+	"Catalyst::Request::BEGIN@8";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::mk_classdata";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::BEGIN@4";
+	"Catalyst::EngineLoader::BEGIN@3";
+	"Catalyst::EngineLoader::BEGIN@2";
+	"Catalyst::EngineLoader::BEGIN@5";
+	"Catalyst::EngineLoader::meta";
+	"Catalyst::EngineLoader::catalyst_engine_class";
+	"Catalyst::EngineLoader::new";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::match";
+	"Catalyst::Action::dispatch";
+	"Catalyst::Action::execute";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::import";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::new";
+	"Path::Class::Dir::subdir";
+	"Path::Class::Dir::stringify";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::boolify";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::create";
+	"Moose::Meta::Class::initialize";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::execute";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::ACCEPT_CONTEXT";
+	"Catalyst::Model::KiokuDB::setup_scope_guard";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::BEGIN@4";
+	"Catalyst::Exception::Go::meta";
+	"Catalyst::Exception::Go::BEGIN@3";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::match";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::prepare_path";
+	"Catalyst::Engine::prepare_connection";
+	"Catalyst::Engine::prepare_query_parameters";
+	"Catalyst::Engine::finalize_uploads";
+	"Catalyst::Engine::prepare_parameters";
+	"Catalyst::Engine::prepare_request";
+	"Catalyst::Engine::__ANON__[Catalyst/Engine.pm:683]";
+	"Catalyst::Engine::prepare_read";
+	"Catalyst::Engine::build_psgi_app";
+	"Catalyst::Engine::finalize_cookies";
+	"Catalyst::Engine::prepare_body";
+	"Catalyst::Engine::finalize_headers";
+	"Catalyst::Engine::prepare_uploads";
+	"Catalyst::Engine::finalize_body";
+	"Catalyst::Engine::prepare_body_parameters";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::add_before_method_modifier";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::variantgraph";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::new";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@9";
+	"main::RUNTIME";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::around";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::new";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::process";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::_BEGIN";
+	"Catalyst::Controller::_END";
+	"Catalyst::Controller::BEGIN@10";
+	"Catalyst::Controller::BEGIN@140";
+	"Catalyst::Controller::__action_class_accessor";
+	"Catalyst::Controller::meta";
+	"Catalyst::Controller::BEGIN@121";
+	"Catalyst::Controller::_ACTION";
+	"Catalyst::Controller::BEGIN@11";
+	"Catalyst::Controller::BEGIN@3";
+	"Catalyst::Controller::BEGIN@111";
+	"Catalyst::Controller::BEGIN@5";
+	"Catalyst::Controller::_AUTO";
+	"Catalyst::Controller::_DISPATCH";
+	"Catalyst::Controller::BEGIN@132";
+	"Catalyst::Controller::BEGIN@4";
+	"Catalyst::Controller::__dispatch_steps_accessor";
+	"Catalyst::Controller::BEGIN@103";
+	"Catalyst::Controller::BEGIN@8";
+	"Catalyst::Controller::BEGIN@12";
+	"Catalyst::Controller::BEGIN@6";
+}
+subgraph cluster_Plack_Middleware_IIS6ScriptNameFix {
+	label="Plack::Middleware::IIS6ScriptNameFix";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@4";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@3";
+}
+subgraph cluster_Plack_Middleware_ReverseProxy {
+	label="Plack::Middleware::ReverseProxy";
+	"Plack::Middleware::ReverseProxy::BEGIN@6";
+	"Plack::Middleware::ReverseProxy::BEGIN@5";
+	"Plack::Middleware::ReverseProxy::BEGIN@4";
+	"Plack::Middleware::ReverseProxy::BEGIN@3";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::BEGIN@8";
+	"Catalyst::Log::_flush";
+	"Catalyst::Log::BEGIN@3";
+	"Catalyst::Log::meta";
+	"Catalyst::Log::BEGIN@131";
+	"Catalyst::Log::BEGIN@7";
+	"Catalyst::Log::BEGIN@6";
+	"Catalyst::Log::new";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::mkopt";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+	"Catalyst::Utils::BEGIN@9";
+	"Catalyst::Utils::BEGIN@7";
+	"Catalyst::Utils::BEGIN@10";
+	"Catalyst::Utils::BEGIN@6";
+	"Catalyst::Utils::BEGIN@8";
+	"Catalyst::Utils::BEGIN@4";
+	"Catalyst::Utils::resolve_namespace";
+	"Catalyst::Utils::BEGIN@13";
+	"Catalyst::Utils::class2classsuffix";
+	"Catalyst::Utils::BEGIN@11";
+	"Catalyst::Utils::BEGIN@3";
+	"Catalyst::Utils::home";
+	"Catalyst::Utils::BEGIN@5";
+	"Catalyst::Utils::env_value";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::BEGIN@4";
+	"Module::Pluggable::Object::plugins";
+	"Module::Pluggable::Object::BEGIN@7";
+	"Module::Pluggable::Object::BEGIN@3";
+	"Module::Pluggable::Object::BEGIN@8";
+	"Module::Pluggable::Object::BEGIN@5";
+	"Module::Pluggable::Object::new";
+	"Module::Pluggable::Object::BEGIN@6";
+	"Module::Pluggable::Object::BEGIN@9";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::BEGIN@4";
+	"Catalyst::Exception::Detach::BEGIN@3";
+	"Catalyst::Exception::Detach::meta";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::new";
+}
+subgraph cluster_Plack_Middleware_Conditional {
+	label="Plack::Middleware::Conditional";
+	"Plack::Middleware::Conditional::BEGIN@3";
+	"Plack::Middleware::Conditional::BEGIN@5";
+	"Plack::Middleware::Conditional::BEGIN@2";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::meta";
+	"Catalyst::Exception::Base::BEGIN@48";
+	"Catalyst::Exception::Base::BEGIN@47";
+}
+subgraph cluster_Text_SimpleTable {
+	label="Text::SimpleTable";
+	"Text::SimpleTable::BEGIN@6";
+	"Text::SimpleTable::BEGIN@5";
+}
+subgraph cluster_Plack_Middleware {
+	label="Plack::Middleware";
+	"Plack::Middleware::import";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::setup";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_action";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_uploads";
+	"Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByUID {
+	label="Tree::Simple::Visitor::FindByUID";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@4";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@11";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@9";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@5";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::subtype";
+	"Moose::Util::TypeConstraints::as";
+	"Moose::Util::TypeConstraints::duck_type";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::__ANON__[Sub/Install.pm:284]";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::new";
+	"Catalyst::Stats::enable";
+	"Catalyst::Stats::DESTROY";
+}
+subgraph cluster_Class_C3_Adopt_NEXT {
+	label="Class::C3::Adopt::NEXT";
+	"Class::C3::Adopt::NEXT::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::apply_all_roles";
+	"Moose::Util::find_meta";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::get_metaclass_by_name";
+	"Class::MOP::load_class";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::dispatch";
+	"stemmaweb::BEGIN@19";
+	"stemmaweb::finalize";
+	"stemmaweb::prepare_action";
+	"stemmaweb::setup_finalize";
+}
+subgraph cluster_Plack_Middleware_LighttpdScriptNameFix {
+	label="Plack::Middleware::LighttpdScriptNameFix";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@3";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@2";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@4";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::new";
+	"Catalyst::Response::BEGIN@5";
+	"Catalyst::Response::content_length";
+	"Catalyst::Response::finalized_headers";
+	"Catalyst::Response::meta";
+	"Catalyst::Response::BEGIN@3";
+	"Catalyst::Response::BEGIN@6";
+	"Catalyst::Response::status";
+	"Catalyst::Response::redirect";
+	"Catalyst::Response::BEGIN@4";
+	"Catalyst::Response::body";
+}
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::meta";
+"Catalyst::BEGIN@39" -> "Plack::Middleware::LighttpdScriptNameFix::BEGIN@2";
+"Catalyst::__ANON__[Catalyst.pm:56]" -> "Catalyst::Request::new";
+"Catalyst::execute" -> "Catalyst::depth";
+"Catalyst::finalize_body" -> "Catalyst::Engine::finalize_body";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@7";
+"Catalyst::CORE:ftdir" -> "Path::Class::Dir::stringify";
+"Catalyst::component" -> "Catalyst::_filter_component";
+"Catalyst::model" -> "Catalyst::_filter_component";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@4";
+"Catalyst::BEGIN@14" -> "Moose::Util::TypeConstraints::duck_type";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::import";
+"Catalyst::BEGIN@39" -> "Plack::Middleware::import";
+"Catalyst::BEGIN@37" -> "Plack::Middleware::import";
+"Catalyst::BEGIN@38" -> "Plack::Middleware::import";
+"Catalyst::prepare" -> "Catalyst::Stats::new";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@35";
+"Catalyst::setup_components" -> "Catalyst::Component::expand_modules";
+"Catalyst::finalize_headers" -> "Scalar::Util::blessed";
+"Catalyst::setup_plugins" -> "Scalar::Util::blessed";
+"Catalyst::setup_component" -> "Scalar::Util::blessed";
+"Catalyst::prepare_action" -> "Catalyst::Dispatcher::prepare_action";
+"Catalyst::BEGIN@14" -> "Moose::Util::TypeConstraints::as";
+"Catalyst::BEGIN@32" -> "Moose::extends";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@22";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@5";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@4";
+"Catalyst::setup_component" -> "Catalyst::config";
+"Catalyst::path_to" -> "Catalyst::config";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::config";
+"Catalyst::prepare" -> "Catalyst::config";
+"Catalyst::setup" -> "Catalyst::config";
+"Catalyst::setup_home" -> "Catalyst::config";
+"Catalyst::setup_components" -> "Catalyst::config";
+"Catalyst::BEGIN@38" -> "Plack::Middleware::IIS6ScriptNameFix::BEGIN@4";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:26]" -> "Catalyst::prepare";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Catalyst::prepare";
+"Catalyst::Engine::__ANON__[Catalyst/Engine.pm:683]" -> "Catalyst::handle_request";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@3";
+"Catalyst::forward" -> "Catalyst::Dispatcher::forward";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "Catalyst::prepare_uploads";
+"Catalyst::Controller::_ACTION" -> "Catalyst::error";
+"Catalyst::Controller::_END" -> "Catalyst::error";
+"Catalyst::finalize" -> "Catalyst::error";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@27";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@121";
+"Catalyst::BEGIN@38" -> "Plack::Middleware::IIS6ScriptNameFix::BEGIN@3";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::meta";
+"Catalyst::BEGIN@9" -> "Catalyst::Exception::Detach::BEGIN@4";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@13";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@16";
+"Catalyst::prepare_parameters" -> "Catalyst::prepare_body_parameters";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@3";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@6";
+"Catalyst::import" -> "Catalyst::_arguments_accessor";
+"Catalyst::setup" -> "Catalyst::_arguments_accessor";
+"Class::MOP::Class:::around" -> "Catalyst::res";
+"stemmaweb::View::SVG::process" -> "Catalyst::res";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::res";
+"Catalyst::prepare_connection" -> "Catalyst::Engine::prepare_connection";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@2";
+"Catalyst::prepare_body" -> "Catalyst::_engine_accessor";
+"Catalyst::psgi_app" -> "Catalyst::_engine_accessor";
+"Catalyst::setup_engine" -> "Catalyst::_engine_accessor";
+"Catalyst::finalize" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_parameters" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_path" -> "Catalyst::_engine_accessor";
+"Catalyst::finalize_uploads" -> "Catalyst::_engine_accessor";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::_engine_accessor";
+"Catalyst::finalize_cookies" -> "Catalyst::_engine_accessor";
+"Catalyst::finalize_body" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_read" -> "Catalyst::_engine_accessor";
+"Catalyst::finalize_headers" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_request" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_query_parameters" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_body_parameters" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_uploads" -> "Catalyst::_engine_accessor";
+"Catalyst::prepare_connection" -> "Catalyst::_engine_accessor";
+"Catalyst::setup_engine" -> "Catalyst::_engine_loader_accessor";
+"stemmaweb::Controller::Root::variantgraph" -> "Catalyst::model";
+"main::RUNTIME" -> "Catalyst::model";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@25";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@5";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@9";
+"main::BEGIN@9" -> "Catalyst::import";
+"stemmaweb::BEGIN@19" -> "Catalyst::import";
+"Catalyst::path_to" -> "Path::Class::File::new";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@3";
+"Catalyst::BEGIN@11" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@111";
+"Catalyst::finalize" -> "Catalyst::finalize_body";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@33";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "stemmaweb::finalize";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "Catalyst::__ANON__[Catalyst.pm:1155]";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@8";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::prepare_action";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@39";
+"Catalyst::prepare_cookies" -> "Catalyst::Request::cookies";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@20";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::meta";
+"Catalyst::finalize_headers" -> "Catalyst::Response::status";
+"Catalyst::finalize" -> "Catalyst::Response::status";
+"Catalyst::prepare_request" -> "Catalyst::Engine::prepare_request";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@9";
+"Catalyst::BEGIN@12" -> "Moose::has";
+"Catalyst::BEGIN@32" -> "Moose::has";
+"Catalyst::BEGIN@10" -> "Moose::has";
+"Catalyst::BEGIN@9" -> "Moose::has";
+"Catalyst::BEGIN@13" -> "Moose::has";
+"Catalyst::BEGIN@16" -> "Moose::has";
+"Catalyst::BEGIN@14" -> "Moose::has";
+"Catalyst::BEGIN@11" -> "Moose::has";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@13";
+"Catalyst::setup_home" -> "Catalyst::Utils::home";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@6";
+"Catalyst::__ANON__[Catalyst.pm:64]" -> "Catalyst::Response::new";
+"Catalyst::setup_component" -> "Catalyst::Component::COMPONENT";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@13";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@9";
+"Catalyst::finalize" -> "Catalyst::finalize_uploads";
+"Catalyst::BEGIN@20" -> "Text::SimpleTable::BEGIN@6";
+"Catalyst::BEGIN@26" -> "Tree::Simple::import";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@9";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@131";
+"Catalyst::prepare_body" -> "Catalyst::request";
+"Catalyst::finalize" -> "Catalyst::request";
+"Catalyst::prepare_headers" -> "Catalyst::request";
+"Catalyst::prepare_cookies" -> "Catalyst::request";
+"Catalyst::req" -> "Catalyst::request";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@30";
+"Catalyst::path_to" -> "Catalyst::CORE:ftdir";
+"Catalyst::log_request" -> "Catalyst::debug";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::debug";
+"Class::MOP::Class:::before" -> "Catalyst::debug";
+"Catalyst::View::TT::new" -> "Catalyst::debug";
+"Catalyst::Model::KiokuDB::setup_scope_guard" -> "Catalyst::debug";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::debug";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::debug";
+"Catalyst::prepare" -> "Catalyst::debug";
+"Catalyst::setup_stats" -> "Catalyst::debug";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Catalyst::debug";
+"Catalyst::log_response" -> "Catalyst::debug";
+"Catalyst::Plugin::ConfigLoader::load_config" -> "Catalyst::debug";
+"Catalyst::setup" -> "Catalyst::debug";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@11";
+"Catalyst::setup" -> "Catalyst::setup_dispatcher";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@58";
+"Catalyst::BEGIN@37" -> "Plack::Middleware::ReverseProxy::BEGIN@4";
+"Catalyst::finalize" -> "Catalyst::log_response";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_connection";
+"Catalyst::path_to" -> "Path::Class::Dir::new";
+"Catalyst::setup_home" -> "Path::Class::Dir::new";
+"Catalyst::prepare" -> "Try::Tiny::try";
+"Catalyst::handle_request" -> "Try::Tiny::try";
+"Catalyst::setup_plugins" -> "Moose::Util::apply_all_roles";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@7";
+"Catalyst::_register_plugin" -> "Class::Load::load_class";
+"Catalyst::setup_engine" -> "Class::Load::load_class";
+"Catalyst::setup_plugins" -> "Class::Load::load_class";
+"Catalyst::setup_dispatcher" -> "Class::Load::load_class";
+"Catalyst::setup" -> "Catalyst::setup_components";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::__action_class_accessor";
+"Class::MOP::Class:::around" -> "Catalyst::dispatch";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@132";
+"Catalyst::setup_components" -> "Catalyst::locate_components";
+"Catalyst::depth" -> "Catalyst::stack";
+"Catalyst::execute" -> "Catalyst::stack";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_path";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_headers";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@4";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@31";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@6";
+"Catalyst::get_actions" -> "Catalyst::Dispatcher::get_actions";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@19";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_read";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::setup_finalize";
+"Catalyst::BEGIN@9" -> "Catalyst::Exception::Detach::meta";
+"Catalyst::prepare_body" -> "Catalyst::Engine::prepare_body";
+"Catalyst::prepare" -> "Try::Tiny::catch";
+"Catalyst::handle_request" -> "Try::Tiny::catch";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@12";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@103";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Catalyst::Stats::DESTROY";
+"Catalyst::Action::dispatch" -> "Catalyst::execute";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@12";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@4";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::finalize";
+"Catalyst::__ANON__[Catalyst.pm:56]" -> "Catalyst::_request_class_accessor";
+"Catalyst::BEGIN@31" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::BEGIN@6" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@10";
+"Catalyst::finalize_headers" -> "Catalyst::finalize_cookies";
+"Catalyst::setup_dispatcher" -> "Catalyst::_dispatcher_class_accessor";
+"stemmaweb::Controller::Root::variantgraph" -> "Catalyst::forward";
+"Catalyst::Controller::_DISPATCH" -> "Catalyst::forward";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::forward";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@140";
+"Catalyst::setup_home" -> "Path::Class::Entity::boolify";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::Base::meta";
+"Catalyst::setup_dispatcher" -> "Catalyst::Dispatcher::new";
+"Catalyst::BEGIN@37" -> "Plack::Middleware::ReverseProxy::BEGIN@3";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@26";
+"Catalyst::BEGIN@7" -> "namespace::clean::import";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@5";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@8";
+"Catalyst::psgi_app" -> "Catalyst::Engine::build_psgi_app";
+"Catalyst::BEGIN@39" -> "Plack::Middleware::LighttpdScriptNameFix::BEGIN@4";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_request";
+"Catalyst::setup_engine" -> "Moose::Object::new";
+"Catalyst::setup" -> "Catalyst::Plugin::ConfigLoader::setup";
+"Catalyst::prepare_uploads" -> "Catalyst::Engine::prepare_uploads";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@8";
+"Catalyst::component" -> "Catalyst::_components_accessor";
+"Catalyst::setup" -> "Catalyst::_components_accessor";
+"Catalyst::model" -> "Catalyst::_components_accessor";
+"Catalyst::setup_components" -> "Catalyst::_components_accessor";
+"Catalyst::setup" -> "Catalyst::setup_plugins";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:48]";
+"Catalyst::finalize_headers" -> "Catalyst::response";
+"Catalyst::finalize" -> "Catalyst::response";
+"Catalyst::res" -> "Catalyst::response";
+"Catalyst::setup_plugins" -> "Moose::Util::find_meta";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@3";
+"Catalyst::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@15" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@32" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@16" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@10";
+"Try::Tiny::try" -> "Catalyst::__ANON__[Catalyst.pm:1966]";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@24";
+"Catalyst::BEGIN@10" -> "Moose::with";
+"Catalyst::BEGIN@9" -> "Moose::with";
+"Catalyst::BEGIN@12" -> "Moose::with";
+"Catalyst::BEGIN@13" -> "Moose::with";
+"Catalyst::BEGIN@16" -> "Moose::with";
+"Catalyst::BEGIN@8" -> "Moose::with";
+"Catalyst::BEGIN@14" -> "Moose::with";
+"Catalyst::BEGIN@11" -> "Moose::with";
+"Catalyst::forward" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::dispatch" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::get_actions" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::get_action" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::setup_dispatcher" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::setup_actions" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::prepare_action" -> "Catalyst::_dispatcher_accessor";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@11";
+"Catalyst::request" -> "Catalyst::__ANON__[Catalyst.pm:56]";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@5";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::meta";
+"Catalyst::BEGIN@3427" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::setup" -> "Catalyst::setup_log";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@41";
+"Catalyst::prepare_path" -> "Catalyst::Engine::prepare_path";
+"Catalyst::prepare" -> "Catalyst::log_request";
+"Catalyst::execute" -> "Catalyst::Action::RenderView::execute";
+"Catalyst::locate_components" -> "Module::Pluggable::Object::plugins";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@36";
+"Catalyst::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::BEGIN@28" -> "Class::C3::Adopt::NEXT::import";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@3";
+"Catalyst::locate_components" -> "Catalyst::CORE:sort";
+"Catalyst::setup" -> "Catalyst::CORE:sort";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@46";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::Base::BEGIN@47";
+"Catalyst::BEGIN@11" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Catalyst::finalize" -> "Catalyst::Request::method";
+"main::RUNTIME" -> "Catalyst::psgi_app";
+"Catalyst::_register_plugin" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::BEGIN@11" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@6";
+"Catalyst::prepare_body_parameters" -> "Catalyst::Engine::prepare_body_parameters";
+"Catalyst::BEGIN@32" -> "Moose::around";
+"Catalyst::BEGIN@12" -> "Moose::around";
+"Catalyst::BEGIN@16" -> "Moose::around";
+"Catalyst::BEGIN@11" -> "Moose::around";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@29";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@18";
+"Catalyst::response" -> "Catalyst::__ANON__[Catalyst.pm:64]";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@7";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_query_parameters";
+"Catalyst::BEGIN@10" -> "Catalyst::Exception::Go::meta";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@3";
+"Catalyst::prepare_headers" -> "Catalyst::Request::headers";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::meta";
+"Catalyst::Controller::_BEGIN" -> "Catalyst::get_actions";
+"Catalyst::Controller::_AUTO" -> "Catalyst::get_actions";
+"Catalyst::Controller::_END" -> "Catalyst::get_actions";
+"Catalyst::BEGIN@35" -> "Exporter::import";
+"Catalyst::BEGIN@34" -> "Exporter::import";
+"Catalyst::BEGIN@30" -> "Exporter::import";
+"Catalyst::BEGIN@29" -> "Exporter::import";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@8";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@28";
+"Catalyst::BEGIN@11" -> "Class::MOP::Class::add_before_method_modifier";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@358";
+"Catalyst::BEGIN@9" -> "Catalyst::Exception::Detach::BEGIN@3";
+"Catalyst::finalize_headers" -> "Catalyst::Response::redirect";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@9";
+"Catalyst::BEGIN@20" -> "Text::SimpleTable::BEGIN@5";
+"Catalyst::finalize_headers" -> "Catalyst::CORE:match";
+"Catalyst::setup" -> "Catalyst::CORE:match";
+"Catalyst::setup_components" -> "Catalyst::CORE:match";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@8";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1665";
+"Catalyst::prepare" -> "Catalyst::use_stats";
+"Catalyst::execute" -> "Catalyst::use_stats";
+"Catalyst::finalize" -> "Catalyst::use_stats";
+"Catalyst::prepare_body" -> "Catalyst::Plugin::Unicode::Encoding::prepare_uploads";
+"Catalyst::get_action" -> "Catalyst::Dispatcher::get_action";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_body";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1154";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@14";
+"Catalyst::prepare_read" -> "Catalyst::Engine::prepare_read";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Catalyst::Request::DESTROY";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@11";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@3";
+"Catalyst::prepare_query_parameters" -> "Catalyst::Engine::prepare_query_parameters";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@9";
+"Catalyst::import" -> "Moose::Meta::Class::initialize";
+"Catalyst::BEGIN@14" -> "Moose::Util::TypeConstraints::subtype";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@15";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::Base::BEGIN@48";
+"Catalyst::BEGIN@37" -> "Plack::Middleware::ReverseProxy::BEGIN@5";
+"Catalyst::setup_components" -> "UNIVERSAL::can";
+"Catalyst::_filter_component" -> "UNIVERSAL::can";
+"Catalyst::setup" -> "UNIVERSAL::can";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "UNIVERSAL::can";
+"Catalyst::handle_request" -> "UNIVERSAL::can";
+"Catalyst::finalize" -> "UNIVERSAL::can";
+"Catalyst::setup_component" -> "UNIVERSAL::can";
+"Catalyst::setup_finalize" -> "Catalyst::_setup_finished_accessor";
+"Catalyst::setup" -> "Catalyst::_setup_finished_accessor";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@6";
+"Catalyst::finalize" -> "Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+"Catalyst::BEGIN@17" -> "Sub::Install::__ANON__[Sub/Install.pm:284]";
+"Catalyst::_register_plugin" -> "Moose::Meta::Class::superclasses";
+"Catalyst::import" -> "Moose::Meta::Class::superclasses";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@34";
+"Catalyst::setup_plugins" -> "Catalyst::_register_plugin";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@5";
+"Catalyst::execute" -> "Catalyst::Action::execute";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@6";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::get_action";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::get_action";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@6";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@3";
+"Catalyst::BEGIN@33" -> "utf8::import";
+"Catalyst::setup" -> "Catalyst::setup_actions";
+"Catalyst::execute" -> "Catalyst::state";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::meta";
+"Catalyst::finalize_cookies" -> "Catalyst::Engine::finalize_cookies";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@7";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@11";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@59";
+"Catalyst::BEGIN@358" -> "warnings::unimport";
+"Catalyst::BEGIN@1683" -> "warnings::unimport";
+"Catalyst::BEGIN@1665" -> "warnings::unimport";
+"Catalyst::BEGIN@1154" -> "warnings::unimport";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@4";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@11";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:43]";
+"main::RUNTIME" -> "Catalyst::setup";
+"Catalyst::handle_request" -> "Catalyst::Log::_flush";
+"Catalyst::setup" -> "Catalyst::Log::_flush";
+"Catalyst::finalize_headers" -> "Catalyst::Response::body";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@3";
+"Catalyst::setup_plugins" -> "Catalyst::Component::__plugins_accessor";
+"Catalyst::_register_plugin" -> "Catalyst::Component::__plugins_accessor";
+"Catalyst::BEGIN@10" -> "Catalyst::Exception::Go::BEGIN@3";
+"Catalyst::_filter_component" -> "Catalyst::Model::KiokuDB::ACCEPT_CONTEXT";
+"Catalyst::prepare_body" -> "Catalyst::Request::_has_body";
+"Catalyst::setup_stats" -> "Catalyst::Utils::ensure_class_loaded";
+"Catalyst::setup_components" -> "Catalyst::Utils::ensure_class_loaded";
+"Catalyst::BEGIN@12" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@32" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:44]";
+"Catalyst::setup_log" -> "Catalyst::Log::new";
+"Catalyst::dispatch" -> "Catalyst::Dispatcher::dispatch";
+"Catalyst::setup_engine" -> "Catalyst::EngineLoader::new";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@32";
+"Catalyst::setup" -> "UNIVERSAL::isa";
+"Catalyst::import" -> "UNIVERSAL::isa";
+"Catalyst::setup_plugins" -> "UNIVERSAL::isa";
+"Catalyst::_register_plugin" -> "UNIVERSAL::isa";
+"Catalyst::setup_plugins" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@4";
+"Catalyst::prepare" -> "Catalyst::_stats_class_accessor";
+"Catalyst::setup_stats" -> "Catalyst::_stats_class_accessor";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::meta";
+"Catalyst::setup" -> "stemmaweb::setup_finalize";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@2";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@7";
+"Catalyst::finalize_headers" -> "Catalyst::Response::finalized_headers";
+"Catalyst::BEGIN@32" -> "Catalyst::EngineLoader::BEGIN@5";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@6";
+"Catalyst::locate_components" -> "Module::Pluggable::Object::new";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@38";
+"Catalyst::prepare" -> "Catalyst::stats";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@11";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@63";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Catalyst::DESTROY";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@23";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "Catalyst::prepare_cookies";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::BEGIN@5";
+"Catalyst::finalize_headers" -> "Catalyst::Response::content_length";
+"Catalyst::BEGIN@14" -> "Catalyst::Response::BEGIN@4";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@10";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@4";
+"Catalyst::BEGIN@36" -> "Plack::Middleware::Conditional::BEGIN@3";
+"Try::Tiny::try" -> "Catalyst::__ANON__[Catalyst.pm:2032]";
+"Catalyst::setup_actions" -> "Catalyst::Dispatcher::setup_actions";
+"Catalyst::prepare" -> "Catalyst::_context_class_accessor";
+"Catalyst::BEGIN@26" -> "Tree::Simple::BEGIN@29";
+"Catalyst::_register_plugin" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Catalyst::import" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Catalyst::__ANON__[Catalyst.pm:56]" -> "Catalyst::_has_uploadtmp";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@37";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@6";
+"Catalyst::setup" -> "Catalyst::setup_engine";
+"Catalyst::setup_home" -> "Path::Class::Dir::subdir";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@10";
+"Catalyst::prepare" -> "Catalyst::Stats::enable";
+"Catalyst::setup_plugins" -> "Class::MOP::Package::name";
+"Catalyst::__ANON__[Catalyst.pm:64]" -> "Catalyst::_log_accessor";
+"Catalyst::setup_log" -> "Catalyst::_log_accessor";
+"Catalyst::__ANON__[Catalyst.pm:56]" -> "Catalyst::_log_accessor";
+"Catalyst::handle_request" -> "Catalyst::_log_accessor";
+"Catalyst::setup" -> "Catalyst::_log_accessor";
+"Catalyst::BEGIN@37" -> "Plack::Middleware::ReverseProxy::BEGIN@6";
+"Catalyst::prepare_body" -> "Catalyst::prepare_parameters";
+"Catalyst::setup_component" -> "Catalyst::Utils::class2classsuffix";
+"Catalyst::__ANON__[Catalyst.pm:2032]" -> "stemmaweb::prepare_action";
+"Catalyst::BEGIN@16" -> "Catalyst::Controller::__dispatch_steps_accessor";
+"Catalyst::setup_log" -> "Catalyst::CORE:subst";
+"Catalyst::locate_components" -> "Catalyst::CORE:subst";
+"Catalyst::BEGIN@11" -> "Catalyst::Log::BEGIN@8";
+"Catalyst::_register_plugin" -> "Class::MOP::load_class";
+"Catalyst::setup_engine" -> "Class::MOP::load_class";
+"Catalyst::setup_plugins" -> "Class::MOP::load_class";
+"Catalyst::setup_dispatcher" -> "Class::MOP::load_class";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Catalyst::finalize_headers";
+"Catalyst::execute" -> "Catalyst::Request::args";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@5";
+"Catalyst::setup_engine" -> "Catalyst::EngineLoader::catalyst_engine_class";
+"Catalyst::execute" -> "Catalyst::component";
+"Catalyst::Dispatcher::_find_component" -> "Catalyst::component";
+"Catalyst::BEGIN@30" -> "attributes::import";
+"Catalyst::__ANON__[Catalyst.pm:64]" -> "Catalyst::_response_class_accessor";
+"Catalyst::BEGIN@10" -> "Catalyst::Exception::Go::BEGIN@4";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@21";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@4";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@61";
+"Catalyst::setup_engine" -> "Catalyst::_loading_psgi_file_accessor";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@8";
+"Catalyst::setup_plugins" -> "Data::OptList::mkopt";
+"Catalyst::finalize_uploads" -> "Catalyst::Engine::finalize_uploads";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@17";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@7";
+"Catalyst::prepare" -> "Catalyst::new";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "Tree::Simple::DESTROY";
+"Catalyst::import" -> "Catalyst::setup_home";
+"Catalyst::setup" -> "Catalyst::setup_home";
+"main::BEGIN@9" -> "Catalyst::path_to";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::path_to";
+"Catalyst::setup" -> "Catalyst::setup_stats";
+"Catalyst::__ANON__[Catalyst.pm:1966]" -> "stemmaweb::dispatch";
+"Catalyst::finalize_headers" -> "Catalyst::Engine::finalize_headers";
+"Catalyst::prepare_parameters" -> "Catalyst::Engine::prepare_parameters";
+"Class::MOP::Class:::before" -> "Catalyst::req";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::req";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "Catalyst::req";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::req";
+"Catalyst::Controller::_ACTION" -> "Catalyst::req";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::req";
+"Catalyst::execute" -> "Catalyst::req";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::req";
+"Catalyst::Action::match" -> "Catalyst::req";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@1683";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@7";
+"Catalyst::setup_components" -> "Catalyst::setup_component";
+"stemmaweb::BEGIN@19" -> "Catalyst::BEGIN@3427";
+"Catalyst::_register_plugin" -> "Moose::Meta::Class::create";
+"Catalyst::BEGIN@16" -> "Catalyst::ClassData::mk_classdata";
+"Catalyst::setup_log" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_dispatcher" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_stats" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_home" -> "Catalyst::Utils::env_value";
+"Catalyst::BEGIN@39" -> "Plack::Middleware::LighttpdScriptNameFix::BEGIN@3";
+}

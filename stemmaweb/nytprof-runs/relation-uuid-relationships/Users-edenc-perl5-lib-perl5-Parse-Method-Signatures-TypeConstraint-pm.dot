@@ -1,0 +1,115 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::_string_to_tc";
+}
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::has_available_type_export";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@3";
+	"Parse::Method::Signatures::TypeConstraint::_str_node";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@6";
+	"Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]";
+	"Parse::Method::Signatures::TypeConstraint::tc";
+	"Parse::Method::Signatures::TypeConstraint::_leaf";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@9";
+	"Parse::Method::Signatures::TypeConstraint::has_from_namespace";
+	"Parse::Method::Signatures::TypeConstraint::from_namespace";
+	"Parse::Method::Signatures::TypeConstraint::tc_callback";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@4";
+	"Parse::Method::Signatures::TypeConstraint::_walk_data";
+	"Parse::Method::Signatures::TypeConstraint::ppi";
+	"Parse::Method::Signatures::TypeConstraint::_build_tc";
+	"Parse::Method::Signatures::TypeConstraint::CORE:match";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@5";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@7";
+	"Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+	"Parse::Method::Signatures::TypeConstraint::_union_node";
+	"Parse::Method::Signatures::TypeConstraint::_invoke_callback";
+	"Parse::Method::Signatures::TypeConstraint::_params_node";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::content";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::find_type_constraint";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::get_type_constraint_registry";
+}
+"Parse::Method::Signatures::TypeConstraint::_walk_data" -> "Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]";
+"Parse::Method::Signatures::TypeConstraint::_build_tc" -> "Scalar::Util::blessed";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@6";
+"Parse::Method::Signatures::TypeConstraint::_walk_data" -> "Parse::Method::Signatures::TypeConstraint::_union_node";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Parse::Method::Signatures::TypeConstraint::has_from_namespace";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@9";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@4";
+"TryCatch::_string_to_tc" -> "Parse::Method::Signatures::TypeConstraint::find_registered_constraint";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Moose::Meta::TypeConstraint::Registry::find_type_constraint";
+"Parse::Method::Signatures::TypeConstraint::_walk_data" -> "Parse::Method::Signatures::TypeConstraint::_str_node";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@7";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@9" -> "namespace::clean::import";
+"Parse::Method::Signatures::TypeConstraint::_walk_data" -> "Parse::Method::Signatures::TypeConstraint::_leaf";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Parse::Method::Signatures::TypeConstraint::from_namespace";
+"Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]" -> "PPI::Token::content";
+"Parse::Method::Signatures::TypeConstraint::_build_tc" -> "Parse::Method::Signatures::TypeConstraint::ppi";
+"Parse::Method::Signatures::TypeConstraint::tc" -> "Parse::Method::Signatures::TypeConstraint::_build_tc";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@6" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@7" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::TypeConstraint::_build_tc" -> "Parse::Method::Signatures::TypeConstraint::_walk_data";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@5" -> "Exporter::import";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@3" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@5";
+"Module::Runtime::require_module" -> "Parse::Method::Signatures::TypeConstraint::BEGIN@3";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Moose::Util::TypeConstraints::get_type_constraint_registry";
+"Parse::Method::Signatures::TypeConstraint::_params_node" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::TypeConstraint::_union_node" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::TypeConstraint::_str_node" -> "UNIVERSAL::isa";
+"Parse::Method::Signatures::TypeConstraint::_walk_data" -> "Parse::Method::Signatures::TypeConstraint::_params_node";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Parse::Method::Signatures::TypeConstraint::CORE:match";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Parse::Method::Signatures::TypeConstraint::find_registered_constraint" -> "MooseX::Types::Util::has_available_type_export";
+"Parse::Method::Signatures::TypeConstraint::_invoke_callback" -> "TryCatch::_string_to_tc";
+"Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]" -> "Parse::Method::Signatures::TypeConstraint::_invoke_callback";
+"Parse::Method::Signatures::TypeConstraint::_invoke_callback" -> "Parse::Method::Signatures::TypeConstraint::tc_callback";
+}

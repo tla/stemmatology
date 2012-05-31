@@ -1,0 +1,81 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::BEGIN@4";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@8";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::BEGIN@8";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::BEGIN@4";
+	"Hash::Util::FieldHash::BEGIN@5";
+	"Hash::Util::FieldHash::BEGIN@3";
+	"Hash::Util::FieldHash::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@8";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@5";
+	"Hash::Util::FieldHash::Compat::BEGIN@6";
+	"Hash::Util::FieldHash::Compat::import";
+	"Hash::Util::FieldHash::Compat::BEGIN@8";
+	"Hash::Util::FieldHash::Compat::BEGIN@10";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@21";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@10";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@5";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "Hash::Util::FieldHash::BEGIN@3";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "constant::import";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "Hash::Util::FieldHash::BEGIN@6";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "Hash::Util::FieldHash::BEGIN@5";
+"Hash::Util::FieldHash::Compat::BEGIN@5" -> "strict::import";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "XSLoader::load";
+"Hash::Util::FieldHash::Compat::BEGIN@10" -> "Exporter::import";
+"Hash::Util::FieldHash::Compat::import" -> "UNIVERSAL::can";
+"Hash::Util::FieldHash::Compat::BEGIN@6" -> "warnings::import";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@6";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "Hash::Util::FieldHash::BEGIN@4";
+"KiokuDB::Collapser::Buffer::BEGIN@4" -> "Hash::Util::FieldHash::Compat::import";
+"KiokuDB::LiveObjects::BEGIN@8" -> "Hash::Util::FieldHash::Compat::import";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::import";
+"KiokuDB::BEGIN@21" -> "Hash::Util::FieldHash::Compat::import";
+"Catalyst::Model::KiokuDB::BEGIN@8" -> "Hash::Util::FieldHash::Compat::import";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@8";
+}

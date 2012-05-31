@@ -1,0 +1,68 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Normal {
+	label="PPI::Normal";
+	"PPI::Normal::BEGIN@39";
+	"PPI::Normal::BEGIN@83";
+	"PPI::Normal::register";
+	"PPI::Normal::BEGIN@43";
+	"PPI::Normal::BEGIN@41";
+	"PPI::Normal::CORE:match";
+	"PPI::Normal::BEGIN@260";
+	"PPI::Normal::BEGIN@40";
+	"PPI::Normal::BEGIN@38";
+	"PPI::Normal::BEGIN@107";
+	"PPI::Normal::BEGIN@44";
+	"PPI::Normal::BEGIN@37";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::any";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Normal_Standard {
+	label="PPI::Normal::Standard";
+	"PPI::Normal::Standard::BEGIN@22";
+	"PPI::Normal::Standard::import";
+	"PPI::Normal::Standard::BEGIN@19";
+	"PPI::Normal::Standard::BEGIN@21";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@27";
+}
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@44";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@260";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@83";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::import";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@22";
+"PPI::Normal::BEGIN@37" -> "strict::import";
+"PPI::Normal::register" -> "PPI::Normal::CORE:match";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@40";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@38";
+"PPI::Normal::BEGIN@40" -> "Exporter::import";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@37";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@107";
+"PPI::Normal::BEGIN@260" -> "strict::unimport";
+"PPI::Normal::BEGIN@83" -> "strict::unimport";
+"PPI::Normal::BEGIN@43" -> "vars::import";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@39";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@43";
+"PPI::Normal::register" -> "List::MoreUtils::any";
+"PPI::BEGIN@27" -> "PPI::Normal::BEGIN@41";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@21";
+"PPI::Normal::BEGIN@107" -> "PPI::Normal::Standard::BEGIN@19";
+"PPI::Normal::Standard::import" -> "PPI::Normal::register";
+}

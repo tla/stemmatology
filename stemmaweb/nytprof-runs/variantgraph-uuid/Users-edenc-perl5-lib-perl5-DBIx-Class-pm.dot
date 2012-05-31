@@ -1,0 +1,80 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::BEGIN@66";
+	"DBIx::Class::BEGIN@71";
+	"DBIx::Class::BEGIN@4";
+	"DBIx::Class::mk_classaccessor";
+	"DBIx::Class::BEGIN@70";
+	"DBIx::Class::BEGIN@18";
+	"DBIx::Class::BEGIN@68";
+	"DBIx::Class::mk_classdata";
+	"DBIx::Class::component_base_class";
+	"DBIx::Class::CORE:match";
+	"DBIx::Class::BEGIN@3";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::load_components";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_DBIx_Class_Optional_Dependencies {
+	label="DBIx::Class::Optional::Dependencies";
+	"DBIx::Class::Optional::Dependencies::BEGIN@4";
+	"DBIx::Class::Optional::Dependencies::BEGIN@3";
+	"DBIx::Class::Optional::Dependencies::BEGIN@6";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::set_inherited";
+	"Class::Accessor::Grouped::mk_group_accessors";
+}
+"base::import" -> "DBIx::Class::BEGIN@71";
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@6";
+"DBIx::Class::mk_classaccessor" -> "Class::Accessor::Grouped::set_inherited";
+"base::import" -> "DBIx::Class::BEGIN@4";
+"base::import" -> "DBIx::Class::BEGIN@68";
+"DBIx::Class::BEGIN@71" -> "UNIVERSAL::import";
+"DBIx::Class::BEGIN@68" -> "UNIVERSAL::import";
+"DBIx::Class::mk_classdata" -> "DBIx::Class::mk_classaccessor";
+"DBIx::Class::BEGIN@66" -> "mro::import";
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@4";
+"DBIx::Class::BEGIN@3" -> "strict::import";
+"base::import" -> "DBIx::Class::CORE:match";
+"Module::Runtime::require_module" -> "DBIx::Class::mk_classdata";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::mk_classdata";
+"DBIx::Class::BEGIN@70" -> "base::import";
+"DBIx::Class::BEGIN@4" -> "warnings::import";
+"Class::C3::Componentised::load_components" -> "DBIx::Class::component_base_class";
+"DBIx::Class::mk_classaccessor" -> "Class::Accessor::Grouped::mk_group_accessors";
+"base::import" -> "DBIx::Class::BEGIN@3";
+"DBIx::Class::BEGIN@68" -> "DBIx::Class::Optional::Dependencies::BEGIN@3";
+"base::import" -> "DBIx::Class::BEGIN@66";
+"base::import" -> "DBIx::Class::BEGIN@70";
+"base::import" -> "DBIx::Class::BEGIN@18";
+}

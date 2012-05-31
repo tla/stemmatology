@@ -1,0 +1,403 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@3";
+	"Catalyst::Dispatcher::BEGIN@8";
+	"Catalyst::Dispatcher::postload_dispatch_types";
+	"Catalyst::Dispatcher::CORE:subst";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:33]";
+	"Catalyst::Dispatcher::BEGIN@11";
+	"Catalyst::Dispatcher::BEGIN@7";
+	"Catalyst::Dispatcher::_find_or_create_namespace_node";
+	"Catalyst::Dispatcher::preload_dispatch_types";
+	"Catalyst::Dispatcher::_do_forward";
+	"Catalyst::Dispatcher::_invoke_as_component";
+	"Catalyst::Dispatcher::dispatch";
+	"Catalyst::Dispatcher::BEGIN@692";
+	"Catalyst::Dispatcher::_find_or_create_action_container";
+	"Catalyst::Dispatcher::_tree";
+	"Catalyst::Dispatcher::get_actions";
+	"Catalyst::Dispatcher::CORE:match";
+	"Catalyst::Dispatcher::forward";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::BEGIN@16";
+	"Catalyst::Dispatcher::register";
+	"Catalyst::Dispatcher::_action_rel2abs";
+	"Catalyst::Dispatcher::get_action";
+	"Catalyst::Dispatcher::BEGIN@18";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:36]";
+	"Catalyst::Dispatcher::_invoke_as_path";
+	"Catalyst::Dispatcher::_container_hash";
+	"Catalyst::Dispatcher::_method_action_class";
+	"Catalyst::Dispatcher::BEGIN@13";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:32]";
+	"Catalyst::Dispatcher::_registered_dispatch_types";
+	"Catalyst::Dispatcher::new";
+	"Catalyst::Dispatcher::_build__tree";
+	"Catalyst::Dispatcher::dispatch_types";
+	"Catalyst::Dispatcher::BEGIN@236";
+	"Catalyst::Dispatcher::BEGIN@12";
+	"Catalyst::Dispatcher::BEGIN@9";
+	"Catalyst::Dispatcher::BEGIN@14";
+	"Catalyst::Dispatcher::_command2action";
+	"Catalyst::Dispatcher::setup_actions";
+	"Catalyst::Dispatcher::_action_hash";
+	"Catalyst::Dispatcher::BEGIN@10";
+	"Catalyst::Dispatcher::get_containers";
+	"Catalyst::Dispatcher::BEGIN@4";
+	"Catalyst::Dispatcher::BEGIN@256";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:35]";
+	"Catalyst::Dispatcher::_load_dispatch_types";
+	"Catalyst::Dispatcher::BEGIN@15";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:41]";
+	"Catalyst::Dispatcher::_find_component";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::forward";
+	"Catalyst::dispatch";
+	"Catalyst::component";
+	"Catalyst::stack";
+	"Catalyst::state";
+	"Catalyst::debug";
+	"Catalyst::get_actions";
+	"Catalyst::action";
+	"Catalyst::get_action";
+	"Catalyst::config";
+	"Catalyst::_components_accessor";
+	"Catalyst::request";
+	"Catalyst::req";
+	"Catalyst::setup_actions";
+	"Catalyst::prepare_action";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::_is_low_precedence";
+	"Catalyst::DispatchType::Index::BEGIN@5";
+	"Catalyst::DispatchType::Index::BEGIN@3";
+	"Catalyst::DispatchType::Index::new";
+	"Catalyst::DispatchType::Index::meta";
+	"Catalyst::DispatchType::Index::match";
+	"Catalyst::DispatchType::Index::register";
+}
+subgraph cluster_Catalyst_DispatchType {
+	label="Catalyst::DispatchType";
+	"Catalyst::DispatchType::_is_low_precedence";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::addChild";
+	"Tree::Simple::_insertChildAt";
+	"Tree::Simple::import";
+	"Tree::Simple::getNodeValue";
+	"Tree::Simple::getAllChildren";
+	"Tree::Simple::ROOT";
+	"Tree::Simple::new";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::args";
+	"Catalyst::Request::arguments";
+	"Catalyst::Request::path";
+	"Catalyst::Request::captures";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByPath {
+	label="Tree::Simple::Visitor::FindByPath";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@9";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@5";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@11";
+	"Tree::Simple::Visitor::FindByPath::BEGIN@4";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::namespace";
+	"Catalyst::Action::BEGIN@25";
+	"Catalyst::Action::attributes";
+	"Catalyst::Action::BEGIN@22";
+	"Catalyst::Action::new";
+	"Catalyst::Action::DESTROY";
+	"Catalyst::Action::BEGIN@56";
+	"Catalyst::Action::dispatch";
+	"Catalyst::Action::name";
+	"Catalyst::Action::BEGIN@23";
+	"Catalyst::Action::meta";
+	"Catalyst::Action::BEGIN@41";
+	"Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::add_action";
+	"Catalyst::ActionContainer::new";
+	"Catalyst::ActionContainer::part";
+	"Catalyst::ActionContainer::get_action";
+	"Catalyst::ActionContainer::BEGIN@18";
+	"Catalyst::ActionContainer::BEGIN@32";
+	"Catalyst::ActionContainer::meta";
+	"Catalyst::ActionContainer::BEGIN@30";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::register";
+	"Catalyst::DispatchType::Chained::match";
+	"Catalyst::DispatchType::Chained::new";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::register";
+	"Catalyst::DispatchType::Path::match";
+	"Catalyst::DispatchType::Path::new";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::around";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::new";
+	"Catalyst::DispatchType::Regex::register";
+	"Catalyst::DispatchType::Regex::match";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::register_actions";
+	"Catalyst::Controller::register_action_methods";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::class2prefix";
+	"Catalyst::Utils::resolve_namespace";
+}
+subgraph cluster_Catalyst_DispatchType_Default {
+	label="Catalyst::DispatchType::Default";
+	"Catalyst::DispatchType::Default::meta";
+	"Catalyst::DispatchType::Default::BEGIN@3";
+	"Catalyst::DispatchType::Default::new";
+	"Catalyst::DispatchType::Default::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Dispatcher::postload_dispatch_types";
+"Catalyst::Dispatcher::forward" -> "Catalyst::Dispatcher::_do_forward";
+"Catalyst::Dispatcher::_command2action" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_find_component" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::Utils::class2prefix";
+"Catalyst::prepare_action" -> "Catalyst::Dispatcher::prepare_action";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::Action::new";
+"Catalyst::Dispatcher::BEGIN@11" -> "Moose::extends";
+"Catalyst::Dispatcher::BEGIN@12" -> "Moose::extends";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Index::match";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::config";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:41]";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Dispatcher::preload_dispatch_types";
+"Catalyst::forward" -> "Catalyst::Dispatcher::forward";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::Dispatcher::_invoke_as_component";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::_is_low_precedence";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@9";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Regex::register";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@256";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::getNodeValue";
+"Catalyst::Dispatcher::_find_or_create_action_container" -> "Tree::Simple::getNodeValue";
+"Catalyst::Dispatcher::BEGIN@12" -> "Catalyst::DispatchType::Index::meta";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Catalyst::Dispatcher::_find_or_create_namespace_node";
+"Catalyst::Dispatcher::_find_or_create_action_container" -> "Catalyst::Dispatcher::_find_or_create_namespace_node";
+"Catalyst::Dispatcher::BEGIN@10" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@16" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@12" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@14" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@11" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@13" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@9" -> "UNIVERSAL::import";
+"Catalyst::Dispatcher::BEGIN@4" -> "UNIVERSAL::import";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@18";
+"Catalyst::Dispatcher::register" -> "Catalyst::Dispatcher::_registered_dispatch_types";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Dispatcher::_registered_dispatch_types";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@22";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Regex::match";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@12" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@9" -> "Moose::has";
+"Catalyst::Dispatcher::BEGIN@15" -> "Tree::Simple::import";
+"Catalyst::Dispatcher::register" -> "Catalyst::Dispatcher::_find_or_create_action_container";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::request";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::request";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::debug";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::debug";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@3";
+"Catalyst::Dispatcher::register" -> "Class::Load::load_class";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Class::Load::load_class";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@41";
+"Catalyst::Dispatcher::dispatch_types" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:32]";
+"Catalyst::Dispatcher::_action_rel2abs" -> "Catalyst::stack";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Request::path";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@25";
+"Catalyst::get_actions" -> "Catalyst::Dispatcher::get_actions";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@16";
+"Catalyst::Dispatcher::BEGIN@11" -> "Catalyst::DispatchType::Default::BEGIN@6";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@14";
+"Catalyst::Dispatcher::_action_hash" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:35]";
+"Catalyst::Dispatcher::_build__tree" -> "Tree::Simple::ROOT";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::forward";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@30";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::getAllChildren";
+"Catalyst::Dispatcher::BEGIN@18" -> "namespace::clean::import";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::DispatchType::Index::new";
+"Catalyst::Dispatcher::BEGIN@11" -> "Catalyst::DispatchType::Default::meta";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::_components_accessor";
+"Catalyst::Dispatcher::_build__tree" -> "Tree::Simple::new";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::new";
+"Catalyst::Dispatcher::_find_or_create_action_container" -> "Catalyst::Dispatcher::_tree";
+"Catalyst::Dispatcher::get_containers" -> "Catalyst::Dispatcher::_container_hash";
+"Catalyst::Dispatcher::register" -> "Catalyst::Dispatcher::_container_hash";
+"Catalyst::Dispatcher::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Dispatcher::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@12";
+"Catalyst::Dispatcher::BEGIN@9" -> "Moose::with";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::with";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Action::dispatch";
+"Catalyst::Dispatcher::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::BEGIN@692" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Controller::register_actions";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Dispatcher::dispatch_types";
+"Catalyst::Dispatcher::register" -> "Catalyst::Dispatcher::dispatch_types";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::Dispatcher::dispatch_types";
+"Catalyst::Dispatcher::BEGIN@10" -> "Moose::around";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Chained::match";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::Dispatcher::CORE:match";
+"Catalyst::Dispatcher::_action_rel2abs" -> "Catalyst::Dispatcher::CORE:match";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@236";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Catalyst::ActionContainer::part";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@9";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::DispatchType::Default::new";
+"Catalyst::Dispatcher::register" -> "Catalyst::Action::attributes";
+"Catalyst::Dispatcher::_build__tree" -> "Catalyst::ActionContainer::new";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Catalyst::ActionContainer::new";
+"Catalyst::Dispatcher::_container_hash" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:36]";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::Dispatcher::_method_action_class";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::Action::__ANON__[Catalyst/Action.pm:44]";
+"Catalyst::Dispatcher::register" -> "Catalyst::ActionContainer::add_action";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@10";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::DispatchType::Regex::new";
+"Catalyst::get_action" -> "Catalyst::Dispatcher::get_action";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@56";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@7";
+"Catalyst::Dispatcher::setup_actions" -> "UNIVERSAL::can";
+"Catalyst::Dispatcher::_invoke_as_component" -> "UNIVERSAL::can";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Dispatcher::_command2action";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Path::match";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::meta";
+"Catalyst::Dispatcher::BEGIN@11" -> "Catalyst::DispatchType::Default::BEGIN@3";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::get_action";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@4";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::state";
+"Catalyst::Dispatcher::BEGIN@256" -> "warnings::unimport";
+"Catalyst::Dispatcher::BEGIN@236" -> "warnings::unimport";
+"Catalyst::Dispatcher::register" -> "Catalyst::Dispatcher::_action_hash";
+"Catalyst::Dispatcher::get_action" -> "Catalyst::Dispatcher::_action_hash";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Index::register";
+"Catalyst::Dispatcher::_registered_dispatch_types" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:33]";
+"Catalyst::Dispatcher::BEGIN@12" -> "Catalyst::DispatchType::Index::BEGIN@3";
+"Catalyst::Dispatcher::_invoke_as_path" -> "Catalyst::Dispatcher::_action_rel2abs";
+"Catalyst::Dispatcher::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@12" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Catalyst::dispatch" -> "Catalyst::Dispatcher::dispatch";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Chained::new";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@11";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::action";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::Request::arguments";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::Dispatcher::_find_component";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Path::register";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::BEGIN@23";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::addChild";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@32";
+"Catalyst::Dispatcher::_find_or_create_namespace_node" -> "Tree::Simple::_insertChildAt";
+"Catalyst::Controller::register_action_methods" -> "Catalyst::Dispatcher::register";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::DispatchType::Path::new";
+"Catalyst::setup_actions" -> "Catalyst::Dispatcher::setup_actions";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@692";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@13";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@5";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Dispatcher::CORE:subst";
+"Catalyst::Dispatcher::get_containers" -> "Catalyst::Dispatcher::CORE:subst";
+"Catalyst::Dispatcher::_action_rel2abs" -> "Catalyst::Dispatcher::CORE:subst";
+"Catalyst::Dispatcher::register" -> "Catalyst::Action::namespace";
+"Catalyst::Dispatcher::_action_rel2abs" -> "Catalyst::Action::namespace";
+"Catalyst::Dispatcher::dispatch" -> "Catalyst::Action::namespace";
+"Catalyst::Dispatcher::register" -> "Catalyst::Action::name";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@15";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Class::MOP::load_class";
+"Catalyst::Dispatcher::register" -> "Class::MOP::load_class";
+"Catalyst::Dispatcher::BEGIN@12" -> "Catalyst::DispatchType::Index::BEGIN@5";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Request::args";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Index::_is_low_precedence";
+"Catalyst::Dispatcher::_find_component" -> "Catalyst::component";
+"Catalyst::Dispatcher::_command2action" -> "Catalyst::Dispatcher::_invoke_as_path";
+"Catalyst::Dispatcher::new" -> "Catalyst::Dispatcher::_build__tree";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@8";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@18";
+"Catalyst::Dispatcher::get_actions" -> "Catalyst::ActionContainer::get_action";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Request::captures";
+"Catalyst::Dispatcher::get_actions" -> "Catalyst::Dispatcher::get_containers";
+"Catalyst::Dispatcher::setup_actions" -> "Catalyst::Dispatcher::_load_dispatch_types";
+"Module::Runtime::require_module" -> "Catalyst::Dispatcher::BEGIN@11";
+"Catalyst::Dispatcher::_do_forward" -> "Catalyst::Action::DESTROY";
+"Catalyst::Dispatcher::BEGIN@9" -> "Catalyst::Action::meta";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::req";
+"Catalyst::Dispatcher::BEGIN@16" -> "Tree::Simple::Visitor::FindByPath::BEGIN@4";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Chained::register";
+}

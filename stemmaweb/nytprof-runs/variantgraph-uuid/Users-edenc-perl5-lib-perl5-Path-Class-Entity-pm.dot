@@ -1,0 +1,137 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::setup_home";
+}
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::struct";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::parent";
+	"Path::Class::Dir::new";
+	"Path::Class::Dir::stringify";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::BEGIN@10";
+	"Path::Class::Entity::BEGIN@9";
+	"Path::Class::Entity::BEGIN@14";
+	"Path::Class::Entity::BEGIN@8";
+	"Path::Class::Entity::boolify";
+	"Path::Class::Entity::is_absolute";
+	"Path::Class::Entity::absolute";
+	"Path::Class::Entity::BEGIN@11";
+	"Path::Class::Entity::cleanup";
+	"Path::Class::Entity::_spec";
+	"Path::Class::Entity::new";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::file_name_is_absolute";
+	"File::Spec::Unix::rel2abs";
+	"File::Spec::Unix::canonpath";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@16";
+	"File::stat::BEGIN@5";
+	"File::stat::BEGIN@4";
+	"File::stat::BEGIN@9";
+	"File::stat::BEGIN@6";
+	"File::stat::BEGIN@143";
+	"File::stat::BEGIN@35";
+	"File::stat::BEGIN@7";
+	"File::stat::BEGIN@30";
+	"File::stat::BEGIN@32";
+	"File::stat::BEGIN@173";
+	"File::stat::BEGIN@28";
+	"File::stat::BEGIN@147";
+	"File::stat::BEGIN@200";
+	"File::stat::BEGIN@17";
+	"File::stat::BEGIN@2";
+}
+subgraph cluster_base {
+	label="base";
+	"base::BEGIN@1";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::home";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+	"Path::Class::File::BEGIN@8";
+	"Path::Class::File::new";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@7";
+"Path::Class::Entity::is_absolute" -> "Path::Class::Dir::stringify";
+"Path::Class::Entity::absolute" -> "Path::Class::Dir::stringify";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@28";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@147";
+"Path::Class::Entity::BEGIN@14" -> "overload::import";
+"Path::Class::Dir::parent" -> "Path::Class::Entity::_spec";
+"Path::Class::File::stringify" -> "Path::Class::Entity::_spec";
+"Path::Class::File::new" -> "Path::Class::Entity::_spec";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Entity::_spec";
+"Path::Class::Dir::stringify" -> "Path::Class::Entity::_spec";
+"Path::Class::Dir::new" -> "Path::Class::Entity::_spec";
+"Path::Class::Entity::is_absolute" -> "Path::Class::Entity::_spec";
+"Path::Class::Entity::absolute" -> "Path::Class::Entity::_spec";
+"Path::Class::Entity::cleanup" -> "Path::Class::Entity::_spec";
+"base::import" -> "Path::Class::Entity::BEGIN@10";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@4";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@5";
+"Path::Class::Entity::absolute" -> "File::Spec::Unix::rel2abs";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@35";
+"Path::Class::Entity::absolute" -> "Path::Class::Dir::new";
+"Path::Class::Entity::cleanup" -> "Path::Class::Dir::new";
+"base::import" -> "Path::Class::Entity::BEGIN@14";
+"Path::Class::Entity::cleanup" -> "File::Spec::Unix::canonpath";
+"Catalyst::setup_home" -> "Path::Class::Entity::boolify";
+"base::BEGIN@1" -> "strict::import";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@143";
+"Path::Class::Entity::BEGIN@9" -> "Class::Struct::struct";
+"base::import" -> "Path::Class::Entity::BEGIN@8";
+"base::import" -> "Path::Class::Entity::BEGIN@11";
+"Path::Class::Entity::BEGIN@10" -> "Exporter::import";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@200";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@6";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@17";
+"Path::Class::Entity::is_absolute" -> "File::Spec::Unix::file_name_is_absolute";
+"Path::Class::Dir::new" -> "Path::Class::Entity::new";
+"Path::Class::File::new" -> "Path::Class::Entity::new";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@173";
+"Path::Class::Dir::parent" -> "Path::Class::Entity::is_absolute";
+"Path::Class::Entity::absolute" -> "Path::Class::Entity::is_absolute";
+"Catalyst::Utils::home" -> "Path::Class::Entity::absolute";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@2";
+"base::import" -> "Path::Class::Entity::BEGIN@9";
+"Path::Class::Entity::BEGIN@8" -> "UNIVERSAL::VERSION";
+"base::import" -> "base::BEGIN@1";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@16";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@9";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@30";
+"Path::Class::Entity::BEGIN@9" -> "File::stat::BEGIN@32";
+"Catalyst::Utils::home" -> "Path::Class::Entity::cleanup";
+}

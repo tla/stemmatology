@@ -1,0 +1,158 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::BEGIN@1052";
+	"PPI::Lexer::BEGIN@61";
+	"PPI::Lexer::_lex_document";
+	"PPI::Lexer::_add_element";
+	"PPI::Lexer::_statement";
+	"PPI::Lexer::lex_tokenizer";
+	"PPI::Lexer::BEGIN@57";
+	"PPI::Lexer::BEGIN@60";
+	"PPI::Lexer::BEGIN@97";
+	"PPI::Lexer::BEGIN@360";
+	"PPI::Lexer::BEGIN@63";
+	"PPI::Lexer::BEGIN@100";
+	"PPI::Lexer::_lex_statement";
+	"PPI::Lexer::BEGIN@1051";
+	"PPI::Lexer::new";
+	"PPI::Lexer::lex_source";
+	"PPI::Lexer::BEGIN@56";
+	"PPI::Lexer::_add_delayed";
+	"PPI::Lexer::BEGIN@58";
+	"PPI::Lexer::_get_token";
+	"PPI::Lexer::BEGIN@96";
+	"PPI::Lexer::_clear";
+	"PPI::Lexer::_rollback";
+	"PPI::Lexer::BEGIN@59";
+	"PPI::Lexer::BEGIN@64";
+	"PPI::Lexer::BEGIN@361";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::content";
+	"PPI::Token::__LEXER__closes";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::__LEXER__normal";
+	"PPI::Statement::new";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::significant";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::get_token";
+	"PPI::Tokenizer::new";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_INSTANCE";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::significant";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::schild";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@29";
+}
+"PPI::Lexer::lex_tokenizer" -> "PPI::Document::new";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@56";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@1052";
+"PPI::Lexer::_lex_document" -> "PPI::Lexer::_statement";
+"PPI::Lexer::lex_source" -> "PPI::Lexer::new";
+"PPI::Lexer::_lex_statement" -> "PPI::Statement::__LEXER__normal";
+"PPI::Lexer::lex_source" -> "PPI::Lexer::lex_tokenizer";
+"PPI::Lexer::_lex_statement" -> "PPI::Lexer::_add_element";
+"PPI::Lexer::_lex_document" -> "PPI::Lexer::_add_element";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@59";
+"PPI::Lexer::_statement" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::lex_tokenizer" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::lex_source" -> "Params::Util::_INSTANCE";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@1051";
+"PPI::Lexer::BEGIN@100" -> "constant::import";
+"PPI::Lexer::_add_element" -> "PPI::Node::schild";
+"PPI::Lexer::_lex_statement" -> "PPI::Token::Whitespace::significant";
+"PPI::Lexer::_lex_document" -> "PPI::Token::Whitespace::significant";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@64";
+"PPI::Lexer::BEGIN@56" -> "strict::import";
+"PPI::Lexer::_statement" -> "PPI::Token::content";
+"PPI::Lexer::_lex_document" -> "PPI::Token::content";
+"PPI::Lexer::_add_element" -> "PPI::Util::TRUE";
+"PPI::Lexer::_get_token" -> "PPI::Util::TRUE";
+"PPI::Lexer::_lex_document" -> "PPI::Lexer::_add_delayed";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@58";
+"PPI::Lexer::_lex_statement" -> "PPI::Lexer::_get_token";
+"PPI::Lexer::_lex_document" -> "PPI::Lexer::_get_token";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@61";
+"PPI::Lexer::BEGIN@58" -> "Exporter::import";
+"PPI::Lexer::_lex_document" -> "PPI::Lexer::_lex_statement";
+"PPI::Lexer::_lex_statement" -> "PPI::Token::__LEXER__closes";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@96";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@60";
+"PPI::Lexer::BEGIN@63" -> "vars::import";
+"PPI::Lexer::BEGIN@1051" -> "vars::import";
+"PPI::Lexer::BEGIN@360" -> "vars::import";
+"PPI::Lexer::BEGIN@96" -> "vars::import";
+"PPI::Lexer::_lex_statement" -> "PPI::Element::significant";
+"PPI::Lexer::_lex_document" -> "PPI::Element::significant";
+"PPI::Lexer::lex_source" -> "PPI::Tokenizer::new";
+"PPI::Lexer::_lex_document" -> "PPI::Statement::new";
+"PPI::Lexer::new" -> "PPI::Lexer::_clear";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@360";
+"PPI::Lexer::_add_element" -> "Scalar::Util::weaken";
+"PPI::Lexer::_lex_statement" -> "PPI::Lexer::_rollback";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@361";
+"PPI::Lexer::_add_element" -> "UNIVERSAL::isa";
+"PPI::Lexer::_statement" -> "UNIVERSAL::isa";
+"PPI::Lexer::_lex_statement" -> "UNIVERSAL::isa";
+"PPI::Lexer::lex_tokenizer" -> "PPI::Lexer::_lex_document";
+"PPI::Document::new" -> "PPI::Lexer::lex_source";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@100";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@97";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@57";
+"PPI::BEGIN@29" -> "PPI::Lexer::BEGIN@63";
+"PPI::Lexer::_get_token" -> "PPI::Tokenizer::get_token";
+"PPI::Lexer::_add_element" -> "Scalar::Util::refaddr";
+}

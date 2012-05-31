@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@50";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_adds_members";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_return_value";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_return_value";
+"Moose::Meta::Method::Accessor::Native::_inline_return_value" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_return_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@9";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@50";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_potential_value";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@50" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_inline_optimized_set_new_value";
+"Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_adds_members";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@10";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::BEGIN@12";
+}

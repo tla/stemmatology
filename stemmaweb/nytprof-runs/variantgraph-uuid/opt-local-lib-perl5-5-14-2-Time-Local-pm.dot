@@ -1,0 +1,55 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::import";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Time_Local {
+	label="Time::Local";
+	"Time::Local::CORE:pack";
+	"Time::Local::BEGIN@8";
+	"Time::Local::BEGIN@28";
+	"Time::Local::_daygm";
+	"Time::Local::BEGIN@4";
+	"Time::Local::BEGIN@5";
+	"Time::Local::BEGIN@29";
+	"Time::Local::BEGIN@27";
+	"Time::Local::BEGIN@6";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@9";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@5";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@27";
+"Time::Local::BEGIN@27" -> "constant::import";
+"Time::Local::BEGIN@28" -> "constant::import";
+"Time::Local::BEGIN@29" -> "constant::import";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@29";
+"Time::Local::BEGIN@6" -> "strict::import";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@8";
+"Time::Local::BEGIN@4" -> "Exporter::import";
+"Time::Local::BEGIN@8" -> "vars::import";
+"Time::Piece::BEGIN@9" -> "Time::Local::_daygm";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@6";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@4";
+"Time::Local::BEGIN@5" -> "Config::import";
+"Time::Local::_daygm" -> "Time::Local::CORE:pack";
+"Time::Piece::BEGIN@9" -> "Time::Local::BEGIN@28";
+}

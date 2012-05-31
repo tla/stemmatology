@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_Class_XSAccessor_Heavy {
+	label="Class::XSAccessor::Heavy";
+	"Class::XSAccessor::Heavy::BEGIN@27";
+	"Class::XSAccessor::Heavy::BEGIN@7";
+	"Class::XSAccessor::Heavy::BEGIN@5";
+	"Class::XSAccessor::Heavy::BEGIN@6";
+	"Class::XSAccessor::Heavy::BEGIN@4";
+	"Class::XSAccessor::Heavy::BEGIN@30";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_XSAccessor {
+	label="Class::XSAccessor";
+	"Class::XSAccessor::BEGIN@6";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@6";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@7";
+"Class::XSAccessor::Heavy::BEGIN@5" -> "strict::import";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@27";
+"Class::XSAccessor::Heavy::BEGIN@7" -> "Exporter::import";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@30";
+"Class::XSAccessor::Heavy::BEGIN@27" -> "strict::unimport";
+"Class::XSAccessor::Heavy::BEGIN@6" -> "warnings::import";
+"Class::XSAccessor::Heavy::BEGIN@30" -> "warnings::unimport";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@5";
+"Class::XSAccessor::BEGIN@6" -> "Class::XSAccessor::Heavy::BEGIN@4";
+}

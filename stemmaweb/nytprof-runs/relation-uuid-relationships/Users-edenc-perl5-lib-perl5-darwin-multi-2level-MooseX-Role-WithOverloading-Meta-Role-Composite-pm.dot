@@ -1,0 +1,43 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@11";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@5";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@2";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@10";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@13";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@16";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@14";
+}
+subgraph cluster_aliased {
+	label="aliased";
+	"aliased::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@16";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@14" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@13" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@12" -> "aliased::import";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@13";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@10";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@14";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@2";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@16" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@5";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@12";
+}

@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Role_Method_Conflicting {
+	label="Moose::Meta::Role::Method::Conflicting";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@3";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@15";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@13";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@11";
+	"Moose::Meta::Role::Method::Conflicting::BEGIN@10";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@22";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Role::BEGIN@22" -> "Moose::Meta::Role::Method::Conflicting::BEGIN@10";
+"Moose::Meta::Role::BEGIN@22" -> "Moose::Meta::Role::Method::Conflicting::BEGIN@13";
+"Moose::Meta::Role::BEGIN@22" -> "Moose::Meta::Role::Method::Conflicting::BEGIN@3";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@13" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@10" -> "strict::import";
+"Moose::Meta::Role::BEGIN@22" -> "Moose::Meta::Role::Method::Conflicting::BEGIN@15";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@15" -> "base::import";
+"Moose::Meta::Role::Method::Conflicting::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Role::BEGIN@22" -> "Moose::Meta::Role::Method::Conflicting::BEGIN@11";
+}

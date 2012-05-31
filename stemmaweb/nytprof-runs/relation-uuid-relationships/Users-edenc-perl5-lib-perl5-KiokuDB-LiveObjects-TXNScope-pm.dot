@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@14";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_LiveObjects_TXNScope {
+	label="KiokuDB::LiveObjects::TXNScope";
+	"KiokuDB::LiveObjects::TXNScope::BEGIN@8";
+	"KiokuDB::LiveObjects::TXNScope::BEGIN@4";
+	"KiokuDB::LiveObjects::TXNScope::BEGIN@6";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::LiveObjects::TXNScope::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::TXNScope::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::LiveObjects::TXNScope::BEGIN@6" -> "Exporter::import";
+"KiokuDB::LiveObjects::BEGIN@14" -> "KiokuDB::LiveObjects::TXNScope::BEGIN@6";
+"KiokuDB::LiveObjects::BEGIN@14" -> "KiokuDB::LiveObjects::TXNScope::BEGIN@8";
+"KiokuDB::LiveObjects::BEGIN@14" -> "KiokuDB::LiveObjects::TXNScope::BEGIN@4";
+}

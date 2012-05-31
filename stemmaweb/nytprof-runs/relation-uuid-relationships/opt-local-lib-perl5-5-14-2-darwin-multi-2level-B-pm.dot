@@ -1,0 +1,82 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@6";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_B_Deparse {
+	label="B::Deparse";
+	"B::Deparse::BEGIN@2789";
+	"B::Deparse::BEGIN@2792";
+	"B::Deparse::BEGIN@2791";
+	"B::Deparse::BEGIN@2790";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_inline_throw_error";
+	"Moose::Meta::Attribute::_inline_generate_default";
+	"Moose::Meta::Attribute::BEGIN@13";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::DESTROY";
+}
+subgraph cluster_B {
+	label="B";
+	"B::BEGIN@9";
+	"B::BEGIN@17";
+	"B::perlstring";
+	"B::threadsv_names";
+	"B::opnumber";
+	"B::svref_2object";
+	"B::BEGIN@254";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::__ANON__[Moose/Meta/TypeConstraint/Class.pm:30]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"DBIx::Class::Schema::DESTROY" -> "B::svref_2object";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@17";
+"B::BEGIN@9" -> "strict::import";
+"B::BEGIN@17" -> "XSLoader::load";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@254";
+"B::BEGIN@254" -> "strict::unimport";
+"B::Deparse::BEGIN@2792" -> "B::opnumber";
+"B::Deparse::BEGIN@2789" -> "B::opnumber";
+"B::Deparse::BEGIN@2790" -> "B::opnumber";
+"B::Deparse::BEGIN@2791" -> "B::opnumber";
+"Moose::Meta::Attribute::BEGIN@13" -> "B::BEGIN@9";
+"Text::Tradition::Collation::BEGIN@6" -> "B::threadsv_names";
+"Moose::Meta::Attribute::_inline_throw_error" -> "B::perlstring";
+"Moose::Meta::Attribute::_inline_generate_default" -> "B::perlstring";
+"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]" -> "B::perlstring";
+"Moose::Meta::Method::_inline_throw_error" -> "B::perlstring";
+"Moose::Meta::TypeConstraint::Class::__ANON__[Moose/Meta/TypeConstraint/Class.pm:30]" -> "B::perlstring";
+"Class::MOP::Class:::around" -> "B::perlstring";
+"Moose::Meta::TypeConstraint::Role::__ANON__[Moose/Meta/TypeConstraint/Role.pm:32]" -> "B::perlstring";
+}

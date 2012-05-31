@@ -1,0 +1,253 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_UnmatchedBrace {
+	label="PPI::Statement::UnmatchedBrace";
+	"PPI::Statement::UnmatchedBrace::BEGIN@48";
+	"PPI::Statement::UnmatchedBrace::BEGIN@50";
+	"PPI::Statement::UnmatchedBrace::BEGIN@47";
+	"PPI::Statement::UnmatchedBrace::BEGIN@51";
+}
+subgraph cluster_PPI_Statement_When {
+	label="PPI::Statement::When";
+	"PPI::Statement::When::BEGIN@44";
+	"PPI::Statement::When::BEGIN@48";
+	"PPI::Statement::When::BEGIN@45";
+	"PPI::Statement::When::BEGIN@47";
+}
+subgraph cluster_PPI_Statement_Variable {
+	label="PPI::Statement::Variable";
+	"PPI::Statement::Variable::BEGIN@41";
+	"PPI::Statement::Variable::BEGIN@43";
+	"PPI::Statement::Variable::BEGIN@42";
+	"PPI::Statement::Variable::BEGIN@45";
+	"PPI::Statement::Variable::BEGIN@46";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_PPI_Statement_Scheduled {
+	label="PPI::Statement::Scheduled";
+	"PPI::Statement::Scheduled::BEGIN@59";
+	"PPI::Statement::Scheduled::BEGIN@57";
+	"PPI::Statement::Scheduled::BEGIN@60";
+	"PPI::Statement::Scheduled::BEGIN@56";
+}
+subgraph cluster_PPI_Statement_Compound {
+	label="PPI::Statement::Compound";
+	"PPI::Statement::Compound::BEGIN@57";
+	"PPI::Statement::Compound::BEGIN@54";
+	"PPI::Statement::Compound::BEGIN@56";
+	"PPI::Statement::Compound::BEGIN@53";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_lex_statement";
+	"PPI::Lexer::_lex_document";
+}
+subgraph cluster_PPI_Statement_Null {
+	label="PPI::Statement::Null";
+	"PPI::Statement::Null::BEGIN@46";
+	"PPI::Statement::Null::BEGIN@47";
+	"PPI::Statement::Null::BEGIN@44";
+	"PPI::Statement::Null::BEGIN@43";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@173";
+	"PPI::Statement::BEGIN@163";
+	"PPI::Statement::BEGIN@156";
+	"PPI::Statement::BEGIN@176";
+	"PPI::Statement::BEGIN@165";
+	"PPI::Statement::BEGIN@175";
+	"PPI::Statement::BEGIN@166";
+	"PPI::Statement::BEGIN@167";
+	"PPI::Statement::BEGIN@164";
+	"PPI::Statement::BEGIN@152";
+	"PPI::Statement::new";
+	"PPI::Statement::BEGIN@149";
+	"PPI::Statement::BEGIN@151";
+	"PPI::Statement::BEGIN@162";
+	"PPI::Statement::__LEXER__normal";
+	"PPI::Statement::BEGIN@153";
+	"PPI::Statement::BEGIN@168";
+	"PPI::Statement::BEGIN@150";
+	"PPI::Statement::BEGIN@171";
+	"PPI::Statement::BEGIN@170";
+	"PPI::Statement::BEGIN@174";
+	"PPI::Statement::BEGIN@169";
+	"PPI::Statement::BEGIN@155";
+	"PPI::Statement::BEGIN@172";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Statement_Expression {
+	label="PPI::Statement::Expression";
+	"PPI::Statement::Expression::BEGIN@38";
+	"PPI::Statement::Expression::BEGIN@39";
+	"PPI::Statement::Expression::BEGIN@42";
+	"PPI::Statement::Expression::BEGIN@41";
+}
+subgraph cluster_PPI_Statement_Unknown {
+	label="PPI::Statement::Unknown";
+	"PPI::Statement::Unknown::BEGIN@35";
+	"PPI::Statement::Unknown::BEGIN@38";
+	"PPI::Statement::Unknown::BEGIN@39";
+	"PPI::Statement::Unknown::BEGIN@36";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_INSTANCE";
+}
+subgraph cluster_PPI_Statement_Data {
+	label="PPI::Statement::Data";
+	"PPI::Statement::Data::BEGIN@43";
+	"PPI::Statement::Data::BEGIN@47";
+	"PPI::Statement::Data::BEGIN@46";
+	"PPI::Statement::Data::BEGIN@44";
+}
+subgraph cluster_PPI_Statement_Given {
+	label="PPI::Statement::Given";
+	"PPI::Statement::Given::BEGIN@40";
+	"PPI::Statement::Given::BEGIN@37";
+	"PPI::Statement::Given::BEGIN@39";
+	"PPI::Statement::Given::BEGIN@36";
+}
+subgraph cluster_PPI_Statement_Package {
+	label="PPI::Statement::Package";
+	"PPI::Statement::Package::BEGIN@68";
+	"PPI::Statement::Package::BEGIN@71";
+	"PPI::Statement::Package::BEGIN@70";
+	"PPI::Statement::Package::BEGIN@67";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_PPI_Statement_Include {
+	label="PPI::Statement::Include";
+	"PPI::Statement::Include::BEGIN@48";
+	"PPI::Statement::Include::BEGIN@49";
+	"PPI::Statement::Include::BEGIN@47";
+	"PPI::Statement::Include::BEGIN@52";
+	"PPI::Statement::Include::BEGIN@51";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI_Statement_End {
+	label="PPI::Statement::End";
+	"PPI::Statement::End::BEGIN@47";
+	"PPI::Statement::End::BEGIN@50";
+	"PPI::Statement::End::BEGIN@48";
+	"PPI::Statement::End::BEGIN@51";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@21";
+}
+subgraph cluster_PPI_Statement_Break {
+	label="PPI::Statement::Break";
+	"PPI::Statement::Break::BEGIN@41";
+	"PPI::Statement::Break::BEGIN@44";
+	"PPI::Statement::Break::BEGIN@43";
+	"PPI::Statement::Break::BEGIN@40";
+}
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@165";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@162";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@51";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@47";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@50";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@56";
+"PPI::Statement::BEGIN@175" -> "PPI::Statement::Variable::BEGIN@46";
+"PPI::Statement::BEGIN@175" -> "PPI::Statement::Variable::BEGIN@41";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@57";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@38";
+"PPI::Statement::BEGIN@165" -> "PPI::Statement::End::BEGIN@51";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@39";
+"PPI::Lexer::_lex_statement" -> "PPI::Statement::__LEXER__normal";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@155";
+"PPI::Statement::BEGIN@164" -> "PPI::Statement::Data::BEGIN@47";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@54";
+"PPI::Statement::BEGIN@162" -> "PPI::Statement::Break::BEGIN@41";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@167";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@173";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@59";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@153";
+"PPI::Statement::BEGIN@175" -> "PPI::Statement::Variable::BEGIN@45";
+"PPI::Statement::new" -> "Params::Util::_INSTANCE";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@48";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@166";
+"PPI::Statement::BEGIN@166" -> "PPI::Statement::Expression::BEGIN@39";
+"PPI::Statement::BEGIN@164" -> "PPI::Statement::Data::BEGIN@44";
+"PPI::Statement::BEGIN@149" -> "strict::import";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@176";
+"PPI::Statement::BEGIN@169" -> "PPI::Statement::Package::BEGIN@67";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@175";
+"PPI::Statement::BEGIN@176" -> "PPI::Statement::When::BEGIN@48";
+"PPI::Statement::BEGIN@175" -> "PPI::Statement::Variable::BEGIN@43";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@44";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@46";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@35";
+"PPI::Statement::BEGIN@172" -> "PPI::Statement::Given::BEGIN@36";
+"PPI::Statement::new" -> "PPI::Util::TRUE";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@169";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@171";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@57";
+"PPI::Statement::BEGIN@165" -> "PPI::Statement::End::BEGIN@48";
+"PPI::Statement::BEGIN@151" -> "Exporter::import";
+"PPI::Statement::BEGIN@166" -> "PPI::Statement::Expression::BEGIN@42";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@170";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@151";
+"PPI::Statement::BEGIN@155" -> "vars::import";
+"PPI::Lexer::_lex_document" -> "PPI::Statement::new";
+"PPI::Statement::BEGIN@162" -> "PPI::Statement::Break::BEGIN@43";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@172";
+"PPI::Statement::BEGIN@166" -> "PPI::Statement::Expression::BEGIN@38";
+"PPI::Statement::BEGIN@165" -> "PPI::Statement::End::BEGIN@50";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@47";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@52";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@164";
+"PPI::Statement::BEGIN@172" -> "PPI::Statement::Given::BEGIN@39";
+"PPI::Statement::BEGIN@162" -> "PPI::Statement::Break::BEGIN@40";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@51";
+"PPI::Statement::new" -> "Scalar::Util::weaken";
+"PPI::Statement::BEGIN@172" -> "PPI::Statement::Given::BEGIN@37";
+"PPI::Statement::BEGIN@164" -> "PPI::Statement::Data::BEGIN@46";
+"PPI::Statement::BEGIN@173" -> "PPI::Statement::UnmatchedBrace::BEGIN@48";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@56";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@156";
+"PPI::Statement::BEGIN@169" -> "PPI::Statement::Package::BEGIN@71";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@53";
+"PPI::Statement::BEGIN@165" -> "PPI::Statement::End::BEGIN@47";
+"PPI::Statement::BEGIN@172" -> "PPI::Statement::Given::BEGIN@40";
+"PPI::Statement::BEGIN@166" -> "PPI::Statement::Expression::BEGIN@41";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@149";
+"PPI::Statement::BEGIN@170" -> "PPI::Statement::Scheduled::BEGIN@60";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@174";
+"PPI::Statement::BEGIN@176" -> "PPI::Statement::When::BEGIN@45";
+"PPI::Statement::BEGIN@176" -> "PPI::Statement::When::BEGIN@44";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@49";
+"PPI::Statement::new" -> "Scalar::Util::refaddr";
+"PPI::Statement::BEGIN@169" -> "PPI::Statement::Package::BEGIN@70";
+"PPI::Statement::BEGIN@164" -> "PPI::Statement::Data::BEGIN@43";
+"PPI::Statement::BEGIN@169" -> "PPI::Statement::Package::BEGIN@68";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@36";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@152";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@43";
+"PPI::Statement::BEGIN@176" -> "PPI::Statement::When::BEGIN@47";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@163";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@150";
+"PPI::Statement::BEGIN@162" -> "PPI::Statement::Break::BEGIN@44";
+"PPI::BEGIN@21" -> "PPI::Statement::BEGIN@168";
+"PPI::Statement::BEGIN@175" -> "PPI::Statement::Variable::BEGIN@42";
+"PPI::Statement::BEGIN@167" -> "PPI::Statement::Include::BEGIN@47";
+}

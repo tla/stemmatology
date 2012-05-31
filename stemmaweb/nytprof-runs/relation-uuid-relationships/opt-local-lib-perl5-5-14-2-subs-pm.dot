@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Opcode {
+	label="Opcode";
+	"Opcode::BEGIN@29";
+}
+subgraph cluster_Data_Dump {
+	label="Data::Dump";
+	"Data::Dump::BEGIN@5";
+}
+subgraph cluster_subs {
+	label="subs";
+	"subs::import";
+}
+"Opcode::BEGIN@29" -> "subs::import";
+"Data::Dump::BEGIN@5" -> "subs::import";
+}

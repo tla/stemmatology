@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_File_Glob {
+	label="File::Glob";
+	"File::Glob::import";
+	"File::Glob::GLOB_CSH";
+	"File::Glob::BEGIN@3";
+	"File::Glob::CORE:match";
+	"File::Glob::BEGIN@7";
+	"File::Glob::BEGIN@50";
+}
+subgraph cluster_feature {
+	label="feature";
+	"feature::import";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@22";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@50";
+"Config::General::BEGIN@22" -> "File::Glob::import";
+"Config::General::BEGIN@22" -> "File::Glob::GLOB_CSH";
+"File::Glob::BEGIN@3" -> "strict::import";
+"File::Glob::import" -> "Exporter::import";
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@7";
+"File::Glob::BEGIN@50" -> "warnings::unimport";
+"Config::General::BEGIN@22" -> "File::Glob::CORE:match";
+"File::Glob::BEGIN@7" -> "feature::import";
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@3";
+}

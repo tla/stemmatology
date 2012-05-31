@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@27";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Tree_Simple_Visitor_FindByUID {
+	label="Tree::Simple::Visitor::FindByUID";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@4";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@11";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@9";
+	"Tree::Simple::Visitor::FindByUID::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@9";
+"Tree::Simple::Visitor::FindByUID::BEGIN@4" -> "strict::import";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@5";
+"Tree::Simple::Visitor::FindByUID::BEGIN@9" -> "Exporter::import";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@11";
+"Tree::Simple::Visitor::FindByUID::BEGIN@11" -> "base::import";
+"Tree::Simple::Visitor::FindByUID::BEGIN@5" -> "warnings::import";
+"Catalyst::BEGIN@27" -> "Tree::Simple::Visitor::FindByUID::BEGIN@4";
+}

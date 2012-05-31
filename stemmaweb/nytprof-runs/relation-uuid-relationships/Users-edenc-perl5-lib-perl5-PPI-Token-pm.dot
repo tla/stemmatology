@@ -1,0 +1,634 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::BEGIN@30";
+	"PPI::Token::Symbol::raw_type";
+	"PPI::Token::Symbol::canonical";
+	"PPI::Token::Symbol::BEGIN@34";
+	"PPI::Token::Symbol::BEGIN@31";
+	"PPI::Token::Symbol::BEGIN@32";
+	"PPI::Token::Symbol::BEGIN@35";
+}
+subgraph cluster_PPI_Token_Label {
+	label="PPI::Token::Label";
+	"PPI::Token::Label::BEGIN@32";
+	"PPI::Token::Label::BEGIN@31";
+	"PPI::Token::Label::BEGIN@34";
+	"PPI::Token::Label::BEGIN@35";
+}
+subgraph cluster_PPI_Token_Regexp_Substitute {
+	label="PPI::Token::Regexp::Substitute";
+	"PPI::Token::Regexp::Substitute::BEGIN@35";
+	"PPI::Token::Regexp::Substitute::BEGIN@36";
+	"PPI::Token::Regexp::Substitute::BEGIN@40";
+	"PPI::Token::Regexp::Substitute::BEGIN@37";
+	"PPI::Token::Regexp::Substitute::BEGIN@39";
+}
+subgraph cluster_PPI_Token_Cast {
+	label="PPI::Token::Cast";
+	"PPI::Token::Cast::BEGIN@38";
+	"PPI::Token::Cast::BEGIN@35";
+	"PPI::Token::Cast::BEGIN@37";
+	"PPI::Token::Cast::BEGIN@34";
+}
+subgraph cluster_PPI_Token_QuoteLike_Words {
+	label="PPI::Token::QuoteLike::Words";
+	"PPI::Token::QuoteLike::Words::BEGIN@28";
+	"PPI::Token::QuoteLike::Words::BEGIN@33";
+	"PPI::Token::QuoteLike::Words::BEGIN@29";
+	"PPI::Token::QuoteLike::Words::BEGIN@30";
+	"PPI::Token::QuoteLike::Words::BEGIN@32";
+}
+subgraph cluster_PPI_Token_Quote_Literal {
+	label="PPI::Token::Quote::Literal";
+	"PPI::Token::Quote::Literal::BEGIN@31";
+	"PPI::Token::Quote::Literal::BEGIN@36";
+	"PPI::Token::Quote::Literal::BEGIN@32";
+	"PPI::Token::Quote::Literal::BEGIN@35";
+	"PPI::Token::Quote::Literal::BEGIN@33";
+}
+subgraph cluster_PPI_Token_End {
+	label="PPI::Token::End";
+	"PPI::Token::End::BEGIN@46";
+	"PPI::Token::End::BEGIN@44";
+	"PPI::Token::End::BEGIN@43";
+	"PPI::Token::End::BEGIN@47";
+}
+subgraph cluster_PPI_Token_QuoteLike_Backtick {
+	label="PPI::Token::QuoteLike::Backtick";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@32";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@36";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@33";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@35";
+	"PPI::Token::QuoteLike::Backtick::BEGIN@31";
+}
+subgraph cluster_PPI_Token_Operator {
+	label="PPI::Token::Operator";
+	"PPI::Token::Operator::BEGIN@42";
+	"PPI::Token::Operator::BEGIN@43";
+	"PPI::Token::Operator::BEGIN@46";
+	"PPI::Token::Operator::BEGIN@45";
+}
+subgraph cluster_PPI_Token_Number {
+	label="PPI::Token::Number";
+	"PPI::Token::Number::BEGIN@36";
+	"PPI::Token::Number::BEGIN@35";
+	"PPI::Token::Number::BEGIN@32";
+	"PPI::Token::Number::BEGIN@33";
+}
+subgraph cluster_PPI_Token_Prototype {
+	label="PPI::Token::Prototype";
+	"PPI::Token::Prototype::BEGIN@49";
+	"PPI::Token::Prototype::BEGIN@53";
+	"PPI::Token::Prototype::BEGIN@52";
+	"PPI::Token::Prototype::BEGIN@50";
+}
+subgraph cluster_PPI_Token_Number_Binary {
+	label="PPI::Token::Number::Binary";
+	"PPI::Token::Number::Binary::BEGIN@29";
+	"PPI::Token::Number::Binary::BEGIN@32";
+	"PPI::Token::Number::Binary::BEGIN@30";
+	"PPI::Token::Number::Binary::BEGIN@33";
+}
+subgraph cluster_PPI_Token_Pod {
+	label="PPI::Token::Pod";
+	"PPI::Token::Pod::BEGIN@33";
+	"PPI::Token::Pod::BEGIN@29";
+	"PPI::Token::Pod::BEGIN@34";
+	"PPI::Token::Pod::BEGIN@31";
+	"PPI::Token::Pod::BEGIN@30";
+}
+subgraph cluster_PPI_Token_Number_Float {
+	label="PPI::Token::Number::Float";
+	"PPI::Token::Number::Float::BEGIN@31";
+	"PPI::Token::Number::Float::BEGIN@35";
+	"PPI::Token::Number::Float::BEGIN@32";
+	"PPI::Token::Number::Float::BEGIN@34";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_lex_statement";
+	"PPI::Lexer::_statement";
+	"PPI::Lexer::_lex_document";
+}
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::BEGIN@42";
+	"PPI::Token::Word::BEGIN@41";
+	"PPI::Token::Word::BEGIN@38";
+	"PPI::Token::Word::BEGIN@39";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::_param_labeled";
+	"Parse::Method::Signatures::_param_default";
+	"Parse::Method::Signatures::consume_token";
+	"Parse::Method::Signatures::parse";
+	"Parse::Method::Signatures::_param_named";
+	"Parse::Method::Signatures::_tc_union";
+	"Parse::Method::Signatures::bracketed";
+	"Parse::Method::Signatures::_param_variable";
+}
+subgraph cluster_PPI_Token_Quote_Double {
+	label="PPI::Token::Quote::Double";
+	"PPI::Token::Quote::Double::BEGIN@35";
+	"PPI::Token::Quote::Double::BEGIN@40";
+	"PPI::Token::Quote::Double::BEGIN@36";
+	"PPI::Token::Quote::Double::BEGIN@39";
+	"PPI::Token::Quote::Double::BEGIN@34";
+	"PPI::Token::Quote::Double::BEGIN@37";
+}
+subgraph cluster_PPI_Token_Quote_Single {
+	label="PPI::Token::Quote::Single";
+	"PPI::Token::Quote::Single::BEGIN@38";
+	"PPI::Token::Quote::Single::BEGIN@42";
+	"PPI::Token::Quote::Single::BEGIN@41";
+	"PPI::Token::Quote::Single::BEGIN@39";
+	"PPI::Token::Quote::Single::BEGIN@37";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@28";
+	"PPI::Token::BEGIN@47";
+	"PPI::Token::BEGIN@54";
+	"PPI::Token::BEGIN@69";
+	"PPI::Token::BEGIN@23";
+	"PPI::Token::BEGIN@60";
+	"PPI::Token::BEGIN@39";
+	"PPI::Token::new";
+	"PPI::Token::BEGIN@48";
+	"PPI::Token::BEGIN@26";
+	"PPI::Token::BEGIN@76";
+	"PPI::Token::BEGIN@52";
+	"PPI::Token::BEGIN@43";
+	"PPI::Token::BEGIN@68";
+	"PPI::Token::BEGIN@72";
+	"PPI::Token::BEGIN@24";
+	"PPI::Token::BEGIN@71";
+	"PPI::Token::BEGIN@42";
+	"PPI::Token::BEGIN@59";
+	"PPI::Token::BEGIN@44";
+	"PPI::Token::BEGIN@66";
+	"PPI::Token::BEGIN@38";
+	"PPI::Token::BEGIN@70";
+	"PPI::Token::BEGIN@29";
+	"PPI::Token::BEGIN@64";
+	"PPI::Token::BEGIN@61";
+	"PPI::Token::BEGIN@40";
+	"PPI::Token::BEGIN@50";
+	"PPI::Token::BEGIN@49";
+	"PPI::Token::BEGIN@73";
+	"PPI::Token::BEGIN@53";
+	"PPI::Token::BEGIN@62";
+	"PPI::Token::BEGIN@63";
+	"PPI::Token::BEGIN@41";
+	"PPI::Token::BEGIN@56";
+	"PPI::Token::BEGIN@74";
+	"PPI::Token::__LEXER__closes";
+	"PPI::Token::BEGIN@58";
+	"PPI::Token::BEGIN@55";
+	"PPI::Token::BEGIN@46";
+	"PPI::Token::BEGIN@51";
+	"PPI::Token::BEGIN@65";
+	"PPI::Token::BEGIN@25";
+	"PPI::Token::set_class";
+	"PPI::Token::BEGIN@45";
+	"PPI::Token::CORE:match";
+	"PPI::Token::BEGIN@67";
+	"PPI::Token::BEGIN@75";
+	"PPI::Token::content";
+	"PPI::Token::BEGIN@57";
+}
+subgraph cluster_PPI_Token_Regexp_Transliterate {
+	label="PPI::Token::Regexp::Transliterate";
+	"PPI::Token::Regexp::Transliterate::BEGIN@44";
+	"PPI::Token::Regexp::Transliterate::BEGIN@41";
+	"PPI::Token::Regexp::Transliterate::BEGIN@39";
+	"PPI::Token::Regexp::Transliterate::BEGIN@43";
+	"PPI::Token::Regexp::Transliterate::BEGIN@40";
+}
+subgraph cluster_PPI_Token_Data {
+	label="PPI::Token::Data";
+	"PPI::Token::Data::BEGIN@31";
+	"PPI::Token::Data::BEGIN@30";
+	"PPI::Token::Data::BEGIN@34";
+	"PPI::Token::Data::BEGIN@32";
+	"PPI::Token::Data::BEGIN@35";
+}
+subgraph cluster_PPI_Token_Number_Octal {
+	label="PPI::Token::Number::Octal";
+	"PPI::Token::Number::Octal::BEGIN@29";
+	"PPI::Token::Number::Octal::BEGIN@33";
+	"PPI::Token::Number::Octal::BEGIN@32";
+	"PPI::Token::Number::Octal::BEGIN@30";
+}
+subgraph cluster_PPI_Token_Magic {
+	label="PPI::Token::Magic";
+	"PPI::Token::Magic::BEGIN@48";
+	"PPI::Token::Magic::BEGIN@45";
+	"PPI::Token::Magic::BEGIN@44";
+	"PPI::Token::Magic::BEGIN@46";
+	"PPI::Token::Magic::BEGIN@49";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_new_token";
+	"PPI::Tokenizer::_process_next_char";
+}
+subgraph cluster_PPI_Token_ArrayIndex {
+	label="PPI::Token::ArrayIndex";
+	"PPI::Token::ArrayIndex::BEGIN@32";
+	"PPI::Token::ArrayIndex::BEGIN@33";
+	"PPI::Token::ArrayIndex::BEGIN@30";
+	"PPI::Token::ArrayIndex::BEGIN@29";
+}
+subgraph cluster_PPI_Token_Regexp_Match {
+	label="PPI::Token::Regexp::Match";
+	"PPI::Token::Regexp::Match::BEGIN@45";
+	"PPI::Token::Regexp::Match::BEGIN@46";
+	"PPI::Token::Regexp::Match::BEGIN@47";
+	"PPI::Token::Regexp::Match::BEGIN@49";
+	"PPI::Token::Regexp::Match::BEGIN@50";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::BEGIN@49";
+	"PPI::Token::Whitespace::BEGIN@48";
+	"PPI::Token::Whitespace::BEGIN@114";
+	"PPI::Token::Whitespace::BEGIN@46";
+	"PPI::Token::Whitespace::BEGIN@45";
+	"PPI::Token::Whitespace::BEGIN@113";
+	"PPI::Token::Whitespace::null";
+	"PPI::Token::Whitespace::BEGIN@44";
+}
+subgraph cluster_PPI_Token_Number_Version {
+	label="PPI::Token::Number::Version";
+	"PPI::Token::Number::Version::BEGIN@37";
+	"PPI::Token::Number::Version::BEGIN@34";
+	"PPI::Token::Number::Version::BEGIN@36";
+	"PPI::Token::Number::Version::BEGIN@33";
+}
+subgraph cluster_PPI_Token_Comment {
+	label="PPI::Token::Comment";
+	"PPI::Token::Comment::BEGIN@61";
+	"PPI::Token::Comment::BEGIN@65";
+	"PPI::Token::Comment::BEGIN@62";
+	"PPI::Token::Comment::BEGIN@64";
+}
+subgraph cluster_PPI_Token_Quote_Interpolate {
+	label="PPI::Token::Quote::Interpolate";
+	"PPI::Token::Quote::Interpolate::BEGIN@36";
+	"PPI::Token::Quote::Interpolate::BEGIN@33";
+	"PPI::Token::Quote::Interpolate::BEGIN@31";
+	"PPI::Token::Quote::Interpolate::BEGIN@32";
+	"PPI::Token::Quote::Interpolate::BEGIN@35";
+}
+subgraph cluster_PPI_Token_Number_Hex {
+	label="PPI::Token::Number::Hex";
+	"PPI::Token::Number::Hex::BEGIN@33";
+	"PPI::Token::Number::Hex::BEGIN@29";
+	"PPI::Token::Number::Hex::BEGIN@30";
+	"PPI::Token::Number::Hex::BEGIN@32";
+}
+subgraph cluster_PPI_Token_DashedWord {
+	label="PPI::Token::DashedWord";
+	"PPI::Token::DashedWord::BEGIN@33";
+	"PPI::Token::DashedWord::BEGIN@29";
+	"PPI::Token::DashedWord::BEGIN@30";
+	"PPI::Token::DashedWord::BEGIN@32";
+}
+subgraph cluster_PPI_Token_Attribute {
+	label="PPI::Token::Attribute";
+	"PPI::Token::Attribute::BEGIN@36";
+	"PPI::Token::Attribute::BEGIN@39";
+	"PPI::Token::Attribute::BEGIN@35";
+	"PPI::Token::Attribute::BEGIN@38";
+}
+subgraph cluster_PPI_Token_QuoteLike_Readline {
+	label="PPI::Token::QuoteLike::Readline";
+	"PPI::Token::QuoteLike::Readline::BEGIN@44";
+	"PPI::Token::QuoteLike::Readline::BEGIN@40";
+	"PPI::Token::QuoteLike::Readline::BEGIN@41";
+	"PPI::Token::QuoteLike::Readline::BEGIN@45";
+	"PPI::Token::QuoteLike::Readline::BEGIN@42";
+}
+subgraph cluster_PPI_Token_Unknown {
+	label="PPI::Token::Unknown";
+	"PPI::Token::Unknown::__TOKENIZER__on_char";
+}
+subgraph cluster_PPI_Token_Separator {
+	label="PPI::Token::Separator";
+	"PPI::Token::Separator::BEGIN@38";
+	"PPI::Token::Separator::BEGIN@36";
+	"PPI::Token::Separator::BEGIN@35";
+	"PPI::Token::Separator::BEGIN@39";
+}
+subgraph cluster_PPI_Token_BOM {
+	label="PPI::Token::BOM";
+	"PPI::Token::BOM::BEGIN@43";
+	"PPI::Token::BOM::BEGIN@46";
+	"PPI::Token::BOM::BEGIN@42";
+	"PPI::Token::BOM::BEGIN@45";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_PPI_Token_HereDoc {
+	label="PPI::Token::HereDoc";
+	"PPI::Token::HereDoc::BEGIN@88";
+	"PPI::Token::HereDoc::BEGIN@91";
+	"PPI::Token::HereDoc::BEGIN@87";
+	"PPI::Token::HereDoc::BEGIN@90";
+}
+subgraph cluster_PPI_Token_Number_Exp {
+	label="PPI::Token::Number::Exp";
+	"PPI::Token::Number::Exp::BEGIN@32";
+	"PPI::Token::Number::Exp::BEGIN@35";
+	"PPI::Token::Number::Exp::BEGIN@31";
+	"PPI::Token::Number::Exp::BEGIN@34";
+}
+subgraph cluster_PPI_Token_QuoteLike_Regexp {
+	label="PPI::Token::QuoteLike::Regexp";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@37";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@32";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@34";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@36";
+	"PPI::Token::QuoteLike::Regexp::BEGIN@33";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@20";
+}
+subgraph cluster_PPI_Token_QuoteLike_Command {
+	label="PPI::Token::QuoteLike::Command";
+	"PPI::Token::QuoteLike::Command::BEGIN@31";
+	"PPI::Token::QuoteLike::Command::BEGIN@33";
+	"PPI::Token::QuoteLike::Command::BEGIN@35";
+	"PPI::Token::QuoteLike::Command::BEGIN@36";
+	"PPI::Token::QuoteLike::Command::BEGIN@32";
+}
+subgraph cluster_PPI_Token_Structure {
+	label="PPI::Token::Structure";
+	"PPI::Token::Structure::BEGIN@32";
+	"PPI::Token::Structure::BEGIN@31";
+	"PPI::Token::Structure::BEGIN@34";
+	"PPI::Token::Structure::BEGIN@42";
+	"PPI::Token::Structure::BEGIN@35";
+	"PPI::Token::Structure::BEGIN@43";
+}
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@69";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@32";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@29";
+"PPI::Token::BEGIN@75" -> "PPI::Token::Attribute::BEGIN@35";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@30";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@73";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@41";
+"PPI::Token::BEGIN@57" -> "PPI::Token::Quote::Interpolate::BEGIN@31";
+"PPI::Token::BEGIN@67" -> "PPI::Token::Cast::BEGIN@34";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@46";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@57";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@24";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@38";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@46";
+"PPI::Token::BEGIN@40" -> "PPI::Token::Comment::BEGIN@62";
+"PPI::Token::BEGIN@59" -> "PPI::Token::QuoteLike::Command::BEGIN@36";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@40";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@38";
+"PPI::Token::BEGIN@59" -> "PPI::Token::QuoteLike::Command::BEGIN@33";
+"PPI::Token::BEGIN@62" -> "PPI::Token::QuoteLike::Readline::BEGIN@41";
+"PPI::Token::BEGIN@71" -> "PPI::Token::Separator::BEGIN@39";
+"PPI::Token::BEGIN@50" -> "PPI::Token::DashedWord::BEGIN@32";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@43";
+"PPI::Token::BEGIN@64" -> "PPI::Token::Regexp::Substitute::BEGIN@39";
+"PPI::Token::BEGIN@66" -> "PPI::Token::Operator::BEGIN@45";
+"PPI::Token::BEGIN@59" -> "PPI::Token::QuoteLike::Command::BEGIN@31";
+"PPI::Token::BEGIN@56" -> "PPI::Token::Quote::Literal::BEGIN@33";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@26";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@34";
+"PPI::Token::BEGIN@61" -> "PPI::Token::QuoteLike::Words::BEGIN@33";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@59";
+"PPI::Token::BEGIN@71" -> "PPI::Token::Separator::BEGIN@35";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@114";
+"PPI::Token::BEGIN@40" -> "PPI::Token::Comment::BEGIN@64";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@60";
+"PPI::Token::BEGIN@70" -> "PPI::Token::HereDoc::BEGIN@91";
+"PPI::Token::BEGIN@42" -> "PPI::Token::Number::BEGIN@32";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@76";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@71";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@44";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@53";
+"PPI::Token::BEGIN@43" -> "PPI::Token::Number::Binary::BEGIN@30";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@31";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@41";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@42";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@31";
+"PPI::Token::BEGIN@52" -> "PPI::Token::ArrayIndex::BEGIN@33";
+"PPI::Token::BEGIN@56" -> "PPI::Token::Quote::Literal::BEGIN@35";
+"PPI::Token::BEGIN@62" -> "PPI::Token::QuoteLike::Readline::BEGIN@42";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@48";
+"PPI::Token::BEGIN@69" -> "PPI::Token::Label::BEGIN@31";
+"PPI::Token::BEGIN@58" -> "PPI::Token::QuoteLike::Backtick::BEGIN@35";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@37";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@51";
+"PPI::Token::Unknown::__TOKENIZER__on_char" -> "PPI::Token::set_class";
+"PPI::Token::BEGIN@64" -> "PPI::Token::Regexp::Substitute::BEGIN@35";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@32";
+"PPI::Token::BEGIN@70" -> "PPI::Token::HereDoc::BEGIN@90";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@45";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@39";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@41";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@55";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@43";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@45";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@34";
+"PPI::Token::BEGIN@58" -> "PPI::Token::QuoteLike::Backtick::BEGIN@32";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@43";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@39";
+"PPI::Token::BEGIN@59" -> "PPI::Token::QuoteLike::Command::BEGIN@35";
+"PPI::Token::BEGIN@67" -> "PPI::Token::Cast::BEGIN@38";
+"PPI::Token::BEGIN@75" -> "PPI::Token::Attribute::BEGIN@39";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@42";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@47";
+"PPI::Token::BEGIN@61" -> "PPI::Token::QuoteLike::Words::BEGIN@28";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@47";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@44";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@34";
+"PPI::Token::BEGIN@57" -> "PPI::Token::Quote::Interpolate::BEGIN@35";
+"PPI::Token::BEGIN@69" -> "PPI::Token::Label::BEGIN@35";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@65";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@41";
+"PPI::Token::BEGIN@23" -> "strict::import";
+"PPI::Token::BEGIN@47" -> "PPI::Token::Number::Exp::BEGIN@32";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@48";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@43";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@64";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@34";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@63";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@50";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@36";
+"Parse::Method::Signatures::TypeConstraint::__ANON__[Parse/Method/Signatures/TypeConstraint.pm:95]" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_labeled" -> "PPI::Token::content";
+"Parse::Method::Signatures::consume_token" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_default" -> "PPI::Token::content";
+"PPI::Lexer::_lex_document" -> "PPI::Token::content";
+"PPI::Lexer::_statement" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_named" -> "PPI::Token::content";
+"Parse::Method::Signatures::_tc_union" -> "PPI::Token::content";
+"PPI::Token::Symbol::canonical" -> "PPI::Token::content";
+"PPI::Token::Symbol::raw_type" -> "PPI::Token::content";
+"Parse::Method::Signatures::bracketed" -> "PPI::Token::content";
+"Parse::Method::Signatures::_param_variable" -> "PPI::Token::content";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@35";
+"PPI::Token::BEGIN@64" -> "PPI::Token::Regexp::Substitute::BEGIN@37";
+"PPI::Token::BEGIN@46" -> "PPI::Token::Number::Float::BEGIN@34";
+"PPI::Token::BEGIN@47" -> "PPI::Token::Number::Exp::BEGIN@34";
+"PPI::Token::BEGIN@40" -> "PPI::Token::Comment::BEGIN@65";
+"PPI::Token::BEGIN@46" -> "PPI::Token::Number::Float::BEGIN@31";
+"PPI::Token::BEGIN@62" -> "PPI::Token::QuoteLike::Readline::BEGIN@44";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@45";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@45";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@31";
+"PPI::Token::BEGIN@53" -> "PPI::Token::Magic::BEGIN@49";
+"PPI::Token::BEGIN@45" -> "PPI::Token::Number::Hex::BEGIN@32";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@29";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@47";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@36";
+"PPI::Token::BEGIN@66" -> "PPI::Token::Operator::BEGIN@43";
+"PPI::Token::BEGIN@43" -> "PPI::Token::Number::Binary::BEGIN@33";
+"PPI::Token::BEGIN@53" -> "PPI::Token::Magic::BEGIN@45";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@46";
+"PPI::Token::BEGIN@24" -> "Exporter::import";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@38";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@53";
+"PPI::Token::BEGIN@56" -> "PPI::Token::Quote::Literal::BEGIN@32";
+"PPI::Token::BEGIN@43" -> "PPI::Token::Number::Binary::BEGIN@29";
+"PPI::Token::BEGIN@47" -> "PPI::Token::Number::Exp::BEGIN@35";
+"PPI::Token::BEGIN@50" -> "PPI::Token::DashedWord::BEGIN@30";
+"PPI::Token::BEGIN@38" -> "PPI::Token::BOM::BEGIN@46";
+"PPI::Token::BEGIN@47" -> "PPI::Token::Number::Exp::BEGIN@31";
+"PPI::Token::BEGIN@45" -> "PPI::Token::Number::Hex::BEGIN@30";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@75";
+"PPI::Token::BEGIN@58" -> "PPI::Token::QuoteLike::Backtick::BEGIN@36";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@34";
+"PPI::Token::BEGIN@41" -> "PPI::Token::Pod::BEGIN@33";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@30";
+"PPI::Tokenizer::_new_token" -> "PPI::Token::new";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::new";
+"PPI::Token::Whitespace::null" -> "PPI::Token::new";
+"Parse::Method::Signatures::parse" -> "PPI::Token::new";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@35";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@72";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@113";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@40";
+"PPI::Token::BEGIN@61" -> "PPI::Token::QuoteLike::Words::BEGIN@30";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@56";
+"PPI::Lexer::_lex_statement" -> "PPI::Token::__LEXER__closes";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@33";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@34";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@30";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@34";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@23";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@39";
+"PPI::Token::BEGIN@70" -> "PPI::Token::HereDoc::BEGIN@87";
+"PPI::Token::BEGIN@28" -> "vars::import";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@29";
+"PPI::Token::BEGIN@40" -> "PPI::Token::Comment::BEGIN@61";
+"PPI::Token::BEGIN@66" -> "PPI::Token::Operator::BEGIN@42";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@40";
+"PPI::Token::BEGIN@66" -> "PPI::Token::Operator::BEGIN@46";
+"PPI::Token::BEGIN@50" -> "PPI::Token::DashedWord::BEGIN@33";
+"PPI::Token::BEGIN@59" -> "PPI::Token::QuoteLike::Command::BEGIN@32";
+"PPI::Token::BEGIN@70" -> "PPI::Token::HereDoc::BEGIN@88";
+"PPI::Token::BEGIN@52" -> "PPI::Token::ArrayIndex::BEGIN@32";
+"PPI::Token::BEGIN@46" -> "PPI::Token::Number::Float::BEGIN@35";
+"PPI::Token::set_class" -> "PPI::Token::CORE:match";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@49";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@42";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@33";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@50";
+"PPI::Token::BEGIN@50" -> "PPI::Token::DashedWord::BEGIN@29";
+"PPI::Token::BEGIN@75" -> "PPI::Token::Attribute::BEGIN@38";
+"PPI::Token::BEGIN@51" -> "PPI::Token::Symbol::BEGIN@32";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@31";
+"PPI::Token::BEGIN@57" -> "PPI::Token::Quote::Interpolate::BEGIN@32";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@58";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@67";
+"PPI::Token::BEGIN@42" -> "PPI::Token::Number::BEGIN@35";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@30";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@44";
+"PPI::Token::BEGIN@57" -> "PPI::Token::Quote::Interpolate::BEGIN@33";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@70";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@61";
+"PPI::Token::BEGIN@63" -> "PPI::Token::Regexp::Match::BEGIN@49";
+"PPI::Token::BEGIN@71" -> "PPI::Token::Separator::BEGIN@38";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@37";
+"PPI::Token::BEGIN@64" -> "PPI::Token::Regexp::Substitute::BEGIN@36";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@25";
+"PPI::Token::BEGIN@61" -> "PPI::Token::QuoteLike::Words::BEGIN@32";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@49";
+"PPI::Token::BEGIN@61" -> "PPI::Token::QuoteLike::Words::BEGIN@29";
+"PPI::Token::BEGIN@52" -> "PPI::Token::ArrayIndex::BEGIN@29";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@28";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@37";
+"PPI::Token::BEGIN@75" -> "PPI::Token::Attribute::BEGIN@36";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@43";
+"PPI::Token::BEGIN@53" -> "PPI::Token::Magic::BEGIN@46";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@50";
+"PPI::Token::BEGIN@57" -> "PPI::Token::Quote::Interpolate::BEGIN@36";
+"PPI::Token::BEGIN@52" -> "PPI::Token::ArrayIndex::BEGIN@30";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@66";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@49";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@62";
+"PPI::Token::BEGIN@69" -> "PPI::Token::Label::BEGIN@34";
+"PPI::Token::BEGIN@43" -> "PPI::Token::Number::Binary::BEGIN@32";
+"PPI::Token::BEGIN@60" -> "PPI::Token::QuoteLike::Regexp::BEGIN@36";
+"PPI::Token::BEGIN@45" -> "PPI::Token::Number::Hex::BEGIN@29";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@32";
+"PPI::Token::BEGIN@68" -> "PPI::Token::Structure::BEGIN@42";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@37";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@52";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@44";
+"PPI::Token::BEGIN@62" -> "PPI::Token::QuoteLike::Readline::BEGIN@40";
+"PPI::Token::BEGIN@71" -> "PPI::Token::Separator::BEGIN@36";
+"PPI::Token::BEGIN@67" -> "PPI::Token::Cast::BEGIN@35";
+"PPI::Token::BEGIN@64" -> "PPI::Token::Regexp::Substitute::BEGIN@40";
+"PPI::Token::BEGIN@62" -> "PPI::Token::QuoteLike::Readline::BEGIN@45";
+"PPI::Token::BEGIN@42" -> "PPI::Token::Number::BEGIN@33";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@52";
+"PPI::Token::BEGIN@58" -> "PPI::Token::QuoteLike::Backtick::BEGIN@31";
+"PPI::Token::BEGIN@53" -> "PPI::Token::Magic::BEGIN@48";
+"PPI::Token::BEGIN@65" -> "PPI::Token::Regexp::Transliterate::BEGIN@39";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@54";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@68";
+"PPI::Token::BEGIN@58" -> "PPI::Token::QuoteLike::Backtick::BEGIN@33";
+"PPI::Token::BEGIN@53" -> "PPI::Token::Magic::BEGIN@44";
+"PPI::Token::BEGIN@49" -> "PPI::Token::Word::BEGIN@39";
+"PPI::Token::BEGIN@73" -> "PPI::Token::End::BEGIN@46";
+"PPI::Token::BEGIN@56" -> "PPI::Token::Quote::Literal::BEGIN@36";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@33";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@35";
+"PPI::Token::BEGIN@67" -> "PPI::Token::Cast::BEGIN@37";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@42";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@32";
+"PPI::Token::BEGIN@69" -> "PPI::Token::Label::BEGIN@32";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@35";
+"PPI::Token::BEGIN@56" -> "PPI::Token::Quote::Literal::BEGIN@31";
+"PPI::Token::BEGIN@45" -> "PPI::Token::Number::Hex::BEGIN@33";
+"PPI::Token::BEGIN@46" -> "PPI::Token::Number::Float::BEGIN@32";
+"PPI::BEGIN@20" -> "PPI::Token::BEGIN@74";
+"PPI::Token::BEGIN@42" -> "PPI::Token::Number::BEGIN@36";
+}

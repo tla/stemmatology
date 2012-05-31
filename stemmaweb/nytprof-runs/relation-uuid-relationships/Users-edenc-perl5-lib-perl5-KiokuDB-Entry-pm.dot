@@ -1,0 +1,69 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@14";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::prev";
+	"KiokuDB::Entry::root";
+	"KiokuDB::Entry::BEGIN@218";
+	"KiokuDB::Entry::BEGIN@201";
+	"KiokuDB::Entry::BEGIN@139";
+	"KiokuDB::Entry::BEGIN@6";
+	"KiokuDB::Entry::BEGIN@202";
+	"KiokuDB::Entry::BEGIN@196";
+	"KiokuDB::Entry::BEGIN@182";
+	"KiokuDB::Entry::_build_root";
+	"KiokuDB::Entry::has_id";
+	"KiokuDB::Entry::BEGIN@4";
+	"KiokuDB::Entry::BEGIN@251";
+	"KiokuDB::Entry::BEGIN@8";
+	"KiokuDB::Entry::BEGIN@199";
+	"KiokuDB::Entry::BEGIN@198";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@202";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@218";
+"KiokuDB::Entry::root" -> "KiokuDB::Entry::_build_root";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@199";
+"KiokuDB::Entry::_build_root" -> "KiokuDB::Entry::has_id";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@139";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@4";
+"KiokuDB::Entry::BEGIN@196" -> "constant::import";
+"KiokuDB::Entry::BEGIN@198" -> "constant::import";
+"KiokuDB::Entry::BEGIN@202" -> "constant::import";
+"KiokuDB::Entry::BEGIN@201" -> "constant::import";
+"KiokuDB::Entry::BEGIN@199" -> "constant::import";
+"KiokuDB::Entry::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@251";
+"KiokuDB::Entry::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Entry::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@6";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@182";
+"KiokuDB::Entry::BEGIN@218" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@139" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@251" -> "warnings::unimport";
+"KiokuDB::Entry::BEGIN@182" -> "warnings::unimport";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@8";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@196";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@198";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@201";
+"KiokuDB::Entry::_build_root" -> "KiokuDB::Entry::prev";
+}

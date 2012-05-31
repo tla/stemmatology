@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::gettimeofday";
+	"Time::HiRes::BEGIN@4";
+	"Time::HiRes::BEGIN@3";
+	"Time::HiRes::import";
+	"Time::HiRes::BEGIN@43";
+	"Time::HiRes::bootstrap";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export_to_level";
+}
+subgraph cluster_Benchmark {
+	label="Benchmark";
+	"Benchmark::BEGIN@453";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_to_level";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]";
+	"Catalyst::Stats::BEGIN@4";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@4";
+"DynaLoader::bootstrap" -> "Time::HiRes::bootstrap";
+"Time::HiRes::BEGIN@4" -> "strict::import";
+"Time::HiRes::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Time::HiRes::import" -> "Exporter::export_to_level";
+"Time::HiRes::BEGIN@43" -> "strict::unimport";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::import";
+"Benchmark::BEGIN@453" -> "Time::HiRes::import";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@3";
+"Catalyst::Stats::__ANON__[Catalyst/Stats.pm:16]" -> "Time::HiRes::gettimeofday";
+"Catalyst::Stats::BEGIN@4" -> "Time::HiRes::BEGIN@43";
+}

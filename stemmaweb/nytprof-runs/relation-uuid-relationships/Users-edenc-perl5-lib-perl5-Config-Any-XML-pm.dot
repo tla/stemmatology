@@ -1,0 +1,39 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::_require";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::_load";
+	"Config::Any::extensions";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Config_Any_XML {
+	label="Config::Any::XML";
+	"Config::Any::XML::BEGIN@4";
+	"Config::Any::XML::BEGIN@3";
+	"Config::Any::XML::BEGIN@6";
+	"Config::Any::XML::extensions";
+}
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@4";
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@3";
+"Config::Any::XML::BEGIN@3" -> "strict::import";
+"Config::Any::_load" -> "Config::Any::XML::extensions";
+"Config::Any::extensions" -> "Config::Any::XML::extensions";
+"Config::Any::XML::BEGIN@6" -> "base::import";
+"Config::Any::XML::BEGIN@4" -> "warnings::import";
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@6";
+}

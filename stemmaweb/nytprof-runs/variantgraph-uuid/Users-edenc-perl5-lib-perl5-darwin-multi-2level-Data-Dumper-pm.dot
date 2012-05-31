@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Dumper {
+	label="Data::Dumper";
+	"Data::Dumper::BEGIN@22";
+	"Data::Dumper::BEGIN@16";
+	"Data::Dumper::BEGIN@683";
+	"Data::Dumper::BEGIN@20";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@28";
+}
+"Data::Dumper::BEGIN@20" -> "Exporter::import";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@16";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@22";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@20";
+"Data::Dumper::BEGIN@683" -> "bytes::import";
+"Graph::BEGIN@28" -> "Data::Dumper::BEGIN@683";
+}

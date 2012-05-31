@@ -1,0 +1,191 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::path_to";
+	"Catalyst::debug";
+	"Catalyst::setup";
+	"Catalyst::config";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@8";
+	"Catalyst::Plugin::ConfigLoader::CORE:match";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@7";
+	"Catalyst::Plugin::ConfigLoader::setup";
+	"Catalyst::Plugin::ConfigLoader::get_config_local_suffix";
+	"Catalyst::Plugin::ConfigLoader::CORE:regcomp";
+	"Catalyst::Plugin::ConfigLoader::config_substitutions";
+	"Catalyst::Plugin::ConfigLoader::finalize_config";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@9";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@6";
+	"Catalyst::Plugin::ConfigLoader::CORE:sort";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@3";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@4";
+	"Catalyst::Plugin::ConfigLoader::find_files";
+	"Catalyst::Plugin::ConfigLoader::_fix_syntax";
+	"Catalyst::Plugin::ConfigLoader::get_config_path";
+	"Catalyst::Plugin::ConfigLoader::__ANON__[Catalyst/Plugin/ConfigLoader.pm:269]";
+	"Catalyst::Plugin::ConfigLoader::CORE:ftdir";
+	"Catalyst::Plugin::ConfigLoader::load_config";
+	"Catalyst::Plugin::ConfigLoader::CORE:subst";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::appprefix";
+	"Catalyst::Utils::env_value";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::_load";
+	"Config::Any::load_files";
+	"Config::Any::BEGIN@6";
+	"Config::Any::BEGIN@7";
+	"Config::Any::BEGIN@3";
+	"Config::Any::extensions";
+	"Config::Any::BEGIN@4";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@130";
+	"Data::Visitor::Callback::BEGIN@270";
+	"Data::Visitor::Callback::BEGIN@227";
+	"Data::Visitor::Callback::BEGIN@199";
+	"Data::Visitor::Callback::callback";
+	"Data::Visitor::Callback::BEGIN@193";
+	"Data::Visitor::Callback::BEGIN@21";
+	"Data::Visitor::Callback::BEGIN@14";
+	"Data::Visitor::Callback::new";
+	"Data::Visitor::Callback::BEGIN@18";
+	"Data::Visitor::Callback::meta";
+	"Data::Visitor::Callback::BEGIN@8";
+	"Data::Visitor::Callback::BEGIN@2";
+	"Data::Visitor::Callback::BEGIN@13";
+	"Data::Visitor::Callback::visit";
+	"Data::Visitor::Callback::BEGIN@20";
+	"Data::Visitor::Callback::BEGIN@177";
+	"Data::Visitor::Callback::BEGIN@16";
+	"Data::Visitor::Callback::BEGIN@190";
+	"Data::Visitor::Callback::BEGIN@11";
+	"Data::Visitor::Callback::BEGIN@52";
+	"Data::Visitor::Callback::DESTROY";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::setup";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Moose::extends";
+"Catalyst::Plugin::ConfigLoader::finalize_config" -> "Data::Visitor::Callback::visit";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::config";
+"Catalyst::Plugin::ConfigLoader::get_config_local_suffix" -> "Catalyst::config";
+"Catalyst::Plugin::ConfigLoader::config_substitutions" -> "Catalyst::config";
+"Catalyst::Plugin::ConfigLoader::finalize_config" -> "Catalyst::config";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::config";
+"Catalyst::Plugin::ConfigLoader::load_config" -> "Catalyst::config";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@8";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@4";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::find_files";
+"Catalyst::Plugin::ConfigLoader::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::finalize_config";
+"Catalyst::Plugin::ConfigLoader::finalize_config" -> "Data::Visitor::Callback::new";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Moose::has";
+"Catalyst::Plugin::ConfigLoader::config_substitutions" -> "Catalyst::Plugin::ConfigLoader::CORE:regcomp";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::CORE:regcomp";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Catalyst::Plugin::ConfigLoader::get_config_local_suffix";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::get_config_local_suffix";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@6";
+"Catalyst::Plugin::ConfigLoader::load_config" -> "Catalyst::debug";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Plugin::ConfigLoader::CORE:ftdir";
+"Catalyst::Plugin::ConfigLoader::finalize_config" -> "Data::Visitor::Callback::DESTROY";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@9";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Utils::appprefix";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@16";
+"Config::Any::_load" -> "Catalyst::Plugin::ConfigLoader::_fix_syntax";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@4";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Catalyst::Plugin::ConfigLoader::get_config_path";
+"Catalyst::Plugin::ConfigLoader::BEGIN@3" -> "strict::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@270";
+"Catalyst::setup" -> "Catalyst::Plugin::ConfigLoader::setup";
+"Catalyst::Plugin::ConfigLoader::__ANON__[Catalyst/Plugin/ConfigLoader.pm:269]" -> "Catalyst::Plugin::ConfigLoader::config_substitutions";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@193";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@52";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@20";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@7";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@2";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::load_config";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::meta";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@11";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@199";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "UNIVERSAL::can";
+"Catalyst::Plugin::ConfigLoader::BEGIN@4" -> "warnings::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@190";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@8";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@227";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@177";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@3";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@130";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@7";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Config::Any::extensions";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@13";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@18";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::Unicode::Encoding::setup";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::CORE:sort";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@14";
+"Catalyst::Plugin::ConfigLoader::find_files" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::CORE:match" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::CORE:ftdir" -> "Path::Class::File::stringify";
+"Catalyst::Plugin::ConfigLoader::BEGIN@6" -> "Config::Any::BEGIN@6";
+"Data::Visitor::Callback::callback" -> "Catalyst::Plugin::ConfigLoader::__ANON__[Catalyst/Plugin/ConfigLoader.pm:269]";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@21";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::ConfigLoader::BEGIN@3";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Plugin::ConfigLoader::CORE:match";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Catalyst::Plugin::ConfigLoader::CORE:match";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::path_to";
+"Catalyst::Plugin::ConfigLoader::setup" -> "next::method";
+"Catalyst::Plugin::ConfigLoader::setup" -> "Config::Any::load_files";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Utils::env_value";
+"Catalyst::Plugin::ConfigLoader::get_config_local_suffix" -> "Catalyst::Utils::env_value";
+"Catalyst::Plugin::ConfigLoader::config_substitutions" -> "Catalyst::Plugin::ConfigLoader::CORE:subst";
+}

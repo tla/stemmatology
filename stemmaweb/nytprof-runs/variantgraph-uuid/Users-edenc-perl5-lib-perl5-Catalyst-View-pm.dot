@@ -1,0 +1,21 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::BEGIN@3";
+	"Catalyst::View::BEGIN@60";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"base::import" -> "Catalyst::View::BEGIN@60";
+"base::import" -> "Catalyst::View::BEGIN@3";
+"Catalyst::View::BEGIN@60" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::View::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}

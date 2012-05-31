@@ -1,0 +1,97 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__idna {
+	label="URI::_idna";
+	"URI::_idna::BEGIN@6";
+	"URI::_idna::BEGIN@10";
+	"URI::_idna::CORE:qr";
+	"URI::_idna::BEGIN@8";
+	"URI::_idna::encode";
+	"URI::_idna::BEGIN@7";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@6";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::default_port";
+	"URI::http::canonical";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::authority";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::CORE:subst";
+	"URI::_server::_port";
+	"URI::_server::host";
+	"URI::_server::canonical";
+	"URI::_server::_host_escape";
+	"URI::_server::port";
+	"URI::_server::BEGIN@6";
+	"URI::_server::CORE:regcomp";
+	"URI::_server::_uric_escape";
+	"URI::_server::CORE:match";
+	"URI::_server::BEGIN@5";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_URI_Escape {
+	label="URI::Escape";
+	"URI::Escape::uri_unescape";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::canonical";
+	"URI::_uric_escape";
+	"URI::_init";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"URI::_server::_host_escape" -> "URI::_idna::encode";
+"Catalyst::Request::BEGIN@6" -> "URI::_server::BEGIN@5";
+"URI::_server::_host_escape" -> "URI::_idna::BEGIN@8";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_server::port";
+"URI::_server::canonical" -> "URI::canonical";
+"URI::_server::port" -> "URI::http::default_port";
+"URI::_server::canonical" -> "URI::_server::_port";
+"URI::_server::port" -> "URI::_server::_port";
+"URI::_server::_uric_escape" -> "URI::_server::CORE:regcomp";
+"URI::_server::host" -> "URI::_server::_host_escape";
+"URI::_server::_host_escape" -> "URI::_idna::CORE:qr";
+"URI::_server::BEGIN@5" -> "strict::import";
+"URI::_server::_uric_escape" -> "URI::_uric_escape";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_server::host";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "URI::_server::host";
+"URI::_server::canonical" -> "URI::_server::host";
+"URI::_server::host" -> "URI::Escape::uri_unescape";
+"URI::_server::BEGIN@6" -> "Exporter::import";
+"URI::_server::_host_escape" -> "URI::_idna::BEGIN@7";
+"Catalyst::Request::BEGIN@6" -> "URI::_server::BEGIN@6";
+"URI::_server::_port" -> "URI::_generic::authority";
+"URI::_server::host" -> "URI::_generic::authority";
+"URI::_server::_host_escape" -> "URI::_idna::BEGIN@10";
+"URI::_server::_uric_escape" -> "URI::_server::CORE:match";
+"URI::_server::_port" -> "URI::_server::CORE:match";
+"URI::_server::host" -> "URI::_server::CORE:match";
+"URI::_server::canonical" -> "URI::_server::CORE:match";
+"URI::_server::_host_escape" -> "URI::_server::CORE:match";
+"URI::_init" -> "URI::_server::_uric_escape";
+"URI::http::canonical" -> "URI::_server::canonical";
+"URI::_server::_host_escape" -> "URI::_idna::BEGIN@6";
+"URI::_server::host" -> "URI::_server::CORE:subst";
+}

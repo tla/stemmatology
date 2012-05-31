@@ -1,0 +1,26 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::BEGIN@8";
+	"Data::Stream::Bulk::DBI::BEGIN@2";
+	"Data::Stream::Bulk::DBI::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@21";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@8";
+"Data::Stream::Bulk::DBI::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@11";
+"Data::Stream::Bulk::DBI::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@2";
+}

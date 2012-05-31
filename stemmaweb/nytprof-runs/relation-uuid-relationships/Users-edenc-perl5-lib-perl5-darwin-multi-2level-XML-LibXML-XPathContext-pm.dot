@@ -1,0 +1,76 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::_lookup_node_data";
+	"Text::Tradition::Parser::GraphML::graphml_parse";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::new";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@26";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_XML_LibXML_XPathContext {
+	label="XML::LibXML::XPathContext";
+	"XML::LibXML::XPathContext::registerNs";
+	"XML::LibXML::XPathContext::_guarded_find_call";
+	"XML::LibXML::XPathContext::BEGIN@141";
+	"XML::LibXML::XPathContext::BEGIN@13";
+	"XML::LibXML::XPathContext::BEGIN@15";
+	"XML::LibXML::XPathContext::new";
+	"XML::LibXML::XPathContext::BEGIN@12";
+	"XML::LibXML::XPathContext::_free_node_pool";
+	"XML::LibXML::XPathContext::find";
+	"XML::LibXML::XPathContext::BEGIN@16";
+	"XML::LibXML::XPathContext::BEGIN@17";
+	"XML::LibXML::XPathContext::setContextNode";
+	"XML::LibXML::XPathContext::findnodes";
+	"XML::LibXML::XPathContext::_find";
+	"XML::LibXML::XPathContext::_findnodes";
+	"XML::LibXML::XPathContext::getContextNode";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"XML::LibXML::XPathContext::_guarded_find_call" -> "XML::LibXML::XPathContext::_free_node_pool";
+"XML::LibXML::XPathContext::_guarded_find_call" -> "XML::LibXML::XPathContext::getContextNode";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::new";
+"XML::LibXML::XPathContext::BEGIN@17" -> "UNIVERSAL::import";
+"XML::LibXML::XPathContext::BEGIN@16" -> "UNIVERSAL::import";
+"XML::LibXML::XPathContext::_guarded_find_call" -> "XML::LibXML::XPathContext::setContextNode";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::findnodes";
+"XML::LibXML::XPathContext::_guarded_find_call" -> "XML::LibXML::XPathContext::_find";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::XPathContext::find";
+"XML::LibXML::XPathContext::find" -> "XML::LibXML::XPathContext::_guarded_find_call";
+"XML::LibXML::XPathContext::findnodes" -> "XML::LibXML::XPathContext::_guarded_find_call";
+"XML::LibXML::XPathContext::BEGIN@12" -> "strict::import";
+"XML::LibXML::XPathContext::_guarded_find_call" -> "XML::LibXML::XPathContext::_findnodes";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@141";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@16";
+"XML::LibXML::XPathContext::BEGIN@15" -> "Exporter::import";
+"XML::LibXML::XPathContext::BEGIN@141" -> "strict::unimport";
+"XML::LibXML::XPathContext::find" -> "XML::LibXML::NodeList::new";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@15";
+"XML::LibXML::XPathContext::BEGIN@13" -> "vars::import";
+"Text::Tradition::Parser::GraphML::graphml_parse" -> "XML::LibXML::XPathContext::registerNs";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@12";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@13";
+"XML::LibXML::BEGIN@26" -> "XML::LibXML::XPathContext::BEGIN@17";
+}

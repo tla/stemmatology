@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_Null {
+	label="PPI::Statement::Null";
+	"PPI::Statement::Null::BEGIN@46";
+	"PPI::Statement::Null::BEGIN@47";
+	"PPI::Statement::Null::BEGIN@44";
+	"PPI::Statement::Null::BEGIN@43";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@168";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::Null::BEGIN@43" -> "strict::import";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@44";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@46";
+"PPI::Statement::Null::BEGIN@46" -> "vars::import";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@47";
+"PPI::Statement::BEGIN@168" -> "PPI::Statement::Null::BEGIN@43";
+}

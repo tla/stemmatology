@@ -1,0 +1,120 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::parse_proto_using_pms";
+	"TryCatch::parse_proto";
+	"TryCatch::_parse_catch";
+	"TryCatch::_parse_try";
+	"TryCatch::BEGIN@10";
+	"TryCatch::lookahead_after_block";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Devel_Declare_Context_Simple {
+	label="Devel::Declare::Context::Simple";
+	"Devel::Declare::Context::Simple::BEGIN@4";
+	"Devel::Declare::Context::Simple::skip_declarator";
+	"Devel::Declare::Context::Simple::set_linestr";
+	"Devel::Declare::Context::Simple::BEGIN@5";
+	"Devel::Declare::Context::Simple::strip_proto";
+	"Devel::Declare::Context::Simple::offset";
+	"Devel::Declare::Context::Simple::BEGIN@3";
+	"Devel::Declare::Context::Simple::inject_if_block";
+	"Devel::Declare::Context::Simple::skipspace";
+	"Devel::Declare::Context::Simple::BEGIN@6";
+	"Devel::Declare::Context::Simple::get_curstash_name";
+	"Devel::Declare::Context::Simple::strip_name";
+	"Devel::Declare::Context::Simple::declarator";
+	"Devel::Declare::Context::Simple::init";
+	"Devel::Declare::Context::Simple::get_linestr";
+	"Devel::Declare::Context::Simple::BEGIN@7";
+	"Devel::Declare::Context::Simple::shadow";
+	"Devel::Declare::Context::Simple::inc_offset";
+	"Devel::Declare::Context::Simple::new";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::toke_scan_word";
+	"Devel::Declare::set_linestr";
+	"Devel::Declare::toke_skipspace";
+	"Devel::Declare::get_lex_stuff";
+	"Devel::Declare::clear_lex_stuff";
+	"Devel::Declare::get_linestr";
+	"Devel::Declare::shadow_sub";
+	"Devel::Declare::toke_scan_str";
+	"Devel::Declare::get_curstash_name";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::init";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::init";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@7";
+"Devel::Declare::Context::Simple::inject_if_block" -> "Devel::Declare::Context::Simple::offset";
+"Devel::Declare::Context::Simple::skipspace" -> "Devel::Declare::Context::Simple::offset";
+"Devel::Declare::Context::Simple::strip_name" -> "Devel::Declare::Context::Simple::offset";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::offset";
+"Devel::Declare::Context::Simple::skip_declarator" -> "Devel::Declare::Context::Simple::offset";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::offset";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::Context::Simple::offset";
+"Devel::Declare::Context::Simple::inject_if_block" -> "Devel::Declare::Context::Simple::set_linestr";
+"Devel::Declare::Context::Simple::strip_name" -> "Devel::Declare::Context::Simple::set_linestr";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::set_linestr";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::Context::Simple::set_linestr";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::skip_declarator";
+"Devel::Declare::Context::Simple::inject_if_block" -> "Devel::Declare::Context::Simple::get_linestr";
+"Devel::Declare::Context::Simple::strip_name" -> "Devel::Declare::Context::Simple::get_linestr";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::get_linestr";
+"Devel::Declare::Context::Simple::skip_declarator" -> "Devel::Declare::Context::Simple::get_linestr";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::get_linestr";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::Context::Simple::get_linestr";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@4";
+"Devel::Declare::Context::Simple::BEGIN@6" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Devel::Declare::Context::Simple::get_curstash_name" -> "Devel::Declare::get_curstash_name";
+"Devel::Declare::Context::Simple::BEGIN@3" -> "strict::import";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@6";
+"Devel::Declare::Context::Simple::skipspace" -> "Devel::Declare::toke_skipspace";
+"Devel::Declare::Context::Simple::shadow" -> "Devel::Declare::shadow_sub";
+"Devel::Declare::Context::Simple::BEGIN@7" -> "Exporter::import";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::get_lex_stuff";
+"Devel::Declare::Context::Simple::skipspace" -> "Devel::Declare::Context::Simple::inc_offset";
+"Devel::Declare::Context::Simple::skip_declarator" -> "Devel::Declare::Context::Simple::inc_offset";
+"Devel::Declare::Context::Simple::get_linestr" -> "Devel::Declare::get_linestr";
+"TryCatch::parse_proto" -> "Devel::Declare::Context::Simple::strip_proto";
+"Devel::Declare::Context::Simple::BEGIN@4" -> "warnings::import";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::toke_scan_str";
+"TryCatch::parse_proto_using_pms" -> "Devel::Declare::Context::Simple::get_curstash_name";
+"Devel::Declare::Context::Simple::shadow" -> "Devel::Declare::Context::Simple::get_curstash_name";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::strip_name";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::clear_lex_stuff";
+"Devel::Declare::Context::Simple::shadow" -> "Devel::Declare::Context::Simple::declarator";
+"Devel::Declare::Context::Simple::skip_declarator" -> "Devel::Declare::Context::Simple::declarator";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::new";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::new";
+"Devel::Declare::Context::Simple::set_linestr" -> "Devel::Declare::set_linestr";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::shadow";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@3";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::inject_if_block";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::inject_if_block";
+"Devel::Declare::Context::Simple::inject_if_block" -> "Devel::Declare::Context::Simple::skipspace";
+"Devel::Declare::Context::Simple::strip_name" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::_parse_catch" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::_parse_try" -> "Devel::Declare::Context::Simple::skipspace";
+"TryCatch::lookahead_after_block" -> "Devel::Declare::Context::Simple::skipspace";
+"Devel::Declare::Context::Simple::strip_proto" -> "Devel::Declare::Context::Simple::skipspace";
+"Devel::Declare::Context::Simple::strip_name" -> "Devel::Declare::toke_scan_word";
+"Devel::Declare::Context::Simple::skip_declarator" -> "Devel::Declare::toke_scan_word";
+"TryCatch::BEGIN@10" -> "Devel::Declare::Context::Simple::BEGIN@5";
+}

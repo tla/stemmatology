@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Prototype {
+	label="PPI::Token::Prototype";
+	"PPI::Token::Prototype::BEGIN@49";
+	"PPI::Token::Prototype::BEGIN@53";
+	"PPI::Token::Prototype::BEGIN@52";
+	"PPI::Token::Prototype::BEGIN@50";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@74";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::Prototype::BEGIN@49" -> "strict::import";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@53";
+"PPI::Token::Prototype::BEGIN@52" -> "vars::import";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@49";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@50";
+"PPI::Token::BEGIN@74" -> "PPI::Token::Prototype::BEGIN@52";
+}

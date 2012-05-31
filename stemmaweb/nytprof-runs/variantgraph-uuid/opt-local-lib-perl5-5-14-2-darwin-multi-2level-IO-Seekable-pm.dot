@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::BEGIN@260";
+	"IO::Handle::BEGIN@261";
+	"IO::Handle::BEGIN@266";
+	"IO::Handle::BEGIN@264";
+	"IO::Handle::BEGIN@263";
+	"IO::Handle::BEGIN@265";
+	"IO::Handle::BEGIN@624";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_File {
+	label="IO::File";
+	"IO::File::BEGIN@133";
+}
+subgraph cluster_IO_Seekable {
+	label="IO::Seekable";
+	"IO::Seekable::BEGIN@98";
+	"IO::Seekable::BEGIN@99";
+	"IO::Seekable::BEGIN@97";
+	"IO::Seekable::BEGIN@104";
+	"IO::Seekable::BEGIN@101";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@98";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@101";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@264";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@266";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@104";
+"IO::Seekable::BEGIN@99" -> "strict::import";
+"IO::Seekable::BEGIN@98" -> "Exporter::import";
+"IO::Seekable::BEGIN@104" -> "Exporter::import";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@261";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@263";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@260";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@624";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@97";
+"IO::Seekable::BEGIN@101" -> "IO::Handle::BEGIN@265";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@99";
+}

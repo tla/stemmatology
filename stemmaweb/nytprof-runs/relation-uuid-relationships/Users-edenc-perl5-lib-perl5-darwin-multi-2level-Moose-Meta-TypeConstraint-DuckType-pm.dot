@@ -1,0 +1,91 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@16";
+	"Moose::Meta::TypeConstraint::DuckType::methods";
+	"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@9";
+	"Moose::Meta::TypeConstraint::DuckType::create_child_type";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@15";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@14";
+	"Moose::Meta::TypeConstraint::DuckType::new";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@10";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@2";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@20";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@13";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@11";
+	"Moose::Meta::TypeConstraint::DuckType::BEGIN@18";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_B {
+	label="B";
+	"B::perlstring";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::_has_compiled_type_constraint";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::parent";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::create_duck_type_constraint";
+	"Moose::Util::TypeConstraints::BEGIN@39";
+	"Moose::Util::TypeConstraints::_create_type_constraint";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::TypeConstraint::DuckType::new" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@2";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@9";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "Moose::Meta::TypeConstraint::DuckType::create_child_type";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@16";
+"Moose::Meta::TypeConstraint::_inline_check" -> "Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]";
+"Moose::Util::TypeConstraints::create_duck_type_constraint" -> "Moose::Meta::TypeConstraint::DuckType::new";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@14";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@11" -> "metaclass::import";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@20";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@16" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]" -> "Moose::Meta::TypeConstraint::DuckType::methods";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@9" -> "strict::import";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@11";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@13";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@15" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@20" -> "base::import";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@18";
+"Moose::Meta::TypeConstraint::DuckType::BEGIN@10" -> "warnings::import";
+"Moose::Meta::TypeConstraint::DuckType::new" -> "Moose::Meta::TypeConstraint::_has_compiled_type_constraint";
+"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]" -> "Moose::Meta::TypeConstraint::parent";
+"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]" -> "Moose::Meta::TypeConstraint::_inline_check";
+"Moose::Meta::TypeConstraint::DuckType::__ANON__[Moose/Meta/TypeConstraint/DuckType.pm:39]" -> "B::perlstring";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@15";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Moose::Meta::TypeConstraint::DuckType::BEGIN@10";
+"Moose::Meta::TypeConstraint::DuckType::create_child_type" -> "Moose::Meta::TypeConstraint::new";
+"Moose::Meta::TypeConstraint::DuckType::new" -> "Moose::Meta::TypeConstraint::new";
+}

@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@3";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_Socket_INET {
+	label="IO::Socket::INET";
+	"IO::Socket::INET::BEGIN@11";
+	"IO::Socket::INET::BEGIN@14";
+	"IO::Socket::INET::BEGIN@13";
+	"IO::Socket::INET::BEGIN@9";
+	"IO::Socket::INET::BEGIN@15";
+	"IO::Socket::INET::BEGIN@12";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@13";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@12";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@9";
+"IO::Socket::INET::BEGIN@9" -> "strict::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@14";
+"IO::Socket::INET::BEGIN@13" -> "Exporter::import";
+"IO::Socket::INET::BEGIN@12" -> "Exporter::import";
+"IO::Socket::INET::BEGIN@14" -> "Exporter::import";
+"IO::Socket::INET::BEGIN@15" -> "Exporter::import";
+"IO::Socket::INET::BEGIN@11" -> "IO::Socket::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@11";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@15";
+}

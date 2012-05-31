@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@347";
+	"Graph::Reader::Dot::CORE:qr";
+	"Graph::Reader::Dot::BEGIN@346";
+	"Graph::Reader::Dot::CORE:regcomp";
+	"Graph::Reader::Dot::CORE:match";
+}
+subgraph cluster_Graph_Reader {
+	label="Graph::Reader";
+	"Graph::Reader::BEGIN@6";
+	"Graph::Reader::BEGIN@7";
+	"Graph::Reader::BEGIN@12";
+	"Graph::Reader::BEGIN@11";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@7";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@7";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@347";
+"Graph::Reader::Dot::BEGIN@346" -> "UNIVERSAL::import";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:match";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@11";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@6";
+"Graph::Reader::Dot::BEGIN@347" -> "vars::import";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:qr";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:regcomp";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@346";
+"Graph::Reader::Dot::BEGIN@346" -> "Graph::Reader::BEGIN@12";
+}

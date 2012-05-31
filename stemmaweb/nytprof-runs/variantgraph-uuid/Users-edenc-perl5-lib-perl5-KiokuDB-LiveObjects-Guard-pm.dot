@@ -1,0 +1,49 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_LiveObjects_Guard {
+	label="KiokuDB::LiveObjects::Guard";
+	"KiokuDB::LiveObjects::Guard::key";
+	"KiokuDB::LiveObjects::Guard::BEGIN@3";
+	"KiokuDB::LiveObjects::Guard::BEGIN@8";
+	"KiokuDB::LiveObjects::Guard::BEGIN@4";
+	"KiokuDB::LiveObjects::Guard::new";
+	"KiokuDB::LiveObjects::Guard::BEGIN@6";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::_vivify_id_info";
+	"KiokuDB::LiveObjects::object_to_id";
+	"KiokuDB::LiveObjects::BEGIN@7";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"KiokuDB::LiveObjects::BEGIN@7" -> "KiokuDB::LiveObjects::Guard::BEGIN@6";
+"KiokuDB::LiveObjects::BEGIN@7" -> "KiokuDB::LiveObjects::Guard::BEGIN@3";
+"KiokuDB::LiveObjects::BEGIN@7" -> "KiokuDB::LiveObjects::Guard::BEGIN@8";
+"KiokuDB::LiveObjects::Guard::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::Guard::BEGIN@3" -> "strict::import";
+"KiokuDB::LiveObjects::Guard::BEGIN@6" -> "Exporter::import";
+"KiokuDB::LiveObjects::object_to_id" -> "KiokuDB::LiveObjects::Guard::key";
+"KiokuDB::LiveObjects::Guard::BEGIN@4" -> "warnings::import";
+"KiokuDB::LiveObjects::Guard::new" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::_vivify_id_info" -> "KiokuDB::LiveObjects::Guard::new";
+"KiokuDB::LiveObjects::BEGIN@7" -> "KiokuDB::LiveObjects::Guard::BEGIN@4";
+}

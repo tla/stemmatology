@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@13";
+	"Graph::Reader::Dot::BEGIN@12";
+	"Graph::Reader::Dot::BEGIN@15";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@7";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@13";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@15";
+"Graph::Reader::Dot::BEGIN@12" -> "strict::import";
+"Graph::Reader::Dot::BEGIN@13" -> "warnings::import";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@12";
+"Graph::Reader::Dot::BEGIN@15" -> "parent::import";
+}

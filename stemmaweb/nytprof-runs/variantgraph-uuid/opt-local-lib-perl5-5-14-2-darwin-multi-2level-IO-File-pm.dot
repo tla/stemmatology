@@ -1,0 +1,76 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@15";
+}
+subgraph cluster_SelectSaver {
+	label="SelectSaver";
+	"SelectSaver::BEGIN@38";
+	"SelectSaver::BEGIN@39";
+}
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::_open_mode_string";
+	"IO::Handle::new";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_File {
+	label="IO::File";
+	"IO::File::BEGIN@128";
+	"IO::File::BEGIN@133";
+	"IO::File::BEGIN@130";
+	"IO::File::BEGIN@131";
+	"IO::File::CORE:match";
+	"IO::File::new";
+	"IO::File::CORE:open";
+	"IO::File::BEGIN@134";
+	"IO::File::BEGIN@132";
+	"IO::File::open";
+	"IO::File::BEGIN@127";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::_open";
+}
+subgraph cluster_IO_Seekable {
+	label="IO::Seekable";
+	"IO::Seekable::BEGIN@98";
+	"IO::Seekable::BEGIN@99";
+	"IO::Seekable::BEGIN@97";
+	"IO::Seekable::BEGIN@104";
+	"IO::Seekable::BEGIN@101";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::File::new" -> "IO::File::open";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@132";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@98";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@101";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@127";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@130";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@128";
+"IO::File::new" -> "IO::Handle::new";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@104";
+"IO::File::BEGIN@128" -> "strict::import";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@134";
+"IO::File::open" -> "IO::File::CORE:open";
+"Config::General::_open" -> "IO::File::new";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@133";
+"IO::File::open" -> "IO::File::CORE:match";
+"IO::Dir::BEGIN@15" -> "IO::File::CORE:match";
+"IO::File::BEGIN@131" -> "Exporter::import";
+"IO::File::BEGIN@130" -> "Exporter::import";
+"IO::File::BEGIN@133" -> "Exporter::import";
+"IO::Dir::BEGIN@15" -> "IO::File::BEGIN@131";
+"IO::File::BEGIN@132" -> "SelectSaver::BEGIN@38";
+"IO::File::BEGIN@132" -> "SelectSaver::BEGIN@39";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@97";
+"IO::File::open" -> "IO::Handle::_open_mode_string";
+"IO::File::BEGIN@133" -> "IO::Seekable::BEGIN@99";
+}

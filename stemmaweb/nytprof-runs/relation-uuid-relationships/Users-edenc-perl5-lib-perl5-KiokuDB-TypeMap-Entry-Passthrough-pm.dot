@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@12";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@10";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@4";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Passthrough::BEGIN@10";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@8" -> "UNIVERSAL::import";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Passthrough::BEGIN@12";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@6" -> "Exporter::import";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@10" -> "warnings::unimport";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Passthrough::BEGIN@8";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Passthrough::BEGIN@6";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Passthrough::BEGIN@4";
+}

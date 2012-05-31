@@ -1,0 +1,177 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::import";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@17";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@7";
+	"TryCatch::BEGIN@9";
+}
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::bootstrap";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::CORE:ftfile";
+	"DynaLoader::CORE:ftsize";
+	"DynaLoader::dl_undef_symbols";
+	"DynaLoader::BEGIN@22";
+	"DynaLoader::dl_find_symbol";
+	"DynaLoader::dl_load_file";
+	"DynaLoader::CORE:subst";
+	"DynaLoader::BEGIN@18";
+	"DynaLoader::dl_load_flags";
+	"DynaLoader::dl_install_xsub";
+	"DynaLoader::CORE:ftdir";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::bootstrap";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::bootstrap";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::BEGIN@15";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::bootstrap";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::BEGIN@9";
+	"List::MoreUtils::bootstrap";
+}
+subgraph cluster_B_Hooks_OP_Check {
+	label="B::Hooks::OP::Check";
+	"B::Hooks::OP::Check::dl_load_flags";
+	"B::Hooks::OP::Check::bootstrap";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::bootstrap";
+}
+subgraph cluster_Data_UUID {
+	label="Data::UUID";
+	"Data::UUID::bootstrap";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::bootstrap";
+	"XML::LibXML::BEGIN@29";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::bootstrap";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::BEGIN@25";
+}
+subgraph cluster_Clone {
+	label="Clone";
+	"Clone::bootstrap";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::install_driver";
+	"DBI::BEGIN@161";
+	"DBI::bootstrap";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::BEGIN@10";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::bootstrap";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::BEGIN@17";
+	"Devel::Declare::bootstrap";
+}
+subgraph cluster_KiokuDB_Role_UUIDs_DataUUID {
+	label="KiokuDB::Role::UUIDs::DataUUID";
+	"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6";
+}
+subgraph cluster_B_Hooks_OP_PPAddr {
+	label="B::Hooks::OP::PPAddr";
+	"B::Hooks::OP::PPAddr::dl_load_flags";
+	"B::Hooks::OP::PPAddr::bootstrap";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::BEGIN@4";
+}
+subgraph cluster_Template_Stash_XS {
+	label="Template::Stash::XS";
+	"Template::Stash::XS::BEGIN@21";
+	"Template::Stash::XS::bootstrap";
+}
+"DynaLoader::bootstrap" -> "B::Hooks::OP::Check::dl_load_flags";
+"DynaLoader::bootstrap" -> "Set::Object::bootstrap";
+"DynaLoader::bootstrap" -> "Time::HiRes::bootstrap";
+"DynaLoader::bootstrap" -> "DynaLoader::CORE:subst";
+"DynaLoader::bootstrap" -> "DynaLoader::dl_install_xsub";
+"DynaLoader::bootstrap" -> "Moose::bootstrap";
+"DynaLoader::bootstrap" -> "B::Hooks::OP::PPAddr::dl_load_flags";
+"DynaLoader::bootstrap" -> "Sub::Name::bootstrap";
+"DynaLoader::bootstrap" -> "Clone::bootstrap";
+"Data::OptList::BEGIN@10" -> "DynaLoader::BEGIN@18";
+"DynaLoader::bootstrap" -> "DynaLoader::CORE:ftsize";
+"DynaLoader::bootstrap" -> "DBI::bootstrap";
+"DynaLoader::bootstrap" -> "B::Hooks::OP::PPAddr::bootstrap";
+"DynaLoader::bootstrap" -> "Params::Util::bootstrap";
+"DynaLoader::bootstrap" -> "DynaLoader::CORE:ftdir";
+"DynaLoader::bootstrap" -> "XML::LibXML::bootstrap";
+"DynaLoader::bootstrap" -> "List::MoreUtils::bootstrap";
+"DynaLoader::bootstrap" -> "Devel::Declare::bootstrap";
+"DynaLoader::bootstrap" -> "B::Hooks::OP::Check::bootstrap";
+"DynaLoader::bootstrap" -> "Time::Piece::bootstrap";
+"DynaLoader::bootstrap" -> "Data::UUID::bootstrap";
+"DynaLoader::bootstrap" -> "Template::Stash::XS::bootstrap";
+"DynaLoader::BEGIN@22" -> "Config::import";
+"DynaLoader::bootstrap" -> "DynaLoader::dl_load_flags";
+"DynaLoader::bootstrap" -> "DynaLoader::dl_load_file";
+"DynaLoader::bootstrap" -> "DBD::SQLite::bootstrap";
+"DynaLoader::bootstrap" -> "DynaLoader::dl_find_symbol";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "DynaLoader::bootstrap";
+"Catalyst::Stats::BEGIN@4" -> "DynaLoader::bootstrap";
+"PPI::Element::BEGIN@25" -> "DynaLoader::bootstrap";
+"DBI::BEGIN@161" -> "DynaLoader::bootstrap";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@6" -> "DynaLoader::bootstrap";
+"TryCatch::BEGIN@7" -> "DynaLoader::bootstrap";
+"Data::OptList::BEGIN@10" -> "DynaLoader::bootstrap";
+"DBI::install_driver" -> "DynaLoader::bootstrap";
+"TryCatch::BEGIN@9" -> "DynaLoader::bootstrap";
+"Template::Stash::XS::BEGIN@21" -> "DynaLoader::bootstrap";
+"Devel::Declare::BEGIN@17" -> "DynaLoader::bootstrap";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "DynaLoader::bootstrap";
+"String::Errf::BEGIN@15" -> "DynaLoader::bootstrap";
+"List::MoreUtils::BEGIN@9" -> "DynaLoader::bootstrap";
+"XML::LibXML::BEGIN@29" -> "DynaLoader::bootstrap";
+"Moose::Exporter::BEGIN@13" -> "DynaLoader::bootstrap";
+"DynaLoader::bootstrap" -> "DynaLoader::dl_undef_symbols";
+"DynaLoader::bootstrap" -> "DynaLoader::CORE:ftfile";
+"Data::OptList::BEGIN@10" -> "DynaLoader::BEGIN@22";
+}

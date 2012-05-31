@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::BEGIN@2";
+	"Class::MOP::Mixin::BEGIN@9";
+	"Class::MOP::Mixin::BEGIN@10";
+	"Class::MOP::Mixin::BEGIN@12";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"base::import" -> "Class::MOP::Mixin::BEGIN@10";
+"base::import" -> "Class::MOP::Mixin::BEGIN@9";
+"base::import" -> "Class::MOP::Mixin::BEGIN@2";
+"Class::MOP::Mixin::BEGIN@9" -> "strict::import";
+"base::import" -> "Class::MOP::Mixin::BEGIN@12";
+"Class::MOP::Mixin::BEGIN@12" -> "Exporter::import";
+"Class::MOP::Mixin::BEGIN@10" -> "warnings::import";
+}

@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::request";
+	"Catalyst::req";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::new";
+	"Catalyst::ActionChain::BEGIN@3";
+	"Catalyst::ActionChain::BEGIN@7";
+	"Catalyst::ActionChain::dispatch";
+	"Catalyst::ActionChain::from_chain";
+	"Catalyst::ActionChain::chain";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::captures";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::number_of_captures";
+	"Catalyst::Action::dispatch";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::match";
+	"Catalyst::DispatchType::Chained::BEGIN@7";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::_ACTION";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::ActionChain::dispatch" -> "Catalyst::ActionChain::chain";
+"Catalyst::Controller::_ACTION" -> "Catalyst::ActionChain::dispatch";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::Action::number_of_captures";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::request";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@3";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::Action::dispatch";
+"Catalyst::ActionChain::BEGIN@7" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::ActionChain::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Catalyst::ActionChain::BEGIN@7";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::ActionChain::from_chain";
+"Catalyst::ActionChain::from_chain" -> "Catalyst::ActionChain::new";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::Request::captures";
+"Catalyst::ActionChain::dispatch" -> "Catalyst::req";
+}

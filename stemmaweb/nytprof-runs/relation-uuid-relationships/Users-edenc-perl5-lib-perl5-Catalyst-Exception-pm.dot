@@ -1,0 +1,47 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@8";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::BEGIN@63";
+	"Catalyst::Exception::BEGIN@61";
+	"Catalyst::Exception::BEGIN@58";
+	"Catalyst::Exception::BEGIN@59";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::BEGIN@48";
+	"Catalyst::Exception::Base::BEGIN@47";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Catalyst::Exception::BEGIN@63" -> "Moose::extends";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@58";
+"Catalyst::Exception::BEGIN@59" -> "namespace::clean::import";
+"Catalyst::Exception::Base::BEGIN@48" -> "namespace::clean::import";
+"Catalyst::Exception::Base::BEGIN@47" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Exception::BEGIN@58" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::Base::BEGIN@47";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::Base::BEGIN@48";
+"Catalyst::Exception::BEGIN@61" -> "vars::import";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@59";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@63";
+"Catalyst::BEGIN@8" -> "Catalyst::Exception::BEGIN@61";
+}

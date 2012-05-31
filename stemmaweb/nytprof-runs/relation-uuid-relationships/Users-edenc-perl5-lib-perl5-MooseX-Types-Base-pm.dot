@@ -1,0 +1,215 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::BEGIN@7";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::role";
+}
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@8";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@16";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::type_storage";
+}
+subgraph cluster_MooseX_Types_Util {
+	label="MooseX::Types::Util";
+	"MooseX::Types::Util::BEGIN@12";
+	"MooseX::Types::Util::BEGIN@9";
+	"MooseX::Types::Util::BEGIN@8";
+	"MooseX::Types::Util::BEGIN@10";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@11";
+	"MooseX::Types::import";
+	"MooseX::Types::coercion_export_generator";
+	"MooseX::Types::check_export_generator";
+	"MooseX::Types::type_export_generator";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@11";
+	"Parse::Method::Signatures::BEGIN@4";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::BEGIN@4";
+	"Parse::Method::Signatures::Sig::BEGIN@5";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@7";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@6";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@5";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@4";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::class_type";
+	"MooseX::Types::CheckedUtilExports::role_type";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Parse_Method_Signatures_Param_Bindable {
+	label="Parse::Method::Signatures::Param::Bindable";
+	"Parse::Method::Signatures::Param::Bindable::BEGIN@4";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@14";
+	"MooseX::Types::Base::type_storage";
+	"MooseX::Types::Base::register_class_type";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:68]";
+	"MooseX::Types::Base::BEGIN@141";
+	"MooseX::Types::Base::add_type";
+	"MooseX::Types::Base::BEGIN@9";
+	"MooseX::Types::Base::BEGIN@151";
+	"MooseX::Types::Base::import";
+	"MooseX::Types::Base::type_names";
+	"MooseX::Types::Base::registered_role_types";
+	"MooseX::Types::Base::BEGIN@178";
+	"MooseX::Types::Base::BEGIN@11";
+	"MooseX::Types::Base::get_type";
+	"MooseX::Types::Base::BEGIN@5";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:60]";
+	"MooseX::Types::Base::BEGIN@12";
+	"MooseX::Types::Base::register_role_type";
+	"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:55]";
+	"MooseX::Types::Base::registered_class_types";
+	"MooseX::Types::Base::has_type";
+	"MooseX::Types::Base::BEGIN@10";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::class";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::has_coercion";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::default_generator";
+	"Sub::Exporter::build_exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+}
+"MooseX::Types::Base::import" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@11";
+"MooseX::Types::CheckedUtilExports::role_type" -> "MooseX::Types::Base::register_role_type";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:55]" -> "MooseX::Types::type_export_generator";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@151";
+"Sub::Exporter::default_generator" -> "MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:55]";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@9";
+"MooseX::Types::Base::BEGIN@9" -> "Carp::Clan::import";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@178";
+"MooseX::Types::Base::type_names" -> "MooseX::Types::Base::type_storage";
+"MooseX::Types::Base::get_type" -> "MooseX::Types::Base::type_storage";
+"MooseX::Types::Base::has_type" -> "MooseX::Types::Base::type_storage";
+"MooseX::Types::Base::add_type" -> "MooseX::Types::Base::type_storage";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:68]" -> "MooseX::Types::coercion_export_generator";
+"MooseX::Types::Base::import" -> "MooseX::Types::Base::get_type";
+"MooseX::Types::Base::get_type" -> "MooseX::Types::Base::has_type";
+"MooseX::Types::Base::import" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Types::Base::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@141";
+"MooseX::Types::Base::BEGIN@14" -> "namespace::clean::import";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@5";
+"MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:60]" -> "MooseX::Types::check_export_generator";
+"MooseX::Types::Base::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Base::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Types::Base::import" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Parse::Method::Signatures::Param::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@6" -> "MooseX::Types::Base::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@12" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Types::BEGIN@7" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@4" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::BEGIN@4" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::BEGIN@11" -> "MooseX::Types::Base::import";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@11" -> "MooseX::Types::Base::import";
+"KiokuDB::Backend::DBI::BEGIN@16" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@7" -> "MooseX::Types::Base::import";
+"MooseX::Types::import" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Sig::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Sig::BEGIN@4" -> "MooseX::Types::Base::import";
+"Catalyst::Plugin::Static::Simple::BEGIN@8" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::Param::Bindable::BEGIN@4" -> "MooseX::Types::Base::import";
+"Sub::Exporter::default_generator" -> "MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:68]";
+"MooseX::Types::Base::import" -> "MooseX::Types::Base::type_names";
+"MooseX::Types::Base::BEGIN@10" -> "Exporter::import";
+"Sub::Exporter::default_generator" -> "MooseX::Types::Base::__ANON__[MooseX/Types/Base.pm:60]";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@10";
+"MooseX::Types::Base::BEGIN@178" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@141" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@151" -> "strict::unimport";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@10";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@9";
+"MooseX::Types::CheckedUtilExports::class_type" -> "MooseX::Types::Base::register_class_type";
+"MooseX::Types::Base::register_class_type" -> "Moose::Meta::TypeConstraint::Class::class";
+"MooseX::Types::Base::register_role_type" -> "UNIVERSAL::isa";
+"MooseX::Types::Base::register_class_type" -> "UNIVERSAL::isa";
+"MooseX::Types::Base::import" -> "Sub::Exporter::build_exporter";
+"MooseX::Types::Base::register_class_type" -> "MooseX::Types::Base::registered_class_types";
+"MooseX::Types::Base::register_role_type" -> "Moose::Meta::TypeConstraint::Role::role";
+"MooseX::Types::Base::register_role_type" -> "MooseX::Types::Base::registered_role_types";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@8";
+"MooseX::Types::Base::type_names" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::Base::get_type" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::Base::has_type" -> "MooseX::Types::Moose::type_storage";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@12";
+"MooseX::Types::Base::import" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"MooseX::Types::import" -> "MooseX::Types::Base::add_type";
+"MooseX::Types::Base::BEGIN@10" -> "MooseX::Types::Util::BEGIN@12";
+"MooseX::Types::BEGIN@11" -> "MooseX::Types::Base::BEGIN@14";
+}

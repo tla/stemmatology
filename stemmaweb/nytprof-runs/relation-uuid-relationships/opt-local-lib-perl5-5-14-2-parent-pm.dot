@@ -1,0 +1,128 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@15";
+}
+subgraph cluster_XML_Easy_Syntax {
+	label="XML::Easy::Syntax";
+	"XML::Easy::Syntax::BEGIN@31";
+}
+subgraph cluster_Plack_Util_IOWithPath {
+	label="Plack::Util::IOWithPath";
+	"Plack::Util::IOWithPath::BEGIN@352";
+}
+subgraph cluster_Plack_Component {
+	label="Plack::Component";
+	"Plack::Component::BEGIN@2";
+	"Plack::Component::BEGIN@3";
+	"Plack::Component::BEGIN@5";
+	"Plack::Component::BEGIN@4";
+	"Plack::Component::BEGIN@6";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@4";
+}
+subgraph cluster_B_Hooks_OP_Check {
+	label="B::Hooks::OP::Check";
+	"B::Hooks::OP::Check::BEGIN@7";
+}
+subgraph cluster_Parse_Yapp_Driver {
+	label="Parse::Yapp::Driver";
+	"Parse::Yapp::Driver::BEGIN@201";
+	"Parse::Yapp::Driver::BEGIN@22";
+	"Parse::Yapp::Driver::BEGIN@28";
+	"Parse::Yapp::Driver::BEGIN@20";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::BEGIN@4";
+}
+subgraph cluster_Plack_Middleware_IIS6ScriptNameFix {
+	label="Plack::Middleware::IIS6ScriptNameFix";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@4";
+}
+subgraph cluster_Plack_Middleware_ReverseProxy {
+	label="Plack::Middleware::ReverseProxy";
+	"Plack::Middleware::ReverseProxy::BEGIN@6";
+}
+subgraph cluster_Plack_Middleware_Conditional {
+	label="Plack::Middleware::Conditional";
+	"Plack::Middleware::Conditional::BEGIN@3";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::BEGIN@25";
+	"parent::BEGIN@2";
+	"parent::CORE:subst";
+	"parent::import";
+	"parent::BEGIN@3";
+}
+subgraph cluster_Plack_Middleware {
+	label="Plack::Middleware";
+	"Plack::Middleware::BEGIN@2";
+	"Plack::Middleware::BEGIN@4";
+	"Plack::Middleware::BEGIN@7";
+	"Plack::Middleware::BEGIN@5";
+	"Plack::Middleware::BEGIN@3";
+	"Plack::Middleware::BEGIN@6";
+}
+subgraph cluster_B_Hooks_OP_PPAddr {
+	label="B::Hooks::OP::PPAddr";
+	"B::Hooks::OP::PPAddr::BEGIN@6";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::BEGIN@3";
+	"vars::BEGIN@8";
+	"vars::import";
+	"vars::BEGIN@7";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_Plack_Middleware_LighttpdScriptNameFix {
+	label="Plack::Middleware::LighttpdScriptNameFix";
+	"Plack::Middleware::LighttpdScriptNameFix::BEGIN@3";
+}
+"parent::import" -> "Plack::Middleware::BEGIN@3";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@2";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@201";
+"parent::import" -> "Plack::Component::BEGIN@5";
+"parent::import" -> "Plack::Component::BEGIN@3";
+"parent::import" -> "Plack::Middleware::BEGIN@7";
+"parent::BEGIN@2" -> "strict::import";
+"parent::BEGIN@3" -> "vars::BEGIN@8";
+"parent::import" -> "Plack::Middleware::BEGIN@5";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@28";
+"parent::BEGIN@25" -> "strict::unimport";
+"parent::BEGIN@3" -> "vars::import";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@20";
+"parent::BEGIN@3" -> "vars::BEGIN@7";
+"parent::import" -> "parent::CORE:subst";
+"parent::import" -> "Parse::Yapp::Driver::BEGIN@22";
+"parent::import" -> "Plack::Component::BEGIN@6";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@3";
+"parent::import" -> "Plack::Middleware::BEGIN@6";
+"parent::BEGIN@3" -> "vars::BEGIN@3";
+"parent::import" -> "Plack::Component::BEGIN@4";
+"parent::import" -> "Plack::Middleware::BEGIN@4";
+"parent::import" -> "Plack::Component::BEGIN@2";
+"Plack::Middleware::ReverseProxy::BEGIN@6" -> "parent::import";
+"XML::Easy::Syntax::BEGIN@31" -> "parent::import";
+"Plack::Test::BEGIN@4" -> "parent::import";
+"Plack::Middleware::Conditional::BEGIN@3" -> "parent::import";
+"Plack::Middleware::LighttpdScriptNameFix::BEGIN@3" -> "parent::import";
+"Plack::Middleware::BEGIN@5" -> "parent::import";
+"B::Hooks::OP::PPAddr::BEGIN@6" -> "parent::import";
+"Plack::Middleware::IIS6ScriptNameFix::BEGIN@4" -> "parent::import";
+"Plack::Util::IOWithPath::BEGIN@352" -> "parent::import";
+"B::Hooks::OP::Check::BEGIN@7" -> "parent::import";
+"HTTP::Message::PSGI::BEGIN@4" -> "parent::import";
+"Graph::Reader::Dot::BEGIN@15" -> "parent::import";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@25";
+"parent::import" -> "Plack::Middleware::BEGIN@2";
+}

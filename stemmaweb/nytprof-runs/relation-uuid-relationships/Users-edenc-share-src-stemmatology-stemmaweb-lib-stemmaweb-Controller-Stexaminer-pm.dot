@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@5";
+	"stemmaweb::Controller::Stexaminer::BEGIN@61";
+	"stemmaweb::Controller::Stexaminer::BEGIN@8";
+	"stemmaweb::Controller::Stexaminer::BEGIN@4";
+	"stemmaweb::Controller::Stexaminer::BEGIN@3";
+	"stemmaweb::Controller::Stexaminer::BEGIN@2";
+	"stemmaweb::Controller::Stexaminer::BEGIN@6";
+	"stemmaweb::Controller::Stexaminer::BEGIN@69";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"stemmaweb::Controller::Stexaminer::BEGIN@8" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@6";
+"stemmaweb::Controller::Stexaminer::BEGIN@5" -> "JSON::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@4";
+"stemmaweb::Controller::Stexaminer::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Stexaminer::BEGIN@6" -> "Exporter::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@4" -> "Exporter::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@61";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@3";
+"stemmaweb::Controller::Stexaminer::BEGIN@3" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@61" -> "attributes::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@69" -> "attributes::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@69";
+}

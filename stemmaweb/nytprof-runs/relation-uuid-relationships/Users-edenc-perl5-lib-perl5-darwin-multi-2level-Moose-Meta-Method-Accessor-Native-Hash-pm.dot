@@ -1,0 +1,58 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash {
+	label="Moose::Meta::Method::Accessor::Native::Hash";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@28";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key";
+	"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_exists {
+	label="Moose::Meta::Method::Accessor::Native::Hash::exists";
+	"Moose::Meta::Method::Accessor::Native::Hash::exists::_inline_check_arguments";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_get {
+	label="Moose::Meta::Method::Accessor::Native::Hash::get";
+	"Moose::Meta::Method::Accessor::Native::Hash::get::_inline_check_arguments";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::delegate_to_method";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::BEGIN@12";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@28" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Hash::BEGIN@10" -> "warnings::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key" -> "Moose::Meta::Method::Delegation::delegate_to_method";
+"Moose::Meta::Method::Accessor::Native::Hash::get::_inline_check_arguments" -> "Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key";
+"Moose::Meta::Method::Accessor::Native::Hash::exists::_inline_check_arguments" -> "Moose::Meta::Method::Accessor::Native::Hash::_inline_check_var_is_valid_key";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::BEGIN@10";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Hash::BEGIN@28";
+}

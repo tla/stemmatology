@@ -1,0 +1,23 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Role_Attribute {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::BEGIN@2";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::accessor_metaclass";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:398]" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::accessor_metaclass";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::Emulate::Class::Accessor::Fast::Meta::Role::Attribute::BEGIN@2";
+}

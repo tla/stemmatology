@@ -1,0 +1,67 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_LWP_Protocol {
+	label="LWP::Protocol";
+	"LWP::Protocol::BEGIN@10";
+	"LWP::Protocol::BEGIN@7";
+	"LWP::Protocol::BEGIN@8";
+	"LWP::Protocol::BEGIN@9";
+	"LWP::Protocol::BEGIN@62";
+}
+subgraph cluster_HTTP_Date {
+	label="HTTP::Date";
+	"HTTP::Date::BEGIN@13";
+	"HTTP::Date::BEGIN@10";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::BEGIN@8";
+	"HTTP::Response::BEGIN@7";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@10";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@3";
+	"LWP::UserAgent::BEGIN@14";
+	"LWP::UserAgent::BEGIN@12";
+	"LWP::UserAgent::BEGIN@10";
+	"LWP::UserAgent::BEGIN@17";
+	"LWP::UserAgent::BEGIN@374";
+	"LWP::UserAgent::BEGIN@11";
+	"LWP::UserAgent::BEGIN@15";
+	"LWP::UserAgent::BEGIN@4";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@3";
+"LWP::UserAgent::BEGIN@11" -> "HTTP::Response::BEGIN@7";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@374";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@9";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@8";
+"LWP::UserAgent::BEGIN@3" -> "strict::import";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@11";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@7";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@17";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@10";
+"LWP::UserAgent::BEGIN@374" -> "strict::unimport";
+"LWP::UserAgent::BEGIN@12" -> "HTTP::Date::BEGIN@13";
+"LWP::UserAgent::BEGIN@4" -> "vars::import";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@10";
+"LWP::UserAgent::BEGIN@11" -> "HTTP::Response::BEGIN@8";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@15";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@14";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@4";
+"Text::Tradition::Analysis::BEGIN@10" -> "LWP::UserAgent::BEGIN@12";
+"LWP::UserAgent::BEGIN@12" -> "HTTP::Date::BEGIN@10";
+"LWP::UserAgent::BEGIN@15" -> "LWP::Protocol::BEGIN@62";
+}

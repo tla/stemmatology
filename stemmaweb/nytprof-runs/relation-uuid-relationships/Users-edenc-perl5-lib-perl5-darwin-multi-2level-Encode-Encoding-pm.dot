@@ -1,0 +1,32 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::BEGIN@4";
+	"Encode::Encoding::BEGIN@5";
+	"Encode::Encoding::CORE:match";
+	"Encode::Encoding::renewed";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::decode_xs";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::predefine_encodings";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Encode::predefine_encodings" -> "Encode::Encoding::CORE:match";
+"Encode::Encoding::BEGIN@4" -> "strict::import";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@4";
+"Encode::Encoding::BEGIN@5" -> "warnings::import";
+"Encode::utf8::decode_xs" -> "Encode::Encoding::renewed";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@5";
+}

@@ -1,0 +1,118 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@48";
+}
+subgraph cluster_Class_MOP_Deprecated {
+	label="Class::MOP::Deprecated";
+	"Class::MOP::Deprecated::BEGIN@12";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@7";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::BEGIN@4";
+	"List::MoreUtils::BEGIN@6";
+	"List::MoreUtils::BEGIN@3";
+	"List::MoreUtils::BEGIN@8";
+	"List::MoreUtils::BEGIN@5";
+	"List::MoreUtils::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@18";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::BEGIN@20";
+}
+subgraph cluster_Moose_Deprecated {
+	label="Moose::Deprecated";
+	"Moose::Deprecated::BEGIN@12";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_HASH0";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::BEGIN@16";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::_build_warn";
+	"Package::DeprecationManager::import";
+	"Package::DeprecationManager::BEGIN@12";
+	"Package::DeprecationManager::BEGIN@9";
+	"Package::DeprecationManager::BEGIN@11";
+	"Package::DeprecationManager::_build_import";
+	"Package::DeprecationManager::BEGIN@6";
+	"Package::DeprecationManager::BEGIN@10";
+	"Package::DeprecationManager::BEGIN@7";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@31";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::__ANON__[Sub/Install.pm:284]";
+	"Sub::Install::__ANON__[Sub/Install.pm:132]";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::BEGIN@14";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::BEGIN@16";
+}
+"Package::DeprecationManager::import" -> "Sub::Install::__ANON__[Sub/Install.pm:132]";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@9";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@5";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@12";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@7";
+"Package::DeprecationManager::import" -> "Package::DeprecationManager::_build_import";
+"Package::DeprecationManager::BEGIN@6" -> "strict::import";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@10";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@3";
+"Package::DeprecationManager::BEGIN@9" -> "Exporter::import";
+"Package::DeprecationManager::BEGIN@11" -> "Exporter::import";
+"Package::DeprecationManager::BEGIN@10" -> "Exporter::import";
+"Package::DeprecationManager::import" -> "Params::Util::_HASH0";
+"Package::DeprecationManager::BEGIN@12" -> "Sub::Install::__ANON__[Sub/Install.pm:284]";
+"Package::DeprecationManager::BEGIN@7" -> "warnings::import";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@6";
+"Class::MOP::Package::BEGIN@16" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Util::MetaRole::BEGIN@16" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Meta::Attribute::Native::Trait::BEGIN@14" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::BEGIN@18" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Meta::Attribute::BEGIN@20" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"namespace::clean::BEGIN@7" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Util::TypeConstraints::BEGIN@31" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::import";
+"Package::Stash::BEGIN@48" -> "Package::DeprecationManager::import";
+"Class::MOP::Deprecated::BEGIN@12" -> "Package::DeprecationManager::import";
+"Package::DeprecationManager::import" -> "Package::DeprecationManager::_build_warn";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@8";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@6";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@9";
+"Package::DeprecationManager::BEGIN@10" -> "List::MoreUtils::BEGIN@4";
+"Moose::Deprecated::BEGIN@12" -> "Package::DeprecationManager::BEGIN@11";
+}

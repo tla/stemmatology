@@ -1,0 +1,96 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Package_Stash {
+	label="Package::Stash";
+	"Package::Stash::BEGIN@11";
+}
+subgraph cluster_Package_Stash_XS {
+	label="Package::Stash::XS";
+	"Package::Stash::XS::has_symbol";
+	"Package::Stash::XS::get_symbol";
+	"Package::Stash::XS::remove_symbol";
+	"Package::Stash::XS::BEGIN@6";
+	"Package::Stash::XS::list_all_symbols";
+	"Package::Stash::XS::add_symbol";
+	"Package::Stash::XS::name";
+	"Package::Stash::XS::get_or_add_symbol";
+	"Package::Stash::XS::namespace";
+	"Package::Stash::XS::new";
+	"Package::Stash::XS::get_all_symbols";
+	"Package::Stash::XS::BEGIN@2";
+	"Package::Stash::XS::BEGIN@9";
+	"Package::Stash::XS::remove_glob";
+	"Package::Stash::XS::BEGIN@5";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::__ANON__[namespace/clean.pm:274]";
+	"namespace::clean::import";
+	"namespace::clean::get_class_store";
+	"namespace::clean::get_functions";
+	"namespace::clean::__ANON__[namespace/clean.pm:221]";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::namespace";
+	"Class::MOP::Package::remove_package_symbol";
+	"Class::MOP::Package::list_all_package_symbols";
+	"Class::MOP::Package::get_all_package_symbols";
+	"Class::MOP::Package::get_package_symbol";
+	"Class::MOP::Package::add_package_symbol";
+	"Class::MOP::Package::_package_stash";
+	"Class::MOP::Package::has_package_symbol";
+	"Class::MOP::Package::get_or_add_package_symbol";
+}
+"Class::MOP::Package::namespace" -> "Package::Stash::XS::namespace";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::has_symbol" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::get_symbol" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::remove_symbol" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::list_all_symbols" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::get_or_add_symbol" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::get_all_symbols" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::remove_glob" -> "Package::Stash::XS::namespace";
+"Package::Stash::XS::get_symbol" -> "Package::Stash::XS::name";
+"Package::Stash::XS::add_symbol" -> "Package::Stash::XS::name";
+"Package::Stash::XS::get_or_add_symbol" -> "Package::Stash::XS::name";
+"Package::Stash::XS::namespace" -> "Package::Stash::XS::name";
+"Class::MOP::Package::get_or_add_package_symbol" -> "Package::Stash::XS::get_or_add_symbol";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::get_symbol";
+"Class::MOP::Package::get_package_symbol" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::get_functions" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::new";
+"Class::MOP::Package::_package_stash" -> "Package::Stash::XS::new";
+"namespace::clean::import" -> "Package::Stash::XS::new";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::new";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::new";
+"namespace::clean::get_functions" -> "Package::Stash::XS::new";
+"Package::Stash::XS::BEGIN@5" -> "strict::import";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@5";
+"Class::MOP::Package::get_all_package_symbols" -> "Package::Stash::XS::get_all_symbols";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::get_all_symbols";
+"Class::MOP::Package::remove_package_symbol" -> "Package::Stash::XS::remove_symbol";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::remove_glob";
+"Class::MOP::Package::list_all_package_symbols" -> "Package::Stash::XS::list_all_symbols";
+"namespace::clean::get_functions" -> "Package::Stash::XS::list_all_symbols";
+"Package::Stash::XS::BEGIN@6" -> "warnings::import";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@2";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@9";
+"Class::MOP::Package::add_package_symbol" -> "Package::Stash::XS::add_symbol";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::add_symbol";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::add_symbol";
+"namespace::clean::__ANON__[namespace/clean.pm:221]" -> "Package::Stash::XS::add_symbol";
+"Package::Stash::BEGIN@11" -> "Package::Stash::XS::BEGIN@6";
+"namespace::clean::import" -> "Package::Stash::XS::has_symbol";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::has_symbol";
+"Class::MOP::Package::has_package_symbol" -> "Package::Stash::XS::has_symbol";
+}

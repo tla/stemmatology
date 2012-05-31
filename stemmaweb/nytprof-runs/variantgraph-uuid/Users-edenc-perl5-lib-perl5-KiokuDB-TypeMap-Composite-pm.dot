@@ -1,0 +1,179 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::new";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_KiokuDB_TypeMap {
+	label="Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap";
+	"Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap::register_implementation";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_construct_entry";
+	"KiokuDB::TypeMap::Composite::CORE:subst";
+	"KiokuDB::TypeMap::Composite::__ANON__[KiokuDB/TypeMap/Composite.pm:28]";
+	"KiokuDB::TypeMap::Composite::_entry_options";
+	"KiokuDB::TypeMap::Composite::_create_typemap";
+	"KiokuDB::TypeMap::Composite::BEGIN@6";
+	"KiokuDB::TypeMap::Composite::_build__exclude";
+	"KiokuDB::TypeMap::Composite::_create_entries";
+	"KiokuDB::TypeMap::Composite::_build_includes";
+	"KiokuDB::TypeMap::Composite::__ANON__[KiokuDB/TypeMap/Composite.pm:22]";
+	"KiokuDB::TypeMap::Composite::_create_entry";
+	"KiokuDB::TypeMap::Composite::BEGIN@4";
+	"KiokuDB::TypeMap::Composite::BEGIN@8";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::new";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::new";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::name";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::new";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::new";
+	"KiokuDB::TypeMap::includes";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::new";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::does";
+	"Moose::Meta::Attribute::get_value";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite_TypeMapAttr {
+	label="KiokuDB::TypeMap::Composite::TypeMapAttr";
+	"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@14";
+	"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::new";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::_exclude";
+	"KiokuDB::TypeMap::Default::JSON::exclude";
+	"KiokuDB::TypeMap::Default::JSON::_build_json_boolean_typemap";
+	"KiokuDB::TypeMap::Default::JSON::meta";
+	"KiokuDB::TypeMap::Default::JSON::override";
+	"KiokuDB::TypeMap::Default::JSON::new";
+}
+subgraph cluster_KiokuDB_TypeMap_Default {
+	label="KiokuDB::TypeMap::Default";
+	"KiokuDB::TypeMap::Default::_build_tie_typemap";
+	"KiokuDB::TypeMap::Default::_build_core_typemap";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::new";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_Canonical {
+	label="KiokuDB::TypeMap::Default::Canonical";
+	"KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap";
+	"KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::resolve_metaclass_alias";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::new";
+}
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Closure::new";
+"KiokuDB::TypeMap::Composite::_create_entry" -> "Scalar::Util::blessed";
+"Moose::Util::resolve_metaclass_alias" -> "Moose::Meta::Attribute::Custom::Trait::KiokuDB::TypeMap::register_implementation";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Moose::Meta::Attribute::get_value";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Ref::new";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Composite::BEGIN@6";
+"KiokuDB::TypeMap::Composite::_create_typemap" -> "KiokuDB::TypeMap::Composite::_create_entries";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "KiokuDB::TypeMap::Composite::CORE:subst";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "KiokuDB::TypeMap::Default::JSON::meta";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Composite::BEGIN@8";
+"KiokuDB::TypeMap::Composite::BEGIN@6" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Moose::Meta::Attribute::does";
+"KiokuDB::TypeMap::Composite::_create_typemap" -> "KiokuDB::TypeMap::new";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "Class::Load::load_class";
+"KiokuDB::TypeMap::Default::JSON::new" -> "KiokuDB::TypeMap::Composite::__ANON__[KiokuDB/TypeMap/Composite.pm:22]";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Callback::new";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Composite::_entry_options";
+"KiokuDB::TypeMap::Composite::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@14" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Naive::new";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::StorableHook::new";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Composite::BEGIN@4";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Passthrough::new";
+"KiokuDB::TypeMap::Composite::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Class::MOP::Mixin::AttributeCore::name";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::Set::new";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"KiokuDB::TypeMap::Composite::_build__exclude" -> "KiokuDB::TypeMap::Default::JSON::exclude";
+"KiokuDB::TypeMap::Composite::_build_includes" -> "KiokuDB::TypeMap::Default::JSON::_exclude";
+"KiokuDB::TypeMap::Composite::_create_entry" -> "KiokuDB::TypeMap::Default::JSON::_exclude";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@14";
+"KiokuDB::TypeMap::Default::JSON::_exclude" -> "KiokuDB::TypeMap::Composite::_build__exclude";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "KiokuDB::TypeMap::Entry::JSON::Scalar::new";
+"KiokuDB::TypeMap::Default::Canonical::_build_authen_passphrase_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::_build_tie_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::JSON::_build_json_boolean_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::_build_core_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_path_class_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_uri_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"KiokuDB::TypeMap::Default::Canonical::_build_datetime_typemap" -> "KiokuDB::TypeMap::Composite::_create_typemap";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@12";
+"KiokuDB::TypeMap::Composite::_create_entries" -> "KiokuDB::TypeMap::Composite::_create_entry";
+"KiokuDB::TypeMap::Composite::_entry_options" -> "KiokuDB::TypeMap::Default::JSON::override";
+"KiokuDB::TypeMap::Default::JSON::new" -> "KiokuDB::TypeMap::Composite::__ANON__[KiokuDB/TypeMap/Composite.pm:28]";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "Class::MOP::load_class";
+"KiokuDB::TypeMap::Composite::_create_entry" -> "KiokuDB::TypeMap::Composite::_construct_entry";
+"KiokuDB::TypeMap::includes" -> "KiokuDB::TypeMap::Composite::_build_includes";
+}

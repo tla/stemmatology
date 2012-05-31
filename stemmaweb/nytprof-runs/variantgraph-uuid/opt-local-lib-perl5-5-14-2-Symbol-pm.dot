@@ -1,0 +1,18 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@13";
+}
+subgraph cluster_Symbol {
+	label="Symbol";
+	"Symbol::gensym";
+	"Symbol::BEGIN@81";
+}
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::new";
+}
+"IO::Dir::BEGIN@13" -> "Symbol::BEGIN@81";
+"IO::Handle::new" -> "Symbol::gensym";
+}

@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_OneArgNew {
+	label="MooseX::OneArgNew";
+	"MooseX::OneArgNew::BEGIN@11";
+	"MooseX::OneArgNew::BEGIN@5";
+	"MooseX::OneArgNew::BEGIN@2";
+	"MooseX::OneArgNew::BEGIN@9";
+	"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]";
+	"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:18]";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::around";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:72]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:18]" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:72]" -> "MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:18]";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]";
+"MooseX::OneArgNew::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::OneArgNew::BEGIN@9" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "MooseX::OneArgNew::BEGIN@9";
+"Module::Runtime::require_module" -> "MooseX::OneArgNew::BEGIN@2";
+"MooseX::OneArgNew::__ANON__[MooseX/OneArgNew.pm:43]" -> "Moose::Role::around";
+"MooseX::OneArgNew::BEGIN@11" -> "namespace::autoclean::import";
+"Module::Runtime::require_module" -> "MooseX::OneArgNew::BEGIN@5";
+"Module::Runtime::require_module" -> "MooseX::OneArgNew::BEGIN@11";
+}

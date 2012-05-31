@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@2";
+}
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@4" -> "warnings::unimport";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@2";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@6";
+}

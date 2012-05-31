@@ -1,0 +1,66 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Constructor {
+	label="Moose::Meta::Method::Constructor";
+	"Moose::Meta::Method::Constructor::_initialize_body";
+	"Moose::Meta::Method::Constructor::BEGIN@11";
+	"Moose::Meta::Method::Constructor::BEGIN@3";
+	"Moose::Meta::Method::Constructor::new";
+	"Moose::Meta::Method::Constructor::BEGIN@18";
+	"Moose::Meta::Method::Constructor::BEGIN@13";
+	"Moose::Meta::Method::Constructor::BEGIN@10";
+	"Moose::Meta::Method::Constructor::BEGIN@16";
+	"Moose::Meta::Method::Constructor::BEGIN@14";
+	"Moose::Meta::Method::Constructor::BEGIN@15";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@25";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_inline_constructor";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::_generate_constructor_method_inline";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@16";
+"Moose::Meta::Method::Constructor::BEGIN@10" -> "strict::import";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@14";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@18";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@11";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@3";
+"Moose::Meta::Method::Constructor::BEGIN@16" -> "Exporter::import";
+"Moose::Meta::Method::Constructor::BEGIN@15" -> "Exporter::import";
+"Moose::Meta::Method::Constructor::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::Method::Constructor::BEGIN@18" -> "base::import";
+"Moose::Meta::Method::Constructor::BEGIN@11" -> "warnings::import";
+"Class::MOP::Class::_inline_constructor" -> "Moose::Meta::Method::Constructor::new";
+"Moose::Meta::Method::Constructor::_initialize_body" -> "Class::MOP::Method::Constructor::_generate_constructor_method_inline";
+"Moose::Meta::Method::Constructor::new" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Constructor::new" -> "Moose::Meta::Method::Constructor::_initialize_body";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@15";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@10";
+"Moose::Meta::Class::BEGIN@25" -> "Moose::Meta::Method::Constructor::BEGIN@13";
+}

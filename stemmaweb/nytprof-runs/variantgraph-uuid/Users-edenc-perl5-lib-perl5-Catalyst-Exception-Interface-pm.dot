@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Exception_Interface {
+	label="Catalyst::Exception::Interface";
+	"Catalyst::Exception::Interface::BEGIN@3";
+	"Catalyst::Exception::Interface::BEGIN@4";
+	"Catalyst::Exception::Interface::BEGIN@7";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Catalyst::Exception::Interface::BEGIN@7" -> "overload::import";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Interface::BEGIN@4";
+"Catalyst::Exception::Interface::BEGIN@4" -> "namespace::clean::import";
+"Catalyst::Exception::Interface::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Interface::BEGIN@7";
+"Module::Runtime::require_module" -> "Catalyst::Exception::Interface::BEGIN@3";
+}

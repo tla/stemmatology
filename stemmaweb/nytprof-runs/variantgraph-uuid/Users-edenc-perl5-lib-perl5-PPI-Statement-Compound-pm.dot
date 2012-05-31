@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement_Compound {
+	label="PPI::Statement::Compound";
+	"PPI::Statement::Compound::BEGIN@57";
+	"PPI::Statement::Compound::BEGIN@54";
+	"PPI::Statement::Compound::BEGIN@56";
+	"PPI::Statement::Compound::BEGIN@53";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@163";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@56";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@54";
+"PPI::Statement::Compound::BEGIN@53" -> "strict::import";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@57";
+"PPI::Statement::Compound::BEGIN@56" -> "vars::import";
+"PPI::Statement::BEGIN@163" -> "PPI::Statement::Compound::BEGIN@53";
+}

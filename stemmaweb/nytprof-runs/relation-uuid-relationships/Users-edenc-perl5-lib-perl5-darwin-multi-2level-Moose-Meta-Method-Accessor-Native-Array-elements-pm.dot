@@ -1,0 +1,46 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_elements {
+	label="Moose::Meta::Method::Accessor::Native::Array::elements";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::_maximum_arguments";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@26";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Method::Accessor::Native::_inline_return_value" -> "Moose::Meta::Method::Accessor::Native::Array::elements::_return_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@10";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@26";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@26" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::Accessor::Native::Array::elements::_maximum_arguments";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@9";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Array::elements::BEGIN@10" -> "warnings::import";
+}

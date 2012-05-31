@@ -1,0 +1,62 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native {
+	label="Moose::Meta::Method::Accessor::Native";
+	"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count";
+	"Moose::Meta::Method::Accessor::Native::_inline_return_value";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_adds_members";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_potential_value";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_return_value";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@39";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_inline_optimized_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_maximum_arguments";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_return_value";
+"Moose::Meta::Method::Accessor::Native::_inline_return_value" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_return_value";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_potential_value";
+"Moose::Meta::Method::Accessor::Native::_inline_check_argument_count" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_maximum_arguments";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@9" -> "strict::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@39";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@39" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@10" -> "warnings::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Array::clear::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_set_new_value" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_inline_optimized_set_new_value";
+}

@@ -1,0 +1,165 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:41]";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::__ANON__[Catalyst.pm:44]";
+	"Catalyst::__ANON__[Catalyst.pm:43]";
+	"Catalyst::__ANON__[Catalyst.pm:48]";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::__ANON__[Moose/Meta/Class.pm:37]";
+	"Moose::Meta::Class::__ANON__[Moose/Meta/Class.pm:43]";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:76]";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:91]";
+	"Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:308]";
+	"Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:354]";
+	"Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:400]";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::transform_trait";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_immutable_metaclass";
+	"Class::MOP::Class::_eval_environment";
+	"Class::MOP::Class::_inline_default_value";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@14";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@10";
+	"Class::MOP::Mixin::AttributeCore::has_accessor";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@12";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@2";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@9";
+	"Class::MOP::Mixin::AttributeCore::has_read_method";
+	"Class::MOP::Mixin::AttributeCore::has_reader";
+	"Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::__ANON__[Moose/Meta/TypeConstraint/Registry.pm:27]";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::_inline_generate_default";
+	"Moose::Meta::Attribute::initialize_instance_slot";
+	"Moose::Meta::Attribute::get_value";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:19]";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::initialize_instance_slot";
+	"Class::MOP::Attribute::new";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:101]";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:42]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::__ANON__[Class/MOP.pm:177]";
+	"Class::MOP::__ANON__[Class/MOP.pm:478]";
+	"Class::MOP::BEGIN@23";
+	"Class::MOP::__ANON__[Class/MOP.pm:269]";
+	"Class::MOP::__ANON__[Class/MOP.pm:132]";
+	"Class::MOP::__ANON__[Class/MOP.pm:222]";
+	"Class::MOP::__ANON__[Class/MOP.pm:249]";
+	"Class::MOP::__ANON__[Class/MOP.pm:286]";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::_get_delegate_accessor";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::__ANON__[Moose/Meta/Role/Application.pm:16]";
+	"Moose::Meta::Role::Application::__ANON__[Moose/Meta/Role/Application.pm:23]";
+}
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:354]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:308]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Text::Tradition::Directory::__ANON__[lib/Text/Tradition/Directory.pm:168]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::Dispatcher::__ANON__[Catalyst/Dispatcher.pm:41]";
+"Moose::Meta::Attribute::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::default";
+"Moose::Meta::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Attribute::initialize_instance_slot" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Mixin::AttributeCore::default";
+"MooseX::Traits::Util::transform_trait" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Class::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::default";
+"Moose::Meta::Attribute::get_value" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Mixin::AttributeCore::has_read_method" -> "Class::MOP::Mixin::AttributeCore::has_reader";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::Application::__ANON__[Moose/Meta/Role/Application.pm:23]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:286]";
+"Moose::Meta::Attribute::_inline_generate_default" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::Attribute::new" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::Class::_inline_default_value" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@10";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:249]";
+"Class::MOP::Mixin::AttributeCore::BEGIN@9" -> "strict::import";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Class::__ANON__[Moose/Meta/Class.pm:43]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:42]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:48]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::Model::KiokuDB::__ANON__[Catalyst/Model/KiokuDB.pm:76]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:101]";
+"Class::MOP::Mixin::AttributeCore::BEGIN@12" -> "Exporter::import";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::Application::__ANON__[Moose/Meta/Role/Application.pm:16]";
+"Class::MOP::Mixin::AttributeCore::BEGIN@14" -> "base::import";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Class::__ANON__[Moose/Meta/Class.pm:37]";
+"Class::MOP::Mixin::AttributeCore::BEGIN@10" -> "warnings::import";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@14";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:43]";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@9";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:478]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Catalyst::__ANON__[Catalyst.pm:44]";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@12";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:132]";
+"Class::MOP::Mixin::AttributeCore::has_read_method" -> "Class::MOP::Mixin::AttributeCore::has_accessor";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:400]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::Role::__ANON__[Moose/Meta/Role.pm:91]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:222]";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@2";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:269]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:19]";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Class::MOP::Mixin::AttributeCore::has_read_method";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:177]";
+"Class::MOP::Mixin::AttributeCore::default" -> "Moose::Meta::TypeConstraint::Registry::__ANON__[Moose/Meta/TypeConstraint/Registry.pm:27]";
+}

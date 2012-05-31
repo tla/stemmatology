@@ -1,0 +1,68 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::BEGIN@6";
+	"Plack::Test::MockHTTP::test_psgi";
+	"Plack::Test::MockHTTP::BEGIN@8";
+	"Plack::Test::MockHTTP::BEGIN@7";
+	"Plack::Test::MockHTTP::BEGIN@9";
+	"Plack::Test::MockHTTP::BEGIN@2";
+	"Plack::Test::MockHTTP::BEGIN@3";
+	"Plack::Test::MockHTTP::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Plack_Test {
+	label="Plack::Test";
+	"Plack::Test::BEGIN@2";
+	"Plack::Test::BEGIN@4";
+	"Plack::Test::BEGIN@13";
+	"Plack::Test::BEGIN@3";
+	"Plack::Test::test_psgi";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@4";
+	"main::RUNTIME";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::BEGIN@25";
+	"parent::BEGIN@2";
+	"parent::import";
+	"parent::BEGIN@3";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@5";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@3";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@2";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@13";
+"CatalystX::Test::MockContext::__ANON__[CatalystX/Test/MockContext.pm:32]" -> "Plack::Test::test_psgi";
+"main::RUNTIME" -> "Plack::Test::test_psgi";
+"Plack::Test::BEGIN@2" -> "strict::import";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@9";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@4";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@7";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@2";
+"Plack::Test::BEGIN@13" -> "strict::unimport";
+"Plack::Test::BEGIN@3" -> "warnings::import";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::test_psgi";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@3";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@8";
+"Plack::Test::BEGIN@4" -> "parent::import";
+"Plack::Test::BEGIN@4" -> "parent::BEGIN@25";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@2";
+"Plack::Test::test_psgi" -> "Plack::Test::MockHTTP::BEGIN@6";
+"main::BEGIN@4" -> "Plack::Test::BEGIN@3";
+}

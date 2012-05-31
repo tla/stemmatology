@@ -1,0 +1,250 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::CORE:ftdir";
+	"Catalyst::setup_home";
+	"Catalyst::path_to";
+}
+subgraph cluster_Fcntl {
+	label="Fcntl";
+	"Fcntl::O_NOFOLLOW";
+	"Fcntl::O_TEMPORARY";
+	"Fcntl::O_EXLOCK";
+	"Fcntl::O_LARGEFILE";
+	"Fcntl::O_NOINHERIT";
+	"Fcntl::O_BINARY";
+}
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::dir";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::parent";
+	"Path::Class::Dir::BEGIN@14";
+	"Path::Class::Dir::dir_list";
+	"Path::Class::Dir::file";
+	"Path::Class::Dir::BEGIN@8";
+	"Path::Class::Dir::file_class";
+	"Path::Class::Dir::BEGIN@10";
+	"Path::Class::Dir::stringify";
+	"Path::Class::Dir::new";
+	"Path::Class::Dir::BEGIN@12";
+	"Path::Class::Dir::BEGIN@13";
+	"Path::Class::Dir::subdir";
+	"Path::Class::Dir::BEGIN@9";
+}
+subgraph cluster_IO_Dir {
+	label="IO::Dir";
+	"IO::Dir::BEGIN@12";
+	"IO::Dir::BEGIN@13";
+	"IO::Dir::BEGIN@15";
+	"IO::Dir::BEGIN@42";
+	"IO::Dir::BEGIN@18";
+	"IO::Dir::BEGIN@19";
+	"IO::Dir::BEGIN@14";
+	"IO::Dir::BEGIN@17";
+	"IO::Dir::BEGIN@9";
+	"IO::Dir::BEGIN@11";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::absolute";
+	"Path::Class::Entity::is_absolute";
+	"Path::Class::Entity::cleanup";
+	"Path::Class::Entity::_spec";
+	"Path::Class::Entity::new";
+}
+subgraph cluster_File_Temp_Dir {
+	label="File::Temp::Dir";
+	"File::Temp::Dir::BEGIN@2405";
+	"File::Temp::Dir::BEGIN@2407";
+	"File::Temp::Dir::BEGIN@2406";
+}
+subgraph cluster_Carp_Heavy {
+	label="Carp::Heavy";
+	"Carp::Heavy::BEGIN@3";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::curdir";
+	"File::Spec::Unix::splitpath";
+	"File::Spec::Unix::canonpath";
+	"File::Spec::Unix::splitdir";
+	"File::Spec::Unix::CORE:subst";
+	"File::Spec::Unix::updir";
+	"File::Spec::Unix::catdir";
+	"File::Spec::Unix::catpath";
+}
+subgraph cluster_main {
+	label="main";
+	"main::RUNTIME";
+}
+subgraph cluster_base {
+	label="base";
+	"base::BEGIN@3";
+	"base::BEGIN@4";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export_tags";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::CORE:match";
+	"Catalyst::Utils::home";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+	"Path::Class::File::BEGIN@1";
+	"Path::Class::File::BEGIN@8";
+	"Path::Class::File::new";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_tags";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@230";
+	"File::Temp::BEGIN@144";
+	"File::Temp::BEGIN@142";
+	"File::Temp::BEGIN@224";
+	"File::Temp::BEGIN@147";
+	"File::Temp::BEGIN@229";
+	"File::Temp::BEGIN@217";
+	"File::Temp::BEGIN@162";
+	"File::Temp::BEGIN@141";
+	"File::Temp::BEGIN@148";
+	"File::Temp::BEGIN@163";
+	"File::Temp::BEGIN@166";
+	"File::Temp::BEGIN@220";
+	"File::Temp::BEGIN@143";
+	"File::Temp::BEGIN@228";
+	"File::Temp::BEGIN@146";
+	"File::Temp::BEGIN@173";
+	"File::Temp::BEGIN@241";
+	"File::Temp::BEGIN@271";
+	"File::Temp::BEGIN@145";
+}
+subgraph cluster_File_Path {
+	label="File::Path";
+	"File::Path::BEGIN@7";
+	"File::Path::BEGIN@6";
+	"File::Path::BEGIN@8";
+	"File::Path::BEGIN@19";
+	"File::Path::BEGIN@10";
+	"File::Path::BEGIN@4";
+	"File::Path::BEGIN@18";
+	"File::Path::BEGIN@3";
+	"File::Path::BEGIN@329";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@4";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@228";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@271";
+"Path::Class::Dir::new" -> "Path::Class::Dir::stringify";
+"Catalyst::Utils::CORE:match" -> "Path::Class::Dir::stringify";
+"Path::Class::Entity::absolute" -> "Path::Class::Dir::stringify";
+"Path::Class::Entity::is_absolute" -> "Path::Class::Dir::stringify";
+"Catalyst::CORE:ftdir" -> "Path::Class::Dir::stringify";
+"File::Spec::Unix::canonpath" -> "Path::Class::Dir::stringify";
+"Catalyst::Utils::home" -> "Path::Class::Dir::stringify";
+"Path::Class::File::stringify" -> "Path::Class::Dir::stringify";
+"File::Spec::Unix::CORE:subst" -> "Path::Class::Dir::stringify";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@142";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2405";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@13";
+"Path::Class::Dir::parent" -> "Path::Class::Entity::_spec";
+"Path::Class::Dir::stringify" -> "Path::Class::Entity::_spec";
+"Path::Class::Dir::new" -> "Path::Class::Entity::_spec";
+"Path::Class::Dir::stringify" -> "File::Spec::Unix::catpath";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@9";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@6";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@42";
+"Path::Class::Dir::file" -> "Path::Class::File::new";
+"Path::Class::Dir::new" -> "File::Spec::Unix::splitdir";
+"Path::Class::Dir::BEGIN@10" -> "base::BEGIN@3";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@144";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@166";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@11";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@18";
+"Path::Class::Dir::parent" -> "Path::Class::Dir::new";
+"Path::Class::dir" -> "Path::Class::Dir::new";
+"Catalyst::path_to" -> "Path::Class::Dir::new";
+"Path::Class::File::new" -> "Path::Class::Dir::new";
+"Path::Class::Entity::absolute" -> "Path::Class::Dir::new";
+"Path::Class::Entity::cleanup" -> "Path::Class::Dir::new";
+"Catalyst::setup_home" -> "Path::Class::Dir::new";
+"Path::Class::Dir::subdir" -> "Path::Class::Dir::new";
+"Path::Class::Dir::BEGIN@14" -> "Exporter::export_tags";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@141";
+"Path::Class::Dir::new" -> "File::Spec::Unix::canonpath";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@13";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_EXLOCK";
+"Path::Class::Dir::BEGIN@10" -> "base::BEGIN@4";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@241";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2407";
+"Path::Class::Dir::parent" -> "File::Spec::Unix::curdir";
+"Path::Class::File::BEGIN@8" -> "Path::Class::File::BEGIN@1";
+"Path::Class::Dir::new" -> "File::Spec::Unix::catdir";
+"Path::Class::Dir::stringify" -> "File::Spec::Unix::catdir";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@146";
+"Path::Class::File::BEGIN@1" -> "strict::import";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@143";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@173";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_NOFOLLOW";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@10";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_NOINHERIT";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@14";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@145";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::Dir::BEGIN@2406";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_BINARY";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@162";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@230";
+"Catalyst::Utils::home" -> "Path::Class::Dir::dir_list";
+"Path::Class::Dir::BEGIN@10" -> "base::import";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@19";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@220";
+"Path::Class::Dir::new" -> "Path::Class::Entity::new";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@217";
+"Path::Class::Dir::file" -> "Path::Class::Dir::file_class";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@147";
+"Path::Class::Dir::new" -> "File::Spec::Unix::splitpath";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@12";
+"Catalyst::Utils::home" -> "Path::Class::Dir::parent";
+"main::RUNTIME" -> "Path::Class::Dir::parent";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@18";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_TEMPORARY";
+"Path::Class::Dir::BEGIN@14" -> "Exporter::Heavy::heavy_export_tags";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@14";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@8";
+"Path::Class::Dir::parent" -> "Path::Class::Entity::is_absolute";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@8";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@224";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@148";
+"Path::Class::Dir::BEGIN@14" -> "Fcntl::O_LARGEFILE";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@229";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@7";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@9";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@17";
+"Catalyst::setup_home" -> "Path::Class::Dir::subdir";
+"main::RUNTIME" -> "Path::Class::Dir::subdir";
+"Path::Class::Dir::BEGIN@14" -> "Carp::Heavy::BEGIN@3";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@12";
+"Path::Class::Dir::parent" -> "File::Spec::Unix::updir";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@329";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@3";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@19";
+"Path::Class::Dir::BEGIN@12" -> "IO::Dir::BEGIN@15";
+"Path::Class::Dir::BEGIN@14" -> "File::Temp::BEGIN@163";
+"Catalyst::Utils::home" -> "Path::Class::Dir::file";
+"main::RUNTIME" -> "Path::Class::Dir::file";
+"Path::Class::File::BEGIN@8" -> "Path::Class::Dir::BEGIN@10";
+}

@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::import";
+}
+subgraph cluster_File_Copy {
+	label="File::Copy";
+	"File::Copy::BEGIN@10";
+	"File::Copy::BEGIN@11";
+	"File::Copy::BEGIN@13";
+	"File::Copy::BEGIN@47";
+	"File::Copy::BEGIN@12";
+	"File::Copy::BEGIN@14";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::BEGIN@7";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@14";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@10";
+"File::Copy::BEGIN@11" -> "strict::import";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@47";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@13";
+"File::Copy::BEGIN@12" -> "warnings::import";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@11";
+"File::Copy::BEGIN@14" -> "Config::import";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@12";
+}

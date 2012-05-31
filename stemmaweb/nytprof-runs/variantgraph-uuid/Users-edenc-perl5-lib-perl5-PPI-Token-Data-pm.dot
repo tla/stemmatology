@@ -1,0 +1,39 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@72";
+}
+subgraph cluster_PPI_Token_Data {
+	label="PPI::Token::Data";
+	"PPI::Token::Data::BEGIN@31";
+	"PPI::Token::Data::BEGIN@30";
+	"PPI::Token::Data::BEGIN@34";
+	"PPI::Token::Data::BEGIN@32";
+	"PPI::Token::Data::BEGIN@35";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_IO_String {
+	label="IO::String";
+	"IO::String::BEGIN@9";
+	"IO::String::BEGIN@13";
+	"IO::String::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@9";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@31";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@32";
+"PPI::Token::Data::BEGIN@30" -> "strict::import";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@34";
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@10";
+"PPI::Token::Data::BEGIN@34" -> "vars::import";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@30";
+"PPI::Token::Data::BEGIN@31" -> "IO::String::BEGIN@13";
+"PPI::Token::BEGIN@72" -> "PPI::Token::Data::BEGIN@35";
+}

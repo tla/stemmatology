@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_FindBin {
+	label="FindBin";
+	"FindBin::BEGIN@100";
+}
+subgraph cluster_File_Spec {
+	label="File::Spec";
+	"File::Spec::BEGIN@4";
+	"File::Spec::BEGIN@3";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"File::Spec::BEGIN@3" -> "strict::import";
+"FindBin::BEGIN@100" -> "File::Spec::BEGIN@3";
+"File::Spec::BEGIN@4" -> "vars::import";
+"FindBin::BEGIN@100" -> "File::Spec::BEGIN@4";
+}

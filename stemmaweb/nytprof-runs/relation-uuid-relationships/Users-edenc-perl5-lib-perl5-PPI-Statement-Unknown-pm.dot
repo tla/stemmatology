@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::BEGIN@174";
+}
+subgraph cluster_PPI_Statement_Unknown {
+	label="PPI::Statement::Unknown";
+	"PPI::Statement::Unknown::BEGIN@35";
+	"PPI::Statement::Unknown::BEGIN@38";
+	"PPI::Statement::Unknown::BEGIN@39";
+	"PPI::Statement::Unknown::BEGIN@36";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@38";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@39";
+"PPI::Statement::Unknown::BEGIN@35" -> "strict::import";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@35";
+"PPI::Statement::Unknown::BEGIN@38" -> "vars::import";
+"PPI::Statement::BEGIN@174" -> "PPI::Statement::Unknown::BEGIN@36";
+}

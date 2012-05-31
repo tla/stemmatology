@@ -1,0 +1,63 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::requires";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@8";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@4";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Serializer {
+	label="KiokuDB::Serializer";
+	"KiokuDB::Serializer::BEGIN@4";
+	"KiokuDB::Serializer::BEGIN@6";
+	"KiokuDB::Serializer::BEGIN@10";
+	"KiokuDB::Serializer::BEGIN@8";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::via";
+	"Moose::Util::TypeConstraints::coerce";
+	"Moose::Util::TypeConstraints::from";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::Delegate::BEGIN@8";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Util::TypeConstraints::via";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::Delegate::BEGIN@6";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@8" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::Delegate::BEGIN@4";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Util::TypeConstraints::from";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@6";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Role::requires";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@8";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Role::with";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@4";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "KiokuDB::Serializer::BEGIN@10";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@6" -> "Moose::Util::TypeConstraints::coerce";
+}

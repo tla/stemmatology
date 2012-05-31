@@ -1,0 +1,17 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured {
+	label="MooseX::Meta::TypeCoercion::Structured";
+	"MooseX::Meta::TypeCoercion::Structured::BEGIN@5";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"MooseX::Meta::TypeCoercion::Structured::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "MooseX::Meta::TypeCoercion::Structured::BEGIN@5";
+}

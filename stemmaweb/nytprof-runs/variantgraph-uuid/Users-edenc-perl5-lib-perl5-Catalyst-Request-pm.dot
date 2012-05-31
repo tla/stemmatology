@@ -1,0 +1,248 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::execute";
+	"Catalyst::BEGIN@12";
+}
+subgraph cluster_URI__query {
+	label="URI::_query";
+	"URI::_query::BEGIN@3";
+	"URI::_query::BEGIN@5";
+	"URI::_query::BEGIN@4";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::match";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::method";
+	"Catalyst::Request::prepare_parameters";
+	"Catalyst::Request::_has_path";
+	"Catalyst::Request::path";
+	"Catalyst::Request::new";
+	"Catalyst::Request::BEGIN@6";
+	"Catalyst::Request::BEGIN@3";
+	"Catalyst::Request::headers";
+	"Catalyst::Request::BEGIN@5";
+	"Catalyst::Request::hostname";
+	"Catalyst::Request::prepare_cookies";
+	"Catalyst::Request::protocol";
+	"Catalyst::Request::__ANON__[Catalyst/Request.pm:44]";
+	"Catalyst::Request::base";
+	"Catalyst::Request::__ANON__[Catalyst/Request.pm:39]";
+	"Catalyst::Request::prepare_body";
+	"Catalyst::Request::parameters";
+	"Catalyst::Request::__ANON__[Catalyst/Request.pm:138]";
+	"Catalyst::Request::CORE:regcomp";
+	"Catalyst::Request::BEGIN@9";
+	"Catalyst::Request::secure";
+	"Catalyst::Request::args";
+	"Catalyst::Request::CORE:match";
+	"Catalyst::Request::body_parameters";
+	"Catalyst::Request::query_parameters";
+	"Catalyst::Request::_path";
+	"Catalyst::Request::_read_length";
+	"Catalyst::Request::BEGIN@11";
+	"Catalyst::Request::_body";
+	"Catalyst::Request::_has_body";
+	"Catalyst::Request::prepare_headers";
+	"Catalyst::Request::__ANON__[Catalyst/Request.pm:60]";
+	"Catalyst::Request::BEGIN@4";
+	"Catalyst::Request::uri";
+	"Catalyst::Request::env";
+	"Catalyst::Request::BEGIN@13";
+	"Catalyst::Request::remote_user";
+	"Catalyst::Request::CORE:subst";
+	"Catalyst::Request::prepare_connection";
+	"Catalyst::Request::BEGIN@7";
+	"Catalyst::Request::__ANON__[Catalyst/Request.pm:62]";
+	"Catalyst::Request::cookies";
+	"Catalyst::Request::header";
+	"Catalyst::Request::prepare_body_parameters";
+	"Catalyst::Request::arguments";
+	"Catalyst::Request::BEGIN@8";
+	"Catalyst::Request::address";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::new";
+	"HTTP::Headers::header";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::BEGIN@12";
+	"IO::Socket::BEGIN@17";
+	"IO::Socket::CORE:pack";
+	"IO::Socket::BEGIN@11";
+	"IO::Socket::BEGIN@13";
+	"IO::Socket::import";
+	"IO::Socket::register_domain";
+	"IO::Socket::BEGIN@16";
+	"IO::Socket::BEGIN@14";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::match";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::import";
+}
+subgraph cluster_IO_Socket_UNIX {
+	label="IO::Socket::UNIX";
+	"IO::Socket::UNIX::BEGIN@11";
+	"IO::Socket::UNIX::BEGIN@9";
+	"IO::Socket::UNIX::BEGIN@12";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::match";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::BEGIN@6";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::BEGIN@8";
+	"URI::_generic::BEGIN@6";
+	"URI::_generic::path";
+	"URI::_generic::CORE:subst";
+	"URI::_generic::BEGIN@7";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::BEGIN@6";
+	"URI::_server::BEGIN@5";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::prepare_connection";
+	"Catalyst::Engine::prepare_body";
+	"Catalyst::Engine::prepare_body_parameters";
+}
+subgraph cluster_URI_QueryParam {
+	label="URI::QueryParam";
+	"URI::QueryParam::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_Socket_INET {
+	label="IO::Socket::INET";
+	"IO::Socket::INET::BEGIN@11";
+	"IO::Socket::INET::BEGIN@14";
+	"IO::Socket::INET::BEGIN@13";
+	"IO::Socket::INET::BEGIN@9";
+	"IO::Socket::INET::BEGIN@15";
+	"IO::Socket::INET::BEGIN@12";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Catalyst::Request::BEGIN@6" -> "URI::_server::BEGIN@5";
+"Catalyst::Request::path" -> "Catalyst::Request::CORE:regcomp";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@4";
+"Catalyst::Request::BEGIN@8" -> "URI::QueryParam::BEGIN@3";
+"Catalyst::Request::BEGIN@6" -> "URI::http::BEGIN@6";
+"Catalyst::Request::BEGIN@6" -> "URI::_query::BEGIN@3";
+"Catalyst::Request::prepare_headers" -> "HTTP::Headers::header";
+"Catalyst::Request::BEGIN@6" -> "URI::_query::BEGIN@4";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@13";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@12";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@9";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@13";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@8";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@9";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::secure";
+"Catalyst::Request::new" -> "Catalyst::Request::__ANON__[Catalyst/Request.pm:138]";
+"Catalyst::Request::path" -> "URI::_generic::path";
+"Catalyst::Request::prepare_parameters" -> "Catalyst::Request::query_parameters";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Request::path";
+"Class::MOP::Class:::before" -> "Catalyst::Request::path";
+"Catalyst::Request::path" -> "Catalyst::Request::base";
+"Catalyst::Request::path" -> "Catalyst::Request::_path";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@6";
+"Catalyst::Request::BEGIN@13" -> "namespace::clean::import";
+"Catalyst::Request::body_parameters" -> "Catalyst::Request::prepare_body_parameters";
+"Catalyst::Engine::prepare_body_parameters" -> "Catalyst::Request::prepare_body_parameters";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@8";
+"Catalyst::Request::parameters" -> "Catalyst::Request::prepare_parameters";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@14";
+"Catalyst::Request::new" -> "Catalyst::Request::__ANON__[Catalyst/Request.pm:44]";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@13";
+"Catalyst::Request::prepare_parameters" -> "Catalyst::Request::body_parameters";
+"Catalyst::Request::path" -> "Catalyst::Request::_has_path";
+"Catalyst::Request::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::method";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@6";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@12";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::CORE:subst";
+"Catalyst::Request::BEGIN@4" -> "Exporter::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@12";
+"Catalyst::Request::path" -> "Catalyst::Request::uri";
+"Catalyst::Request::BEGIN@6" -> "URI::_query::BEGIN@5";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@5";
+"Catalyst::Request::BEGIN@6" -> "URI::_server::BEGIN@6";
+"Catalyst::Request::BEGIN@5" -> "utf8::import";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@14";
+"Catalyst::Request::prepare_body" -> "Catalyst::Request::_read_length";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@11";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::env";
+"Catalyst::Request::prepare_headers" -> "Catalyst::Request::env";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@3";
+"Catalyst::Engine::prepare_body" -> "Catalyst::Request::prepare_body";
+"Catalyst::Request::prepare_body_parameters" -> "Catalyst::Request::_has_body";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::import";
+"Catalyst::Request::BEGIN@6" -> "URI::_generic::BEGIN@7";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::register_domain";
+"Catalyst::Request::prepare_headers" -> "Catalyst::Request::CORE:subst";
+"Catalyst::Request::path" -> "Catalyst::Request::CORE:subst";
+"Catalyst::Engine::prepare_connection" -> "Catalyst::Request::prepare_connection";
+"Catalyst::Request::args" -> "Catalyst::Request::arguments";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@17";
+"Catalyst::Request::new" -> "Catalyst::Request::__ANON__[Catalyst/Request.pm:62]";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::protocol";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@11";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@16";
+"Catalyst::Request::_read_length" -> "Catalyst::Request::__ANON__[Catalyst/Request.pm:39]";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@9";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::CORE:pack";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::hostname";
+"Catalyst::Request::cookies" -> "Catalyst::Request::prepare_cookies";
+"Catalyst::Request::prepare_cookies" -> "Catalyst::Request::header";
+"Catalyst::Request::__ANON__[Catalyst/Request.pm:39]" -> "Catalyst::Request::header";
+"Catalyst::Request::prepare_headers" -> "Catalyst::Request::CORE:match";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::Request::args";
+"Catalyst::DispatchType::Index::match" -> "Catalyst::Request::args";
+"Catalyst::execute" -> "Catalyst::Request::args";
+"Catalyst::DispatchType::Chained::match" -> "Catalyst::Request::args";
+"Catalyst::Action::match" -> "Catalyst::Request::args";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::UNIX::BEGIN@11";
+"Catalyst::BEGIN@12" -> "Catalyst::Request::BEGIN@7";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::INET::BEGIN@15";
+"Catalyst::Request::prepare_headers" -> "HTTP::Headers::new";
+"Catalyst::Request::prepare_body_parameters" -> "Catalyst::Request::_body";
+"Catalyst::Request::prepare_body" -> "Catalyst::Request::_body";
+"Catalyst::Request::new" -> "Catalyst::Request::__ANON__[Catalyst/Request.pm:60]";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::remote_user";
+"Catalyst::Request::BEGIN@3" -> "IO::Socket::BEGIN@11";
+"Catalyst::Request::headers" -> "Catalyst::Request::prepare_headers";
+"Catalyst::Request::prepare_connection" -> "Catalyst::Request::address";
+}

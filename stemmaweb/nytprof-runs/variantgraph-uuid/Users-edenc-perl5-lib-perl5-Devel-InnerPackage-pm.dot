@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::expand_modules";
+	"Catalyst::Component::BEGIN@8";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::handle_innerpackages";
+}
+subgraph cluster_Devel_InnerPackage {
+	label="Devel::InnerPackage";
+	"Devel::InnerPackage::BEGIN@66";
+	"Devel::InnerPackage::BEGIN@4";
+	"Devel::InnerPackage::_loaded";
+	"Devel::InnerPackage::BEGIN@5";
+	"Devel::InnerPackage::list_packages";
+	"Devel::InnerPackage::CORE:subst";
+	"Devel::InnerPackage::CORE:match";
+	"Devel::InnerPackage::BEGIN@3";
+	"Devel::InnerPackage::BEGIN@86";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@5";
+"Devel::InnerPackage::list_packages" -> "Devel::InnerPackage::CORE:match";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@3";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@86";
+"Devel::InnerPackage::list_packages" -> "Devel::InnerPackage::list_packages";
+"Catalyst::Component::expand_modules" -> "Devel::InnerPackage::list_packages";
+"Module::Pluggable::Object::handle_innerpackages" -> "Devel::InnerPackage::list_packages";
+"Devel::InnerPackage::list_packages" -> "Devel::InnerPackage::_loaded";
+"Devel::InnerPackage::BEGIN@3" -> "strict::import";
+"Devel::InnerPackage::list_packages" -> "Devel::InnerPackage::CORE:subst";
+"Devel::InnerPackage::BEGIN@86" -> "strict::unimport";
+"Devel::InnerPackage::BEGIN@66" -> "strict::unimport";
+"Devel::InnerPackage::BEGIN@4" -> "base::import";
+"Devel::InnerPackage::BEGIN@5" -> "vars::import";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@4";
+"Catalyst::Component::BEGIN@8" -> "Devel::InnerPackage::BEGIN@66";
+}

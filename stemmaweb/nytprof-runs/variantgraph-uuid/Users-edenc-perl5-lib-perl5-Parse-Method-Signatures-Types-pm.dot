@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::CORE:match";
+	"Parse::Method::Signatures::Types::BEGIN@6";
+	"Parse::Method::Signatures::Types::BEGIN@8";
+	"Parse::Method::Signatures::Types::BEGIN@7";
+	"Parse::Method::Signatures::Types::__ANON__[Parse/Method/Signatures/Types.pm:22]";
+	"Parse::Method::Signatures::Types::VariableName";
+	"Parse::Method::Signatures::Types::BEGIN@10";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@2";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@1";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Parse::Method::Signatures::Types::VariableName" -> "Parse::Method::Signatures::Types::__ANON__[Parse/Method/Signatures/Types.pm:22]";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@8";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::ParamCollection::BEGIN@2";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@7";
+"Parse::Method::Signatures::Types::BEGIN@8" -> "namespace::clean::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@1" -> "strict::import";
+"Parse::Method::Signatures::Types::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::Types::BEGIN@7" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@6";
+"Parse::Method::Signatures::ParamCollection::BEGIN@2" -> "warnings::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::ParamCollection::BEGIN@1";
+"Parse::Method::Signatures::Types::__ANON__[Parse/Method/Signatures/Types.pm:22]" -> "Parse::Method::Signatures::Types::CORE:match";
+"Parse::Method::Signatures::Types::BEGIN@10" -> "MooseX::Types::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@10";
+}

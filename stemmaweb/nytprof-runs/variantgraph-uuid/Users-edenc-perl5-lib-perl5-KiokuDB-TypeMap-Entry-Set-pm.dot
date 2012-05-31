@@ -1,0 +1,91 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Set_Stored {
+	label="KiokuDB::Set::Stored";
+	"KiokuDB::Set::Stored::BEGIN@6";
+	"KiokuDB::Set::Stored::BEGIN@4";
+	"KiokuDB::Set::Stored::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@10";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@12";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@9";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@4";
+	"KiokuDB::Set::Deferred::BEGIN@12";
+	"KiokuDB::Set::Deferred::meta";
+	"KiokuDB::Set::Deferred::BEGIN@6";
+	"KiokuDB::Set::Deferred::BEGIN@10";
+	"KiokuDB::Set::Deferred::BEGIN@8";
+}
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Moose::extends";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::extends";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "KiokuDB::Set::Stored::meta";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@10" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::has";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::BEGIN@10";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@10";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::BEGIN@12";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::meta";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Moose::with";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@9";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "KiokuDB::Set::Stored::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::BEGIN@8";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@6" -> "warnings::unimport";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@4";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "KiokuDB::Set::Stored::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@12";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@8";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Set::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "KiokuDB::Set::Deferred::BEGIN@4";
+}

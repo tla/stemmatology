@@ -1,0 +1,29 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@9";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_HTML_Entities {
+	label="HTML::Entities";
+	"HTML::Entities::BEGIN@138";
+	"HTML::Entities::BEGIN@139";
+	"HTML::Entities::CORE:subst";
+	"HTML::Entities::BEGIN@140";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Engine::BEGIN@9" -> "HTML::Entities::CORE:subst";
+"HTML::Entities::BEGIN@138" -> "strict::import";
+"Catalyst::Engine::BEGIN@9" -> "HTML::Entities::BEGIN@138";
+"HTML::Entities::BEGIN@140" -> "vars::import";
+"HTML::Entities::BEGIN@139" -> "vars::import";
+"Catalyst::Engine::BEGIN@9" -> "HTML::Entities::BEGIN@139";
+"Catalyst::Engine::BEGIN@9" -> "HTML::Entities::BEGIN@140";
+}

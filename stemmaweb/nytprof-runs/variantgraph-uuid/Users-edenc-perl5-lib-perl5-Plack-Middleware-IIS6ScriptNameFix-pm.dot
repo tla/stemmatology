@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@38";
+}
+subgraph cluster_Plack_Middleware_IIS6ScriptNameFix {
+	label="Plack::Middleware::IIS6ScriptNameFix";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@4";
+	"Plack::Middleware::IIS6ScriptNameFix::BEGIN@3";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::BEGIN@38" -> "Plack::Middleware::IIS6ScriptNameFix::BEGIN@4";
+"Catalyst::BEGIN@38" -> "Plack::Middleware::IIS6ScriptNameFix::BEGIN@3";
+"Plack::Middleware::IIS6ScriptNameFix::BEGIN@3" -> "strict::import";
+"Plack::Middleware::IIS6ScriptNameFix::BEGIN@4" -> "parent::import";
+}

@@ -1,0 +1,35 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export";
+}
+subgraph cluster_FileHandle {
+	label="FileHandle";
+	"FileHandle::import";
+	"FileHandle::BEGIN@46";
+	"FileHandle::BEGIN@3";
+	"FileHandle::BEGIN@4";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@20";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@46";
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@4";
+"FileHandle::BEGIN@4" -> "strict::import";
+"Config::General::BEGIN@20" -> "FileHandle::import";
+"FileHandle::BEGIN@46" -> "strict::unimport";
+"FileHandle::import" -> "Exporter::Heavy::heavy_export";
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@3";
+"FileHandle::import" -> "Exporter::export";
+}

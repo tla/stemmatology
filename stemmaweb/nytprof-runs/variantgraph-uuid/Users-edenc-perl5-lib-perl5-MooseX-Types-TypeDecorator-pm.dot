@@ -1,0 +1,278 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+	"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_eval_environment";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::create_type_decorator";
+	"MooseX::Types::BEGIN@10";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::_try_delegate";
+	"MooseX::Types::TypeDecorator::BEGIN@8";
+	"MooseX::Types::TypeDecorator::__type_constraint";
+	"MooseX::Types::TypeDecorator::BEGIN@16";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]";
+	"MooseX::Types::TypeDecorator::BEGIN@11";
+	"MooseX::Types::TypeDecorator::BEGIN@13";
+	"MooseX::Types::TypeDecorator::CORE:match";
+	"MooseX::Types::TypeDecorator::BEGIN@14";
+	"MooseX::Types::TypeDecorator::BEGIN@9";
+	"MooseX::Types::TypeDecorator::BEGIN@12";
+	"MooseX::Types::TypeDecorator::DESTROY";
+	"MooseX::Types::TypeDecorator::isa";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+	"MooseX::Types::TypeDecorator::new";
+	"MooseX::Types::TypeDecorator::AUTOLOAD";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::get_type_constraint";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::verify_against_type_constraint";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::_inline_check_constraint";
+	"Moose::Meta::Attribute::_process_coerce_option";
+	"Moose::Meta::Attribute::_inline_check_coercion";
+	"Moose::Meta::Attribute::_process_isa_option";
+	"Moose::Meta::Attribute::_auto_deref";
+	"Moose::Meta::Attribute::_process_auto_deref_option";
+	"Moose::Meta::Attribute::_process_does_option";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::is_subtype_of";
+	"MooseX::Meta::TypeConstraint::Structured::parameterize";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:203]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:238]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:218]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::inline_environment";
+	"Moose::Meta::TypeConstraint::Union::new";
+	"Moose::Meta::TypeConstraint::Union::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::compile_type_coercion";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::is_same_as";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::is_subtype_of";
+	"Moose::Meta::TypeConstraint::Class::class";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::message";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::has_coercion";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::is_subtype_of";
+	"Moose::Meta::TypeConstraint::check";
+	"Moose::Meta::TypeConstraint::parent";
+	"Moose::Meta::TypeConstraint::_default_message";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+	"Moose::Meta::TypeConstraint::is_a_type_of";
+	"Moose::Meta::TypeConstraint::coercion";
+	"Moose::Meta::TypeConstraint::has_message";
+	"Moose::Meta::TypeConstraint::name";
+	"Moose::Meta::TypeConstraint::_compiled_type_constraint";
+	"Moose::Meta::TypeConstraint::create_child_type";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::_create_type_constraint";
+	"Moose::Util::TypeConstraints::create_role_type_constraint";
+	"Moose::Util::TypeConstraints::find_or_parse_type_constraint";
+	"Moose::Util::TypeConstraints::find_or_create_isa_type_constraint";
+	"Moose::Util::TypeConstraints::create_class_type_constraint";
+	"Moose::Util::TypeConstraints::CORE:subst";
+	"Moose::Util::TypeConstraints::CORE:match";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::_install_type_coercions";
+	"Moose::Util::TypeConstraints::register_type_constraint";
+}
+subgraph cluster_Carp_Clan {
+	label="Carp::Clan";
+	"Carp::Clan::BEGIN@224";
+	"Carp::Clan::BEGIN@17";
+	"Carp::Clan::BEGIN@16";
+	"Carp::Clan::import";
+	"Carp::Clan::BEGIN@18";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::parameterize";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::name";
+	"MooseX::Types::UndefinedType::__ANON__[MooseX/Types/UndefinedType.pm:12]";
+}
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "MooseX::Types::TypeDecorator::isa";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::Attribute::_process_does_option" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Util::TypeConstraints::find_type_constraint" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::Attribute::_process_isa_option" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::TypeConstraint::Parameterizable::parameterize" -> "MooseX::Types::TypeDecorator::isa";
+"MooseX::Types::TypeDecorator::isa" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::new" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__type_constraint" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@224";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@16";
+"MooseX::Types::TypeDecorator::new" -> "MooseX::Types::UndefinedType::__ANON__[MooseX/Types/UndefinedType.pm:12]";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::coercion";
+"MooseX::Types::TypeDecorator::BEGIN@16" -> "overload::import";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::is_subtype_of";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::inline_environment";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::_compiled_type_constraint";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@18";
+"Module::Runtime::require_module" -> "MooseX::Types::TypeDecorator::DESTROY";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::TypeDecorator::DESTROY";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::import";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@14";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]" -> "Moose::Meta::TypeConstraint::Union::new";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::is_a_type_of";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@9";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@12";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::create_child_type";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "MooseX::Meta::TypeConstraint::Structured::is_subtype_of";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"MooseX::Types::create_type_decorator" -> "MooseX::Types::TypeDecorator::new";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@8";
+"MooseX::Types::TypeDecorator::AUTOLOAD" -> "MooseX::Types::TypeDecorator::CORE:match";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "MooseX::Types::UndefinedType::name";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Util::TypeConstraints::create_class_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Moose::Util::TypeConstraints::create_role_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Moose::Meta::TypeConstraint::new" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Moose::Util::TypeConstraints::find_or_create_isa_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"Moose::Util::TypeConstraints::find_or_parse_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:30]";
+"MooseX::Types::TypeDecorator::BEGIN@8" -> "strict::import";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::_default_message";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::has_coercion";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "MooseX::Types::TypeDecorator::__type_constraint";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "MooseX::Types::TypeDecorator::__type_constraint";
+"MooseX::Types::TypeDecorator::isa" -> "MooseX::Types::TypeDecorator::__type_constraint";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Class::is_subtype_of";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@17";
+"Moose::Util::TypeConstraints::CORE:subst" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"MooseX::Meta::TypeConstraint::Structured::parameterize" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"Moose::Util::TypeConstraints::CORE:match" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"Moose::Meta::TypeConstraint::new" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"Moose::Meta::TypeConstraint::Registry::get_type_constraint" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"Moose::Meta::Role::Attribute::is_same_as" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+"MooseX::Types::TypeDecorator::BEGIN@14" -> "Exporter::import";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "UNIVERSAL::can";
+"MooseX::Types::TypeDecorator::BEGIN@9" -> "warnings::import";
+"Module::Runtime::require_module" -> "MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]";
+"MooseX::Types::TypeDecorator::AUTOLOAD" -> "MooseX::Types::TypeDecorator::_try_delegate";
+"MooseX::Types::TypeDecorator::isa" -> "MooseX::Types::TypeDecorator::_try_delegate";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::message";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Class::class";
+"MooseX::Types::TypeDecorator::isa" -> "UNIVERSAL::isa";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "UNIVERSAL::isa";
+"MooseX::Types::TypeDecorator::new" -> "UNIVERSAL::isa";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::parent";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::_inline_check";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@13";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]" -> "Moose::Util::TypeConstraints::register_type_constraint";
+"MooseX::Types::BEGIN@10" -> "MooseX::Types::TypeDecorator::BEGIN@11";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::name";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "Moose::Meta::TypeConstraint::name";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::check";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"MooseX::Types::TypeDecorator::new" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::has_message";
+"MooseX::Types::TypeDecorator::BEGIN@11" -> "Carp::Clan::BEGIN@16";
+"Moose::Meta::Attribute::_eval_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:203]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_process_coerce_option" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::new" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:238]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeCoercion::compile_type_coercion" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::inline_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::verify_against_type_constraint" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_inline_check_coercion" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Class::_eval_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:218]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Parameterizable::parameterize" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_auto_deref" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::can_be_inlined" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::Attribute::_process_auto_deref_option" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Util::TypeConstraints::_install_type_coercions" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+}

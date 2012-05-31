@@ -1,0 +1,50 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@6";
+}
+subgraph cluster_Devel_PartialDump {
+	label="Devel::PartialDump";
+	"Devel::PartialDump::BEGIN@21";
+	"Devel::PartialDump::BEGIN@7";
+	"Devel::PartialDump::BEGIN@4";
+	"Devel::PartialDump::BEGIN@13";
+	"Devel::PartialDump::BEGIN@6";
+	"Devel::PartialDump::BEGIN@9";
+	"Devel::PartialDump::BEGIN@128";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@9";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@4";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@7";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@21";
+"Devel::PartialDump::BEGIN@13" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Devel::PartialDump::BEGIN@9" -> "namespace::clean::import";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@128";
+"Devel::PartialDump::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Devel::PartialDump::BEGIN@7" -> "Exporter::import";
+"Devel::PartialDump::BEGIN@21" -> "warnings::unimport";
+"Devel::PartialDump::BEGIN@128" -> "warnings::unimport";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@6";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@6" -> "Devel::PartialDump::BEGIN@13";
+}

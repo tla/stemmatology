@@ -1,0 +1,77 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::response";
+	"Catalyst::execute";
+	"Catalyst::debug";
+	"Catalyst::req";
+	"Catalyst::config";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::method";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::execute";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::BEGIN@8";
+	"Catalyst::Action::RenderView::execute";
+	"Catalyst::Action::RenderView::BEGIN@10";
+	"Catalyst::Action::RenderView::BEGIN@4";
+	"Catalyst::Action::RenderView::BEGIN@3";
+	"Catalyst::Action::RenderView::BEGIN@11";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::body";
+	"Catalyst::Response::content_type";
+}
+"Catalyst::Action::RenderView::execute" -> "Catalyst::config";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::Response::content_type";
+"Module::Runtime::require_module" -> "Catalyst::Action::RenderView::BEGIN@3";
+"Module::Runtime::require_module" -> "Catalyst::Action::RenderView::BEGIN@10";
+"Module::Runtime::require_module" -> "Catalyst::Action::RenderView::BEGIN@4";
+"Catalyst::Action::RenderView::BEGIN@11" -> "UNIVERSAL::import";
+"Catalyst::Action::RenderView::BEGIN@10" -> "UNIVERSAL::import";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::debug";
+"Catalyst::Action::RenderView::BEGIN@3" -> "strict::import";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::response";
+"Module::Runtime::require_module" -> "Catalyst::Action::RenderView::BEGIN@11";
+"Catalyst::execute" -> "Catalyst::Action::RenderView::execute";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::Request::method";
+"Catalyst::Action::RenderView::BEGIN@8" -> "base::import";
+"Catalyst::Action::RenderView::BEGIN@4" -> "warnings::import";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::Action::execute";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::Response::body";
+"Module::Runtime::require_module" -> "Catalyst::Action::RenderView::BEGIN@8";
+"Catalyst::Action::RenderView::execute" -> "next::method";
+"Catalyst::Action::RenderView::execute" -> "Catalyst::req";
+}

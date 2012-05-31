@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@13";
+}
+subgraph cluster_File_Copy {
+	label="File::Copy";
+	"File::Copy::BEGIN@10";
+	"File::Copy::BEGIN@11";
+	"File::Copy::BEGIN@13";
+	"File::Copy::BEGIN@47";
+	"File::Copy::BEGIN@12";
+	"File::Copy::BEGIN@14";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::BEGIN@8";
+	"Catalyst::Request::Upload::BEGIN@3";
+	"Catalyst::Request::Upload::BEGIN@7";
+	"Catalyst::Request::Upload::BEGIN@9";
+	"Catalyst::Request::Upload::BEGIN@46";
+	"Catalyst::Request::Upload::BEGIN@10";
+	"Catalyst::Request::Upload::BEGIN@6";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@3";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@14";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@6";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@10";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@10";
+"Catalyst::Request::Upload::BEGIN@10" -> "namespace::clean::import";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@8";
+"Catalyst::Request::Upload::BEGIN@46" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::Request::Upload::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@46";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@47";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@9";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@13";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@11";
+"Catalyst::Request::Upload::BEGIN@7" -> "File::Copy::BEGIN@12";
+"Catalyst::BEGIN@13" -> "Catalyst::Request::Upload::BEGIN@7";
+}

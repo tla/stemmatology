@@ -1,0 +1,96 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Symbol {
+	label="PPI::Token::Symbol";
+	"PPI::Token::Symbol::__TOKENIZER__on_char";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_lex_statement";
+	"PPI::Lexer::_lex_document";
+}
+subgraph cluster_PPI_Token_Word {
+	label="PPI::Token::Word";
+	"PPI::Token::Word::__TOKENIZER__commit";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::consume_token";
+	"Parse::Method::Signatures::BUILD";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@39";
+	"PPI::Token::new";
+}
+subgraph cluster_Clone {
+	label="Clone";
+	"Clone::clone";
+}
+subgraph cluster_PPI_Tokenizer {
+	label="PPI::Tokenizer";
+	"PPI::Tokenizer::_process_next_line";
+	"PPI::Tokenizer::_finalize_token";
+	"PPI::Tokenizer::_process_next_char";
+	"PPI::Tokenizer::_previous_significant_tokens";
+}
+subgraph cluster_PPI_Token_Whitespace {
+	label="PPI::Token::Whitespace";
+	"PPI::Token::Whitespace::CORE:match";
+	"PPI::Token::Whitespace::__TOKENIZER__on_line_start";
+	"PPI::Token::Whitespace::significant";
+	"PPI::Token::Whitespace::BEGIN@49";
+	"PPI::Token::Whitespace::BEGIN@48";
+	"PPI::Token::Whitespace::BEGIN@114";
+	"PPI::Token::Whitespace::BEGIN@46";
+	"PPI::Token::Whitespace::__TOKENIZER__on_char";
+	"PPI::Token::Whitespace::__TOKENIZER__on_line_end";
+	"PPI::Token::Whitespace::BEGIN@45";
+	"PPI::Token::Whitespace::BEGIN@113";
+	"PPI::Token::Whitespace::null";
+	"PPI::Token::Whitespace::BEGIN@44";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_PPI_Token_BOM {
+	label="PPI::Token::BOM";
+	"PPI::Token::BOM::__TOKENIZER__on_line_start";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@46";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@114";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@48";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@45";
+"PPI::Tokenizer::_process_next_line" -> "PPI::Token::Whitespace::__TOKENIZER__on_line_end";
+"PPI::Token::Whitespace::__TOKENIZER__on_line_end" -> "PPI::Tokenizer::_finalize_token";
+"PPI::Lexer::_lex_statement" -> "PPI::Token::Whitespace::significant";
+"Parse::Method::Signatures::consume_token" -> "PPI::Token::Whitespace::significant";
+"PPI::Lexer::_lex_document" -> "PPI::Token::Whitespace::significant";
+"Parse::Method::Signatures::BUILD" -> "PPI::Token::Whitespace::significant";
+"PPI::Token::Whitespace::BEGIN@44" -> "strict::import";
+"PPI::Token::BOM::__TOKENIZER__on_line_start" -> "PPI::Token::Whitespace::__TOKENIZER__on_line_start";
+"PPI::Token::Whitespace::__TOKENIZER__on_line_end" -> "PPI::Util::TRUE";
+"PPI::Token::Whitespace::null" -> "PPI::Util::TRUE";
+"PPI::Token::Whitespace::null" -> "Clone::clone";
+"PPI::Token::Whitespace::null" -> "PPI::Token::new";
+"PPI::Token::Whitespace::__TOKENIZER__on_line_start" -> "PPI::Token::Whitespace::CORE:match";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@113";
+"PPI::Token::Whitespace::BEGIN@113" -> "vars::import";
+"PPI::Token::Whitespace::BEGIN@48" -> "vars::import";
+"PPI::Tokenizer::_previous_significant_tokens" -> "PPI::Token::Whitespace::null";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@49";
+"PPI::Token::BEGIN@39" -> "PPI::Token::Whitespace::BEGIN@44";
+"PPI::Token::Whitespace::__TOKENIZER__on_char" -> "PPI::Token::Word::__TOKENIZER__commit";
+"PPI::Token::Symbol::__TOKENIZER__on_char" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+"PPI::Tokenizer::_process_next_char" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+"PPI::Token::Word::__TOKENIZER__commit" -> "PPI::Token::Whitespace::__TOKENIZER__on_char";
+}

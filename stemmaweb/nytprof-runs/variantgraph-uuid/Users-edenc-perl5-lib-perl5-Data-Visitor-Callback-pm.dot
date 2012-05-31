@@ -1,0 +1,178 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@8";
+	"Catalyst::Plugin::ConfigLoader::finalize_config";
+	"Catalyst::Plugin::ConfigLoader::__ANON__[Catalyst/Plugin/ConfigLoader.pm:269]";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BUILDARGS";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::init_arg";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::callback_and_reg";
+	"Data::Visitor::Callback::visit_value";
+	"Data::Visitor::Callback::visit_ref";
+	"Data::Visitor::Callback::BEGIN@199";
+	"Data::Visitor::Callback::callback";
+	"Data::Visitor::Callback::visit_hash_entry";
+	"Data::Visitor::Callback::BEGIN@8.17";
+	"Data::Visitor::Callback::BEGIN@8.14";
+	"Data::Visitor::Callback::BEGIN@18";
+	"Data::Visitor::Callback::visit_object";
+	"Data::Visitor::Callback::meta";
+	"Data::Visitor::Callback::BEGIN@8";
+	"Data::Visitor::Callback::visit_hash";
+	"Data::Visitor::Callback::visit_array";
+	"Data::Visitor::Callback::BEGIN@8.15";
+	"Data::Visitor::Callback::BEGIN@190";
+	"Data::Visitor::Callback::BEGIN@11";
+	"Data::Visitor::Callback::BEGIN@130";
+	"Data::Visitor::Callback::BEGIN@270";
+	"Data::Visitor::Callback::BEGIN@227";
+	"Data::Visitor::Callback::BEGIN@193";
+	"Data::Visitor::Callback::BEGIN@21";
+	"Data::Visitor::Callback::BEGIN@14";
+	"Data::Visitor::Callback::new";
+	"Data::Visitor::Callback::callbacks";
+	"Data::Visitor::Callback::BEGIN@2";
+	"Data::Visitor::Callback::BEGIN@8.16";
+	"Data::Visitor::Callback::class_callbacks";
+	"Data::Visitor::Callback::CORE:sort";
+	"Data::Visitor::Callback::CORE:match";
+	"Data::Visitor::Callback::BEGIN@13";
+	"Data::Visitor::Callback::visit";
+	"Data::Visitor::Callback::BEGIN@20";
+	"Data::Visitor::Callback::BEGIN@177";
+	"Data::Visitor::Callback::BEGIN@16";
+	"Data::Visitor::Callback::BEGIN@52";
+	"Data::Visitor::Callback::BUILDARGS";
+	"Data::Visitor::Callback::ignore_return_values";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit_hash_entries";
+	"Data::Visitor::visit_array_entry";
+	"Data::Visitor::visit_hash_entry";
+	"Data::Visitor::visit_ref";
+	"Data::Visitor::visit_no_rec_check";
+	"Data::Visitor::visit_hash_key";
+	"Data::Visitor::visit";
+	"Data::Visitor::visit_hash_value";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+}
+"Data::Visitor::Callback::visit_ref" -> "Data::Visitor::visit_ref";
+"Data::Visitor::Callback::visit_object" -> "Scalar::Util::blessed";
+"Data::Visitor::visit_array_entry" -> "Data::Visitor::Callback::visit";
+"Catalyst::Plugin::ConfigLoader::finalize_config" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::visit_hash_value" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::visit_hash_key" -> "Data::Visitor::Callback::visit";
+"Data::Visitor::Callback::new" -> "Data::Visitor::Callback::BUILDARGS";
+"Data::Visitor::Callback::BEGIN@190" -> "Data::Visitor::Callback::BEGIN@8.15";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_ref";
+"Data::Visitor::Callback::visit_hash_entry" -> "Data::Visitor::visit_hash_entry";
+"Data::Visitor::Callback::BUILDARGS" -> "Moose::Object::BUILDARGS";
+"Data::Visitor::Callback::BEGIN@21" -> "constant::import";
+"Data::Visitor::Callback::BEGIN@20" -> "constant::import";
+"Data::Visitor::Callback::visit_object" -> "Data::Visitor::Callback::class_callbacks";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@16";
+"Data::Visitor::Callback::BEGIN@190" -> "Data::Visitor::Callback::BEGIN@8.14";
+"Data::Visitor::Callback::BEGIN@18" -> "namespace::clean::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@270";
+"Data::Visitor::visit_hash_entries" -> "Data::Visitor::Callback::visit_hash_entry";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@193";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@52";
+"Data::Visitor::Callback::visit_hash" -> "Data::Visitor::Callback::callback_and_reg";
+"Data::Visitor::Callback::visit_array" -> "Data::Visitor::Callback::callback_and_reg";
+"Data::Visitor::Callback::visit_value" -> "Data::Visitor::Callback::callback_and_reg";
+"Data::Visitor::Callback::visit_object" -> "Data::Visitor::Callback::callback_and_reg";
+"Data::Visitor::Callback::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Data::Visitor::Callback::BEGIN@190" -> "Data::Visitor::Callback::BEGIN@8.16";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@20";
+"Data::Visitor::Callback::BUILDARGS" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"Data::Visitor::Callback::BEGIN@13" -> "Exporter::import";
+"Data::Visitor::Callback::BEGIN@14" -> "Exporter::import";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@2";
+"Data::Visitor::Callback::BUILDARGS" -> "Data::Visitor::Callback::meta";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@11";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@199";
+"Data::Visitor::Callback::BEGIN@52" -> "strict::unimport";
+"Data::Visitor::Callback::BEGIN@199" -> "strict::unimport";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_object";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@190";
+"Data::Visitor::Callback::BUILDARGS" -> "Data::Visitor::Callback::CORE:match";
+"Data::Visitor::Callback::callback_and_reg" -> "Data::Visitor::Callback::ignore_return_values";
+"Data::Visitor::Callback::callback" -> "Data::Visitor::Callback::ignore_return_values";
+"Data::Visitor::Callback::visit_hash_entry" -> "Data::Visitor::Callback::ignore_return_values";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@8";
+"Data::Visitor::Callback::BEGIN@270" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@227" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@177" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@16" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@130" -> "warnings::unimport";
+"Data::Visitor::Callback::BEGIN@193" -> "warnings::unimport";
+"Data::Visitor::Callback::BUILDARGS" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@227";
+"Data::Visitor::Callback::BUILDARGS" -> "Data::Visitor::Callback::CORE:sort";
+"Data::Visitor::Callback::visit" -> "Data::Visitor::visit";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@177";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@130";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@13";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@18";
+"Data::Visitor::Callback::callback_and_reg" -> "Data::Visitor::Callback::callback";
+"Data::Visitor::Callback::visit_hash_entry" -> "Data::Visitor::Callback::callback";
+"Data::Visitor::Callback::visit_ref" -> "Data::Visitor::Callback::callback";
+"Data::Visitor::Callback::visit" -> "Data::Visitor::Callback::callback";
+"Data::Visitor::Callback::BEGIN@190" -> "Data::Visitor::Callback::BEGIN@8.17";
+"Data::Visitor::visit_no_rec_check" -> "Data::Visitor::Callback::visit_value";
+"Data::Visitor::Callback::callback" -> "Data::Visitor::Callback::callbacks";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@14";
+"Data::Visitor::Callback::callback" -> "Catalyst::Plugin::ConfigLoader::__ANON__[Catalyst/Plugin/ConfigLoader.pm:269]";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Data::Visitor::Callback::BEGIN@21";
+"Data::Visitor::Callback::callback_and_reg" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit_hash_entry" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::BEGIN@190" -> "Sub::Name::subname";
+}

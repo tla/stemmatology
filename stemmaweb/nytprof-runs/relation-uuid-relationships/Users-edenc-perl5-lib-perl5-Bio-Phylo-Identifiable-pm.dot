@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Bio_Phylo_Identifiable {
+	label="Bio::Phylo::Identifiable";
+	"Bio::Phylo::Identifiable::BEGIN@2";
+	"Bio::Phylo::Identifiable::BEGIN@3";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Bio_Phylo_Util_IDPool {
+	label="Bio::Phylo::Util::IDPool";
+	"Bio::Phylo::Util::IDPool::BEGIN@2";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Bio_Phylo_Util_Exceptions {
+	label="Bio::Phylo::Util::Exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@5";
+	"Bio::Phylo::Util::Exceptions::_make_exceptions";
+	"Bio::Phylo::Util::Exceptions::BEGIN@2";
+	"Bio::Phylo::Util::Exceptions::BEGIN@4";
+	"Bio::Phylo::Util::Exceptions::BEGIN@3";
+	"Bio::Phylo::Util::Exceptions::BEGIN@6";
+}
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@4";
+"Bio::Phylo::Identifiable::BEGIN@2" -> "UNIVERSAL::import";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@2";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::_make_exceptions";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@5";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@6";
+"base::import" -> "Bio::Phylo::Identifiable::BEGIN@3";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Exporter::import";
+"Bio::Phylo::Identifiable::BEGIN@3" -> "Bio::Phylo::Util::Exceptions::BEGIN@3";
+"Bio::Phylo::Identifiable::BEGIN@2" -> "Bio::Phylo::Util::IDPool::BEGIN@2";
+"base::import" -> "Bio::Phylo::Identifiable::BEGIN@2";
+}

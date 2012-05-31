@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Opcode {
+	label="Opcode";
+	"Opcode::BEGIN@15";
+	"Opcode::BEGIN@29";
+	"Opcode::opset";
+	"Opcode::CORE:subst";
+	"Opcode::full_opset";
+	"Opcode::BEGIN@12";
+	"Opcode::BEGIN@13";
+	"Opcode::BEGIN@11";
+	"Opcode::CORE:match";
+	"Opcode::CORE:close";
+	"Opcode::BEGIN@3";
+	"Opcode::opset_to_ops";
+	"Opcode::_init_optags";
+	"Opcode::BEGIN@5";
+	"Opcode::define_optag";
+	"Opcode::CORE:readline";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_subs {
+	label="subs";
+	"subs::import";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::BEGIN@46";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Opcode::_init_optags" -> "Opcode::CORE:close";
+"Opcode::_init_optags" -> "Opcode::full_opset";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@3";
+"Opcode::_init_optags" -> "Opcode::CORE:subst";
+"Opcode::_init_optags" -> "Opcode::opset_to_ops";
+"Safe::BEGIN@46" -> "Opcode::_init_optags";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@15";
+"Opcode::BEGIN@5" -> "strict::import";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@13";
+"Opcode::_init_optags" -> "Opcode::CORE:match";
+"Opcode::BEGIN@11" -> "Exporter::import";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@5";
+"Opcode::BEGIN@29" -> "subs::import";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@11";
+"Opcode::_init_optags" -> "Opcode::CORE:readline";
+"Opcode::_init_optags" -> "Opcode::define_optag";
+"Opcode::_init_optags" -> "Opcode::opset";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@29";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@12";
+}

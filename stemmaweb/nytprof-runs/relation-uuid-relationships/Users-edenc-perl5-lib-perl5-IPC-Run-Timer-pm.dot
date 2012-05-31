@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@7";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IPC_Run_Timer {
+	label="IPC::Run::Timer";
+	"IPC::Run::Timer::BEGIN@162";
+	"IPC::Run::Timer::BEGIN@165";
+	"IPC::Run::Timer::BEGIN@188";
+	"IPC::Run::Timer::BEGIN@163";
+	"IPC::Run::Timer::BEGIN@161";
+	"IPC::Run::Timer::BEGIN@164";
+	"IPC::Run::Timer::BEGIN@160";
+	"IPC::Run::Timer::BEGIN@159";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@159";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@188";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@160";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@162";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@163";
+"IPC::Run::Timer::BEGIN@159" -> "strict::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@165";
+"IPC::Run::Timer::BEGIN@188" -> "Exporter::import";
+"IPC::Run::Timer::BEGIN@160" -> "Exporter::import";
+"IPC::Run::Timer::BEGIN@162" -> "Exporter::import";
+"IPC::Run::Timer::BEGIN@161" -> "Exporter::import";
+"IPC::Run::Timer::BEGIN@163" -> "Exporter::import";
+"IPC::Run::Timer::BEGIN@164" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@161";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@164";
+}

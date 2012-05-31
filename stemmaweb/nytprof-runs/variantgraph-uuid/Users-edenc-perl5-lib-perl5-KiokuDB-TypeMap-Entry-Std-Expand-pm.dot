@@ -1,0 +1,50 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Expand {
+	label="KiokuDB::TypeMap::Entry::Std::Expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::compile_create";
+	"KiokuDB::TypeMap::Entry::MOP::compile_clear";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh" -> "KiokuDB::TypeMap::Entry::MOP::compile_clear";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand" -> "KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh" -> "KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand" -> "KiokuDB::TypeMap::Entry::MOP::compile_create";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@4" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@2";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "KiokuDB::TypeMap::Entry::Std::Expand::compile_expand";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@6";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@4";
+}

@@ -1,0 +1,104 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::import";
+}
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::import";
+}
+subgraph cluster_IO_Socket {
+	label="IO::Socket";
+	"IO::Socket::import";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@14";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+	"Exporter::as_heavy";
+	"Exporter::export";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::BEGIN@8";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::BEGIN@161";
+}
+subgraph cluster_Benchmark {
+	label="Benchmark";
+	"Benchmark::import";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::_rebuild_cache";
+	"Exporter::Heavy::BEGIN@197";
+	"Exporter::Heavy::_push_tags";
+	"Exporter::Heavy::heavy_export_tags";
+	"Exporter::Heavy::CORE:subst";
+	"Exporter::Heavy::CORE:regcomp";
+	"Exporter::Heavy::heavy_export_ok_tags";
+	"Exporter::Heavy::heavy_export_to_level";
+	"Exporter::Heavy::BEGIN@4";
+	"Exporter::Heavy::heavy_export";
+	"Exporter::Heavy::CORE:match";
+	"Exporter::Heavy::BEGIN@3";
+}
+subgraph cluster_FileHandle {
+	label="FileHandle";
+	"FileHandle::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Exporter::Heavy::heavy_export_tags" -> "Exporter::Heavy::_push_tags";
+"Exporter::Heavy::heavy_export_ok_tags" -> "Exporter::Heavy::_push_tags";
+"Exporter::as_heavy" -> "Exporter::Heavy::BEGIN@3";
+"Exporter::as_heavy" -> "Exporter::Heavy::BEGIN@197";
+"Exporter::Heavy::heavy_export" -> "Exporter::Heavy::CORE:match";
+"Exporter::as_heavy" -> "Exporter::Heavy::BEGIN@4";
+"Exporter::Heavy::heavy_export" -> "Exporter::Heavy::_rebuild_cache";
+"Exporter::Heavy::BEGIN@3" -> "strict::import";
+"Catalyst::DispatchType::Regex::BEGIN@8" -> "Exporter::Heavy::heavy_export_ok_tags";
+"DBI::BEGIN@161" -> "Exporter::Heavy::heavy_export_ok_tags";
+"Class::Struct::import" -> "Exporter::Heavy::heavy_export_to_level";
+"JSON::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Time::HiRes::import" -> "Exporter::Heavy::heavy_export_to_level";
+"XML::LibXML::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Benchmark::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Exporter::Heavy::heavy_export" -> "Exporter::Heavy::CORE:regcomp";
+"Exporter::Heavy::BEGIN@4" -> "strict::unimport";
+"Exporter::Heavy::_rebuild_cache" -> "Exporter::Heavy::CORE:subst";
+"Exporter::Heavy::heavy_export" -> "Exporter::Heavy::CORE:subst";
+"Exporter::import" -> "Exporter::Heavy::heavy_export";
+"FileHandle::import" -> "Exporter::Heavy::heavy_export";
+"IO::Socket::import" -> "Exporter::Heavy::heavy_export";
+"Exporter::Heavy::heavy_export_to_level" -> "Exporter::Heavy::heavy_export";
+"Exporter::Heavy::BEGIN@197" -> "warnings::unimport";
+"Path::Class::Dir::BEGIN@14" -> "Exporter::Heavy::heavy_export_tags";
+"Exporter::Heavy::heavy_export" -> "UNIVERSAL::VERSION";
+"Exporter::Heavy::heavy_export_to_level" -> "Exporter::export";
+}

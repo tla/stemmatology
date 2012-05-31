@@ -1,0 +1,65 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::serialize";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::encode";
+	"KiokuDB::Serializer::JSON::pretty";
+	"KiokuDB::Serializer::JSON::utf8";
+	"KiokuDB::Serializer::JSON::collapse_jspon";
+	"KiokuDB::Serializer::JSON::canonical";
+	"KiokuDB::Serializer::JSON::json";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+}
+subgraph cluster_JSON_XS {
+	label="JSON::XS";
+	"JSON::XS::utf8";
+	"JSON::XS::canonical";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSON {
+	label="KiokuDB::Backend::Serialize::JSON";
+	"KiokuDB::Backend::Serialize::JSON::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSON::BEGIN@8";
+	"KiokuDB::Backend::Serialize::JSON::serialize";
+	"KiokuDB::Backend::Serialize::JSON::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSON::_build_json";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "JSON::XS::utf8";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "JSON::XS::canonical";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+"KiokuDB::Backend::DBI::serialize" -> "KiokuDB::Backend::Serialize::JSON::serialize";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSON::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSON::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "KiokuDB::Serializer::JSON::canonical";
+"KiokuDB::Backend::Serialize::JSON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSON::serialize" -> "KiokuDB::Serializer::JSON::collapse_jspon";
+"KiokuDB::Backend::Serialize::JSON::BEGIN@6" -> "Exporter::import";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "KiokuDB::Serializer::JSON::utf8";
+"KiokuDB::Serializer::JSON::json" -> "KiokuDB::Backend::Serialize::JSON::_build_json";
+"KiokuDB::Backend::Serialize::JSON::_build_json" -> "KiokuDB::Serializer::JSON::pretty";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSON::BEGIN@4";
+"KiokuDB::Backend::Serialize::JSON::serialize" -> "KiokuDB::Serializer::JSON::encode";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSON::BEGIN@8";
+}

@@ -1,0 +1,112 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::BEGIN@6";
+	"Parse::Method::Signatures::Types::BEGIN@8";
+	"Parse::Method::Signatures::Types::BEGIN@7";
+	"Parse::Method::Signatures::Types::BEGIN@10";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::ArrayRef";
+	"__TYPE__::Str";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@10";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::DESTROY";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@3";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@2";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@7";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@5";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@1";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@4";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::as";
+	"MooseX::Types::CheckedUtilExports::subtype";
+	"MooseX::Types::CheckedUtilExports::from";
+	"MooseX::Types::CheckedUtilExports::class_type";
+	"MooseX::Types::CheckedUtilExports::role_type";
+	"MooseX::Types::CheckedUtilExports::coerce";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster___TYPE___Parse_Method_Signatures_Types {
+	label="__TYPE__::Parse::Method::Signatures::Types";
+	"__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+	"__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::VariableName";
+	"__TYPE__::Parse::Method::Signatures::Types::Param";
+	"__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+	"__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+	"__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::where";
+	"Moose::Util::TypeConstraints::via";
+	"Moose::Util::TypeConstraints::message";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_MooseX_Types_UndefinedType {
+	label="MooseX::Types::UndefinedType";
+	"MooseX::Types::UndefinedType::DESTROY";
+}
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@7";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::TypeConstraint";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::TypeDecorator::DESTROY";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@8";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::role_type";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::subtype";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::Param";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::ArrayRef";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::coerce";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Moose::Util::TypeConstraints::via";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Moose::Util::TypeConstraints::where";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::UndefinedType::DESTROY";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::ParamCollection::BEGIN@2";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@3";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::as";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@7";
+"Parse::Method::Signatures::ParamCollection::BEGIN@7" -> "namespace::clean::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::VariableName";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Str";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@5";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Parse::Method::Signatures::ParamCollection::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@4" -> "MooseX::Types::Base::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@6";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::class_type";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::NamedParam";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::ParamCollection::BEGIN@1";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::ParamCollection";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Moose::Util::TypeConstraints::message";
+"Parse::Method::Signatures::BEGIN@10" -> "Parse::Method::Signatures::ParamCollection::BEGIN@4";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::UnpackedParam";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "Parse::Method::Signatures::Types::BEGIN@10";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "MooseX::Types::CheckedUtilExports::from";
+"Parse::Method::Signatures::ParamCollection::BEGIN@5" -> "__TYPE__::Parse::Method::Signatures::Types::PositionalParam";
+}

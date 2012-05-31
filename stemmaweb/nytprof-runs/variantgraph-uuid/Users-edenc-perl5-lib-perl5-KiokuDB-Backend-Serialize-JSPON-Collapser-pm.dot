@@ -1,0 +1,123 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Converter {
+	label="KiokuDB::Backend::Serialize::JSPON::Converter";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::_jspon_fields";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::is_weak";
+	"KiokuDB::Reference::id";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+	"JSON::true";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::collapse_jspon";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::has_class_meta";
+	"KiokuDB::Entry::has_class";
+	"KiokuDB::Entry::class_version";
+	"KiokuDB::Entry::id";
+	"KiokuDB::Entry::root";
+	"KiokuDB::Entry::backend_data";
+	"KiokuDB::Entry::has_tied";
+	"KiokuDB::Entry::deleted";
+	"KiokuDB::Entry::class";
+	"KiokuDB::Entry::data";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::data_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::class_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::reserved_key";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::inline_data";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::ref_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::deleted_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:match";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::class_meta_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@7";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:regcomp";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::tied_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::backend_data_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::id_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::class_version_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::root_field";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:qr";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+}
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::class_meta_field";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::class_version_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "JSON::true";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::tied_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@7" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@6" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::has_tied";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::backend_data_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::inline_data";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::id";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8" -> "JSON::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::has_class";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::deleted";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::deleted_field";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@7";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::has_class_meta";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::class_version";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Reference::id";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::backend_data";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::root_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::root_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::data_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::data_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::root";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Converter::_jspon_fields";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::id_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::id_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:match";
+"KiokuDB::Serializer::JSON::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Reference::is_weak";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::reserved_key";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::data";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::class_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::class_field";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:regcomp";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:regcomp";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::CORE:qr";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Entry::class";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::_build_reserved_key" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::ref_field";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::ref_field";
+}

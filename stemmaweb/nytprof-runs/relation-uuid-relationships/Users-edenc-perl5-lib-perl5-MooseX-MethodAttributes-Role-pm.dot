@@ -1,0 +1,32 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role {
+	label="MooseX::MethodAttributes::Role";
+	"MooseX::MethodAttributes::Role::BEGIN@2";
+	"MooseX::MethodAttributes::Role::BEGIN@10";
+	"MooseX::MethodAttributes::Role::BEGIN@15";
+	"MooseX::MethodAttributes::Role::BEGIN@12";
+	"MooseX::MethodAttributes::Role::BEGIN@13";
+	"MooseX::MethodAttributes::Role::BEGIN@11";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role {
+	label="MooseX::MethodAttributes::Role::Meta::Role";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@11";
+"MooseX::MethodAttributes::Role::BEGIN@13" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@2";
+"MooseX::MethodAttributes::Role::BEGIN@11" -> "Moose::Exporter::import";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@13";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@18" -> "MooseX::MethodAttributes::Role::BEGIN@15";
+}

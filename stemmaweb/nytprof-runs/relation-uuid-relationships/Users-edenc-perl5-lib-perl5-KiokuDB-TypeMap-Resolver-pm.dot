@@ -1,0 +1,136 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::resolve";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::id_method";
+	"KiokuDB::Collapser::collapse_method";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@287";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::MOP::meta";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@19";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@261";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@7";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@239";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::collapse_method";
+	"KiokuDB::TypeMap::Entry::Compiled::id_method";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@16";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::fallback_entry";
+	"KiokuDB::TypeMap::Resolver::compile_entry";
+	"KiokuDB::TypeMap::Resolver::resolve";
+	"KiokuDB::TypeMap::Resolver::_compiled";
+	"KiokuDB::TypeMap::Resolver::resolve_fallback_with_meta";
+	"KiokuDB::TypeMap::Resolver::BEGIN@4";
+	"KiokuDB::TypeMap::Resolver::BEGIN@6";
+	"KiokuDB::TypeMap::Resolver::id_method";
+	"KiokuDB::TypeMap::Resolver::typemap";
+	"KiokuDB::TypeMap::Resolver::BEGIN@9";
+	"KiokuDB::TypeMap::Resolver::collapse_method";
+	"KiokuDB::TypeMap::Resolver::register_compiled";
+	"KiokuDB::TypeMap::Resolver::BEGIN@11";
+	"KiokuDB::TypeMap::Resolver::BEGIN@8";
+	"KiokuDB::TypeMap::Resolver::resolve_fallback";
+	"KiokuDB::TypeMap::Resolver::find_or_resolve";
+	"KiokuDB::TypeMap::Resolver::__ANON__[KiokuDB/TypeMap/Resolver.pm:21]";
+	"KiokuDB::TypeMap::Resolver::new";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::get_metaclass_by_name";
+}
+"KiokuDB::TypeMap::Resolver::collapse_method" -> "KiokuDB::TypeMap::Entry::Compiled::collapse_method";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@19";
+"KiokuDB::TypeMap::Resolver::id_method" -> "KiokuDB::TypeMap::Resolver::find_or_resolve";
+"KiokuDB::TypeMap::Resolver::collapse_method" -> "KiokuDB::TypeMap::Resolver::find_or_resolve";
+"KiokuDB::TypeMap::Resolver::compile_entry" -> "KiokuDB::TypeMap::Resolver::register_compiled";
+"KiokuDB::Collapser::id_method" -> "KiokuDB::TypeMap::Resolver::id_method";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Resolver::BEGIN@8" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Moose::has";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@261";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@4";
+"KiokuDB::TypeMap::Resolver::compile_entry" -> "KiokuDB::TypeMap::Entry::Std::Compile::compile";
+"KiokuDB::BEGIN@16" -> "KiokuDB::TypeMap::Resolver::BEGIN@9";
+"KiokuDB::Collapser::collapse_method" -> "KiokuDB::TypeMap::Resolver::collapse_method";
+"KiokuDB::TypeMap::Resolver::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Resolver::resolve" -> "KiokuDB::TypeMap::Resolver::resolve_fallback";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Moose::with";
+"KiokuDB::TypeMap::Resolver::new" -> "KiokuDB::TypeMap::Resolver::__ANON__[KiokuDB/TypeMap/Resolver.pm:21]";
+"KiokuDB::TypeMap::Resolver::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Resolver::register_compiled" -> "KiokuDB::TypeMap::Resolver::_compiled";
+"KiokuDB::TypeMap::Resolver::find_or_resolve" -> "KiokuDB::TypeMap::Resolver::_compiled";
+"KiokuDB::TypeMap::Resolver::resolve_fallback" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Resolver::BEGIN@6" -> "Exporter::import";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::meta";
+"KiokuDB::BEGIN@16" -> "KiokuDB::TypeMap::Resolver::BEGIN@11";
+"KiokuDB::TypeMap::Resolver::id_method" -> "KiokuDB::TypeMap::Entry::Compiled::id_method";
+"KiokuDB::TypeMap::Resolver::resolve_fallback_with_meta" -> "KiokuDB::TypeMap::Resolver::compile_entry";
+"KiokuDB::TypeMap::Resolver::resolve" -> "KiokuDB::TypeMap::Resolver::compile_entry";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@6";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@11";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@239";
+"KiokuDB::TypeMap::Resolver::resolve" -> "KiokuDB::TypeMap::Resolver::typemap";
+"KiokuDB::BEGIN@16" -> "KiokuDB::TypeMap::Resolver::BEGIN@4";
+"KiokuDB::TypeMap::Resolver::find_or_resolve" -> "KiokuDB::TypeMap::Resolver::resolve";
+"KiokuDB::TypeMap::Resolver::resolve_fallback" -> "KiokuDB::TypeMap::Resolver::resolve_fallback_with_meta";
+"KiokuDB::BEGIN@16" -> "KiokuDB::TypeMap::Resolver::BEGIN@8";
+"KiokuDB::TypeMap::Resolver::resolve" -> "KiokuDB::TypeMap::Shadow::resolve";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@7";
+"KiokuDB::TypeMap::Resolver::resolve_fallback_with_meta" -> "KiokuDB::TypeMap::Resolver::fallback_entry";
+"KiokuDB::BEGIN@16" -> "KiokuDB::TypeMap::Resolver::BEGIN@6";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@287";
+}

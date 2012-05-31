@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_CGI_Simple_Util {
+	label="CGI::Simple::Util";
+	"CGI::Simple::Util::BEGIN@238";
+	"CGI::Simple::Util::new";
+	"CGI::Simple::Util::ebcdic";
+	"CGI::Simple::Util::BEGIN@3";
+	"CGI::Simple::Util::os";
+	"CGI::Simple::Util::charset";
+	"CGI::Simple::Util::init";
+	"CGI::Simple::Util::CORE:match";
+	"CGI::Simple::Util::BEGIN@2";
+}
+subgraph cluster_CGI_Simple_Cookie {
+	label="CGI::Simple::Cookie";
+	"CGI::Simple::Cookie::BEGIN@16";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"CGI::Simple::Util::init" -> "CGI::Simple::Util::os";
+"CGI::Simple::Util::new" -> "CGI::Simple::Util::init";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@238";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@3";
+"CGI::Simple::Util::BEGIN@2" -> "strict::import";
+"CGI::Simple::Util::init" -> "CGI::Simple::Util::charset";
+"CGI::Simple::Cookie::BEGIN@16" -> "CGI::Simple::Util::BEGIN@2";
+"CGI::Simple::Util::BEGIN@3" -> "vars::import";
+"CGI::Simple::Util::os" -> "CGI::Simple::Util::CORE:match";
+"CGI::Simple::Util::init" -> "CGI::Simple::Util::ebcdic";
+"CGI::Simple::Util::BEGIN@238" -> "CGI::Simple::Util::new";
+}

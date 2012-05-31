@@ -1,0 +1,34 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_StackTrace_Auto {
+	label="StackTrace::Auto";
+	"StackTrace::Auto::BEGIN@10";
+	"StackTrace::Auto::BEGIN@83";
+	"StackTrace::Auto::BEGIN@5";
+	"StackTrace::Auto::BEGIN@2";
+	"StackTrace::Auto::BEGIN@30";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Module::Runtime::require_module" -> "StackTrace::Auto::BEGIN@2";
+"StackTrace::Auto::BEGIN@83" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"StackTrace::Auto::BEGIN@30" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"StackTrace::Auto::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"StackTrace::Auto::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "StackTrace::Auto::BEGIN@83";
+"Module::Runtime::require_module" -> "StackTrace::Auto::BEGIN@30";
+"Module::Runtime::require_module" -> "StackTrace::Auto::BEGIN@10";
+"StackTrace::Auto::BEGIN@5" -> "UNIVERSAL::VERSION";
+"Module::Runtime::require_module" -> "StackTrace::Auto::BEGIN@5";
+}

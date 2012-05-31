@@ -1,0 +1,137 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::add_columns";
+	"DBIx::Class::ResultSource::DESTROY";
+	"DBIx::Class::ResultSource::result_class";
+	"DBIx::Class::ResultSource::set_primary_key";
+	"DBIx::Class::ResultSource::add_relationship";
+	"DBIx::Class::ResultSource::sqlt_deploy_callback";
+	"DBIx::Class::ResultSource::new";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::_build_schema";
+	"KiokuDB::Backend::DBI::register_handle";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@12";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@17";
+	"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@15";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@2";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@21";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@14";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@10";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@19";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@9";
+	"DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+}
+subgraph cluster_DBIx_Class_KiokuDB_EntryProxy {
+	label="DBIx::Class::KiokuDB::EntryProxy";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@12";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@14";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@10";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@9";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@2";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_DBIx_Class_ResultSource_Table {
+	label="DBIx::Class::ResultSource::Table";
+	"DBIx::Class::ResultSource::Table::BEGIN@4";
+	"DBIx::Class::ResultSource::Table::BEGIN@6";
+	"DBIx::Class::ResultSource::Table::BEGIN@3";
+	"DBIx::Class::ResultSource::Table::BEGIN@8";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::register_source";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::load_components";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::new";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::new";
+"KiokuDB::Backend::DBI::register_handle" -> "DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@12";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::sqlt_deploy_callback";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::sqlt_deploy_callback";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "UNIVERSAL::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "UNIVERSAL::import";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@15";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@17";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::add_relationship";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@14";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::set_primary_key";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::ResultSource::DESTROY";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::result_class";
+"DBIx::Class::Schema::KiokuDB::BEGIN@19" -> "namespace::clean::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@9" -> "strict::import";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_entries_resultsource" -> "DBIx::Class::ResultSource::add_columns";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource" -> "DBIx::Class::ResultSource::add_columns";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::Schema::KiokuDB::define_kiokudb_gin_index_resultsource";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@12";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@21";
+"DBIx::Class::Schema::KiokuDB::BEGIN@17" -> "Exporter::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@12" -> "Exporter::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "DBIx::Class::ResultSource::Table::BEGIN@3";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@19";
+"DBIx::Class::Schema::KiokuDB::BEGIN@21" -> "base::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@10" -> "warnings::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@2";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@9";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@9";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "DBIx::Class::ResultSource::Table::BEGIN@8";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@10";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@14";
+"DBIx::Class::Schema::KiokuDB::_kiokudb_handle" -> "Scalar::Util::weaken";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"DBIx::Class::Schema::KiokuDB::_kiokudb_handle" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"Class::C3::Componentised::ensure_class_loaded" -> "DBIx::Class::Schema::KiokuDB::BEGIN@2";
+"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema" -> "DBIx::Class::Schema::register_source";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "DBIx::Class::ResultSource::Table::BEGIN@6";
+"DBIx::Class::Schema::KiokuDB::BEGIN@14" -> "DBIx::Class::KiokuDB::EntryProxy::BEGIN@10";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "DBIx::Class::ResultSource::Table::BEGIN@4";
+"DBIx::Class::Schema::KiokuDB::BEGIN@15" -> "Class::C3::Componentised::load_components";
+}

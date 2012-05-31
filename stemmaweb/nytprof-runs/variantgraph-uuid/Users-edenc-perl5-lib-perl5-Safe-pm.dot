@@ -1,0 +1,95 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Opcode {
+	label="Opcode";
+	"Opcode::BEGIN@15";
+	"Opcode::BEGIN@29";
+	"Opcode::BEGIN@12";
+	"Opcode::BEGIN@13";
+	"Opcode::BEGIN@11";
+	"Opcode::BEGIN@3";
+	"Opcode::_init_optags";
+	"Opcode::BEGIN@5";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::AUTOLOAD";
+	"utf8::SWASHNEW";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::BEGIN@70";
+	"Safe::BEGIN@29";
+	"Safe::BEGIN@28";
+	"Safe::BEGIN@2";
+	"Safe::CORE:match";
+	"Safe::CORE:regcomp";
+	"Safe::CORE:pack";
+	"Safe::BEGIN@36";
+	"Safe::BEGIN@46";
+	"Safe::BEGIN@344";
+	"Safe::BEGIN@30";
+	"Safe::BEGIN@3";
+	"Safe::BEGIN@4";
+	"Safe::BEGIN@34";
+	"Safe::BEGIN@337";
+	"Safe::BEGIN@191";
+	"Safe::BEGIN@35";
+	"Safe::BEGIN@285";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@42";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Graph::BEGIN@42" -> "Safe::BEGIN@30";
+"Graph::BEGIN@42" -> "Safe::BEGIN@3";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@3";
+"Graph::BEGIN@42" -> "Safe::BEGIN@35";
+"Graph::BEGIN@42" -> "Safe::CORE:pack";
+"Graph::BEGIN@42" -> "Safe::BEGIN@285";
+"Safe::CORE:regcomp" -> "utf8::AUTOLOAD";
+"Graph::BEGIN@42" -> "Safe::BEGIN@191";
+"Safe::BEGIN@46" -> "Opcode::_init_optags";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@15";
+"Graph::BEGIN@42" -> "Safe::BEGIN@28";
+"Safe::BEGIN@28" -> "strict::import";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@13";
+"Safe::BEGIN@46" -> "XSLoader::load";
+"Safe::CORE:regcomp" -> "utf8::SWASHNEW";
+"Safe::BEGIN@4" -> "Exporter::import";
+"Safe::BEGIN@29" -> "Exporter::import";
+"Safe::BEGIN@46" -> "Exporter::import";
+"Graph::BEGIN@42" -> "Safe::BEGIN@36";
+"Safe::CORE:regcomp" -> "Safe::BEGIN@70";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@5";
+"Safe::BEGIN@285" -> "strict::unimport";
+"Safe::BEGIN@36" -> "strict::unimport";
+"Safe::BEGIN@344" -> "strict::unimport";
+"Safe::BEGIN@337" -> "strict::unimport";
+"Safe::BEGIN@191" -> "strict::unimport";
+"Graph::BEGIN@42" -> "Safe::BEGIN@4";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@11";
+"Graph::BEGIN@42" -> "Safe::CORE:regcomp";
+"Graph::BEGIN@42" -> "Safe::BEGIN@337";
+"Safe::BEGIN@30" -> "Safe::BEGIN@2";
+"Graph::BEGIN@42" -> "Safe::BEGIN@34";
+"Graph::BEGIN@42" -> "Safe::BEGIN@29";
+"Graph::BEGIN@42" -> "Safe::CORE:match";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@29";
+"Graph::BEGIN@42" -> "Safe::BEGIN@344";
+"Graph::BEGIN@42" -> "Safe::BEGIN@46";
+"Safe::BEGIN@46" -> "Opcode::BEGIN@12";
+}

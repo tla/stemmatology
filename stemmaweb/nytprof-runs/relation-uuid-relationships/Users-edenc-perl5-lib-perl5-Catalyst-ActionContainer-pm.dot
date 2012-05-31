@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::get_actions";
+	"Catalyst::Dispatcher::BEGIN@10";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::name";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::add_action";
+	"Catalyst::ActionContainer::__ANON__[Catalyst/ActionContainer.pm:22]";
+	"Catalyst::ActionContainer::get_action";
+	"Catalyst::ActionContainer::actions";
+	"Catalyst::ActionContainer::BEGIN@18";
+	"Catalyst::ActionContainer::BEGIN@32";
+	"Catalyst::ActionContainer::BEGIN@30";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::ActionContainer::add_action" -> "Catalyst::ActionContainer::actions";
+"Catalyst::ActionContainer::get_action" -> "Catalyst::ActionContainer::actions";
+"Catalyst::ActionContainer::BEGIN@32" -> "overload::import";
+"Catalyst::ActionContainer::actions" -> "Catalyst::ActionContainer::__ANON__[Catalyst/ActionContainer.pm:22]";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@30";
+"Catalyst::ActionContainer::BEGIN@30" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::ActionContainer::BEGIN@18" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Dispatcher::register" -> "Catalyst::ActionContainer::add_action";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@32";
+"Catalyst::ActionContainer::add_action" -> "Catalyst::Action::name";
+"Catalyst::Dispatcher::BEGIN@10" -> "Catalyst::ActionContainer::BEGIN@18";
+"Catalyst::Dispatcher::get_actions" -> "Catalyst::ActionContainer::get_action";
+}

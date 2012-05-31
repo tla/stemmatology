@@ -1,0 +1,88 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_AdjacencyMap_Heavy {
+	label="Graph::AdjacencyMap::Heavy";
+	"Graph::AdjacencyMap::Heavy::__attr";
+	"Graph::AdjacencyMap::Heavy::__set_path_node";
+}
+subgraph cluster_Graph_AdjacencyMap {
+	label="Graph::AdjacencyMap";
+	"Graph::AdjacencyMap::CORE:sort";
+	"Graph::AdjacencyMap::_get_path_attrs";
+	"Graph::AdjacencyMap::_new";
+	"Graph::AdjacencyMap::_get_path_attr";
+	"Graph::AdjacencyMap::_is_UNORD";
+	"Graph::AdjacencyMap::BEGIN@3";
+	"Graph::AdjacencyMap::_has_path_attr";
+	"Graph::AdjacencyMap::_is_COUNT";
+	"Graph::AdjacencyMap::_del_id";
+	"Graph::AdjacencyMap::_set_path_attr";
+	"Graph::AdjacencyMap::_new_node";
+	"Graph::AdjacencyMap::_is_MULTI";
+	"Graph::AdjacencyMap::__get_path_node";
+	"Graph::AdjacencyMap::BEGIN@6";
+	"Graph::AdjacencyMap::_ids";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::get_edge_attributes";
+	"Graph::get_edge_attribute";
+	"Graph::countedged";
+	"Graph::multiedged";
+	"Graph::omniedged";
+	"Graph::delete_vertex";
+	"Graph::has_edge_attribute";
+	"Graph::BEGIN@13";
+	"Graph::set_edge_attribute";
+	"Graph::_edges";
+	"Graph::directed";
+	"Graph::_edges_at";
+	"Graph::delete_edge";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::_get_id_path";
+	"Graph::AdjacencyMap::Light::del_path";
+	"Graph::AdjacencyMap::Light::__attr";
+}
+"Graph::countedged" -> "Graph::AdjacencyMap::_is_COUNT";
+"Graph::AdjacencyMap::_set_path_attr" -> "Graph::AdjacencyMap::Light::__attr";
+"Graph::BEGIN@13" -> "Graph::AdjacencyMap::BEGIN@6";
+"Graph::AdjacencyMap::_del_id" -> "Graph::AdjacencyMap::Light::_get_id_path";
+"Graph::set_edge_attribute" -> "Graph::AdjacencyMap::_set_path_attr";
+"Graph::AdjacencyMap::BEGIN@3" -> "strict::import";
+"Graph::has_edge_attribute" -> "Graph::AdjacencyMap::_has_path_attr";
+"Graph::BEGIN@13" -> "Graph::AdjacencyMap::BEGIN@3";
+"Graph::AdjacencyMap::BEGIN@6" -> "vars::import";
+"Graph::multiedged" -> "Graph::AdjacencyMap::_is_MULTI";
+"Graph::AdjacencyMap::_get_path_attrs" -> "Graph::AdjacencyMap::__get_path_node";
+"Graph::AdjacencyMap::_get_path_attr" -> "Graph::AdjacencyMap::__get_path_node";
+"Graph::AdjacencyMap::_has_path_attr" -> "Graph::AdjacencyMap::__get_path_node";
+"Graph::directed" -> "Graph::AdjacencyMap::_is_UNORD";
+"Graph::omniedged" -> "Graph::AdjacencyMap::_is_UNORD";
+"Graph::AdjacencyMap::Light::__attr" -> "Graph::AdjacencyMap::_new";
+"Graph::get_edge_attribute" -> "Graph::AdjacencyMap::_get_path_attr";
+"Graph::delete_edge" -> "Graph::AdjacencyMap::_del_id";
+"Graph::delete_vertex" -> "Graph::AdjacencyMap::_del_id";
+"Graph::AdjacencyMap::_set_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_get_path_attrs" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_get_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::AdjacencyMap::_has_path_attr" -> "Graph::AdjacencyMap::Heavy::__attr";
+"Graph::get_edge_attributes" -> "Graph::AdjacencyMap::_get_path_attrs";
+"Graph::AdjacencyMap::_set_path_attr" -> "Graph::AdjacencyMap::CORE:sort";
+"Graph::AdjacencyMap::__get_path_node" -> "Graph::AdjacencyMap::CORE:sort";
+"Graph::AdjacencyMap::_get_path_attr" -> "Graph::AdjacencyMap::CORE:sort";
+"Graph::AdjacencyMap::_has_path_attr" -> "Graph::AdjacencyMap::CORE:sort";
+"Graph::_edges" -> "Graph::AdjacencyMap::_ids";
+"Graph::_edges_at" -> "Graph::AdjacencyMap::_ids";
+"Graph::AdjacencyMap::_del_id" -> "Graph::AdjacencyMap::Light::del_path";
+"Graph::AdjacencyMap::Heavy::__set_path_node" -> "Graph::AdjacencyMap::_new_node";
+}

@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_stemmaweb_View_TT {
+	label="stemmaweb::View::TT";
+	"stemmaweb::View::TT::BEGIN@4";
+	"stemmaweb::View::TT::BEGIN@6";
+	"stemmaweb::View::TT::BEGIN@3";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@4";
+"stemmaweb::View::TT::BEGIN@3" -> "strict::import";
+"stemmaweb::View::TT::BEGIN@6" -> "base::import";
+"stemmaweb::View::TT::BEGIN@4" -> "warnings::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@3";
+}

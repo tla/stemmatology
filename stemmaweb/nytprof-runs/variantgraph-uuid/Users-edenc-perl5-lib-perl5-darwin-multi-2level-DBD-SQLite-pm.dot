@@ -1,0 +1,121 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DBI_db {
+	label="DBI::db";
+	"DBI::db::sqlite_create_function";
+	"DBI::db::sqlite_collation_needed";
+	"DBI::db::sqlite_register_fts3_perl_tokenizer";
+	"DBI::db::prepare";
+}
+subgraph cluster_DBD_SQLite_st {
+	label="DBD::SQLite::st";
+	"DBD::SQLite::st::_prepare";
+}
+subgraph cluster_locale {
+	label="locale";
+	"locale::import";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::BEGIN@9";
+	"DBD::SQLite::BEGIN@34";
+	"DBD::SQLite::BEGIN@3";
+	"DBD::SQLite::BEGIN@4";
+	"DBD::SQLite::bootstrap";
+	"DBD::SQLite::BEGIN@10";
+	"DBD::SQLite::BEGIN@6";
+	"DBD::SQLite::BEGIN@12";
+	"DBD::SQLite::BEGIN@30";
+	"DBD::SQLite::driver";
+	"DBD::SQLite::BEGIN@8";
+	"DBD::SQLite::BEGIN@5";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_DBD___common {
+	label="DBD::_::common";
+	"DBD::_::common::install_method";
+}
+subgraph cluster_DBD_SQLite_dr {
+	label="DBD::SQLite::dr";
+	"DBD::SQLite::dr::connect";
+	"DBD::SQLite::dr::CORE:match";
+	"DBD::SQLite::dr::BEGIN@178";
+}
+subgraph cluster_DBI {
+	label="DBI";
+	"DBI::_new_dbh";
+	"DBI::install_driver";
+	"DBI::_new_sth";
+	"DBI::setup_driver";
+	"DBI::_new_drh";
+}
+subgraph cluster_DBD_SQLite_db {
+	label="DBD::SQLite::db";
+	"DBD::SQLite::db::_login";
+	"DBD::SQLite::db::prepare";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_DBD_SQLite__WriteOnceHash {
+	label="DBD::SQLite::_WriteOnceHash";
+	"DBD::SQLite::_WriteOnceHash::STORE";
+	"DBD::SQLite::_WriteOnceHash::TIEHASH";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_DBI_dr {
+	label="DBI::dr";
+	"DBI::dr::connect";
+}
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@12";
+"DBD::SQLite::dr::connect" -> "DBI::_new_dbh";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@9";
+"DBD::SQLite::db::prepare" -> "DBD::SQLite::st::_prepare";
+"DBI::install_driver" -> "DBD::SQLite::driver";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_create_function";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@5";
+"DBD::SQLite::BEGIN@34" -> "locale::import";
+"DBD::SQLite::dr::BEGIN@178" -> "locale::import";
+"DBD::SQLite::db::prepare" -> "DBI::_new_sth";
+"DBD::SQLite::BEGIN@30" -> "constant::import";
+"DBI::install_driver" -> "DBD::SQLite::_WriteOnceHash::TIEHASH";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@10";
+"DBD::SQLite::BEGIN@4" -> "strict::import";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_collation_needed";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@3";
+"DBI::install_driver" -> "DBD::SQLite::_WriteOnceHash::STORE";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@34";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@8";
+"DBI::install_driver" -> "DBD::SQLite::dr::BEGIN@178";
+"DBD::SQLite::BEGIN@8" -> "vars::import";
+"DBD::SQLite::BEGIN@9" -> "vars::import";
+"DBD::SQLite::BEGIN@10" -> "vars::import";
+"DBD::SQLite::dr::connect" -> "DBD::SQLite::dr::CORE:match";
+"DBD::SQLite::driver" -> "DBD::_::common::install_method";
+"DBD::SQLite::driver" -> "DBI::setup_driver";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@30";
+"DBI::db::prepare" -> "DBD::SQLite::db::prepare";
+"DynaLoader::bootstrap" -> "DBD::SQLite::bootstrap";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@6";
+"DBD::SQLite::BEGIN@5" -> "UNIVERSAL::VERSION";
+"DBD::SQLite::driver" -> "DBI::_new_drh";
+"DBD::SQLite::dr::connect" -> "DBI::db::sqlite_register_fts3_perl_tokenizer";
+"DBI::dr::connect" -> "DBD::SQLite::dr::connect";
+"DBI::install_driver" -> "DBD::SQLite::BEGIN@4";
+"DBD::SQLite::dr::connect" -> "DBD::SQLite::db::_login";
+}

@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::BEGIN@4";
+	"Config::Any::General::BEGIN@3";
+	"Config::Any::General::extensions";
+	"Config::Any::General::requires_all_of";
+	"Config::Any::General::load";
+	"Config::Any::General::BEGIN@6";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::_require";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::_load";
+	"Config::Any::extensions";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::new";
+	"Config::General::getall";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::is_supported";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@3";
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@6";
+"Config::Any::General::BEGIN@3" -> "strict::import";
+"Config::Any::General::load" -> "Config::General::new";
+"Config::Any::Base::is_supported" -> "Config::Any::General::requires_all_of";
+"Config::Any::General::BEGIN@6" -> "base::import";
+"Config::Any::_load" -> "Config::Any::General::extensions";
+"Config::Any::extensions" -> "Config::Any::General::extensions";
+"Config::Any::General::BEGIN@4" -> "warnings::import";
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@4";
+"Config::Any::General::load" -> "Config::General::getall";
+"Config::Any::General::load" -> "UNIVERSAL::VERSION";
+"Config::Any::_load" -> "Config::Any::General::load";
+}

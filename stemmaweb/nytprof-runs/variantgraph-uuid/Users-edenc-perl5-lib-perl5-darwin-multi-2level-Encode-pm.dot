@@ -1,0 +1,139 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@3";
+	"Text::Tradition::Collation::as_svg";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::BEGIN@4";
+	"Encode::Encoding::BEGIN@5";
+	"Encode::Encoding::CORE:match";
+	"Encode::Encoding::renewed";
+}
+subgraph cluster_Encode_Alias {
+	label="Encode::Alias";
+	"Encode::Alias::BEGIN@6";
+	"Encode::Alias::BEGIN@8";
+	"Encode::Alias::BEGIN@3";
+	"Encode::Alias::CORE:match";
+	"Encode::Alias::BEGIN@4";
+	"Encode::Alias::find_alias";
+	"Encode::Alias::init_aliases";
+	"Encode::Alias::BEGIN@2";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::encode_xs";
+	"Encode::utf8::decode_xs";
+	"Encode::utf8::BEGIN@325";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::process";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::define_encoding";
+	"Encode::BEGIN@242";
+	"Encode::BEGIN@8";
+	"Encode::BEGIN@9";
+	"Encode::find_encoding";
+	"Encode::BEGIN@5";
+	"Encode::getEncoding";
+	"Encode::is_utf8";
+	"Encode::LEAVE_SRC";
+	"Encode::BEGIN@13";
+	"Encode::CORE:match";
+	"Encode::predefine_encodings";
+	"Encode::BEGIN@48";
+	"Encode::BEGIN@6";
+	"Encode::CORE:subst";
+	"Encode::decode_utf8";
+	"Encode::FB_CROAK";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::encoding";
+	"Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+	"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@242";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@6";
+"Encode::decode_utf8" -> "Encode::utf8::decode_xs";
+"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]" -> "Encode::utf8::decode_xs";
+"stemmaweb::View::SVG::process" -> "Encode::decode_utf8";
+"Text::Tradition::Collation::as_svg" -> "Encode::decode_utf8";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@48";
+"Encode::getEncoding" -> "Encode::CORE:subst";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::predefine_encodings";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@6";
+"Encode::BEGIN@8" -> "constant::import";
+"Encode::predefine_encodings" -> "Encode::Encoding::CORE:match";
+"Encode::BEGIN@5" -> "strict::import";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Encode::utf8::encode_xs";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@4";
+"Encode::BEGIN@48" -> "Encode::Alias::init_aliases";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::utf8::BEGIN@325";
+"Encode::BEGIN@48" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@9";
+"Module::Runtime::require_module" -> "Encode::FB_CROAK";
+"Encode::BEGIN@13" -> "base::import";
+"Encode::BEGIN@6" -> "warnings::import";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@2";
+"Encode::utf8::BEGIN@325" -> "bytes::import";
+"Encode::BEGIN@242" -> "warnings::unimport";
+"Encode::decode_utf8" -> "Encode::is_utf8";
+"Catalyst::Plugin::Unicode::Encoding::__ANON__[Catalyst/Plugin/Unicode/Encoding.pm:163]" -> "Encode::is_utf8";
+"Encode::find_encoding" -> "Encode::getEncoding";
+"Encode::getEncoding" -> "Encode::Alias::find_alias";
+"Encode::BEGIN@48" -> "Encode::Alias::CORE:match";
+"Module::Runtime::require_module" -> "Encode::LEAVE_SRC";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@5";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@8";
+"Encode::BEGIN@48" -> "Encode::Alias::BEGIN@8";
+"Encode::utf8::decode_xs" -> "Encode::Encoding::renewed";
+"Encode::decode_utf8" -> "Encode::find_encoding";
+"Catalyst::Plugin::Unicode::Encoding::encoding" -> "Encode::find_encoding";
+"Encode::Alias::find_alias" -> "Encode::find_encoding";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::CORE:match";
+"XSLoader::load" -> "Encode::define_encoding";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@5";
+}

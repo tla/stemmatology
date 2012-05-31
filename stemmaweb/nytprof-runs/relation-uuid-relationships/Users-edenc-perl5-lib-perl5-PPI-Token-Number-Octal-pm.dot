@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@44";
+}
+subgraph cluster_PPI_Token_Number_Octal {
+	label="PPI::Token::Number::Octal";
+	"PPI::Token::Number::Octal::BEGIN@29";
+	"PPI::Token::Number::Octal::BEGIN@33";
+	"PPI::Token::Number::Octal::BEGIN@32";
+	"PPI::Token::Number::Octal::BEGIN@30";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@29";
+"PPI::Token::Number::Octal::BEGIN@29" -> "strict::import";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@30";
+"PPI::Token::Number::Octal::BEGIN@32" -> "vars::import";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@33";
+"PPI::Token::BEGIN@44" -> "PPI::Token::Number::Octal::BEGIN@32";
+}

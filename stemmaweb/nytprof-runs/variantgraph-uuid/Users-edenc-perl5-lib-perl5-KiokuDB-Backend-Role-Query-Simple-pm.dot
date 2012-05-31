@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Backend_Role_Query_Simple {
+	label="KiokuDB::Backend::Role::Query::Simple";
+	"KiokuDB::Backend::Role::Query::Simple::BEGIN@6";
+	"KiokuDB::Backend::Role::Query::Simple::BEGIN@4";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Role::Query::Simple::BEGIN@4";
+"KiokuDB::Backend::Role::Query::Simple::BEGIN@6" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Role::Query::Simple::BEGIN@6";
+"KiokuDB::Backend::Role::Query::Simple::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}

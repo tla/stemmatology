@@ -1,0 +1,19 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Object_Trait {
+	label="Moose::Meta::Object::Trait";
+	"Moose::Meta::Object::Trait::BEGIN@10";
+	"Moose::Meta::Object::Trait::BEGIN@3";
+}
+"Module::Runtime::require_module" -> "Moose::Meta::Object::Trait::BEGIN@10";
+"Moose::Meta::Object::Trait::BEGIN@10" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Moose::Meta::Object::Trait::BEGIN@3";
+}

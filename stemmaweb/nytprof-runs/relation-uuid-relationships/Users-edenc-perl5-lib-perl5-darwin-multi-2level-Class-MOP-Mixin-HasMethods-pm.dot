@@ -1,0 +1,433 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@11";
+	"Catalyst::_register_plugin";
+	"Catalyst::import";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+	"Class::MOP::Mixin::HasMethods::BEGIN@17";
+	"Class::MOP::Mixin::HasMethods::BEGIN@19";
+	"Class::MOP::Mixin::HasMethods::_full_method_map";
+	"Class::MOP::Mixin::HasMethods::BEGIN@21";
+	"Class::MOP::Mixin::HasMethods::BEGIN@2";
+	"Class::MOP::Mixin::HasMethods::CORE:match";
+	"Class::MOP::Mixin::HasMethods::BEGIN@12";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+	"Class::MOP::Mixin::HasMethods::update_package_cache_flag";
+	"Class::MOP::Mixin::HasMethods::get_method_list";
+	"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method";
+	"Class::MOP::Mixin::HasMethods::remove_method";
+	"Class::MOP::Mixin::HasMethods::_method_map";
+	"Class::MOP::Mixin::HasMethods::wrap_method_body";
+	"Class::MOP::Mixin::HasMethods::reset_package_cache_flag";
+	"Class::MOP::Mixin::HasMethods::BEGIN@13";
+	"Class::MOP::Mixin::HasMethods::BEGIN@15";
+	"Class::MOP::Mixin::HasMethods::get_method";
+	"Class::MOP::Mixin::HasMethods::_get_local_methods";
+	"Class::MOP::Mixin::HasMethods::_code_is_mine";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::_meta_method_class";
+	"Class::MOP::Mixin::HasMethods::BEGIN@9";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::BEGIN@16";
+	"Class::MOP::Mixin::HasMethods::BEGIN@10";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::mk_accessors";
+	"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::check_required_methods";
+	"Moose::Meta::Role::Application::RoleSummation::apply_methods";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::BEGIN@45";
+	"Sub::Name::subname";
+	"Sub::Name::BEGIN@44";
+	"Sub::Name::BEGIN@42";
+	"Sub::Name::BEGIN@49";
+	"Sub::Name::BEGIN@50";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::mk_classdata";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::clone";
+	"Class::MOP::Method::body";
+	"Class::MOP::Method::detach_from_class";
+	"Class::MOP::Method::package_name";
+	"Class::MOP::Method::attach_to_class";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::apply_override_method_modifiers";
+	"Moose::Meta::Role::Application::ToClass::apply_methods";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_inline_create_error";
+	"Moose::Meta::Class::add_override_method_modifier";
+	"Moose::Meta::Class::_meta_method_class";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::apply";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::create";
+	"Moose::Meta::Role::add_override_method_modifier";
+	"Moose::Meta::Role::_restore_metaobjects_from";
+	"Moose::Meta::Role::method_metaclass";
+	"Moose::Meta::Role::find_method_by_name";
+	"Moose::Meta::Role::_meta_method_class";
+	"Moose::Meta::Role::add_role";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_restore_metaobjects_from";
+	"Class::MOP::Class::find_all_methods_by_name";
+	"Class::MOP::Class::find_next_method_by_name";
+	"Class::MOP::Class::_inline_constructor";
+	"Class::MOP::Class::is_pristine";
+	"Class::MOP::Class::find_method_by_name";
+	"Class::MOP::Class::create";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+	"Class::MOP::Class::_inline_destructor";
+	"Class::MOP::Class::get_all_methods";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::init_meta";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::apply_override_method_modifiers";
+	"Moose::Meta::Role::Application::ToRole::apply_methods";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@36";
+	"Moose::init_meta";
+	"Moose::BEGIN@47";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_pkg_gen";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::_method_map";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::remove_delegation";
+	"Moose::Meta::Attribute::_canonicalize_handles";
+	"Moose::Meta::Attribute::install_delegation";
+	"Moose::Meta::Attribute::_process_accessors";
+}
+subgraph cluster_Class_MOP_Method_Overload {
+	label="Class::MOP::Method::Overload";
+	"Class::MOP::Method::Overload::BEGIN@3";
+	"Class::MOP::Method::Overload::BEGIN@15";
+	"Class::MOP::Method::Overload::BEGIN@11";
+	"Class::MOP::Method::Overload::BEGIN@13";
+	"Class::MOP::Method::Overload::BEGIN@10";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::method";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::_make_compatible_with";
+}
+subgraph cluster_Moose_Meta_Method_Meta {
+	label="Moose::Meta::Method::Meta";
+	"Moose::Meta::Method::Meta::_make_compatible_with";
+	"Moose::Meta::Method::Meta::wrap";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::BEGIN@3";
+	"Class::MOP::Method::Meta::BEGIN@18";
+	"Class::MOP::Method::Meta::BEGIN@11";
+	"Class::MOP::Method::Meta::wrap";
+	"Class::MOP::Method::Meta::BEGIN@10";
+	"Class::MOP::Method::Meta::BEGIN@14";
+	"Class::MOP::Method::Meta::BEGIN@16";
+	"Class::MOP::Method::Meta::BEGIN@13";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::install_accessors";
+	"Class::MOP::Attribute::get_read_method_ref";
+	"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::BEGIN@25";
+	"Class::MOP::get_code_info";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Class_MOP_Class {
+	label="Class::MOP::Class::Immutable::Class::MOP::Class";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::_method_map";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::add_package_symbol";
+	"Class::MOP::Package::remove_package_symbol";
+	"Class::MOP::Package::name";
+	"Class::MOP::Package::list_all_package_symbols";
+	"Class::MOP::Package::get_package_symbol";
+}
+"Class::MOP::Mixin::HasMethods::wrap_method_body" -> "Class::MOP::Method::wrap";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::Mixin::HasMethods::wrap_method_body" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@21";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@14";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@44";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@10";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@12";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Class::MOP::Package::remove_package_symbol";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Module::Runtime::require_module" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::init_meta" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::find_next_method_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Role::init_meta" -> "Class::MOP::Mixin::HasMethods::get_method";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Role::Application::ToClass::apply_methods" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Role::Application::ToRole::apply_methods" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Attribute::get_read_method_ref" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Catalyst::BEGIN@11" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Moose::Meta::Role::find_method_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::is_pristine" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::find_method_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class:::around" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@17";
+"Class::MOP::Mixin::HasMethods::get_method_list" -> "Class::MOP::Mixin::HasMethods::_full_method_map";
+"Class::MOP::Mixin::HasMethods::_get_local_methods" -> "Class::MOP::Mixin::HasMethods::_full_method_map";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Mixin::HasMethods::wrap_method_body";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Package::list_all_package_symbols";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Moose::Meta::Method::Meta::wrap";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@15";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@3";
+"Class::MOP::Mixin::HasMethods::BEGIN@9" -> "strict::import";
+"Moose::Meta::Role::Application::ToClass::apply_methods" -> "Class::MOP::Mixin::HasMethods::reset_package_cache_flag";
+"Moose::Meta::Role::add_role" -> "Class::MOP::Mixin::HasMethods::reset_package_cache_flag";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::Meta::Role::Application::ToRole::apply_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::Meta::Role::Application::RoleSummation::apply_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Moose::Meta::Role::Application::ToClass::apply_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Class::MOP::Class::get_all_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@10";
+"Class::MOP::Mixin::HasMethods::has_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Class::find_method_by_name";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@19";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Moose::Meta::Role::Method::_make_compatible_with";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Module::Runtime::require_module" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Class::add_override_method_modifier" -> "Class::MOP::Mixin::HasMethods::add_method";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Mixin::HasMethods::add_method";
+"MooseX::Role::Parameterized::method" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::BEGIN@36" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Mixin::HasMethods::add_method";
+"MooseX::Emulate::Class::Accessor::Fast::BEGIN@7" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Attribute::install_delegation" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Role::Application::ToRole::apply_methods" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Role::Application::ToClass::apply_methods" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Attribute::install_accessors" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Catalyst::BEGIN@11" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::BEGIN@47" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Attribute::remove_delegation" -> "Class::MOP::Mixin::HasMethods::remove_method";
+"Class::MOP::Attribute::__ANON__[Class/MOP/Attribute.pm:456]" -> "Class::MOP::Mixin::HasMethods::remove_method";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@10";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Method::body";
+"Class::MOP::Mixin::HasMethods::BEGIN@16" -> "Exporter::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Exporter::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@15" -> "Exporter::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@13";
+"Class::MOP::Mixin::HasMethods::has_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Moose::Meta::Method::Meta::_make_compatible_with";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@50";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@16";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "UNIVERSAL::can";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@3";
+"Moose::Meta::Role::_restore_metaobjects_from" -> "Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+"Class::MOP::Class::_restore_metaobjects_from" -> "Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+"Class::MOP::Mixin::HasMethods::BEGIN@21" -> "base::import";
+"Class::MOP::Mixin::HasMethods::has_method" -> "Class::MOP::Mixin::HasMethods::_get_maybe_raw_method";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Mixin::HasMethods::_get_maybe_raw_method";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@13";
+"Class::MOP::Mixin::HasMethods::BEGIN@10" -> "warnings::import";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@16";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Mixin::HasMethods::_meta_method_class";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Moose::Meta::Role::find_method_by_name";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "mro::get_pkg_gen";
+"Class::MOP::Mixin::HasMethods::update_package_cache_flag" -> "mro::get_pkg_gen";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@45";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@11";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Method::attach_to_class";
+"Class::MOP::Mixin::HasMethods::_code_is_mine" -> "Class::MOP::get_code_info";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::get_code_info";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Method::clone";
+"Class::MOP::Class::is_pristine" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Moose::Meta::Role::method_metaclass";
+"Class::MOP::Mixin::HasMethods::wrap_method_body" -> "Moose::Meta::Role::method_metaclass";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Class::MOP::Method::detach_from_class";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Moose::Meta::Class::_meta_method_class";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@11";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@18";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@15";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Package::add_package_symbol";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "UNIVERSAL::isa";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Moose::Meta::Role::_meta_method_class";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Method::Meta::wrap";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@2";
+"Class::MOP::Mixin::HasMethods::BEGIN@12" -> "Class::MOP::Method::Meta::BEGIN@13";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Method::package_name";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@9";
+"Class::MOP::Mixin::HasMethods::has_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::_method_map";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::_method_map";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Mixin::HasMethods::update_package_cache_flag";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Class::MOP::Mixin::HasMethods::update_package_cache_flag";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Class::MOP::Method::name";
+"Moose::Meta::Role::Application::RoleSummation::check_required_methods" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Class::_inline_create_error" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Role::Application::ToRole::apply_override_method_modifiers" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Class::add_override_method_modifier" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Catalyst::_register_plugin" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Catalyst::import" -> "Class::MOP::Mixin::HasMethods::has_method";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Attribute::_process_accessors" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Role::add_override_method_modifier" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Moose::Meta::Role::Application::ToClass::apply_override_method_modifiers" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Package::get_package_symbol";
+"Class::MOP::Mixin::HasMethods::has_method" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Mixin::HasMethods::_method_map";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::update_package_cache_flag" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::wrap_method_body" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::_code_is_mine" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Package::name";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Class::Immutable::Class::MOP::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Class::MOP::Class::Immutable::Class::MOP::Class::_method_map";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::Mixin::HasMethods::CORE:match";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "DynaLoader::bootstrap";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Sub::Name::subname";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@49";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@42";
+"Class::MOP::Mixin::HasMethods::_get_maybe_raw_method" -> "Class::MOP::Mixin::HasMethods::_code_is_mine";
+"Moose::Meta::Role::create" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"metaclass::import" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Class::MOP::Class::create" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Moose::init_meta" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Moose::Role::init_meta" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+}

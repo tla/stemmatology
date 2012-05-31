@@ -1,0 +1,121 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::_init";
+}
+subgraph cluster_Template_Stash {
+	label="Template::Stash";
+	"Template::Stash::new";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Filters {
+	label="Template::Filters";
+	"Template::Filters::BEGIN@23";
+	"Template::Filters::BEGIN@27";
+	"Template::Filters::BEGIN@25";
+	"Template::Filters::BEGIN@24";
+	"Template::Filters::BEGIN@22";
+	"Template::Filters::BEGIN@26";
+}
+subgraph cluster_Template_Plugins {
+	label="Template::Plugins";
+	"Template::Plugins::BEGIN@28";
+	"Template::Plugins::BEGIN@27";
+	"Template::Plugins::BEGIN@26";
+	"Template::Plugins::BEGIN@29";
+}
+subgraph cluster_Template_Config {
+	label="Template::Config";
+	"Template::Config::CORE:subst";
+	"Template::Config::context";
+	"Template::Config::provider";
+	"Template::Config::BEGIN@22";
+	"Template::Config::plugins";
+	"Template::Config::service";
+	"Template::Config::BEGIN@21";
+	"Template::Config::load";
+	"Template::Config::filters";
+	"Template::Config::BEGIN@24";
+	"Template::Config::stash";
+	"Template::Config::BEGIN@23";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::new";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Template_Service {
+	label="Template::Service";
+	"Template::Service::_init";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Template_Stash_XS {
+	label="Template::Stash::XS";
+	"Template::Stash::XS::BEGIN@16";
+	"Template::Stash::XS::BEGIN@21";
+	"Template::Stash::XS::BEGIN@17";
+	"Template::Stash::XS::BEGIN@14";
+	"Template::Stash::XS::BEGIN@15";
+}
+subgraph cluster_Template {
+	label="Template";
+	"Template::BEGIN@27";
+	"Template::_init";
+}
+"Template::Config::load" -> "Template::Filters::BEGIN@26";
+"Template::Config::load" -> "Template::Filters::BEGIN@23";
+"Template::Config::service" -> "Template::Config::load";
+"Template::Config::context" -> "Template::Config::load";
+"Template::Config::filters" -> "Template::Config::load";
+"Template::Config::provider" -> "Template::Config::load";
+"Template::Config::plugins" -> "Template::Config::load";
+"Template::Config::stash" -> "Template::Config::load";
+"Template::Service::_init" -> "Template::Config::context";
+"Template::Context::_init" -> "Template::Config::filters";
+"Template::Config::load" -> "Template::Stash::XS::BEGIN@16";
+"Template::_init" -> "Template::Config::service";
+"Template::Config::load" -> "Template::Filters::BEGIN@22";
+"Template::Config::load" -> "Template::Config::CORE:subst";
+"Template::Config::BEGIN@21" -> "strict::import";
+"Template::BEGIN@27" -> "Template::Config::BEGIN@23";
+"Template::Config::load" -> "Template::Stash::XS::BEGIN@14";
+"Template::Config::load" -> "Template::Plugins::BEGIN@28";
+"Template::Context::_init" -> "Template::Config::plugins";
+"Template::Config::load" -> "Template::Stash::XS::BEGIN@21";
+"Template::BEGIN@27" -> "Template::Config::BEGIN@21";
+"Template::Context::_init" -> "Template::Config::stash";
+"Template::Config::BEGIN@23" -> "base::import";
+"Template::Config::BEGIN@22" -> "warnings::import";
+"Template::Config::stash" -> "Template::Stash::new";
+"Template::Config::load" -> "Template::Filters::BEGIN@24";
+"Template::Config::BEGIN@24" -> "vars::import";
+"Template::Config::service" -> "Template::Base::new";
+"Template::Config::context" -> "Template::Base::new";
+"Template::Config::filters" -> "Template::Base::new";
+"Template::Config::provider" -> "Template::Base::new";
+"Template::Config::plugins" -> "Template::Base::new";
+"Template::Config::load" -> "Template::Filters::BEGIN@25";
+"Template::Config::load" -> "Template::Plugins::BEGIN@29";
+"Template::Context::_init" -> "Template::Config::provider";
+"Template::Config::load" -> "Template::Stash::XS::BEGIN@17";
+"Template::Config::load" -> "Template::Filters::BEGIN@27";
+"Template::BEGIN@27" -> "Template::Config::BEGIN@24";
+"Template::BEGIN@27" -> "Template::Config::BEGIN@22";
+"Template::Config::load" -> "Template::Plugins::BEGIN@26";
+"Template::Config::load" -> "Template::Stash::XS::BEGIN@15";
+"Template::Config::load" -> "Template::Plugins::BEGIN@27";
+}

@@ -1,0 +1,88 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_XML_LibXML_Node {
+	label="XML::LibXML::Node";
+	"XML::LibXML::Node::string_value";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::_lookup_node_data";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XML_LibXML_NodeList {
+	label="XML::LibXML::NodeList";
+	"XML::LibXML::NodeList::BEGIN@16";
+	"XML::LibXML::NodeList::BEGIN@13";
+	"XML::LibXML::NodeList::BEGIN@15";
+	"XML::LibXML::NodeList::BEGIN@23";
+	"XML::LibXML::NodeList::BEGIN@19";
+	"XML::LibXML::NodeList::BEGIN@12";
+	"XML::LibXML::NodeList::to_literal";
+	"XML::LibXML::NodeList::new";
+	"XML::LibXML::NodeList::BEGIN@17";
+	"XML::LibXML::NodeList::size";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@25";
+}
+subgraph cluster_XML_LibXML_XPathContext {
+	label="XML::LibXML::XPathContext";
+	"XML::LibXML::XPathContext::find";
+}
+subgraph cluster_XML_LibXML_Boolean {
+	label="XML::LibXML::Boolean";
+	"XML::LibXML::Boolean::BEGIN@13";
+	"XML::LibXML::Boolean::BEGIN@16";
+	"XML::LibXML::Boolean::BEGIN@21";
+	"XML::LibXML::Boolean::BEGIN@12";
+	"XML::LibXML::Boolean::BEGIN@14";
+}
+subgraph cluster_XML_LibXML_Literal {
+	label="XML::LibXML::Literal";
+	"XML::LibXML::Literal::new";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"XML::LibXML::NodeList::BEGIN@23" -> "overload::import";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@19";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@23";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@17";
+"XML::LibXML::NodeList::BEGIN@16" -> "UNIVERSAL::import";
+"XML::LibXML::NodeList::BEGIN@17" -> "UNIVERSAL::import";
+"XML::LibXML::NodeList::BEGIN@15" -> "UNIVERSAL::import";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@13";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@15";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@13";
+"XML::LibXML::NodeList::BEGIN@12" -> "strict::import";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::NodeList::size";
+"Text::Tradition::Parser::GraphML::_lookup_node_data" -> "XML::LibXML::NodeList::to_literal";
+"XML::LibXML::XPathContext::find" -> "XML::LibXML::NodeList::new";
+"XML::LibXML::NodeList::BEGIN@13" -> "warnings::import";
+"XML::LibXML::NodeList::BEGIN@19" -> "vars::import";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@16";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@12";
+"XML::LibXML::BEGIN@25" -> "XML::LibXML::NodeList::BEGIN@16";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@12";
+"XML::LibXML::NodeList::to_literal" -> "XML::LibXML::Node::string_value";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@21";
+"XML::LibXML::NodeList::to_literal" -> "XML::LibXML::Literal::new";
+"XML::LibXML::NodeList::BEGIN@15" -> "XML::LibXML::Boolean::BEGIN@14";
+}

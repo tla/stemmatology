@@ -1,0 +1,187 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__query {
+	label="URI::_query";
+	"URI::_query::query";
+}
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::content";
+	"HTTP::Message::AUTOLOAD";
+	"HTTP::Message::protocol";
+	"HTTP::Message::headers";
+	"HTTP::Message::__ANON__[HTTP/Message.pm:649]";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+	"Plack::Test::MockHTTP::BEGIN@8";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::header";
+	"HTTP::Headers::header_field_names";
+}
+subgraph cluster_HTTP_Request {
+	label="HTTP::Request";
+	"HTTP::Request::to_psgi";
+	"HTTP::Request::uri";
+	"HTTP::Request::method";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::BEGIN@41";
+	"HTTP::Message::PSGI::BEGIN@9";
+	"HTTP::Message::PSGI::BEGIN@11";
+	"HTTP::Message::PSGI::BEGIN@10";
+	"HTTP::Message::PSGI::BEGIN@7";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:138]";
+	"HTTP::Message::PSGI::CORE:subst";
+	"HTTP::Message::PSGI::res_from_psgi";
+	"HTTP::Message::PSGI::BEGIN@2";
+	"HTTP::Message::PSGI::req_to_psgi";
+	"HTTP::Message::PSGI::BEGIN@3";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:104]";
+	"HTTP::Message::PSGI::BEGIN@4";
+	"HTTP::Message::PSGI::CORE:open";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+	"HTTP::Message::PSGI::BEGIN@8";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:19]";
+	"HTTP::Message::PSGI::CORE:match";
+	"HTTP::Message::PSGI::_res_from_psgi";
+}
+subgraph cluster_HTTP_Status {
+	label="HTTP::Status";
+	"HTTP::Status::status_message";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_URI_http {
+	label="URI::http";
+	"URI::http::default_port";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::path_query";
+	"URI::_generic::path";
+}
+subgraph cluster_URI__server {
+	label="URI::_server";
+	"URI::_server::host";
+	"URI::_server::port";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::new";
+	"HTTP::Response::from_psgi";
+	"HTTP::Response::message";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::__ANON__[Catalyst/Engine.pm:683]";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_URI_Escape {
+	label="URI::Escape";
+	"URI::Escape::uri_unescape";
+}
+subgraph cluster_Plack_Util_Prototype {
+	label="Plack::Util::Prototype";
+	"Plack::Util::Prototype::AUTOLOAD";
+}
+subgraph cluster_parent {
+	label="parent";
+	"parent::import";
+}
+subgraph cluster_Plack_Util {
+	label="Plack::Util";
+	"Plack::Util::inline_object";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::scheme";
+	"URI::clone";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::finalize_headers";
+}
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@10";
+"HTTP::Message::PSGI::_res_from_psgi" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+"Plack::Util::Prototype::AUTOLOAD" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Headers::header";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Headers::header";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@8";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_query::query";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_server::port";
+"Catalyst::Response::finalize_headers" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:104]";
+"HTTP::Message::PSGI::BEGIN@10" -> "UNIVERSAL::import";
+"HTTP::Message::PSGI::_res_from_psgi" -> "Plack::Util::inline_object";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::PSGI::CORE:open";
+"HTTP::Message::PSGI::CORE:open" -> "HTTP::Message::PSGI::BEGIN@41";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Request::to_psgi";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@11";
+"HTTP::Message::PSGI::req_to_psgi" -> "Try::Tiny::try";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_generic::path";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Headers::header_field_names";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::http::default_port";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@4";
+"HTTP::Message::PSGI::BEGIN@2" -> "strict::import";
+"HTTP::Response::from_psgi" -> "HTTP::Message::PSGI::res_from_psgi";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::PSGI::CORE:match";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@9";
+"Plack::Util::Prototype::AUTOLOAD" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:138]";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_generic::path_query";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::_server::host";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::Escape::uri_unescape";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Response::new";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Status::status_message";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::__ANON__[HTTP/Message.pm:649]";
+"HTTP::Message::PSGI::BEGIN@8" -> "Exporter::import";
+"HTTP::Message::PSGI::BEGIN@11" -> "Exporter::import";
+"HTTP::Message::PSGI::res_from_psgi" -> "HTTP::Message::PSGI::_res_from_psgi";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:104]" -> "HTTP::Message::PSGI::_res_from_psgi";
+"HTTP::Request::to_psgi" -> "HTTP::Message::PSGI::req_to_psgi";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::headers";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Message::headers";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Response::message";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Request::uri";
+"HTTP::Message::PSGI::req_to_psgi" -> "UNIVERSAL::can";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@7";
+"HTTP::Message::PSGI::BEGIN@3" -> "warnings::import";
+"HTTP::Message::PSGI::res_from_psgi" -> "Catalyst::Engine::__ANON__[Catalyst/Engine.pm:683]";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::clone";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@2";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:19]" -> "UNIVERSAL::isa";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:25]" -> "HTTP::Response::from_psgi";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::PSGI::CORE:subst";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Request::method";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::protocol";
+"HTTP::Message::PSGI::BEGIN@4" -> "parent::import";
+"Plack::Test::MockHTTP::BEGIN@8" -> "HTTP::Message::PSGI::BEGIN@3";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::AUTOLOAD";
+"HTTP::Message::PSGI::req_to_psgi" -> "URI::scheme";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Message::content";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Message::content";
+"Try::Tiny::try" -> "HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:19]";
+}

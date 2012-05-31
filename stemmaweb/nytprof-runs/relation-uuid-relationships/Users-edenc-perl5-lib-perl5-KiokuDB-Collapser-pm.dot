@@ -1,0 +1,377 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::BEGIN@6";
+	"KiokuDB::Error::UnknownObjects::BEGIN@2";
+	"KiokuDB::Error::UnknownObjects::meta";
+	"KiokuDB::Error::UnknownObjects::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::meta";
+	"KiokuDB::Reference::BEGIN@6";
+	"KiokuDB::Reference::BEGIN@4";
+	"KiokuDB::Reference::new";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::isweak";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::insert";
+	"KiokuDB::Collapser::Buffer::new";
+	"KiokuDB::Collapser::Buffer::first_class";
+	"KiokuDB::Collapser::Buffer::BEGIN@4";
+	"KiokuDB::Collapser::Buffer::merged_objects_to_ids";
+	"KiokuDB::Collapser::Buffer::BEGIN@5";
+	"KiokuDB::Collapser::Buffer::simple_entries";
+	"KiokuDB::Collapser::Buffer::intrinsic_entry";
+	"KiokuDB::Collapser::Buffer::object_to_id";
+	"KiokuDB::Collapser::Buffer::compact_entries";
+	"KiokuDB::Collapser::Buffer::BEGIN@2";
+	"KiokuDB::Collapser::Buffer::meta";
+	"KiokuDB::Collapser::Buffer::BEGIN@7";
+	"KiokuDB::Collapser::Buffer::options";
+	"KiokuDB::Collapser::Buffer::insert_entry";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::object_to_entry";
+	"KiokuDB::LiveObjects::id_in_storage";
+	"KiokuDB::LiveObjects::id_to_object";
+	"KiokuDB::LiveObjects::object_to_id";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::VERSION";
+	"UNIVERSAL::can";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::insert";
+}
+subgraph cluster_Scope_Guard {
+	label="Scope::Guard";
+	"Scope::Guard::BEGIN@6";
+	"Scope::Guard::BEGIN@7";
+	"Scope::Guard::DESTROY";
+	"Scope::Guard::new";
+	"Scope::Guard::BEGIN@4";
+	"Scope::Guard::BEGIN@3";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::__ANON__[KiokuDB/TypeMap/Entry/Naive.pm:24]";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_KiokuDB_Entry_Skip {
+	label="KiokuDB::Entry::Skip";
+	"KiokuDB::Entry::Skip::meta";
+	"KiokuDB::Entry::Skip::BEGIN@6";
+	"KiokuDB::Entry::Skip::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::visit_with_typemap";
+	"KiokuDB::Collapser::visit_object";
+	"KiokuDB::Collapser::_clear_buffer";
+	"KiokuDB::Collapser::BEGIN@16";
+	"KiokuDB::Collapser::id_method";
+	"KiokuDB::Collapser::BEGIN@22";
+	"KiokuDB::Collapser::BEGIN@4";
+	"KiokuDB::Collapser::visit_ref_fallback";
+	"KiokuDB::Collapser::_set_buffer";
+	"KiokuDB::Collapser::BEGIN@14";
+	"KiokuDB::Collapser::BEGIN@12";
+	"KiokuDB::Collapser::make_ref";
+	"KiokuDB::Collapser::BEGIN@10";
+	"KiokuDB::Collapser::collapse";
+	"KiokuDB::Collapser::_ref_id";
+	"KiokuDB::Collapser::__ANON__[KiokuDB/Collapser.pm:84]";
+	"KiokuDB::Collapser::compact";
+	"KiokuDB::Collapser::BEGIN@1";
+	"KiokuDB::Collapser::BEGIN@20";
+	"KiokuDB::Collapser::retain_magic";
+	"KiokuDB::Collapser::live_objects";
+	"KiokuDB::Collapser::_buffer";
+	"KiokuDB::Collapser::make_entry";
+	"KiokuDB::Collapser::BEGIN@17";
+	"KiokuDB::Collapser::visit_ref";
+	"KiokuDB::Collapser::BEGIN@9";
+	"KiokuDB::Collapser::BEGIN@15";
+	"KiokuDB::Collapser::visit_ref_data";
+	"KiokuDB::Collapser::BEGIN@6";
+	"KiokuDB::Collapser::BEGIN@11";
+	"KiokuDB::Collapser::BEGIN@24";
+	"KiokuDB::Collapser::BEGIN@18";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::BEGIN@8";
+	"KiokuDB::Collapser::collapse_method";
+	"KiokuDB::Collapser::visit_seen";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit_ref";
+	"Data::Visitor::BEGIN@12";
+	"Data::Visitor::meta";
+	"Data::Visitor::BEGIN@13";
+	"Data::Visitor::BEGIN@2";
+	"Data::Visitor::visit_normal_array";
+	"Data::Visitor::BEGIN@23";
+	"Data::Visitor::BEGIN@15";
+	"Data::Visitor::BEGIN@16";
+	"Data::Visitor::BEGIN@376";
+	"Data::Visitor::visit_no_rec_check";
+	"Data::Visitor::BEGIN@25";
+	"Data::Visitor::visit_normal_hash";
+	"Data::Visitor::_register_mapping";
+	"Data::Visitor::BEGIN@11";
+	"Data::Visitor::BEGIN@20";
+	"Data::Visitor::BEGIN@18";
+	"Data::Visitor::visit";
+	"Data::Visitor::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Role_UUIDs_DataUUID {
+	label="KiokuDB::Role::UUIDs::DataUUID";
+	"KiokuDB::Role::UUIDs::DataUUID::generate_uuid";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::BEGIN@6";
+	"KiokuDB::Entry::BEGIN@202";
+	"KiokuDB::Entry::BEGIN@196";
+	"KiokuDB::Entry::BEGIN@182";
+	"KiokuDB::Entry::BEGIN@4";
+	"KiokuDB::Entry::BEGIN@218";
+	"KiokuDB::Entry::BEGIN@251";
+	"KiokuDB::Entry::BEGIN@8";
+	"KiokuDB::Entry::BEGIN@198";
+	"KiokuDB::Entry::BEGIN@199";
+	"KiokuDB::Entry::BEGIN@201";
+	"KiokuDB::Entry::new";
+	"KiokuDB::Entry::meta";
+	"KiokuDB::Entry::BEGIN@139";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::store_objects";
+	"KiokuDB::BEGIN@11";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]";
+}
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::meta";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::_set_buffer";
+"KiokuDB::Collapser::visit_ref_data" -> "Data::Visitor::visit_ref";
+"Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]" -> "KiokuDB::Collapser::make_entry";
+"KiokuDB::TypeMap::Entry::Naive::__ANON__[KiokuDB/TypeMap/Entry/Naive.pm:24]" -> "KiokuDB::Collapser::make_entry";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "KiokuDB::Collapser::make_entry";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::make_entry";
+"Data::Visitor::visit_no_rec_check" -> "KiokuDB::Collapser::visit_object";
+"KiokuDB::Collapser::__ANON__[KiokuDB/Collapser.pm:84]" -> "KiokuDB::Collapser::_clear_buffer";
+"KiokuDB::Collapser::visit_seen" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::meta";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@16";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@202";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::merged_objects_to_ids";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@4";
+"KiokuDB::Collapser::collapse" -> "Scope::Guard::new";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::Buffer::simple_entries";
+"KiokuDB::Collapser::make_ref" -> "Scalar::Util::isweak";
+"KiokuDB::Collapser::collapse" -> "Scope::Guard::DESTROY";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@10";
+"Scope::Guard::DESTROY" -> "KiokuDB::Collapser::__ANON__[KiokuDB/Collapser.pm:84]";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@25";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@218";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::compact_entries";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::Collapser::live_objects";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::live_objects";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::live_objects";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Collapser::live_objects";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::meta";
+"KiokuDB::Collapser::BEGIN@20" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@16" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@18" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@14" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@17" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@15" -> "UNIVERSAL::import";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@7";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::new";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@11";
+"KiokuDB::Collapser::BEGIN@20" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@16" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@14" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@17" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@15" -> "Moose::has";
+"KiokuDB::Collapser::BEGIN@18" -> "Moose::has";
+"KiokuDB::Collapser::collapse" -> "Set::Object::insert";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@199";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::compact";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::compact";
+"KiokuDB::Collapser::BEGIN@16" -> "KiokuDB::Reference::meta";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@23";
+"KiokuDB::Collapser::BEGIN@15" -> "KiokuDB::Entry::Skip::BEGIN@4";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::_ref_id";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@139";
+"Data::Visitor::visit_no_rec_check" -> "KiokuDB::Collapser::visit_ref";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@6";
+"KiokuDB::Collapser::visit_with_typemap" -> "KiokuDB::Collapser::collapse_method";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@4";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::Buffer::options";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::Buffer::options";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Collapser::Buffer::options";
+"KiokuDB::Collapser::BEGIN@15" -> "KiokuDB::Entry::Skip::BEGIN@6";
+"KiokuDB::Collapser::BEGIN@12" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@14";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@17";
+"KiokuDB::Collapser::BEGIN@24" -> "namespace::clean::import";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@2";
+"Data::Visitor::visit_normal_hash" -> "KiokuDB::Collapser::retain_magic";
+"Data::Visitor::visit_normal_array" -> "KiokuDB::Collapser::retain_magic";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@7";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@251";
+"Data::Visitor::visit" -> "KiokuDB::Collapser::visit_seen";
+"KiokuDB::Collapser::visit_with_typemap" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::id_method";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@11";
+"KiokuDB::Collapser::BEGIN@20" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@16" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@14" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@17" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@15" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@18" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Collapser::BEGIN@16" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@14" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@18" -> "Moose::with";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@6";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@3";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+"KiokuDB::Collapser::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@6";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::LiveObjects::object_to_entry";
+"KiokuDB::Collapser::BEGIN@16" -> "KiokuDB::Reference::BEGIN@6";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::Collapser::_buffer";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::_buffer";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::_buffer";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Collapser::_buffer";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::_buffer";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@15";
+"KiokuDB::Collapser::visit_object" -> "KiokuDB::Collapser::visit_with_typemap";
+"KiokuDB::Collapser::visit_ref" -> "KiokuDB::Collapser::visit_with_typemap";
+"KiokuDB::Collapser::visit_with_typemap" -> "KiokuDB::Collapser::visit_ref_fallback";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@6";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@12";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::make_ref";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::make_ref";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::make_ref";
+"KiokuDB::Collapser::BEGIN@9" -> "Exporter::import";
+"KiokuDB::Collapser::BEGIN@22" -> "Exporter::import";
+"KiokuDB::Collapser::BEGIN@11" -> "Exporter::import";
+"KiokuDB::Collapser::BEGIN@8" -> "Exporter::import";
+"KiokuDB::store_objects" -> "KiokuDB::Collapser::collapse";
+"KiokuDB::Collapser::BEGIN@15" -> "KiokuDB::Entry::Skip::meta";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@9";
+"KiokuDB::Collapser::collapse_first_class" -> "Text::Tradition::TypeMap::Entry::__ANON__[lib/Text/Tradition/TypeMap/Entry.pm:24]";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@15";
+"KiokuDB::Collapser::BEGIN@20" -> "UNIVERSAL::can";
+"KiokuDB::Collapser::BEGIN@16" -> "KiokuDB::Reference::BEGIN@4";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::LiveObjects::object_to_id";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::LiveObjects::object_to_id";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::Buffer::object_to_id";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::TypeMap::Entry::Naive::__ANON__[KiokuDB/TypeMap/Entry/Naive.pm:24]";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@22";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@182";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@18";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@4";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::meta";
+"KiokuDB::Collapser::BEGIN@6" -> "warnings::unimport";
+"KiokuDB::Collapser::collapse" -> "Data::Visitor::visit";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@8";
+"KiokuDB::Collapser::collapse" -> "KiokuDB::Collapser::Buffer::first_class";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@196";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@198";
+"KiokuDB::Collapser::BEGIN@20" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@17" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@15" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@18" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@14" -> "KiokuDB::Entry::BEGIN@201";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@2";
+"KiokuDB::Collapser::BEGIN@8" -> "Scope::Guard::BEGIN@4";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]" -> "KiokuDB::Collapser::collapse_first_class";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@24";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Collapser::Buffer::insert";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Collapser::Buffer::insert";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::LiveObjects::id_to_object";
+"KiokuDB::Collapser::make_ref" -> "KiokuDB::Reference::new";
+"KiokuDB::TypeMap::Entry::Naive::__ANON__[KiokuDB/TypeMap/Entry/Naive.pm:24]" -> "KiokuDB::Collapser::visit_ref_data";
+"KiokuDB::Collapser::visit_ref_fallback" -> "KiokuDB::Collapser::visit_ref_data";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::Collapser::Buffer::insert_entry";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@5";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@8";
+"KiokuDB::Collapser::visit_seen" -> "KiokuDB::Collapser::Buffer::intrinsic_entry";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@18";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@4";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::Entry::new";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@12";
+"KiokuDB::Collapser::BEGIN@20" -> "UNIVERSAL::VERSION";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@8";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@20";
+"KiokuDB::BEGIN@11" -> "KiokuDB::Collapser::BEGIN@16";
+"KiokuDB::Collapser::make_entry" -> "KiokuDB::LiveObjects::id_in_storage";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::LiveObjects::id_in_storage";
+"KiokuDB::Collapser::BEGIN@17" -> "KiokuDB::Collapser::Buffer::BEGIN@2";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@20";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@13";
+"KiokuDB::Collapser::BEGIN@10" -> "KiokuDB::Collapser::BEGIN@1";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::Role::UUIDs::DataUUID::generate_uuid";
+"KiokuDB::Collapser::_ref_id" -> "KiokuDB::Role::UUIDs::DataUUID::generate_uuid";
+"KiokuDB::Collapser::BEGIN@20" -> "Data::Visitor::BEGIN@376";
+"KiokuDB::Collapser::collapse_first_class" -> "Data::Visitor::_register_mapping";
+}

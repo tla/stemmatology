@@ -1,0 +1,523 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::_load_dispatch_types";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@11";
+	"Catalyst::setup_plugins";
+	"Catalyst::setup_dispatcher";
+	"Catalyst::setup_engine";
+	"Catalyst::_register_plugin";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@17";
+	"Class::MOP::Mixin::HasMethods::BEGIN@19";
+	"Class::MOP::Mixin::HasMethods::BEGIN@21";
+	"Class::MOP::Mixin::HasMethods::BEGIN@13";
+	"Class::MOP::Mixin::HasMethods::BEGIN@15";
+	"Class::MOP::Mixin::HasMethods::BEGIN@2";
+	"Class::MOP::Mixin::HasMethods::BEGIN@12";
+	"Class::MOP::Mixin::HasMethods::_code_is_mine";
+	"Class::MOP::Mixin::HasMethods::BEGIN@9";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::BEGIN@16";
+	"Class::MOP::Mixin::HasMethods::BEGIN@10";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::BEGIN@2";
+	"MRO::Compat::BEGIN@225";
+	"MRO::Compat::BEGIN@116";
+	"MRO::Compat::BEGIN@39";
+	"MRO::Compat::BEGIN@256";
+	"MRO::Compat::BEGIN@3";
+	"MRO::Compat::BEGIN@10";
+	"MRO::Compat::BEGIN@226";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::config";
+	"Catalyst::Component::BUILDARGS";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::isweak";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_construct_entry";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::apply_override_method_modifiers";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::excludes_role";
+	"Moose::Meta::Class::initialize";
+	"Moose::Meta::Class::calculate_all_roles_with_inheritance";
+	"Moose::Meta::Class::does_role";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BUILD";
+}
+subgraph cluster_KiokuDB_Backend_Serialize {
+	label="KiokuDB::Backend::Serialize";
+	"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::reinitialize";
+	"Moose::Meta::Role::BEGIN@22";
+	"Moose::Meta::Role::_new";
+	"Moose::Meta::Role::BEGIN@21";
+	"Moose::Meta::Role::BEGIN@19";
+	"Moose::Meta::Role::initialize";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::resolve_traits";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::BEGIN@14";
+	"Class::MOP::Class::BEGIN@22";
+	"Class::MOP::Class::class_precedence_list";
+	"Class::MOP::Class::BEGIN@15";
+	"Class::MOP::Class::initialize";
+	"Class::MOP::Class::BEGIN@24";
+	"Class::MOP::Class::BEGIN@16";
+	"Class::MOP::Class::_construct_class_instance";
+	"Class::MOP::Class::BEGIN@17";
+	"Class::MOP::Class::BEGIN@23";
+	"Class::MOP::Class::BEGIN@13";
+	"Class::MOP::Class::_construct_instance";
+	"Class::MOP::Class::BEGIN@19";
+	"Class::MOP::Class::_single_metaclass_is_compatible";
+	"Class::MOP::Class::reinitialize";
+	"Class::MOP::Class::BEGIN@10";
+	"Class::MOP::Class::_force_rebless_instance";
+	"Class::MOP::Class::_inline_preserve_weak_metaclasses";
+	"Class::MOP::Class::BEGIN@26";
+	"Class::MOP::Class::_superclasses_updated";
+	"Class::MOP::Class::_class_metaclass_is_compatible";
+	"Class::MOP::Class::BEGIN@3";
+	"Class::MOP::Class::BEGIN@20";
+	"Class::MOP::Class::BEGIN@11";
+	"Class::MOP::Class::BEGIN@21";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BUILDALL";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::init_meta";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@12";
+	"Class::MOP::Mixin::AttributeCore::default";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@2";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@14";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@9";
+	"Class::MOP::Mixin::AttributeCore::BEGIN@10";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::init_meta";
+	"Moose::BEGIN@38";
+	"Moose::BEGIN@29";
+	"Moose::BEGIN@30";
+	"Moose::BEGIN@40";
+	"Moose::BEGIN@39";
+	"Moose::BEGIN@36";
+	"Moose::BEGIN@37";
+	"Moose::BEGIN@28";
+	"Moose::BEGIN@42";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::resolve";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::action_class";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_canonicalize_handles";
+	"Moose::Meta::Attribute::clone";
+	"Moose::Meta::Attribute::BEGIN@24";
+	"Moose::Meta::Attribute::_new";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::_new";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]";
+	"MooseX::Role::Parameterized::parameter";
+	"MooseX::Role::Parameterized::role";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_metathing_for";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::new";
+	"Moose::Meta::TypeCoercion::BEGIN@14";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic";
+	"KiokuDB::TypeMap::Entry::MOP::compile_create";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+	"KiokuDB::TypeMap::Entry::MOP::compile_id";
+	"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::BEGIN@11";
+	"Class::MOP::Attribute::BEGIN@16";
+	"Class::MOP::Attribute::BEGIN@17";
+	"Class::MOP::Attribute::BEGIN@10";
+	"Class::MOP::Attribute::BEGIN@13";
+	"Class::MOP::Attribute::BEGIN@19";
+	"Class::MOP::Attribute::BEGIN@3";
+	"Class::MOP::Attribute::BEGIN@15";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@12";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@13";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@9";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@15";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@10";
+	"Class::MOP::Mixin::HasAttributes::BEGIN@2";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:42]";
+	"Moose::Exporter::_make_sub_exporter_params";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@42";
+	"Moose::Util::TypeConstraints::BEGIN@39";
+	"Moose::Util::TypeConstraints::BEGIN@34";
+	"Moose::Util::TypeConstraints::BEGIN@33";
+	"Moose::Util::TypeConstraints::BEGIN@37";
+	"Moose::Util::TypeConstraints::BEGIN@38";
+	"Moose::Util::TypeConstraints::BEGIN@36";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::__ANON__[Sub/Install.pm:284]";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::resolve_fallback";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_new";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::_apply_all_roles";
+	"Moose::Util::find_meta";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::dsn_to_backend";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::__ANON__[Class/MOP.pm:269]";
+	"Class::MOP::BEGIN@17";
+	"Class::MOP::get_metaclass_by_name";
+	"Class::MOP::__ANON__[Class/MOP.pm:222]";
+	"Class::MOP::weaken_metaclass";
+	"Class::MOP::__ANON__[Class/MOP.pm:286]";
+	"Class::MOP::class_of";
+	"Class::MOP::remove_metaclass_by_name";
+	"Class::MOP::load_class";
+	"Class::MOP::is_class_loaded";
+	"Class::MOP::__ANON__";
+	"Class::MOP::store_metaclass_by_name";
+	"Class::MOP::BEGIN@25";
+	"Class::MOP::__ANON__[Class/MOP.pm:478]";
+	"Class::MOP::BEGIN@30";
+	"Class::MOP::BEGIN@24";
+	"Class::MOP::BEGIN@3";
+	"Class::MOP::BEGIN@26";
+	"Class::MOP::BEGIN@23";
+	"Class::MOP::BEGIN@18";
+	"Class::MOP::BEGIN@27";
+	"Class::MOP::BEGIN@19";
+	"Class::MOP::__ANON__[Class/MOP.pm:249]";
+	"Class::MOP::BEGIN@21";
+	"Class::MOP::BEGIN@28";
+	"Class::MOP::BEGIN@15";
+	"Class::MOP::BEGIN@20";
+	"Class::MOP::_definition_context";
+	"Class::MOP::metaclass_is_weak";
+	"Class::MOP::BEGIN@10";
+	"Class::MOP::BEGIN@11";
+	"Class::MOP::BEGIN@13";
+	"Class::MOP::__ANON__[Class/MOP.pm:177]";
+	"Class::MOP::__ANON__[Class/MOP.pm:132]";
+	"Class::MOP::get_code_info";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::reinitialize";
+	"Class::MOP::Package::initialize";
+}
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@19";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@10";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@21";
+"Class::MOP::class_of" -> "Scalar::Util::blessed";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@25";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@20";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@21";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@13";
+"Class::MOP::metaclass_is_weak" -> "Scalar::Util::isweak";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@10";
+"Moose::Util::TypeConstraints::BEGIN@39" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@38" -> "Class::MOP::_definition_context";
+"Moose::Meta::Role::BEGIN@21" -> "Class::MOP::_definition_context";
+"base::import" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@29" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@42" -> "Class::MOP::_definition_context";
+"Moose::Meta::TypeCoercion::BEGIN@14" -> "Class::MOP::_definition_context";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@39" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@36" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@37" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@28" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@42" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Class::MOP::_definition_context";
+"Moose::Meta::Role::BEGIN@22" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@36" -> "Class::MOP::_definition_context";
+"Moose::Meta::Role::BEGIN@19" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@38" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@30" -> "Class::MOP::_definition_context";
+"Moose::BEGIN@40" -> "Class::MOP::_definition_context";
+"Moose::Util::TypeConstraints::BEGIN@37" -> "Class::MOP::_definition_context";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::_definition_context";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@12";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@3";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@26";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@17";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@13";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@256";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@19";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@9";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@2";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@39";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:286]";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@15";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@10";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@10";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::__ANON__";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@2";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@116";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@10";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@16";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:249]";
+"Moose::Meta::Role::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:249]";
+"Moose::Meta::Role::Composite::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:249]";
+"Class::MOP::BEGIN@10" -> "strict::import";
+"Class::MOP::Package::initialize" -> "Class::MOP::store_metaclass_by_name";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::store_metaclass_by_name";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@16";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@13";
+"Class::MOP::Package::initialize" -> "Class::MOP::weaken_metaclass";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::weaken_metaclass";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@19";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@22";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@18";
+"Moose::Meta::Role::reinitialize" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::reinitialize" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_inline_preserve_weak_metaclasses" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::metaclass_is_weak";
+"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic" -> "Class::MOP::get_metaclass_by_name";
+"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::_register_plugin" -> "Class::MOP::get_metaclass_by_name";
+"Moose::init_meta" -> "Class::MOP::get_metaclass_by_name";
+"Moose::Meta::Class::initialize" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::initialize" -> "Class::MOP::get_metaclass_by_name";
+"Moose::Meta::Role::initialize" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Package::initialize" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::get_metaclass_by_name";
+"Moose::Role::init_meta" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Resolver::resolve_fallback" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_class_metaclass_is_compatible" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::Component::config" -> "Class::MOP::get_metaclass_by_name";
+"Catalyst::BEGIN@11" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_create" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::resolve" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_id" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@10";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@23";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@10";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@11";
+"Class::MOP::BEGIN@21" -> "Exporter::import";
+"Class::MOP::BEGIN@19" -> "Exporter::import";
+"Class::MOP::BEGIN@17" -> "Exporter::import";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@26";
+"Class::MOP::BEGIN@20" -> "Sub::Install::__ANON__[Sub/Install.pm:284]";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@13";
+"Class::MOP::BEGIN@11" -> "warnings::import";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@11";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@16";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@14";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@21";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@20";
+"Class::MOP::Mixin::HasMethods::_code_is_mine" -> "Class::MOP::get_code_info";
+"Moose::Exporter::_make_sub_exporter_params" -> "Class::MOP::get_code_info";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Class::MOP::get_code_info";
+"Moose::Meta::Role::Application::ToClass::apply_override_method_modifiers" -> "Class::MOP::get_code_info";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@14";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@23";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@19";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@28";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@3";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@9";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@3";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:478]";
+"Moose::Meta::Attribute::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:478]";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@15";
+"Class::MOP::weaken_metaclass" -> "Scalar::Util::weaken";
+"Catalyst::Utils::ensure_class_loaded" -> "Class::MOP::is_class_loaded";
+"Catalyst::Component::BUILDARGS" -> "Class::MOP::is_class_loaded";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@15";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@225";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@12";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@17";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@2";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@24";
+"Class::MOP::BEGIN@25" -> "Class::MOP::Mixin::HasMethods::BEGIN@9";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:132]";
+"Moose::Meta::Role::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:132]";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@15";
+"MooseX::Role::Parameterized::__ANON__[MooseX/Role/Parameterized.pm:18]" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::class_of";
+"Moose::Util::_apply_all_roles" -> "Class::MOP::class_of";
+"Moose::Util::MetaRole::_metathing_for" -> "Class::MOP::class_of";
+"Moose::Meta::TypeCoercion::new" -> "Class::MOP::class_of";
+"MooseX::Role::Parameterized::parameter" -> "Class::MOP::class_of";
+"Moose::Object::BUILDALL" -> "Class::MOP::class_of";
+"Moose::Util::find_meta" -> "Class::MOP::class_of";
+"MooseX::Role::Parameterized::role" -> "Class::MOP::class_of";
+"Class::MOP::Object::_new" -> "Class::MOP::class_of";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::class_of";
+"Moose::Meta::Class::excludes_role" -> "Class::MOP::class_of";
+"Class::MOP::Class::_superclasses_updated" -> "Class::MOP::class_of";
+"Moose::Meta::Class::does_role" -> "Class::MOP::class_of";
+"Moose::Meta::Class::calculate_all_roles_with_inheritance" -> "Class::MOP::class_of";
+"Moose::Meta::Class::superclasses" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::MOP::class_of";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:42]" -> "Class::MOP::class_of";
+"Moose::Meta::Attribute::clone" -> "Class::MOP::class_of";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:225]" -> "Class::MOP::class_of";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@17";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@24";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@27";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@15";
+"Class::MOP::BEGIN@18" -> "UNIVERSAL::VERSION";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:222]";
+"Moose::Meta::Role::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:222]";
+"Moose::Meta::Role::Composite::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:222]";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "Class::MOP::load_class";
+"Catalyst::setup_engine" -> "Class::MOP::load_class";
+"Catalyst::_register_plugin" -> "Class::MOP::load_class";
+"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]" -> "Class::MOP::load_class";
+"Catalyst::Controller::action_class" -> "Class::MOP::load_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Class::MOP::load_class";
+"Catalyst::setup_plugins" -> "Class::MOP::load_class";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]" -> "Class::MOP::load_class";
+"Catalyst::setup_dispatcher" -> "Class::MOP::load_class";
+"Catalyst::Dispatcher::register" -> "Class::MOP::load_class";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Class::MOP::load_class";
+"KiokuDB::Util::dsn_to_backend" -> "Class::MOP::load_class";
+"Parse::Method::Signatures::BUILD" -> "Class::MOP::load_class";
+"MooseX::Traits::Util::resolve_traits" -> "Class::MOP::load_class";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@13";
+"Class::MOP::BEGIN@15" -> "MRO::Compat::BEGIN@226";
+"Class::MOP::BEGIN@23" -> "Class::MOP::Mixin::AttributeCore::BEGIN@2";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::BEGIN@30";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:269]";
+"Moose::Meta::Role::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:269]";
+"Moose::Meta::Role::Composite::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:269]";
+"Class::MOP::Package::reinitialize" -> "Class::MOP::remove_metaclass_by_name";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@17";
+"Class::MOP::Mixin::AttributeCore::default" -> "Class::MOP::__ANON__[Class/MOP.pm:177]";
+"Moose::Meta::Role::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:177]";
+"Moose::Meta::Role::Composite::_new" -> "Class::MOP::__ANON__[Class/MOP.pm:177]";
+"Class::MOP::BEGIN@24" -> "Class::MOP::Mixin::HasAttributes::BEGIN@12";
+"Class::MOP::BEGIN@27" -> "Class::MOP::Attribute::BEGIN@3";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@11";
+}

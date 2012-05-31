@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Quote_Double {
+	label="PPI::Token::Quote::Double";
+	"PPI::Token::Quote::Double::BEGIN@35";
+	"PPI::Token::Quote::Double::BEGIN@40";
+	"PPI::Token::Quote::Double::BEGIN@36";
+	"PPI::Token::Quote::Double::BEGIN@39";
+	"PPI::Token::Quote::Double::BEGIN@34";
+	"PPI::Token::Quote::Double::BEGIN@37";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@55";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@39";
+"PPI::Token::Quote::Double::BEGIN@34" -> "strict::import";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@36";
+"PPI::Token::Quote::Double::BEGIN@35" -> "Exporter::import";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@34";
+"PPI::Token::Quote::Double::BEGIN@39" -> "vars::import";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@40";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@37";
+"PPI::Token::BEGIN@55" -> "PPI::Token::Quote::Double::BEGIN@35";
+}

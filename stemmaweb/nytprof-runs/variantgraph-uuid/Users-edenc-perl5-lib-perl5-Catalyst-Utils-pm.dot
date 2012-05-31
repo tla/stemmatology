@@ -1,0 +1,418 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::_load_dispatch_types";
+	"Catalyst::Dispatcher::_invoke_as_component";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::setup_component";
+	"Catalyst::BEGIN@15";
+	"Catalyst::setup_plugins";
+	"Catalyst::setup_log";
+	"Catalyst::setup_stats";
+	"Catalyst::setup_dispatcher";
+	"Catalyst::setup_home";
+	"Catalyst::setup_components";
+}
+subgraph cluster_Path_Class {
+	label="Path::Class";
+	"Path::Class::dir";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::config";
+	"Catalyst::Component::merge_config_hashes";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::get_config_path";
+	"Catalyst::Plugin::ConfigLoader::get_config_local_suffix";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::BEGIN@3";
+	"stemmaweb::Model::Directory::BEGIN@5";
+	"stemmaweb::Model::Directory::BEGIN@4";
+	"stemmaweb::Model::Directory::BEGIN@2";
+}
+subgraph cluster_String_RewritePrefix {
+	label="String::RewritePrefix";
+	"String::RewritePrefix::BEGIN@4";
+	"String::RewritePrefix::rewrite";
+	"String::RewritePrefix::BEGIN@11";
+	"String::RewritePrefix::BEGIN@7";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::_guess_catalyst_engine_class";
+}
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::parent";
+	"Path::Class::Dir::dir_list";
+	"Path::Class::Dir::file";
+	"Path::Class::Dir::stringify";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::absolute";
+	"Path::Class::Entity::cleanup";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_stemmaweb_View_JSON {
+	label="stemmaweb::View::JSON";
+	"stemmaweb::View::JSON::BEGIN@4";
+	"stemmaweb::View::JSON::BEGIN@3";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@5";
+	"stemmaweb::Controller::Stexaminer::BEGIN@61";
+	"stemmaweb::Controller::Stexaminer::meta";
+	"stemmaweb::Controller::Stexaminer::BEGIN@8";
+	"stemmaweb::Controller::Stexaminer::BEGIN@4";
+	"stemmaweb::Controller::Stexaminer::BEGIN@3";
+	"stemmaweb::Controller::Stexaminer::BEGIN@2";
+	"stemmaweb::Controller::Stexaminer::BEGIN@6";
+	"stemmaweb::Controller::Stexaminer::BEGIN@69";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@3";
+	"stemmaweb::Controller::Root::BEGIN@131";
+	"stemmaweb::Controller::Root::BEGIN@148";
+	"stemmaweb::Controller::Root::BEGIN@4";
+	"stemmaweb::Controller::Root::BEGIN@102";
+	"stemmaweb::Controller::Root::BEGIN@55";
+	"stemmaweb::Controller::Root::BEGIN@160";
+	"stemmaweb::Controller::Root::meta";
+	"stemmaweb::Controller::Root::BEGIN@2";
+	"stemmaweb::Controller::Root::BEGIN@7";
+	"stemmaweb::Controller::Root::BEGIN@168";
+	"stemmaweb::Controller::Root::BEGIN@36";
+	"stemmaweb::Controller::Root::BEGIN@74";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@177";
+	"stemmaweb::Controller::Microservice::BEGIN@193";
+	"stemmaweb::Controller::Microservice::BEGIN@79";
+	"stemmaweb::Controller::Microservice::BEGIN@5";
+	"stemmaweb::Controller::Microservice::BEGIN@8";
+	"stemmaweb::Controller::Microservice::BEGIN@72";
+	"stemmaweb::Controller::Microservice::BEGIN@56";
+	"stemmaweb::Controller::Microservice::BEGIN@11";
+	"stemmaweb::Controller::Microservice::BEGIN@2";
+	"stemmaweb::Controller::Microservice::BEGIN@6";
+	"stemmaweb::Controller::Microservice::BEGIN@137";
+	"stemmaweb::Controller::Microservice::meta";
+	"stemmaweb::Controller::Microservice::BEGIN@53";
+	"stemmaweb::Controller::Microservice::BEGIN@149";
+	"stemmaweb::Controller::Microservice::BEGIN@159";
+	"stemmaweb::Controller::Microservice::BEGIN@4";
+	"stemmaweb::Controller::Microservice::BEGIN@9";
+	"stemmaweb::Controller::Microservice::BEGIN@146";
+	"stemmaweb::Controller::Microservice::BEGIN@222";
+	"stemmaweb::Controller::Microservice::BEGIN@210";
+	"stemmaweb::Controller::Microservice::BEGIN@98";
+	"stemmaweb::Controller::Microservice::BEGIN@74";
+	"stemmaweb::Controller::Microservice::BEGIN@3";
+	"stemmaweb::Controller::Microservice::BEGIN@135";
+	"stemmaweb::Controller::Microservice::BEGIN@50";
+}
+subgraph cluster_stemmaweb_View_SVG {
+	label="stemmaweb::View::SVG";
+	"stemmaweb::View::SVG::BEGIN@3";
+	"stemmaweb::View::SVG::BEGIN@5";
+	"stemmaweb::View::SVG::BEGIN@4";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::_parse_ActionClass_attr";
+}
+subgraph cluster_stemmaweb_View_Plain {
+	label="stemmaweb::View::Plain";
+	"stemmaweb::View::Plain::BEGIN@4";
+	"stemmaweb::View::Plain::BEGIN@3";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+	"Catalyst::Utils::BEGIN@2";
+	"Catalyst::Utils::BEGIN@10";
+	"Catalyst::Utils::BEGIN@6";
+	"Catalyst::Utils::BEGIN@8";
+	"Catalyst::Utils::appprefix";
+	"Catalyst::Utils::class2classsuffix";
+	"Catalyst::Utils::class2env";
+	"Catalyst::Utils::class2appclass";
+	"Catalyst::Utils::env_value";
+	"Catalyst::Utils::class2prefix";
+	"Catalyst::Utils::BEGIN@9";
+	"Catalyst::Utils::CORE:ftfile";
+	"Catalyst::Utils::CORE:match";
+	"Catalyst::Utils::BEGIN@7";
+	"Catalyst::Utils::merge_hashes";
+	"Catalyst::Utils::BEGIN@1";
+	"Catalyst::Utils::BEGIN@4";
+	"Catalyst::Utils::BEGIN@13";
+	"Catalyst::Utils::resolve_namespace";
+	"Catalyst::Utils::BEGIN@11";
+	"Catalyst::Utils::dist_indicator_file_list";
+	"Catalyst::Utils::BEGIN@3";
+	"Catalyst::Utils::home";
+	"Catalyst::Utils::CORE:regcomp";
+	"Catalyst::Utils::CORE:subst";
+	"Catalyst::Utils::BEGIN@5";
+}
+subgraph cluster_Path_Class_File {
+	label="Path::Class::File";
+	"Path::Class::File::stringify";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::done_declare";
+	"Devel::Declare::linestr_callback";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@133";
+	"stemmaweb::Controller::Relation::BEGIN@106";
+	"stemmaweb::Controller::Relation::BEGIN@43";
+	"stemmaweb::Controller::Relation::BEGIN@30";
+	"stemmaweb::Controller::Relation::BEGIN@3";
+	"stemmaweb::Controller::Relation::BEGIN@210";
+	"stemmaweb::Controller::Relation::BEGIN@6";
+	"stemmaweb::Controller::Relation::BEGIN@195";
+	"stemmaweb::Controller::Relation::BEGIN@59";
+	"stemmaweb::Controller::Relation::meta";
+	"stemmaweb::Controller::Relation::BEGIN@4";
+	"stemmaweb::Controller::Relation::BEGIN@183";
+	"stemmaweb::Controller::Relation::BEGIN@201";
+	"stemmaweb::Controller::Relation::BEGIN@191";
+	"stemmaweb::Controller::Relation::BEGIN@179";
+	"stemmaweb::Controller::Relation::BEGIN@2";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::BEGIN@5";
+	"Catalyst::Stats::BEGIN@8";
+	"Catalyst::Stats::BEGIN@6";
+	"Catalyst::Stats::BEGIN@4";
+	"Catalyst::Stats::BEGIN@3";
+	"Catalyst::Stats::BEGIN@10";
+	"Catalyst::Stats::BEGIN@7";
+	"Catalyst::Stats::meta";
+}
+subgraph cluster_stemmaweb_View_TT {
+	label="stemmaweb::View::TT";
+	"stemmaweb::View::TT::BEGIN@4";
+	"stemmaweb::View::TT::BEGIN@6";
+	"stemmaweb::View::TT::BEGIN@3";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::is_class_loaded";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@135";
+"Catalyst::Utils::CORE:match" -> "Path::Class::Dir::stringify";
+"Catalyst::Utils::home" -> "Path::Class::Dir::stringify";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@4";
+"Class::MOP::Class:::around" -> "Catalyst::Utils::class2prefix";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Catalyst::Utils::class2prefix";
+"Catalyst::Utils::ensure_class_loaded" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@98";
+"Catalyst::Utils::resolve_namespace" -> "String::RewritePrefix::rewrite";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@59";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@56";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@160";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::JSON::BEGIN@4";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@106";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@79";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@137";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@9";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@146";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@72";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@159";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Component::config";
+"Catalyst::Utils::BEGIN@11" -> "Catalyst::Utils::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@210";
+"Catalyst::Utils::ensure_class_loaded" -> "Moose::has";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@13";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@4";
+"Catalyst::setup_home" -> "Catalyst::Utils::home";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::JSON::BEGIN@3";
+"Catalyst::Utils::class2classsuffix" -> "Catalyst::Utils::class2appclass";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::meta";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@8";
+"Catalyst::Utils::home" -> "Catalyst::Utils::dist_indicator_file_list";
+"Catalyst::Utils::ensure_class_loaded" -> "Class::Load::XS::is_class_loaded";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@7";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@191";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@201";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Utils::appprefix";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@43";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::meta";
+"Catalyst::Utils::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@4";
+"Catalyst::Utils::BEGIN@13" -> "namespace::clean::import";
+"Catalyst::Utils::BEGIN@3" -> "strict::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@4";
+"Catalyst::Utils::home" -> "Path::Class::dir";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::Plain::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@55";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@195";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@177";
+"Catalyst::Utils::ensure_class_loaded" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@4";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@11";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@222";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@11";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@193";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@7";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@183";
+"Catalyst::Utils::BEGIN@6" -> "Exporter::import";
+"Catalyst::Utils::BEGIN@9" -> "Exporter::import";
+"Catalyst::Utils::BEGIN@8" -> "Exporter::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@179";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@133";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@102";
+"Catalyst::Utils::home" -> "Path::Class::Dir::dir_list";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@168";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@30";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@4";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@6";
+"Catalyst::Utils::env_value" -> "Catalyst::Utils::class2env";
+"Catalyst::Utils::ensure_class_loaded" -> "Devel::Declare::done_declare";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@50";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@148";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@61";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@9";
+"Catalyst::Utils::home" -> "Path::Class::Dir::parent";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@3";
+"Catalyst::setup_stats" -> "Catalyst::Utils::ensure_class_loaded";
+"Catalyst::setup_components" -> "Catalyst::Utils::ensure_class_loaded";
+"Catalyst::Utils::ensure_class_loaded" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Utils::ensure_class_loaded" -> "Class::MOP::is_class_loaded";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@210";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@3";
+"Catalyst::Utils::home" -> "Catalyst::Utils::CORE:ftfile";
+"Catalyst::Utils::BEGIN@11" -> "Catalyst::Utils::BEGIN@1";
+"Catalyst::setup_plugins" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::Controller::_parse_ActionClass_attr" -> "Catalyst::Utils::resolve_namespace";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@4";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@7";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "Devel::Declare::linestr_callback";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::meta";
+"Catalyst::Utils::home" -> "Path::Class::Entity::absolute";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@74";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@3";
+"Catalyst::Utils::class2prefix" -> "Catalyst::Utils::CORE:match";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Utils::CORE:match";
+"Catalyst::Utils::home" -> "Catalyst::Utils::CORE:match";
+"Catalyst::Utils::class2appclass" -> "Catalyst::Utils::CORE:match";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@131";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::meta";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@7";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@74";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@10";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::Utils::class2prefix" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::Utils::appprefix" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::Utils::home" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::Utils::class2classsuffix" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::Utils::class2env" -> "Catalyst::Utils::CORE:subst";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@10";
+"Catalyst::Utils::BEGIN@11" -> "String::RewritePrefix::BEGIN@11";
+"Catalyst::Component::config" -> "Catalyst::Utils::merge_hashes";
+"Class::MOP::Class:::before" -> "Catalyst::Utils::merge_hashes";
+"Catalyst::Utils::merge_hashes" -> "Catalyst::Utils::merge_hashes";
+"Catalyst::Component::merge_config_hashes" -> "Catalyst::Utils::merge_hashes";
+"Catalyst::setup_component" -> "Catalyst::Utils::class2classsuffix";
+"Catalyst::Utils::CORE:ftfile" -> "Path::Class::File::stringify";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@53";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@2";
+"Catalyst::Utils::ensure_class_loaded" -> "Catalyst::Stats::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::Plain::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::meta";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@149";
+"Catalyst::BEGIN@15" -> "Catalyst::Utils::BEGIN@8";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@36";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Root::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Microservice::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::SVG::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Stexaminer::BEGIN@69";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Model::Directory::BEGIN@5";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::View::TT::BEGIN@3";
+"Catalyst::Utils::home" -> "Path::Class::Entity::cleanup";
+"Catalyst::Utils::home" -> "Catalyst::Utils::CORE:regcomp";
+"Catalyst::Utils::class2classsuffix" -> "Catalyst::Utils::CORE:regcomp";
+"Catalyst::Plugin::ConfigLoader::get_config_path" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_log" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_stats" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_dispatcher" -> "Catalyst::Utils::env_value";
+"Catalyst::setup_home" -> "Catalyst::Utils::env_value";
+"Catalyst::Plugin::ConfigLoader::get_config_local_suffix" -> "Catalyst::Utils::env_value";
+"Catalyst::EngineLoader::_guess_catalyst_engine_class" -> "Catalyst::Utils::env_value";
+"Catalyst::Utils::home" -> "Path::Class::Dir::file";
+}

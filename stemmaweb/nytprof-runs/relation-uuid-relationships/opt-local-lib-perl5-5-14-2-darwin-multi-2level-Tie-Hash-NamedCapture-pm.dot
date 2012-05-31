@@ -1,0 +1,14 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_English {
+	label="English";
+	"English::BEGIN@1";
+	"English::BEGIN@148";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"English::BEGIN@148" -> "English::BEGIN@1";
+"English::BEGIN@1" -> "strict::import";
+}

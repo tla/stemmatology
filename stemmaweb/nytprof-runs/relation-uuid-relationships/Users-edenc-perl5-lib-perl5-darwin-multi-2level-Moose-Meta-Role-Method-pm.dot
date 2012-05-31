@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::BEGIN@20";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::BEGIN@10";
+	"Moose::Meta::Role::Method::BEGIN@11";
+	"Moose::Meta::Role::Method::BEGIN@3";
+	"Moose::Meta::Role::Method::BEGIN@13";
+	"Moose::Meta::Role::Method::_make_compatible_with";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_real_ref_name";
+	"Class::MOP::Object::_make_compatible_with";
+	"Class::MOP::Object::_is_compatible_with";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_real_ref_name";
+"Moose::Meta::Role::BEGIN@20" -> "Moose::Meta::Role::Method::BEGIN@10";
+"Moose::Meta::Role::Method::BEGIN@10" -> "strict::import";
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Mixin::HasMethods::_restore_metamethods_from" -> "Moose::Meta::Role::Method::_make_compatible_with";
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_make_compatible_with";
+"Moose::Meta::Role::BEGIN@20" -> "Moose::Meta::Role::Method::BEGIN@13";
+"Moose::Meta::Role::BEGIN@20" -> "Moose::Meta::Role::Method::BEGIN@11";
+"Moose::Meta::Role::Method::BEGIN@13" -> "base::import";
+"Moose::Meta::Role::Method::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Role::BEGIN@20" -> "Moose::Meta::Role::Method::BEGIN@3";
+}

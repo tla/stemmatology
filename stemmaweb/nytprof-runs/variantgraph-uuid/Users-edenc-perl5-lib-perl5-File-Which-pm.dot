@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@5";
+	"Text::Tradition::Collation::as_svg";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_File_Which {
+	label="File::Which";
+	"File::Which::BEGIN@5";
+	"File::Which::CORE:fteexec";
+	"File::Which::BEGIN@18";
+	"File::Which::which";
+	"File::Which::BEGIN@4";
+	"File::Which::CORE:ftdir";
+	"File::Which::BEGIN@8";
+	"File::Which::BEGIN@17";
+	"File::Which::BEGIN@3";
+	"File::Which::BEGIN@9";
+	"File::Which::BEGIN@16";
+	"File::Which::BEGIN@6";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::path";
+	"File::Spec::Unix::catfile";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@4";
+"File::Which::which" -> "File::Spec::Unix::catfile";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@6";
+"File::Which::BEGIN@17" -> "constant::import";
+"File::Which::BEGIN@18" -> "constant::import";
+"File::Which::BEGIN@16" -> "constant::import";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@9";
+"File::Which::BEGIN@4" -> "strict::import";
+"Text::Tradition::Collation::as_svg" -> "File::Which::which";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@16";
+"File::Which::which" -> "File::Which::CORE:ftdir";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@18";
+"File::Which::BEGIN@8" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@17";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@8";
+"File::Which::which" -> "File::Which::CORE:fteexec";
+"File::Which::which" -> "File::Spec::Unix::path";
+}

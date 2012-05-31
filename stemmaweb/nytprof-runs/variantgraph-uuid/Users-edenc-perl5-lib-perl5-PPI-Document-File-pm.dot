@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Document_File {
+	label="PPI::Document::File";
+	"PPI::Document::File::BEGIN@26";
+	"PPI::Document::File::BEGIN@22";
+	"PPI::Document::File::BEGIN@25";
+	"PPI::Document::File::BEGIN@23";
+	"PPI::Document::File::BEGIN@20";
+	"PPI::Document::File::BEGIN@21";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@24";
+}
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@26";
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@20";
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@22";
+"PPI::Document::File::BEGIN@20" -> "strict::import";
+"PPI::Document::File::BEGIN@22" -> "Exporter::import";
+"PPI::Document::File::BEGIN@25" -> "vars::import";
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@23";
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@25";
+"PPI::BEGIN@24" -> "PPI::Document::File::BEGIN@21";
+}

@@ -1,0 +1,148 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_eval_environment";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@10";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@11";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@14";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@12";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@3";
+	"Moose::Meta::TypeCoercion::Union::BEGIN@16";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::AUTOLOAD";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::_inline_check_constraint";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:202]";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::coercion";
+	"Moose::Meta::TypeConstraint::Union::new";
+	"Moose::Meta::TypeConstraint::Union::_actually_compile_type_constraint";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@17";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@12";
+	"Moose::Meta::TypeConstraint::Union::inline_environment";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@10";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@19";
+	"Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@11";
+	"Moose::Meta::TypeConstraint::Union::type_constraints";
+	"Moose::Meta::TypeConstraint::Union::CORE:sort";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@16";
+	"Moose::Meta::TypeConstraint::Union::_inline_check";
+	"Moose::Meta::TypeConstraint::Union::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Union::has_coercion";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@14";
+	"Moose::Meta::TypeConstraint::Union::BEGIN@3";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::has_coercion";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::check";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+	"Moose::Meta::TypeConstraint::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::_set_constraint";
+	"Moose::Meta::TypeConstraint::name";
+	"Moose::Meta::TypeConstraint::new";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@33";
+	"Moose::Util::TypeConstraints::_create_type_constraint_union";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::TypeConstraint::Union::has_coercion" -> "Moose::Meta::TypeConstraint::Union::coercion";
+"Moose::Meta::TypeConstraint::Union::new" -> "Moose::Meta::TypeConstraint::Union::CORE:sort";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@14";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::TypeConstraint::compile_type_constraint" -> "Moose::Meta::TypeConstraint::Union::_actually_compile_type_constraint";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@10";
+"Moose::Meta::TypeConstraint::Union::inline_environment" -> "Moose::Meta::TypeConstraint::inline_environment";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@3";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@19";
+"Moose::Meta::TypeConstraint::Union::new" -> "Moose::Meta::TypeConstraint::_set_constraint";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@12";
+"Moose::Util::TypeConstraints::_create_type_constraint_union" -> "Moose::Meta::TypeConstraint::Union::new";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]" -> "Moose::Meta::TypeConstraint::Union::new";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:202]" -> "Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]";
+"Moose::Meta::TypeConstraint::check" -> "Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]";
+"Moose::Meta::TypeConstraint::Union::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Union::can_be_inlined" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::TypeConstraint::Union::BEGIN@10" -> "strict::import";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@3";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Union::_inline_check";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]" -> "Moose::Meta::TypeConstraint::Union::_inline_check";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@10";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@17";
+"Moose::Meta::TypeConstraint::Union::coercion" -> "Moose::Meta::TypeConstraint::has_coercion";
+"Moose::Meta::TypeConstraint::Union::BEGIN@16" -> "Exporter::import";
+"Moose::Meta::TypeConstraint::Union::BEGIN@17" -> "Exporter::import";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@16";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::inline_environment";
+"Moose::Meta::Class::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::inline_environment";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Union::inline_environment";
+"Moose::Meta::TypeConstraint::Union::BEGIN@19" -> "base::import";
+"Moose::Meta::TypeConstraint::Union::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::has_coercion";
+"Moose::Meta::Class::_eval_environment" -> "Moose::Meta::TypeConstraint::Union::has_coercion";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@11";
+"Moose::Meta::TypeConstraint::Union::coercion" -> "Moose::Meta::TypeConstraint::Union::type_constraints";
+"Moose::Meta::TypeConstraint::Union::_actually_compile_type_constraint" -> "Moose::Meta::TypeConstraint::Union::type_constraints";
+"Moose::Meta::TypeConstraint::Union::inline_environment" -> "Moose::Meta::TypeConstraint::Union::type_constraints";
+"Moose::Meta::TypeConstraint::Union::can_be_inlined" -> "Moose::Meta::TypeConstraint::Union::type_constraints";
+"Moose::Meta::TypeConstraint::Union::_inline_check" -> "Moose::Meta::TypeConstraint::Union::type_constraints";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@11";
+"Moose::Meta::TypeConstraint::Union::_inline_check" -> "Moose::Meta::TypeConstraint::_inline_check";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@12";
+"Moose::Meta::TypeConstraint::Union::new" -> "Moose::Meta::TypeConstraint::name";
+"Moose::Util::TypeConstraints::BEGIN@33" -> "Moose::Meta::TypeConstraint::Union::BEGIN@14";
+"Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]" -> "Moose::Meta::TypeConstraint::check";
+"Moose::Meta::TypeConstraint::Union::new" -> "Moose::Meta::TypeConstraint::new";
+"Moose::Meta::TypeConstraint::Union::BEGIN@14" -> "Moose::Meta::TypeCoercion::Union::BEGIN@16";
+"Moose::Meta::TypeConstraint::Union::new" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::inline_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::__ANON__[Moose/Meta/TypeConstraint/Union.pm:78]" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Union::can_be_inlined" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+}

@@ -1,0 +1,112 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_StrableClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::StrableClone";
+	"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@6";
+	"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@8";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_NoClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::NoClone";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@4";
+	"MooseX::Clone::BEGIN@13";
+	"MooseX::Clone::BEGIN@15";
+	"MooseX::Clone::BEGIN@12";
+	"MooseX::Clone::BEGIN@10";
+	"MooseX::Clone::BEGIN@11";
+	"MooseX::Clone::BEGIN@8";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@5";
+	"Hash::Util::FieldHash::Compat::BEGIN@6";
+	"Hash::Util::FieldHash::Compat::import";
+	"Hash::Util::FieldHash::Compat::BEGIN@8";
+	"Hash::Util::FieldHash::Compat::BEGIN@10";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Copy {
+	label="MooseX::Clone::Meta::Attribute::Trait::Copy";
+	"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@4";
+	"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@6";
+	"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@8";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"MooseX::Clone::BEGIN@11" -> "MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@6";
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@6";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@10";
+"MooseX::Clone::BEGIN@12" -> "UNIVERSAL::import";
+"MooseX::Clone::BEGIN@11" -> "UNIVERSAL::import";
+"MooseX::Clone::BEGIN@13" -> "UNIVERSAL::import";
+"MooseX::Clone::BEGIN@10" -> "UNIVERSAL::import";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@5";
+"MooseX::Clone::BEGIN@11" -> "MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@8";
+"MooseX::Clone::BEGIN@13" -> "MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@8";
+"MooseX::Clone::BEGIN@10" -> "Moose::Role::has";
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8";
+"MooseX::Clone::BEGIN@13" -> "MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@4";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@11";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@4";
+"MooseX::Clone::BEGIN@15" -> "namespace::clean::import";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@15";
+"MooseX::Clone::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@11" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@13" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::Clone::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Clone::BEGIN@8" -> "Exporter::import";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@13";
+"MooseX::Clone::BEGIN@13" -> "MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@6";
+"MooseX::Clone::BEGIN@12" -> "MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@12";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@6";
+"MooseX::Clone::BEGIN@12" -> "MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@4";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::import";
+"MooseX::Clone::BEGIN@13" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@10" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@12" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@11" -> "Moose::Role::with";
+"MooseX::Clone::BEGIN@8" -> "Hash::Util::FieldHash::Compat::BEGIN@8";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@10";
+"MooseX::Clone::BEGIN@11" -> "MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@4";
+"MooseX::Clone::BEGIN@10" -> "MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@4";
+"Module::Runtime::require_module" -> "MooseX::Clone::BEGIN@8";
+}

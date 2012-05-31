@@ -1,0 +1,160 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_full_method_map";
+	"Class::MOP::Mixin::HasMethods::update_package_cache_flag";
+}
+subgraph cluster_MRO_Compat {
+	label="MRO::Compat";
+	"MRO::Compat::BEGIN@10";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@10";
+	"Catalyst::Component::COMPONENT";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::setup";
+}
+subgraph cluster_DBIx_Class_Componentised {
+	label="DBIx::Class::Componentised";
+	"DBIx::Class::Componentised::inject_base";
+	"DBIx::Class::Componentised::BEGIN@8";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+	"next::can";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::new";
+}
+subgraph cluster_Catalyst_Action_RenderView {
+	label="Catalyst::Action::RenderView";
+	"Catalyst::Action::RenderView::execute";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::linearized_isa";
+	"Class::MOP::Class::class_precedence_list";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@7";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::new";
+	"DBIx::Class::Storage::DBI::txn_commit";
+	"DBIx::Class::Storage::DBI::_determine_driver";
+	"DBIx::Class::Storage::DBI::txn_begin";
+	"DBIx::Class::Storage::DBI::BEGIN@8";
+}
+subgraph cluster_DBIx_Class_Storage_DBIHacks {
+	label="DBIx::Class::Storage::DBIHacks";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@14";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::init_meta";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::_nextcan";
+	"mro::import";
+	"mro::get_linear_isa";
+	"mro::BEGIN@10";
+	"mro::method_changed_in";
+	"mro::get_mro";
+	"mro::BEGIN@11";
+	"mro::get_pkg_gen";
+	"mro::set_mro";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::new";
+}
+subgraph cluster_DBIx_Class {
+	label="DBIx::Class";
+	"DBIx::Class::BEGIN@66";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::BEGIN@7";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::setup";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_action";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_uploads";
+	"Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::inject_base";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::mycan";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::get_super_paths";
+	"Class::Accessor::Grouped::get_inherited";
+}
+"MRO::Compat::BEGIN@10" -> "mro::BEGIN@10";
+"Class::C3::Componentised::inject_base" -> "mro::set_mro";
+"DBIx::Class::Storage::DBI::_determine_driver" -> "mro::set_mro";
+"mro::import" -> "mro::set_mro";
+"Catalyst::Component::BEGIN@10" -> "mro::import";
+"DBIx::Class::Storage::BEGIN@7" -> "mro::import";
+"DBIx::Class::BEGIN@66" -> "mro::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@14" -> "mro::import";
+"DBIx::Class::Componentised::BEGIN@8" -> "mro::import";
+"DBIx::Class::Storage::DBI::SQLite::BEGIN@7" -> "mro::import";
+"DBIx::Class::Storage::DBI::BEGIN@8" -> "mro::import";
+"mro::BEGIN@10" -> "strict::import";
+"Catalyst::Component::COMPONENT" -> "next::can";
+"constant::import" -> "mro::method_changed_in";
+"MRO::Compat::BEGIN@10" -> "mro::BEGIN@11";
+"mro::BEGIN@11" -> "warnings::import";
+"Class::MOP::Mixin::HasMethods::update_package_cache_flag" -> "mro::get_pkg_gen";
+"Class::MOP::Mixin::HasMethods::_full_method_map" -> "mro::get_pkg_gen";
+"Class::Accessor::Grouped::get_inherited" -> "mro::get_pkg_gen";
+"Class::MOP::Class::class_precedence_list" -> "mro::get_mro";
+"next::can" -> "mro::_nextcan";
+"next::method" -> "mro::_nextcan";
+"DBIx::Class::Storage::DBI::txn_commit" -> "next::method";
+"DBIx::Class::Storage::DBI::new" -> "next::method";
+"DBIx::Class::Componentised::inject_base" -> "next::method";
+"Catalyst::Action::RenderView::execute" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::setup" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::prepare_action" -> "next::method";
+"Catalyst::Plugin::ConfigLoader::setup" -> "next::method";
+"Catalyst::View::TT::new" -> "next::method";
+"Catalyst::View::JSON::new" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::prepare_uploads" -> "next::method";
+"DBIx::Class::Storage::DBI::txn_begin" -> "next::method";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "next::method";
+"Class::MOP::Class::linearized_isa" -> "mro::get_linear_isa";
+"overload::mycan" -> "mro::get_linear_isa";
+"Class::C3::Componentised::inject_base" -> "mro::get_linear_isa";
+"Class::Accessor::Grouped::get_super_paths" -> "mro::get_linear_isa";
+"Class::MOP::Class::class_precedence_list" -> "mro::get_linear_isa";
+"Moose::init_meta" -> "mro::get_linear_isa";
+}

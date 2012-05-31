@@ -1,0 +1,565 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__punycode {
+	label="URI::_punycode";
+	"URI::_punycode::BEGIN@15";
+	"URI::_punycode::BEGIN@16";
+	"URI::_punycode::BEGIN@20";
+	"URI::_punycode::BEGIN@18";
+	"URI::_punycode::BEGIN@14";
+	"URI::_punycode::BEGIN@17";
+	"URI::_punycode::BEGIN@19";
+}
+subgraph cluster_Template_Context {
+	label="Template::Context";
+	"Template::Context::BEGIN@34";
+	"Template::Context::BEGIN@35";
+	"Template::Context::BEGIN@33";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::BEGIN@29";
+}
+subgraph cluster_YAML_XS {
+	label="YAML::XS";
+	"YAML::XS::BEGIN@101";
+}
+subgraph cluster_DBD_SQLite {
+	label="DBD::SQLite";
+	"DBD::SQLite::BEGIN@30";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+	"constant::BEGIN@4";
+	"constant::BEGIN@3";
+	"constant::BEGIN@25";
+	"constant::BEGIN@114";
+	"constant::BEGIN@29";
+	"constant::BEGIN@52";
+	"constant::CORE:regcomp";
+	"constant::CORE:qr";
+	"constant::BEGIN@2";
+	"constant::__ANON__[constant.pm:142]";
+	"constant::BEGIN@6";
+	"constant::CORE:match";
+}
+subgraph cluster_IPC_Run_IO {
+	label="IPC::Run::IO";
+	"IPC::Run::IO::BEGIN@74";
+	"IPC::Run::IO::_new_internal";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::BEGIN@95";
+	"PPI::Document::BEGIN@93";
+	"PPI::Document::BEGIN@96";
+	"PPI::Document::BEGIN@92";
+	"PPI::Document::BEGIN@94";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::is_utf8";
+}
+subgraph cluster_Tree_Simple_Visitor {
+	label="Tree::Simple::Visitor";
+	"Tree::Simple::Visitor::BEGIN@13";
+	"Tree::Simple::Visitor::BEGIN@14";
+}
+subgraph cluster_Time_Seconds {
+	label="Time::Seconds";
+	"Time::Seconds::BEGIN@33";
+	"Time::Seconds::BEGIN@23";
+	"Time::Seconds::BEGIN@30";
+	"Time::Seconds::BEGIN@28";
+	"Time::Seconds::BEGIN@27";
+	"Time::Seconds::BEGIN@32";
+	"Time::Seconds::BEGIN@25";
+	"Time::Seconds::BEGIN@37";
+	"Time::Seconds::BEGIN@29";
+	"Time::Seconds::BEGIN@31";
+	"Time::Seconds::BEGIN@36";
+	"Time::Seconds::BEGIN@24";
+	"Time::Seconds::BEGIN@26";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@168";
+	"namespace::clean::BEGIN@169";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::BEGIN@100";
+}
+subgraph cluster_File_Which {
+	label="File::Which";
+	"File::Which::BEGIN@18";
+	"File::Which::BEGIN@16";
+	"File::Which::BEGIN@17";
+}
+subgraph cluster_Time_Local {
+	label="Time::Local";
+	"Time::Local::BEGIN@28";
+	"Time::Local::BEGIN@29";
+	"Time::Local::BEGIN@27";
+}
+subgraph cluster_Encode_Alias {
+	label="Encode::Alias";
+	"Encode::Alias::BEGIN@6";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@50";
+	"Template::Provider::BEGIN@53";
+	"Template::Provider::BEGIN@54";
+	"Template::Provider::BEGIN@52";
+	"Template::Provider::BEGIN@55";
+	"Template::Provider::BEGIN@51";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@35";
+	"Time::Piece::BEGIN@40";
+	"Time::Piece::BEGIN@41";
+	"Time::Piece::BEGIN@43";
+	"Time::Piece::BEGIN@38";
+	"Time::Piece::BEGIN@42";
+	"Time::Piece::BEGIN@39";
+	"Time::Piece::BEGIN@44";
+	"Time::Piece::BEGIN@37";
+	"Time::Piece::BEGIN@34";
+	"Time::Piece::BEGIN@36";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_Internals {
+	label="Internals";
+	"Internals::SvREADONLY";
+}
+subgraph cluster_Template_Exception {
+	label="Template::Exception";
+	"Template::Exception::BEGIN@26";
+	"Template::Exception::BEGIN@25";
+	"Template::Exception::BEGIN@24";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@178";
+	"XML::LibXML::BEGIN@21";
+	"XML::LibXML::BEGIN@168";
+	"XML::LibXML::BEGIN@170";
+	"XML::LibXML::BEGIN@166";
+	"XML::LibXML::BEGIN@22";
+	"XML::LibXML::BEGIN@161";
+	"XML::LibXML::BEGIN@179";
+	"XML::LibXML::BEGIN@169";
+	"XML::LibXML::BEGIN@235";
+	"XML::LibXML::BEGIN@164";
+	"XML::LibXML::BEGIN@173";
+	"XML::LibXML::BEGIN@165";
+	"XML::LibXML::BEGIN@177";
+	"XML::LibXML::BEGIN@176";
+	"XML::LibXML::BEGIN@160";
+	"XML::LibXML::BEGIN@162";
+	"XML::LibXML::BEGIN@174";
+	"XML::LibXML::BEGIN@163";
+	"XML::LibXML::BEGIN@171";
+	"XML::LibXML::BEGIN@175";
+	"XML::LibXML::BEGIN@167";
+	"XML::LibXML::BEGIN@172";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@143";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::method_changed_in";
+}
+subgraph cluster_Template_Constants {
+	label="Template::Constants";
+	"Template::Constants::BEGIN@66";
+	"Template::Constants::BEGIN@50";
+	"Template::Constants::BEGIN@79";
+	"Template::Constants::BEGIN@58";
+	"Template::Constants::BEGIN@67";
+	"Template::Constants::BEGIN@44";
+	"Template::Constants::BEGIN@60";
+	"Template::Constants::BEGIN@52";
+	"Template::Constants::BEGIN@72";
+	"Template::Constants::BEGIN@45";
+	"Template::Constants::BEGIN@54";
+	"Template::Constants::BEGIN@49";
+	"Template::Constants::BEGIN@48";
+	"Template::Constants::BEGIN@41";
+	"Template::Constants::BEGIN@65";
+	"Template::Constants::BEGIN@76";
+	"Template::Constants::BEGIN@71";
+	"Template::Constants::BEGIN@70";
+	"Template::Constants::BEGIN@64";
+	"Template::Constants::BEGIN@57";
+	"Template::Constants::BEGIN@59";
+	"Template::Constants::BEGIN@40";
+	"Template::Constants::BEGIN@80";
+	"Template::Constants::BEGIN@69";
+	"Template::Constants::BEGIN@61";
+	"Template::Constants::BEGIN@75";
+	"Template::Constants::BEGIN@43";
+	"Template::Constants::BEGIN@68";
+	"Template::Constants::BEGIN@73";
+	"Template::Constants::BEGIN@42";
+	"Template::Constants::BEGIN@53";
+	"Template::Constants::BEGIN@51";
+	"Template::Constants::BEGIN@74";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::BEGIN@23";
+	"JSON::Any::BEGIN@22";
+	"JSON::Any::BEGIN@25";
+	"JSON::Any::BEGIN@24";
+}
+subgraph cluster_File_Temp {
+	label="File::Temp";
+	"File::Temp::BEGIN@230";
+	"File::Temp::BEGIN@229";
+	"File::Temp::BEGIN@217";
+	"File::Temp::BEGIN@220";
+	"File::Temp::BEGIN@224";
+	"File::Temp::BEGIN@228";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::BEGIN@11";
+	"Devel::Declare::BEGIN@10";
+	"Devel::Declare::BEGIN@9";
+	"Devel::Declare::BEGIN@12";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@21";
+	"Data::Visitor::Callback::BEGIN@20";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::BEGIN@18";
+	"JSON::Backend::XS::BEGIN@11";
+	"JSON::Backend::XS::BEGIN@9";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::BEGIN@25";
+	"Data::Visitor::BEGIN@23";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::BEGIN@199";
+	"KiokuDB::Entry::BEGIN@202";
+	"KiokuDB::Entry::BEGIN@198";
+	"KiokuDB::Entry::BEGIN@201";
+	"KiokuDB::Entry::BEGIN@196";
+}
+subgraph cluster_Hash_Util_FieldHash_Compat {
+	label="Hash::Util::FieldHash::Compat";
+	"Hash::Util::FieldHash::Compat::BEGIN@8";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::BEGIN@22";
+	"PPI::Util::BEGIN@18";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::BEGIN@8";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::BEGIN@16";
+}
+subgraph cluster_XML_LibXML_Error {
+	label="XML::LibXML::Error";
+	"XML::LibXML::Error::BEGIN@45";
+	"XML::LibXML::Error::BEGIN@56";
+	"XML::LibXML::Error::BEGIN@63";
+	"XML::LibXML::Error::BEGIN@57";
+	"XML::LibXML::Error::BEGIN@40";
+	"XML::LibXML::Error::BEGIN@49";
+	"XML::LibXML::Error::BEGIN@42";
+	"XML::LibXML::Error::BEGIN@41";
+	"XML::LibXML::Error::BEGIN@53";
+	"XML::LibXML::Error::BEGIN@36";
+	"XML::LibXML::Error::BEGIN@34";
+	"XML::LibXML::Error::BEGIN@60";
+	"XML::LibXML::Error::BEGIN@50";
+	"XML::LibXML::Error::BEGIN@61";
+	"XML::LibXML::Error::BEGIN@35";
+	"XML::LibXML::Error::BEGIN@51";
+	"XML::LibXML::Error::BEGIN@59";
+	"XML::LibXML::Error::BEGIN@47";
+	"XML::LibXML::Error::BEGIN@48";
+	"XML::LibXML::Error::BEGIN@55";
+	"XML::LibXML::Error::BEGIN@43";
+	"XML::LibXML::Error::BEGIN@37";
+	"XML::LibXML::Error::BEGIN@65";
+	"XML::LibXML::Error::BEGIN@66";
+	"XML::LibXML::Error::BEGIN@58";
+	"XML::LibXML::Error::BEGIN@64";
+	"XML::LibXML::Error::BEGIN@52";
+	"XML::LibXML::Error::BEGIN@44";
+	"XML::LibXML::Error::BEGIN@67";
+	"XML::LibXML::Error::BEGIN@62";
+	"XML::LibXML::Error::BEGIN@54";
+	"XML::LibXML::Error::BEGIN@39";
+	"XML::LibXML::Error::BEGIN@46";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::reap_nb";
+	"IPC::Run::_search_path";
+	"IPC::Run::_select_loop";
+	"IPC::Run::start";
+	"IPC::Run::harness";
+	"IPC::Run::BEGIN@1063";
+	"IPC::Run::BEGIN@1061";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@8";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Template_Service {
+	label="Template::Service";
+	"Template::Service::BEGIN@31";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::BEGIN@168";
+}
+"File::stat::BEGIN@143" -> "constant::BEGIN@4";
+"File::stat::BEGIN@143" -> "constant::BEGIN@6";
+"constant::import" -> "constant::CORE:match";
+"File::stat::BEGIN@143" -> "constant::BEGIN@114";
+"File::stat::BEGIN@143" -> "constant::BEGIN@29";
+"Time::Piece::BEGIN@40" -> "constant::import";
+"XML::LibXML::BEGIN@21" -> "constant::import";
+"Template::Constants::BEGIN@50" -> "constant::import";
+"File::stat::BEGIN@143" -> "constant::import";
+"Tree::Simple::Visitor::BEGIN@14" -> "constant::import";
+"Template::Constants::BEGIN@44" -> "constant::import";
+"URI::_punycode::BEGIN@16" -> "constant::import";
+"Template::Constants::BEGIN@60" -> "constant::import";
+"File::Temp::BEGIN@229" -> "constant::import";
+"Template::Constants::BEGIN@52" -> "constant::import";
+"Time::Piece::BEGIN@34" -> "constant::import";
+"Time::Seconds::BEGIN@29" -> "constant::import";
+"Time::Seconds::BEGIN@36" -> "constant::import";
+"Time::Piece::BEGIN@35" -> "constant::import";
+"XML::LibXML::BEGIN@164" -> "constant::import";
+"Time::Seconds::BEGIN@30" -> "constant::import";
+"Time::Piece::BEGIN@38" -> "constant::import";
+"XML::LibXML::BEGIN@176" -> "constant::import";
+"Template::Constants::BEGIN@54" -> "constant::import";
+"File::Temp::BEGIN@228" -> "constant::import";
+"XML::LibXML::BEGIN@162" -> "constant::import";
+"Time::Seconds::BEGIN@27" -> "constant::import";
+"Time::Seconds::BEGIN@32" -> "constant::import";
+"KiokuDB::BEGIN@8" -> "constant::import";
+"XML::LibXML::Error::BEGIN@50" -> "constant::import";
+"Template::Provider::BEGIN@54" -> "constant::import";
+"Time::Seconds::BEGIN@25" -> "constant::import";
+"Template::Constants::BEGIN@49" -> "constant::import";
+"XML::LibXML::Error::BEGIN@61" -> "constant::import";
+"XML::LibXML::Error::BEGIN@35" -> "constant::import";
+"Template::Constants::BEGIN@41" -> "constant::import";
+"Time::Local::BEGIN@27" -> "constant::import";
+"PPI::Document::BEGIN@92" -> "constant::import";
+"Devel::Declare::BEGIN@9" -> "constant::import";
+"Template::Constants::BEGIN@71" -> "constant::import";
+"JSON::Backend::XS::BEGIN@9" -> "constant::import";
+"XML::LibXML::Error::BEGIN@43" -> "constant::import";
+"XML::LibXML::Error::BEGIN@55" -> "constant::import";
+"XML::LibXML::BEGIN@179" -> "constant::import";
+"Data::Visitor::Callback::BEGIN@21" -> "constant::import";
+"Template::Exception::BEGIN@24" -> "constant::import";
+"Template::Constants::BEGIN@64" -> "constant::import";
+"XML::LibXML::Error::BEGIN@66" -> "constant::import";
+"Template::Constants::BEGIN@57" -> "constant::import";
+"Template::Constants::BEGIN@59" -> "constant::import";
+"URI::_punycode::BEGIN@15" -> "constant::import";
+"XML::LibXML::Error::BEGIN@64" -> "constant::import";
+"PPI::Document::BEGIN@96" -> "constant::import";
+"File::Which::BEGIN@17" -> "constant::import";
+"XML::LibXML::BEGIN@174" -> "constant::import";
+"JSON::Backend::XS::BEGIN@18" -> "constant::import";
+"URI::_punycode::BEGIN@20" -> "constant::import";
+"XML::LibXML::Error::BEGIN@39" -> "constant::import";
+"Time::Seconds::BEGIN@24" -> "constant::import";
+"XML::LibXML::Error::BEGIN@45" -> "constant::import";
+"File::Temp::BEGIN@230" -> "constant::import";
+"Devel::Declare::BEGIN@11" -> "constant::import";
+"Time::Piece::BEGIN@43" -> "constant::import";
+"URI::_punycode::BEGIN@19" -> "constant::import";
+"Template::Constants::BEGIN@67" -> "constant::import";
+"XML::LibXML::Error::BEGIN@57" -> "constant::import";
+"PPI::Lexer::BEGIN@100" -> "constant::import";
+"XML::LibXML::Error::BEGIN@40" -> "constant::import";
+"XML::LibXML::Error::BEGIN@49" -> "constant::import";
+"XML::LibXML::Error::BEGIN@42" -> "constant::import";
+"Template::Constants::BEGIN@72" -> "constant::import";
+"Time::Local::BEGIN@28" -> "constant::import";
+"XML::LibXML::Error::BEGIN@53" -> "constant::import";
+"KiokuDB::Entry::BEGIN@196" -> "constant::import";
+"XML::LibXML::BEGIN@160" -> "constant::import";
+"namespace::clean::BEGIN@169" -> "constant::import";
+"Time::Piece::BEGIN@44" -> "constant::import";
+"Template::Context::BEGIN@34" -> "constant::import";
+"XML::LibXML::BEGIN@171" -> "constant::import";
+"XML::LibXML::BEGIN@175" -> "constant::import";
+"KiokuDB::Entry::BEGIN@198" -> "constant::import";
+"Template::Provider::BEGIN@51" -> "constant::import";
+"Template::Constants::BEGIN@65" -> "constant::import";
+"XML::LibXML::Error::BEGIN@59" -> "constant::import";
+"Template::Constants::BEGIN@76" -> "constant::import";
+"XML::LibXML::Error::BEGIN@47" -> "constant::import";
+"Template::Constants::BEGIN@70" -> "constant::import";
+"Time::Piece::BEGIN@37" -> "constant::import";
+"Template::Constants::BEGIN@40" -> "constant::import";
+"Template::Constants::BEGIN@69" -> "constant::import";
+"XML::LibXML::BEGIN@173" -> "constant::import";
+"KiokuDB::Entry::BEGIN@202" -> "constant::import";
+"XML::LibXML::BEGIN@177" -> "constant::import";
+"XML::LibXML::Error::BEGIN@52" -> "constant::import";
+"Template::Constants::BEGIN@61" -> "constant::import";
+"XML::LibXML::Error::BEGIN@67" -> "constant::import";
+"XML::LibXML::Error::BEGIN@62" -> "constant::import";
+"XML::LibXML::BEGIN@167" -> "constant::import";
+"Template::Constants::BEGIN@42" -> "constant::import";
+"Template::Constants::BEGIN@53" -> "constant::import";
+"Template::Constants::BEGIN@74" -> "constant::import";
+"PPI::Document::BEGIN@94" -> "constant::import";
+"Tree::Simple::Visitor::BEGIN@13" -> "constant::import";
+"XML::LibXML::BEGIN@178" -> "constant::import";
+"Time::Piece::BEGIN@41" -> "constant::import";
+"File::Which::BEGIN@18" -> "constant::import";
+"Time::Seconds::BEGIN@28" -> "constant::import";
+"Template::Constants::BEGIN@58" -> "constant::import";
+"Time::Piece::BEGIN@39" -> "constant::import";
+"Tree::Simple::BEGIN@29" -> "constant::import";
+"Template::Provider::BEGIN@53" -> "constant::import";
+"Template::Context::BEGIN@35" -> "constant::import";
+"JSON::Any::BEGIN@22" -> "constant::import";
+"KiokuDB::Entry::BEGIN@201" -> "constant::import";
+"URI::_punycode::BEGIN@17" -> "constant::import";
+"XML::LibXML::BEGIN@169" -> "constant::import";
+"Template::Constants::BEGIN@45" -> "constant::import";
+"XML::LibXML::Error::BEGIN@41" -> "constant::import";
+"XML::LibXML::BEGIN@165" -> "constant::import";
+"XML::LibXML::Error::BEGIN@36" -> "constant::import";
+"PPI::Util::BEGIN@22" -> "constant::import";
+"XML::LibXML::BEGIN@163" -> "constant::import";
+"PPI::Util::BEGIN@18" -> "constant::import";
+"XML::LibXML::Error::BEGIN@34" -> "constant::import";
+"Class::MOP::Method::Meta::BEGIN@16" -> "constant::import";
+"Template::Constants::BEGIN@48" -> "constant::import";
+"XML::LibXML::Error::BEGIN@51" -> "constant::import";
+"Time::Seconds::BEGIN@26" -> "constant::import";
+"XML::LibXML::BEGIN@168" -> "constant::import";
+"JSON::Any::BEGIN@24" -> "constant::import";
+"URI::_punycode::BEGIN@14" -> "constant::import";
+"Hash::Util::FieldHash::Compat::BEGIN@8" -> "constant::import";
+"XML::LibXML::Error::BEGIN@37" -> "constant::import";
+"XML::LibXML::Error::BEGIN@65" -> "constant::import";
+"XML::LibXML::BEGIN@161" -> "constant::import";
+"XML::LibXML::BEGIN@22" -> "constant::import";
+"Time::Seconds::BEGIN@31" -> "constant::import";
+"XML::LibXML::BEGIN@235" -> "constant::import";
+"Template::Service::BEGIN@31" -> "constant::import";
+"XML::LibXML::Error::BEGIN@44" -> "constant::import";
+"Template::Context::BEGIN@33" -> "constant::import";
+"Template::Constants::BEGIN@43" -> "constant::import";
+"Devel::Declare::BEGIN@10" -> "constant::import";
+"Template::Constants::BEGIN@51" -> "constant::import";
+"XML::LibXML::Error::BEGIN@54" -> "constant::import";
+"XML::LibXML::Error::BEGIN@46" -> "constant::import";
+"XML::LibXML::Error::BEGIN@56" -> "constant::import";
+"Time::Seconds::BEGIN@23" -> "constant::import";
+"Template::Constants::BEGIN@66" -> "constant::import";
+"Template::Exception::BEGIN@25" -> "constant::import";
+"Template::Constants::BEGIN@79" -> "constant::import";
+"Devel::Declare::BEGIN@12" -> "constant::import";
+"Time::Piece::BEGIN@42" -> "constant::import";
+"XML::LibXML::Error::BEGIN@63" -> "constant::import";
+"XML::LibXML::BEGIN@170" -> "constant::import";
+"Template::Exception::BEGIN@26" -> "constant::import";
+"PPI::Document::BEGIN@95" -> "constant::import";
+"XML::LibXML::BEGIN@166" -> "constant::import";
+"Encode::Alias::BEGIN@6" -> "constant::import";
+"URI::_punycode::BEGIN@18" -> "constant::import";
+"File::Temp::BEGIN@220" -> "constant::import";
+"XML::LibXML::Error::BEGIN@60" -> "constant::import";
+"KiokuDB::Entry::BEGIN@199" -> "constant::import";
+"JSON::Backend::XS::BEGIN@11" -> "constant::import";
+"XML::LibXML::BEGIN@172" -> "constant::import";
+"Time::Seconds::BEGIN@33" -> "constant::import";
+"namespace::clean::BEGIN@168" -> "constant::import";
+"Template::Provider::BEGIN@52" -> "constant::import";
+"Encode::BEGIN@8" -> "constant::import";
+"File::Temp::BEGIN@224" -> "constant::import";
+"JSON::Any::BEGIN@25" -> "constant::import";
+"XML::LibXML::Error::BEGIN@48" -> "constant::import";
+"Template::Provider::BEGIN@50" -> "constant::import";
+"DBD::SQLite::BEGIN@30" -> "constant::import";
+"File::Temp::BEGIN@217" -> "constant::import";
+"PPI::Document::BEGIN@93" -> "constant::import";
+"Time::Local::BEGIN@29" -> "constant::import";
+"File::Which::BEGIN@16" -> "constant::import";
+"Data::Visitor::BEGIN@23" -> "constant::import";
+"Time::Piece::BEGIN@36" -> "constant::import";
+"XML::LibXML::Error::BEGIN@58" -> "constant::import";
+"Template::Constants::BEGIN@80" -> "constant::import";
+"Data::Visitor::BEGIN@25" -> "constant::import";
+"Template::Provider::BEGIN@55" -> "constant::import";
+"Template::Constants::BEGIN@75" -> "constant::import";
+"IPC::Run::BEGIN@1061" -> "constant::import";
+"Data::Visitor::Callback::BEGIN@20" -> "constant::import";
+"YAML::XS::BEGIN@101" -> "constant::import";
+"Template::Constants::BEGIN@68" -> "constant::import";
+"JSON::Any::BEGIN@23" -> "constant::import";
+"Template::Constants::BEGIN@73" -> "constant::import";
+"KiokuDB::Util::BEGIN@168" -> "constant::import";
+"Time::Seconds::BEGIN@37" -> "constant::import";
+"constant::BEGIN@3" -> "strict::import";
+"constant::import" -> "constant::CORE:regcomp";
+"File::stat::BEGIN@143" -> "constant::CORE:regcomp";
+"constant::import" -> "mro::method_changed_in";
+"File::stat::BEGIN@143" -> "constant::BEGIN@25";
+"constant::BEGIN@4" -> "warnings::register::import";
+"constant::BEGIN@52" -> "strict::unimport";
+"constant::BEGIN@114" -> "strict::unimport";
+"constant::BEGIN@29" -> "strict::unimport";
+"constant::BEGIN@6" -> "vars::import";
+"File::stat::BEGIN@143" -> "constant::BEGIN@3";
+"File::stat::BEGIN@143" -> "constant::CORE:qr";
+"constant::import" -> "Internals::SvREADONLY";
+"IPC::Run::reap_nb" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::_search_path" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::IO::BEGIN@74" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::IO::_new_internal" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::_select_loop" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::start" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::harness" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::BEGIN@1063" -> "constant::__ANON__[constant.pm:142]";
+"constant::import" -> "utf8::is_utf8";
+"File::stat::BEGIN@143" -> "constant::BEGIN@52";
+"File::stat::BEGIN@143" -> "constant::BEGIN@2";
+}

@@ -1,0 +1,79 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@4";
+	"Catalyst::Plugin::Static::Simple::BEGIN@9";
+	"Catalyst::Plugin::Static::Simple::BEGIN@3";
+	"Catalyst::Plugin::Static::Simple::BEGIN@5";
+	"Catalyst::Plugin::Static::Simple::BEGIN@6";
+	"Catalyst::Plugin::Static::Simple::BEGIN@7";
+	"Catalyst::Plugin::Static::Simple::BEGIN@10";
+	"Catalyst::Plugin::Static::Simple::BEGIN@8";
+	"Catalyst::Plugin::Static::Simple::CORE:subst";
+	"Catalyst::Plugin::Static::Simple::CORE:match";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_MIME_Types {
+	label="MIME::Types";
+	"MIME::Types::BEGIN@14";
+	"MIME::Types::BEGIN@7";
+	"MIME::Types::BEGIN@138";
+	"MIME::Types::BEGIN@13";
+	"MIME::Types::BEGIN@11";
+	"MIME::Types::BEGIN@191";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@4";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@138";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@10";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@9";
+"Catalyst::Plugin::Static::Simple::BEGIN@9" -> "UNIVERSAL::import";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@8";
+"Class::MOP::Class:::before" -> "Catalyst::Plugin::Static::Simple::CORE:subst";
+"Catalyst::Plugin::Static::Simple::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::Plugin::Static::Simple::BEGIN@8" -> "MooseX::Types::Base::import";
+"Catalyst::Plugin::Static::Simple::BEGIN@4" -> "Exporter::import";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@5";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@7";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@14";
+"Catalyst::Plugin::Static::Simple::BEGIN@10" -> "namespace::autoclean::import";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@191";
+"Catalyst::Plugin::Static::Simple::BEGIN@4" -> "File::stat::import";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@3";
+"Class::MOP::Class:::before" -> "Catalyst::Plugin::Static::Simple::CORE:match";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@13";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@6";
+"Catalyst::Plugin::Static::Simple::BEGIN@7" -> "MIME::Types::BEGIN@11";
+"Module::Runtime::require_module" -> "Catalyst::Plugin::Static::Simple::BEGIN@7";
+}

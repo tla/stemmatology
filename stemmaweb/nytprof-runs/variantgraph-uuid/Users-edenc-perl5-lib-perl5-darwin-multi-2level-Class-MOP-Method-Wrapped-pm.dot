@@ -1,0 +1,493 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BUILD";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::stash";
+	"Catalyst::finalize";
+	"Catalyst::setup_finalize";
+	"Catalyst::config";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_25 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::25";
+	"Moose::Meta::Class::__ANON__::SERIAL::25::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::25::new";
+}
+subgraph cluster_Catalyst_DispatchType {
+	label="Catalyst::DispatchType";
+	"Catalyst::DispatchType::BUILD";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::get_relationship";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::store";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BUILD";
+	"Catalyst::Component::catalyst_component_name";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_32 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::32";
+	"Moose::Meta::Class::__ANON__::SERIAL::32::new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::install_accessors";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::_process_options";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_22 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::22";
+	"Moose::Meta::Class::__ANON__::SERIAL::22::new";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::parameters";
+	"Catalyst::Request::BUILD";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_18 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::18";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::18::_eval_environment";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_get_compatible_metaclass";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::_inline_BUILDALL";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::new_object";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::_eval_environment";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::body";
+	"Class::MOP::Method::original_method";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::apply_methods";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_9 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::9";
+	"Moose::Meta::Class::__ANON__::SERIAL::9::new";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BUILD";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::class_precedence_list";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles_with_inheritance";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::does_role";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::is_immutable";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::superclasses";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_methods";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_20 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::20";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_eval_environment";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_check_argument_count";
+	"Moose::Meta::Class::__ANON__::SERIAL::20::new";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::new_object";
+	"Moose::Meta::Class::_get_compatible_metaclass";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::BUILD";
+	"Catalyst::ActionContainer::BUILDARGS";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::after";
+	"Class::MOP::Class:::before";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::BUILDARGS";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BUILD";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_26 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::26";
+	"Moose::Meta::Class::__ANON__::SERIAL::26::new";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::BEGIN@14";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+	"Class::MOP::Class::add_before_method_modifier";
+	"Class::MOP::Class::add_after_method_modifier";
+	"Class::MOP::Class::initialize";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_2 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::2";
+	"Moose::Meta::Class::__ANON__::SERIAL::2::apply";
+	"Moose::Meta::Class::__ANON__::SERIAL::2::apply_methods";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::super";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_19 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::19";
+	"Moose::Meta::Class::__ANON__::SERIAL::19::new";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::apply_methods";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_10 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::10";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::10::_eval_environment";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::install_accessors";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::_process_options";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::wrap";
+	"Class::MOP::Method::Wrapped::BEGIN@13";
+	"Class::MOP::Method::Wrapped::BEGIN@11";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+	"Class::MOP::Method::Wrapped::add_after_modifier";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+	"Class::MOP::Method::Wrapped::_new";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]";
+	"Class::MOP::Method::Wrapped::BEGIN@14";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:164]";
+	"Class::MOP::Method::Wrapped::add_around_modifier";
+	"Class::MOP::Method::Wrapped::BEGIN@10";
+	"Class::MOP::Method::Wrapped::get_original_method";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+	"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:71]";
+	"Class::MOP::Method::Wrapped::BEGIN@16";
+	"Class::MOP::Method::Wrapped::add_before_modifier";
+	"Class::MOP::Method::Wrapped::BEGIN@3";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::path_prefix";
+	"Catalyst::Controller::action_namespace";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::_method_map";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::is_immutable";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_process_options";
+	"Moose::Meta::Attribute::install_accessors";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_24 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::24";
+	"Moose::Meta::Class::__ANON__::SERIAL::24::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::24::_inline_tc_code";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::compile_type_constraint";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_3 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::3";
+	"Moose::Meta::Class::__ANON__::SERIAL::3::apply_methods";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::new";
+	"Catalyst::Log::BUILD";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_12 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::12";
+	"Moose::Meta::Class::__ANON__::SERIAL::12::new";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::BUILDARGS";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_21 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::21";
+	"Moose::Meta::Class::__ANON__::SERIAL::21::new";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::add_witness";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::MODIFY_CODE_ATTRIBUTES";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::add_before_method_modifier";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::add_around_method_modifier";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::BUILDARGS";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_11 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::11";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::new";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::_inline_tc_code";
+	"Moose::Meta::Class::__ANON__::SERIAL::11::_eval_environment";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::prepare_action";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::store";
+	"Text::Tradition::Directory::BUILDARGS";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::is_immutable";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Class_MOP_Class {
+	label="Class::MOP::Class::Immutable::Class::MOP::Class";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::_method_map";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::class_precedence_list";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::linearized_isa";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::is_immutable";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::superclasses";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::dispatch";
+	"stemmaweb::finalize";
+	"stemmaweb::prepare_action";
+	"stemmaweb::setup_finalize";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::BUILD";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_make_delegation_method";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::_process_options";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::install_accessors";
+}
+"Class::MOP::Method::Wrapped::wrap" -> "Class::MOP::Method::wrap";
+"Class::MOP::Method::Wrapped::wrap" -> "Scalar::Util::blessed";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]" -> "Class::MOP::Class:::around";
+"Class::MOP::Class::add_after_method_modifier" -> "Class::MOP::Method::Wrapped::add_after_modifier";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@14";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@16";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@3";
+"Moose::Meta::Class::__ANON__::SERIAL::3::apply_methods" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]";
+"Moose::Meta::Class::__ANON__::SERIAL::2::apply_methods" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "KiokuX::Model::store";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Class::MOP::Class:::before";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Class::MOP::Class:::before";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]" -> "Moose::Meta::Role::Application::ToRole::apply_methods";
+"Class::MOP::Method::Wrapped::add_around_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:71]";
+"Class::MOP::Method::Wrapped::add_after_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:71]";
+"Class::MOP::Method::Wrapped::wrap" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:71]";
+"Class::MOP::Method::Wrapped::add_before_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:71]";
+"Class::MOP::Class::add_before_method_modifier" -> "Class::MOP::Method::Wrapped::add_before_modifier";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::setup_finalize";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "MooseX::MethodAttributes::Role::AttrContainer::MODIFY_CODE_ATTRIBUTES";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::finalize";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@13";
+"Class::MOP::Method::Wrapped::BEGIN@10" -> "strict::import";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Moose::Meta::Attribute::_process_options";
+"Class::MOP::Method::Wrapped::add_around_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:164]";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Method::Wrapped::wrap";
+"Moose::Role::super" -> "Class::MOP::Method::Wrapped::wrap";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@11";
+"Class::MOP::Method::Wrapped::wrap" -> "Class::MOP::Method::body";
+"Class::MOP::Method::Wrapped::BEGIN@14" -> "Exporter::import";
+"Class::MOP::Method::Wrapped::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]" -> "Catalyst::Plugin::Unicode::Encoding::prepare_action";
+"Class::MOP::Method::Wrapped::BEGIN@16" -> "base::import";
+"Class::MOP::Method::Wrapped::BEGIN@11" -> "warnings::import";
+"Class::MOP::Method::Wrapped::_new" -> "Moose::Meta::Class::new_object";
+"Class::MOP::Method::Wrapped::_new" -> "Class::MOP::Class::initialize";
+"Class::MOP::Method::wrap" -> "Class::MOP::Method::Wrapped::_new";
+"Class::MOP::Method::Wrapped::get_original_method" -> "Class::MOP::Method::original_method";
+"Class::MOP::Class:::around" -> "Class::MOP::Method::Wrapped::get_original_method";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Class::MOP::Method::Wrapped::get_original_method";
+"Moose::Meta::Class::__ANON__::SERIAL::23::install_accessors" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+"Moose::Meta::Class::__ANON__::SERIAL::17::install_accessors" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+"Moose::Meta::Class::__ANON__::SERIAL::8::install_accessors" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]";
+"Class::MOP::Method::Wrapped::wrap" -> "UNIVERSAL::isa";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Class::MOP::Class:::after";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]" -> "Class::MOP::Class:::after";
+"Moose::Meta::Class::__ANON__::SERIAL::11::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::is_immutable" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::18::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::class_precedence_list" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::linearized_isa" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::21::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::_get_compatible_metaclass" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Log::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_methods" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Exception::Go::BUILDARGS" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Text::Tradition::Collation::Reading::BUILDARGS" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::2::apply" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::30::new_object" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::ActionContainer::BUILDARGS" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Action::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Dispatcher::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::5::add_around_method_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::30::_inline_BUILDALL" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"stemmaweb::dispatch" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Exception::Detach::BUILDARGS" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Component::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::DispatchType::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::superclasses" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Engine::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Text::Tradition::add_witness" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Response::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::10::_eval_environment" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::26::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::stash" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::class_precedence_list" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::18::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Text::Tradition::Directory::BUILDARGS" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::18::_eval_environment" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::_method_map" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::is_immutable" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::25::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::_method_map" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::24::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::17::_make_delegation_method" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::_method_map" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::25::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::20::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::does_role" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Text::Tradition::Collation::get_relationship" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Request::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::8::_canonicalize_handles" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::9::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Request::parameters" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::10::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::12::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::24::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::17::_canonicalize_handles" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_check_argument_count" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::30::_eval_environment" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::ActionContainer::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::20::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Method::_get_compatible_metaclass" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::get_meta_instance" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Text::Tradition::Collation::RelationshipStore::add_reading" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::11::_eval_environment" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::20::_eval_environment" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::32::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Controller::path_prefix" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::is_immutable" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Controller::action_namespace" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Log::BUILD" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::is_immutable" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::23::_make_delegation_method" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::5::add_before_method_modifier" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Moose::Meta::Class::calculate_all_roles_with_inheritance" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::superclasses" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::Component::catalyst_component_name" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::11::_inline_tc_code" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Catalyst::config" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::_method_map" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::23::_canonicalize_handles" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::10::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::8::_make_delegation_method" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::19::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Moose::Meta::Class::__ANON__::SERIAL::22::new" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"MooseX::Meta::TypeConstraint::Structured::compile_type_constraint" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:162]";
+"Class::MOP::Class::add_around_method_modifier" -> "Class::MOP::Method::Wrapped::add_around_modifier";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@10";
+"MooseX::MethodAttributes::Inheritable::MODIFY_CODE_ATTRIBUTES" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"stemmaweb::setup_finalize" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"Moose::Meta::Class::__ANON__::SERIAL::23::_process_options" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"stemmaweb::finalize" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"Text::Tradition::Directory::store" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"stemmaweb::prepare_action" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"Moose::Meta::Class::__ANON__::SERIAL::8::_process_options" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"Moose::Meta::Class::__ANON__::SERIAL::17::_process_options" -> "Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:51]";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:66]" -> "Moose::Meta::Role::Application::ToClass::apply_methods";
+"Class::MOP::Method::Wrapped::__ANON__[Class/MOP/Method/Wrapped.pm:45]" -> "Moose::Meta::Attribute::install_accessors";
+}

@@ -1,0 +1,52 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token_Quote_Single {
+	label="PPI::Token::Quote::Single";
+	"PPI::Token::Quote::Single::BEGIN@38";
+	"PPI::Token::Quote::Single::BEGIN@42";
+	"PPI::Token::Quote::Single::BEGIN@41";
+	"PPI::Token::Quote::Single::BEGIN@39";
+	"PPI::Token::Quote::Single::BEGIN@37";
+}
+subgraph cluster_PPI_Token_Quote {
+	label="PPI::Token::Quote";
+	"PPI::Token::Quote::BEGIN@48";
+	"PPI::Token::Quote::BEGIN@52";
+	"PPI::Token::Quote::BEGIN@49";
+	"PPI::Token::Quote::BEGIN@51";
+}
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@54";
+}
+subgraph cluster_PPI_Token__QuoteEngine_Simple {
+	label="PPI::Token::_QuoteEngine::Simple";
+	"PPI::Token::_QuoteEngine::Simple::BEGIN@6";
+	"PPI::Token::_QuoteEngine::Simple::BEGIN@5";
+	"PPI::Token::_QuoteEngine::Simple::BEGIN@8";
+	"PPI::Token::_QuoteEngine::Simple::BEGIN@9";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@38";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@42";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@41";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@39";
+"PPI::Token::Quote::Single::BEGIN@39" -> "PPI::Token::_QuoteEngine::Simple::BEGIN@6";
+"PPI::Token::Quote::Single::BEGIN@38" -> "PPI::Token::Quote::BEGIN@52";
+"PPI::Token::Quote::Single::BEGIN@37" -> "strict::import";
+"PPI::Token::Quote::Single::BEGIN@39" -> "PPI::Token::_QuoteEngine::Simple::BEGIN@9";
+"PPI::Token::Quote::Single::BEGIN@41" -> "vars::import";
+"PPI::Token::Quote::Single::BEGIN@38" -> "PPI::Token::Quote::BEGIN@49";
+"PPI::Token::Quote::Single::BEGIN@39" -> "PPI::Token::_QuoteEngine::Simple::BEGIN@8";
+"PPI::Token::BEGIN@54" -> "PPI::Token::Quote::Single::BEGIN@37";
+"PPI::Token::Quote::Single::BEGIN@38" -> "PPI::Token::Quote::BEGIN@51";
+"PPI::Token::Quote::Single::BEGIN@38" -> "PPI::Token::Quote::BEGIN@48";
+"PPI::Token::Quote::Single::BEGIN@39" -> "PPI::Token::_QuoteEngine::Simple::BEGIN@5";
+}

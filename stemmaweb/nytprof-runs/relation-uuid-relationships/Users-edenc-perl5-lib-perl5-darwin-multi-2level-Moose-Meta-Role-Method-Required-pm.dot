@@ -1,0 +1,59 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Role_Method_Conflicting {
+	label="Moose::Meta::Role::Method::Conflicting";
+	"Moose::Meta::Role::Method::Conflicting::_new";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::add_conflicting_method";
+	"Moose::Meta::Role::add_required_methods";
+	"Moose::Meta::Role::BEGIN@21";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::BEGIN@14";
+	"Moose::Meta::Role::Method::Required::_new";
+	"Moose::Meta::Role::Method::Required::BEGIN@17";
+	"Moose::Meta::Role::Method::Required::BEGIN@12";
+	"Moose::Meta::Role::Method::Required::BEGIN@10";
+	"Moose::Meta::Role::Method::Required::BEGIN@11";
+	"Moose::Meta::Role::Method::Required::BEGIN@3";
+	"Moose::Meta::Role::Method::Required::new";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@10";
+"Moose::Meta::Role::Method::Required::BEGIN@14" -> "overload::import";
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@3";
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@12";
+"Moose::Meta::Role::Method::Required::BEGIN@12" -> "metaclass::import";
+"Moose::Meta::Role::add_conflicting_method" -> "Moose::Meta::Role::Method::Required::new";
+"Moose::Meta::Role::add_required_methods" -> "Moose::Meta::Role::Method::Required::new";
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@14";
+"Moose::Meta::Role::Method::Required::BEGIN@10" -> "strict::import";
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@17";
+"Moose::Meta::Role::Method::Required::BEGIN@17" -> "base::import";
+"Moose::Meta::Role::Method::Required::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Role::Method::Required::new" -> "Moose::Meta::Role::Method::Conflicting::_new";
+"Moose::Meta::Role::BEGIN@21" -> "Moose::Meta::Role::Method::Required::BEGIN@11";
+"Moose::Meta::Role::Method::Required::new" -> "Moose::Meta::Role::Method::Required::_new";
+}

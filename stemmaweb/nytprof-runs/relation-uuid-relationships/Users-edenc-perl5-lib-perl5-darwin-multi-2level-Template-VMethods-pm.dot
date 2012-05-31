@@ -1,0 +1,54 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_VMethods {
+	label="Template::VMethods";
+	"Template::VMethods::BEGIN@121";
+	"Template::VMethods::BEGIN@24";
+	"Template::VMethods::BEGIN@439";
+	"Template::VMethods::BEGIN@115";
+	"Template::VMethods::BEGIN@466";
+	"Template::VMethods::BEGIN@27";
+	"Template::VMethods::BEGIN@472";
+	"Template::VMethods::BEGIN@25";
+	"Template::VMethods::BEGIN@26";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Template_Stash {
+	label="Template::Stash";
+	"Template::Stash::BEGIN@24";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@466";
+"Template::VMethods::BEGIN@27" -> "UNIVERSAL::import";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@26";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@439";
+"Template::VMethods::BEGIN@24" -> "strict::import";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@24";
+"Template::VMethods::BEGIN@26" -> "Exporter::import";
+"Template::VMethods::BEGIN@25" -> "warnings::import";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@27";
+"Template::VMethods::BEGIN@115" -> "warnings::unimport";
+"Template::VMethods::BEGIN@439" -> "warnings::unimport";
+"Template::VMethods::BEGIN@121" -> "warnings::unimport";
+"Template::VMethods::BEGIN@466" -> "warnings::unimport";
+"Template::VMethods::BEGIN@472" -> "warnings::unimport";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@472";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@25";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@115";
+"Template::Stash::BEGIN@24" -> "Template::VMethods::BEGIN@121";
+}

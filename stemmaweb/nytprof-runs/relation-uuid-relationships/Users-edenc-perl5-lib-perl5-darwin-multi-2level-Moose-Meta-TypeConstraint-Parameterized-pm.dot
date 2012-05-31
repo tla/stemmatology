@@ -1,0 +1,183 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@2";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@10";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@17";
+	"Moose::Meta::TypeConstraint::Parameterized::has_type_parameter";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@14";
+	"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+	"Moose::Meta::TypeConstraint::Parameterized::parameterized_from";
+	"Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+	"Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@13";
+	"Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@9";
+	"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::Parameterized::has_parameterized_from";
+	"Moose::Meta::TypeConstraint::Parameterized::equals";
+	"Moose::Meta::TypeConstraint::Parameterized::BEGIN@11";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_eval_environment";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::_try_delegate";
+	"MooseX::Types::TypeDecorator::AUTOLOAD";
+	"MooseX::Types::TypeDecorator::isa";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_eval_environment";
+	"Moose::Meta::Attribute::_inline_check_constraint";
+}
+subgraph cluster_Moose_Util_TypeConstraints_Builtins {
+	label="Moose::Util::TypeConstraints::Builtins";
+	"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::inline_environment";
+	"Moose::Meta::TypeConstraint::Union::can_be_inlined";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::_set_constraint";
+	"Moose::Meta::TypeConstraint::inline_environment";
+	"Moose::Meta::TypeConstraint::new";
+	"Moose::Meta::TypeConstraint::_actually_compile_type_constraint";
+	"Moose::Meta::TypeConstraint::is_a_type_of";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::BEGIN@34";
+	"Moose::Util::TypeConstraints::get_all_parameterizable_types";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@13";
+	"Moose::Meta::TypeConstraint::Parameterizable::has_inline_generator";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@15";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@2";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@9";
+	"Moose::Meta::TypeConstraint::Parameterizable::meta";
+	"Moose::Meta::TypeConstraint::Parameterizable::generate_inline_for";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@11";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@14";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@17";
+	"Moose::Meta::TypeConstraint::Parameterizable::generate_constraint_for";
+	"Moose::Meta::TypeConstraint::Parameterizable::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::_definition_context";
+}
+"Moose::Meta::TypeConstraint::Parameterized::_inline_check" -> "Moose::Meta::TypeConstraint::Parameterized::parameterized_from";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Parameterized::parameterized_from";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Parameterized::parameterized_from";
+"Moose::Meta::TypeConstraint::Parameterized::equals" -> "Moose::Util::TypeConstraints::find_type_constraint";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "MooseX::Types::TypeDecorator::isa";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Union::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::_inline_check" -> "Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@13";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::inline_environment";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Class::MOP::_definition_context";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::meta";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Meta::TypeConstraint::_set_constraint";
+"Moose::Meta::TypeConstraint::is_a_type_of" -> "Moose::Meta::TypeConstraint::Parameterized::equals";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Parameterizable::has_inline_generator";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"Moose::Util::TypeConstraints::Builtins::__ANON__[Moose/Util/TypeConstraints/Builtins.pm:253]" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"Moose::Meta::TypeConstraint::_actually_compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::_inline_check";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@13";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@11";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::Class::_eval_environment" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::TypeConstraint::_actually_compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Parameterized::inline_environment";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@17";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@11" -> "metaclass::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@10";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@11";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@2";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@17";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Util::TypeConstraints::get_all_parameterizable_types";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@9" -> "strict::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@9";
+"Moose::Meta::TypeConstraint::Parameterized::_inline_check" -> "Moose::Meta::TypeConstraint::Parameterizable::generate_inline_for";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@15";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@10";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@13" -> "Exporter::import";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@2";
+"Moose::Meta::TypeConstraint::new" -> "Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::has_type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Parameterized::has_type_parameter";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Union::inline_environment";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@17" -> "base::import";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@10" -> "warnings::import";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@15";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@14";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Class::MOP::Mixin::HasAttributes::add_attribute";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "UNIVERSAL::isa";
+"Moose::Meta::TypeConstraint::Parameterized::equals" -> "UNIVERSAL::isa";
+"Moose::Util::TypeConstraints::BEGIN@34" -> "Moose::Meta::TypeConstraint::Parameterized::BEGIN@9";
+"MooseX::Types::TypeDecorator::_try_delegate" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::Attribute::_eval_environment" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::Attribute::_inline_check_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::_inline_check" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::TypeConstraint::_actually_compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterized::can_be_inlined";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "Moose::Meta::TypeConstraint::Parameterized::has_parameterized_from";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "Moose::Meta::TypeConstraint::Parameterized::has_parameterized_from";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Meta::TypeConstraint::compile_type_constraint";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Moose::Meta::TypeConstraint::Parameterizable::generate_constraint_for";
+"Moose::Meta::TypeConstraint::Parameterized::BEGIN@15" -> "Moose::Meta::TypeConstraint::Parameterizable::BEGIN@14";
+"Moose::Meta::TypeConstraint::Parameterized::can_be_inlined" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+"Moose::Meta::TypeConstraint::Parameterized::inline_environment" -> "MooseX::Types::TypeDecorator::AUTOLOAD";
+}

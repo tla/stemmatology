@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::resolve";
+	"KiokuDB::TypeMap::Shadow::BEGIN@4";
+	"KiokuDB::TypeMap::Shadow::BEGIN@6";
+	"KiokuDB::TypeMap::Shadow::typemaps";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::resolve";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@15";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::resolve";
+}
+"KiokuDB::BEGIN@15" -> "KiokuDB::TypeMap::Shadow::BEGIN@4";
+"KiokuDB::TypeMap::Shadow::resolve" -> "KiokuDB::TypeMap::Shadow::typemaps";
+"KiokuDB::TypeMap::Shadow::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Shadow::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::BEGIN@15" -> "KiokuDB::TypeMap::Shadow::BEGIN@6";
+"KiokuDB::TypeMap::Resolver::resolve" -> "KiokuDB::TypeMap::Shadow::resolve";
+"KiokuDB::TypeMap::Shadow::resolve" -> "KiokuDB::TypeMap::resolve";
+}

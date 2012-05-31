@@ -1,0 +1,134 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_get_compatible_metaclass";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_get_compatible_metaclass";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_single_metaclass_is_compatible";
+	"Class::MOP::Class::_fix_single_metaclass_incompatibility";
+	"Class::MOP::Class::_force_rebless_instance";
+	"Class::MOP::Class::_class_metaclass_is_compatible";
+	"Class::MOP::Class::_class_metaclass_can_be_made_compatible";
+	"Class::MOP::Class::_real_ref_name";
+	"Class::MOP::Class::_fix_class_metaclass_incompatibility";
+	"Class::MOP::Class::_single_metaclass_can_be_made_compatible";
+	"Class::MOP::Class::new_object";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::new";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::_make_compatible_with";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::_make_compatible_with";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_new";
+	"Class::MOP::Object::_get_compatible_metaclass_by_subclassing";
+	"Class::MOP::Object::BEGIN@10";
+	"Class::MOP::Object::BEGIN@14";
+	"Class::MOP::Object::_real_ref_name";
+	"Class::MOP::Object::BEGIN@3";
+	"Class::MOP::Object::meta";
+	"Class::MOP::Object::BEGIN@11";
+	"Class::MOP::Object::_get_compatible_metaclass";
+	"Class::MOP::Object::_can_be_made_compatible_with";
+	"Class::MOP::Object::_make_compatible_with";
+	"Class::MOP::Object::BEGIN@13";
+	"Class::MOP::Object::_is_compatible_with";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+}
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "Class::MOP::Object::_real_ref_name";
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_real_ref_name";
+"Class::MOP::Method::Meta::_make_compatible_with" -> "Class::MOP::Object::_real_ref_name";
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "Scalar::Util::blessed";
+"Class::MOP::Object::_real_ref_name" -> "Scalar::Util::blessed";
+"Class::MOP::Object::_make_compatible_with" -> "Scalar::Util::blessed";
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Object::_new" -> "Class::MOP::Class::new_object";
+"Class::MOP::Object::_can_be_made_compatible_with" -> "Class::MOP::Object::_get_compatible_metaclass";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Object::_get_compatible_metaclass";
+"Class::MOP::Class:::around" -> "Class::MOP::Object::_get_compatible_metaclass";
+"Class::MOP::Object::_make_compatible_with" -> "Class::MOP::Object::_get_compatible_metaclass";
+"base::import" -> "Class::MOP::Object::BEGIN@14";
+"Class::MOP::Object::_get_compatible_metaclass" -> "Class::MOP::Object::_get_compatible_metaclass_by_subclassing";
+"Moose::Meta::TypeConstraint::Registry::new" -> "Class::MOP::Object::_new";
+"Class::MOP::Object::_make_compatible_with" -> "Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+"Class::MOP::Object::BEGIN@10" -> "strict::import";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Object::_can_be_made_compatible_with" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Class::_class_metaclass_is_compatible" -> "Class::MOP::Object::_is_compatible_with";
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Method::Meta::_make_compatible_with" -> "Class::MOP::Object::_is_compatible_with";
+"base::import" -> "Class::MOP::Object::BEGIN@10";
+"Class::MOP::Object::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Object::BEGIN@14" -> "Exporter::import";
+"Class::MOP::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Object::_make_compatible_with";
+"Moose::Meta::Role::Method::_make_compatible_with" -> "Class::MOP::Object::_make_compatible_with";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Object::_can_be_made_compatible_with";
+"Class::MOP::Class::_class_metaclass_can_be_made_compatible" -> "Class::MOP::Object::_can_be_made_compatible_with";
+"Class::MOP::Object::BEGIN@11" -> "warnings::import";
+"base::import" -> "Class::MOP::Object::BEGIN@13";
+"Class::MOP::Object::_make_compatible_with" -> "Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+"Class::MOP::Object::_make_compatible_with" -> "Class::MOP::Class::_force_rebless_instance";
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "UNIVERSAL::isa";
+"Class::MOP::Object::_is_compatible_with" -> "UNIVERSAL::isa";
+"Class::MOP::Object::_can_be_made_compatible_with" -> "Moose::Meta::Class::_get_compatible_metaclass";
+"Class::MOP::Object::_make_compatible_with" -> "Moose::Meta::Class::_get_compatible_metaclass";
+"Class::MOP::Object::_make_compatible_with" -> "Class::MOP::Object::meta";
+"Class::MOP::Object::_new" -> "Class::MOP::class_of";
+"Class::MOP::Object::_can_be_made_compatible_with" -> "Moose::Meta::Method::_get_compatible_metaclass";
+"Class::MOP::Object::_make_compatible_with" -> "Moose::Meta::Method::_get_compatible_metaclass";
+"base::import" -> "Class::MOP::Object::BEGIN@11";
+"base::import" -> "Class::MOP::Object::BEGIN@3";
+}

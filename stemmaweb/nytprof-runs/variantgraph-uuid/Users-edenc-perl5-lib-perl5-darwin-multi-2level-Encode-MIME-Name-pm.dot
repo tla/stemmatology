@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::mime_name";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Encode_MIME_Name {
+	label="Encode::MIME::Name";
+	"Encode::MIME::Name::BEGIN@2";
+	"Encode::MIME::Name::get_mime_name";
+	"Encode::MIME::Name::CORE:match";
+	"Encode::MIME::Name::BEGIN@3";
+}
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::get_mime_name";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::BEGIN@2";
+"Encode::MIME::Name::BEGIN@2" -> "strict::import";
+"Encode::MIME::Name::BEGIN@3" -> "warnings::import";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::BEGIN@3";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::CORE:match";
+}

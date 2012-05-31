@@ -1,0 +1,45 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Path_Class_Dir {
+	label="Path::Class::Dir";
+	"Path::Class::Dir::BEGIN@13";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_File_Path {
+	label="File::Path";
+	"File::Path::BEGIN@7";
+	"File::Path::BEGIN@6";
+	"File::Path::BEGIN@8";
+	"File::Path::BEGIN@19";
+	"File::Path::BEGIN@10";
+	"File::Path::BEGIN@4";
+	"File::Path::BEGIN@18";
+	"File::Path::BEGIN@3";
+	"File::Path::BEGIN@329";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@4";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@6";
+"File::Path::BEGIN@4" -> "strict::import";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@10";
+"File::Path::BEGIN@6" -> "Exporter::import";
+"File::Path::BEGIN@329" -> "strict::unimport";
+"File::Path::BEGIN@19" -> "vars::import";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@18";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@8";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@7";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@329";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@3";
+"Path::Class::Dir::BEGIN@13" -> "File::Path::BEGIN@19";
+}

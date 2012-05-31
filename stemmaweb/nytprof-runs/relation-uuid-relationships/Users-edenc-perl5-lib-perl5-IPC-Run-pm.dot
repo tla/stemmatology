@@ -1,0 +1,121 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::BEGIN@70";
+	"IPC::Run::Debug::BEGIN@25";
+	"IPC::Run::Debug::BEGIN@69";
+	"IPC::Run::Debug::BEGIN@72";
+	"IPC::Run::Debug::BEGIN@71";
+	"IPC::Run::Debug::BEGIN@2";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@7";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+	"constant::__ANON__[constant.pm:142]";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::CORE:qr";
+	"IPC::Run::BEGIN@1053";
+	"IPC::Run::BEGIN@1054";
+	"IPC::Run::BEGIN@1055";
+	"IPC::Run::BEGIN@1052";
+	"IPC::Run::BEGIN@1445";
+	"IPC::Run::BEGIN@2";
+	"IPC::Run::CORE:regcomp";
+	"IPC::Run::BEGIN@1048";
+	"IPC::Run::BEGIN@1081";
+	"IPC::Run::BEGIN@1051";
+	"IPC::Run::BEGIN@1014";
+	"IPC::Run::BEGIN@3615";
+	"IPC::Run::BEGIN@1";
+	"IPC::Run::BEGIN@1049";
+	"IPC::Run::BEGIN@1016";
+	"IPC::Run::BEGIN@1013";
+	"IPC::Run::BEGIN@1015";
+	"IPC::Run::BEGIN@1082";
+	"IPC::Run::BEGIN@1061";
+	"IPC::Run::BEGIN@1114";
+	"IPC::Run::BEGIN@1237";
+	"IPC::Run::CORE:match";
+	"IPC::Run::BEGIN@1050";
+	"IPC::Run::BEGIN@1059";
+	"IPC::Run::BEGIN@1063";
+	"IPC::Run::BEGIN@1056";
+	"IPC::Run::BEGIN@1080";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@72";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1051";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1014";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1114";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1080";
+"IPC::Run::BEGIN@1063" -> "IPC::Run::BEGIN@1";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1053";
+"IPC::Run::BEGIN@1061" -> "constant::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1061";
+"IPC::Run::BEGIN@1048" -> "strict::import";
+"IPC::Run::BEGIN@1013" -> "strict::import";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@70";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@2";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1055";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1237";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@69";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1016";
+"IPC::Run::BEGIN@1050" -> "Exporter::import";
+"IPC::Run::BEGIN@1051" -> "Exporter::import";
+"IPC::Run::BEGIN@1081" -> "Exporter::import";
+"IPC::Run::BEGIN@1053" -> "Exporter::import";
+"IPC::Run::BEGIN@1054" -> "Exporter::import";
+"IPC::Run::BEGIN@1056" -> "Exporter::import";
+"IPC::Run::BEGIN@1049" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1050";
+"IPC::Run::BEGIN@1082" -> "IPC::Run::CORE:regcomp";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1048";
+"IPC::Run::BEGIN@1061" -> "IPC::Run::CORE:match";
+"IPC::Run::BEGIN@1237" -> "strict::unimport";
+"IPC::Run::BEGIN@1445" -> "vars::import";
+"IPC::Run::BEGIN@1114" -> "vars::import";
+"IPC::Run::BEGIN@3615" -> "vars::import";
+"IPC::Run::BEGIN@1015" -> "vars::import";
+"IPC::Run::BEGIN@1080" -> "vars::import";
+"IPC::Run::BEGIN@1082" -> "IPC::Run::CORE:qr";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1052";
+"IPC::Run::BEGIN@2" -> "bytes::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1063";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@25";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1081";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@3615";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1013";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1059";
+"IPC::Run::BEGIN@1063" -> "constant::__ANON__[constant.pm:142]";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@2";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1015";
+"IPC::Run::BEGIN@1049" -> "IPC::Run::Debug::BEGIN@71";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1054";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1082";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1445";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1056";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1049";
+}

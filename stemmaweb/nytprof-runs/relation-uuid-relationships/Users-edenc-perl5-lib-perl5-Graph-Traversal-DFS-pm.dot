@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Traversal_DFS {
+	label="Graph::Traversal::DFS";
+	"Graph::Traversal::DFS::current";
+	"Graph::Traversal::DFS::see";
+	"Graph::Traversal::DFS::BEGIN@6";
+	"Graph::Traversal::DFS::BEGIN@5";
+	"Graph::Traversal::DFS::BEGIN@3";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@33";
+}
+subgraph cluster_Graph_Traversal {
+	label="Graph::Traversal";
+	"Graph::Traversal::__ANON__[Graph/Traversal.pm:26]";
+	"Graph::Traversal::next";
+	"Graph::Traversal::BEGIN@3";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@5";
+"Graph::Traversal::__ANON__[Graph/Traversal.pm:26]" -> "Graph::Traversal::DFS::see";
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@3";
+"Graph::Traversal::DFS::BEGIN@3" -> "strict::import";
+"Graph::Traversal::next" -> "Graph::Traversal::DFS::current";
+"Graph::Traversal::DFS::BEGIN@5" -> "Graph::Traversal::BEGIN@3";
+"Graph::Traversal::DFS::BEGIN@6" -> "base::import";
+"Graph::BEGIN@33" -> "Graph::Traversal::DFS::BEGIN@6";
+}

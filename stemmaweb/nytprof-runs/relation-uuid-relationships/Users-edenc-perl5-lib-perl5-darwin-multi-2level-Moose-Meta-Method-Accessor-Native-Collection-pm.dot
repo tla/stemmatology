@@ -1,0 +1,143 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_set {
+	label="Moose::Meta::Method::Accessor::Native::Hash::set";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_adds_members";
+	"Moose::Meta::Method::Accessor::Native::Hash::set::_new_members";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+}
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::has_trigger";
+	"Moose::Meta::Mixin::AttributeCore::type_constraint";
+	"Moose::Meta::Mixin::AttributeCore::should_coerce";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_inline_throw_error";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::associated_attribute";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_push {
+	label="Moose::Meta::Method::Accessor::Native::Array::push";
+	"Moose::Meta::Method::Accessor::Native::Array::push::_adds_members";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::name";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_clear {
+	label="Moose::Meta::Method::Accessor::Native::Array::clear";
+	"Moose::Meta::Method::Accessor::Native::Array::clear::_adds_members";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Hash_delete {
+	label="Moose::Meta::Method::Accessor::Native::Hash::delete";
+	"Moose::Meta::Method::Accessor::Native::Hash::delete::_adds_members";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Collection {
+	label="Moose::Meta::Method::Accessor::Native::Collection";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@12";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@9";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@10";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@2";
+	"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@167";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger";
+	"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+	"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only";
+	"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Writer";
+	"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core";
+	"Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+	"Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+	"Moose::Meta::TypeConstraint::_inline_check";
+	"Moose::Meta::TypeConstraint::parent";
+	"Moose::Meta::TypeConstraint::can_be_inlined";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Moose_Meta_Method_Accessor_Native_Array_Writer {
+	label="Moose::Meta::Method::Accessor::Native::Array::Writer";
+	"Moose::Meta::Method::Accessor::Native::Array::Writer::_new_members";
+}
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Writer::_constraint_must_be_checked";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "Moose::Meta::TypeConstraint::Parameterized::type_parameter";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger" -> "Moose::Meta::Mixin::AttributeCore::has_trigger";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Collection::BEGIN@12";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Collection::BEGIN@2";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Moose::Meta::TypeConstraint::can_be_inlined";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@9" -> "strict::import";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::set::_new_members";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Collection::BEGIN@167";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Moose::Meta::Mixin::AttributeCore::type_constraint";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@167" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Moose::Meta::Mixin::AttributeCore::should_coerce";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Moose::Meta::Method::_inline_throw_error";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Class::MOP::Mixin::AttributeCore::name";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Collection::BEGIN@10";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "UNIVERSAL::can";
+"Moose::Meta::Method::Accessor::Native::Collection::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Array::push::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "UNIVERSAL::isa";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type";
+"Class::MOP::Class:::around" -> "Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Moose::Meta::TypeConstraint::parent";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "Moose::Meta::TypeConstraint::parent";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Moose::Meta::TypeConstraint::_inline_check";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Moose::Meta::Method::Accessor::Native::Writer::_is_root_type";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Array::Writer::_new_members";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Hash::delete::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_get_old_value_for_trigger" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Collection::_check_new_members_only" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_check_member_constraint" -> "Class::MOP::Method::Accessor::associated_attribute";
+"Moose::Meta::Method::Accessor::Native::Collection::_inline_tc_code" -> "Moose::Meta::Method::Accessor::Native::Array::clear::_adds_members";
+"Moose::Meta::Method::Accessor::Native::Collection::_tc_member_type" -> "Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:16]";
+"Module::Runtime::require_module" -> "Moose::Meta::Method::Accessor::Native::Collection::BEGIN@9";
+"Moose::Meta::Method::Accessor::Native::Writer::_inline_writer_core" -> "Moose::Meta::Method::Accessor::Native::Collection::_inline_coerce_new_values";
+}

@@ -1,0 +1,110 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IPC_Run_Debug {
+	label="IPC::Run::Debug";
+	"IPC::Run::Debug::_debugging_details";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@7";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::__ANON__[constant.pm:142]";
+}
+subgraph cluster_IPC_Run_IO {
+	label="IPC::Run::IO";
+	"IPC::Run::IO::_new_internal";
+	"IPC::Run::IO::_do_open";
+	"IPC::Run::IO::_cleanup";
+	"IPC::Run::IO::_do_filters";
+	"IPC::Run::IO::binmode";
+	"IPC::Run::IO::_init_filters";
+	"IPC::Run::IO::BEGIN@73";
+	"IPC::Run::IO::op";
+	"IPC::Run::IO::dir";
+	"IPC::Run::IO::BEGIN@65";
+	"IPC::Run::IO::CORE:match";
+	"IPC::Run::IO::BEGIN@74";
+	"IPC::Run::IO::BEGIN@71";
+	"IPC::Run::IO::open_pipe";
+	"IPC::Run::IO::BEGIN@67";
+	"IPC::Run::IO::close";
+	"IPC::Run::IO::poll";
+	"IPC::Run::IO::BEGIN@66";
+	"IPC::Run::IO::BEGIN@489";
+	"IPC::Run::IO::BEGIN@68";
+	"IPC::Run::IO::CORE:regcomp";
+	"IPC::Run::IO::BEGIN@70";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::_open_pipes";
+	"IPC::Run::get_more_input";
+	"IPC::Run::_select_loop";
+	"IPC::Run::_pipe";
+	"IPC::Run::harness";
+	"IPC::Run::_empty";
+	"IPC::Run::_close";
+	"IPC::Run::_cleanup";
+	"IPC::Run::_clobber";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@70";
+"IPC::Run::_clobber" -> "IPC::Run::IO::close";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@66";
+"IPC::Run::IO::poll" -> "IPC::Run::IO::dir";
+"IPC::Run::IO::_do_open" -> "IPC::Run::IO::dir";
+"IPC::Run::IO::open_pipe" -> "IPC::Run::IO::dir";
+"IPC::Run::_select_loop" -> "IPC::Run::IO::poll";
+"IPC::Run::IO::_new_internal" -> "IPC::Run::IO::binmode";
+"IPC::Run::_open_pipes" -> "IPC::Run::IO::open_pipe";
+"IPC::Run::IO::_do_filters" -> "IPC::Run::IO::CORE:regcomp";
+"IPC::Run::IO::open_pipe" -> "IPC::Run::IO::_do_open";
+"IPC::Run::IO::_new_internal" -> "IPC::Run::IO::CORE:match";
+"IPC::Run::IO::_do_filters" -> "IPC::Run::IO::CORE:match";
+"IPC::Run::IO::poll" -> "IPC::Run::Debug::_debugging_details";
+"IPC::Run::IO::BEGIN@65" -> "strict::import";
+"IPC::Run::IO::_do_open" -> "IPC::Run::_pipe";
+"IPC::Run::_cleanup" -> "IPC::Run::IO::_cleanup";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@68";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@74";
+"IPC::Run::IO::_do_filters" -> "IPC::Run::get_more_input";
+"IPC::Run::IO::BEGIN@70" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@66" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@71" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@68" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@67" -> "Exporter::import";
+"IPC::Run::IO::poll" -> "IPC::Run::IO::_do_filters";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@65";
+"IPC::Run::IO::BEGIN@73" -> "vars::import";
+"IPC::Run::IO::BEGIN@489" -> "vars::import";
+"IPC::Run::harness" -> "IPC::Run::IO::_new_internal";
+"IPC::Run::IO::_new_internal" -> "IPC::Run::IO::op";
+"IPC::Run::IO::_new_internal" -> "UNIVERSAL::isa";
+"IPC::Run::IO::_init_filters" -> "UNIVERSAL::isa";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@71";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@73";
+"IPC::Run::IO::BEGIN@74" -> "constant::__ANON__[constant.pm:142]";
+"IPC::Run::IO::_new_internal" -> "constant::__ANON__[constant.pm:142]";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@489";
+"IPC::Run::IO::_new_internal" -> "IPC::Run::_empty";
+"IPC::Run::IO::close" -> "IPC::Run::_close";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@67";
+"IPC::Run::_open_pipes" -> "IPC::Run::IO::_init_filters";
+}

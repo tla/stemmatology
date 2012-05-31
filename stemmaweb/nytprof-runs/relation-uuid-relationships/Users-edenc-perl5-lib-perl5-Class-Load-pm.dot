@@ -1,0 +1,284 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::register";
+	"Catalyst::Dispatcher::_load_dispatch_types";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::setup_plugins";
+	"Catalyst::setup_dispatcher";
+	"Catalyst::_register_plugin";
+	"Catalyst::setup_engine";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Counter {
+	label="Moose::Meta::Attribute::Custom::Trait::Counter";
+	"Moose::Meta::Attribute::Custom::Trait::Counter::register_implementation";
+}
+subgraph cluster_CatalystX_Test_MockContext {
+	label="CatalystX::Test::MockContext";
+	"CatalystX::Test::MockContext::mock_context";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+}
+subgraph cluster_Module_Implementation {
+	label="Module::Implementation";
+	"Module::Implementation::BEGIN@113";
+	"Module::Implementation::BEGIN@7";
+	"Module::Implementation::BEGIN@9";
+	"Module::Implementation::BEGIN@114";
+	"Module::Implementation::BEGIN@10";
+	"Module::Implementation::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_construct_entry";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::_inline_create_error";
+	"Moose::Meta::Class::superclasses";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::CORE:match";
+	"Class::Load::load_optional_class";
+	"Class::Load::CORE:qr";
+	"Class::Load::try_load_class";
+	"Class::Load::load_first_existing_class";
+	"Class::Load::BEGIN@9";
+	"Class::Load::BEGIN@2";
+	"Class::Load::_croak";
+	"Class::Load::CORE:regcomp";
+	"Class::Load::BEGIN@6";
+	"Class::Load::BEGIN@10";
+	"Class::Load::__ANON__[Class/Load.pm:180]";
+	"Class::Load::BEGIN@7";
+	"Class::Load::_error";
+	"Class::Load::BEGIN@1";
+	"Class::Load::BEGIN@5";
+	"Class::Load::load_class";
+	"Class::Load::_nonexistent_fail_re";
+	"Class::Load::__ANON__[Class/Load.pm:183]";
+	"Class::Load::BEGIN@8";
+	"Class::Load::BEGIN@16";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BUILD";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::apply";
+}
+subgraph cluster_KiokuDB_Backend_Serialize {
+	label="KiokuDB::Backend::Serialize";
+	"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::apply";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::resolve_traits";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::_inline_destructor";
+	"Class::MOP::Class::_inline_constructor";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Array {
+	label="Moose::Meta::Attribute::Custom::Trait::Array";
+	"Moose::Meta::Attribute::Custom::Trait::Array::register_implementation";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@15";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::import";
+	"Module::Runtime::require_module";
+	"Module::Runtime::module_notional_filename";
+	"Module::Runtime::check_module_name";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::action_class";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_canonicalize_handles";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::apply_params";
+}
+subgraph cluster_Data_OptList {
+	label="Data::OptList";
+	"Data::OptList::BEGIN@10";
+	"Data::OptList::BEGIN@100";
+	"Data::OptList::BEGIN@11";
+	"Data::OptList::mkopt";
+	"Data::OptList::BEGIN@4";
+	"Data::OptList::BEGIN@9";
+	"Data::OptList::BEGIN@15";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::BEGIN@25";
+}
+subgraph cluster_Moose_Meta_Attribute_Custom_Trait_Hash {
+	label="Moose::Meta::Attribute::Custom::Trait::Hash";
+	"Moose::Meta::Attribute::Custom::Trait::Hash::register_implementation";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::croak";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::__ANON__[Sub/Install.pm:284]";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::_apply_all_roles";
+	"Moose::Util::resolve_metaclass_alias";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::dsn_to_backend";
+}
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@11";
+"Class::Load::load_optional_class" -> "Class::Load::_nonexistent_fail_re";
+"Class::Load::BEGIN@8" -> "Class::Load::BEGIN@2";
+"Class::Load::BEGIN@10" -> "Module::Runtime::import";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@10";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@114";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@8";
+"Class::Load::_nonexistent_fail_re" -> "Class::Load::CORE:qr";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@6";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@100";
+"Try::Tiny::try" -> "Class::Load::__ANON__[Class/Load.pm:180]";
+"Class::Load::load_class" -> "Class::Load::_croak";
+"Class::Load::load_optional_class" -> "Class::Load::CORE:regcomp";
+"Class::Load::load_first_existing_class" -> "Class::Load::CORE:regcomp";
+"Class::Load::_nonexistent_fail_re" -> "Class::Load::CORE:regcomp";
+"Class::Load::try_load_class" -> "Try::Tiny::try";
+"Moose::Meta::Attribute::Custom::Trait::Counter::register_implementation" -> "Class::Load::load_class";
+"KiokuDB::TypeMap::Composite::_construct_entry" -> "Class::Load::load_class";
+"Catalyst::setup_engine" -> "Class::Load::load_class";
+"Catalyst::_register_plugin" -> "Class::Load::load_class";
+"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]" -> "Class::Load::load_class";
+"Class::MOP::Class::_inline_constructor" -> "Class::Load::load_class";
+"Moose::Util::_apply_all_roles" -> "Class::Load::load_class";
+"CatalystX::Test::MockContext::mock_context" -> "Class::Load::load_class";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Class::Load::load_class";
+"metaclass::import" -> "Class::Load::load_class";
+"Moose::Meta::Role::Composite::apply_params" -> "Class::Load::load_class";
+"Moose::Meta::Attribute::Custom::Trait::Hash::register_implementation" -> "Class::Load::load_class";
+"Class::MOP::MiniTrait::apply" -> "Class::Load::load_class";
+"Class::MOP::Class::_inline_destructor" -> "Class::Load::load_class";
+"KiokuDB::Util::dsn_to_backend" -> "Class::Load::load_class";
+"MooseX::Traits::Util::resolve_traits" -> "Class::Load::load_class";
+"Moose::Meta::Class::_inline_create_error" -> "Class::Load::load_class";
+"Moose::Meta::Attribute::Custom::Trait::Array::register_implementation" -> "Class::Load::load_class";
+"Moose::Meta::Role::apply" -> "Class::Load::load_class";
+"Moose::Meta::Class::superclasses" -> "Class::Load::load_class";
+"Catalyst::Controller::action_class" -> "Class::Load::load_class";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Class::Load::load_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Class::Load::load_class";
+"Catalyst::setup_plugins" -> "Class::Load::load_class";
+"Catalyst::setup_dispatcher" -> "Class::Load::load_class";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]" -> "Class::Load::load_class";
+"Catalyst::Dispatcher::_load_dispatch_types" -> "Class::Load::load_class";
+"Catalyst::Dispatcher::register" -> "Class::Load::load_class";
+"Parse::Method::Signatures::BUILD" -> "Class::Load::load_class";
+"Class::Load::load_optional_class" -> "Class::Load::CORE:match";
+"Class::Load::load_first_existing_class" -> "Class::Load::CORE:match";
+"Class::Load::load_first_existing_class" -> "Class::Load::XS::is_class_loaded";
+"Class::Load::try_load_class" -> "Class::Load::XS::is_class_loaded";
+"Class::Load::try_load_class" -> "Try::Tiny::catch";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@9";
+"Try::Tiny::try" -> "Class::Load::__ANON__[Class/Load.pm:183]";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@16";
+"Class::Load::BEGIN@5" -> "strict::import";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@4";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@7";
+"Class::Load::__ANON__[Class/Load.pm:183]" -> "Class::Load::_error";
+"Class::Load::BEGIN@16" -> "Exporter::import";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@113";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@15";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@9";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@9";
+"Class::Load::BEGIN@7" -> "base::import";
+"Class::Load::BEGIN@8" -> "Sub::Install::__ANON__[Sub/Install.pm:284]";
+"Class::Load::BEGIN@6" -> "warnings::import";
+"Data::Visitor::BEGIN@25" -> "Class::Load::load_optional_class";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@7";
+"Class::Load::load_optional_class" -> "Module::Runtime::check_module_name";
+"Class::Load::load_first_existing_class" -> "Module::Runtime::check_module_name";
+"Class::Load::try_load_class" -> "Module::Runtime::check_module_name";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@6";
+"Class::Load::try_load_class" -> "Module::Runtime::module_notional_filename";
+"Class::Load::load_first_existing_class" -> "Module::Runtime::module_notional_filename";
+"Class::Load::_nonexistent_fail_re" -> "Module::Runtime::module_notional_filename";
+"Class::Load::__ANON__[Class/Load.pm:180]" -> "Module::Runtime::require_module";
+"Moose::Util::resolve_metaclass_alias" -> "Class::Load::load_first_existing_class";
+"Class::Load::BEGIN@9" -> "UNIVERSAL::VERSION";
+"Class::Load::BEGIN@10" -> "UNIVERSAL::VERSION";
+"Class::Load::_croak" -> "Carp::croak";
+"Moose::BEGIN@15" -> "Class::Load::BEGIN@5";
+"Class::Load::BEGIN@8" -> "Class::Load::BEGIN@1";
+"Class::Load::load_first_existing_class" -> "Data::OptList::mkopt";
+"Class::Load::load_class" -> "Class::Load::try_load_class";
+"Class::Load::load_optional_class" -> "Class::Load::try_load_class";
+"Class::Load::load_first_existing_class" -> "Class::Load::try_load_class";
+"Class::Load::BEGIN@8" -> "Data::OptList::BEGIN@10";
+"Class::Load::BEGIN@9" -> "Module::Implementation::BEGIN@10";
+}

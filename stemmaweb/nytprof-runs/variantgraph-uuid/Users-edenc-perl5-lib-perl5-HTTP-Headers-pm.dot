@@ -1,0 +1,88 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::new";
+	"HTTP::Message::__ANON__[HTTP/Message.pm:649]";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::prepare_headers";
+	"Catalyst::Request::header";
+}
+subgraph cluster_HTTP_Headers {
+	label="HTTP::Headers";
+	"HTTP::Headers::CORE:match";
+	"HTTP::Headers::header_field_names";
+	"HTTP::Headers::CORE:substcont";
+	"HTTP::Headers::CORE:sort";
+	"HTTP::Headers::CORE:subst";
+	"HTTP::Headers::_sorted_field_names";
+	"HTTP::Headers::BEGIN@4";
+	"HTTP::Headers::BEGIN@3";
+	"HTTP::Headers::content_encoding";
+	"HTTP::Headers::content_length";
+	"HTTP::Headers::scan";
+	"HTTP::Headers::new";
+	"HTTP::Headers::BEGIN@6";
+	"HTTP::Headers::header";
+	"HTTP::Headers::content_type";
+	"HTTP::Headers::_header";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::req_to_psgi";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@7";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::finalize_headers";
+	"Catalyst::Response::content_encoding";
+	"Catalyst::Response::content_length";
+	"Catalyst::Response::__ANON__[Catalyst/Response.pm:81]";
+	"Catalyst::Response::__ANON__[Catalyst/Response.pm:42]";
+	"Catalyst::Response::content_type";
+}
+"HTTP::Headers::_header" -> "HTTP::Headers::CORE:match";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Headers::header";
+"Catalyst::Request::prepare_headers" -> "HTTP::Headers::header";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Headers::header";
+"HTTP::Message::__ANON__[HTTP/Message.pm:649]" -> "HTTP::Headers::header";
+"Catalyst::Request::header" -> "HTTP::Headers::header";
+"HTTP::Headers::_header" -> "HTTP::Headers::CORE:substcont";
+"HTTP::Headers::scan" -> "HTTP::Headers::_sorted_field_names";
+"HTTP::Headers::header_field_names" -> "HTTP::Headers::_sorted_field_names";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@6";
+"HTTP::Message::PSGI::req_to_psgi" -> "HTTP::Headers::header_field_names";
+"HTTP::Headers::BEGIN@3" -> "strict::import";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@4";
+"main::BEGIN@7" -> "HTTP::Headers::BEGIN@3";
+"Catalyst::Response::content_encoding" -> "HTTP::Headers::content_encoding";
+"HTTP::Headers::content_type" -> "HTTP::Headers::CORE:subst";
+"HTTP::Headers::_header" -> "HTTP::Headers::CORE:subst";
+"Catalyst::Response::finalize_headers" -> "HTTP::Headers::scan";
+"HTTP::Headers::BEGIN@6" -> "vars::import";
+"Catalyst::Response::content_type" -> "HTTP::Headers::content_type";
+"HTTP::Headers::scan" -> "Catalyst::Response::__ANON__[Catalyst/Response.pm:81]";
+"Catalyst::Response::content_length" -> "HTTP::Headers::content_length";
+"HTTP::Message::__ANON__[HTTP/Message.pm:649]" -> "HTTP::Headers::content_length";
+"HTTP::Headers::content_length" -> "HTTP::Headers::_header";
+"HTTP::Headers::header" -> "HTTP::Headers::_header";
+"HTTP::Headers::content_encoding" -> "HTTP::Headers::_header";
+"Catalyst::Request::prepare_headers" -> "HTTP::Headers::new";
+"HTTP::Message::new" -> "HTTP::Headers::new";
+"Catalyst::Response::__ANON__[Catalyst/Response.pm:42]" -> "HTTP::Headers::new";
+"HTTP::Headers::_sorted_field_names" -> "HTTP::Headers::CORE:sort";
+}

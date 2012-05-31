@@ -1,0 +1,211 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config {
+	label="Config";
+	"Config::FETCH";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::locate_components";
+	"Catalyst::BEGIN@19";
+}
+subgraph cluster_File_Spec_Functions {
+	label="File::Spec::Functions";
+	"File::Spec::Functions::BEGIN@3";
+	"File::Spec::Functions::BEGIN@6";
+	"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+	"File::Spec::Functions::BEGIN@42";
+	"File::Spec::Functions::BEGIN@4";
+}
+subgraph cluster_Config_Any_JSON {
+	label="Config::Any::JSON";
+	"Config::Any::JSON::BEGIN@3";
+	"Config::Any::JSON::BEGIN@4";
+	"Config::Any::JSON::BEGIN@6";
+}
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::BEGIN@4";
+	"Config::Any::General::BEGIN@3";
+	"Config::Any::General::BEGIN@6";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_File_Basename {
+	label="File::Basename";
+	"File::Basename::fileparse";
+}
+subgraph cluster_File_Spec_Unix {
+	label="File::Spec::Unix";
+	"File::Spec::Unix::curdir";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Config_Any_Perl {
+	label="Config::Any::Perl";
+	"Config::Any::Perl::BEGIN@3";
+	"Config::Any::Perl::BEGIN@6";
+	"Config::Any::Perl::BEGIN@4";
+}
+subgraph cluster_Module_Pluggable_Object {
+	label="Module::Pluggable::Object";
+	"Module::Pluggable::Object::_is_legit";
+	"Module::Pluggable::Object::find_files";
+	"Module::Pluggable::Object::BEGIN@4";
+	"Module::Pluggable::Object::search_paths";
+	"Module::Pluggable::Object::_is_editor_junk";
+	"Module::Pluggable::Object::CORE:open";
+	"Module::Pluggable::Object::BEGIN@3";
+	"Module::Pluggable::Object::_setup_exceptions";
+	"Module::Pluggable::Object::BEGIN@8";
+	"Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]";
+	"Module::Pluggable::Object::CORE:ftis";
+	"Module::Pluggable::Object::CORE:match";
+	"Module::Pluggable::Object::CORE:qr";
+	"Module::Pluggable::Object::plugins";
+	"Module::Pluggable::Object::BEGIN@7";
+	"Module::Pluggable::Object::CORE:readline";
+	"Module::Pluggable::Object::CORE:ftdir";
+	"Module::Pluggable::Object::CORE:regcomp";
+	"Module::Pluggable::Object::CORE:subst";
+	"Module::Pluggable::Object::_require";
+	"Module::Pluggable::Object::search_directories";
+	"Module::Pluggable::Object::BEGIN@6";
+	"Module::Pluggable::Object::new";
+	"Module::Pluggable::Object::handle_innerpackages";
+	"Module::Pluggable::Object::BEGIN@5";
+	"Module::Pluggable::Object::handle_finding_plugin";
+	"Module::Pluggable::Object::CORE:close";
+	"Module::Pluggable::Object::BEGIN@9";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::finder";
+	"Config::Any::plugins";
+}
+subgraph cluster_Config_Any_INI {
+	label="Config::Any::INI";
+	"Config::Any::INI::BEGIN@4";
+	"Config::Any::INI::BEGIN@3";
+	"Config::Any::INI::BEGIN@6";
+}
+subgraph cluster_File_Find {
+	label="File::Find";
+	"File::Find::BEGIN@2";
+	"File::Find::BEGIN@3";
+	"File::Find::BEGIN@4";
+	"File::Find::BEGIN@5";
+	"File::Find::BEGIN@349";
+	"File::Find::find";
+	"File::Find::CORE:qr";
+	"File::Find::_find_dir";
+}
+subgraph cluster_Devel_InnerPackage {
+	label="Devel::InnerPackage";
+	"Devel::InnerPackage::list_packages";
+}
+subgraph cluster_Config_Any_YAML {
+	label="Config::Any::YAML";
+	"Config::Any::YAML::BEGIN@3";
+	"Config::Any::YAML::BEGIN@6";
+	"Config::Any::YAML::BEGIN@4";
+	"Config::Any::YAML::BEGIN@8";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Config_Any_XML {
+	label="Config::Any::XML";
+	"Config::Any::XML::BEGIN@4";
+	"Config::Any::XML::BEGIN@3";
+	"Config::Any::XML::BEGIN@6";
+}
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@3";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@3";
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@4";
+"Module::Pluggable::Object::BEGIN@4" -> "Config::FETCH";
+"Module::Pluggable::Object::_require" -> "Config::Any::YAML::BEGIN@4";
+"Module::Pluggable::Object::handle_finding_plugin" -> "Module::Pluggable::Object::_require";
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@6";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@5";
+"Module::Pluggable::Object::plugins" -> "Module::Pluggable::Object::_setup_exceptions";
+"Module::Pluggable::Object::_require" -> "Config::Any::JSON::BEGIN@4";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@4";
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@4";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:ftdir";
+"Module::Pluggable::Object::find_files" -> "File::Find::find";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@9";
+"Module::Pluggable::Object::search_paths" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"Module::Pluggable::Object::handle_innerpackages" -> "Devel::InnerPackage::list_packages";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::handle_finding_plugin";
+"Module::Pluggable::Object::handle_innerpackages" -> "Module::Pluggable::Object::handle_finding_plugin";
+"Module::Pluggable::Object::_require" -> "Config::Any::YAML::BEGIN@8";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@7";
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@3";
+"Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]" -> "Module::Pluggable::Object::CORE:subst";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:ftis";
+"Module::Pluggable::Object::find_files" -> "Module::Pluggable::Object::CORE:qr";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:qr";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Spec::Unix::curdir";
+"Module::Pluggable::Object::BEGIN@3" -> "strict::import";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@5";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:close";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@2";
+"File::Find::_find_dir" -> "Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@349";
+"Catalyst::locate_components" -> "Module::Pluggable::Object::plugins";
+"Config::Any::plugins" -> "Module::Pluggable::Object::plugins";
+"Module::Pluggable::Object::search_directories" -> "Module::Pluggable::Object::search_paths";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::_is_editor_junk";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@3";
+"Module::Pluggable::Object::search_paths" -> "File::Basename::fileparse";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@6";
+"Module::Pluggable::Object::BEGIN@8" -> "Exporter::import";
+"Module::Pluggable::Object::BEGIN@7" -> "Exporter::import";
+"Module::Pluggable::Object::BEGIN@6" -> "Exporter::import";
+"Module::Pluggable::Object::BEGIN@5" -> "Exporter::import";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::CORE:qr";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@8";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::handle_innerpackages";
+"Module::Pluggable::Object::plugins" -> "Module::Pluggable::Object::handle_innerpackages";
+"Module::Pluggable::Object::_require" -> "Config::Any::INI::BEGIN@4";
+"Module::Pluggable::Object::BEGIN@6" -> "UNIVERSAL::can";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@42";
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@3";
+"Module::Pluggable::Object::BEGIN@9" -> "vars::import";
+"Module::Pluggable::Object::_require" -> "Config::Any::JSON::BEGIN@6";
+"Module::Pluggable::Object::_require" -> "Config::Any::INI::BEGIN@6";
+"Module::Pluggable::Object::_require" -> "Config::Any::YAML::BEGIN@6";
+"Module::Pluggable::Object::_require" -> "Config::Any::General::BEGIN@4";
+"Module::Pluggable::Object::_require" -> "Config::Any::JSON::BEGIN@3";
+"Module::Pluggable::Object::plugins" -> "Module::Pluggable::Object::_is_legit";
+"Module::Pluggable::Object::handle_finding_plugin" -> "Module::Pluggable::Object::_is_legit";
+"Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]" -> "Module::Pluggable::Object::CORE:match";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:match";
+"Module::Pluggable::Object::_is_editor_junk" -> "Module::Pluggable::Object::CORE:match";
+"Module::Pluggable::Object::BEGIN@4" -> "File::Find::BEGIN@4";
+"Config::Any::finder" -> "Module::Pluggable::Object::new";
+"Catalyst::locate_components" -> "Module::Pluggable::Object::new";
+"Module::Pluggable::Object::_require" -> "Config::Any::Perl::BEGIN@6";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@4";
+"Module::Pluggable::Object::__ANON__[Module/Pluggable/Object.pm:281]" -> "Module::Pluggable::Object::CORE:regcomp";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:regcomp";
+"Module::Pluggable::Object::_require" -> "Config::Any::YAML::BEGIN@3";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:readline";
+"Catalyst::BEGIN@19" -> "Module::Pluggable::Object::BEGIN@6";
+"Module::Pluggable::Object::_require" -> "Config::Any::XML::BEGIN@6";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::find_files";
+"Module::Pluggable::Object::BEGIN@6" -> "File::Spec::Functions::BEGIN@3";
+"Module::Pluggable::Object::search_paths" -> "Module::Pluggable::Object::CORE:open";
+"Module::Pluggable::Object::_require" -> "Config::Any::INI::BEGIN@3";
+"Module::Pluggable::Object::plugins" -> "Module::Pluggable::Object::search_directories";
+}

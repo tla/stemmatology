@@ -1,0 +1,99 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::prepare_action";
+	"Catalyst::Dispatcher::register";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::namespace";
+	"Catalyst::req";
+	"Catalyst::action";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::action";
+	"Catalyst::Request::match";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::namespace";
+	"Catalyst::Action::compare";
+	"Catalyst::Action::attributes";
+	"Catalyst::Action::match";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::register";
+	"Catalyst::DispatchType::Path::BEGIN@17";
+	"Catalyst::DispatchType::Path::match";
+	"Catalyst::DispatchType::Path::register_path";
+	"Catalyst::DispatchType::Path::BEGIN@8";
+	"Catalyst::DispatchType::Path::BEGIN@3";
+	"Catalyst::DispatchType::Path::_paths";
+	"Catalyst::DispatchType::Path::BEGIN@6";
+	"Catalyst::DispatchType::Path::BEGIN@7";
+	"Catalyst::DispatchType::Path::__ANON__[Catalyst/DispatchType/Path.pm:14]";
+	"Catalyst::DispatchType::Path::CORE:sort";
+	"Catalyst::DispatchType::Path::CORE:subst";
+	"Catalyst::DispatchType::Path::new";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::new";
+	"Catalyst::DispatchType::Regex::match";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::canonical";
+	"URI::__ANON__[URI.pm:24]";
+	"URI::new";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Catalyst::DispatchType::Path::match" -> "Catalyst::DispatchType::Path::_paths";
+"Catalyst::DispatchType::Path::register_path" -> "Catalyst::DispatchType::Path::_paths";
+"Catalyst::DispatchType::Path::register_path" -> "URI::canonical";
+"Catalyst::DispatchType::Path::BEGIN@6" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Path::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Path::BEGIN@7" -> "UNIVERSAL::import";
+"Catalyst::DispatchType::Path::register_path" -> "URI::new";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Path::BEGIN@7";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Path::BEGIN@6";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::Request::action";
+"Catalyst::DispatchType::Path::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Catalyst::DispatchType::Path::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::DispatchType::Path::register" -> "Catalyst::Action::attributes";
+"Catalyst::DispatchType::Path::register_path" -> "URI::__ANON__[URI.pm:24]";
+"Catalyst::DispatchType::Path::CORE:subst" -> "URI::__ANON__[URI.pm:24]";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::Request::match";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::Action::match";
+"Catalyst::Dispatcher::prepare_action" -> "Catalyst::DispatchType::Path::match";
+"Catalyst::DispatchType::Regex::match" -> "Catalyst::DispatchType::Path::match";
+"Catalyst::DispatchType::Path::register" -> "Catalyst::DispatchType::Path::register_path";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Path::BEGIN@8";
+"Catalyst::DispatchType::Path::CORE:sort" -> "Catalyst::Action::compare";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::namespace";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::action";
+"Catalyst::Dispatcher::register" -> "Catalyst::DispatchType::Path::register";
+"Catalyst::DispatchType::Path::register_path" -> "Catalyst::DispatchType::Path::CORE:sort";
+"Catalyst::DispatchType::Path::register_path" -> "Catalyst::DispatchType::Path::CORE:subst";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Path::BEGIN@3";
+"Catalyst::DispatchType::Regex::new" -> "Catalyst::DispatchType::Path::__ANON__[Catalyst/DispatchType/Path.pm:14]";
+"Catalyst::DispatchType::Path::new" -> "Catalyst::DispatchType::Path::__ANON__[Catalyst/DispatchType/Path.pm:14]";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::Action::namespace";
+"Catalyst::DispatchType::Path::match" -> "Catalyst::req";
+"Module::Runtime::require_module" -> "Catalyst::DispatchType::Path::BEGIN@17";
+}

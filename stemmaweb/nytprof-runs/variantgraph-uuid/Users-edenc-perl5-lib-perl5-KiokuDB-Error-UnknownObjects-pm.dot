@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::BEGIN@6";
+	"KiokuDB::Error::UnknownObjects::BEGIN@2";
+	"KiokuDB::Error::UnknownObjects::BEGIN@4";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@18";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Error::UnknownObjects::BEGIN@6" -> "overload::import";
+"KiokuDB::Error::UnknownObjects::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::Error::UnknownObjects::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@6";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@2";
+"KiokuDB::Collapser::BEGIN@18" -> "KiokuDB::Error::UnknownObjects::BEGIN@4";
+}

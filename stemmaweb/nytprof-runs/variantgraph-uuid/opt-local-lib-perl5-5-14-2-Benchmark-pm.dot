@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Time_HiRes {
+	label="Time::HiRes";
+	"Time::HiRes::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+	"Exporter::export_to_level";
+}
+subgraph cluster_Benchmark {
+	label="Benchmark";
+	"Benchmark::init";
+	"Benchmark::disablecache";
+	"Benchmark::BEGIN@3";
+	"Benchmark::clearallcache";
+	"Benchmark::BEGIN@432";
+	"Benchmark::BEGIN@433";
+	"Benchmark::import";
+	"Benchmark::BEGIN@426";
+	"Benchmark::BEGIN@453";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_to_level";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@5";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@3";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@432";
+"Benchmark::BEGIN@3" -> "strict::import";
+"Benchmark::init" -> "Benchmark::disablecache";
+"Benchmark::BEGIN@432" -> "Exporter::import";
+"Benchmark::BEGIN@433" -> "Exporter::import";
+"Benchmark::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Benchmark::import" -> "Exporter::export_to_level";
+"Benchmark::BEGIN@426" -> "strict::unimport";
+"Benchmark::BEGIN@453" -> "Time::HiRes::import";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::import";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::init";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@453";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@433";
+"Benchmark::init" -> "Benchmark::clearallcache";
+"Text::Tradition::Analysis::BEGIN@5" -> "Benchmark::BEGIN@426";
+}

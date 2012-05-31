@@ -1,0 +1,29 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_HTTP_Body {
+	label="HTTP::Body";
+	"HTTP::Body::BEGIN@24";
+	"HTTP::Body::BEGIN@8";
+	"HTTP::Body::BEGIN@25";
+	"HTTP::Body::BEGIN@6";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::BEGIN@24";
+"HTTP::Body::BEGIN@25" -> "UNIVERSAL::import";
+"HTTP::Body::BEGIN@24" -> "UNIVERSAL::import";
+"HTTP::Body::BEGIN@6" -> "strict::import";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::BEGIN@6";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::BEGIN@25";
+"Catalyst::Engine::BEGIN@10" -> "HTTP::Body::BEGIN@8";
+}

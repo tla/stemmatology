@@ -1,0 +1,79 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@59";
+	"stemmaweb::Controller::Relation::BEGIN@133";
+	"stemmaweb::Controller::Relation::BEGIN@106";
+	"stemmaweb::Controller::Relation::BEGIN@43";
+	"stemmaweb::Controller::Relation::BEGIN@4";
+	"stemmaweb::Controller::Relation::BEGIN@183";
+	"stemmaweb::Controller::Relation::BEGIN@201";
+	"stemmaweb::Controller::Relation::BEGIN@30";
+	"stemmaweb::Controller::Relation::BEGIN@3";
+	"stemmaweb::Controller::Relation::BEGIN@210";
+	"stemmaweb::Controller::Relation::BEGIN@6";
+	"stemmaweb::Controller::Relation::BEGIN@2";
+	"stemmaweb::Controller::Relation::BEGIN@179";
+	"stemmaweb::Controller::Relation::BEGIN@191";
+	"stemmaweb::Controller::Relation::BEGIN@195";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@4";
+"stemmaweb::Controller::Relation::BEGIN@6" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@59";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@106";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@6";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@210";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@191";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@201";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@43";
+"stemmaweb::Controller::Relation::BEGIN@4" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@195";
+"stemmaweb::Controller::Relation::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Relation::BEGIN@195" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@183" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@179" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@191" -> "TryCatch::inject_scope";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@183";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@179";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@133";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@30";
+"stemmaweb::Controller::Relation::BEGIN@3" -> "namespace::autoclean::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@3";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@2";
+"stemmaweb::Controller::Relation::BEGIN@133" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@106" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@43" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@30" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@210" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@59" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@201" -> "attributes::import";
+}

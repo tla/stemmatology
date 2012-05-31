@@ -1,0 +1,67 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_Struct_Tie_ISA {
+	label="Class::Struct::Tie_ISA";
+	"Class::Struct::Tie_ISA::TIEARRAY";
+}
+subgraph cluster_Class_Struct {
+	label="Class::Struct";
+	"Class::Struct::CORE:match";
+	"Class::Struct::BEGIN@5";
+	"Class::Struct::BEGIN@188";
+	"Class::Struct::BEGIN@11";
+	"Class::Struct::struct";
+	"Class::Struct::import";
+	"Class::Struct::BEGIN@7";
+	"Class::Struct::BEGIN@108";
+	"Class::Struct::BEGIN@8";
+	"Class::Struct::BEGIN@99";
+}
+subgraph cluster_Path_Class_Entity {
+	label="Path::Class::Entity";
+	"Path::Class::Entity::BEGIN@9";
+}
+subgraph cluster_warnings_register {
+	label="warnings::register";
+	"warnings::register::import";
+}
+subgraph cluster_File_stat {
+	label="File::stat";
+	"File::stat::BEGIN@173";
+	"File::stat::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+	"Exporter::export_to_level";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_to_level";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@11";
+"Class::Struct::BEGIN@7" -> "strict::import";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@99";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@188";
+"Path::Class::Entity::BEGIN@9" -> "Class::Struct::struct";
+"File::stat::BEGIN@173" -> "Class::Struct::import";
+"Class::Struct::BEGIN@11" -> "Exporter::import";
+"Class::Struct::import" -> "Exporter::Heavy::heavy_export_to_level";
+"Class::Struct::BEGIN@8" -> "warnings::register::import";
+"Class::Struct::import" -> "Exporter::export_to_level";
+"Class::Struct::BEGIN@99" -> "strict::unimport";
+"Class::Struct::BEGIN@188" -> "strict::unimport";
+"Class::Struct::BEGIN@108" -> "strict::unimport";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@7";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@8";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@108";
+"File::stat::BEGIN@173" -> "Class::Struct::BEGIN@5";
+"Class::Struct::struct" -> "Class::Struct::CORE:match";
+"Class::Struct::struct" -> "File::stat::BEGIN@3";
+"Class::Struct::struct" -> "Class::Struct::Tie_ISA::TIEARRAY";
+}

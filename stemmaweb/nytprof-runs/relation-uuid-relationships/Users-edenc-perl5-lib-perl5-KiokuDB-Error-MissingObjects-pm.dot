@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@18";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::BEGIN@2";
+	"KiokuDB::Error::MissingObjects::BEGIN@4";
+	"KiokuDB::Error::MissingObjects::BEGIN@6";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+"KiokuDB::Error::MissingObjects::BEGIN@6" -> "overload::import";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@6";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@4";
+"KiokuDB::Error::MissingObjects::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::Linker::BEGIN@18" -> "KiokuDB::Error::MissingObjects::BEGIN@2";
+"KiokuDB::Error::MissingObjects::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}

@@ -1,0 +1,145 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_JSON_Boolean {
+	label="JSON::Boolean";
+	"JSON::Boolean::_overrride_overload";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@23";
+}
+subgraph cluster_JSON_Backend_XS_Supportable {
+	label="JSON::Backend::XS::Supportable";
+	"JSON::Backend::XS::Supportable::BEGIN@99";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::BEGIN@4";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::BEGIN@318";
+	"JSON::CORE:close";
+	"JSON::BEGIN@9";
+	"JSON::BEGIN@6";
+	"JSON::CORE:readline";
+	"JSON::true";
+	"JSON::BEGIN@4";
+	"JSON::BEGIN@5";
+	"JSON::import";
+	"JSON::_set_module";
+	"JSON::_load_xs";
+	"JSON::BEGIN@2";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@5";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@4";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::export_to_level";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::__ANON__[JSON/Any.pm:108]";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10";
+}
+subgraph cluster_Exporter_Heavy {
+	label="Exporter::Heavy";
+	"Exporter::Heavy::heavy_export_to_level";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@3";
+}
+subgraph cluster_Text_Tradition_Analysis {
+	label="Text::Tradition::Analysis";
+	"Text::Tradition::Analysis::BEGIN@9";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::BEGIN@18";
+	"JSON::Backend::XS::BEGIN@29";
+	"JSON::Backend::XS::BEGIN@42";
+	"JSON::Backend::XS::BEGIN@11";
+	"JSON::Backend::XS::support_by_pp";
+	"JSON::Backend::XS::BEGIN@9";
+	"JSON::Backend::XS::init";
+}
+subgraph cluster_JSON_XS_Boolean {
+	label="JSON::XS::Boolean";
+	"JSON::XS::Boolean::BEGIN@3";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10";
+}
+subgraph cluster_JSON_Backend_PP {
+	label="JSON::Backend::PP";
+	"JSON::Backend::PP::BEGIN@383";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_JSON_PP_Boolean {
+	label="JSON::PP::Boolean";
+	"JSON::PP::Boolean::BEGIN@3";
+}
+"KiokuDB::Backend::Serialize::JSPON::Collapser::collapse_jspon" -> "JSON::true";
+"JSON::_load_xs" -> "JSON::Backend::XS::BEGIN@42";
+"JSON::_load_xs" -> "JSON::Boolean::_overrride_overload";
+"Text::Tradition::BEGIN@3" -> "JSON::_load_xs";
+"JSON::Boolean::_overrride_overload" -> "JSON::PP::Boolean::BEGIN@3";
+"JSON::_load_xs" -> "JSON::Backend::XS::init";
+"JSON::import" -> "JSON::Backend::XS::support_by_pp";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@6";
+"JSON::_load_xs" -> "JSON::BEGIN@2";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@9";
+"JSON::_load_xs" -> "JSON::Backend::XS::Supportable::BEGIN@99";
+"KiokuDB::Backend::DBI::BEGIN@23" -> "JSON::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@5" -> "JSON::import";
+"JSON::Any::__ANON__[JSON/Any.pm:108]" -> "JSON::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8" -> "JSON::import";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10" -> "JSON::import";
+"Text::Tradition::Analysis::BEGIN@9" -> "JSON::import";
+"stemmaweb::Controller::Microservice::BEGIN@4" -> "JSON::import";
+"Text::Tradition::Witness::BEGIN@4" -> "JSON::import";
+"Text::Tradition::BEGIN@3" -> "JSON::import";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10" -> "JSON::import";
+"JSON::BEGIN@4" -> "strict::import";
+"JSON::_load_xs" -> "JSON::CORE:readline";
+"JSON::Boolean::_overrride_overload" -> "JSON::XS::Boolean::BEGIN@3";
+"JSON::_load_xs" -> "JSON::Backend::XS::BEGIN@29";
+"JSON::_load_xs" -> "JSON::CORE:close";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@4";
+"JSON::import" -> "Exporter::Heavy::heavy_export_to_level";
+"JSON::import" -> "Exporter::export_to_level";
+"JSON::Backend::PP::BEGIN@383" -> "strict::unimport";
+"JSON::BEGIN@318" -> "strict::unimport";
+"JSON::BEGIN@6" -> "base::import";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@318";
+"JSON::_load_xs" -> "JSON::Backend::XS::BEGIN@9";
+"JSON::_load_xs" -> "JSON::Backend::XS::BEGIN@18";
+"Text::Tradition::BEGIN@3" -> "JSON::Backend::PP::BEGIN@383";
+"JSON::_load_xs" -> "JSON::_set_module";
+"JSON::_load_xs" -> "JSON::Backend::XS::BEGIN@11";
+"Text::Tradition::BEGIN@3" -> "JSON::BEGIN@5";
+}

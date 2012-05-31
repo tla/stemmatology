@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Heap071_Fibonacci {
+	label="Heap071::Fibonacci";
+	"Heap071::Fibonacci::BEGIN@3";
+	"Heap071::Fibonacci::BEGIN@4";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@38";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Heap071::Fibonacci::BEGIN@3" -> "strict::import";
+"Graph::BEGIN@38" -> "Heap071::Fibonacci::BEGIN@4";
+"Heap071::Fibonacci::BEGIN@4" -> "vars::import";
+"Graph::BEGIN@38" -> "Heap071::Fibonacci::BEGIN@3";
+}

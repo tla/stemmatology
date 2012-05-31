@@ -1,0 +1,75 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::text_from_paths";
+	"Text::Tradition::Collation::reading_sequence";
+	"Text::Tradition::Collation::reading_witnesses";
+	"Text::Tradition::Collation::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::_find_applicable";
+	"Text::Tradition::Collation::RelationshipStore::add_relationship";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::is_lacuna";
+	"Text::Tradition::Collation::Reading::is_start";
+	"Text::Tradition::Collation::Reading::new";
+	"Text::Tradition::Collation::Reading::is_meta";
+	"Text::Tradition::Collation::Reading::BEGIN@4";
+	"Text::Tradition::Collation::Reading::is_ph";
+	"Text::Tradition::Collation::Reading::is_end";
+	"Text::Tradition::Collation::Reading::__ANON__[lib/Text/Tradition/Collation/Reading.pm:151]";
+	"Text::Tradition::Collation::Reading::_stringify";
+	"Text::Tradition::Collation::Reading::BEGIN@331";
+	"Text::Tradition::Collation::Reading::BEGIN@3";
+	"Text::Tradition::Collation::Reading::id";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::_edges";
+}
+subgraph cluster_Text_Tradition_Collation_Reading_Morphology {
+	label="Text::Tradition::Collation::Reading::Morphology";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@340";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@413";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::_get_path_id";
+}
+"Text::Tradition::Collation::Reading::BEGIN@4" -> "overload::import";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@4";
+"Text::Tradition::Collation::Reading::is_meta" -> "Text::Tradition::Collation::Reading::is_end";
+"Text::Tradition::Collation::Reading::is_meta" -> "Text::Tradition::Collation::Reading::is_ph";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::Morphology::BEGIN@340";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@331";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@3";
+"Text::Tradition::Collation::Reading::Morphology::BEGIN@413" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Reading::BEGIN@331" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::Reading::Morphology::BEGIN@340" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Reading::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::Reading::is_meta" -> "Text::Tradition::Collation::Reading::is_start";
+"Text::Tradition::Collation::Reading::_stringify" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::Reading::is_meta";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "Text::Tradition::Collation::Reading::is_meta";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::reading_sequence" -> "Text::Tradition::Collation::Reading::_stringify";
+"Graph::_edges" -> "Text::Tradition::Collation::Reading::_stringify";
+"Graph::AdjacencyMap::Light::_get_path_id" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::RelationshipStore::_find_applicable" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::Reading::new" -> "Text::Tradition::Collation::Reading::__ANON__[lib/Text/Tradition/Collation/Reading.pm:151]";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::Morphology::BEGIN@413";
+"Text::Tradition::Collation::Reading::is_meta" -> "Text::Tradition::Collation::Reading::is_lacuna";
+}

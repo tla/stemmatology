@@ -1,0 +1,69 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@16";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::BEGIN@4";
+	"Catalyst::ClassData::BEGIN@3";
+	"Catalyst::ClassData::BEGIN@27";
+	"Catalyst::ClassData::mk_classdata";
+	"Catalyst::ClassData::BEGIN@5";
+	"Catalyst::ClassData::BEGIN@6";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::is_immutable";
+	"Class::MOP::Class::immutable_options";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@19";
+}
+"Module::Runtime::require_module" -> "Catalyst::ClassData::BEGIN@27";
+"Catalyst::ClassData::mk_classdata" -> "Scalar::Util::blessed";
+"Module::Runtime::require_module" -> "Catalyst::ClassData::BEGIN@3";
+"Module::Runtime::require_module" -> "Catalyst::ClassData::BEGIN@6";
+"Catalyst::ClassData::BEGIN@3" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Module::Runtime::require_module" -> "Catalyst::ClassData::BEGIN@4";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Class::immutable_options";
+"Catalyst::ClassData::BEGIN@27" -> "strict::unimport";
+"Catalyst::ClassData::mk_classdata" -> "UNIVERSAL::isa";
+"Module::Runtime::require_module" -> "Catalyst::ClassData::BEGIN@5";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Object::meta";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Class::is_immutable";
+"stemmaweb::BEGIN@19" -> "Catalyst::ClassData::mk_classdata";
+"Module::Runtime::require_module" -> "Catalyst::ClassData::mk_classdata";
+"Catalyst::BEGIN@16" -> "Catalyst::ClassData::mk_classdata";
+}

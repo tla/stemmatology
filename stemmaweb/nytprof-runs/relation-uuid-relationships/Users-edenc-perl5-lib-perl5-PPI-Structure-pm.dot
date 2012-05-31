@@ -1,0 +1,158 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Structure_List {
+	label="PPI::Structure::List";
+	"PPI::Structure::List::BEGIN@38";
+	"PPI::Structure::List::BEGIN@42";
+	"PPI::Structure::List::BEGIN@43";
+	"PPI::Structure::List::BEGIN@40";
+	"PPI::Structure::List::BEGIN@39";
+}
+subgraph cluster_PPI_Structure_Unknown {
+	label="PPI::Structure::Unknown";
+	"PPI::Structure::Unknown::BEGIN@43";
+	"PPI::Structure::Unknown::BEGIN@45";
+	"PPI::Structure::Unknown::BEGIN@42";
+	"PPI::Structure::Unknown::BEGIN@46";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_PPI_Structure_Block {
+	label="PPI::Structure::Block";
+	"PPI::Structure::Block::BEGIN@46";
+	"PPI::Structure::Block::BEGIN@49";
+	"PPI::Structure::Block::BEGIN@45";
+	"PPI::Structure::Block::BEGIN@48";
+}
+subgraph cluster_PPI_Structure {
+	label="PPI::Structure";
+	"PPI::Structure::BEGIN@109";
+	"PPI::Structure::BEGIN@98";
+	"PPI::Structure::BEGIN@112";
+	"PPI::Structure::BEGIN@92";
+	"PPI::Structure::BEGIN@110";
+	"PPI::Structure::BEGIN@94";
+	"PPI::Structure::BEGIN@107";
+	"PPI::Structure::BEGIN@95";
+	"PPI::Structure::BEGIN@93";
+	"PPI::Structure::BEGIN@111";
+	"PPI::Structure::BEGIN@104";
+	"PPI::Structure::BEGIN@91";
+	"PPI::Structure::BEGIN@106";
+	"PPI::Structure::BEGIN@108";
+	"PPI::Structure::BEGIN@105";
+	"PPI::Structure::BEGIN@97";
+}
+subgraph cluster_PPI_Structure_Condition {
+	label="PPI::Structure::Condition";
+	"PPI::Structure::Condition::BEGIN@44";
+	"PPI::Structure::Condition::BEGIN@40";
+	"PPI::Structure::Condition::BEGIN@43";
+	"PPI::Structure::Condition::BEGIN@41";
+}
+subgraph cluster_PPI_Structure_Constructor {
+	label="PPI::Structure::Constructor";
+	"PPI::Structure::Constructor::BEGIN@36";
+	"PPI::Structure::Constructor::BEGIN@39";
+	"PPI::Structure::Constructor::BEGIN@35";
+	"PPI::Structure::Constructor::BEGIN@38";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_PPI_Structure_Subscript {
+	label="PPI::Structure::Subscript";
+	"PPI::Structure::Subscript::BEGIN@42";
+	"PPI::Structure::Subscript::BEGIN@44";
+	"PPI::Structure::Subscript::BEGIN@45";
+	"PPI::Structure::Subscript::BEGIN@41";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI_Structure_Given {
+	label="PPI::Structure::Given";
+	"PPI::Structure::Given::BEGIN@39";
+	"PPI::Structure::Given::BEGIN@37";
+	"PPI::Structure::Given::BEGIN@36";
+	"PPI::Structure::Given::BEGIN@40";
+}
+subgraph cluster_PPI_Structure_For {
+	label="PPI::Structure::For";
+	"PPI::Structure::For::BEGIN@40";
+	"PPI::Structure::For::BEGIN@37";
+	"PPI::Structure::For::BEGIN@36";
+	"PPI::Structure::For::BEGIN@39";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@22";
+}
+subgraph cluster_PPI_Structure_When {
+	label="PPI::Structure::When";
+	"PPI::Structure::When::BEGIN@39";
+	"PPI::Structure::When::BEGIN@36";
+	"PPI::Structure::When::BEGIN@37";
+	"PPI::Structure::When::BEGIN@40";
+}
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@109";
+"PPI::Structure::BEGIN@108" -> "PPI::Structure::Given::BEGIN@37";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@40";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@91";
+"PPI::Structure::BEGIN@105" -> "PPI::Structure::Condition::BEGIN@41";
+"PPI::Structure::BEGIN@104" -> "PPI::Structure::Block::BEGIN@49";
+"PPI::Structure::BEGIN@111" -> "PPI::Structure::Unknown::BEGIN@42";
+"PPI::Structure::BEGIN@111" -> "PPI::Structure::Unknown::BEGIN@45";
+"PPI::Structure::BEGIN@111" -> "PPI::Structure::Unknown::BEGIN@46";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@98";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@104";
+"PPI::Structure::BEGIN@108" -> "PPI::Structure::Given::BEGIN@40";
+"PPI::Structure::BEGIN@106" -> "PPI::Structure::Constructor::BEGIN@36";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@39";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@111";
+"PPI::Structure::BEGIN@109" -> "PPI::Structure::List::BEGIN@43";
+"PPI::Structure::BEGIN@109" -> "PPI::Structure::List::BEGIN@39";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@36";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@106";
+"PPI::Structure::BEGIN@110" -> "PPI::Structure::Subscript::BEGIN@44";
+"PPI::Structure::BEGIN@104" -> "PPI::Structure::Block::BEGIN@46";
+"PPI::Structure::BEGIN@91" -> "strict::import";
+"PPI::Structure::BEGIN@108" -> "PPI::Structure::Given::BEGIN@36";
+"PPI::Structure::BEGIN@106" -> "PPI::Structure::Constructor::BEGIN@38";
+"PPI::Structure::BEGIN@110" -> "PPI::Structure::Subscript::BEGIN@42";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@108";
+"PPI::Structure::BEGIN@107" -> "PPI::Structure::For::BEGIN@36";
+"PPI::Structure::BEGIN@104" -> "PPI::Structure::Block::BEGIN@48";
+"PPI::Structure::BEGIN@105" -> "PPI::Structure::Condition::BEGIN@43";
+"PPI::Structure::BEGIN@93" -> "Exporter::import";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@94";
+"PPI::Structure::BEGIN@107" -> "PPI::Structure::For::BEGIN@40";
+"PPI::Structure::BEGIN@109" -> "PPI::Structure::List::BEGIN@42";
+"PPI::Structure::BEGIN@110" -> "PPI::Structure::Subscript::BEGIN@45";
+"PPI::Structure::BEGIN@109" -> "PPI::Structure::List::BEGIN@38";
+"PPI::Structure::BEGIN@107" -> "PPI::Structure::For::BEGIN@39";
+"PPI::Structure::BEGIN@97" -> "vars::import";
+"PPI::Structure::BEGIN@106" -> "PPI::Structure::Constructor::BEGIN@39";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@92";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@110";
+"PPI::Structure::BEGIN@107" -> "PPI::Structure::For::BEGIN@37";
+"PPI::Structure::BEGIN@105" -> "PPI::Structure::Condition::BEGIN@40";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@105";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@97";
+"PPI::Structure::BEGIN@111" -> "PPI::Structure::Unknown::BEGIN@43";
+"PPI::Structure::BEGIN@104" -> "PPI::Structure::Block::BEGIN@45";
+"PPI::Structure::BEGIN@105" -> "PPI::Structure::Condition::BEGIN@44";
+"PPI::Structure::BEGIN@112" -> "PPI::Structure::When::BEGIN@37";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@95";
+"PPI::Structure::BEGIN@106" -> "PPI::Structure::Constructor::BEGIN@35";
+"PPI::Structure::BEGIN@109" -> "PPI::Structure::List::BEGIN@40";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@107";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@93";
+"PPI::Structure::BEGIN@108" -> "PPI::Structure::Given::BEGIN@39";
+"PPI::Structure::BEGIN@110" -> "PPI::Structure::Subscript::BEGIN@41";
+"PPI::BEGIN@22" -> "PPI::Structure::BEGIN@112";
+}

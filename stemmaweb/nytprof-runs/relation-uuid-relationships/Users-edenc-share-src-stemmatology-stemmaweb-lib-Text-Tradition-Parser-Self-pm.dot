@@ -1,0 +1,136 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::CORE:sort";
+	"Text::Tradition::Parser::Self::parse";
+	"Text::Tradition::Parser::Self::_layersort_rel";
+	"Text::Tradition::Parser::Self::BEGIN@3";
+	"Text::Tradition::Parser::Self::BEGIN@223";
+	"Text::Tradition::Parser::Self::BEGIN@4";
+	"Text::Tradition::Parser::Self::BEGIN@5";
+	"Text::Tradition::Parser::Self::BEGIN@221";
+	"Text::Tradition::Parser::Self::BEGIN@6";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::end";
+	"Text::Tradition::Collation::reading";
+	"Text::Tradition::Collation::ac_label";
+	"Text::Tradition::Collation::linear";
+	"Text::Tradition::Collation::add_relationship";
+	"Text::Tradition::Collation::add_reading";
+	"Text::Tradition::Collation::meta";
+	"Text::Tradition::Collation::baselabel";
+	"Text::Tradition::Collation::text_from_paths";
+	"Text::Tradition::Collation::add_path";
+	"Text::Tradition::Collation::get_relationship";
+	"Text::Tradition::Collation::wit_list_separator";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::__ANON__[TryCatch.pm:87]";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_Text_Tradition_Parser_GraphML {
+	label="Text::Tradition::Parser::GraphML";
+	"Text::Tradition::Parser::GraphML::BEGIN@4";
+	"Text::Tradition::Parser::GraphML::BEGIN@3";
+	"Text::Tradition::Parser::GraphML::BEGIN@9";
+	"Text::Tradition::Parser::GraphML::graphml_parse";
+	"Text::Tradition::Parser::GraphML::BEGIN@8";
+	"Text::Tradition::Parser::GraphML::BEGIN@6";
+	"Text::Tradition::Parser::GraphML::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Module_Load {
+	label="Module::Load";
+	"Module::Load::load";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::add_witness";
+	"Text::Tradition::meta";
+	"Text::Tradition::name";
+	"Text::Tradition::BUILD";
+	"Text::Tradition::collation";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::rank";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::has_attribute";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::type";
+	"Text::Tradition::Collation::Relationship::scope";
+}
+subgraph cluster_Scope_Upper {
+	label="Scope::Upper";
+	"Scope::Upper::unwind";
+	"Scope::Upper::SUB";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::Relationship::scope";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::collation";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::linear";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@3";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::ac_label";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::meta";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Parser::GraphML::graphml_parse";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@6";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@5";
+"Text::Tradition::Parser::Self::parse" -> "Class::MOP::Mixin::HasAttributes::has_attribute";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::Relationship::type";
+"Text::Tradition::Parser::Self::_layersort_rel" -> "Scope::Upper::SUB";
+"Text::Tradition::Parser::Self::parse" -> "TryCatch::__ANON__[TryCatch.pm:87]";
+"Text::Tradition::Parser::Self::BEGIN@6" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Parser::Self::BEGIN@3" -> "strict::import";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@223";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@4";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@4";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Parser::Self::CORE:sort" -> "Text::Tradition::Parser::Self::_layersort_rel";
+"Text::Tradition::Parser::Self::BEGIN@223" -> "TryCatch::inject_scope";
+"Text::Tradition::Parser::Self::BEGIN@221" -> "TryCatch::inject_scope";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Exporter::import";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::add_witness";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@221";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Parser::Self::CORE:sort";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::baselabel";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_path";
+"Text::Tradition::Parser::Self::BEGIN@4" -> "warnings::import";
+"Text::Tradition::BUILD" -> "Text::Tradition::Parser::Self::parse";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@9";
+"Module::Load::load" -> "Text::Tradition::Parser::Self::BEGIN@6";
+"Text::Tradition::Parser::Self::_layersort_rel" -> "Scope::Upper::unwind";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::text_from_paths";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::name";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_relationship";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::get_relationship";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::meta";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::end";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_reading";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::Reading::rank";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@8";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::wit_list_separator";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@3";
+"Text::Tradition::Parser::Self::BEGIN@5" -> "Text::Tradition::Parser::GraphML::BEGIN@5";
+}

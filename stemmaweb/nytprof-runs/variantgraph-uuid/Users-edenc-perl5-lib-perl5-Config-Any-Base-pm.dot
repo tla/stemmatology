@@ -1,0 +1,69 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::requires_all_of";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Config_Any {
+	label="Config::Any";
+	"Config::Any::_load";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::BEGIN@22";
+	"Config::General::BEGIN@15";
+	"Config::General::BEGIN@38";
+	"Config::General::BEGIN@16";
+	"Config::General::BEGIN@19";
+	"Config::General::BEGIN@32";
+	"Config::General::BEGIN@37";
+	"Config::General::BEGIN@29";
+	"Config::General::BEGIN@21";
+	"Config::General::BEGIN@33";
+	"Config::General::BEGIN@20";
+	"Config::General::BEGIN@17";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::BEGIN@4";
+	"Config::Any::Base::BEGIN@3";
+	"Config::Any::Base::_require_line";
+	"Config::Any::Base::is_supported";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@21";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@15";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@38";
+"Config::Any::_load" -> "Config::Any::Base::is_supported";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@33";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@29";
+"Config::Any::Base::is_supported" -> "Config::Any::Base::_require_line";
+"Config::Any::Base::BEGIN@3" -> "strict::import";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@20";
+"base::import" -> "Config::Any::Base::BEGIN@4";
+"Config::Any::Base::is_supported" -> "Config::Any::General::requires_all_of";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@16";
+"Config::Any::Base::is_supported" -> "UNIVERSAL::can";
+"Config::Any::Base::BEGIN@4" -> "warnings::import";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@17";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@32";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@22";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@19";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@37";
+"base::import" -> "Config::Any::Base::BEGIN@3";
+}

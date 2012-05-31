@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@13";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Method_Overload {
+	label="Class::MOP::Method::Overload";
+	"Class::MOP::Method::Overload::BEGIN@3";
+	"Class::MOP::Method::Overload::BEGIN@15";
+	"Class::MOP::Method::Overload::BEGIN@11";
+	"Class::MOP::Method::Overload::BEGIN@13";
+	"Class::MOP::Method::Overload::BEGIN@10";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@15";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@3";
+"Class::MOP::Method::Overload::BEGIN@10" -> "strict::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@10";
+"Class::MOP::Method::Overload::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@13";
+"Class::MOP::Method::Overload::BEGIN@15" -> "base::import";
+"Class::MOP::Method::Overload::BEGIN@11" -> "warnings::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@13" -> "Class::MOP::Method::Overload::BEGIN@11";
+}

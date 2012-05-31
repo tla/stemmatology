@@ -1,0 +1,51 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Encode_Encoding {
+	label="Encode::Encoding";
+	"Encode::Encoding::BEGIN@4";
+	"Encode::Encoding::name";
+	"Encode::Encoding::BEGIN@5";
+	"Encode::Encoding::CORE:match";
+	"Encode::Encoding::mime_name";
+	"Encode::Encoding::renewed";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::decode_xs";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::predefine_encodings";
+}
+subgraph cluster_Catalyst_Plugin_Unicode_Encoding {
+	label="Catalyst::Plugin::Unicode::Encoding";
+	"Catalyst::Plugin::Unicode::Encoding::finalize_headers";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Encode_MIME_Name {
+	label="Encode::MIME::Name";
+	"Encode::MIME::Name::BEGIN@2";
+	"Encode::MIME::Name::get_mime_name";
+	"Encode::MIME::Name::CORE:match";
+	"Encode::MIME::Name::BEGIN@3";
+}
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::get_mime_name";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::BEGIN@2";
+"Encode::predefine_encodings" -> "Encode::Encoding::CORE:match";
+"Encode::Encoding::BEGIN@4" -> "strict::import";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@4";
+"Catalyst::Plugin::Unicode::Encoding::finalize_headers" -> "Encode::Encoding::mime_name";
+"Encode::Encoding::BEGIN@5" -> "warnings::import";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::BEGIN@3";
+"Encode::Encoding::mime_name" -> "Encode::MIME::Name::CORE:match";
+"Encode::Encoding::mime_name" -> "Encode::Encoding::name";
+"Encode::utf8::decode_xs" -> "Encode::Encoding::renewed";
+"Encode::predefine_encodings" -> "Encode::Encoding::BEGIN@5";
+}

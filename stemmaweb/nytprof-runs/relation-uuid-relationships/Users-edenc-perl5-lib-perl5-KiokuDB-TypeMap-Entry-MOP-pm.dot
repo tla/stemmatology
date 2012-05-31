@@ -1,0 +1,205 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Module {
+	label="Class::MOP::Module";
+	"Class::MOP::Module::version";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Expand {
+	label="KiokuDB::TypeMap::Entry::Std::Expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::does_role";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::does_role";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::is_anon_class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::meta";
+	"KiokuDB::Thunk::BEGIN@4";
+	"KiokuDB::Thunk::BEGIN@6";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::name";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::has";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::make_entry";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@287";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::MOP::compile_clear";
+	"KiokuDB::TypeMap::Entry::MOP::does_role";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@19";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@239";
+	"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+	"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:37]";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand";
+	"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+	"KiokuDB::TypeMap::Entry::MOP::new";
+	"KiokuDB::TypeMap::Entry::MOP::has_intrinsic";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@261";
+	"KiokuDB::TypeMap::Entry::MOP::compile_create";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@7";
+	"KiokuDB::TypeMap::Entry::MOP::compile_id";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::has_value";
+	"Class::MOP::Attribute::get_raw_value";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::get_metaclass_by_name";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+}
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "KiokuDB::Collapser::make_entry";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@19";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "KiokuDB::Thunk::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::MOP::compile_expand";
+"KiokuDB::TypeMap::Entry::MOP::does_role" -> "Moose::Meta::Class::does_role";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "KiokuDB::Thunk::meta";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "UNIVERSAL::import";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "Moose::has";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@261";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh" -> "KiokuDB::TypeMap::Entry::MOP::compile_clear";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@4";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "Class::MOP::Class::is_anon_class";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Class::is_anon_class";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::MOP::compile_id";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"KiokuDB::TypeMap::Entry::MOP::compile_create" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand" -> "KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_refresh" -> "KiokuDB::TypeMap::Entry::MOP::compile_expand_data";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Class::MOP::Attribute::get_raw_value";
+"KiokuDB::Collapser::collapse_first_class" -> "KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]";
+"KiokuDB::TypeMap::Entry::Std::Expand::compile_expand" -> "KiokuDB::TypeMap::Entry::MOP::compile_create";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_create" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::compile_id" -> "Class::MOP::get_metaclass_by_name";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Class::MOP::Mixin::AttributeCore::name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::Mixin::AttributeCore::name";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Mixin::AttributeCore::name";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@6" -> "Exporter::import";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@7" -> "Exporter::import";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse" -> "KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "KiokuDB::Thunk::BEGIN@4";
+"KiokuDB::TypeMap::Entry::MOP::does_role" -> "UNIVERSAL::can";
+"KiokuDB::TypeMap::Entry::MOP::does_role" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::does_role";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "Class::MOP::Module::version";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Module::version";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@261" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@287" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@11" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@239" -> "warnings::unimport";
+"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic" -> "KiokuDB::TypeMap::Entry::MOP::does_role";
+"KiokuDB::TypeMap::Entry::MOP::compile_create" -> "KiokuDB::TypeMap::Entry::MOP::does_role";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "KiokuDB::TypeMap::Entry::MOP::does_role";
+"KiokuDB::TypeMap::Entry::MOP::compile_id" -> "KiokuDB::TypeMap::Entry::MOP::does_role";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "KiokuDB::TypeMap::Entry::MOP::does_role";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Data::Visitor::visit";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@6";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@11";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@239";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "KiokuDB::TypeMap::Entry::Std::Expand::compile_expand";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Object::meta";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Class::MOP::Object::meta";
+"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic" -> "KiokuDB::TypeMap::Entry::MOP::has_intrinsic";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@7";
+"KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:179]" -> "Class::MOP::Attribute::has_value";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand_data" -> "Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "KiokuDB::TypeMap::Entry::MOP::BEGIN@287";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper" -> "KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+"KiokuDB::TypeMap::Entry::MOP::new" -> "KiokuDB::TypeMap::Entry::MOP::__ANON__[KiokuDB/TypeMap/Entry/MOP.pm:37]";
+}

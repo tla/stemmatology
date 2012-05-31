@@ -1,0 +1,23 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_URI__query {
+	label="URI::_query";
+	"URI::_query::CORE:match";
+	"URI::_query::query";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@8";
+}
+subgraph cluster_URI_QueryParam {
+	label="URI::QueryParam";
+	"URI::QueryParam::BEGIN@3";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Request::BEGIN@8" -> "URI::QueryParam::BEGIN@3";
+"URI::QueryParam::BEGIN@3" -> "strict::import";
+"URI::_query::query" -> "URI::_query::CORE:match";
+}

@@ -1,0 +1,152 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::forward";
+	"Catalyst::stash";
+	"Catalyst::request";
+	"Catalyst::model";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::end";
+	"Text::Tradition::Collation::relations";
+	"Text::Tradition::Collation::relationships";
+	"Text::Tradition::Collation::paths";
+	"Text::Tradition::Collation::readings";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::inject_scope";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::method";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::execute";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::get_relationship";
+}
+subgraph cluster_attributes {
+	label="attributes";
+	"attributes::import";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::extends";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::collation";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::rank";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::tradition";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@133";
+	"stemmaweb::Controller::Relation::BEGIN@106";
+	"stemmaweb::Controller::Relation::BEGIN@43";
+	"stemmaweb::Controller::Relation::BEGIN@30";
+	"stemmaweb::Controller::Relation::BEGIN@3";
+	"stemmaweb::Controller::Relation::BEGIN@210";
+	"stemmaweb::Controller::Relation::BEGIN@6";
+	"stemmaweb::Controller::Relation::text";
+	"stemmaweb::Controller::Relation::BEGIN@195";
+	"stemmaweb::Controller::Relation::BEGIN@59";
+	"stemmaweb::Controller::Relation::BEGIN@4";
+	"stemmaweb::Controller::Relation::BEGIN@183";
+	"stemmaweb::Controller::Relation::relationships";
+	"stemmaweb::Controller::Relation::BEGIN@201";
+	"stemmaweb::Controller::Relation::end";
+	"stemmaweb::Controller::Relation::BEGIN@2";
+	"stemmaweb::Controller::Relation::BEGIN@191";
+	"stemmaweb::Controller::Relation::BEGIN@179";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::annotation";
+	"Text::Tradition::Collation::Relationship::type";
+	"Text::Tradition::Collation::Relationship::has_annotation";
+	"Text::Tradition::Collation::Relationship::scope";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@4";
+"stemmaweb::Controller::Relation::BEGIN@6" -> "Moose::extends";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@59";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::Relationship::scope";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::collation";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::collation";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@106";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@6";
+"stemmaweb::Controller::Relation::relationships" -> "Catalyst::model";
+"stemmaweb::Controller::Relation::text" -> "Catalyst::model";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@210";
+"stemmaweb::Controller::Relation::relationships" -> "Catalyst::request";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Collation::readings";
+"stemmaweb::Controller::Relation::relationships" -> "Catalyst::stash";
+"stemmaweb::Controller::Relation::text" -> "Catalyst::stash";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@191";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::Relationship::type";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@201";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@43";
+"stemmaweb::Controller::Relation::BEGIN@4" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::text";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::relations";
+"stemmaweb::Controller::Relation::relationships" -> "Catalyst::forward";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::Relationship::has_annotation";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@195";
+"stemmaweb::Controller::Relation::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"stemmaweb::Controller::Relation::relationships" -> "Catalyst::Request::method";
+"stemmaweb::Controller::Relation::BEGIN@195" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@183" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@179" -> "TryCatch::inject_scope";
+"stemmaweb::Controller::Relation::BEGIN@191" -> "TryCatch::inject_scope";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::end";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@183";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@179";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@133";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::RelationshipStore::get_relationship";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Collation::paths";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::relationships";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@30";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Directory::tradition";
+"stemmaweb::Controller::Relation::relationships" -> "Text::Tradition::Collation::Relationship::annotation";
+"stemmaweb::Controller::Relation::BEGIN@3" -> "namespace::autoclean::import";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@3";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Collation::end";
+"Catalyst::Action::execute" -> "stemmaweb::Controller::Relation::relationships";
+"stemmaweb::Controller::Relation::text" -> "Text::Tradition::Collation::Reading::rank";
+"Catalyst::Utils::ensure_class_loaded" -> "stemmaweb::Controller::Relation::BEGIN@2";
+"stemmaweb::Controller::Relation::BEGIN@133" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@106" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@43" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@30" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@210" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@59" -> "attributes::import";
+"stemmaweb::Controller::Relation::BEGIN@201" -> "attributes::import";
+}

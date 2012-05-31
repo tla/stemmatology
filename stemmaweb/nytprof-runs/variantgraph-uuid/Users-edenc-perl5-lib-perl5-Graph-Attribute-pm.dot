@@ -1,0 +1,31 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Attribute {
+	label="Graph::Attribute";
+	"Graph::Attribute::BEGIN@24";
+	"Graph::Attribute::import";
+	"Graph::Attribute::BEGIN@14";
+	"Graph::Attribute::BEGIN@49";
+	"Graph::Attribute::BEGIN@3";
+	"Graph::Attribute::CORE:match";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@86";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@14";
+"Graph::Attribute::BEGIN@3" -> "strict::import";
+"Graph::Attribute::import" -> "Graph::Attribute::CORE:match";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@24";
+"Graph::Attribute::BEGIN@49" -> "strict::unimport";
+"Graph::Attribute::BEGIN@24" -> "strict::unimport";
+"Graph::Attribute::BEGIN@14" -> "strict::unimport";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@3";
+"Graph::BEGIN@86" -> "Graph::Attribute::import";
+"Graph::BEGIN@86" -> "Graph::Attribute::BEGIN@49";
+}

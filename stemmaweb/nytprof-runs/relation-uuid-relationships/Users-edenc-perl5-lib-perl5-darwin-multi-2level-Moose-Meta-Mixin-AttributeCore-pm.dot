@@ -1,0 +1,29 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Mixin_AttributeCore {
+	label="Moose::Meta::Mixin::AttributeCore";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@10";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@12";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@2";
+	"Moose::Meta::Mixin::AttributeCore::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"base::import" -> "Moose::Meta::Mixin::AttributeCore::BEGIN@2";
+"Moose::Meta::Mixin::AttributeCore::BEGIN@9" -> "strict::import";
+"base::import" -> "Moose::Meta::Mixin::AttributeCore::BEGIN@12";
+"Moose::Meta::Mixin::AttributeCore::BEGIN@12" -> "base::import";
+"Moose::Meta::Mixin::AttributeCore::BEGIN@10" -> "warnings::import";
+"base::import" -> "Moose::Meta::Mixin::AttributeCore::BEGIN@10";
+"base::import" -> "Moose::Meta::Mixin::AttributeCore::BEGIN@9";
+}

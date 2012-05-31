@@ -1,0 +1,66 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::before";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role {
+	label="MooseX::MethodAttributes::Role::Meta::Role";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::apply_metaroles";
+	"Moose::Util::MetaRole::apply_base_class_roles";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+	"Moose::Util::find_meta";
+}
+subgraph cluster_MooseX_MethodAttributes {
+	label="MooseX::MethodAttributes";
+	"MooseX::MethodAttributes::BEGIN@12";
+	"MooseX::MethodAttributes::BEGIN@11";
+	"MooseX::MethodAttributes::init_meta";
+	"MooseX::MethodAttributes::BEGIN@10";
+	"MooseX::MethodAttributes::BEGIN@13";
+	"MooseX::MethodAttributes::BEGIN@2";
+	"MooseX::MethodAttributes::BEGIN@15";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::DESTROY";
+}
+"MooseX::MethodAttributes::init_meta" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"MooseX::MethodAttributes::init_meta" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@2";
+"MooseX::MethodAttributes::init_meta" -> "Class::MOP::Package::DESTROY";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@10";
+"MooseX::MethodAttributes::BEGIN@13" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@12";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::find_meta";
+"MooseX::MethodAttributes::BEGIN@11" -> "Moose::Exporter::import";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@13";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::does_role";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@15";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::MetaRole::apply_base_class_roles";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]" -> "MooseX::MethodAttributes::init_meta";
+"Class::MOP::Class:::before" -> "MooseX::MethodAttributes::init_meta";
+"MooseX::MethodAttributes::init_meta" -> "Moose::Util::MetaRole::apply_metaroles";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@17" -> "MooseX::MethodAttributes::BEGIN@11";
+}

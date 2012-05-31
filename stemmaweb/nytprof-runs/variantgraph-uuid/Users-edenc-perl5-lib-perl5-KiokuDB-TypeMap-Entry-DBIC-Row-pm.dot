@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@28";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::new";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::__ANON__[KiokuDB/TypeMap/Entry/DBIC/Row.pm:20]";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@2";
+"KiokuDB::TypeMap::Entry::DBIC::Row::__ANON__[KiokuDB/TypeMap/Entry/DBIC/Row.pm:20]" -> "JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10";
+"KiokuDB::TypeMap::Entry::DBIC::Row::new" -> "KiokuDB::TypeMap::Entry::DBIC::Row::__ANON__[KiokuDB/TypeMap/Entry/DBIC/Row.pm:20]";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10" -> "JSON::import";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@11" -> "Exporter::import";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@11";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13" -> "namespace::autoclean::import";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8";
+}

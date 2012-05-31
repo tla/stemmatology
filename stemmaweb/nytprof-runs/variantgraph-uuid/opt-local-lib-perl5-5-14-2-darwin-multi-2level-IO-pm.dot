@@ -1,0 +1,33 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_IO {
+	label="IO";
+	"IO::BEGIN@7";
+	"IO::BEGIN@5";
+	"IO::BEGIN@8";
+	"IO::BEGIN@6";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_IO_Handle {
+	label="IO::Handle";
+	"IO::Handle::BEGIN@266";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"IO::Handle::BEGIN@266" -> "IO::BEGIN@5";
+"IO::BEGIN@7" -> "strict::import";
+"IO::Handle::BEGIN@266" -> "IO::BEGIN@7";
+"IO::BEGIN@6" -> "Exporter::import";
+"IO::BEGIN@8" -> "warnings::import";
+"IO::Handle::BEGIN@266" -> "IO::BEGIN@8";
+"IO::Handle::BEGIN@266" -> "IO::BEGIN@6";
+}

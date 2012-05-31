@@ -1,0 +1,97 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@10";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@7";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::meta";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@9";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::_jspon_params";
+	"KiokuDB::Serializer::JSON::collapser";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::new";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@7";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::meta";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@9";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::_build_collapser";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::meta";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@7";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@10";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12";
+"KiokuDB::Backend::Serialize::JSPON::_build_collapser" -> "KiokuDB::Serializer::JSON::_jspon_params";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Moose::has";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Moose::has";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@7";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Moose::with";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Moose::with";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::BEGIN@9";
+"KiokuDB::Backend::Serialize::JSPON::_build_collapser" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::new";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@8";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Serializer::JSON::collapser" -> "KiokuDB::Backend::Serialize::JSPON::_build_collapser";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@4";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@9";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "KiokuDB::Backend::Serialize::JSPON::Collapser::meta";
+}

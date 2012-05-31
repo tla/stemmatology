@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@30";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@11";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10" -> "JSON::import";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@11" -> "Exporter::import";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@2";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13" -> "namespace::autoclean::import";
+}

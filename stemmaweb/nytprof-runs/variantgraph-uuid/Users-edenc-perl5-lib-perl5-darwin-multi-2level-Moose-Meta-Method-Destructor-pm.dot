@@ -1,0 +1,102 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::associated_metaclass";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@26";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::BEGIN@17";
+	"Moose::Meta::Method::Destructor::_generate_DEMOLISHALL";
+	"Moose::Meta::Method::Destructor::BEGIN@11";
+	"Moose::Meta::Method::Destructor::_initialize_body";
+	"Moose::Meta::Method::Destructor::BEGIN@15";
+	"Moose::Meta::Method::Destructor::_generate_fallback_destructor";
+	"Moose::Meta::Method::Destructor::options";
+	"Moose::Meta::Method::Destructor::BEGIN@14";
+	"Moose::Meta::Method::Destructor::BEGIN@10";
+	"Moose::Meta::Method::Destructor::BEGIN@13";
+	"Moose::Meta::Method::Destructor::new";
+	"Moose::Meta::Method::Destructor::__ANON__[Moose/Meta/Method/Destructor.pm:99]";
+	"Moose::Meta::Method::Destructor::BEGIN@3";
+	"Moose::Meta::Method::Destructor::is_needed";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_method_by_name";
+	"Class::MOP::Class::find_all_methods_by_name";
+	"Class::MOP::Class::_inline_destructor";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Class_MOP_Method_Generated {
+	label="Class::MOP::Method::Generated";
+	"Class::MOP::Method::Generated::_compile_code";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Moose::Meta::Method::Destructor::is_needed" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@13";
+"Try::Tiny::try" -> "Moose::Meta::Method::Destructor::__ANON__[Moose/Meta/Method/Destructor.pm:99]";
+"Moose::Meta::Method::Destructor::_generate_DEMOLISHALL" -> "Class::MOP::Method::associated_metaclass";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Class::MOP::Method::associated_metaclass";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@11";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Try::Tiny::try";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@17";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Try::Tiny::catch";
+"Moose::Meta::Method::Destructor::BEGIN@10" -> "strict::import";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@15";
+"Moose::Meta::Method::Destructor::is_needed" -> "Class::MOP::Class::find_method_by_name";
+"Moose::Meta::Method::Destructor::__ANON__[Moose/Meta/Method/Destructor.pm:99]" -> "Class::MOP::Method::Generated::_compile_code";
+"Moose::Meta::Method::Destructor::BEGIN@14" -> "Exporter::import";
+"Moose::Meta::Method::Destructor::BEGIN@15" -> "Exporter::import";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Moose::Meta::Method::Destructor::_generate_DEMOLISHALL";
+"Moose::Meta::Method::Destructor::BEGIN@17" -> "base::import";
+"Moose::Meta::Method::Destructor::BEGIN@11" -> "warnings::import";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@10";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Moose::Meta::Method::Destructor::options";
+"Moose::Meta::Method::Destructor::new" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Destructor::is_needed" -> "UNIVERSAL::isa";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Moose::Meta::Method::Destructor::_generate_fallback_destructor";
+"Moose::Meta::Method::Destructor::_generate_DEMOLISHALL" -> "Class::MOP::Class::find_all_methods_by_name";
+"Moose::Meta::Method::Destructor::new" -> "Moose::Meta::Method::Destructor::_initialize_body";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@14";
+"Moose::Meta::Method::Destructor::_initialize_body" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_inline_destructor" -> "Moose::Meta::Method::Destructor::is_needed";
+"Class::MOP::Class::_inline_destructor" -> "Moose::Meta::Method::Destructor::new";
+"Moose::Meta::Class::BEGIN@26" -> "Moose::Meta::Method::Destructor::BEGIN@3";
+}

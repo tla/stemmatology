@@ -1,0 +1,127 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::debug";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::COMPONENT";
+	"Catalyst::Component::config";
+}
+subgraph cluster_next {
+	label="next";
+	"next::method";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::BEGIN@10";
+	"Catalyst::View::TT::BEGIN@4";
+	"Catalyst::View::TT::BEGIN@11";
+	"Catalyst::View::TT::BEGIN@8";
+	"Catalyst::View::TT::new";
+	"Catalyst::View::TT::BEGIN@6";
+	"Catalyst::View::TT::expose_methods";
+	"Catalyst::View::TT::BEGIN@9";
+	"Catalyst::View::TT::BEGIN@7";
+	"Catalyst::View::TT::BEGIN@3";
+	"Catalyst::View::TT::include_path";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::new";
+}
+subgraph cluster_Template_Base {
+	label="Template::Base";
+	"Template::Base::new";
+}
+subgraph cluster_Template_Timer {
+	label="Template::Timer";
+	"Template::Timer::BEGIN@3";
+	"Template::Timer::BEGIN@4";
+	"Template::Timer::BEGIN@60";
+	"Template::Timer::BEGIN@61";
+	"Template::Timer::BEGIN@68";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Template {
+	label="Template";
+	"Template::BEGIN@22";
+	"Template::BEGIN@31";
+	"Template::BEGIN@28";
+	"Template::BEGIN@25";
+	"Template::BEGIN@24";
+	"Template::BEGIN@32";
+	"Template::BEGIN@29";
+	"Template::BEGIN@27";
+	"Template::BEGIN@33";
+	"Template::BEGIN@23";
+	"Template::BEGIN@30";
+}
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@27";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@28";
+"base::import" -> "Catalyst::View::TT::BEGIN@7";
+"base::import" -> "Catalyst::View::TT::BEGIN@4";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@33";
+"Catalyst::View::TT::BEGIN@10" -> "UNIVERSAL::import";
+"Catalyst::View::TT::BEGIN@9" -> "UNIVERSAL::import";
+"Catalyst::View::TT::BEGIN@8" -> "UNIVERSAL::import";
+"Catalyst::View::TT::new" -> "Catalyst::Component::config";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@4";
+"Catalyst::View::TT::new" -> "Catalyst::debug";
+"base::import" -> "Catalyst::View::TT::BEGIN@10";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@68";
+"base::import" -> "Catalyst::View::TT::BEGIN@9";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@30";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@61";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@24";
+"Catalyst::View::TT::BEGIN@3" -> "strict::import";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@32";
+"Catalyst::View::TT::new" -> "Catalyst::View::TT::expose_methods";
+"Catalyst::View::TT::new" -> "Catalyst::View::new";
+"Catalyst::View::TT::BEGIN@7" -> "Exporter::import";
+"Catalyst::View::TT::BEGIN@11" -> "Exporter::import";
+"Catalyst::View::TT::BEGIN@9" -> "UNIVERSAL::can";
+"base::import" -> "Catalyst::View::TT::BEGIN@8";
+"Catalyst::View::TT::BEGIN@6" -> "base::import";
+"Catalyst::View::TT::BEGIN@4" -> "warnings::import";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@29";
+"Catalyst::Component::COMPONENT" -> "Catalyst::View::TT::new";
+"Catalyst::View::TT::new" -> "Template::Base::new";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@22";
+"Catalyst::View::TT::new" -> "Catalyst::View::TT::include_path";
+"Catalyst::View::TT::new" -> "Scalar::Util::weaken";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@3";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@31";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@25";
+"Catalyst::View::TT::BEGIN@9" -> "Template::Timer::BEGIN@60";
+"base::import" -> "Catalyst::View::TT::BEGIN@11";
+"base::import" -> "Catalyst::View::TT::BEGIN@3";
+"Catalyst::View::TT::BEGIN@8" -> "Template::BEGIN@23";
+"base::import" -> "Catalyst::View::TT::BEGIN@6";
+"Catalyst::View::TT::new" -> "next::method";
+}

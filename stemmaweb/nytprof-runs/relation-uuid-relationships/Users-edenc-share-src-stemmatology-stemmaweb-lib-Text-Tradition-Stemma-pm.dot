@@ -1,0 +1,123 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_Reader_Dot {
+	label="Graph::Reader::Dot";
+	"Graph::Reader::Dot::BEGIN@347";
+	"Graph::Reader::Dot::BEGIN@12";
+	"Graph::Reader::Dot::CORE:match";
+	"Graph::Reader::Dot::BEGIN@13";
+	"Graph::Reader::Dot::CORE:qr";
+	"Graph::Reader::Dot::CORE:regcomp";
+	"Graph::Reader::Dot::BEGIN@346";
+	"Graph::Reader::Dot::BEGIN@15";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::BEGIN@3";
+	"Text::Tradition::Stemma::BEGIN@12";
+	"Text::Tradition::Stemma::BEGIN@6";
+	"Text::Tradition::Stemma::BEGIN@393";
+	"Text::Tradition::Stemma::BEGIN@8";
+	"Text::Tradition::Stemma::BEGIN@4";
+	"Text::Tradition::Stemma::BEGIN@11";
+	"Text::Tradition::Stemma::BEGIN@5";
+	"Text::Tradition::Stemma::BEGIN@9";
+	"Text::Tradition::Stemma::BEGIN@10";
+	"Text::Tradition::Stemma::BEGIN@7";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::import";
+}
+subgraph cluster_Bio_Phylo_IO {
+	label="Bio::Phylo::IO";
+	"Bio::Phylo::IO::BEGIN@2";
+	"Bio::Phylo::IO::BEGIN@5";
+	"Bio::Phylo::IO::BEGIN@3";
+	"Bio::Phylo::IO::BEGIN@7";
+	"Bio::Phylo::IO::BEGIN@4";
+	"Bio::Phylo::IO::BEGIN@6";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@7";
+}
+subgraph cluster_Text_Tradition_StemmaUtil {
+	label="Text::Tradition::StemmaUtil";
+	"Text::Tradition::StemmaUtil::BEGIN@9";
+	"Text::Tradition::StemmaUtil::BEGIN@12";
+	"Text::Tradition::StemmaUtil::BEGIN@15";
+	"Text::Tradition::StemmaUtil::BEGIN@10";
+	"Text::Tradition::StemmaUtil::BEGIN@6";
+	"Text::Tradition::StemmaUtil::BEGIN@3";
+	"Text::Tradition::StemmaUtil::BEGIN@5";
+	"Text::Tradition::StemmaUtil::BEGIN@11";
+	"Text::Tradition::StemmaUtil::BEGIN@14";
+	"Text::Tradition::StemmaUtil::BEGIN@13";
+	"Text::Tradition::StemmaUtil::BEGIN@7";
+	"Text::Tradition::StemmaUtil::BEGIN@4";
+	"Text::Tradition::StemmaUtil::BEGIN@8";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@4";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@8";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@6";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@3";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@13";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@6";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@347";
+"Text::Tradition::Stemma::BEGIN@6" -> "UNIVERSAL::import";
+"Text::Tradition::Stemma::BEGIN@9" -> "UNIVERSAL::import";
+"Text::Tradition::Stemma::BEGIN@7" -> "UNIVERSAL::import";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@4";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@15";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@15";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:match";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@5";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@11";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@14";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@4";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@2";
+"Text::Tradition::Stemma::BEGIN@393" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Stemma::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@8";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@12";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@9";
+"Text::Tradition::Stemma::BEGIN@8" -> "Exporter::import";
+"Text::Tradition::Stemma::BEGIN@5" -> "Exporter::import";
+"Text::Tradition::Stemma::BEGIN@10" -> "Exporter::import";
+"Text::Tradition::Stemma::BEGIN@4" -> "Exporter::import";
+"Text::Tradition::Stemma::BEGIN@3" -> "Exporter::import";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@12";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@9";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@7";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@5";
+"Text::Tradition::Stemma::BEGIN@11" -> "XML::LibXML::import";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:qr";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@10";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@5";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@7";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::CORE:regcomp";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@12";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@3";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@13";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@7";
+"Text::Tradition::Stemma::BEGIN@7" -> "Graph::Reader::Dot::BEGIN@346";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@10";
+"Text::Tradition::Stemma::BEGIN@3" -> "Bio::Phylo::IO::BEGIN@6";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@3";
+"Text::Tradition::BEGIN@7" -> "Text::Tradition::Stemma::BEGIN@393";
+"Text::Tradition::Stemma::BEGIN@10" -> "Text::Tradition::StemmaUtil::BEGIN@11";
+}

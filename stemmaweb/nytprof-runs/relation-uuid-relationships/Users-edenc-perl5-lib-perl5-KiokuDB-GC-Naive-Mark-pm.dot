@@ -1,0 +1,64 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Set_Object {
+	label="Set::Object";
+	"Set::Object::BEGIN@497";
+	"Set::Object::BEGIN@712";
+	"Set::Object::BEGIN@499";
+	"Set::Object::BEGIN@498";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+	"KiokuDB::GC::Naive::Mark::Results::BEGIN@12";
+}
+subgraph cluster_Set_Object_Weak {
+	label="Set::Object::Weak";
+	"Set::Object::Weak::BEGIN@28";
+	"Set::Object::Weak::BEGIN@30";
+	"Set::Object::Weak::BEGIN@32";
+	"Set::Object::Weak::BEGIN@31";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::BEGIN@4";
+	"KiokuDB::GC::Naive::Mark::BEGIN@6";
+}
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@499";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@712";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@32";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::BEGIN@4";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@28";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@497";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::BEGIN@6";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@30";
+"KiokuDB::GC::Naive::Mark::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::BEGIN@498";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Mark::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Exporter::import";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::Results::BEGIN@14";
+"KiokuDB::GC::Naive::BEGIN@6" -> "KiokuDB::GC::Naive::Mark::Results::BEGIN@12";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "Set::Object::Weak::BEGIN@31";
+"KiokuDB::GC::Naive::Mark::Results::BEGIN@14" -> "DynaLoader::bootstrap";
+}

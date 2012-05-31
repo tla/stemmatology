@@ -1,0 +1,97 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::get_method_list";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::can";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_7 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::7";
+	"Moose::Meta::Class::__ANON__::SERIAL::7::attributes";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_method_by_name";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::get_action_methods";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method {
+	label="MooseX::MethodAttributes::Role::Meta::Method";
+	"MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::CORE:sort";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@13";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@11";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::find_meta";
+}
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "MooseX::MethodAttributes::Role::Meta::Method::_get_attributed_coderef";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Class::BEGIN@11";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Class::MOP::Mixin::HasMethods::get_method";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "Moose::Meta::Class::__ANON__::SERIAL::7::attributes";
+"Catalyst::Controller::get_action_methods" -> "MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Class::BEGIN@2";
+"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@13" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "Moose::Util::find_meta";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Class::BEGIN@10";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "Class::MOP::Class::find_method_by_name";
+"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "UNIVERSAL::can";
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "UNIVERSAL::can";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "UNIVERSAL::can";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Class::BEGIN@13";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_map";
+"MooseX::MethodAttributes::Role::Meta::Class::get_all_methods_with_attributes" -> "Class::MOP::Method::name";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "Class::MOP::Method::name";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "MooseX::MethodAttributes::Role::Meta::Class::CORE:sort";
+"MooseX::MethodAttributes::Role::Meta::Class::get_method_with_attributes_list" -> "Moose::Meta::Class::__ANON__::SERIAL::5::_method_attribute_list";
+}

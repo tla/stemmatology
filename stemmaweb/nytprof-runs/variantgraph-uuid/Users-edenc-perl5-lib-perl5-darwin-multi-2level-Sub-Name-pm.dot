@@ -1,0 +1,139 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::BEGIN@17";
+	"Class::MOP::Mixin::HasMethods::add_method";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::_unique_constraints";
+	"DBIx::Class::ResultSource::_columns";
+	"DBIx::Class::ResultSource::_ordered_columns";
+	"DBIx::Class::ResultSource::_primaries";
+	"DBIx::Class::ResultSource::_relationships";
+}
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::BEGIN@45";
+	"Sub::Name::subname";
+	"Sub::Name::BEGIN@44";
+	"Sub::Name::BEGIN@42";
+	"Sub::Name::BEGIN@49";
+	"Sub::Name::BEGIN@50";
+	"Sub::Name::bootstrap";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::type_export_generator";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::add_before_method_modifier";
+	"Class::MOP::Class::add_after_method_modifier";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::on_connect_call";
+	"DBIx::Class::Storage::DBI::_driver_determined";
+	"DBIx::Class::Storage::DBI::auto_savepoint";
+	"DBIx::Class::Storage::DBI::_dbh_details";
+	"DBIx::Class::Storage::DBI::_connect_info";
+	"DBIx::Class::Storage::DBI::_dbh";
+	"DBIx::Class::Storage::DBI::on_connect_do";
+	"DBIx::Class::Storage::DBI::_dbh_autocommit";
+	"DBIx::Class::Storage::DBI::_dbi_connect_info";
+	"DBIx::Class::Storage::DBI::_dbic_connect_attributes";
+	"DBIx::Class::Storage::DBI::_sql_maker";
+	"DBIx::Class::Storage::DBI::unsafe";
+	"DBIx::Class::Storage::DBI::_conn_pid";
+	"DBIx::Class::Storage::DBI::_sql_maker_opts";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@190";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::schema";
+	"DBIx::Class::Storage::debug";
+	"DBIx::Class::Storage::transaction_depth";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::ensure_class_loaded";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::_compile_subtype";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:329]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:352]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::_mk_group_accessors";
+}
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@44";
+"DynaLoader::bootstrap" -> "Sub::Name::bootstrap";
+"Sub::Name::BEGIN@44" -> "strict::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@50";
+"Sub::Name::BEGIN@49" -> "base::import";
+"Sub::Name::BEGIN@50" -> "base::import";
+"Sub::Name::BEGIN@45" -> "warnings::import";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@45";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Sub::Name::subname";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "Sub::Name::subname";
+"DBIx::Class::Storage::debug" -> "Sub::Name::subname";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:352]" -> "Sub::Name::subname";
+"Moose::Exporter::__ANON__[Moose/Exporter.pm:329]" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_relationships" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_primaries" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Sub::Name::subname";
+"DBIx::Class::Storage::schema" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_columns" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::unsafe" -> "Sub::Name::subname";
+"Data::Visitor::Callback::BEGIN@190" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Sub::Name::subname";
+"DBIx::Class::Storage::transaction_depth" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh" -> "Sub::Name::subname";
+"Class::C3::Componentised::ensure_class_loaded" -> "Sub::Name::subname";
+"Class::MOP::Class::add_before_method_modifier" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Sub::Name::subname";
+"Class::MOP::Class::add_around_method_modifier" -> "Sub::Name::subname";
+"MooseX::Types::type_export_generator" -> "Sub::Name::subname";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Sub::Name::subname";
+"Moose::Meta::TypeConstraint::_compile_subtype" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Sub::Name::subname";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Sub::Name::subname";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Sub::Name::subname";
+"Class::MOP::Class::add_after_method_modifier" -> "Sub::Name::subname";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@49";
+"Class::MOP::Mixin::HasMethods::BEGIN@17" -> "Sub::Name::BEGIN@42";
+}

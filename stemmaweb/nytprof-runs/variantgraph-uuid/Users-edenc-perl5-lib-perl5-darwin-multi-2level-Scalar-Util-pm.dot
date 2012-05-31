@@ -1,0 +1,1674 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::meta";
+}
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::meta";
+	"Catalyst::Dispatcher::new";
+	"Catalyst::Dispatcher::_invoke_as_component";
+	"Catalyst::Dispatcher::_command2action";
+	"Catalyst::Dispatcher::_find_component";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::meta";
+	"Catalyst::DESTROY";
+	"Catalyst::setup_plugins";
+	"Catalyst::finalize_headers";
+	"Catalyst::setup_component";
+	"Catalyst::new";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::remove_method";
+	"Class::MOP::Mixin::HasMethods::get_method";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_7 {
+	label="MooseX::Traits::__ANON__::SERIAL::7";
+	"MooseX::Traits::__ANON__::SERIAL::7::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::new";
+	"Catalyst::DispatchType::Index::meta";
+}
+subgraph cluster_Catalyst_DispatchType {
+	label="Catalyst::DispatchType";
+	"Catalyst::DispatchType::meta";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::new";
+	"Text::Tradition::Collation::_set_start";
+	"Text::Tradition::Collation::meta";
+	"Text::Tradition::Collation::paths";
+	"Text::Tradition::Collation::equivalence_graph";
+	"Text::Tradition::Collation::_add_reading";
+	"Text::Tradition::Collation::equivalence";
+	"Text::Tradition::Collation::_set_end";
+	"Text::Tradition::Collation::_set_relations";
+	"Text::Tradition::Collation::get_relationship";
+}
+subgraph cluster_Moose_Meta_Method_Constructor {
+	label="Moose::Meta::Method::Constructor";
+	"Moose::Meta::Method::Constructor::new";
+}
+subgraph cluster_Moose_Meta_Instance {
+	label="Moose::Meta::Instance";
+	"Moose::Meta::Instance::_new";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::meta";
+}
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::meta";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::meta";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep_Results {
+	label="KiokuDB::GC::Naive::Sweep::Results";
+	"KiokuDB::GC::Naive::Sweep::Results::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Alias {
+	label="KiokuDB::TypeMap::Entry::Alias";
+	"KiokuDB::TypeMap::Entry::Alias::meta";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::store";
+	"KiokuX::Model::new";
+	"KiokuX::Model::new_scope";
+	"KiokuX::Model::directory";
+	"KiokuX::Model::lookup";
+	"KiokuX::Model::meta";
+}
+subgraph cluster_Data_Stream_Bulk_Chunked {
+	label="Data::Stream::Bulk::Chunked";
+	"Data::Stream::Bulk::Chunked::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::_new";
+	"Moose::Meta::TypeConstraint::DuckType::meta";
+}
+subgraph cluster_Eval_Closure {
+	label="Eval::Closure";
+	"Eval::Closure::_canonicalize_source";
+	"Eval::Closure::_validate_env";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::meta";
+	"KiokuDB::Linker::new";
+}
+subgraph cluster_KiokuDB_Set_Loaded {
+	label="KiokuDB::Set::Loaded";
+	"KiokuDB::Set::Loaded::meta";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::BUILDARGS";
+	"Class::MOP::Instance::weaken_slot_value";
+	"Class::MOP::Instance::new";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_3 {
+	label="MooseX::Traits::__ANON__::SERIAL::3";
+	"MooseX::Traits::__ANON__::SERIAL::3::meta";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::config";
+	"Catalyst::Component::meta";
+	"Catalyst::Component::BUILDARGS";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::meta";
+}
+subgraph cluster_MooseX_Types_Structured_MessageStack {
+	label="MooseX::Types::Structured::MessageStack";
+	"MooseX::Types::Structured::MessageStack::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::_new";
+	"Moose::Meta::TypeConstraint::Role::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::meta";
+	"KiokuDB::TypeMap::Entry::Closure::new";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::meta";
+}
+subgraph cluster_KiokuDB_LiveObjects_Guard {
+	label="KiokuDB::LiveObjects::Guard";
+	"KiokuDB::LiveObjects::Guard::new";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::_unique_constraints";
+	"DBIx::Class::ResultSource::DESTROY";
+	"DBIx::Class::ResultSource::_columns";
+	"DBIx::Class::ResultSource::_primaries";
+	"DBIx::Class::ResultSource::_ordered_columns";
+	"DBIx::Class::ResultSource::_relationships";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured_Optional {
+	label="MooseX::Meta::TypeCoercion::Structured::Optional";
+	"MooseX::Meta::TypeCoercion::Structured::Optional::meta";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+}
+subgraph cluster_Moose_Meta_Method_Overridden {
+	label="Moose::Meta::Method::Overridden";
+	"Moose::Meta::Method::Overridden::_new";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::new";
+	"KiokuDB::Backend::DBI::storage";
+	"KiokuDB::Backend::DBI::schema";
+	"KiokuDB::Backend::DBI::meta";
+	"KiokuDB::Backend::DBI::kiokudb_entries_source_name";
+	"KiokuDB::Backend::DBI::serialize";
+	"KiokuDB::Backend::DBI::dbh_do";
+}
+subgraph cluster_Tree_Simple {
+	label="Tree::Simple";
+	"Tree::Simple::_insertChildAt";
+	"Tree::Simple::_setParent";
+	"Tree::Simple::_init";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::meta";
+	"Moose::Meta::TypeConstraint::Enum::_new";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_5 {
+	label="MooseX::Traits::__ANON__::SERIAL::5";
+	"MooseX::Traits::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_Eval_Closure_Sandbox_421 {
+	label="Eval::Closure::Sandbox_421";
+	"Eval::Closure::Sandbox_421::__ANON__[(eval 582)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::headers";
+	"Catalyst::Request::meta";
+	"Catalyst::Request::DESTROY";
+	"Catalyst::Request::new";
+	"Catalyst::Request::header";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::meta";
+	"KiokuDB::Reference::DESTROY";
+	"KiokuDB::Reference::new";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint";
+	"Moose::Meta::TypeConstraint::Parameterized::meta";
+	"Moose::Meta::TypeConstraint::Parameterized::_new";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role";
+	"Moose::Meta::Role::Application::RoleSummation::_new";
+	"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role";
+	"Moose::Meta::Role::Application::RoleSummation::meta";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::set_prototype";
+	"Scalar::Util::BEGIN@9";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::looks_like_number";
+	"Scalar::Util::reftype";
+	"Scalar::Util::isweak";
+	"Scalar::Util::blessed";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_Data_Stream_Bulk_Nil {
+	label="Data::Stream::Bulk::Nil";
+	"Data::Stream::Bulk::Nil::meta";
+}
+subgraph cluster_Eval_Closure_Sandbox_637 {
+	label="Eval::Closure::Sandbox_637";
+	"Eval::Closure::Sandbox_637::__ANON__[(eval 843)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::_create_entry";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_1 {
+	label="MooseX::Traits::__ANON__::SERIAL::1";
+	"MooseX::Traits::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_KiokuDB_Stream_Objects {
+	label="KiokuDB::Stream::Objects";
+	"KiokuDB::Stream::Objects::meta";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+}
+subgraph cluster_Moose_Meta_Role_Method_Conflicting {
+	label="Moose::Meta::Role::Method::Conflicting";
+	"Moose::Meta::Role::Method::Conflicting::_new";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::mk_classdata";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::clone";
+	"Class::MOP::Method::attach_to_class";
+	"Class::MOP::Method::wrap";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::meta";
+	"Moose::Meta::Role::Application::ToClass::_new";
+	"Moose::Meta::Role::Application::ToClass::apply";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::meta";
+	"Catalyst::EngineLoader::new";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::compare";
+	"Catalyst::Action::meta";
+	"Catalyst::Action::new";
+	"Catalyst::Action::DESTROY";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::meta";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::new";
+	"KiokuDB::Collapser::Buffer::DESTROY";
+	"KiokuDB::Collapser::Buffer::meta";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::register_entry";
+	"KiokuDB::LiveObjects::detach_scope";
+	"KiokuDB::LiveObjects::meta";
+	"KiokuDB::LiveObjects::_vivify_id_info";
+	"KiokuDB::LiveObjects::update_object_entry";
+	"KiokuDB::LiveObjects::new";
+	"KiokuDB::LiveObjects::register_object";
+	"KiokuDB::LiveObjects::_set_current_scope";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::new";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::reinitialize";
+	"Moose::Meta::Class::add_role";
+	"Moose::Meta::Class::add_attribute";
+	"Moose::Meta::Class::_anon_cache_key";
+	"Moose::Meta::Class::add_role_application";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::new";
+	"Text::Tradition::Collation::RelationshipStore::meta";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::new";
+	"Moose::Meta::Method::Destructor::is_needed";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::new";
+	"Catalyst::ActionContainer::meta";
+}
+subgraph cluster_KiokuDB_Set_Base {
+	label="KiokuDB::Set::Base";
+	"KiokuDB::Set::Base::meta";
+}
+subgraph cluster___TYPE__ {
+	label="__TYPE__";
+	"__TYPE__::ArrayRef";
+	"__TYPE__::HashRef";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_add_element";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::new";
+	"KiokuDB::TypeMap::Entry::Callback::meta";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::meta";
+	"Parse::Method::Signatures::new";
+	"Parse::Method::Signatures::ppi_doc";
+	"Parse::Method::Signatures::_set_ppi";
+	"Parse::Method::Signatures::ppi";
+	"Parse::Method::Signatures::param";
+	"Parse::Method::Signatures::DESTROY";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::meta";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::meta";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::meta";
+	"KiokuDB::TypeMap::Shadow::new";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::directory";
+	"Catalyst::Model::KiokuDB::meta";
+	"Catalyst::Model::KiokuDB::new";
+	"Catalyst::Model::KiokuDB::_model";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+	"List::MoreUtils::firstidx";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+}
+subgraph cluster_MooseX_Types_TypeDecorator {
+	label="MooseX::Types::TypeDecorator";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]";
+	"MooseX::Types::TypeDecorator::new";
+	"MooseX::Types::TypeDecorator::__type_constraint";
+	"MooseX::Types::TypeDecorator::isa";
+	"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::register";
+	"Catalyst::DispatchType::Chained::meta";
+	"Catalyst::DispatchType::Chained::new";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::meta";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::meta";
+	"Moose::Meta::Role::_new";
+	"Moose::Meta::Role::apply";
+	"Moose::Meta::Role::reinitialize";
+	"Moose::Meta::Role::add_required_methods";
+	"Moose::Meta::Role::add_role";
+	"Moose::Meta::Role::add_attribute";
+	"Moose::Meta::Role::does_role";
+	"Moose::Meta::Role::combine";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSource {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSource";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::new";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::_build_tc";
+	"Parse::Method::Signatures::TypeConstraint::DESTROY";
+	"Parse::Method::Signatures::TypeConstraint::new";
+	"Parse::Method::Signatures::TypeConstraint::tc";
+	"Parse::Method::Signatures::TypeConstraint::meta";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::new";
+	"Catalyst::Exception::Go::meta";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::meta";
+	"Text::Tradition::Witness::new";
+}
+subgraph cluster___TYPE___MooseX_Types_Structured {
+	label="__TYPE__::MooseX::Types::Structured";
+	"__TYPE__::MooseX::Types::Structured::Tuple";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::meta";
+	"Catalyst::DispatchType::Path::new";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::finalize_body";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::new";
+	"Parse::Method::Signatures::Param::DESTROY";
+	"Parse::Method::Signatures::Param::meta_type_constraint";
+	"Parse::Method::Signatures::Param::meta";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::new";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::new";
+	"stemmaweb::Controller::Stexaminer::meta";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::reinitialize";
+	"Class::MOP::Class::_construct_instance";
+}
+subgraph cluster_Data_Stream_Bulk_Cat {
+	label="Data::Stream::Bulk::Cat";
+	"Data::Stream::Bulk::Cat::meta";
+}
+subgraph cluster_Eval_Closure_Sandbox_848 {
+	label="Eval::Closure::Sandbox_848";
+	"Eval::Closure::Sandbox_848::__ANON__[(eval 1061)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::new";
+	"KiokuDB::TypeMap::Entry::Naive::meta";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::new";
+	"stemmaweb::Controller::Root::meta";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::meta";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::does";
+	"Moose::Object::new";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::auto_savepoint";
+	"DBIx::Class::Storage::DBI::_driver_determined";
+	"DBIx::Class::Storage::DBI::_dbh";
+	"DBIx::Class::Storage::DBI::on_connect_do";
+	"DBIx::Class::Storage::DBI::_dbh_autocommit";
+	"DBIx::Class::Storage::DBI::_dbic_connect_attributes";
+	"DBIx::Class::Storage::DBI::on_connect_call";
+	"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1298]";
+	"DBIx::Class::Storage::DBI::_dbh_details";
+	"DBIx::Class::Storage::DBI::_arm_global_destructor";
+	"DBIx::Class::Storage::DBI::_connect_info";
+	"DBIx::Class::Storage::DBI::_dbi_connect_info";
+	"DBIx::Class::Storage::DBI::unsafe";
+	"DBIx::Class::Storage::DBI::_sql_maker";
+	"DBIx::Class::Storage::DBI::_conn_pid";
+	"DBIx::Class::Storage::DBI::_sql_maker_opts";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::meta";
+	"Moose::Meta::Role::Application::ToRole::_new";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@13";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::meta";
+	"Moose::Meta::TypeConstraint::Registry::add_type_constraint";
+}
+subgraph cluster_Catalyst_View_TT {
+	label="Catalyst::View::TT";
+	"Catalyst::View::TT::new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+}
+subgraph cluster_PPI_Statement {
+	label="PPI::Statement";
+	"PPI::Statement::new";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::new";
+	"KiokuDB::TypeMap::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::new";
+	"KiokuDB::TypeMap::Entry::Passthrough::meta";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::new";
+	"stemmaweb::Controller::Microservice::meta";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::wrap";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::next_sibling";
+	"PPI::Element::snext_sibling";
+	"PPI::Element::DESTROY";
+	"PPI::Element::parent";
+}
+subgraph cluster_KiokuDB_Entry_Skip {
+	label="KiokuDB::Entry::Skip";
+	"KiokuDB::Entry::Skip::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_33 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::33";
+	"Moose::Meta::Class::__ANON__::SERIAL::33::meta";
+}
+subgraph cluster_Eval_Closure_Sandbox_788 {
+	label="Eval::Closure::Sandbox_788";
+	"Eval::Closure::Sandbox_788::__ANON__[(eval 999)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_metaclass";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::meta";
+	"KiokuDB::LiveObjects::Scope::new";
+	"KiokuDB::LiveObjects::Scope::DESTROY";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_4 {
+	label="MooseX::Traits::__ANON__::SERIAL::4";
+	"MooseX::Traits::__ANON__::SERIAL::4::meta";
+}
+subgraph cluster_KiokuDB_Set_Stored {
+	label="KiokuDB::Set::Stored";
+	"KiokuDB::Set::Stored::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::new";
+	"Catalyst::DispatchType::Regex::meta";
+}
+subgraph cluster_Data_Stream_Bulk_Filter {
+	label="Data::Stream::Bulk::Filter";
+	"Data::Stream::Bulk::Filter::meta";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::register_action_methods";
+	"Catalyst::Controller::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::meta";
+	"KiokuDB::TypeMap::Entry::Set::new";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::_canonicalize_handles";
+	"Moose::Meta::Attribute::_weaken_value";
+	"Moose::Meta::Attribute::_process_does_option";
+	"Moose::Meta::Attribute::_new";
+	"Moose::Meta::Attribute::_process_isa_option";
+}
+subgraph cluster_MooseX_Role_Parameterized_Parameters {
+	label="MooseX::Role::Parameterized::Parameters";
+	"MooseX::Role::Parameterized::Parameters::meta";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::meta";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::meta";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::meta";
+	"Moose::Meta::Role::Composite::add_method";
+	"Moose::Meta::Role::Composite::_new";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_31 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::31";
+	"Moose::Meta::Class::__ANON__::SERIAL::31::meta";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_make_new_metaclass";
+	"Moose::Util::MetaRole::_metathing_for";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::encode";
+	"KiokuDB::Serializer::JSON::meta";
+	"KiokuDB::Serializer::JSON::new";
+	"KiokuDB::Serializer::JSON::collapser";
+	"KiokuDB::Serializer::JSON::collapse_jspon";
+	"KiokuDB::Serializer::JSON::json";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::_register_source";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::new";
+	"Catalyst::Exception::Detach::meta";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured {
+	label="MooseX::Meta::TypeCoercion::Structured";
+	"MooseX::Meta::TypeCoercion::Structured::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::new";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::meta";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::new";
+	"KiokuDB::Collapser::_set_buffer";
+	"KiokuDB::Collapser::id_method";
+	"KiokuDB::Collapser::meta";
+	"KiokuDB::Collapser::make_ref";
+	"KiokuDB::Collapser::visit_seen";
+	"KiokuDB::Collapser::collapse_method";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::new";
+	"KiokuDB::TypeMap::Entry::Ref::meta";
+}
+subgraph cluster_Hash_Util_FieldHash {
+	label="Hash::Util::FieldHash";
+	"Hash::Util::FieldHash::fieldhash";
+	"Hash::Util::FieldHash::idhash";
+}
+subgraph cluster_Moose_Meta_Role_Method {
+	label="Moose::Meta::Role::Method";
+	"Moose::Meta::Role::Method::_new";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::callback_and_reg";
+	"Data::Visitor::Callback::visit_hash";
+	"Data::Visitor::Callback::visit_array";
+	"Data::Visitor::Callback::visit";
+	"Data::Visitor::Callback::visit_hash_entry";
+	"Data::Visitor::Callback::new";
+	"Data::Visitor::Callback::DESTROY";
+	"Data::Visitor::Callback::meta";
+	"Data::Visitor::Callback::visit_object";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::meta";
+	"Catalyst::View::new";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::_save_collation";
+	"Text::Tradition::add_witness";
+	"Text::Tradition::meta";
+	"Text::Tradition::new";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::meta";
+	"Moose::Meta::TypeConstraint::Union::_new";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_8 {
+	label="MooseX::Traits::__ANON__::SERIAL::8";
+	"MooseX::Traits::__ANON__::SERIAL::8::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::meta";
+	"KiokuDB::TypeMap::Default::JSON::new";
+}
+subgraph cluster_Eval_Closure_Sandbox_396 {
+	label="Eval::Closure::Sandbox_396";
+	"Eval::Closure::Sandbox_396::__ANON__[(eval 556)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_Catalyst_DispatchType_Default {
+	label="Catalyst::DispatchType::Default";
+	"Catalyst::DispatchType::Default::meta";
+	"Catalyst::DispatchType::Default::new";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::meta";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::get_component_class";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::new";
+	"Text::Tradition::Collation::Reading::meta";
+}
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::meta";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::visit_ref";
+	"Data::Visitor::visit";
+	"Data::Visitor::visit_no_rec_check";
+	"Data::Visitor::retain_magic";
+	"Data::Visitor::_register_mapping";
+	"Data::Visitor::meta";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::DESTROY";
+	"KiokuDB::Entry::new";
+	"KiokuDB::Entry::meta";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::DESTROY";
+	"PPI::Node::add_element";
+}
+subgraph cluster_Moose_Meta_Role_Attribute {
+	label="Moose::Meta::Role::Attribute";
+	"Moose::Meta::Role::Attribute::attach_to_role";
+}
+subgraph cluster_Catalyst_Model {
+	label="Catalyst::Model";
+	"Catalyst::Model::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::meta";
+	"Moose::Meta::TypeConstraint::Class::_new";
+}
+subgraph cluster_Text_Tradition_Collation_Reading_Morphology {
+	label="Text::Tradition::Collation::Reading::Morphology";
+	"Text::Tradition::Collation::Reading::Morphology::meta";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::new";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_1 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::1";
+	"Moose::Meta::Class::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::meta";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Schema {
+	label="KiokuDB::TypeMap::Entry::DBIC::Schema";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::new";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::meta";
+}
+subgraph cluster_Class_MOP_Method_Meta {
+	label="Class::MOP::Method::Meta";
+	"Class::MOP::Method::Meta::_generate_meta_method";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::new";
+	"KiokuDB::TypeMap::Entry::StorableHook::meta";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::set_schema";
+	"DBIx::Class::Storage::schema";
+	"DBIx::Class::Storage::debug";
+	"DBIx::Class::Storage::transaction_depth";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::new";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::new";
+	"KiokuDB::TypeMap::Entry::MOP::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::new";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@6";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::meta";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::attach_to_class";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::AddrRef";
+	"overload::ov_method";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::meta";
+	"KiokuDB::TypeMap::Entry::Compiled::new";
+}
+subgraph cluster_KiokuDB_LiveObjects_TXNScope {
+	label="KiokuDB::LiveObjects::TXNScope";
+	"KiokuDB::LiveObjects::TXNScope::meta";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::_new";
+	"Moose::Meta::Role::Method::Required::meta";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::meta";
+	"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:14]";
+	"Moose::Meta::TypeConstraint::_new";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::new";
+	"KiokuDB::meta";
+	"KiokuDB::collapser";
+	"KiokuDB::live_objects";
+	"KiokuDB::new_scope";
+	"KiokuDB::typemap_resolver";
+	"KiokuDB::linker";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::_curry_wrapper";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::meta";
+}
+subgraph cluster_Moose_Util_TypeConstraints {
+	label="Moose::Util::TypeConstraints";
+	"Moose::Util::TypeConstraints::subtype";
+	"Moose::Util::TypeConstraints::_create_type_constraint";
+	"Moose::Util::TypeConstraints::find_type_constraint";
+	"Moose::Util::TypeConstraints::add_parameterizable_type";
+}
+subgraph cluster_Class_MOP_Method_Inlined {
+	label="Class::MOP::Method::Inlined";
+	"Class::MOP::Method::Inlined::can_be_inlined";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::meta";
+	"stemmaweb::Controller::Relation::new";
+}
+subgraph cluster_Sub_Install {
+	label="Sub::Install";
+	"Sub::Install::_CODELIKE";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::new";
+	"Catalyst::Stats::DESTROY";
+	"Catalyst::Stats::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_6 {
+	label="MooseX::Traits::__ANON__::SERIAL::6";
+	"MooseX::Traits::__ANON__::SERIAL::6::meta";
+}
+subgraph cluster_Eval_Closure_Sandbox_60 {
+	label="Eval::Closure::Sandbox_60";
+	"Eval::Closure::Sandbox_60::__ANON__[(eval 142)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::meta";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::new";
+	"Text::Tradition::Collation::Relationship::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::new";
+	"KiokuDB::TypeMap::Resolver::meta";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::_new";
+	"Moose::Meta::TypeConstraint::Parameterizable::meta";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_get_compatible_metaclass_by_subclassing";
+	"Class::MOP::Object::_real_ref_name";
+	"Class::MOP::Object::_make_compatible_with";
+	"Class::MOP::Object::meta";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::__ANON__[Moose/Util.pm:121]";
+	"Moose::Util::_apply_all_roles";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+	"Class::MOP::metaclass_is_weak";
+	"Class::MOP::weaken_metaclass";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::meta";
+	"Text::Tradition::TypeMap::Entry::new";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]";
+}
+subgraph cluster_Eval_Closure_Sandbox_401 {
+	label="Eval::Closure::Sandbox_401";
+	"Eval::Closure::Sandbox_401::__ANON__[(eval 561)[Eval/Closure.pm:125]:3]";
+}
+subgraph cluster_Graph_AdjacencyMap_Light {
+	label="Graph::AdjacencyMap::Light";
+	"Graph::AdjacencyMap::Light::_new";
+}
+subgraph cluster_Class_Accessor_Grouped {
+	label="Class::Accessor::Grouped";
+	"Class::Accessor::Grouped::_mk_group_accessors";
+	"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]";
+	"Class::Accessor::Grouped::set_inherited";
+	"Class::Accessor::Grouped::get_inherited";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::new";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_34 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::34";
+	"Moose::Meta::Class::__ANON__::SERIAL::34::meta";
+}
+subgraph cluster_Data_Stream_Bulk_Array {
+	label="Data::Stream::Bulk::Array";
+	"Data::Stream::Bulk::Array::meta";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::reinitialize";
+	"Class::MOP::Package::create_anon";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::meta";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::DESTROY";
+	"Catalyst::Response::new";
+	"Catalyst::Response::content_encoding";
+	"Catalyst::Response::_set_writer";
+	"Catalyst::Response::content_length";
+	"Catalyst::Response::meta";
+	"Catalyst::Response::headers";
+	"Catalyst::Response::content_type";
+}
+subgraph cluster_Bio_Phylo {
+	label="Bio::Phylo";
+	"Bio::Phylo::BEGIN@14";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Accessor {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta";
+}
+subgraph cluster_Moose_Meta_Method_Delegation {
+	label="Moose::Meta::Method::Delegation";
+	"Moose::Meta::Method::Delegation::new";
+	"Moose::Meta::Method::Delegation::_get_delegate_accessor";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_2 {
+	label="MooseX::Traits::__ANON__::SERIAL::2";
+	"MooseX::Traits::__ANON__::SERIAL::2::meta";
+}
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "Scalar::Util::blessed";
+"Catalyst::Exception::Go::meta" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Default::new" -> "Scalar::Util::blessed";
+"Class::MOP::Object::_real_ref_name" -> "Scalar::Util::blessed";
+"Catalyst::Controller::meta" -> "Scalar::Util::blessed";
+"Catalyst::Request::new" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::Nil::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Reference::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSource::new" -> "Scalar::Util::blessed";
+"Catalyst::Request::headers" -> "Scalar::Util::blessed";
+"Catalyst::Exception::meta" -> "Scalar::Util::blessed";
+"Moose::Util::MetaRole::_metathing_for" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::ppi_doc" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta" -> "Scalar::Util::blessed";
+"Catalyst::Engine::finalize_body" -> "Scalar::Util::blessed";
+"KiokuDB::Entry::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::23::meta" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::2::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::_set_buffer" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Scalar::Util::blessed";
+"Class::MOP::Method::wrap" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Enum::_new" -> "Scalar::Util::blessed";
+"MooseX::Meta::TypeConstraint::Structured::Optional::meta" -> "Scalar::Util::blessed";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta" -> "Scalar::Util::blessed";
+"Catalyst::DESTROY" -> "Scalar::Util::blessed";
+"Tree::Simple::_insertChildAt" -> "Scalar::Util::blessed";
+"Text::Tradition::Witness::new" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::unsafe" -> "Scalar::Util::blessed";
+"Moose::Util::TypeConstraints::find_type_constraint" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterizable::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeCoercion::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Linker::new" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Scalar::Util::blessed";
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Scalar::Util::blessed";
+"KiokuX::Model::new" -> "Scalar::Util::blessed";
+"Text::Tradition::add_witness" -> "Scalar::Util::blessed";
+"Catalyst::ActionContainer::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::MOP::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Closure::new" -> "Scalar::Util::blessed";
+"Moose::Util::_apply_all_roles" -> "Scalar::Util::blessed";
+"KiokuDB::Entry::Skip::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::equivalence" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::Scope::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::TypeConstraint::new" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::construct_parameters" -> "Scalar::Util::blessed";
+"Catalyst::Stats::new" -> "Scalar::Util::blessed";
+"Catalyst::Response::content_length" -> "Scalar::Util::blessed";
+"Moose::Util::TypeConstraints::_create_type_constraint" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::Param::meta_type_constraint" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::add_role_application" -> "Scalar::Util::blessed";
+"Catalyst::Stats::meta" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::isa" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterized::compile_type_constraint" -> "Scalar::Util::blessed";
+"Data::Visitor::retain_magic" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Parameters::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::Schema::meta" -> "Scalar::Util::blessed";
+"Data::Visitor::Callback::DESTROY" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Regex::new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Enum::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Union::meta" -> "Scalar::Util::blessed";
+"MooseX::Types::Structured::OverflowHandler::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::30::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::RoleSummation::meta" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Regex::meta" -> "Scalar::Util::blessed";
+"KiokuDB::linker" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Scalar::Util::blessed";
+"Catalyst::Component::BUILDARGS" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Composite::_new" -> "Scalar::Util::blessed";
+"Data::Visitor::Callback::meta" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Path::meta" -> "Scalar::Util::blessed";
+"Catalyst::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterized::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Method::Required::_new" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::Serialize::JSPON::Expander::meta" -> "Scalar::Util::blessed";
+"Moose::Util::TypeConstraints::add_parameterizable_type" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Class::_new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::MOP::new" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Ref::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Object::_make_compatible_with" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::Buffer::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::Witness::meta" -> "Scalar::Util::blessed";
+"Catalyst::Exception::Go::new" -> "Scalar::Util::blessed";
+"Catalyst::ActionChain::meta" -> "Scalar::Util::blessed";
+"Catalyst::Action::new" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::set_inherited" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::paths" -> "Scalar::Util::blessed";
+"Class::MOP::Object::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::DESTROY" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::ToRole::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::StorableHook::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Passthrough::meta" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Path::new" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::Relationship::new" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::new" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Stexaminer::meta" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_new" -> "Scalar::Util::blessed";
+"Catalyst::Exception::Detach::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::DuckType::meta" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Scalar::Util::blessed";
+"Catalyst::Request::DESTROY" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Root::new" -> "Scalar::Util::blessed";
+"Class::MOP::Class:::around" -> "Scalar::Util::blessed";
+"Class::MOP::Method::Constructor::new" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::7::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Default::JSON::new" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::collapse_method" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::_mk_group_accessors" -> "Scalar::Util::blessed";
+"KiokuDB::GC::Naive::Mark::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::TypeConstraint::tc" -> "Scalar::Util::blessed";
+"Catalyst::Response::content_type" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Callback::meta" -> "Scalar::Util::blessed";
+"Class::MOP::class_of" -> "Scalar::Util::blessed";
+"Catalyst::Response::content_encoding" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::Delegation::_get_delegate_accessor" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::add_required_methods" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::Chunked::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Class::_construct_instance" -> "Scalar::Util::blessed";
+"KiokuDB::typemap_resolver" -> "Scalar::Util::blessed";
+"Moose::Util::TypeConstraints::subtype" -> "Scalar::Util::blessed";
+"KiokuDB::Set::Stored::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::Delegation::new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::_new" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::json" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::1::meta" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_60::__ANON__[(eval 142)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"Catalyst::Stats::DESTROY" -> "Scalar::Util::blessed";
+"Catalyst::Component::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::Reading::new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterized::_new" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Root::meta" -> "Scalar::Util::blessed";
+"KiokuDB::new" -> "Scalar::Util::blessed";
+"Sub::Install::_CODELIKE" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::Reading::meta" -> "Scalar::Util::blessed";
+"Catalyst::Response::_set_writer" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_command2action" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_canonicalize_handles" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_421::__ANON__[(eval 582)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::new" -> "Scalar::Util::blessed";
+"KiokuDB::new_scope" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Attribute::attach_to_role" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::meta" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::5::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Entry::new" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::Filter::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Callback::new" -> "Scalar::Util::blessed";
+"Catalyst::EngineLoader::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Role::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Instance::_new" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:53]" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Ref::new" -> "Scalar::Util::blessed";
+"MooseX::Types::Structured::__ANON__[MooseX/Types/Structured.pm:153]" -> "Scalar::Util::blessed";
+"KiokuDB::Reference::DESTROY" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::Param::DESTROY" -> "Scalar::Util::blessed";
+"Catalyst::Model::KiokuDB::_model" -> "Scalar::Util::blessed";
+"Catalyst::ActionContainer::meta" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_invoke_as_component" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::add_attribute" -> "Scalar::Util::blessed";
+"Data::Visitor::Callback::visit_object" -> "Scalar::Util::blessed";
+"KiokuDB::Entry::DESTROY" -> "Scalar::Util::blessed";
+"KiokuDB::Stream::Objects::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::Schema::new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::DuckType::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_process_does_option" -> "Scalar::Util::blessed";
+"KiokuDB::Set::Loaded::meta" -> "Scalar::Util::blessed";
+"KiokuDB::GC::Naive::Mark::Results::meta" -> "Scalar::Util::blessed";
+"Catalyst::Response::headers" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::RelationshipStore::add_reading" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Shadow::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::add_role" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::new" -> "Scalar::Util::blessed";
+"Catalyst::View::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::transaction_depth" -> "Scalar::Util::blessed";
+"Catalyst::Exception::Base::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::Param::new" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::new" -> "Scalar::Util::blessed";
+"KiokuDB::Thunk::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::serialize" -> "Scalar::Util::blessed";
+"Tree::Simple::_init" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::8::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::new" -> "Scalar::Util::blessed";
+"KiokuDB::collapser" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Resolver::meta" -> "Scalar::Util::blessed";
+"Catalyst::Request::header" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::Scope::DESTROY" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::ToInstance::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Linker::meta" -> "Scalar::Util::blessed";
+"KiokuDB::GC::Naive::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_weaken_value" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::encode" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::RelationshipStore::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::Row::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::debug" -> "Scalar::Util::blessed";
+"KiokuDB::Set::Deferred::meta" -> "Scalar::Util::blessed";
+"KiokuX::Model::lookup" -> "Scalar::Util::blessed";
+"Tree::Simple::_setParent" -> "Scalar::Util::blessed";
+"Catalyst::Request::Upload::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_relationships" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::parameters_metaclass" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::TypeConstraint::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Composite::add_method" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::Destructor::is_needed" -> "Scalar::Util::blessed";
+"Text::Tradition::Error::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Closure::meta" -> "Scalar::Util::blessed";
+"Catalyst::finalize_headers" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::kiokudb_entries_source_name" -> "Scalar::Util::blessed";
+"KiokuDB::Error::UnknownObjects::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Naive::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::Param::meta" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::Array::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::reinitialize" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Index::new" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::Cat::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Method::clone" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Shadow::new" -> "Scalar::Util::blessed";
+"Moose::Object::new" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::6::meta" -> "Scalar::Util::blessed";
+"MooseX::MethodAttributes::Inheritable::meta" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Microservice::new" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Default::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::_set_end" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::RelationshipStore::meta" -> "Scalar::Util::blessed";
+"Catalyst::Model::meta" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Stexaminer::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::Row::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::StorableHook::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Naive::new" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::ppi" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::ToRole::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::get_method" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Parameterizable::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Set::Base::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::equivalence_graph" -> "Scalar::Util::blessed";
+"Catalyst::setup_plugins" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::_set_relations" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Method::Required::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::visit_seen" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::5::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::_new" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::new" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::meta" -> "Scalar::Util::blessed";
+"Data::Visitor::meta" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::_set_current_scope" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::add_parameter" -> "Scalar::Util::blessed";
+"Moose::Util::__ANON__[Moose/Util.pm:121]" -> "Scalar::Util::blessed";
+"Class::MOP::Package::reinitialize" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::new" -> "Scalar::Util::blessed";
+"Class::MOP::Instance::BUILDARGS" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Index::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Default::JSON::meta" -> "Scalar::Util::blessed";
+"KiokuX::Model::new_scope" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::id_method" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::RoleSummation::get_exclusions_for_role" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::add_role" -> "Scalar::Util::blessed";
+"MooseX::Meta::TypeCoercion::Structured::Optional::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Role::meta" -> "Scalar::Util::blessed";
+"Data::Visitor::visit_no_rec_check" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::RoleSummation::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::17::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_primaries" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::TXNScope::meta" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Relation::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Scalar::Util::blessed";
+"Class::Accessor::Grouped::get_inherited" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::8::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Class::meta" -> "Scalar::Util::blessed";
+"Catalyst::Component::config" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::schema" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::Buffer::new" -> "Scalar::Util::blessed";
+"MooseX::Emulate::Class::Accessor::Fast::__ANON__[MooseX/Emulate/Class/Accessor/Fast.pm:77]" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::storage" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_637::__ANON__[(eval 843)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::meta" -> "Scalar::Util::blessed";
+"KiokuX::Model::directory" -> "Scalar::Util::blessed";
+"Data::Stream::Bulk::DBI::meta" -> "Scalar::Util::blessed";
+"Catalyst::Controller::register_action_methods" -> "Scalar::Util::blessed";
+"Data::Visitor::Callback::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::RoleSummation::get_method_aliases_for_role" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::ToClass::_new" -> "Scalar::Util::blessed";
+"Catalyst::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Resolver::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Method::Overridden::_new" -> "Scalar::Util::blessed";
+"MooseX::Meta::TypeCoercion::Structured::meta" -> "Scalar::Util::blessed";
+"Catalyst::Log::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Method::_new" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::reinitialize" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasAttributes::add_attribute" -> "Scalar::Util::blessed";
+"MooseX::Types::Structured::MessageStack::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::param" -> "Scalar::Util::blessed";
+"Moose::Object::does" -> "Scalar::Util::blessed";
+"Catalyst::Request::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Compiled::new" -> "Scalar::Util::blessed";
+"Text::Tradition::Stemma::meta" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Chained::meta" -> "Scalar::Util::blessed";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta" -> "Scalar::Util::blessed";
+"overload::AddrRef" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::Sig::meta" -> "Scalar::Util::blessed";
+"KiokuDB::meta" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_401::__ANON__[(eval 561)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"Text::Tradition::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Passthrough::new" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::TypeConstraint::_build_tc" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeCoercion::Union::meta" -> "Scalar::Util::blessed";
+"Catalyst::Action::DESTROY" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::new" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Registry::add_type_constraint" -> "Scalar::Util::blessed";
+"Catalyst::EngineLoader::new" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::_set_start" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Union::_new" -> "Scalar::Util::blessed";
+"Catalyst::DispatchType::Chained::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Application::ToClass::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Method::Conflicting::_new" -> "Scalar::Util::blessed";
+"Catalyst::Model::KiokuDB::new" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Composite::_create_entry" -> "Scalar::Util::blessed";
+"KiokuX::Model::meta" -> "Scalar::Util::blessed";
+"Catalyst::Response::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::34::meta" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_788::__ANON__[(eval 999)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"Class::MOP::Method::Wrapped::wrap" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::dbh_do" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::_add_reading" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbh" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::_set_ppi" -> "Scalar::Util::blessed";
+"Catalyst::Action::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::collapser" -> "Scalar::Util::blessed";
+"KiokuDB::Collapser::Buffer::DESTROY" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::new" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::register_object" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Set::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Error::MissingObjects::meta" -> "Scalar::Util::blessed";
+"Catalyst::View::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Attribute::_process_isa_option" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::add_method" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::meta" -> "Scalar::Util::blessed";
+"KiokuDB::live_objects" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::_anon_cache_key" -> "Scalar::Util::blessed";
+"Catalyst::Dispatcher::_find_component" -> "Scalar::Util::blessed";
+"Catalyst::Response::DESTROY" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Attribute::attach_to_class" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__type_constraint" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::Relationship::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::Composite::meta" -> "Scalar::Util::blessed";
+"Catalyst::Exception::Detach::new" -> "Scalar::Util::blessed";
+"Catalyst::Model::KiokuDB::meta" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::new" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::add_attribute" -> "Scalar::Util::blessed";
+"Class::MOP::Mixin::HasMethods::remove_method" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::get_relationship" -> "Scalar::Util::blessed";
+"Catalyst::Model::KiokuDB::directory" -> "Scalar::Util::blessed";
+"Parse::Method::Signatures::TypeConstraint::DESTROY" -> "Scalar::Util::blessed";
+"Catalyst::Response::meta" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_396::__ANON__[(eval 556)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::4::meta" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Relation::new" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::meta" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::new" -> "Scalar::Util::blessed";
+"KiokuX::Model::store" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Alias::meta" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::1::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::schema" -> "Scalar::Util::blessed";
+"DBIx::Class::ResultSource::_columns" -> "Scalar::Util::blessed";
+"KiokuDB::LiveObjects::Scope::new" -> "Scalar::Util::blessed";
+"KiokuDB::GC::Naive::Sweep::Results::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::does_role" -> "Scalar::Util::blessed";
+"Text::Tradition::TypeMap::Entry::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Reference::meta" -> "Scalar::Util::blessed";
+"List::MoreUtils::all" -> "Scalar::Util::blessed";
+"Moose::Meta::TypeConstraint::Registry::meta" -> "Scalar::Util::blessed";
+"Catalyst::setup_component" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Set::new" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::DBI::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::33::meta" -> "Scalar::Util::blessed";
+"Text::Tradition::Collation::Reading::Morphology::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Class::__ANON__::SERIAL::31::meta" -> "Scalar::Util::blessed";
+"MooseX::Traits::__ANON__::SERIAL::3::meta" -> "Scalar::Util::blessed";
+"Eval::Closure::Sandbox_848::__ANON__[(eval 1061)[Eval/Closure.pm:125]:3]" -> "Scalar::Util::blessed";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::meta" -> "Scalar::Util::blessed";
+"Catalyst::ClassData::mk_classdata" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::combine" -> "Scalar::Util::blessed";
+"KiokuDB::GC::Naive::Sweep::meta" -> "Scalar::Util::blessed";
+"Class::MOP::Class::reinitialize" -> "Scalar::Util::blessed";
+"Text::Tradition::TypeMap::Entry::new" -> "Scalar::Util::blessed";
+"Text::Tradition::_save_collation" -> "Scalar::Util::blessed";
+"KiokuDB::TypeMap::Entry::Compiled::meta" -> "Scalar::Util::blessed";
+"KiokuDB::Serializer::JSON::collapse_jspon" -> "Scalar::Util::blessed";
+"MooseX::Meta::TypeConstraint::Structured::meta" -> "Scalar::Util::blessed";
+"stemmaweb::Controller::Microservice::meta" -> "Scalar::Util::blessed";
+"Moose::Meta::Role::apply" -> "Scalar::Util::blessed";
+"stemmaweb::Model::Directory::meta" -> "Scalar::Util::blessed";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Scalar::Util::blessed";
+"MooseX::Types::TypeDecorator::__ANON__[MooseX/Types/TypeDecorator.pm:29]" -> "Scalar::Util::blessed";
+"Class::MOP::Method::Accessor::new" -> "Scalar::Util::blessed";
+"Moose::BEGIN@13" -> "Scalar::Util::BEGIN@9";
+"DBIx::Class::ResultSource::DESTROY" -> "Scalar::Util::isweak";
+"Class::MOP::metaclass_is_weak" -> "Scalar::Util::isweak";
+"KiokuDB::Collapser::make_ref" -> "Scalar::Util::isweak";
+"Catalyst::DispatchType::Chained::register" -> "Scalar::Util::looks_like_number";
+"Catalyst::Action::compare" -> "Scalar::Util::looks_like_number";
+"Bio::Phylo::BEGIN@14" -> "Scalar::Util::looks_like_number";
+"Moose::Exporter::_curry_wrapper" -> "Scalar::Util::set_prototype";
+"Scalar::Util::BEGIN@9" -> "strict::import";
+"Text::Tradition::Collation::RelationshipStore::new" -> "Scalar::Util::weaken";
+"Catalyst::View::TT::new" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::debug" -> "Scalar::Util::weaken";
+"Catalyst::Request::new" -> "Scalar::Util::weaken";
+"Class::MOP::weaken_metaclass" -> "Scalar::Util::weaken";
+"Tree::Simple::_setParent" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_relationships" -> "Scalar::Util::weaken";
+"Class::MOP::Instance::new" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::on_connect_do" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbic_connect_attributes" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Delegation::new" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_ordered_columns" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::_vivify_id_info" -> "Scalar::Util::weaken";
+"Class::MOP::Method::wrap" -> "Scalar::Util::weaken";
+"Text::Tradition::Collation::_set_start" -> "Scalar::Util::weaken";
+"Text::Tradition::Directory::BEGIN@6" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::TxnScopeGuard::new" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::unsafe" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_sql_maker_opts" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::register_entry" -> "Scalar::Util::weaken";
+"Class::MOP::Method::clone" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_driver_determined" -> "Scalar::Util::weaken";
+"Text::Tradition::Collation::Reading::new" -> "Scalar::Util::weaken";
+"PPI::Lexer::_add_element" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::set_schema" -> "Scalar::Util::weaken";
+"Text::Tradition::Collation::_set_end" -> "Scalar::Util::weaken";
+"PPI::Statement::new" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::register_object" -> "Scalar::Util::weaken";
+"DBIx::Class::Schema::KiokuDB::_kiokudb_handle" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::__ANON__[DBIx/Class/Storage/DBI.pm:1298]" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_arm_global_destructor" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::DESTROY" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh_details" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Constructor::new" -> "Scalar::Util::weaken";
+"Moose::Meta::Role::Attribute::attach_to_role" -> "Scalar::Util::weaken";
+"KiokuDB::Entry::new" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::auto_savepoint" -> "Scalar::Util::weaken";
+"Class::MOP::Attribute::attach_to_class" -> "Scalar::Util::weaken";
+"Text::Tradition::Collation::new" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::_set_current_scope" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbh_autocommit" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_primaries" -> "Scalar::Util::weaken";
+"PPI::Node::add_element" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_connect_info" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_columns" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::schema" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::transaction_depth" -> "Scalar::Util::weaken";
+"Class::MOP::Method::Meta::_generate_meta_method" -> "Scalar::Util::weaken";
+"Class::MOP::Package::create_anon" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::on_connect_call" -> "Scalar::Util::weaken";
+"Class::MOP::Instance::weaken_slot_value" -> "Scalar::Util::weaken";
+"Class::Accessor::Grouped::__ANON__[Class/Accessor/Grouped.pm:810]" -> "Scalar::Util::weaken";
+"Moose::Meta::Role::Application::ToClass::apply" -> "Scalar::Util::weaken";
+"Class::MOP::Method::attach_to_class" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::update_object_entry" -> "Scalar::Util::weaken";
+"Graph::AdjacencyMap::Light::_new" -> "Scalar::Util::weaken";
+"DBIx::Class::Schema::_register_source" -> "Scalar::Util::weaken";
+"DBIx::Class::ResultSource::_unique_constraints" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_dbi_connect_info" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_sql_maker" -> "Scalar::Util::weaken";
+"Moose::Meta::Method::Destructor::new" -> "Scalar::Util::weaken";
+"Class::MOP::Method::Constructor::new" -> "Scalar::Util::weaken";
+"DBIx::Class::AccessorGroup::get_component_class" -> "Scalar::Util::weaken";
+"DBIx::Class::Storage::DBI::_conn_pid" -> "Scalar::Util::weaken";
+"Class::MOP::Method::Accessor::new" -> "Scalar::Util::weaken";
+"KiokuDB::LiveObjects::Guard::new" -> "Scalar::Util::weaken";
+"Data::Visitor::visit_ref" -> "Scalar::Util::reftype";
+"Data::Visitor::Callback::visit_hash" -> "Scalar::Util::reftype";
+"__TYPE__::ArrayRef" -> "Scalar::Util::reftype";
+"Data::Visitor::Callback::visit_array" -> "Scalar::Util::reftype";
+"Class::MOP::Method::wrap" -> "Scalar::Util::reftype";
+"Class::Accessor::Grouped::set_inherited" -> "Scalar::Util::reftype";
+"Hash::Util::FieldHash::idhash" -> "Scalar::Util::reftype";
+"Class::Accessor::Grouped::get_inherited" -> "Scalar::Util::reftype";
+"overload::AddrRef" -> "Scalar::Util::reftype";
+"__TYPE__::HashRef" -> "Scalar::Util::reftype";
+"__TYPE__::MooseX::Types::Structured::Tuple" -> "Scalar::Util::reftype";
+"Hash::Util::FieldHash::fieldhash" -> "Scalar::Util::reftype";
+"Eval::Closure::_canonicalize_source" -> "Scalar::Util::reftype";
+"Sub::Install::_CODELIKE" -> "Scalar::Util::reftype";
+"Eval::Closure::_validate_env" -> "Scalar::Util::reftype";
+"Data::Visitor::Callback::callback_and_reg" -> "Scalar::Util::refaddr";
+"PPI::Element::DESTROY" -> "Scalar::Util::refaddr";
+"PPI::Element::snext_sibling" -> "Scalar::Util::refaddr";
+"KiokuDB::LiveObjects::detach_scope" -> "Scalar::Util::refaddr";
+"Moose::Meta::TypeConstraint::__ANON__[Moose/Meta/TypeConstraint.pm:14]" -> "Scalar::Util::refaddr";
+"PPI::Lexer::_add_element" -> "Scalar::Util::refaddr";
+"PPI::Element::next_sibling" -> "Scalar::Util::refaddr";
+"overload::AddrRef" -> "Scalar::Util::refaddr";
+"PPI::Statement::new" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit_hash_entry" -> "Scalar::Util::refaddr";
+"KiokuDB::LiveObjects::register_object" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit_hash" -> "Scalar::Util::refaddr";
+"DBIx::Class::Storage::DBI::_arm_global_destructor" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit_array" -> "Scalar::Util::refaddr";
+"PPI::Node::add_element" -> "Scalar::Util::refaddr";
+"Data::Visitor::_register_mapping" -> "Scalar::Util::refaddr";
+"KiokuDB::LiveObjects::update_object_entry" -> "Scalar::Util::refaddr";
+"Data::Visitor::Callback::visit" -> "Scalar::Util::refaddr";
+"PPI::Node::DESTROY" -> "Scalar::Util::refaddr";
+"Data::Visitor::visit" -> "Scalar::Util::refaddr";
+"List::MoreUtils::firstidx" -> "Scalar::Util::refaddr";
+"overload::ov_method" -> "Scalar::Util::refaddr";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Scalar::Util::refaddr";
+"PPI::Element::parent" -> "Scalar::Util::refaddr";
+}

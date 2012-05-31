@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_KiokuDB_Backend_Serialize {
+	label="KiokuDB::Backend::Serialize";
+	"KiokuDB::Backend::Serialize::BEGIN@6";
+	"KiokuDB::Backend::Serialize::BEGIN@8";
+	"KiokuDB::Backend::Serialize::BEGIN@4";
+	"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::new";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:72]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+"Moose::Meta::TypeCoercion::__ANON__[Moose/Meta/TypeCoercion.pm:72]" -> "KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::BEGIN@8";
+"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]" -> "Class::Load::load_class";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::BEGIN@4";
+"KiokuDB::Backend::Serialize::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::BEGIN@6" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]" -> "KiokuDB::Serializer::JSON::new";
+"KiokuDB::Backend::Serialize::__ANON__[KiokuDB/Backend/Serialize.pm:24]" -> "Class::MOP::load_class";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::Serialize::BEGIN@6";
+}

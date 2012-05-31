@@ -1,0 +1,255 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::get_method_list";
+}
+subgraph cluster_MooseX_OneArgNew {
+	label="MooseX::OneArgNew";
+	"MooseX::OneArgNew::BEGIN@11";
+}
+subgraph cluster_List_Util {
+	label="List::Util";
+	"List::Util::first";
+}
+subgraph cluster_Catalyst_Plugin_Static_Simple {
+	label="Catalyst::Plugin::Static::Simple";
+	"Catalyst::Plugin::Static::Simple::BEGIN@10";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@13";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToClass {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToClass";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToClass::BEGIN@11";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::BEGIN@5";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToInstance {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance::BEGIN@11";
+}
+subgraph cluster_Variable_Magic {
+	label="Variable::Magic";
+	"Variable::Magic::wizard";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Class {
+	label="MooseX::StrictConstructor::Trait::Class";
+	"MooseX::StrictConstructor::Trait::Class::BEGIN@8";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@16";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@3";
+	"namespace::clean::BEGIN@168";
+	"namespace::clean::BEGIN@14";
+	"namespace::clean::clean_subroutines";
+	"namespace::clean::BEGIN@4";
+	"namespace::clean::BEGIN@6";
+	"namespace::clean::BEGIN@467";
+	"namespace::clean::BEGIN@169";
+	"namespace::clean::BEGIN@7";
+	"namespace::clean::import";
+	"namespace::clean::BEGIN@171";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToClass {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass::BEGIN@11";
+}
+subgraph cluster_MooseX_StrictConstructor_Trait_Method_Constructor {
+	label="MooseX::StrictConstructor::Trait::Method::Constructor";
+	"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@8";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSource {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSource";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@18";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::BEGIN@3";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::initialize";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::BEGIN@3";
+}
+subgraph cluster_MooseX_Traits {
+	label="MooseX::Traits";
+	"MooseX::Traits::BEGIN@9";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::BEGIN@3";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::BEGIN@11";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_Composite_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@11";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_FixOverloadedRefs {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs::BEGIN@11";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@13";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Schema {
+	label="KiokuDB::TypeMap::Entry::DBIC::Schema";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@12";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToInstance {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@11";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::BEGIN@15";
+	"namespace::autoclean::BEGIN@5";
+	"namespace::autoclean::BEGIN@1";
+	"namespace::autoclean::BEGIN@14";
+	"namespace::autoclean::BEGIN@2";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+	"namespace::autoclean::BEGIN@16";
+	"namespace::autoclean::import";
+	"namespace::autoclean::BEGIN@13";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::BEGIN@3";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::BEGIN@16";
+	"B::Hooks::EndOfScope::BEGIN@13";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+	"B::Hooks::EndOfScope::BEGIN@5";
+	"B::Hooks::EndOfScope::on_scope_end";
+	"B::Hooks::EndOfScope::BEGIN@14";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2.2";
+	"stemmaweb::BEGIN@1";
+	"stemmaweb::BEGIN@3";
+}
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role_Application_ToRole {
+	label="MooseX::Role::WithOverloading::Meta::Role::Application::ToRole";
+	"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@13";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::get_all_package_symbols";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::BEGIN@6";
+}
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@3";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@13";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "Class::MOP::Package::get_all_package_symbols";
+"namespace::autoclean::BEGIN@14" -> "namespace::autoclean::BEGIN@2";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@169";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@6";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@16";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@7";
+"namespace::autoclean::BEGIN@14" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@16";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::import";
+"stemmaweb::BEGIN@1" -> "strict::import";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@14";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "List::Util::first";
+"stemmaweb::BEGIN@3" -> "stemmaweb::BEGIN@1";
+"namespace::autoclean::BEGIN@15" -> "Exporter::import";
+"namespace::autoclean::BEGIN@14" -> "Variable::Magic::wizard";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@171";
+"namespace::autoclean::BEGIN@14" -> "namespace::autoclean::BEGIN@1";
+"stemmaweb::BEGIN@2.2" -> "warnings::import";
+"stemmaweb::BEGIN@3" -> "stemmaweb::BEGIN@2.2";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@168";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "Class::MOP::Class::initialize";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@15";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@467";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@4";
+"namespace::autoclean::import" -> "B::Hooks::EndOfScope::on_scope_end";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "UNIVERSAL::isa";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@13" -> "namespace::autoclean::import";
+"Catalyst::Response::BEGIN@6" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Stexaminer::BEGIN@3" -> "namespace::autoclean::import";
+"Catalyst::EngineLoader::BEGIN@5" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Composite::BEGIN@16" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Relation::BEGIN@3" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::BEGIN@13" -> "namespace::autoclean::import";
+"Catalyst::Plugin::Static::Simple::BEGIN@10" -> "namespace::autoclean::import";
+"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13" -> "namespace::autoclean::import";
+"MooseX::StrictConstructor::Trait::Class::BEGIN@8" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Root::BEGIN@3" -> "namespace::autoclean::import";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13" -> "namespace::autoclean::import";
+"MooseX::StrictConstructor::Trait::Method::Constructor::BEGIN@8" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::FixOverloadedRefs::BEGIN@11" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToRole::BEGIN@13" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToInstance::BEGIN@11" -> "namespace::autoclean::import";
+"MooseX::Traits::BEGIN@9" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToClass::BEGIN@11" -> "namespace::autoclean::import";
+"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@12" -> "namespace::autoclean::import";
+"MooseX::OneArgNew::BEGIN@11" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::BEGIN@11" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToClass::BEGIN@11" -> "namespace::autoclean::import";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@18" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::ToInstance::BEGIN@11" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::Application::Composite::ToRole::BEGIN@11" -> "namespace::autoclean::import";
+"stemmaweb::Controller::Microservice::BEGIN@3" -> "namespace::autoclean::import";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@13";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "namespace::clean::clean_subroutines";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@14";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@14";
+"namespace::autoclean::BEGIN@14" -> "B::Hooks::EndOfScope::BEGIN@5";
+"namespace::autoclean::BEGIN@16" -> "UNIVERSAL::VERSION";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "UNIVERSAL::VERSION";
+"namespace::autoclean::BEGIN@13" -> "UNIVERSAL::VERSION";
+"stemmaweb::BEGIN@3" -> "namespace::autoclean::BEGIN@5";
+}

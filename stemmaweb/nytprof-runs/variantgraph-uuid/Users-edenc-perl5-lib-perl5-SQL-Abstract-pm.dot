@@ -1,0 +1,39 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@22";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_SQL_Abstract {
+	label="SQL::Abstract";
+	"SQL::Abstract::BEGIN@10";
+	"SQL::Abstract::BEGIN@11";
+	"SQL::Abstract::CORE:match";
+	"SQL::Abstract::BEGIN@8";
+	"SQL::Abstract::BEGIN@12";
+	"SQL::Abstract::CORE:qr";
+	"SQL::Abstract::BEGIN@9";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@12";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@9";
+"SQL::Abstract::BEGIN@9" -> "strict::import";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@8";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::CORE:qr";
+"SQL::Abstract::BEGIN@8" -> "Exporter::import";
+"SQL::Abstract::BEGIN@10" -> "warnings::import";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::CORE:match";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@11";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@10";
+}

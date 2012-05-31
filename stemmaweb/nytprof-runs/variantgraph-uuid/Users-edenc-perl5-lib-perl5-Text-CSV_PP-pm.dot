@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_bytes {
+	label="bytes";
+	"bytes::import";
+}
+subgraph cluster_Text_CSV_ErrorDiag {
+	label="Text::CSV::ErrorDiag";
+	"Text::CSV::ErrorDiag::BEGIN@977";
+	"Text::CSV::ErrorDiag::BEGIN@978";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_Text_CSV {
+	label="Text::CSV";
+	"Text::CSV::_load_pp";
+}
+subgraph cluster_Text_CSV_PP {
+	label="Text::CSV_PP";
+	"Text::CSV_PP::BEGIN@896";
+	"Text::CSV_PP::BEGIN@107";
+	"Text::CSV_PP::BEGIN@314";
+	"Text::CSV_PP::BEGIN@12";
+	"Text::CSV_PP::BEGIN@10";
+	"Text::CSV_PP::BEGIN@104";
+	"Text::CSV_PP::BEGIN@111";
+	"Text::CSV_PP::BEGIN@11";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@10";
+"Text::CSV::ErrorDiag::BEGIN@978" -> "overload::import";
+"Text::CSV::_load_pp" -> "Text::CSV::ErrorDiag::BEGIN@978";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@12";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@314";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@107";
+"Text::CSV_PP::BEGIN@10" -> "strict::import";
+"Text::CSV::ErrorDiag::BEGIN@977" -> "strict::import";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@896";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@11";
+"Text::CSV_PP::BEGIN@107" -> "strict::unimport";
+"Text::CSV_PP::BEGIN@111" -> "strict::unimport";
+"Text::CSV_PP::BEGIN@11" -> "vars::import";
+"Text::CSV_PP::BEGIN@314" -> "bytes::import";
+"Text::CSV::_load_pp" -> "Text::CSV::ErrorDiag::BEGIN@977";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@111";
+"Text::CSV::_load_pp" -> "Text::CSV_PP::BEGIN@104";
+}

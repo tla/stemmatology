@@ -1,0 +1,462 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::BEGIN@8";
+	"Data::Stream::Bulk::DBI::BEGIN@2";
+	"Data::Stream::Bulk::DBI::meta";
+	"Data::Stream::Bulk::DBI::BEGIN@11";
+}
+subgraph cluster_DBI_db {
+	label="DBI::db";
+	"DBI::db::prepare_cached";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::columns";
+	"DBIx::Class::ResultSource::DESTROY";
+	"DBIx::Class::ResultSource::columns_info";
+	"DBIx::Class::ResultSource::column_info";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::entries_to_rows";
+	"KiokuDB::Backend::DBI::_schema_proto";
+	"KiokuDB::Backend::DBI::BEGIN@18";
+	"KiokuDB::Backend::DBI::BEGIN@23";
+	"KiokuDB::Backend::DBI::BEGIN@22";
+	"KiokuDB::Backend::DBI::mysql_strict";
+	"KiokuDB::Backend::DBI::kiokudb_entries_source_name";
+	"KiokuDB::Backend::DBI::extract";
+	"KiokuDB::Backend::DBI::_columns";
+	"KiokuDB::Backend::DBI::ValidColumnName";
+	"KiokuDB::Backend::DBI::_build_on_connect_call";
+	"KiokuDB::Backend::DBI::BEGIN@27";
+	"KiokuDB::Backend::DBI::dbh_do";
+	"KiokuDB::Backend::DBI::BEGIN@26";
+	"KiokuDB::Backend::DBI::BEGIN@16";
+	"KiokuDB::Backend::DBI::BEGIN@10";
+	"KiokuDB::Backend::DBI::_build_storage";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:81]";
+	"KiokuDB::Backend::DBI::_ordered_columns";
+	"KiokuDB::Backend::DBI::BEGIN@28";
+	"KiokuDB::Backend::DBI::insert_rows";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:54]";
+	"KiokuDB::Backend::DBI::BEGIN@29";
+	"KiokuDB::Backend::DBI::default_typemap";
+	"KiokuDB::Backend::DBI::CORE:sort";
+	"KiokuDB::Backend::DBI::_build__ordered_columns";
+	"KiokuDB::Backend::DBI::columns";
+	"KiokuDB::Backend::DBI::new";
+	"KiokuDB::Backend::DBI::BEGIN@30";
+	"KiokuDB::Backend::DBI::BEGIN@21";
+	"KiokuDB::Backend::DBI::new_from_dsn";
+	"KiokuDB::Backend::DBI::password";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:135]";
+	"KiokuDB::Backend::DBI::on_connect_call";
+	"KiokuDB::Backend::DBI::prepare_insert";
+	"KiokuDB::Backend::DBI::BEGIN@33";
+	"KiokuDB::Backend::DBI::BEGIN@14";
+	"KiokuDB::Backend::DBI::has_schema_hook";
+	"KiokuDB::Backend::DBI::_build_schema";
+	"KiokuDB::Backend::DBI::dbic_attrs";
+	"KiokuDB::Backend::DBI::schema";
+	"KiokuDB::Backend::DBI::BEGIN@12";
+	"KiokuDB::Backend::DBI::has_sqlite_fsync_mode";
+	"KiokuDB::Backend::DBI::SchemaProto";
+	"KiokuDB::Backend::DBI::insert";
+	"KiokuDB::Backend::DBI::BEGIN@31";
+	"KiokuDB::Backend::DBI::storage";
+	"KiokuDB::Backend::DBI::CORE:match";
+	"KiokuDB::Backend::DBI::BUILD";
+	"KiokuDB::Backend::DBI::serialize";
+	"KiokuDB::Backend::DBI::create";
+	"KiokuDB::Backend::DBI::register_handle";
+	"KiokuDB::Backend::DBI::connect_info";
+	"KiokuDB::Backend::DBI::dsn";
+	"KiokuDB::Backend::DBI::entry_to_row";
+	"KiokuDB::Backend::DBI::BEGIN@4";
+	"KiokuDB::Backend::DBI::BEGIN@24";
+	"KiokuDB::Backend::DBI::dbi_attrs";
+	"KiokuDB::Backend::DBI::_build_connect_info";
+	"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+	"KiokuDB::Backend::DBI::user";
+	"KiokuDB::Backend::DBI::_build__columns";
+	"KiokuDB::Backend::DBI::prepare_update";
+	"KiokuDB::Backend::DBI::BEGIN@20";
+	"KiokuDB::Backend::DBI::_build_dbic_attrs";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::insert_to_backend";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::DESTROY";
+	"DBIx::Class::Storage::TxnScopeGuard::commit";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::import";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+	"DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+	"DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSource {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSource";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::new";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@16";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@14";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@18";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@11";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::bind_attribute_by_data_type";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::_do_connection_actions";
+	"DBIx::Class::Storage::DBI::dbh_do";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::with";
+	"Moose::has";
+	"Moose::extends";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::new";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_SQL_Abstract {
+	label="SQL::Abstract";
+	"SQL::Abstract::BEGIN@10";
+	"SQL::Abstract::BEGIN@11";
+	"SQL::Abstract::CORE:match";
+	"SQL::Abstract::BEGIN@8";
+	"SQL::Abstract::BEGIN@12";
+	"SQL::Abstract::CORE:qr";
+	"SQL::Abstract::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::clone";
+	"DBIx::Class::Schema::DESTROY";
+	"DBIx::Class::Schema::storage";
+	"DBIx::Class::Schema::source";
+	"DBIx::Class::Schema::connect";
+	"DBIx::Class::Schema::txn_scope_guard";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::new";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13";
+}
+subgraph cluster_DBI_st {
+	label="DBI::st";
+	"DBI::st::execute_array";
+	"DBI::st::bind_param_array";
+	"DBI::st::finish";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::import";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::class";
+	"KiokuDB::Entry::tied";
+	"KiokuDB::Entry::prev";
+	"KiokuDB::Entry::id";
+	"KiokuDB::Entry::root";
+	"KiokuDB::Entry::data";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Schema {
+	label="KiokuDB::TypeMap::Entry::DBIC::Schema";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@12";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@10";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::new";
+}
+subgraph cluster_Class_C3_Componentised {
+	label="Class::C3::Componentised";
+	"Class::C3::Componentised::load_components";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::new";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@11";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BUILD";
+	"KiokuDB::_find_default_typemaps";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::dsn_to_backend";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::load_class";
+}
+subgraph cluster_KiokuDB_Backend_DBI_Schema {
+	label="KiokuDB::Backend::DBI::Schema";
+	"KiokuDB::Backend::DBI::Schema::BEGIN@12";
+	"KiokuDB::Backend::DBI::Schema::BEGIN@10";
+	"KiokuDB::Backend::DBI::Schema::BEGIN@4";
+}
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta";
+"KiokuDB::Backend::DBI::_build_schema" -> "KiokuDB::Backend::DBI::_schema_proto";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@2";
+"KiokuDB::Backend::DBI::register_handle" -> "DBIx::Class::Schema::KiokuDB::_kiokudb_handle";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@2";
+"KiokuDB::Backend::DBI::_build_schema" -> "KiokuDB::Backend::DBI::has_schema_hook";
+"KiokuDB::Backend::DBI::insert_rows" -> "DBIx::Class::Storage::TxnScopeGuard::DESTROY";
+"KiokuDB::Backend::DBI::insert" -> "DBIx::Class::Storage::TxnScopeGuard::DESTROY";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "Moose::extends";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "Moose::extends";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@20";
+"KiokuDB::Backend::DBI::insert" -> "KiokuDB::Backend::DBI::entries_to_rows";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:81]" -> "JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@18";
+"KiokuDB::Backend::DBI::new" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:81]";
+"DBIx::Class::Storage::DBI::dbh_do" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]";
+"KiokuDB::Backend::DBI::_build_dbic_attrs" -> "KiokuDB::Backend::DBI::on_connect_call";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "KiokuDB::Backend::DBI::prepare_insert";
+"KiokuDB::Backend::DBI::default_typemap" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::new";
+"KiokuDB::Backend::DBI::new" -> "KiokuDB::Backend::DBI::BUILD";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@16";
+"KiokuDB::Backend::DBI::_columns" -> "KiokuDB::Backend::DBI::_build__columns";
+"KiokuDB::Backend::DBI::_build__columns" -> "KiokuDB::Backend::DBI::kiokudb_entries_source_name";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@12";
+"KiokuDB::Backend::DBI::default_typemap" -> "KiokuDB::TypeMap::Entry::DBIC::Row::new";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@9";
+"KiokuDB::Backend::DBI::new_from_dsn" -> "KiokuDB::Backend::DBI::new";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@27" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "UNIVERSAL::import";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "KiokuDB::Backend::DBI::Schema::BEGIN@12";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@4";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Moose::has";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Moose::has";
+"KiokuDB::Backend::DBI::_build__columns" -> "DBIx::Class::ResultSource::column_info";
+"KiokuDB::Backend::DBI::_build_schema" -> "KiokuDB::Backend::DBI::columns";
+"KiokuDB::Util::dsn_to_backend" -> "KiokuDB::Backend::DBI::new_from_dsn";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@11";
+"KiokuDB::Backend::DBI::default_typemap" -> "KiokuDB::TypeMap::new";
+"KiokuDB::Backend::DBI::_build_storage" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::BUILD" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::insert_rows" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::_build__columns" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::register_handle" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::insert" -> "KiokuDB::Backend::DBI::schema";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "KiokuDB::Backend::DBI::Schema::BEGIN@4";
+"KiokuDB::Backend::DBI::insert_rows" -> "DBIx::Class::Schema::txn_scope_guard";
+"KiokuDB::Backend::DBI::insert" -> "DBIx::Class::Schema::txn_scope_guard";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@23";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]" -> "Class::Load::load_class";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::KiokuDB::define_kiokudb_schema";
+"KiokuDB::Backend::DBI::entries_to_rows" -> "KiokuDB::Entry::id";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Entry::id";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@28";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@10";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@14";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@8";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::clone";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::connect";
+"KiokuDB::Backend::DBI::entries_to_rows" -> "KiokuDB::Backend::DBI::CORE:match";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBIx::Class::Schema::source";
+"KiokuDB::Backend::DBI::_build__columns" -> "DBIx::Class::Schema::source";
+"KiokuDB::Backend::DBI::on_connect_call" -> "KiokuDB::Backend::DBI::_build_on_connect_call";
+"KiokuDB::Backend::DBI::entries_to_rows" -> "KiokuDB::Backend::DBI::_ordered_columns";
+"KiokuDB::Backend::DBI::prepare_insert" -> "KiokuDB::Backend::DBI::_ordered_columns";
+"KiokuDB::Backend::DBI::prepare_update" -> "KiokuDB::Backend::DBI::_ordered_columns";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::ResultSource::DESTROY";
+"KiokuDB::Backend::DBI::insert" -> "KiokuDB::Backend::DBI::insert_rows";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@8";
+"KiokuDB::Backend::DBI::_build__ordered_columns" -> "KiokuDB::Backend::DBI::CORE:sort";
+"KiokuDB::Backend::DBI::_build_connect_info" -> "KiokuDB::Backend::DBI::password";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::finish";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@13";
+"KiokuDB::Backend::DBI::_build_storage" -> "DBIx::Class::Schema::storage";
+"KiokuDB::Backend::DBI::_build_connect_info" -> "KiokuDB::Backend::DBI::dbic_attrs";
+"KiokuDB::Backend::DBI::BEGIN@23" -> "JSON::import";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Backend::DBI::serialize";
+"KiokuDB::Backend::DBI::_build_schema" -> "KiokuDB::Backend::DBI::connect_info";
+"KiokuDB::Backend::DBI::BEGIN@33" -> "namespace::clean::import";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@8";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::meta";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@26";
+"KiokuDB::Backend::DBI::ValidColumnName" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:54]";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@18";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@10";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@2";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBIx::Class::ResultSource::columns_info";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "Moose::with";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@11";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::CORE:qr";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@10";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "KiokuDB::Backend::DBI::Schema::BEGIN@10";
+"KiokuDB::Backend::DBI::BEGIN@18" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@12" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::DBI::insert_rows" -> "KiokuDB::Backend::DBI::dbh_do";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@30";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@21";
+"KiokuDB::Backend::DBI::BEGIN@16" -> "MooseX::Types::Base::import";
+"DBIx::Class::Storage::DBI::_do_connection_actions" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:135]";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::BEGIN@2";
+"KiokuDB::Backend::DBI::_build_on_connect_call" -> "KiokuDB::Backend::DBI::has_sqlite_fsync_mode";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@8";
+"KiokuDB::Backend::DBI::SchemaProto" -> "KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]";
+"KiokuDB::Backend::DBI::dbic_attrs" -> "KiokuDB::Backend::DBI::_build_dbic_attrs";
+"KiokuDB::Backend::DBI::default_typemap" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::new";
+"KiokuDB::Backend::DBI::BEGIN@20" -> "Exporter::import";
+"KiokuDB::Backend::DBI::BEGIN@24" -> "Exporter::import";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "KiokuDB::Backend::DBI::extract";
+"KiokuDB::Backend::DBI::insert" -> "KiokuDB::Backend::DBI::extract";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::meta";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::BEGIN@2";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@8";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:135]" -> "UNIVERSAL::can";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::bind_param_array";
+"KiokuDB::Backend::DBI::default_typemap" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSet::new";
+"KiokuDB::Collapser::Buffer::insert_to_backend" -> "KiokuDB::Backend::DBI::insert";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@13";
+"KiokuDB::Backend::DBI::_build_connect_info" -> "KiokuDB::Backend::DBI::dsn";
+"KiokuDB::Backend::DBI::entries_to_rows" -> "KiokuDB::Backend::DBI::entry_to_row";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@24";
+"KiokuDB::Backend::DBI::schema" -> "KiokuDB::Backend::DBI::_build_schema";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@12";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Data::Stream::Bulk::DBI::meta";
+"KiokuDB::Backend::DBI::prepare_insert" -> "DBI::db::prepare_cached";
+"KiokuDB::Backend::DBI::prepare_update" -> "DBI::db::prepare_cached";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBI::st::execute_array";
+"KiokuDB::Backend::DBI::_build_connect_info" -> "KiokuDB::Backend::DBI::user";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "Class::MOP::Class::make_immutable";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@22";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::DESTROY";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@11";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]" -> "UNIVERSAL::isa";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta";
+"KiokuDB::Backend::DBI::insert_rows" -> "DBIx::Class::Storage::TxnScopeGuard::commit";
+"KiokuDB::Backend::DBI::insert" -> "DBIx::Class::Storage::TxnScopeGuard::commit";
+"KiokuDB::Backend::DBI::_build_schema" -> "DBIx::Class::Schema::KiokuDB::kiokudb_entries_source_name";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Entry::root";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::CORE:match";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@33";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@14";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@11";
+"KiokuDB::BUILD" -> "KiokuDB::Backend::DBI::register_handle";
+"KiokuDB::Backend::DBI::_build_connect_info" -> "KiokuDB::Backend::DBI::dbi_attrs";
+"KiokuDB::Backend::DBI::connect_info" -> "KiokuDB::Backend::DBI::_build_connect_info";
+"KiokuDB::Backend::DBI::_build__ordered_columns" -> "KiokuDB::Backend::DBI::_columns";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Backend::DBI::_columns";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "KiokuDB::TypeMap::Entry::DBIC::ResultSource::BEGIN@11";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@16";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@29";
+"KiokuDB::Backend::DBI::entries_to_rows" -> "KiokuDB::Entry::prev";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Entry::data";
+"KiokuDB::Backend::DBI::BUILD" -> "KiokuDB::Backend::DBI::create";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "KiokuDB::Backend::DBI::prepare_update";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:58]" -> "Class::MOP::load_class";
+"KiokuDB::Backend::DBI::BEGIN@14" -> "MooseX::Types::import";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "DBIx::Class::Storage::DBI::SQLite::bind_attribute_by_data_type";
+"KiokuDB::Backend::DBI::storage" -> "KiokuDB::Backend::DBI::_build_storage";
+"KiokuDB::Backend::DBI::_ordered_columns" -> "KiokuDB::Backend::DBI::_build__ordered_columns";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "KiokuDB::TypeMap::Entry::DBIC::Row::BEGIN@8";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Entry::tied";
+"KiokuDB::Backend::DBI::_build__columns" -> "DBIx::Class::ResultSource::columns";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@31";
+"KiokuDB::Backend::DBI::__ANON__[KiokuDB/Backend/DBI.pm:492]" -> "KiokuDB::Backend::DBI::storage";
+"KiokuDB::Backend::DBI::BEGIN@22" -> "SQL::Abstract::BEGIN@10";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "KiokuDB::TypeMap::Entry::DBIC::Schema::BEGIN@12";
+"KiokuDB::Backend::DBI::_build_on_connect_call" -> "KiokuDB::Backend::DBI::mysql_strict";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@27";
+"Module::Runtime::require_module" -> "KiokuDB::Backend::DBI::BEGIN@10";
+"KiokuDB::_find_default_typemaps" -> "KiokuDB::Backend::DBI::default_typemap";
+"KiokuDB::Backend::DBI::entry_to_row" -> "KiokuDB::Entry::class";
+"KiokuDB::Backend::DBI::BEGIN@26" -> "Class::C3::Componentised::load_components";
+}

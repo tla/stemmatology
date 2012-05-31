@@ -1,0 +1,38 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Graph_SPTHeapElem {
+	label="Graph::SPTHeapElem";
+	"Graph::SPTHeapElem::BEGIN@3";
+	"Graph::SPTHeapElem::BEGIN@5";
+	"Graph::SPTHeapElem::BEGIN@7";
+	"Graph::SPTHeapElem::BEGIN@4";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@35";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Graph::SPTHeapElem::BEGIN@3" -> "strict::import";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@4";
+"Graph::SPTHeapElem::BEGIN@5" -> "Exporter::import";
+"Graph::SPTHeapElem::BEGIN@7" -> "base::import";
+"Graph::SPTHeapElem::BEGIN@4" -> "vars::import";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@5";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@7";
+"Graph::BEGIN@35" -> "Graph::SPTHeapElem::BEGIN@3";
+}

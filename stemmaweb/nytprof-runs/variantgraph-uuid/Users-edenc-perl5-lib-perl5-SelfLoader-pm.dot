@@ -1,0 +1,57 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_SelfLoader {
+	label="SelfLoader";
+	"SelfLoader::BEGIN@158";
+	"SelfLoader::BEGIN@2";
+	"SelfLoader::BEGIN@1";
+	"SelfLoader::BEGIN@73";
+	"SelfLoader::BEGIN@91";
+	"SelfLoader::BEGIN@3";
+	"SelfLoader::BEGIN@10";
+	"SelfLoader::BEGIN@1.22";
+	"SelfLoader::BEGIN@9";
+	"SelfLoader::BEGIN@4";
+	"SelfLoader::CORE:qr";
+	"SelfLoader::BEGIN@42";
+	"SelfLoader::BEGIN@93";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Text_Balanced {
+	label="Text::Balanced";
+	"Text::Balanced::BEGIN@9";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@42";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@158";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@9";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@10";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@4";
+"SelfLoader::BEGIN@10" -> "SelfLoader::BEGIN@1.22";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@93";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@2";
+"SelfLoader::BEGIN@3" -> "strict::import";
+"SelfLoader::BEGIN@93" -> "strict::import";
+"SelfLoader::BEGIN@42" -> "Exporter::import";
+"SelfLoader::BEGIN@4" -> "Exporter::import";
+"SelfLoader::BEGIN@158" -> "strict::unimport";
+"SelfLoader::BEGIN@73" -> "strict::unimport";
+"SelfLoader::BEGIN@91" -> "strict::unimport";
+"SelfLoader::BEGIN@9" -> "vars::import";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@91";
+"SelfLoader::BEGIN@10" -> "SelfLoader::BEGIN@1";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@3";
+"SelfLoader::BEGIN@10" -> "SelfLoader::CORE:qr";
+"Text::Balanced::BEGIN@9" -> "SelfLoader::BEGIN@73";
+}

@@ -1,0 +1,40 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Template_Document {
+	label="Template::Document";
+	"Template::Document::BEGIN@27";
+	"Template::Document::BEGIN@25";
+	"Template::Document::BEGIN@34";
+	"Template::Document::BEGIN@24";
+	"Template::Document::BEGIN@26";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Template_Provider {
+	label="Template::Provider";
+	"Template::Provider::BEGIN@46";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@34";
+"Template::Document::BEGIN@24" -> "strict::import";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@25";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@26";
+"Template::Document::BEGIN@27" -> "Exporter::import";
+"Template::Document::BEGIN@26" -> "base::import";
+"Template::Document::BEGIN@25" -> "warnings::import";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@27";
+"Template::Provider::BEGIN@46" -> "Template::Document::BEGIN@24";
+}

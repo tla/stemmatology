@@ -1,0 +1,70 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_Wrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::Wrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@2";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_6 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::6";
+	"Moose::Meta::Class::__ANON__::SERIAL::6::wrap";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::super";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::get_original_method";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@2";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@10";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@14";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@11";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::does_role";
+}
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@10";
+"Moose::Meta::Class::__ANON__::SERIAL::6::wrap" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@11" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@14";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@14" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@10" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@10";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@11";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@2";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Class::MOP::Method::Wrapped::get_original_method";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Moose::Util::does_role";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12" -> "MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@2";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::__ANON__[MooseX/MethodAttributes/Role/Meta/Method/MaybeWrapped.pm:26]" -> "Moose::Role::super";
+"Module::Runtime::require_module" -> "MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@12";
+}

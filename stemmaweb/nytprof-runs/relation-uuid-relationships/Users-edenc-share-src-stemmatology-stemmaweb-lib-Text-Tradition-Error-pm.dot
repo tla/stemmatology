@@ -1,0 +1,74 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Role {
+	label="Moose::Role";
+	"Moose::Role::with";
+	"Moose::Role::has";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@5";
+	"Throwable::X::BEGIN@9";
+	"Throwable::X::BEGIN@14";
+	"Throwable::X::BEGIN@2";
+	"Throwable::X::BEGIN@11";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::BEGIN@6";
+	"Text::Tradition::Error::BEGIN@5";
+	"Text::Tradition::Error::BEGIN@3";
+	"Text::Tradition::Error::BEGIN@9";
+	"Text::Tradition::Error::BEGIN@17";
+	"Text::Tradition::Error::BEGIN@4";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Error::BEGIN@6" -> "overload::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@5";
+"Text::Tradition::Error::BEGIN@9" -> "Moose::Role::has";
+"Text::Tradition::Error::BEGIN@9" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@14";
+"Text::Tradition::Error::BEGIN@3" -> "strict::import";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@4";
+"Text::Tradition::Error::BEGIN@9" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Error::BEGIN@17" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Error::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@17";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@9";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@11";
+"Text::Tradition::Error::BEGIN@4" -> "warnings::import";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@5";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@6";
+"Text::Tradition::Error::BEGIN@9" -> "Moose::Role::with";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Text::Tradition::Error::BEGIN@3";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@9";
+"Text::Tradition::Error::BEGIN@9" -> "Throwable::X::BEGIN@2";
+}

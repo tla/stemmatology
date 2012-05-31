@@ -1,0 +1,24 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTML_Parser {
+	label="HTML::Parser";
+	"HTML::Parser::BEGIN@10";
+	"HTML::Parser::BEGIN@9";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@9";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Catalyst::Engine::BEGIN@9" -> "HTML::Parser::BEGIN@10";
+"HTML::Parser::BEGIN@9" -> "strict::import";
+"HTML::Parser::BEGIN@10" -> "vars::import";
+"Catalyst::Engine::BEGIN@9" -> "HTML::Parser::BEGIN@9";
+}

@@ -1,0 +1,48 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Document_Normalized {
+	label="PPI::Document::Normalized";
+	"PPI::Document::Normalized::BEGIN@48";
+	"PPI::Document::Normalized::BEGIN@54";
+	"PPI::Document::Normalized::BEGIN@49";
+	"PPI::Document::Normalized::BEGIN@44";
+	"PPI::Document::Normalized::BEGIN@45";
+	"PPI::Document::Normalized::BEGIN@46";
+	"PPI::Document::Normalized::BEGIN@43";
+	"PPI::Document::Normalized::BEGIN@53";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_overload {
+	label="overload";
+	"overload::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_PPI {
+	label="PPI";
+	"PPI::BEGIN@26";
+}
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@46";
+"PPI::Document::Normalized::BEGIN@54" -> "overload::import";
+"PPI::Document::Normalized::BEGIN@53" -> "overload::import";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@44";
+"PPI::Document::Normalized::BEGIN@43" -> "strict::import";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@54";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@49";
+"PPI::Document::Normalized::BEGIN@44" -> "Exporter::import";
+"PPI::Document::Normalized::BEGIN@45" -> "Exporter::import";
+"PPI::Document::Normalized::BEGIN@48" -> "vars::import";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@45";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@53";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@48";
+"PPI::BEGIN@26" -> "PPI::Document::Normalized::BEGIN@43";
+}

@@ -1,0 +1,41 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Tree_Simple_Visitor {
+	label="Tree::Simple::Visitor";
+	"Tree::Simple::Visitor::BEGIN@13";
+	"Tree::Simple::Visitor::BEGIN@9";
+	"Tree::Simple::Visitor::BEGIN@4";
+	"Tree::Simple::Visitor::BEGIN@14";
+	"Tree::Simple::Visitor::BEGIN@5";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"base::import" -> "Tree::Simple::Visitor::BEGIN@14";
+"Tree::Simple::Visitor::BEGIN@14" -> "constant::import";
+"Tree::Simple::Visitor::BEGIN@13" -> "constant::import";
+"Tree::Simple::Visitor::BEGIN@4" -> "strict::import";
+"Tree::Simple::Visitor::BEGIN@9" -> "Exporter::import";
+"base::import" -> "Tree::Simple::Visitor::BEGIN@4";
+"Tree::Simple::Visitor::BEGIN@5" -> "warnings::import";
+"base::import" -> "Tree::Simple::Visitor::BEGIN@13";
+"base::import" -> "Tree::Simple::Visitor::BEGIN@9";
+"base::import" -> "Tree::Simple::Visitor::BEGIN@5";
+}

@@ -1,0 +1,56 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::new";
+	"HTTP::Message::_elem";
+}
+subgraph cluster_Plack_Test_MockHTTP {
+	label="Plack::Test::MockHTTP";
+	"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]";
+}
+subgraph cluster_HTTP_Message_PSGI {
+	label="HTTP::Message::PSGI";
+	"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]";
+}
+subgraph cluster_HTTP_Status {
+	label="HTTP::Status";
+	"HTTP::Status::CORE:match";
+	"HTTP::Status::CORE:subst";
+	"HTTP::Status::BEGIN@3";
+	"HTTP::Status::BEGIN@6";
+}
+subgraph cluster_HTTP_Response {
+	label="HTTP::Response";
+	"HTTP::Response::new";
+	"HTTP::Response::request";
+	"HTTP::Response::BEGIN@8";
+	"HTTP::Response::code";
+	"HTTP::Response::BEGIN@7";
+	"HTTP::Response::message";
+}
+subgraph cluster_LWP_UserAgent {
+	label="LWP::UserAgent";
+	"LWP::UserAgent::BEGIN@11";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::BEGIN@3";
+"LWP::UserAgent::BEGIN@11" -> "HTTP::Response::BEGIN@7";
+"HTTP::Response::BEGIN@7" -> "strict::import";
+"HTTP::Response::request" -> "HTTP::Message::_elem";
+"HTTP::Response::code" -> "HTTP::Message::_elem";
+"HTTP::Response::message" -> "HTTP::Message::_elem";
+"HTTP::Response::new" -> "HTTP::Response::code";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Response::new";
+"HTTP::Response::new" -> "HTTP::Response::message";
+"HTTP::Message::PSGI::__ANON__[HTTP/Message/PSGI.pm:134]" -> "HTTP::Response::message";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::CORE:subst";
+"HTTP::Response::new" -> "HTTP::Message::new";
+"LWP::UserAgent::BEGIN@11" -> "HTTP::Response::BEGIN@8";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::BEGIN@6";
+"HTTP::Response::BEGIN@8" -> "HTTP::Status::CORE:match";
+"Plack::Test::MockHTTP::__ANON__[Plack/Test/MockHTTP.pm:31]" -> "HTTP::Response::request";
+}

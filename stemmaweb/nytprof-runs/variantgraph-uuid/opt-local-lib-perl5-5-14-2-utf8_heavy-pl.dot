@@ -1,0 +1,95 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::as_dot";
+}
+subgraph cluster_HTTP_Message {
+	label="HTTP::Message";
+	"HTTP::Message::__ANON__[HTTP/Message.pm:18]";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_utf8 {
+	label="utf8";
+	"utf8::BEGIN@147";
+	"utf8::is_utf8";
+	"utf8::AUTOLOAD";
+	"utf8::BEGIN@2";
+	"utf8::SWASHNEW";
+	"utf8::BEGIN@399";
+	"utf8::downgrade";
+	"utf8::BEGIN@123";
+	"utf8::BEGIN@117";
+	"utf8::BEGIN@135";
+	"utf8::CORE:sort";
+	"utf8::CORE:match";
+	"utf8::BEGIN@460";
+	"utf8::BEGIN@3";
+	"utf8::upgrade";
+	"utf8::CORE:subst";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::add_relationship";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_URI__generic {
+	label="URI::_generic";
+	"URI::_generic::authority";
+}
+subgraph cluster_Safe {
+	label="Safe";
+	"Safe::CORE:regcomp";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::BEGIN@42";
+}
+subgraph cluster_URI {
+	label="URI";
+	"URI::_uric_escape";
+}
+subgraph cluster_Carp {
+	label="Carp";
+	"Carp::format_arg";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"utf8::SWASHNEW" -> "utf8::CORE:sort";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@3";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@460";
+"utf8::SWASHNEW" -> "utf8::CORE:match";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@135";
+"utf8::BEGIN@2" -> "strict::import";
+"Graph::BEGIN@42" -> "utf8::upgrade";
+"utf8::SWASHNEW" -> "utf8::CORE:subst";
+"Safe::CORE:regcomp" -> "utf8::SWASHNEW";
+"Text::Tradition::Collation::as_dot" -> "utf8::SWASHNEW";
+"Text::Tradition::Collation::RelationshipStore::add_relationship" -> "utf8::SWASHNEW";
+"utf8::BEGIN@123" -> "strict::unimport";
+"utf8::BEGIN@399" -> "strict::unimport";
+"utf8::BEGIN@3" -> "warnings::import";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@2";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@123";
+"utf8::BEGIN@460" -> "warnings::unimport";
+"utf8::BEGIN@117" -> "warnings::unimport";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@117";
+"URI::_uric_escape" -> "utf8::downgrade";
+"Carp::format_arg" -> "utf8::downgrade";
+"URI::_generic::authority" -> "utf8::downgrade";
+"HTTP::Message::__ANON__[HTTP/Message.pm:18]" -> "utf8::downgrade";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@399";
+"constant::import" -> "utf8::is_utf8";
+"Carp::format_arg" -> "utf8::is_utf8";
+"utf8::AUTOLOAD" -> "utf8::BEGIN@147";
+}

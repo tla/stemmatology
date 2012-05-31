@@ -1,0 +1,72 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::compile";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::compile_collapse_body";
+	"KiokuDB::TypeMap::Entry::Naive::intrinsic";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@4";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@6";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@2";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::should_compile_intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_first_class_collapse";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::collapse_first_class";
+	"KiokuDB::Collapser::visit_with_typemap";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic";
+	"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::intrinsic";
+	"Text::Tradition::TypeMap::Entry::compile_collapse_body";
+}
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::should_compile_intrinsic" -> "KiokuDB::TypeMap::Entry::Naive::intrinsic";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper" -> "Text::Tradition::TypeMap::Entry::compile_collapse_body";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::should_compile_intrinsic" -> "Text::Tradition::TypeMap::Entry::intrinsic";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_first_class_collapse" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper" -> "KiokuDB::TypeMap::Entry::Naive::compile_collapse_body";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Collapser::visit_with_typemap" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@2" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse" -> "KiokuDB::TypeMap::Entry::MOP::should_compile_intrinsic";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@4";
+"KiokuDB::TypeMap::Entry::Std::Compile::compile" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::should_compile_intrinsic";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@4" -> "warnings::unimport";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@6";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::__ANON__[KiokuDB/TypeMap/Entry/Std/Intrinsic.pm:53]" -> "KiokuDB::Collapser::collapse_first_class";
+"Module::Runtime::require_module" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@2";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse_wrapper" -> "KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_collapse" -> "KiokuDB::TypeMap::Entry::Std::Intrinsic::compile_first_class_collapse";
+}

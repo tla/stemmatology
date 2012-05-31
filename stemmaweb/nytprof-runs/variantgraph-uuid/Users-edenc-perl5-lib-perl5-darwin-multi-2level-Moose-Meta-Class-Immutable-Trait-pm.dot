@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::BEGIN@24";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Moose_Meta_Class_Immutable_Trait {
+	label="Moose::Meta::Class::Immutable::Trait";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@10";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@2";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@13";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@15";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@12";
+	"Moose::Meta::Class::Immutable::Trait::BEGIN@9";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@13";
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@9";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@9" -> "strict::import";
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@2";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@13" -> "Exporter::import";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@15" -> "base::import";
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@10";
+"Moose::Meta::Class::Immutable::Trait::BEGIN@10" -> "warnings::import";
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@12";
+"Moose::Meta::Class::BEGIN@24" -> "Moose::Meta::Class::Immutable::Trait::BEGIN@15";
+}

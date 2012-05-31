@@ -1,0 +1,28 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_PPI_Token {
+	label="PPI::Token";
+	"PPI::Token::BEGIN@48";
+}
+subgraph cluster_PPI_Token_Number_Version {
+	label="PPI::Token::Number::Version";
+	"PPI::Token::Number::Version::BEGIN@37";
+	"PPI::Token::Number::Version::BEGIN@34";
+	"PPI::Token::Number::Version::BEGIN@36";
+	"PPI::Token::Number::Version::BEGIN@33";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@34";
+"PPI::Token::Number::Version::BEGIN@33" -> "strict::import";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@36";
+"PPI::Token::Number::Version::BEGIN@36" -> "vars::import";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@37";
+"PPI::Token::BEGIN@48" -> "PPI::Token::Number::Version::BEGIN@33";
+}

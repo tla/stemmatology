@@ -1,0 +1,89 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::associated_metaclass";
+	"Class::MOP::Method::body";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::find_next_method_by_name";
+	"Class::MOP::Class::_inline_destructor";
+	"Class::MOP::Class::_inline_constructor";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::associated_metaclass";
+}
+subgraph cluster_Class_MOP_Method_Inlined {
+	label="Class::MOP::Method::Inlined";
+	"Class::MOP::Method::Inlined::BEGIN@9";
+	"Class::MOP::Method::Inlined::BEGIN@12";
+	"Class::MOP::Method::Inlined::BEGIN@2";
+	"Class::MOP::Method::Inlined::BEGIN@13";
+	"Class::MOP::Method::Inlined::_expected_method_class";
+	"Class::MOP::Method::Inlined::_uninlined_body";
+	"Class::MOP::Method::Inlined::BEGIN@15";
+	"Class::MOP::Method::Inlined::BEGIN@10";
+	"Class::MOP::Method::Inlined::can_be_inlined";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::name";
+}
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Method::associated_metaclass";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Method::associated_metaclass";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Class::find_next_method_by_name";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Class::find_next_method_by_name";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Method::Inlined::_uninlined_body";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Method::Inlined::_uninlined_body";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@13";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@9";
+"Class::MOP::Method::Inlined::BEGIN@9" -> "strict::import";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Method::body";
+"Class::MOP::Method::Inlined::BEGIN@13" -> "Exporter::import";
+"Class::MOP::Method::Inlined::BEGIN@12" -> "Exporter::import";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Method::Constructor::associated_metaclass";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "UNIVERSAL::can";
+"Class::MOP::Method::Inlined::BEGIN@15" -> "base::import";
+"Class::MOP::Method::Inlined::BEGIN@10" -> "warnings::import";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@15";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Method::Inlined::_expected_method_class";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@10";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "UNIVERSAL::isa";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "UNIVERSAL::isa";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@2";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Method::Inlined::can_be_inlined";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Method::Inlined::can_be_inlined";
+"base::import" -> "Class::MOP::Method::Inlined::BEGIN@12";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Method::name";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Method::name";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Package::name";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Scalar::Util::refaddr";
+}

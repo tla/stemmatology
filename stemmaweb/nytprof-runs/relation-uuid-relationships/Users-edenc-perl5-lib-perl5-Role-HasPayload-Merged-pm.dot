@@ -1,0 +1,37 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Role_HasPayload_Meta_Attribute_Payload {
+	label="Role::HasPayload::Meta::Attribute::Payload";
+	"Role::HasPayload::Meta::Attribute::Payload::BEGIN@5";
+	"Role::HasPayload::Meta::Attribute::Payload::BEGIN@2";
+}
+subgraph cluster_Role_HasPayload_Merged {
+	label="Role::HasPayload::Merged";
+	"Role::HasPayload::Merged::BEGIN@41";
+	"Role::HasPayload::Merged::BEGIN@5";
+	"Role::HasPayload::Merged::BEGIN@2";
+	"Role::HasPayload::Merged::BEGIN@9";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+"Module::Runtime::require_module" -> "Role::HasPayload::Merged::BEGIN@9";
+"Role::HasPayload::Merged::BEGIN@9" -> "UNIVERSAL::import";
+"Role::HasPayload::Merged::BEGIN@9" -> "Role::HasPayload::Meta::Attribute::Payload::BEGIN@5";
+"Role::HasPayload::Merged::BEGIN@9" -> "Role::HasPayload::Meta::Attribute::Payload::BEGIN@2";
+"Role::HasPayload::Merged::BEGIN@41" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Role::HasPayload::Merged::BEGIN@5" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Module::Runtime::require_module" -> "Role::HasPayload::Merged::BEGIN@5";
+"Module::Runtime::require_module" -> "Role::HasPayload::Merged::BEGIN@41";
+"Module::Runtime::require_module" -> "Role::HasPayload::Merged::BEGIN@2";
+}

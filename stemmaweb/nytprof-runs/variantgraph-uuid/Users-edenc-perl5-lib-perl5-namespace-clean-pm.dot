@@ -1,0 +1,924 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::BEGIN@11";
+}
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@18";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::BEGIN@7";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer {
+	label="MooseX::MethodAttributes::Role::AttrContainer";
+	"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@13";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_AttrContainer_Inheritable {
+	label="MooseX::MethodAttributes::Role::AttrContainer::Inheritable";
+	"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@14";
+}
+subgraph cluster_DBIx_Class_Carp {
+	label="DBIx::Class::Carp";
+	"DBIx::Class::Carp::import";
+}
+subgraph cluster_Parse_Method_Signatures_Types {
+	label="Parse::Method::Signatures::Types";
+	"Parse::Method::Signatures::Types::BEGIN@8";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::BEGIN@5";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Converter {
+	label="KiokuDB::Backend::Serialize::JSPON::Converter";
+	"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::BEGIN@4";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::BEGIN@59";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Alias {
+	label="KiokuDB::TypeMap::Entry::Alias";
+	"KiokuDB::TypeMap::Entry::Alias::BEGIN@6";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role_Application {
+	label="MooseX::MethodAttributes::Role::Meta::Role::Application";
+	"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@14";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@9";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@30";
+}
+subgraph cluster_Data_Stream_Bulk_Chunked {
+	label="Data::Stream::Bulk::Chunked";
+	"Data::Stream::Bulk::Chunked::BEGIN@11";
+}
+subgraph cluster_Parse_Method_Signatures_Param_Positional {
+	label="Parse::Method::Signatures::Param::Positional";
+	"Parse::Method::Signatures::Param::Positional::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_ID {
+	label="KiokuDB::TypeMap::Entry::Std::ID";
+	"KiokuDB::TypeMap::Entry::Std::ID::BEGIN@4";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@20";
+}
+subgraph cluster_KiokuDB_Set_Loaded {
+	label="KiokuDB::Set::Loaded";
+	"KiokuDB::Set::Loaded::BEGIN@8";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::BEGIN@12";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::BEGIN@10";
+}
+subgraph cluster_Data_Stream_Bulk_DoneFlag {
+	label="Data::Stream::Bulk::DoneFlag";
+	"Data::Stream::Bulk::DoneFlag::BEGIN@11";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::BEGIN@9";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Map {
+	label="MooseX::MethodAttributes::Role::Meta::Map";
+	"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@13";
+}
+subgraph cluster_KiokuDB_LiveObjects_Guard {
+	label="KiokuDB::LiveObjects::Guard";
+	"KiokuDB::LiveObjects::Guard::BEGIN@8";
+}
+subgraph cluster_DBIx_Class_ResultSource {
+	label="DBIx::Class::ResultSource";
+	"DBIx::Class::ResultSource::BEGIN@14";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone_Base {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone::Base";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::Base::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@33";
+}
+subgraph cluster_MooseX_Types_Moose {
+	label="MooseX::Types::Moose";
+	"MooseX::Types::Moose::BEGIN@14";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::BEGIN@13";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::BEGIN@6";
+}
+subgraph cluster_Data_Stream_Bulk_Nil {
+	label="Data::Stream::Bulk::Nil";
+	"Data::Stream::Bulk::Nil::BEGIN@11";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_Wrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::Wrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite {
+	label="KiokuDB::TypeMap::Composite";
+	"KiokuDB::TypeMap::Composite::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Stream_Objects {
+	label="KiokuDB::Stream::Objects";
+	"KiokuDB::Stream::Objects::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Expand {
+	label="KiokuDB::TypeMap::Entry::Std::Expand";
+	"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@6";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default {
+	label="KiokuDB::Backend::TypeMap::Default";
+	"KiokuDB::Backend::TypeMap::Default::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Set_Storage {
+	label="KiokuDB::Set::Storage";
+	"KiokuDB::Set::Storage::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry {
+	label="KiokuDB::TypeMap::Entry";
+	"KiokuDB::TypeMap::Entry::BEGIN@6";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::BEGIN@25";
+}
+subgraph cluster_KiokuDB_Error {
+	label="KiokuDB::Error";
+	"KiokuDB::Error::BEGIN@4";
+}
+subgraph cluster_Package_Stash_XS {
+	label="Package::Stash::XS";
+	"Package::Stash::XS::new";
+	"Package::Stash::XS::has_symbol";
+	"Package::Stash::XS::get_symbol";
+	"Package::Stash::XS::list_all_symbols";
+	"Package::Stash::XS::add_symbol";
+	"Package::Stash::XS::remove_glob";
+	"Package::Stash::XS::namespace";
+}
+subgraph cluster_DBIx_Class_ResultSet {
+	label="DBIx::Class::ResultSet";
+	"DBIx::Class::ResultSet::BEGIN@22";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::BEGIN@7";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@18";
+}
+subgraph cluster_DBIx_Class_Storage_TxnScopeGuard {
+	label="DBIx::Class::Storage::TxnScopeGuard";
+	"DBIx::Class::Storage::TxnScopeGuard::BEGIN@10";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_KiokuDB_Role_TypeMap {
+	label="KiokuDB::Role::TypeMap";
+	"KiokuDB::Role::TypeMap::BEGIN@6";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::BEGIN@168";
+	"namespace::clean::BEGIN@14";
+	"namespace::clean::BEGIN@4";
+	"namespace::clean::BEGIN@6";
+	"namespace::clean::BEGIN@467";
+	"namespace::clean::get_functions";
+	"namespace::clean::BEGIN@7";
+	"namespace::clean::__ANON__[namespace/clean.pm:338]";
+	"namespace::clean::BEGIN@171";
+	"namespace::clean::__ANON__[namespace/clean.pm:311]";
+	"namespace::clean::__ANON__[namespace/clean.pm:274]";
+	"namespace::clean::BEGIN@3";
+	"namespace::clean::clean_subroutines";
+	"namespace::clean::get_class_store";
+	"namespace::clean::BEGIN@169";
+	"namespace::clean::import";
+	"namespace::clean::CORE:match";
+	"namespace::clean::__ANON__[namespace/clean.pm:221]";
+}
+subgraph cluster_KiokuDB_Set_Base {
+	label="KiokuDB::Set::Base";
+	"KiokuDB::Set::Base::BEGIN@6";
+}
+subgraph cluster_MooseX_Types {
+	label="MooseX::Types";
+	"MooseX::Types::BEGIN@19";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::BEGIN@10";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::BEGIN@17";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::BEGIN@8";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_Serialize {
+	label="KiokuDB::Backend::Serialize";
+	"KiokuDB::Backend::Serialize::BEGIN@8";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::BEGIN@13";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::unimport";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone_Std {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone::Std";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::Std::BEGIN@4";
+}
+subgraph cluster_DBIx_Class_Schema_KiokuDB {
+	label="DBIx::Class::Schema::KiokuDB";
+	"DBIx::Class::Schema::KiokuDB::BEGIN@19";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@9";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::BEGIN@9";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Compile {
+	label="KiokuDB::TypeMap::Entry::Std::Compile";
+	"KiokuDB::TypeMap::Entry::Std::Compile::BEGIN@6";
+}
+subgraph cluster_Search_GIN_Driver {
+	label="Search::GIN::Driver";
+	"Search::GIN::Driver::BEGIN@13";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::BEGIN@4";
+}
+subgraph cluster_Catalyst_Engine {
+	label="Catalyst::Engine";
+	"Catalyst::Engine::BEGIN@18";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::BEGIN@7";
+}
+subgraph cluster_Data_Stream_Bulk {
+	label="Data::Stream::Bulk";
+	"Data::Stream::Bulk::BEGIN@11";
+}
+subgraph cluster_Data_Stream_Bulk_Cat {
+	label="Data::Stream::Bulk::Cat";
+	"Data::Stream::Bulk::Cat::BEGIN@11";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::BEGIN@6";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@19";
+}
+subgraph cluster_Parse_Method_Signatures_ParamCollection {
+	label="Parse::Method::Signatures::ParamCollection";
+	"Parse::Method::Signatures::ParamCollection::BEGIN@7";
+}
+subgraph cluster_DBIx_Class_Storage_DBI_SQLite {
+	label="DBIx::Class::Storage::DBI::SQLite";
+	"DBIx::Class::Storage::DBI::SQLite::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Backend_Role_Clear {
+	label="KiokuDB::Backend::Role::Clear";
+	"KiokuDB::Backend::Role::Clear::BEGIN@6";
+}
+subgraph cluster_DBIx_Class_Storage_DBI {
+	label="DBIx::Class::Storage::DBI";
+	"DBIx::Class::Storage::DBI::BEGIN@17";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_StrableClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::StrableClone";
+	"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Role_UUIDs {
+	label="KiokuDB::Role::UUIDs";
+	"KiokuDB::Role::UUIDs::BEGIN@8";
+}
+subgraph cluster_MooseX_Types_CheckedUtilExports {
+	label="MooseX::Types::CheckedUtilExports";
+	"MooseX::Types::CheckedUtilExports::BEGIN@15";
+}
+subgraph cluster_DBIx_Class_KiokuDB_EntryProxy {
+	label="DBIx::Class::KiokuDB::EntryProxy";
+	"DBIx::Class::KiokuDB::EntryProxy::BEGIN@12";
+}
+subgraph cluster_DBIx_Class_Storage_DBIHacks {
+	label="DBIx::Class::Storage::DBIHacks";
+	"DBIx::Class::Storage::DBIHacks::BEGIN@19";
+}
+subgraph cluster_Search_GIN_Extract_Delegate {
+	label="Search::GIN::Extract::Delegate";
+	"Search::GIN::Extract::Delegate::BEGIN@10";
+}
+subgraph cluster_Throwable_X {
+	label="Throwable::X";
+	"Throwable::X::BEGIN@11";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_NoClone {
+	label="MooseX::Clone::Meta::Attribute::Trait::NoClone";
+	"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6";
+}
+subgraph cluster_Search_GIN_Extract {
+	label="Search::GIN::Extract";
+	"Search::GIN::Extract::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Backend_Role_Concurrency_POSIX {
+	label="KiokuDB::Backend::Role::Concurrency::POSIX";
+	"KiokuDB::Backend::Role::Concurrency::POSIX::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@12";
+}
+subgraph cluster_KiokuDB_Entry_Skip {
+	label="KiokuDB::Entry::Skip";
+	"KiokuDB::Entry::Skip::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default_JSON {
+	label="KiokuDB::Backend::TypeMap::Default::JSON";
+	"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@8";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::BEGIN@6";
+}
+subgraph cluster_Catalyst_Exception_Basic {
+	label="Catalyst::Exception::Basic";
+	"Catalyst::Exception::Basic::BEGIN@5";
+}
+subgraph cluster_KiokuDB_Set_Stored {
+	label="KiokuDB::Set::Stored";
+	"KiokuDB::Set::Stored::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std_Intrinsic {
+	label="KiokuDB::TypeMap::Entry::Std::Intrinsic";
+	"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@6";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@18";
+}
+subgraph cluster_KiokuDB_Role_Scan {
+	label="KiokuDB::Role::Scan";
+	"KiokuDB::Role::Scan::BEGIN@6";
+}
+subgraph cluster_Data_Stream_Bulk_Filter {
+	label="Data::Stream::Bulk::Filter";
+	"Data::Stream::Bulk::Filter::BEGIN@13";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_Delegate {
+	label="KiokuDB::Backend::Serialize::Delegate";
+	"KiokuDB::Backend::Serialize::Delegate::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@12";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Clone {
+	label="MooseX::Clone::Meta::Attribute::Trait::Clone";
+	"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8";
+}
+subgraph cluster_Catalyst_Exception_Interface {
+	label="Catalyst::Exception::Interface";
+	"Catalyst::Exception::Interface::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Composite_TypeMapAttr {
+	label="KiokuDB::TypeMap::Composite::TypeMapAttr";
+	"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@14";
+}
+subgraph cluster_KiokuDB_Set {
+	label="KiokuDB::Set";
+	"KiokuDB::Set::BEGIN@10";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::BEGIN@13";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Role {
+	label="MooseX::MethodAttributes::Role::Meta::Role";
+	"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@20";
+}
+subgraph cluster_KiokuDB_Backend_Role_GC {
+	label="KiokuDB::Backend::Role::GC";
+	"KiokuDB::Backend::Role::GC::BEGIN@4";
+}
+subgraph cluster_Parse_Method_Signatures_Param_Bindable {
+	label="Parse::Method::Signatures::Param::Bindable";
+	"Parse::Method::Signatures::Param::Bindable::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::BEGIN@6";
+}
+subgraph cluster_DBIx_Class_Schema {
+	label="DBIx::Class::Schema";
+	"DBIx::Class::Schema::BEGIN@12";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::BEGIN@4";
+}
+subgraph cluster_Catalyst_Component_ApplicationAttribute {
+	label="Catalyst::Component::ApplicationAttribute";
+	"Catalyst::Component::ApplicationAttribute::BEGIN@4";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::BEGIN@6";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method_MaybeWrapped {
+	label="MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped";
+	"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@14";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@24";
+}
+subgraph cluster_Devel_PartialDump {
+	label="Devel::PartialDump";
+	"Devel::PartialDump::BEGIN@9";
+}
+subgraph cluster_KiokuDB_Backend_Role_TXN {
+	label="KiokuDB::Backend::Role::TXN";
+	"KiokuDB::Backend::Role::TXN::BEGIN@9";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std {
+	label="KiokuDB::TypeMap::Entry::Std";
+	"KiokuDB::TypeMap::Entry::Std::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Backend_Role_Query_Simple {
+	label="KiokuDB::Backend::Role::Query::Simple";
+	"KiokuDB::Backend::Role::Query::Simple::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::BEGIN@6";
+}
+subgraph cluster_MooseX_Clone {
+	label="MooseX::Clone";
+	"MooseX::Clone::BEGIN@15";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::BEGIN@18";
+}
+subgraph cluster_MooseX_Types_Base {
+	label="MooseX::Types::Base";
+	"MooseX::Types::Base::BEGIN@14";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::BEGIN@16";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::BEGIN@6";
+}
+subgraph cluster_DBIx_Class_AccessorGroup {
+	label="DBIx::Class::AccessorGroup";
+	"DBIx::Class::AccessorGroup::BEGIN@8";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Method {
+	label="MooseX::MethodAttributes::Role::Meta::Method";
+	"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@12";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::BEGIN@20";
+}
+subgraph cluster_KiokuDB_Role_UUIDs_DataUUID {
+	label="KiokuDB::Role::UUIDs::DataUUID";
+	"KiokuDB::Role::UUIDs::DataUUID::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Default {
+	label="KiokuDB::TypeMap::Default";
+	"KiokuDB::TypeMap::Default::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_Role_UnicodeSafe {
+	label="KiokuDB::Backend::Role::UnicodeSafe";
+	"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::BEGIN@48";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::BEGIN@4";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@16";
+}
+subgraph cluster_DBIx_Class_Storage {
+	label="DBIx::Class::Storage";
+	"DBIx::Class::Storage::BEGIN@19";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@19";
+}
+subgraph cluster_KiokuDB_Role_Verbosity {
+	label="KiokuDB::Role::Verbosity";
+	"KiokuDB::Role::Verbosity::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSON {
+	label="KiokuDB::Backend::Serialize::JSON";
+	"KiokuDB::Backend::Serialize::JSON::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::BEGIN@6";
+}
+subgraph cluster_Package_DeprecationManager {
+	label="Package::DeprecationManager";
+	"Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+}
+subgraph cluster_KiokuDB_LiveObjects_TXNScope {
+	label="KiokuDB::LiveObjects::TXNScope";
+	"KiokuDB::LiveObjects::TXNScope::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Backend {
+	label="KiokuDB::Backend";
+	"KiokuDB::Backend::BEGIN@9";
+}
+subgraph cluster_DBIx_Class_ResultSourceHandle {
+	label="DBIx::Class::ResultSourceHandle";
+	"DBIx::Class::ResultSourceHandle::BEGIN@11";
+}
+subgraph cluster_MooseX_Clone_Meta_Attribute_Trait_Copy {
+	label="MooseX::Clone::Meta::Attribute::Trait::Copy";
+	"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@8";
+}
+subgraph cluster_KiokuDB_Serializer {
+	label="KiokuDB::Serializer";
+	"KiokuDB::Serializer::BEGIN@10";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@25";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_KiokuDB_Backend_Role_Scan {
+	label="KiokuDB::Backend::Role::Scan";
+	"KiokuDB::Backend::Role::Scan::BEGIN@11";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@13";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@9";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+	"namespace::autoclean::BEGIN@16";
+}
+subgraph cluster_KiokuDB_Backend_Role_Query_GIN {
+	label="KiokuDB::Backend::Role::Query::GIN";
+	"KiokuDB::Backend::Role::Query::GIN::BEGIN@6";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+	"B::Hooks::EndOfScope::on_scope_end";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::BEGIN@10";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_Canonical {
+	label="KiokuDB::TypeMap::Default::Canonical";
+	"KiokuDB::TypeMap::Default::Canonical::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@11";
+}
+subgraph cluster_KiokuDB_Role_API {
+	label="KiokuDB::Role::API";
+	"KiokuDB::Role::API::BEGIN@4";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+subgraph cluster_KiokuDB_Util {
+	label="KiokuDB::Util";
+	"KiokuDB::Util::BEGIN@13";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::BEGIN@6";
+}
+subgraph cluster_KiokuDB_Backend_DBI_Schema {
+	label="KiokuDB::Backend::DBI::Schema";
+	"KiokuDB::Backend::DBI::Schema::BEGIN@12";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@6";
+}
+subgraph cluster_Data_Stream_Bulk_Array {
+	label="Data::Stream::Bulk::Array";
+	"Data::Stream::Bulk::Array::BEGIN@11";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::BEGIN@6";
+}
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@3";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::clean::__ANON__[namespace/clean.pm:311]";
+"namespace::clean::import" -> "namespace::clean::CORE:match";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::namespace";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@169";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@6";
+"namespace::clean::import" -> "namespace::clean::get_functions";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@7";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::get_functions" -> "Package::Stash::XS::get_symbol";
+"namespace::clean::BEGIN@169" -> "constant::import";
+"namespace::clean::BEGIN@168" -> "constant::import";
+"namespace::clean::BEGIN@14" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::new";
+"namespace::clean::import" -> "Package::Stash::XS::new";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::new";
+"namespace::clean::get_functions" -> "Package::Stash::XS::new";
+"Catalyst::Engine::BEGIN@18" -> "namespace::clean::import";
+"KiokuDB::Serializer::JSON::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Callback::BEGIN@10" -> "namespace::clean::import";
+"MooseX::Clone::BEGIN@15" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Map::BEGIN@13" -> "namespace::clean::import";
+"KiokuDB::Linker::BEGIN@20" -> "namespace::clean::import";
+"Search::GIN::Driver::BEGIN@13" -> "namespace::clean::import";
+"MooseX::Types::Moose::BEGIN@14" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Naive::BEGIN@8" -> "namespace::clean::import";
+"Data::Stream::Bulk::BEGIN@11" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::NoClone::BEGIN@6" -> "namespace::clean::import";
+"Catalyst::Exception::BEGIN@59" -> "namespace::clean::import";
+"Catalyst::DispatchType::Index::BEGIN@5" -> "namespace::clean::import";
+"DBIx::Class::Storage::DBI::SQLite::BEGIN@11" -> "namespace::clean::import";
+"Catalyst::Model::KiokuDB::BEGIN@13" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::TXNScope::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Closure::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::Compile::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Role::UUIDs::BEGIN@8" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Inheritable::BEGIN@16" -> "namespace::clean::import";
+"KiokuDB::Set::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Collapser::Buffer::BEGIN@7" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::Std::BEGIN@4" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::AttrContainer::BEGIN@13" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Method::Wrapped::BEGIN@12" -> "namespace::clean::import";
+"Catalyst::Exception::Go::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::BEGIN@8" -> "namespace::clean::import";
+"DBIx::Class::ResultSource::BEGIN@14" -> "namespace::clean::import";
+"Search::GIN::Extract::BEGIN@11" -> "namespace::clean::import";
+"Parse::Method::Signatures::Types::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Role::Scan::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Set::Loaded::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::TXN::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::Delegate::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Entry::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::Converter::BEGIN@6" -> "namespace::clean::import";
+"Data::Stream::Bulk::Nil::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::Serializer::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Backend::BEGIN@9" -> "namespace::clean::import";
+"DBIx::Class::Storage::TxnScopeGuard::BEGIN@10" -> "namespace::clean::import";
+"Role::HasMessage::Errf::BEGIN@12" -> "namespace::clean::import";
+"DBIx::Class::KiokuDB::EntryProxy::BEGIN@12" -> "namespace::clean::import";
+"Parse::Method::Signatures::Param::Bindable::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Util::BEGIN@13" -> "namespace::clean::import";
+"DBIx::Class::ResultSet::BEGIN@22" -> "namespace::clean::import";
+"MooseX::Types::CheckedUtilExports::BEGIN@15" -> "namespace::clean::import";
+"MooseX::Types::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::StorableHook::BEGIN@16" -> "namespace::clean::import";
+"Parse::Method::Signatures::Param::Positional::BEGIN@4" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Method::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::ID::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::Mark::BEGIN@6" -> "namespace::clean::import";
+"DBIx::Class::Storage::DBI::BEGIN@17" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Shadow::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Composite::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Resolver::BEGIN@11" -> "namespace::clean::import";
+"Catalyst::Action::BEGIN@25" -> "namespace::clean::import";
+"KiokuDB::Backend::DBI::BEGIN@33" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Alias::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Default::BEGIN@6" -> "namespace::clean::import";
+"Catalyst::Dispatcher::BEGIN@18" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::StrableClone::BEGIN@8" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Role::Application::BEGIN@14" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::Backend::DBI::Schema::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::Expand::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Role::Verbosity::BEGIN@6" -> "namespace::clean::import";
+"DBIx::Class::ResultSourceHandle::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::GC::BEGIN@4" -> "namespace::clean::import";
+"Data::Visitor::BEGIN@20" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::Sweep::BEGIN@6" -> "namespace::clean::import";
+"DBIx::Class::Carp::import" -> "namespace::clean::import";
+"KiokuDB::Set::Base::BEGIN@6" -> "namespace::clean::import";
+"MooseX::Role::WithOverloading::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Stream::Objects::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::Guard::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::GC::Naive::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::Query::Simple::BEGIN@6" -> "namespace::clean::import";
+"Data::Stream::Bulk::DBI::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::Error::UnknownObjects::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::Error::MissingObjects::BEGIN@4" -> "namespace::clean::import";
+"Parse::Method::Signatures::Sig::BEGIN@8" -> "namespace::clean::import";
+"Parse::Method::Signatures::TypeConstraint::BEGIN@9" -> "namespace::clean::import";
+"Search::GIN::Extract::Delegate::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Set::Deferred::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@19" -> "namespace::clean::import";
+"Text::Tradition::TypeMap::Entry::BEGIN@6" -> "namespace::clean::import";
+"Catalyst::Component::BEGIN@12" -> "namespace::clean::import";
+"Data::Stream::Bulk::DoneFlag::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::BEGIN@6" -> "namespace::clean::import";
+"Data::Visitor::Callback::BEGIN@18" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::BEGIN@10" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Role::BEGIN@20" -> "namespace::clean::import";
+"Catalyst::Utils::BEGIN@13" -> "namespace::clean::import";
+"Catalyst::Stats::BEGIN@10" -> "namespace::clean::import";
+"KiokuDB::Set::Stored::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Role::UUIDs::DataUUID::BEGIN@8" -> "namespace::clean::import";
+"Catalyst::Exception::Base::BEGIN@48" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::UnicodeSafe::BEGIN@6" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::Copy::BEGIN@8" -> "namespace::clean::import";
+"DBIx::Class::Schema::KiokuDB::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::Clear::BEGIN@6" -> "namespace::clean::import";
+"Devel::PartialDump::BEGIN@9" -> "namespace::clean::import";
+"KiokuDB::Thunk::BEGIN@6" -> "namespace::clean::import";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::import";
+"Throwable::X::BEGIN@11" -> "namespace::clean::import";
+"Catalyst::Controller::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Role::TypeMap::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::Scan::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Default::Canonical::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Std::Intrinsic::BEGIN@6" -> "namespace::clean::import";
+"Catalyst::Component::ApplicationAttribute::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Passthrough::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::Entry::Skip::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@8" -> "namespace::clean::import";
+"KiokuDB::Role::API::BEGIN@4" -> "namespace::clean::import";
+"Catalyst::Request::BEGIN@13" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSON::BEGIN@8" -> "namespace::clean::import";
+"Parse::Method::Signatures::Param::BEGIN@7" -> "namespace::clean::import";
+"Catalyst::Request::Upload::BEGIN@10" -> "namespace::clean::import";
+"Catalyst::Exception::Basic::BEGIN@5" -> "namespace::clean::import";
+"KiokuDB::TypeMap::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Default::JSON::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::Reference::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Composite::TypeMapAttr::BEGIN@14" -> "namespace::clean::import";
+"Data::Stream::Bulk::Filter::BEGIN@13" -> "namespace::clean::import";
+"TryCatch::BEGIN@30" -> "namespace::clean::import";
+"KiokuDB::Set::Storage::BEGIN@8" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::AttrContainer::Inheritable::BEGIN@14" -> "namespace::clean::import";
+"Parse::Method::Signatures::ParamCollection::BEGIN@7" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Method::MaybeWrapped::BEGIN@14" -> "namespace::clean::import";
+"Data::Stream::Bulk::Util::BEGIN@18" -> "namespace::clean::import";
+"Catalyst::Exception::Detach::BEGIN@4" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::BEGIN@8" -> "namespace::clean::import";
+"DBIx::Class::Schema::BEGIN@12" -> "namespace::clean::import";
+"Data::Stream::Bulk::Chunked::BEGIN@11" -> "namespace::clean::import";
+"MooseX::Clone::Meta::Attribute::Trait::Clone::Base::BEGIN@6" -> "namespace::clean::import";
+"Parse::Method::Signatures::BEGIN@17" -> "namespace::clean::import";
+"Catalyst::Exception::Interface::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Ref::BEGIN@6" -> "namespace::clean::import";
+"Data::Stream::Bulk::Cat::BEGIN@11" -> "namespace::clean::import";
+"KiokuDB::Error::BEGIN@4" -> "namespace::clean::import";
+"DBIx::Class::Storage::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::Scope::BEGIN@6" -> "namespace::clean::import";
+"MooseX::Types::Base::BEGIN@14" -> "namespace::clean::import";
+"DBIx::Class::AccessorGroup::BEGIN@8" -> "namespace::clean::import";
+"Catalyst::BEGIN@7" -> "namespace::clean::import";
+"Data::Stream::Bulk::Array::BEGIN@11" -> "namespace::clean::import";
+"DBIx::Class::Storage::DBIHacks::BEGIN@19" -> "namespace::clean::import";
+"KiokuDB::Backend::TypeMap::Default::BEGIN@6" -> "namespace::clean::import";
+"MooseX::MethodAttributes::Role::Meta::Class::BEGIN@13" -> "namespace::clean::import";
+"KiokuDB::Collapser::BEGIN@24" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::Concurrency::POSIX::BEGIN@4" -> "namespace::clean::import";
+"KiokuDB::BEGIN@25" -> "namespace::clean::import";
+"KiokuDB::LiveObjects::BEGIN@18" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::Backend::Role::Query::GIN::BEGIN@6" -> "namespace::clean::import";
+"KiokuDB::TypeMap::Entry::Compiled::BEGIN@6" -> "namespace::clean::import";
+"KiokuX::Model::BEGIN@9" -> "namespace::clean::import";
+"namespace::clean::BEGIN@4" -> "strict::import";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "namespace::clean::__ANON__[namespace/clean.pm:221]";
+"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]" -> "namespace::clean::__ANON__[namespace/clean.pm:338]";
+"namespace::clean::__ANON__[namespace/clean.pm:274]" -> "Package::Stash::XS::remove_glob";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@171";
+"namespace::clean::get_functions" -> "Package::Stash::XS::list_all_symbols";
+"namespace::clean::BEGIN@171" -> "strict::unimport";
+"namespace::clean::BEGIN@3" -> "warnings::import";
+"namespace::clean::BEGIN@7" -> "Package::DeprecationManager::__ANON__[Package/DeprecationManager.pm:61]";
+"namespace::clean::BEGIN@6" -> "vars::import";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@168";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@467";
+"namespace::clean::BEGIN@467" -> "warnings::unimport";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@4";
+"namespace::clean::__ANON__[namespace/clean.pm:311]" -> "namespace::clean::__ANON__[namespace/clean.pm:274]";
+"namespace::clean::clean_subroutines" -> "namespace::clean::__ANON__[namespace/clean.pm:274]";
+"namespace::clean::__ANON__[namespace/clean.pm:338]" -> "namespace::clean::__ANON__[namespace/clean.pm:274]";
+"namespace::clean::import" -> "namespace::clean::get_class_store";
+"namespace::clean::import" -> "B::Hooks::EndOfScope::on_scope_end";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::add_symbol";
+"namespace::clean::__ANON__[namespace/clean.pm:221]" -> "Package::Stash::XS::add_symbol";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "namespace::clean::clean_subroutines";
+"namespace::clean::import" -> "Package::Stash::XS::has_symbol";
+"namespace::clean::get_class_store" -> "Package::Stash::XS::has_symbol";
+"namespace::autoclean::BEGIN@16" -> "namespace::clean::BEGIN@14";
+"namespace::clean::BEGIN@14" -> "UNIVERSAL::VERSION";
+}

@@ -1,0 +1,121 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::parse_proto_using_pms";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::refaddr";
+	"Scalar::Util::weaken";
+}
+subgraph cluster_PPI_Document {
+	label="PPI::Document";
+	"PPI::Document::new";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+}
+subgraph cluster_PPI_Lexer {
+	label="PPI::Lexer";
+	"PPI::Lexer::_add_element";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::_replace_regexps";
+	"Parse::Method::Signatures::_replace_magic";
+	"Parse::Method::Signatures::_fixup_hex";
+	"Parse::Method::Signatures::_replace_labels";
+	"Parse::Method::Signatures::parse";
+}
+subgraph cluster_PPI_Element {
+	label="PPI::Element";
+	"PPI::Element::first_token";
+	"PPI::Element::DESTROY";
+	"PPI::Element::BEGIN@30";
+	"PPI::Element::significant";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Params_Util {
+	label="Params::Util";
+	"Params::Util::_CODELIKE";
+	"Params::Util::_CLASS";
+	"Params::Util::_INSTANCE";
+}
+subgraph cluster_PPI_Node {
+	label="PPI::Node";
+	"PPI::Node::BEGIN@55";
+	"PPI::Node::BEGIN@54";
+	"PPI::Node::__ANON__[(eval 1519)[PPI/Node.pm:654]:4]";
+	"PPI::Node::BEGIN@56";
+	"PPI::Node::__ANON__[(eval 1521)[PPI/Node.pm:654]:4]";
+	"PPI::Node::find";
+	"PPI::Node::schild";
+	"PPI::Node::__ANON__[(eval 1518)[PPI/Node.pm:654]:4]";
+	"PPI::Node::__ANON__[(eval 1520)[PPI/Node.pm:654]:4]";
+	"PPI::Node::BEGIN@52";
+	"PPI::Node::new";
+	"PPI::Node::BEGIN@59";
+	"PPI::Node::add_element";
+	"PPI::Node::BEGIN@53";
+	"PPI::Node::BEGIN@58";
+	"PPI::Node::_wanted";
+	"PPI::Node::first_element";
+	"PPI::Node::DESTROY";
+	"PPI::Node::BEGIN@51";
+}
+subgraph cluster_PPI_Util {
+	label="PPI::Util";
+	"PPI::Util::TRUE";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"PPI::Node::find" -> "PPI::Node::__ANON__[(eval 1520)[PPI/Node.pm:654]:4]";
+"PPI::Document::new" -> "PPI::Node::new";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@53";
+"PPI::Node::add_element" -> "Params::Util::_INSTANCE";
+"PPI::Lexer::_add_element" -> "PPI::Node::schild";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@59";
+"PPI::Node::BEGIN@51" -> "strict::import";
+"Parse::Method::Signatures::_replace_regexps" -> "PPI::Node::find";
+"Parse::Method::Signatures::_fixup_hex" -> "PPI::Node::find";
+"Parse::Method::Signatures::_replace_magic" -> "PPI::Node::find";
+"Parse::Method::Signatures::_replace_labels" -> "PPI::Node::find";
+"PPI::Node::DESTROY" -> "PPI::Node::DESTROY";
+"TryCatch::parse_proto_using_pms" -> "PPI::Node::DESTROY";
+"PPI::Node::add_element" -> "PPI::Util::TRUE";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@56";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@54";
+"PPI::Node::BEGIN@53" -> "Exporter::import";
+"PPI::Node::BEGIN@55" -> "Exporter::import";
+"PPI::Node::_wanted" -> "Params::Util::_CODELIKE";
+"PPI::Node::BEGIN@58" -> "vars::import";
+"PPI::Node::schild" -> "PPI::Element::significant";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@51";
+"PPI::Node::find" -> "PPI::Node::__ANON__[(eval 1518)[PPI/Node.pm:654]:4]";
+"PPI::Node::add_element" -> "Scalar::Util::weaken";
+"PPI::Node::find" -> "UNIVERSAL::isa";
+"PPI::Node::_wanted" -> "UNIVERSAL::isa";
+"PPI::Node::find" -> "PPI::Node::__ANON__[(eval 1519)[PPI/Node.pm:654]:4]";
+"Parse::Method::Signatures::parse" -> "PPI::Node::add_element";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@58";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@52";
+"PPI::Element::first_token" -> "PPI::Node::first_element";
+"PPI::Node::find" -> "PPI::Node::_wanted";
+"PPI::Node::_wanted" -> "Params::Util::_CLASS";
+"PPI::Node::add_element" -> "Scalar::Util::refaddr";
+"PPI::Node::DESTROY" -> "Scalar::Util::refaddr";
+"PPI::Node::find" -> "PPI::Node::__ANON__[(eval 1521)[PPI/Node.pm:654]:4]";
+"PPI::Element::BEGIN@30" -> "PPI::Node::BEGIN@55";
+"PPI::Node::DESTROY" -> "PPI::Element::DESTROY";
+}

@@ -1,0 +1,168 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_File_Spec_Functions {
+	label="File::Spec::Functions";
+	"File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+}
+subgraph cluster_Config_Any_General {
+	label="Config::Any::General";
+	"Config::Any::General::load";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_IO_File {
+	label="IO::File";
+	"IO::File::new";
+}
+subgraph cluster_FileHandle {
+	label="FileHandle";
+	"FileHandle::import";
+	"FileHandle::BEGIN@46";
+	"FileHandle::BEGIN@3";
+	"FileHandle::BEGIN@4";
+}
+subgraph cluster_File_Glob {
+	label="File::Glob";
+	"File::Glob::import";
+	"File::Glob::GLOB_CSH";
+	"File::Glob::BEGIN@3";
+	"File::Glob::CORE:match";
+	"File::Glob::BEGIN@7";
+	"File::Glob::BEGIN@50";
+}
+subgraph cluster_Config_General {
+	label="Config::General";
+	"Config::General::_splitpolicy";
+	"Config::General::CORE:readline";
+	"Config::General::BEGIN@22";
+	"Config::General::BEGIN@38";
+	"Config::General::BEGIN@16";
+	"Config::General::_open";
+	"Config::General::BEGIN@19";
+	"Config::General::_blessvars";
+	"Config::General::CORE:ftdir";
+	"Config::General::_read";
+	"Config::General::BEGIN@32";
+	"Config::General::BEGIN@29";
+	"Config::General::BEGIN@33";
+	"Config::General::CORE:regcomp";
+	"Config::General::CORE:match";
+	"Config::General::BEGIN@15";
+	"Config::General::_parse_value";
+	"Config::General::getall";
+	"Config::General::_parse";
+	"Config::General::CORE:subst";
+	"Config::General::new";
+	"Config::General::_hashref";
+	"Config::General::BEGIN@37";
+	"Config::General::CORE:ftis";
+	"Config::General::_process";
+	"Config::General::BEGIN@21";
+	"Config::General::_blessoop";
+	"Config::General::_prepare";
+	"Config::General::BEGIN@17";
+	"Config::General::BEGIN@20";
+}
+subgraph cluster_Config_Any_Base {
+	label="Config::Any::Base";
+	"Config::Any::Base::is_supported";
+}
+subgraph cluster_English {
+	label="English";
+	"English::import";
+	"English::BEGIN@148";
+	"English::BEGIN@47";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Config::General::new" -> "Config::General::_blessoop";
+"Config::General::_parse" -> "Config::General::_parse";
+"Config::General::_process" -> "Config::General::_parse";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@21";
+"Config::General::_parse" -> "Config::General::CORE:match";
+"Config::General::_read" -> "Config::General::CORE:match";
+"Config::General::_prepare" -> "Config::General::CORE:match";
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@50";
+"Config::General::_process" -> "Config::General::_open";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@15";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@38";
+"Config::General::BEGIN@29" -> "UNIVERSAL::import";
+"Config::General::new" -> "Config::General::_process";
+"Config::General::new" -> "Config::General::_prepare";
+"Config::General::BEGIN@22" -> "File::Glob::import";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@33";
+"Config::General::_open" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"Config::General::_process" -> "File::Spec::Functions::__ANON__[File/Spec/Functions.pm:43]";
+"Config::General::_parse" -> "Config::General::_hashref";
+"Config::General::_process" -> "Config::General::_hashref";
+"Config::General::BEGIN@17" -> "English::import";
+"Config::General::BEGIN@22" -> "File::Glob::GLOB_CSH";
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@46";
+"Config::General::_read" -> "Config::General::CORE:readline";
+"Config::General::_parse" -> "Config::General::CORE:subst";
+"Config::General::_read" -> "Config::General::CORE:subst";
+"Config::General::_process" -> "Config::General::CORE:subst";
+"Config::General::_parse_value" -> "Config::General::CORE:subst";
+"Config::General::_prepare" -> "Config::General::CORE:subst";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@29";
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@4";
+"Config::General::BEGIN@15" -> "strict::import";
+"Config::General::BEGIN@17" -> "English::BEGIN@47";
+"Config::General::BEGIN@22" -> "XSLoader::load";
+"Config::Any::General::load" -> "Config::General::new";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@20";
+"Config::General::_parse" -> "Config::General::CORE:regcomp";
+"Config::General::_prepare" -> "Config::General::CORE:regcomp";
+"Config::General::_open" -> "IO::File::new";
+"Config::General::BEGIN@20" -> "FileHandle::import";
+"Config::General::_parse" -> "Config::General::_parse_value";
+"Config::General::BEGIN@21" -> "Exporter::import";
+"Config::General::BEGIN@32" -> "Exporter::import";
+"Config::General::BEGIN@33" -> "Exporter::import";
+"Config::General::BEGIN@19" -> "Exporter::import";
+"Config::General::BEGIN@20" -> "Exporter::import";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@16";
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@7";
+"Config::General::BEGIN@38" -> "base::import";
+"Config::General::BEGIN@17" -> "English::BEGIN@148";
+"Config::General::BEGIN@16" -> "warnings::import";
+"Config::General::BEGIN@37" -> "vars::import";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@17";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@32";
+"Config::General::_open" -> "Config::General::CORE:ftis";
+"Config::General::_open" -> "Config::General::_read";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@22";
+"Config::General::_open" -> "Config::General::CORE:ftdir";
+"Config::General::BEGIN@22" -> "File::Glob::CORE:match";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@19";
+"Config::Any::General::load" -> "Config::General::getall";
+"Config::General::BEGIN@22" -> "File::Glob::BEGIN@3";
+"Config::Any::Base::is_supported" -> "Config::General::BEGIN@37";
+"Config::General::BEGIN@20" -> "FileHandle::BEGIN@3";
+"Config::General::new" -> "Config::General::_blessvars";
+"Config::General::new" -> "Config::General::_splitpolicy";
+}

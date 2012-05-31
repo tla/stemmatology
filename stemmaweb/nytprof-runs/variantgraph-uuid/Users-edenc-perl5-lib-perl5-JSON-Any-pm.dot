@@ -1,0 +1,81 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_constant {
+	label="constant";
+	"constant::import";
+}
+subgraph cluster_Catalyst_View_JSON {
+	label="Catalyst::View::JSON";
+	"Catalyst::View::JSON::new";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_JSON {
+	label="JSON";
+	"JSON::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_JSON_Any {
+	label="JSON::Any";
+	"JSON::Any::BEGIN@3";
+	"JSON::Any::__ANON__[JSON/Any.pm:108]";
+	"JSON::Any::new";
+	"JSON::Any::BEGIN@4";
+	"JSON::Any::BEGIN@25";
+	"JSON::Any::BEGIN@24";
+	"JSON::Any::import";
+	"JSON::Any::_try_loading";
+	"JSON::Any::BEGIN@27";
+	"JSON::Any::BEGIN@23";
+	"JSON::Any::BEGIN@219";
+	"JSON::Any::CORE:subst";
+	"JSON::Any::BEGIN@5";
+	"JSON::Any::BEGIN@22";
+	"JSON::Any::_make_key";
+}
+subgraph cluster_JSON_Backend_XS {
+	label="JSON::Backend::XS";
+	"JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+}
+subgraph cluster_JSON_XS {
+	label="JSON::XS";
+	"JSON::XS::utf8";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::unimport";
+	"strict::import";
+}
+"Catalyst::View::JSON::new" -> "JSON::Any::import";
+"JSON::Any::__ANON__[JSON/Any.pm:108]" -> "JSON::XS::utf8";
+"JSON::Any::new" -> "JSON::Any::_make_key";
+"JSON::Any::_try_loading" -> "JSON::Any::_make_key";
+"JSON::Any::__ANON__[JSON/Any.pm:108]" -> "JSON::Backend::XS::__ANON__[(eval 459)[JSON.pm:268]:63]";
+"JSON::Any::import" -> "JSON::Any::_try_loading";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@24";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@4";
+"JSON::Any::BEGIN@22" -> "constant::import";
+"JSON::Any::BEGIN@24" -> "constant::import";
+"JSON::Any::BEGIN@25" -> "constant::import";
+"JSON::Any::BEGIN@23" -> "constant::import";
+"JSON::Any::__ANON__[JSON/Any.pm:108]" -> "JSON::import";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@25";
+"JSON::Any::BEGIN@4" -> "strict::import";
+"JSON::Any::_make_key" -> "JSON::Any::CORE:subst";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@23";
+"JSON::Any::BEGIN@5" -> "Exporter::import";
+"JSON::Any::BEGIN@219" -> "strict::unimport";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@3";
+"JSON::Any::BEGIN@3" -> "warnings::import";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@5";
+"JSON::Any::new" -> "JSON::Any::__ANON__[JSON/Any.pm:108]";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@22";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@219";
+"Catalyst::View::JSON::new" -> "JSON::Any::BEGIN@27";
+"Catalyst::View::JSON::new" -> "JSON::Any::new";
+}

@@ -1,0 +1,19 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::BEGIN@47";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Meta_Attribute_Native {
+	label="Moose::Meta::Attribute::Native";
+	"Moose::Meta::Attribute::Native::BEGIN@2";
+	"Moose::Meta::Attribute::Native::BEGIN@9";
+}
+"Moose::BEGIN@47" -> "Moose::Meta::Attribute::Native::BEGIN@2";
+"Moose::Meta::Attribute::Native::BEGIN@9" -> "Exporter::import";
+"Moose::BEGIN@47" -> "Moose::Meta::Attribute::Native::BEGIN@9";
+}

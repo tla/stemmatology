@@ -1,0 +1,1939 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Catalyst_Dispatcher {
+	label="Catalyst::Dispatcher";
+	"Catalyst::Dispatcher::BEGIN@9";
+	"Catalyst::Dispatcher::BEGIN@10";
+	"Catalyst::Dispatcher::BEGIN@11";
+	"Catalyst::Dispatcher::meta";
+	"Catalyst::Dispatcher::BEGIN@12";
+}
+subgraph cluster_Data_Stream_Bulk_DBI {
+	label="Data::Stream::Bulk::DBI";
+	"Data::Stream::Bulk::DBI::meta";
+}
+subgraph cluster_Catalyst {
+	label="Catalyst";
+	"Catalyst::_setup_finished_accessor";
+	"Catalyst::BEGIN@10";
+	"Catalyst::BEGIN@32";
+	"Catalyst::_context_class_accessor";
+	"Catalyst::BEGIN@9";
+	"Catalyst::BEGIN@8";
+	"Catalyst::_response_class_accessor";
+	"Catalyst::BEGIN@12";
+	"Catalyst::_request_class_accessor";
+	"Catalyst::_stats_class_accessor";
+	"Catalyst::meta";
+	"Catalyst::BEGIN@13";
+	"Catalyst::_engine_loader_accessor";
+	"Catalyst::BEGIN@16";
+	"Catalyst::BEGIN@14";
+	"Catalyst::BEGIN@11";
+	"Catalyst::_loading_psgi_file_accessor";
+	"Catalyst::_dispatcher_class_accessor";
+	"Catalyst::_log_accessor";
+}
+subgraph cluster_Class_MOP_Mixin_HasMethods {
+	label="Class::MOP::Mixin::HasMethods";
+	"Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+	"Class::MOP::Mixin::HasMethods::_add_meta_method";
+	"Class::MOP::Mixin::HasMethods::_get_local_methods";
+	"Class::MOP::Mixin::HasMethods::get_method";
+	"Class::MOP::Mixin::HasMethods::has_method";
+	"Class::MOP::Mixin::HasMethods::add_method";
+	"Class::MOP::Mixin::HasMethods::get_method_list";
+	"Class::MOP::Mixin::HasMethods::method_metaclass";
+	"Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+}
+subgraph cluster_Catalyst_ActionChain {
+	label="Catalyst::ActionChain";
+	"Catalyst::ActionChain::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_7 {
+	label="MooseX::Traits::__ANON__::SERIAL::7";
+	"MooseX::Traits::__ANON__::SERIAL::7::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Index {
+	label="Catalyst::DispatchType::Index";
+	"Catalyst::DispatchType::Index::meta";
+}
+subgraph cluster_Catalyst_DispatchType {
+	label="Catalyst::DispatchType";
+	"Catalyst::DispatchType::meta";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@10";
+	"Text::Tradition::Collation::BEGIN@9";
+	"Text::Tradition::Collation::meta";
+}
+subgraph cluster_Moose_Meta_Method_Constructor {
+	label="Moose::Meta::Method::Constructor";
+	"Moose::Meta::Method::Constructor::new";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::meta";
+}
+subgraph cluster_KiokuDB_Error_UnknownObjects {
+	label="KiokuDB::Error::UnknownObjects";
+	"KiokuDB::Error::UnknownObjects::meta";
+}
+subgraph cluster_Catalyst_Exception {
+	label="Catalyst::Exception";
+	"Catalyst::Exception::meta";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep_Results {
+	label="KiokuDB::GC::Naive::Sweep::Results";
+	"KiokuDB::GC::Naive::Sweep::Results::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Alias {
+	label="KiokuDB::TypeMap::Entry::Alias";
+	"KiokuDB::TypeMap::Entry::Alias::meta";
+}
+subgraph cluster_KiokuX_Model {
+	label="KiokuX::Model";
+	"KiokuX::Model::BEGIN@7";
+	"KiokuX::Model::meta";
+}
+subgraph cluster_TryCatch {
+	label="TryCatch";
+	"TryCatch::BEGIN@11";
+}
+subgraph cluster_Data_Stream_Bulk_Chunked {
+	label="Data::Stream::Bulk::Chunked";
+	"Data::Stream::Bulk::Chunked::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_DuckType {
+	label="Moose::Meta::TypeConstraint::DuckType";
+	"Moose::Meta::TypeConstraint::DuckType::meta";
+}
+subgraph cluster_KiokuDB_Linker {
+	label="KiokuDB::Linker";
+	"KiokuDB::Linker::BEGIN@18";
+	"KiokuDB::Linker::meta";
+}
+subgraph cluster_KiokuDB_Set_Loaded {
+	label="KiokuDB::Set::Loaded";
+	"KiokuDB::Set::Loaded::meta";
+}
+subgraph cluster_Class_MOP_Instance {
+	label="Class::MOP::Instance";
+	"Class::MOP::Instance::create_instance";
+	"Class::MOP::Instance::is_dependent_on_superclasses";
+	"Class::MOP::Instance::BEGIN@11";
+	"Class::MOP::Instance::new";
+	"Class::MOP::Instance::BEGIN@3";
+	"Class::MOP::Instance::inline_create_instance";
+	"Class::MOP::Instance::_set_mop_slot";
+	"Class::MOP::Instance::BEGIN@15";
+	"Class::MOP::Instance::BEGIN@10";
+	"Class::MOP::Instance::BEGIN@13";
+	"Class::MOP::Instance::rebless_instance_structure";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_3 {
+	label="MooseX::Traits::__ANON__::SERIAL::3";
+	"MooseX::Traits::__ANON__::SERIAL::3::meta";
+}
+subgraph cluster_Catalyst_Component {
+	label="Catalyst::Component";
+	"Catalyst::Component::__config_accessor";
+	"Catalyst::Component::meta";
+	"Catalyst::Component::__plugins_accessor";
+}
+subgraph cluster_Catalyst_Request_Upload {
+	label="Catalyst::Request::Upload";
+	"Catalyst::Request::Upload::meta";
+}
+subgraph cluster_MooseX_Types_Structured_MessageStack {
+	label="MooseX::Types::Structured::MessageStack";
+	"MooseX::Types::Structured::MessageStack::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Role {
+	label="Moose::Meta::TypeConstraint::Role";
+	"Moose::Meta::TypeConstraint::Role::meta";
+}
+subgraph cluster_Catalyst_Plugin_ConfigLoader {
+	label="Catalyst::Plugin::ConfigLoader";
+	"Catalyst::Plugin::ConfigLoader::BEGIN@8";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Closure {
+	label="KiokuDB::TypeMap::Entry::Closure";
+	"KiokuDB::TypeMap::Entry::Closure::meta";
+}
+subgraph cluster_stemmaweb_Model_Directory {
+	label="stemmaweb::Model::Directory";
+	"stemmaweb::Model::Directory::meta";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured_Optional {
+	label="MooseX::Meta::TypeCoercion::Structured::Optional";
+	"MooseX::Meta::TypeCoercion::Structured::Optional::meta";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast {
+	label="MooseX::Emulate::Class::Accessor::Fast";
+	"MooseX::Emulate::Class::Accessor::Fast::mk_accessors";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_23 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::23";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::install_accessors";
+	"Moose::Meta::Class::__ANON__::SERIAL::23::meta";
+}
+subgraph cluster_Moose_Meta_Method_Overridden {
+	label="Moose::Meta::Method::Overridden";
+	"Moose::Meta::Method::Overridden::new";
+}
+subgraph cluster_Class_MOP_Module {
+	label="Class::MOP::Module";
+	"Class::MOP::Module::create";
+}
+subgraph cluster_KiokuDB_Backend_DBI {
+	label="KiokuDB::Backend::DBI";
+	"KiokuDB::Backend::DBI::BEGIN@30";
+	"KiokuDB::Backend::DBI::BEGIN@21";
+	"KiokuDB::Backend::DBI::BEGIN@28";
+	"KiokuDB::Backend::DBI::meta";
+	"KiokuDB::Backend::DBI::BEGIN@29";
+	"KiokuDB::Backend::DBI::BEGIN@31";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Enum {
+	label="Moose::Meta::TypeConstraint::Enum";
+	"Moose::Meta::TypeConstraint::Enum::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_5 {
+	label="MooseX::Traits::__ANON__::SERIAL::5";
+	"MooseX::Traits::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_Catalyst_Request {
+	label="Catalyst::Request";
+	"Catalyst::Request::meta";
+}
+subgraph cluster_KiokuDB_Reference {
+	label="KiokuDB::Reference";
+	"KiokuDB::Reference::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterized {
+	label="Moose::Meta::TypeConstraint::Parameterized";
+	"Moose::Meta::TypeConstraint::Parameterized::meta";
+}
+subgraph cluster_Moose_Meta_Role_Application_RoleSummation {
+	label="Moose::Meta::Role::Application::RoleSummation";
+	"Moose::Meta::Role::Application::RoleSummation::meta";
+}
+subgraph cluster_Sub_Name {
+	label="Sub::Name";
+	"Sub::Name::subname";
+}
+subgraph cluster_Scalar_Util {
+	label="Scalar::Util";
+	"Scalar::Util::blessed";
+}
+subgraph cluster_Data_Stream_Bulk_Nil {
+	label="Data::Stream::Bulk::Nil";
+	"Data::Stream::Bulk::Nil::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_1 {
+	label="MooseX::Traits::__ANON__::SERIAL::1";
+	"MooseX::Traits::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_KiokuDB_Stream_Objects {
+	label="KiokuDB::Stream::Objects";
+	"KiokuDB::Stream::Objects::meta";
+}
+subgraph cluster_Moose_Meta_Method {
+	label="Moose::Meta::Method";
+	"Moose::Meta::Method::_new";
+	"Moose::Meta::Method::_get_compatible_metaclass";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_6 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::6";
+	"Moose::Meta::Class::__ANON__::SERIAL::6::wrap";
+}
+subgraph cluster_Catalyst_ClassData {
+	label="Catalyst::ClassData";
+	"Catalyst::ClassData::mk_classdata";
+}
+subgraph cluster_Class_MOP_Method {
+	label="Class::MOP::Method";
+	"Class::MOP::Method::name";
+	"Class::MOP::Method::_new";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToClass {
+	label="Moose::Meta::Role::Application::ToClass";
+	"Moose::Meta::Role::Application::ToClass::meta";
+	"Moose::Meta::Role::Application::ToClass::_new";
+	"Moose::Meta::Role::Application::ToClass::check_required_methods";
+	"Moose::Meta::Role::Application::ToClass::apply_method_modifiers";
+}
+subgraph cluster_Catalyst_EngineLoader {
+	label="Catalyst::EngineLoader";
+	"Catalyst::EngineLoader::meta";
+}
+subgraph cluster_Catalyst_Action {
+	label="Catalyst::Action";
+	"Catalyst::Action::meta";
+}
+subgraph cluster_Text_Tradition_Stemma {
+	label="Text::Tradition::Stemma";
+	"Text::Tradition::Stemma::meta";
+}
+subgraph cluster_KiokuDB_Collapser_Buffer {
+	label="KiokuDB::Collapser::Buffer";
+	"KiokuDB::Collapser::Buffer::meta";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::class_precedence_list";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::is_immutable";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::superclasses";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa";
+}
+subgraph cluster_KiokuDB_LiveObjects {
+	label="KiokuDB::LiveObjects";
+	"KiokuDB::LiveObjects::BEGIN@14";
+	"KiokuDB::LiveObjects::meta";
+	"KiokuDB::LiveObjects::BEGIN@13";
+}
+subgraph cluster_Try_Tiny {
+	label="Try::Tiny";
+	"Try::Tiny::catch";
+	"Try::Tiny::try";
+}
+subgraph cluster_metaclass {
+	label="metaclass";
+	"metaclass::import";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::isa";
+	"UNIVERSAL::can";
+}
+subgraph cluster_Moose_Meta_Class {
+	label="Moose::Meta::Class";
+	"Moose::Meta::Class::reinitialize";
+	"Moose::Meta::Class::_inline_params";
+	"Moose::Meta::Class::new_object";
+	"Moose::Meta::Class::_inline_BUILDALL";
+	"Moose::Meta::Class::_base_metaclasses";
+	"Moose::Meta::Class::immutable_trait";
+	"Moose::Meta::Class::initialize";
+	"Moose::Meta::Class::create";
+	"Moose::Meta::Class::error_class";
+	"Moose::Meta::Class::_generate_fallback_constructor";
+	"Moose::Meta::Class::_fix_single_metaclass_incompatibility";
+	"Moose::Meta::Class::_inline_triggers";
+	"Moose::Meta::Class::excludes_role";
+	"Moose::Meta::Class::_eval_environment";
+	"Moose::Meta::Class::_immutable_options";
+	"Moose::Meta::Class::does_role";
+	"Moose::Meta::Class::_inline_init_attr_from_default";
+	"Moose::Meta::Class::superclasses";
+	"Moose::Meta::Class::_inline_init_attr_from_constructor";
+	"Moose::Meta::Class::_call_all_triggers";
+	"Moose::Meta::Class::_restore_metaobjects_from";
+	"Moose::Meta::Class::constructor_class";
+	"Moose::Meta::Class::_inline_slot_initializer";
+	"Moose::Meta::Class::_inline_BUILDARGS";
+	"Moose::Meta::Class::_inline_extra_init";
+	"Moose::Meta::Class::_fix_class_metaclass_incompatibility";
+	"Moose::Meta::Class::destructor_class";
+	"Moose::Meta::Class::_process_inherited_attribute";
+	"Moose::Meta::Class::_fixup_attributes_after_rebless";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+	"Text::Tradition::Collation::RelationshipStore::meta";
+}
+subgraph cluster_Moose_Meta_Method_Destructor {
+	label="Moose::Meta::Method::Destructor";
+	"Moose::Meta::Method::Destructor::_generate_DEMOLISHALL";
+	"Moose::Meta::Method::Destructor::new";
+	"Moose::Meta::Method::Destructor::is_needed";
+}
+subgraph cluster_Catalyst_ActionContainer {
+	label="Catalyst::ActionContainer";
+	"Catalyst::ActionContainer::meta";
+}
+subgraph cluster_Class_Load {
+	label="Class::Load";
+	"Class::Load::load_class";
+}
+subgraph cluster_KiokuDB_Set_Base {
+	label="KiokuDB::Set::Base";
+	"KiokuDB::Set::Base::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Callback {
+	label="KiokuDB::TypeMap::Entry::Callback";
+	"KiokuDB::TypeMap::Entry::Callback::meta";
+}
+subgraph cluster_Parse_Method_Signatures {
+	label="Parse::Method::Signatures";
+	"Parse::Method::Signatures::meta";
+}
+subgraph cluster_Moose_Meta_TypeCoercion_Union {
+	label="Moose::Meta::TypeCoercion::Union";
+	"Moose::Meta::TypeCoercion::Union::meta";
+}
+subgraph cluster_Parse_Method_Signatures_Sig {
+	label="Parse::Method::Signatures::Sig";
+	"Parse::Method::Signatures::Sig::meta";
+}
+subgraph cluster_Class_MOP_MiniTrait {
+	label="Class::MOP::MiniTrait";
+	"Class::MOP::MiniTrait::BEGIN@2";
+	"Class::MOP::MiniTrait::BEGIN@10";
+	"Class::MOP::MiniTrait::apply";
+	"Class::MOP::MiniTrait::BEGIN@12";
+	"Class::MOP::MiniTrait::BEGIN@9";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_KiokuDB_TypeMap_Shadow {
+	label="KiokuDB::TypeMap::Shadow";
+	"KiokuDB::TypeMap::Shadow::meta";
+}
+subgraph cluster_Catalyst_Model_KiokuDB {
+	label="Catalyst::Model::KiokuDB";
+	"Catalyst::Model::KiokuDB::meta";
+	"Catalyst::Model::KiokuDB::BUILD";
+}
+subgraph cluster_List_MoreUtils {
+	label="List::MoreUtils";
+	"List::MoreUtils::all";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Chained {
+	label="Catalyst::DispatchType::Chained";
+	"Catalyst::DispatchType::Chained::BEGIN@7";
+	"Catalyst::DispatchType::Chained::meta";
+}
+subgraph cluster_KiokuDB_GC_Naive {
+	label="KiokuDB::GC::Naive";
+	"KiokuDB::GC::Naive::BEGIN@6";
+	"KiokuDB::GC::Naive::BEGIN@7";
+	"KiokuDB::GC::Naive::meta";
+}
+subgraph cluster_Moose_Meta_Role {
+	label="Moose::Meta::Role";
+	"Moose::Meta::Role::meta";
+	"Moose::Meta::Role::_new";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSource {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSource";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta";
+}
+subgraph cluster_Parse_Method_Signatures_TypeConstraint {
+	label="Parse::Method::Signatures::TypeConstraint";
+	"Parse::Method::Signatures::TypeConstraint::meta";
+}
+subgraph cluster_MooseX_Traits_Util {
+	label="MooseX::Traits::Util";
+	"MooseX::Traits::Util::transform_trait";
+}
+subgraph cluster_Catalyst_Exception_Go {
+	label="Catalyst::Exception::Go";
+	"Catalyst::Exception::Go::meta";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Path {
+	label="Catalyst::DispatchType::Path";
+	"Catalyst::DispatchType::Path::meta";
+}
+subgraph cluster_Parse_Method_Signatures_Param {
+	label="Parse::Method::Signatures::Param";
+	"Parse::Method::Signatures::Param::meta";
+}
+subgraph cluster_Class_MOP_Method_Accessor {
+	label="Class::MOP::Method::Accessor";
+	"Class::MOP::Method::Accessor::BEGIN@11";
+	"Class::MOP::Method::Accessor::BEGIN@13";
+	"Class::MOP::Method::Accessor::BEGIN@15";
+	"Class::MOP::Method::Accessor::BEGIN@3";
+	"Class::MOP::Method::Accessor::_new";
+	"Class::MOP::Method::Accessor::BEGIN@14";
+	"Class::MOP::Method::Accessor::BEGIN@10";
+	"Class::MOP::Method::Accessor::BEGIN@17";
+}
+subgraph cluster_Class_Load_XS {
+	label="Class::Load::XS";
+	"Class::Load::XS::is_class_loaded";
+}
+subgraph cluster_stemmaweb_Controller_Stexaminer {
+	label="stemmaweb::Controller::Stexaminer";
+	"stemmaweb::Controller::Stexaminer::meta";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::BEGIN@14";
+	"Class::MOP::Class::linearized_isa";
+	"Class::MOP::Class::find_attribute_by_name";
+	"Class::MOP::Class::class_precedence_list";
+	"Class::MOP::Class::make_immutable";
+	"Class::MOP::Class::BEGIN@24";
+	"Class::MOP::Class::_inline_slot_initializer";
+	"Class::MOP::Class::_inline_slot_initializers";
+	"Class::MOP::Class::_inline_fallback_constructor";
+	"Class::MOP::Class::BEGIN@17";
+	"Class::MOP::Class::_immutable_metaclass";
+	"Class::MOP::Class::immutable_trait";
+	"Class::MOP::Class::BEGIN@13";
+	"Class::MOP::Class::_construct_instance";
+	"Class::MOP::Class::_inline_default_value";
+	"Class::MOP::Class::_single_metaclass_is_compatible";
+	"Class::MOP::Class::_inline_create_instance";
+	"Class::MOP::Class::_inline_preserve_weak_metaclasses";
+	"Class::MOP::Class::find_all_methods_by_name";
+	"Class::MOP::Class::remove_attribute";
+	"Class::MOP::Class::is_pristine";
+	"Class::MOP::Class::instance_metaclass";
+	"Class::MOP::Class::create";
+	"Class::MOP::Class::find_method_by_name";
+	"Class::MOP::Class::_method_lookup_order";
+	"Class::MOP::Class::_eval_environment";
+	"Class::MOP::Class::constructor_name";
+	"Class::MOP::Class::_immutable_options";
+	"Class::MOP::Class::_check_single_metaclass_compatibility";
+	"Class::MOP::Class::CORE:sort";
+	"Class::MOP::Class::_check_metaclass_compatibility";
+	"Class::MOP::Class::BEGIN@22";
+	"Class::MOP::Class::rebless_instance_away";
+	"Class::MOP::Class::_inline_init_attr_from_constructor";
+	"Class::MOP::Class::_inline_extra_init";
+	"Class::MOP::Class::is_mutable";
+	"Class::MOP::Class::_inline_new_object";
+	"Class::MOP::Class::destructor_class";
+	"Class::MOP::Class::_install_inlined_code";
+	"Class::MOP::Class::add_before_method_modifier";
+	"Class::MOP::Class::_base_metaclasses";
+	"Class::MOP::Class::_remove_generated_metaobjects";
+	"Class::MOP::Class::_single_metaclass_can_be_made_compatible";
+	"Class::MOP::Class::BEGIN@19";
+	"Class::MOP::Class::BEGIN@10";
+	"Class::MOP::Class::invalidate_meta_instances";
+	"Class::MOP::Class::_fix_single_metaclass_incompatibility";
+	"Class::MOP::Class::add_around_method_modifier";
+	"Class::MOP::Class::BEGIN@26";
+	"Class::MOP::Class::_superclasses_updated";
+	"Class::MOP::Class::_class_metaclass_can_be_made_compatible";
+	"Class::MOP::Class::constructor_class";
+	"Class::MOP::Class::_initialize_immutable";
+	"Class::MOP::Class::BEGIN@3";
+	"Class::MOP::Class::_post_add_attribute";
+	"Class::MOP::Class::invalidate_meta_instance";
+	"Class::MOP::Class::add_after_method_modifier";
+	"Class::MOP::Class::_generate_fallback_constructor";
+	"Class::MOP::Class::_inline_accessors";
+	"Class::MOP::Class::new_object";
+	"Class::MOP::Class::is_anon_class";
+	"Class::MOP::Class::find_next_method_by_name";
+	"Class::MOP::Class::_inline_generate_instance";
+	"Class::MOP::Class::_inline_constructor";
+	"Class::MOP::Class::_inline_params";
+	"Class::MOP::Class::_superclass_metas";
+	"Class::MOP::Class::create_anon_class";
+	"Class::MOP::Class::get_all_attributes";
+	"Class::MOP::Class::_fix_class_metaclass_incompatibility";
+	"Class::MOP::Class::_rebless_as_immutable";
+	"Class::MOP::Class::_restore_metaobjects_from";
+	"Class::MOP::Class::_check_class_metaclass_compatibility";
+	"Class::MOP::Class::_new";
+	"Class::MOP::Class::BEGIN@20";
+	"Class::MOP::Class::superclasses";
+	"Class::MOP::Class::BEGIN@21";
+	"Class::MOP::Class::_fix_metaclass_incompatibility";
+	"Class::MOP::Class::BEGIN@15";
+	"Class::MOP::Class::initialize";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+	"Class::MOP::Class::_inline_init_attr_from_default";
+	"Class::MOP::Class::BEGIN@16";
+	"Class::MOP::Class::is_immutable";
+	"Class::MOP::Class::_construct_class_instance";
+	"Class::MOP::Class::BEGIN@23";
+	"Class::MOP::Class::_real_ref_name";
+	"Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::_inline_destructor";
+	"Class::MOP::Class::get_all_methods";
+	"Class::MOP::Class::reinitialize";
+	"Class::MOP::Class::_create_meta_instance";
+	"Class::MOP::Class::_force_rebless_instance";
+	"Class::MOP::Class::_add_inlined_method";
+	"Class::MOP::Class::_attach_attribute";
+	"Class::MOP::Class::_class_metaclass_is_compatible";
+	"Class::MOP::Class::_can_fix_metaclass_incompatibility";
+	"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+	"Class::MOP::Class::BEGIN@11";
+	"Class::MOP::Class::_fixup_attributes_after_rebless";
+	"Class::MOP::Class::update_meta_instance_dependencies";
+	"Class::MOP::Class::immutable_options";
+}
+subgraph cluster_Data_Stream_Bulk_Cat {
+	label="Data::Stream::Bulk::Cat";
+	"Data::Stream::Bulk::Cat::meta";
+}
+subgraph cluster_stemmaweb_Controller_Root {
+	label="stemmaweb::Controller::Root";
+	"stemmaweb::Controller::Root::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Naive {
+	label="KiokuDB::TypeMap::Entry::Naive";
+	"KiokuDB::TypeMap::Entry::Naive::meta";
+}
+subgraph cluster_KiokuDB_Thunk {
+	label="KiokuDB::Thunk";
+	"KiokuDB::Thunk::meta";
+}
+subgraph cluster_Moose_Object {
+	label="Moose::Object";
+	"Moose::Object::BUILDALL";
+	"Moose::Object::does";
+	"Moose::Object::new";
+}
+subgraph cluster_main {
+	label="main";
+	"main::BEGIN@10";
+}
+subgraph cluster_Class_MOP_Mixin_AttributeCore {
+	label="Class::MOP::Mixin::AttributeCore";
+	"Class::MOP::Mixin::AttributeCore::default";
+	"Class::MOP::Mixin::AttributeCore::has_builder";
+	"Class::MOP::Mixin::AttributeCore::has_initializer";
+	"Class::MOP::Mixin::AttributeCore::has_default";
+	"Class::MOP::Mixin::AttributeCore::name";
+	"Class::MOP::Mixin::AttributeCore::init_arg";
+	"Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+	"Class::MOP::Mixin::AttributeCore::builder";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToRole {
+	label="Moose::Meta::Role::Application::ToRole";
+	"Moose::Meta::Role::Application::ToRole::meta";
+	"Moose::Meta::Role::Application::ToRole::_new";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::init_meta";
+	"Moose::BEGIN@47";
+}
+subgraph cluster_mro {
+	label="mro";
+	"mro::get_linear_isa";
+	"mro::get_mro";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Registry {
+	label="Moose::Meta::TypeConstraint::Registry";
+	"Moose::Meta::TypeConstraint::Registry::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_17 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::17";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::17::install_accessors";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Passthrough {
+	label="KiokuDB::TypeMap::Entry::Passthrough";
+	"KiokuDB::TypeMap::Entry::Passthrough::meta";
+}
+subgraph cluster_KiokuDB_TypeMap {
+	label="KiokuDB::TypeMap";
+	"KiokuDB::TypeMap::meta";
+	"KiokuDB::TypeMap::resolve";
+	"KiokuDB::TypeMap::BEGIN@10";
+}
+subgraph cluster_stemmaweb_Controller_Microservice {
+	label="stemmaweb::Controller::Microservice";
+	"stemmaweb::Controller::Microservice::meta";
+}
+subgraph cluster_Class_MOP_Method_Wrapped {
+	label="Class::MOP::Method::Wrapped";
+	"Class::MOP::Method::Wrapped::BEGIN@14";
+	"Class::MOP::Method::Wrapped::add_around_modifier";
+	"Class::MOP::Method::Wrapped::wrap";
+	"Class::MOP::Method::Wrapped::BEGIN@13";
+	"Class::MOP::Method::Wrapped::BEGIN@11";
+	"Class::MOP::Method::Wrapped::BEGIN@10";
+	"Class::MOP::Method::Wrapped::add_after_modifier";
+	"Class::MOP::Method::Wrapped::_new";
+	"Class::MOP::Method::Wrapped::BEGIN@16";
+	"Class::MOP::Method::Wrapped::BEGIN@3";
+	"Class::MOP::Method::Wrapped::add_before_modifier";
+}
+subgraph cluster_KiokuDB_Entry_Skip {
+	label="KiokuDB::Entry::Skip";
+	"KiokuDB::Entry::Skip::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_33 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::33";
+	"Moose::Meta::Class::__ANON__::SERIAL::33::meta";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Role_Parameterizable {
+	label="MooseX::Role::Parameterized::Meta::Role::Parameterizable";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7";
+	"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_KiokuDB_Backend_TypeMap_Default_JSON {
+	label="KiokuDB::Backend::TypeMap::Default::JSON";
+	"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6";
+}
+subgraph cluster_KiokuDB_LiveObjects_Scope {
+	label="KiokuDB::LiveObjects::Scope";
+	"KiokuDB::LiveObjects::Scope::meta";
+}
+subgraph cluster_Module_Runtime {
+	label="Module::Runtime";
+	"Module::Runtime::require_module";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_4 {
+	label="MooseX::Traits::__ANON__::SERIAL::4";
+	"MooseX::Traits::__ANON__::SERIAL::4::meta";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_KiokuDB_Set_Stored {
+	label="KiokuDB::Set::Stored";
+	"KiokuDB::Set::Stored::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Regex {
+	label="Catalyst::DispatchType::Regex";
+	"Catalyst::DispatchType::Regex::meta";
+}
+subgraph cluster_Data_Stream_Bulk_Util {
+	label="Data::Stream::Bulk::Util";
+	"Data::Stream::Bulk::Util::BEGIN@14";
+}
+subgraph cluster_Data_Stream_Bulk_Filter {
+	label="Data::Stream::Bulk::Filter";
+	"Data::Stream::Bulk::Filter::meta";
+}
+subgraph cluster_Catalyst_Controller {
+	label="Catalyst::Controller";
+	"Catalyst::Controller::meta";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_30 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::is_immutable";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Set {
+	label="KiokuDB::TypeMap::Entry::Set";
+	"KiokuDB::TypeMap::Entry::Set::meta";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@8";
+	"KiokuDB::TypeMap::Entry::Set::BEGIN@9";
+}
+subgraph cluster_Moose_Meta_Attribute {
+	label="Moose::Meta::Attribute";
+	"Moose::Meta::Attribute::interpolate_class";
+	"Moose::Meta::Attribute::_weaken_value";
+	"Moose::Meta::Attribute::initialize_instance_slot";
+	"Moose::Meta::Attribute::_find_delegate_metaclass";
+	"Moose::Meta::Attribute::_new";
+	"Moose::Meta::Attribute::BEGIN@24";
+	"Moose::Meta::Attribute::new";
+	"Moose::Meta::Attribute::remove_accessors";
+	"Moose::Meta::Attribute::_inline_set_value";
+	"Moose::Meta::Attribute::install_accessors";
+	"Moose::Meta::Attribute::_inline_weaken_value";
+	"Moose::Meta::Attribute::_get_delegate_method_list";
+}
+subgraph cluster_MooseX_Role_Parameterized_Parameters {
+	label="MooseX::Role::Parameterized::Parameters";
+	"MooseX::Role::Parameterized::Parameters::meta";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured {
+	label="MooseX::Meta::TypeConstraint::Structured";
+	"MooseX::Meta::TypeConstraint::Structured::meta";
+	"MooseX::Meta::TypeConstraint::Structured::BEGIN@8";
+}
+subgraph cluster_Catalyst_Log {
+	label="Catalyst::Log";
+	"Catalyst::Log::meta";
+}
+subgraph cluster_Moose_Meta_Role_Composite {
+	label="Moose::Meta::Role::Composite";
+	"Moose::Meta::Role::Composite::meta";
+}
+subgraph cluster_Catalyst_Utils {
+	label="Catalyst::Utils";
+	"Catalyst::Utils::ensure_class_loaded";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_31 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::31";
+	"Moose::Meta::Class::__ANON__::SERIAL::31::meta";
+}
+subgraph cluster_MooseX_Role_Parameterized {
+	label="MooseX::Role::Parameterized";
+	"MooseX::Role::Parameterized::BEGIN@7";
+}
+subgraph cluster_Moose_Util_MetaRole {
+	label="Moose::Util::MetaRole";
+	"Moose::Util::MetaRole::_make_new_class";
+	"Moose::Util::MetaRole::_make_new_metaclass";
+}
+subgraph cluster_KiokuDB_Serializer_JSON {
+	label="KiokuDB::Serializer::JSON";
+	"KiokuDB::Serializer::JSON::meta";
+}
+subgraph cluster_Catalyst_Exception_Detach {
+	label="Catalyst::Exception::Detach";
+	"Catalyst::Exception::Detach::meta";
+}
+subgraph cluster_MooseX_Meta_TypeCoercion_Structured {
+	label="MooseX::Meta::TypeCoercion::Structured";
+	"MooseX::Meta::TypeCoercion::Structured::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Row {
+	label="KiokuDB::TypeMap::Entry::DBIC::Row";
+	"KiokuDB::TypeMap::Entry::DBIC::Row::meta";
+}
+subgraph cluster_KiokuDB_GC_Naive_Sweep {
+	label="KiokuDB::GC::Naive::Sweep";
+	"KiokuDB::GC::Naive::Sweep::meta";
+}
+subgraph cluster_KiokuDB_Collapser {
+	label="KiokuDB::Collapser";
+	"KiokuDB::Collapser::BEGIN@17";
+	"KiokuDB::Collapser::BEGIN@15";
+	"KiokuDB::Collapser::BEGIN@14";
+	"KiokuDB::Collapser::BEGIN@20";
+	"KiokuDB::Collapser::BEGIN@16";
+	"KiokuDB::Collapser::BEGIN@18";
+	"KiokuDB::Collapser::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Std {
+	label="KiokuDB::TypeMap::Entry::Std";
+	"KiokuDB::TypeMap::Entry::Std::BEGIN@6";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Ref {
+	label="KiokuDB::TypeMap::Entry::Ref";
+	"KiokuDB::TypeMap::Entry::Ref::meta";
+}
+subgraph cluster_Data_Visitor_Callback {
+	label="Data::Visitor::Callback";
+	"Data::Visitor::Callback::meta";
+}
+subgraph cluster_Catalyst_View {
+	label="Catalyst::View";
+	"Catalyst::View::meta";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@7";
+	"Text::Tradition::BEGIN@8";
+	"Text::Tradition::meta";
+	"Text::Tradition::BEGIN@6";
+}
+subgraph cluster_MooseX_MethodAttributes_Inheritable {
+	label="MooseX::MethodAttributes::Inheritable";
+	"MooseX::MethodAttributes::Inheritable::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Union {
+	label="Moose::Meta::TypeConstraint::Union";
+	"Moose::Meta::TypeConstraint::Union::meta";
+}
+subgraph cluster_Moose_Meta_TypeCoercion {
+	label="Moose::Meta::TypeCoercion";
+	"Moose::Meta::TypeCoercion::new";
+	"Moose::Meta::TypeCoercion::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_8 {
+	label="MooseX::Traits::__ANON__::SERIAL::8";
+	"MooseX::Traits::__ANON__::SERIAL::8::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Default_JSON {
+	label="KiokuDB::TypeMap::Default::JSON";
+	"KiokuDB::TypeMap::Default::JSON::meta";
+}
+subgraph cluster_Catalyst_DispatchType_Default {
+	label="Catalyst::DispatchType::Default";
+	"Catalyst::DispatchType::Default::meta";
+}
+subgraph cluster_Moose_Meta_Role_Application_ToInstance {
+	label="Moose::Meta::Role::Application::ToInstance";
+	"Moose::Meta::Role::Application::ToInstance::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::meta";
+}
+subgraph cluster_MooseX_Types_Structured_OverflowHandler {
+	label="MooseX::Types::Structured::OverflowHandler";
+	"MooseX::Types::Structured::OverflowHandler::meta";
+}
+subgraph cluster_Data_Visitor {
+	label="Data::Visitor";
+	"Data::Visitor::meta";
+}
+subgraph cluster_KiokuDB_Entry {
+	label="KiokuDB::Entry";
+	"KiokuDB::Entry::meta";
+}
+subgraph cluster_Catalyst_Model {
+	label="Catalyst::Model";
+	"Catalyst::Model::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Class {
+	label="Moose::Meta::TypeConstraint::Class";
+	"Moose::Meta::TypeConstraint::Class::meta";
+}
+subgraph cluster_Text_Tradition_Collation_Reading_Morphology {
+	label="Text::Tradition::Collation::Reading::Morphology";
+	"Text::Tradition::Collation::Reading::Morphology::meta";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Collapser {
+	label="KiokuDB::Backend::Serialize::JSPON::Collapser";
+	"KiokuDB::Backend::Serialize::JSPON::Collapser::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_1 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::1";
+	"Moose::Meta::Class::__ANON__::SERIAL::1::meta";
+}
+subgraph cluster_Catalyst_Exception_Base {
+	label="Catalyst::Exception::Base";
+	"Catalyst::Exception::Base::meta";
+}
+subgraph cluster_KiokuDB_Error_MissingObjects {
+	label="KiokuDB::Error::MissingObjects";
+	"KiokuDB::Error::MissingObjects::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_Schema {
+	label="KiokuDB::TypeMap::Entry::DBIC::Schema";
+	"KiokuDB::TypeMap::Entry::DBIC::Schema::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_StorableHook {
+	label="KiokuDB::TypeMap::Entry::StorableHook";
+	"KiokuDB::TypeMap::Entry::StorableHook::meta";
+}
+subgraph cluster_MooseX_Role_Parameterized_Meta_Trait_Parameterized {
+	label="MooseX::Role::Parameterized::Meta::Trait::Parameterized";
+	"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6";
+}
+subgraph cluster_Class_MOP_Method_Constructor {
+	label="Class::MOP::Method::Constructor";
+	"Class::MOP::Method::Constructor::_eval_environment";
+	"Class::MOP::Method::Constructor::BEGIN@10";
+	"Class::MOP::Method::Constructor::BEGIN@3";
+	"Class::MOP::Method::Constructor::BEGIN@15";
+	"Class::MOP::Method::Constructor::_generate_constructor_method_inline";
+	"Class::MOP::Method::Constructor::BEGIN@14";
+	"Class::MOP::Method::Constructor::BEGIN@17";
+	"Class::MOP::Method::Constructor::BEGIN@13";
+	"Class::MOP::Method::Constructor::BEGIN@11";
+	"Class::MOP::Method::Constructor::new";
+}
+subgraph cluster_MooseX_Meta_TypeConstraint_Structured_Optional {
+	label="MooseX::Meta::TypeConstraint::Structured::Optional";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5";
+	"MooseX::Meta::TypeConstraint::Structured::Optional::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_MOP {
+	label="KiokuDB::TypeMap::Entry::MOP";
+	"KiokuDB::TypeMap::Entry::MOP::BEGIN@9";
+	"KiokuDB::TypeMap::Entry::MOP::meta";
+	"KiokuDB::TypeMap::Entry::MOP::compile_expand";
+	"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_DBIC_ResultSet {
+	label="KiokuDB::TypeMap::Entry::DBIC::ResultSet";
+	"KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta";
+}
+subgraph cluster_Text_Tradition_Directory {
+	label="Text::Tradition::Directory";
+	"Text::Tradition::Directory::BEGIN@8";
+	"Text::Tradition::Directory::BEGIN@154";
+	"Text::Tradition::Directory::BEGIN@10";
+	"Text::Tradition::Directory::BEGIN@9";
+}
+subgraph cluster_Text_Tradition_Error {
+	label="Text::Tradition::Error";
+	"Text::Tradition::Error::meta";
+}
+subgraph cluster_Class_MOP_Attribute {
+	label="Class::MOP::Attribute";
+	"Class::MOP::Attribute::attach_to_class";
+	"Class::MOP::Attribute::_inline_instance_get";
+	"Class::MOP::Attribute::_new";
+	"Class::MOP::Attribute::has_value";
+	"Class::MOP::Attribute::detach_from_class";
+	"Class::MOP::Attribute::set_initial_value";
+	"Class::MOP::Attribute::get_value";
+	"Class::MOP::Attribute::set_value";
+	"Class::MOP::Attribute::_inline_instance_has";
+	"Class::MOP::Attribute::_inline_instance_clear";
+	"Class::MOP::Attribute::set_raw_value";
+	"Class::MOP::Attribute::install_accessors";
+	"Class::MOP::Attribute::get_raw_value";
+	"Class::MOP::Attribute::_inline_instance_set";
+	"Class::MOP::Attribute::initialize_instance_slot";
+	"Class::MOP::Attribute::_inline_set_value";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_Compiled {
+	label="KiokuDB::TypeMap::Entry::Compiled";
+	"KiokuDB::TypeMap::Entry::Compiled::meta";
+}
+subgraph cluster_KiokuDB_LiveObjects_TXNScope {
+	label="KiokuDB::LiveObjects::TXNScope";
+	"KiokuDB::LiveObjects::TXNScope::meta";
+}
+subgraph cluster_Moose_Meta_Role_Method_Required {
+	label="Moose::Meta::Role::Method::Required";
+	"Moose::Meta::Role::Method::Required::meta";
+}
+subgraph cluster_Class_MOP_Mixin_HasAttributes {
+	label="Class::MOP::Mixin::HasAttributes";
+	"Class::MOP::Mixin::HasAttributes::get_attribute_list";
+	"Class::MOP::Mixin::HasAttributes::get_attribute";
+	"Class::MOP::Mixin::HasAttributes::_attribute_map";
+	"Class::MOP::Mixin::HasAttributes::_restore_metaattributes_from";
+	"Class::MOP::Mixin::HasAttributes::remove_attribute";
+	"Class::MOP::Mixin::HasAttributes::add_attribute";
+	"Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+	"Class::MOP::Mixin::HasAttributes::has_attribute";
+}
+subgraph cluster_Moose_Meta_TypeConstraint {
+	label="Moose::Meta::TypeConstraint";
+	"Moose::Meta::TypeConstraint::meta";
+	"Moose::Meta::TypeConstraint::_new";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Trait {
+	label="Class::MOP::Class::Immutable::Trait";
+	"Class::MOP::Class::Immutable::Trait::_get_mutable_metaclass_name";
+}
+subgraph cluster_KiokuDB {
+	label="KiokuDB";
+	"KiokuDB::BEGIN@13";
+	"KiokuDB::BEGIN@11";
+	"KiokuDB::BEGIN@16";
+	"KiokuDB::meta";
+	"KiokuDB::BEGIN@17";
+	"KiokuDB::BEGIN@12";
+	"KiokuDB::BEGIN@15";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::BEGIN@13";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark_Results {
+	label="KiokuDB::GC::Naive::Mark::Results";
+	"KiokuDB::GC::Naive::Mark::Results::meta";
+}
+subgraph cluster_Class_MOP_Method_Inlined {
+	label="Class::MOP::Method::Inlined";
+	"Class::MOP::Method::Inlined::_uninlined_body";
+	"Class::MOP::Method::Inlined::can_be_inlined";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@7";
+}
+subgraph cluster_MooseX_MethodAttributes_Role_Meta_Class {
+	label="MooseX::MethodAttributes::Role::Meta::Class";
+	"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]";
+}
+subgraph cluster_stemmaweb_Controller_Relation {
+	label="stemmaweb::Controller::Relation";
+	"stemmaweb::Controller::Relation::meta";
+}
+subgraph cluster_Catalyst_Stats {
+	label="Catalyst::Stats";
+	"Catalyst::Stats::meta";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Moose_Meta_Class___ANON___SERIAL_5 {
+	label="Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::is_immutable";
+	"Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_6 {
+	label="MooseX::Traits::__ANON__::SERIAL::6";
+	"MooseX::Traits::__ANON__::SERIAL::6::meta";
+}
+subgraph cluster_KiokuDB_Set_Deferred {
+	label="KiokuDB::Set::Deferred";
+	"KiokuDB::Set::Deferred::meta";
+	"KiokuDB::Set::Deferred::BEGIN@8";
+}
+subgraph cluster_Text_Tradition_Collation_Relationship {
+	label="Text::Tradition::Collation::Relationship";
+	"Text::Tradition::Collation::Relationship::meta";
+}
+subgraph cluster_KiokuDB_TypeMap_Resolver {
+	label="KiokuDB::TypeMap::Resolver";
+	"KiokuDB::TypeMap::Resolver::BEGIN@9";
+	"KiokuDB::TypeMap::Resolver::meta";
+}
+subgraph cluster_Moose_Meta_Attribute_Native_Trait {
+	label="Moose::Meta::Attribute::Native::Trait";
+	"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for";
+}
+subgraph cluster_Class_MOP_Mixin {
+	label="Class::MOP::Mixin";
+	"Class::MOP::Mixin::meta";
+}
+subgraph cluster_Moose_Meta_TypeConstraint_Parameterizable {
+	label="Moose::Meta::TypeConstraint::Parameterizable";
+	"Moose::Meta::TypeConstraint::Parameterizable::_new";
+	"Moose::Meta::TypeConstraint::Parameterizable::meta";
+}
+subgraph cluster_Class_MOP_Object {
+	label="Class::MOP::Object";
+	"Class::MOP::Object::_new";
+	"Class::MOP::Object::_get_compatible_metaclass_by_subclassing";
+	"Class::MOP::Object::_can_be_made_compatible_with";
+	"Class::MOP::Object::_get_compatible_metaclass";
+	"Class::MOP::Object::_make_compatible_with";
+	"Class::MOP::Object::meta";
+	"Class::MOP::Object::_is_compatible_with";
+}
+subgraph cluster_Moose_Util {
+	label="Moose::Util";
+	"Moose::Util::add_method_modifier";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+subgraph cluster_Class_MOP {
+	label="Class::MOP";
+	"Class::MOP::class_of";
+	"Class::MOP::store_metaclass_by_name";
+	"Class::MOP::__ANON__";
+	"Class::MOP::BEGIN@26";
+	"Class::MOP::get_metaclass_by_name";
+	"Class::MOP::metaclass_is_weak";
+	"Class::MOP::weaken_metaclass";
+}
+subgraph cluster_Text_Tradition_TypeMap_Entry {
+	label="Text::Tradition::TypeMap::Entry";
+	"Text::Tradition::TypeMap::Entry::meta";
+}
+subgraph cluster_Class_MOP_Class_Immutable_Class_MOP_Class {
+	label="Class::MOP::Class::Immutable::Class::MOP::Class";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::class_precedence_list";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::is_immutable";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::linearized_isa";
+	"Class::MOP::Class::Immutable::Class::MOP::Class::superclasses";
+}
+subgraph cluster_MooseX_Types_Structured {
+	label="MooseX::Types::Structured";
+	"MooseX::Types::Structured::BEGIN@16";
+	"MooseX::Types::Structured::BEGIN@14";
+	"MooseX::Types::Structured::BEGIN@15";
+	"MooseX::Types::Structured::BEGIN@13";
+}
+subgraph cluster_stemmaweb {
+	label="stemmaweb";
+	"stemmaweb::BEGIN@2";
+	"stemmaweb::BEGIN@19";
+}
+subgraph cluster_KiokuDB_TypeMap_Entry_JSON_Scalar {
+	label="KiokuDB::TypeMap::Entry::JSON::Scalar";
+	"KiokuDB::TypeMap::Entry::JSON::Scalar::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_34 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::34";
+	"Moose::Meta::Class::__ANON__::SERIAL::34::meta";
+}
+subgraph cluster_Data_Stream_Bulk_Array {
+	label="Data::Stream::Bulk::Array";
+	"Data::Stream::Bulk::Array::meta";
+}
+subgraph cluster_KiokuDB_GC_Naive_Mark {
+	label="KiokuDB::GC::Naive::Mark";
+	"KiokuDB::GC::Naive::Mark::meta";
+}
+subgraph cluster_Class_MOP_Package {
+	label="Class::MOP::Package";
+	"Class::MOP::Package::reinitialize";
+	"Class::MOP::Package::is_anon";
+	"Class::MOP::Package::name";
+	"Class::MOP::Package::create";
+	"Class::MOP::Package::create_anon";
+}
+subgraph cluster_Catalyst_Response {
+	label="Catalyst::Response";
+	"Catalyst::Response::meta";
+}
+subgraph cluster_Moose_Meta_Class___ANON___SERIAL_8 {
+	label="Moose::Meta::Class::__ANON__::SERIAL::8";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::meta";
+	"Moose::Meta::Class::__ANON__::SERIAL::8::install_accessors";
+}
+subgraph cluster_MooseX_Emulate_Class_Accessor_Fast_Meta_Accessor {
+	label="MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor";
+	"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta";
+}
+subgraph cluster_Moose_Meta_Role_Application {
+	label="Moose::Meta::Role::Application";
+	"Moose::Meta::Role::Application::meta";
+}
+subgraph cluster_MooseX_Traits___ANON___SERIAL_2 {
+	label="MooseX::Traits::__ANON__::SERIAL::2";
+	"MooseX::Traits::__ANON__::SERIAL::2::meta";
+}
+"Moose::Util::MetaRole::_make_new_metaclass" -> "Class::MOP::Class::find_attribute_by_name";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Class::find_attribute_by_name";
+"MooseX::Traits::Util::transform_trait" -> "Class::MOP::Class::find_attribute_by_name";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::find_attribute_by_name";
+"Moose::Meta::Class::_process_inherited_attribute" -> "Class::MOP::Class::find_attribute_by_name";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Class::find_attribute_by_name";
+"Class::MOP::Class::_method_lookup_order" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::linearized_isa";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_fallback_constructor";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Class::Immutable::Class::MOP::Class::linearized_isa";
+"Class::MOP::Class::get_all_attributes" -> "Class::MOP::Class::Immutable::Class::MOP::Class::linearized_isa";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Class::_single_metaclass_is_compatible";
+"Class::MOP::Class::_check_single_metaclass_compatibility" -> "Class::MOP::Class::_single_metaclass_is_compatible";
+"Class::MOP::Method::Constructor::_eval_environment" -> "Class::MOP::Class::_eval_environment";
+"Moose::Meta::Class::_eval_environment" -> "Class::MOP::Class::_eval_environment";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Class::_single_metaclass_can_be_made_compatible";
+"Class::MOP::Class::_can_fix_metaclass_incompatibility" -> "Class::MOP::Class::_single_metaclass_can_be_made_compatible";
+"Moose::Meta::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Class::_single_metaclass_can_be_made_compatible";
+"Class::MOP::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Class::_class_metaclass_can_be_made_compatible";
+"Moose::Meta::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Class::_class_metaclass_can_be_made_compatible";
+"Class::MOP::Class::_can_fix_metaclass_incompatibility" -> "Class::MOP::Class::_class_metaclass_can_be_made_compatible";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Mixin::HasMethods::method_metaclass";
+"Moose::Meta::Class::_inline_triggers" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Class::get_all_attributes";
+"Catalyst::Model::KiokuDB::BUILD" -> "Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Class::_eval_environment" -> "Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Attribute::new" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_inline_slot_initializers" -> "Class::MOP::Class::get_all_attributes";
+"Moose::Meta::Class::_call_all_triggers" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_eval_environment" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Mixin::HasMethods::wrapped_method_metaclass";
+"Class::MOP::Class::_construct_instance" -> "Scalar::Util::blessed";
+"Class::MOP::Class::reinitialize" -> "Scalar::Util::blessed";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@20";
+"Class::MOP::Object::_get_compatible_metaclass_by_subclassing" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::Class::_real_ref_name";
+"Moose::init_meta" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_class_metaclass_is_compatible" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_class_metaclass_can_be_made_compatible" -> "Class::MOP::Class::_real_ref_name";
+"Class::MOP::Class::_install_inlined_code" -> "Class::MOP::Class::_inline_destructor";
+"Class::MOP::Mixin::HasAttributes::add_attribute" -> "Class::MOP::Class::_attach_attribute";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::initialize_instance_slot";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Attribute::initialize_instance_slot";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@13";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::_check_single_metaclass_compatibility";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@13";
+"Class::MOP::Object::_new" -> "Class::MOP::Class::new_object";
+"Moose::Meta::TypeCoercion::new" -> "Class::MOP::Class::new_object";
+"Moose::Meta::Method::_new" -> "Class::MOP::Class::new_object";
+"Class::MOP::Method::_new" -> "Class::MOP::Class::new_object";
+"Moose::Meta::Class::new_object" -> "Class::MOP::Class::new_object";
+"Class::MOP::Method::Accessor::_new" -> "Class::MOP::Class::new_object";
+"Class::MOP::Attribute::_new" -> "Class::MOP::Class::new_object";
+"Class::MOP::Class::add_after_method_modifier" -> "Class::MOP::Method::Wrapped::add_after_modifier";
+"Moose::Meta::Class::_restore_metaobjects_from" -> "Class::MOP::Class::_restore_metaobjects_from";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@15";
+"Try::Tiny::try" -> "Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@10";
+"Class::MOP::Attribute::_inline_instance_has" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_clear" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_get" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_inline_create_instance" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::_inline_instance_set" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::get_meta_instance";
+"Moose::Meta::Attribute::_inline_weaken_value" -> "Class::MOP::Class::get_meta_instance";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@14";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Class::_fixup_attributes_after_rebless";
+"Moose::Meta::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::_fixup_attributes_after_rebless";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@16";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_setup_finished_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_stats_class_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_engine_loader_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_context_class_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_loading_psgi_file_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::Component::__config_accessor" -> "Class::MOP::Class::linearized_isa";
+"Class::MOP::Class::get_all_attributes" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_response_class_accessor" -> "Class::MOP::Class::linearized_isa";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::linearized_isa";
+"Class::MOP::Class::_method_lookup_order" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_dispatcher_class_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_request_class_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::_log_accessor" -> "Class::MOP::Class::linearized_isa";
+"Catalyst::Component::__plugins_accessor" -> "Class::MOP::Class::linearized_isa";
+"Class::MOP::Class::_immutable_metaclass" -> "Moose::Meta::Class::immutable_trait";
+"Class::MOP::Class::_immutable_options" -> "Moose::Meta::Class::immutable_trait";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Instance::new";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::set_value";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Mixin::HasAttributes::get_attribute";
+"Class::MOP::Class::_inline_accessors" -> "Class::MOP::Mixin::HasAttributes::get_attribute";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_preserve_weak_metaclasses";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Moose::Meta::Class::__ANON__::SERIAL::6::wrap";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Class::destructor_class";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Class::destructor_class";
+"Class::MOP::Class::_immutable_options" -> "Class::MOP::Class::destructor_class";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@11";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@26";
+"Class::MOP::Class::find_next_method_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::is_pristine" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::find_method_by_name" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Mixin::HasMethods::get_method";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Object::_get_compatible_metaclass";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@3";
+"Class::MOP::Class::create" -> "Class::MOP::Module::create";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Moose::Meta::Class::__ANON__::SERIAL::8::install_accessors";
+"Class::MOP::Class::make_immutable" -> "Moose::Meta::Class::_immutable_options";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@13";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Instance::create_instance";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Class::_eval_environment" -> "Class::MOP::Mixin::AttributeCore::default";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Class::_can_fix_metaclass_incompatibility";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_all_attributes";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@19";
+"Class::MOP::Class::invalidate_meta_instances" -> "Class::MOP::Class::invalidate_meta_instance";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@11";
+"Class::MOP::Class::_force_rebless_instance" -> "Moose::Meta::Class::_fixup_attributes_after_rebless";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Class::find_next_method_by_name";
+"Class::MOP::Method::Inlined::_uninlined_body" -> "Class::MOP::Class::find_next_method_by_name";
+"Class::MOP::Method::Inlined::can_be_inlined" -> "Class::MOP::Class::find_next_method_by_name";
+"Moose::Meta::Method::Overridden::new" -> "Class::MOP::Class::find_next_method_by_name";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@3";
+"Class::MOP::Class::_inline_init_attr_from_default" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Class::MOP::Attribute::_inline_set_value";
+"Class::MOP::Class::_restore_metaobjects_from" -> "Class::MOP::Mixin::HasAttributes::_restore_metaattributes_from";
+"Class::MOP::Class::_post_add_attribute" -> "Try::Tiny::try";
+"Class::MOP::Class::_inline_constructor" -> "Class::Load::load_class";
+"Class::MOP::Class::_inline_destructor" -> "Class::Load::load_class";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Class::rebless_instance_away";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Class::is_mutable";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::Class::is_mutable";
+"Class::MOP::Class::make_immutable" -> "Class::MOP::Class::is_mutable";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Mixin::HasAttributes::has_attribute";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@10";
+"Class::MOP::Class::remove_attribute" -> "Class::MOP::Class::invalidate_meta_instances";
+"Class::MOP::Class::_post_add_attribute" -> "Class::MOP::Class::invalidate_meta_instances";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@12";
+"Class::MOP::Class::_inline_slot_initializer" -> "Moose::Meta::Class::_inline_init_attr_from_default";
+"Class::MOP::Class::make_immutable" -> "Class::MOP::Class::_initialize_immutable";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@13";
+"KiokuDB::TypeMap::resolve" -> "Class::MOP::Class::is_anon_class";
+"KiokuDB::TypeMap::Entry::MOP::compile_expand" -> "Class::MOP::Class::is_anon_class";
+"KiokuDB::TypeMap::Entry::MOP::compile_collapse_body" -> "Class::MOP::Class::is_anon_class";
+"Class::MOP::Class::_immutable_metaclass" -> "Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+"Class::MOP::Class::_construct_class_instance" -> "Moose::Meta::Class::__ANON__::SERIAL::30::meta";
+"Class::MOP::Class::_superclasses_updated" -> "Class::MOP::Class::_superclass_metas";
+"Class::MOP::Class::make_immutable" -> "Class::MOP::Class::_rebless_as_immutable";
+"Class::MOP::Class::_inline_default_value" -> "Class::MOP::Mixin::AttributeCore::is_default_a_coderef";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::__ANON__";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::Load::XS::is_class_loaded";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::superclasses";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::superclasses";
+"Class::MOP::Class::create" -> "Class::MOP::Class::superclasses";
+"Class::MOP::Class::_superclasses_updated" -> "Class::MOP::Class::superclasses";
+"Class::MOP::Class::add_before_method_modifier" -> "Class::MOP::Method::Wrapped::add_before_modifier";
+"Class::MOP::Class::initialize" -> "Class::MOP::Class::_construct_class_instance";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa";
+"Class::MOP::Class::get_all_attributes" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa";
+"Class::MOP::Class::_method_lookup_order" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::linearized_isa";
+"Class::MOP::Class::get_meta_instance" -> "Class::MOP::Class::_create_meta_instance";
+"Class::MOP::Class::_superclasses_updated" -> "Class::MOP::Class::update_meta_instance_dependencies";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Moose::Meta::Class::_base_metaclasses";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Moose::Meta::Class::_base_metaclasses";
+"Class::MOP::Class::_can_fix_metaclass_incompatibility" -> "Moose::Meta::Class::_base_metaclasses";
+"Class::MOP::Class::_post_add_attribute" -> "Try::Tiny::catch";
+"Class::MOP::Class::_inline_generate_instance" -> "Class::MOP::Class::_inline_create_instance";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@17";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@13";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_meta_instance";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@3";
+"Class::MOP::Class::is_anon_class" -> "Class::MOP::Package::is_anon";
+"Class::MOP::Class::_inline_slot_initializer" -> "Class::MOP::Class::_inline_init_attr_from_default";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@16";
+"Class::MOP::Class::create_anon_class" -> "Class::MOP::Package::create_anon";
+"Class::MOP::Class::BEGIN@10" -> "strict::import";
+"Class::MOP::Class::remove_attribute" -> "Class::MOP::Attribute::detach_from_class";
+"Class::MOP::Class::_rebless_as_immutable" -> "Class::MOP::Class::_immutable_metaclass";
+"Class::MOP::Class::get_all_methods" -> "Class::MOP::Mixin::HasMethods::_get_local_methods";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::superclasses";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Moose::Meta::Attribute::initialize_instance_slot";
+"Class::MOP::Class::_construct_instance" -> "Moose::Meta::Attribute::initialize_instance_slot";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@15";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_params";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::store_metaclass_by_name";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::is_immutable";
+"Class::MOP::Class::_inline_fallback_constructor" -> "Moose::Meta::Class::_generate_fallback_constructor";
+"Class::MOP::Class::_inline_new_object" -> "Moose::Meta::Class::_inline_params";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::weaken_metaclass";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::Immutable::Class::MOP::Class::class_precedence_list";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Class::immutable_trait";
+"Class::MOP::Class::_immutable_options" -> "Class::MOP::Class::immutable_trait";
+"Moose::Meta::Role::Application::ToClass::check_required_methods" -> "Class::MOP::Class::find_method_by_name";
+"MooseX::MethodAttributes::Role::Meta::Class::get_nearest_methods_with_attributes" -> "Class::MOP::Class::find_method_by_name";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::find_method_by_name";
+"Moose::Meta::Class::_inline_BUILDARGS" -> "Class::MOP::Class::find_method_by_name";
+"Class::MOP::Mixin::HasMethods::_add_meta_method" -> "Class::MOP::Class::find_method_by_name";
+"Moose::BEGIN@47" -> "Class::MOP::Class::find_method_by_name";
+"Moose::Meta::Method::Destructor::is_needed" -> "Class::MOP::Class::find_method_by_name";
+"Class::MOP::Class::_inline_new_object" -> "Moose::Meta::Class::_inline_extra_init";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::Class::_class_metaclass_is_compatible" -> "Class::MOP::Object::_is_compatible_with";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@22";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Method::Wrapped::wrap";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@11";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::_base_metaclasses";
+"Moose::Meta::Class::_base_metaclasses" -> "Class::MOP::Class::_base_metaclasses";
+"Class::MOP::Class::_can_fix_metaclass_incompatibility" -> "Class::MOP::Class::_base_metaclasses";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::Immutable::Class::MOP::Class::get_meta_instance";
+"Class::MOP::Class::reinitialize" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_inline_preserve_weak_metaclasses" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::metaclass_is_weak";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Mixin::HasMethods::add_method";
+"Moose::Meta::Role::Application::ToClass::apply_method_modifiers" -> "Class::MOP::Class::add_after_method_modifier";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_generate_instance";
+"Class::MOP::Class::initialize" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::_class_metaclass_is_compatible" -> "Class::MOP::get_metaclass_by_name";
+"Class::MOP::Class::CORE:sort" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Mixin::AttributeCore::name";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@14";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::get_value";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@23";
+"Class::MOP::Class::add_around_method_modifier" -> "Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+"Class::MOP::Class::add_before_method_modifier" -> "Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+"Class::MOP::Class::add_after_method_modifier" -> "Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]";
+"Class::MOP::Class::_inline_default_value" -> "Class::MOP::Mixin::AttributeCore::has_default";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::get_all_attributes";
+"Class::MOP::Class::BEGIN@20" -> "Exporter::import";
+"Class::MOP::Class::BEGIN@21" -> "Exporter::import";
+"Class::MOP::Class::BEGIN@19" -> "Exporter::import";
+"Class::MOP::Class::BEGIN@24" -> "Exporter::import";
+"Class::MOP::Class::BEGIN@22" -> "Exporter::import";
+"Class::MOP::Class::BEGIN@23" -> "Exporter::import";
+"Moose::Meta::Class::create" -> "Class::MOP::Class::create";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Class::create";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Class::instance_metaclass";
+"Class::MOP::Class::_immutable_options" -> "Class::MOP::Class::constructor_name";
+"Class::MOP::Class::_inline_default_value" -> "Class::MOP::Mixin::AttributeCore::builder";
+"Catalyst::BEGIN@11" -> "Class::MOP::Class::add_before_method_modifier";
+"Moose::Util::add_method_modifier" -> "Class::MOP::Class::add_before_method_modifier";
+"Module::Runtime::require_module" -> "Class::MOP::Class::add_before_method_modifier";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::add_before_method_modifier";
+"Moose::Meta::Role::Application::ToClass::apply_method_modifiers" -> "Class::MOP::Class::add_before_method_modifier";
+"Moose::Util::add_method_modifier" -> "Class::MOP::Class::add_around_method_modifier";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::add_around_method_modifier";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::add_around_method_modifier";
+"Moose::Meta::Role::Application::ToClass::apply_method_modifiers" -> "Class::MOP::Class::add_around_method_modifier";
+"Class::MOP::Class::superclasses" -> "Class::MOP::Class::_superclasses_updated";
+"Class::MOP::Mixin::HasAttributes::add_attribute" -> "Class::MOP::Class::_post_add_attribute";
+"Class::MOP::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Object::_make_compatible_with";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::_fix_metaclass_incompatibility";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Class::immutable_options";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::class_precedence_list";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::class_precedence_list";
+"Moose::Meta::Class::excludes_role" -> "Class::MOP::Class::class_precedence_list";
+"Moose::Meta::Class::does_role" -> "Class::MOP::Class::class_precedence_list";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_slot_initializers";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Instance::_set_mop_slot";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Object::_can_be_made_compatible_with";
+"Class::MOP::Class::_class_metaclass_can_be_made_compatible" -> "Class::MOP::Object::_can_be_made_compatible_with";
+"Class::MOP::Class::find_method_by_name" -> "Class::MOP::Class::_method_lookup_order";
+"Class::MOP::Class::find_next_method_by_name" -> "Class::MOP::Class::_method_lookup_order";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Class::_method_lookup_order";
+"Class::MOP::Class::get_all_methods" -> "Class::MOP::Class::_method_lookup_order";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "UNIVERSAL::can";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "UNIVERSAL::can";
+"Class::MOP::Class::_restore_metaobjects_from" -> "Class::MOP::Mixin::HasMethods::_restore_metamethods_from";
+"Class::MOP::Class::_inline_new_object" -> "Class::MOP::Class::_inline_extra_init";
+"Class::MOP::Class::BEGIN@26" -> "base::import";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Moose::Meta::Class::__ANON__::SERIAL::17::install_accessors";
+"Class::MOP::Class::BEGIN@11" -> "warnings::import";
+"Class::MOP::Class::_inline_constructor" -> "Moose::Meta::Method::Constructor::new";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Moose::Meta::Class::superclasses";
+"Class::MOP::Class::class_precedence_list" -> "Moose::Meta::Class::superclasses";
+"Class::MOP::Class::_superclasses_updated" -> "Moose::Meta::Class::superclasses";
+"Class::MOP::Class::create" -> "Moose::Meta::Class::superclasses";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Class::MOP::Attribute::install_accessors";
+"Class::MOP::Class::_inline_accessors" -> "Class::MOP::Attribute::install_accessors";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@21";
+"Class::MOP::Class::find_attribute_by_name" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Attribute::_weaken_value" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::DBIC::Row::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Exception::Go::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Set::Deferred::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Controller::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::_new" -> "Class::MOP::Class::initialize";
+"Catalyst::Request::Upload::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::has_value" -> "Class::MOP::Class::initialize";
+"Parse::Method::Signatures::TypeConstraint::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::Nil::meta" -> "Class::MOP::Class::initialize";
+"Parse::Method::Signatures::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Exception::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSet::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Method::Wrapped::_new" -> "Class::MOP::Class::initialize";
+"KiokuDB::Entry::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Error::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Closure::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::23::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::2::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Class::initialize";
+"KiokuDB::Error::UnknownObjects::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Meta::TypeConstraint::Structured::Optional::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Emulate::Class::Accessor::Fast::Meta::Accessor::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Naive::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Parameterizable::_new" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeCoercion::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::Array::meta" -> "Class::MOP::Class::initialize";
+"Parse::Method::Signatures::Param::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::Cat::meta" -> "Class::MOP::Class::initialize";
+"Moose::Object::new" -> "Class::MOP::Class::initialize";
+"Class::MOP::Method::Accessor::_new" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::MOP::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::6::meta" -> "Class::MOP::Class::initialize";
+"MooseX::MethodAttributes::Inheritable::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::Default::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Entry::Skip::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Model::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Collation::RelationshipStore::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::LiveObjects::Scope::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::ToRole::_new" -> "Class::MOP::Class::initialize";
+"Catalyst::Stats::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Set::Base::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Parameterizable::meta" -> "Class::MOP::Class::initialize";
+"Moose::Util::MetaRole::_make_new_class" -> "Class::MOP::Class::initialize";
+"MooseX::Role::Parameterized::Parameters::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::DBIC::Schema::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Method::Required::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Package::create" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::5::meta" -> "Class::MOP::Class::initialize";
+"Moose::BEGIN@47" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Enum::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Method::_new" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Union::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Types::Structured::OverflowHandler::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::30::meta" -> "Class::MOP::Class::initialize";
+"Data::Visitor::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::RoleSummation::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::Regex::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::Index::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::get_all_attributes" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Default::JSON::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::initialize";
+"MooseX::Meta::TypeCoercion::Structured::Optional::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Role::meta" -> "Class::MOP::Class::initialize";
+"Data::Visitor::Callback::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::Path::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::17::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Serializer::JSON::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Parameterized::meta" -> "Class::MOP::Class::initialize";
+"stemmaweb::Controller::Relation::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::LiveObjects::TXNScope::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Backend::Serialize::JSPON::Expander::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::8::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Class::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Ref::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Collapser::Buffer::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Witness::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::ActionChain::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Object::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::ToRole::meta" -> "Class::MOP::Class::initialize";
+"metaclass::import" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::StorableHook::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::LiveObjects::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::DBI::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Passthrough::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::ToClass::_new" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::set_raw_value" -> "Class::MOP::Class::initialize";
+"stemmaweb::Controller::Stexaminer::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Attribute::_new" -> "Class::MOP::Class::initialize";
+"Catalyst::Exception::Detach::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::DuckType::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::get_raw_value" -> "Class::MOP::Class::initialize";
+"Catalyst::Log::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Meta::TypeCoercion::Structured::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Types::Structured::MessageStack::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::7::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::initialize";
+"Moose::Object::does" -> "Class::MOP::Class::initialize";
+"Catalyst::Request::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::initialize" -> "Class::MOP::Class::initialize";
+"KiokuDB::GC::Naive::Mark::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Stemma::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::DispatchType::Chained::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Callback::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::meta" -> "Class::MOP::Class::initialize";
+"Parse::Method::Signatures::Sig::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::Chunked::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Set::Stored::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Dispatcher::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeCoercion::Union::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::_new" -> "Class::MOP::Class::initialize";
+"KiokuDB::Collapser::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::1::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::ToClass::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::find_method_by_name" -> "Class::MOP::Class::initialize";
+"Catalyst::Component::meta" -> "Class::MOP::Class::initialize";
+"KiokuX::Model::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::34::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Method::_new" -> "Class::MOP::Class::initialize";
+"Class::MOP::Mixin::meta" -> "Class::MOP::Class::initialize";
+"stemmaweb::Controller::Root::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Action::meta" -> "Class::MOP::Class::initialize";
+"namespace::autoclean::__ANON__[namespace/autoclean.pm:57]" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Collation::Reading::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Set::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Error::MissingObjects::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::JSON::Scalar::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::5::meta" -> "Class::MOP::Class::initialize";
+"Data::Stream::Bulk::Filter::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::DBIC::ResultSource::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::find_next_method_by_name" -> "Class::MOP::Class::initialize";
+"Catalyst::EngineLoader::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Collation::Relationship::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::_new" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Composite::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Model::KiokuDB::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::ActionContainer::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Response::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::4::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Stream::Objects::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Collation::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Alias::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Set::Loaded::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::1::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::GC::Naive::Mark::Results::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::GC::Naive::Sweep::Results::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Shadow::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::TypeMap::Entry::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Reference::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::View::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::TypeConstraint::Registry::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Attribute::_find_delegate_metaclass" -> "Class::MOP::Class::initialize";
+"KiokuDB::Backend::DBI::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::33::meta" -> "Class::MOP::Class::initialize";
+"Text::Tradition::Collation::Reading::Morphology::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Class::__ANON__::SERIAL::31::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::3::meta" -> "Class::MOP::Class::initialize";
+"Catalyst::Exception::Base::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Attribute::set_initial_value" -> "Class::MOP::Class::initialize";
+"KiokuDB::Backend::Serialize::JSPON::Collapser::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Thunk::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::Class::get_all_methods" -> "Class::MOP::Class::initialize";
+"MooseX::Traits::__ANON__::SERIAL::8::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::GC::Naive::Sweep::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Entry::Compiled::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Meta::TypeConstraint::Structured::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::TypeMap::Resolver::meta" -> "Class::MOP::Class::initialize";
+"stemmaweb::Controller::Microservice::meta" -> "Class::MOP::Class::initialize";
+"stemmaweb::Model::Directory::meta" -> "Class::MOP::Class::initialize";
+"MooseX::Role::Parameterized::Meta::Role::Parameterized::meta" -> "Class::MOP::Class::initialize";
+"Moose::Meta::Role::Application::ToInstance::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::Linker::meta" -> "Class::MOP::Class::initialize";
+"KiokuDB::GC::Naive::meta" -> "Class::MOP::Class::initialize";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@14";
+"Class::MOP::Class::_inline_slot_initializers" -> "Class::MOP::Class::_inline_slot_initializer";
+"Moose::Meta::Class::_inline_slot_initializer" -> "Class::MOP::Class::_inline_slot_initializer";
+"Class::MOP::Class::_inline_init_attr_from_default" -> "Class::MOP::Class::_inline_default_value";
+"Moose::Meta::Class::_inline_init_attr_from_default" -> "Class::MOP::Class::_inline_default_value";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@10";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@10";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Class::MOP::Class::_inline_slot_initializer" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Mixin::AttributeCore::init_arg";
+"Class::MOP::Class::_inline_slot_initializer" -> "Class::MOP::Class::_inline_init_attr_from_constructor";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::class_precedence_list";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@3";
+"Class::MOP::Class::_immutable_metaclass" -> "Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+"Class::MOP::Class::_construct_class_instance" -> "Moose::Meta::Class::__ANON__::SERIAL::5::meta";
+"Class::MOP::Class::is_pristine" -> "Class::MOP::Mixin::HasMethods::get_method_list";
+"Class::MOP::Object::_make_compatible_with" -> "Class::MOP::Class::_force_rebless_instance";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Class::Immutable::Class::MOP::Class::superclasses";
+"Class::MOP::Class::reinitialize" -> "Moose::Meta::Class::_restore_metaobjects_from";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Class::MOP::Class::is_immutable";
+"Catalyst::Utils::ensure_class_loaded" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Plugin::ConfigLoader::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"MooseX::Role::Parameterized::Meta::Trait::Parameterized::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"stemmaweb::BEGIN@19" -> "Class::MOP::Class::make_immutable";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@12" -> "Class::MOP::Class::make_immutable";
+"Catalyst::DispatchType::Chained::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"MooseX::Meta::TypeConstraint::Structured::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"KiokuX::Model::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@5" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::TypeMap::Default::JSON::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@20" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@32" -> "Class::MOP::Class::make_immutable";
+"Module::Runtime::require_module" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::GC::Naive::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"base::import" -> "Class::MOP::Class::make_immutable";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@15" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Linker::BEGIN@18" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@28" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::Std::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"MooseX::Role::Parameterized::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"Data::Stream::Bulk::Util::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@29" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::LiveObjects::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@12" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@17" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Moose::Meta::Attribute::BEGIN@24" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@21" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@30" -> "Class::MOP::Class::make_immutable";
+"stemmaweb::BEGIN@2" -> "Class::MOP::Class::make_immutable";
+"TryCatch::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Set::Deferred::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::MOP::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@16" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::GC::Naive::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"MooseX::Types::Structured::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@15" -> "Class::MOP::Class::make_immutable";
+"Moose::Exporter::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::BEGIN@7" -> "Class::MOP::Class::make_immutable";
+"main::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Backend::DBI::BEGIN@31" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@8" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@17" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@12" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Resolver::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::LiveObjects::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::BEGIN@13" -> "Class::MOP::Class::make_immutable";
+"Catalyst::Dispatcher::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@15" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::Collapser::BEGIN@18" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@14" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::RelationshipStore::BEGIN@6" -> "Class::MOP::Class::make_immutable";
+"Catalyst::BEGIN@11" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Directory::BEGIN@154" -> "Class::MOP::Class::make_immutable";
+"MooseX::Meta::TypeConstraint::Structured::Optional::BEGIN@5" -> "Class::MOP::Class::make_immutable";
+"KiokuDB::TypeMap::Entry::Set::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Moose::Meta::Class::error_class";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Moose::Meta::Class::error_class";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Moose::Meta::Class::error_class";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@10";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Class::is_pristine";
+"Class::MOP::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Class::is_pristine";
+"Class::MOP::Mixin::HasAttributes::add_attribute" -> "Class::MOP::Class::remove_attribute";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Moose::Meta::Class::_fix_class_metaclass_incompatibility";
+"Class::MOP::Class::_create_meta_instance" -> "Class::MOP::Instance::is_dependent_on_superclasses";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"Class::MOP::Class::_inline_init_attr_from_default" -> "Class::MOP::Mixin::AttributeCore::has_initializer";
+"Class::MOP::Class::is_pristine" -> "UNIVERSAL::isa";
+"Class::MOP::Class::new_object" -> "UNIVERSAL::isa";
+"Class::MOP::Class::reinitialize" -> "UNIVERSAL::isa";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "UNIVERSAL::isa";
+"Class::MOP::Class::_initialize_immutable" -> "Class::MOP::Class::_install_inlined_code";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Class::constructor_class";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Class::constructor_class";
+"Class::MOP::Class::_immutable_options" -> "Class::MOP::Class::constructor_class";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Moose::Meta::Class::destructor_class";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Moose::Meta::Class::destructor_class";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Moose::Meta::Class::destructor_class";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Moose::Meta::Class::destructor_class";
+"Class::MOP::Class::_immutable_options" -> "Moose::Meta::Class::destructor_class";
+"Class::MOP::Class::_install_inlined_code" -> "Class::MOP::Class::_inline_accessors";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "List::MoreUtils::all";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::30::is_immutable";
+"Moose::Meta::Class::reinitialize" -> "Class::MOP::Class::reinitialize";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Class::_add_inlined_method";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Class::_add_inlined_method";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@24";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Moose::Meta::Class::__ANON__::SERIAL::23::install_accessors";
+"Moose::Meta::Method::Destructor::_generate_DEMOLISHALL" -> "Class::MOP::Class::find_all_methods_by_name";
+"Moose::Object::BUILDALL" -> "Class::MOP::Class::find_all_methods_by_name";
+"Moose::Meta::Class::_inline_BUILDALL" -> "Class::MOP::Class::find_all_methods_by_name";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::Class::_check_metaclass_compatibility";
+"Class::MOP::Class::superclasses" -> "Class::MOP::Class::_check_metaclass_compatibility";
+"Class::MOP::Class::BEGIN@13" -> "Class::MOP::Instance::BEGIN@11";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Instance::rebless_instance_structure";
+"Moose::Meta::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Class::_fix_single_metaclass_incompatibility";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Moose::Meta::Class::__ANON__::SERIAL::5::is_immutable";
+"Class::MOP::Class::is_pristine" -> "Class::MOP::Mixin::HasAttributes::get_attribute_list";
+"Class::MOP::Class::_remove_generated_metaobjects" -> "Class::MOP::Mixin::HasAttributes::get_attribute_list";
+"Class::MOP::Class::_inline_accessors" -> "Class::MOP::Mixin::HasAttributes::get_attribute_list";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::Class::_new";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Method::Inlined::can_be_inlined";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Method::Inlined::can_be_inlined";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@15";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::Object::meta";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::Object::meta";
+"Catalyst::ClassData::mk_classdata" -> "Class::MOP::Class::is_immutable";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::is_immutable";
+"MooseX::Emulate::Class::Accessor::Fast::mk_accessors" -> "Class::MOP::Class::is_immutable";
+"Class::MOP::Class::add_around_method_modifier" -> "Class::MOP::Method::Wrapped::add_around_modifier";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Moose::Meta::Class::constructor_class";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Moose::Meta::Class::constructor_class";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Moose::Meta::Class::constructor_class";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Moose::Meta::Class::constructor_class";
+"Class::MOP::Class::_immutable_options" -> "Moose::Meta::Class::constructor_class";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Method::Constructor::new";
+"Class::MOP::Class::_inline_default_value" -> "Class::MOP::Mixin::AttributeCore::has_builder";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::class_of";
+"Class::MOP::Class::_superclasses_updated" -> "Class::MOP::class_of";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@17";
+"Class::MOP::Class::_construct_class_instance" -> "Class::MOP::Class::_construct_instance";
+"Class::MOP::Class::new_object" -> "Class::MOP::Class::_construct_instance";
+"Class::MOP::Class::_inline_slot_initializer" -> "Moose::Meta::Class::_inline_init_attr_from_constructor";
+"Class::MOP::Class::get_all_methods" -> "Class::MOP::Method::name";
+"Class::MOP::Class::find_all_methods_by_name" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Mixin::HasMethods::has_method";
+"Class::MOP::Class::_inline_create_instance" -> "Class::MOP::Instance::inline_create_instance";
+"Moose::Meta::Class::_immutable_options" -> "Class::MOP::Class::_immutable_options";
+"Class::MOP::Class::make_immutable" -> "Class::MOP::Class::_immutable_options";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@17";
+"Class::MOP::Class::class_precedence_list" -> "mro::get_mro";
+"Class::MOP::Class::_real_ref_name" -> "Class::MOP::Class::Immutable::Trait::_get_mutable_metaclass_name";
+"Class::MOP::Class::_inline_slot_initializers" -> "Moose::Meta::Class::_inline_slot_initializer";
+"Class::MOP::Class::_inline_fallback_constructor" -> "Class::MOP::Class::_generate_fallback_constructor";
+"Class::MOP::Class::BEGIN@15" -> "Class::MOP::Method::Accessor::BEGIN@14";
+"Class::MOP::Class::_install_inlined_code" -> "Class::MOP::Class::_inline_constructor";
+"Moose::Meta::Attribute::Native::Trait::_native_accessor_class_for" -> "Class::MOP::Class::create_anon_class";
+"Moose::Meta::Attribute::interpolate_class" -> "Class::MOP::Class::create_anon_class";
+"Moose::Util::MetaRole::_make_new_class" -> "Class::MOP::Class::create_anon_class";
+"MooseX::Role::Parameterized::Meta::Role::Parameterizable::_build_parameters_metaclass" -> "Class::MOP::Class::create_anon_class";
+"Class::MOP::Class::_single_metaclass_is_compatible" -> "Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+"Class::MOP::Class::_single_metaclass_can_be_made_compatible" -> "Class::MOP::Mixin::HasAttributes::attribute_metaclass";
+"Class::MOP::Class::linearized_isa" -> "Class::MOP::Package::name";
+"Class::MOP::Class::class_precedence_list" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_inline_constructor" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_inline_fallback_constructor" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_construct_instance" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_inline_preserve_weak_metaclasses" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_inline_destructor" -> "Class::MOP::Package::name";
+"Class::MOP::Class::reinitialize" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_force_rebless_instance" -> "Class::MOP::Package::name";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:1072]" -> "Class::MOP::Package::name";
+"Class::MOP::Class::new_object" -> "Class::MOP::Package::name";
+"Class::MOP::Class::_fix_single_metaclass_incompatibility" -> "Moose::Meta::Method::_get_compatible_metaclass";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@3";
+"Class::MOP::Class::remove_attribute" -> "Class::MOP::Mixin::HasAttributes::remove_attribute";
+"Class::MOP::Class::_fixup_attributes_after_rebless" -> "Class::MOP::Attribute::has_value";
+"Class::MOP::Class::_inline_destructor" -> "Moose::Meta::Method::Destructor::is_needed";
+"Class::MOP::Class::_inline_init_attr_from_constructor" -> "Moose::Meta::Attribute::_inline_set_value";
+"Class::MOP::Class::_inline_slot_initializers" -> "Class::MOP::Class::CORE:sort";
+"Class::MOP::Class::_eval_environment" -> "Class::MOP::Class::CORE:sort";
+"Class::MOP::Method::Constructor::_generate_constructor_method_inline" -> "Class::MOP::Class::_inline_new_object";
+"Class::MOP::Class::reinitialize" -> "Class::MOP::Class::_remove_generated_metaobjects";
+"Class::MOP::Class::BEGIN@14" -> "Class::MOP::Method::Wrapped::BEGIN@10";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@2";
+"Class::MOP::Class::reinitialize" -> "Class::MOP::Package::reinitialize";
+"Class::MOP::Class::add_before_method_modifier" -> "Sub::Name::subname";
+"Class::MOP::Class::add_around_method_modifier" -> "Sub::Name::subname";
+"Class::MOP::Class::add_after_method_modifier" -> "Sub::Name::subname";
+"Class::MOP::Class::_immutable_metaclass" -> "Class::MOP::MiniTrait::apply";
+"Class::MOP::Class::BEGIN@16" -> "Class::MOP::Method::Constructor::BEGIN@15";
+"Class::MOP::Class::_check_metaclass_compatibility" -> "Class::MOP::Class::_check_class_metaclass_compatibility";
+"Class::MOP::Class::remove_attribute" -> "Moose::Meta::Attribute::remove_accessors";
+"Class::MOP::Class::_check_class_metaclass_compatibility" -> "Class::MOP::Class::_class_metaclass_is_compatible";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Class::_class_metaclass_is_compatible";
+"Class::MOP::Class::_inline_destructor" -> "Moose::Meta::Method::Destructor::new";
+"Class::MOP::Class::create" -> "Class::MOP::Mixin::HasMethods::_add_meta_method";
+"Class::MOP::Class::BEGIN@17" -> "Class::MOP::MiniTrait::BEGIN@9";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Moose::Meta::Class::_fix_single_metaclass_incompatibility";
+"Class::MOP::Class::_attach_attribute" -> "Class::MOP::Attribute::attach_to_class";
+"Class::MOP::Class::get_all_attributes" -> "Class::MOP::Mixin::HasAttributes::_attribute_map";
+"Class::MOP::Class::_fix_metaclass_incompatibility" -> "Class::MOP::Class::_fix_class_metaclass_incompatibility";
+"Moose::Meta::Class::_fix_class_metaclass_incompatibility" -> "Class::MOP::Class::_fix_class_metaclass_incompatibility";
+"Class::MOP::Class::linearized_isa" -> "mro::get_linear_isa";
+"Class::MOP::Class::class_precedence_list" -> "mro::get_linear_isa";
+"Class::MOP::Class::_immutable_metaclass" -> "Moose::Meta::Class::create";
+"Class::MOP::Class::__ANON__[Class/MOP/Class.pm:892]" -> "Moose::Meta::Attribute::install_accessors";
+"Class::MOP::Class::_inline_accessors" -> "Moose::Meta::Attribute::install_accessors";
+"Class::MOP::MiniTrait::apply" -> "Class::MOP::Class::get_all_methods";
+"Class::MOP::Class:::around" -> "Class::MOP::Class::get_all_methods";
+"Moose::Meta::Attribute::_get_delegate_method_list" -> "Class::MOP::Class::get_all_methods";
+"Class::MOP::BEGIN@26" -> "Class::MOP::Class::BEGIN@11";
+}

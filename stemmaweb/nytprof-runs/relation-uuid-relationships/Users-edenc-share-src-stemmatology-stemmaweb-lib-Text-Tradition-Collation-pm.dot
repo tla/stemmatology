@@ -1,0 +1,721 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Parser_Self {
+	label="Text::Tradition::Parser::Self";
+	"Text::Tradition::Parser::Self::parse";
+}
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::reading_sequence";
+	"Text::Tradition::Collation::reading";
+	"Text::Tradition::Collation::ac_label";
+	"Text::Tradition::Collation::new";
+	"Text::Tradition::Collation::add_relationship";
+	"Text::Tradition::Collation::CORE:sort";
+	"Text::Tradition::Collation::BEGIN@1800";
+	"Text::Tradition::Collation::path_witnesses";
+	"Text::Tradition::Collation::tradition";
+	"Text::Tradition::Collation::_witnesses_of_label";
+	"Text::Tradition::Collation::CORE:regcomp";
+	"Text::Tradition::Collation::wit_list_separator";
+	"Text::Tradition::Collation::end";
+	"Text::Tradition::Collation::BEGIN@3";
+	"Text::Tradition::Collation::BEGIN@12";
+	"Text::Tradition::Collation::BEGIN@13";
+	"Text::Tradition::Collation::BEGIN@8";
+	"Text::Tradition::Collation::relations";
+	"Text::Tradition::Collation::BEGIN@15";
+	"Text::Tradition::Collation::BUILD";
+	"Text::Tradition::Collation::CORE:subst";
+	"Text::Tradition::Collation::next_reading";
+	"Text::Tradition::Collation::_set_start";
+	"Text::Tradition::Collation::text_from_paths";
+	"Text::Tradition::Collation::_is_within";
+	"Text::Tradition::Collation::reading_witnesses";
+	"Text::Tradition::Collation::_stringify_args";
+	"Text::Tradition::Collation::BEGIN@9";
+	"Text::Tradition::Collation::BEGIN@4";
+	"Text::Tradition::Collation::_find_linked_reading";
+	"Text::Tradition::Collation::BEGIN@5";
+	"Text::Tradition::Collation::sequence";
+	"Text::Tradition::Collation::add_reading";
+	"Text::Tradition::Collation::baselabel";
+	"Text::Tradition::Collation::BEGIN@14";
+	"Text::Tradition::Collation::_add_reading";
+	"Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:57]";
+	"Text::Tradition::Collation::BEGIN@7";
+	"Text::Tradition::Collation::_set_end";
+	"Text::Tradition::Collation::start";
+	"Text::Tradition::Collation::BEGIN@11";
+	"Text::Tradition::Collation::CORE:match";
+	"Text::Tradition::Collation::_graphcalc_done";
+	"Text::Tradition::Collation::BEGIN@6";
+	"Text::Tradition::Collation::add_path";
+	"Text::Tradition::Collation::_set_relations";
+	"Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:20]";
+	"Text::Tradition::Collation::BEGIN@10";
+}
+subgraph cluster_XML_LibXML_DocumentFragment {
+	label="XML::LibXML::DocumentFragment";
+	"XML::LibXML::DocumentFragment::BEGIN@1463";
+}
+subgraph cluster_XML_Easy_Syntax {
+	label="XML::Easy::Syntax";
+	"XML::Easy::Syntax::BEGIN@31";
+	"XML::Easy::Syntax::CORE:qr";
+	"XML::Easy::Syntax::BEGIN@26";
+	"XML::Easy::Syntax::BEGIN@25";
+	"XML::Easy::Syntax::BEGIN@27";
+	"XML::Easy::Syntax::CORE:regcomp";
+	"XML::Easy::Syntax::BEGIN@942";
+	"XML::Easy::Syntax::_charclass_regexp";
+}
+subgraph cluster_XML_LibXML_Comment {
+	label="XML::LibXML::Comment";
+	"XML::LibXML::Comment::BEGIN@1788";
+}
+subgraph cluster_IPC_Run_IO {
+	label="IPC::Run::IO";
+	"IPC::Run::IO::BEGIN@65";
+	"IPC::Run::IO::BEGIN@74";
+	"IPC::Run::IO::BEGIN@71";
+	"IPC::Run::IO::BEGIN@67";
+	"IPC::Run::IO::BEGIN@66";
+	"IPC::Run::IO::BEGIN@68";
+	"IPC::Run::IO::BEGIN@73";
+	"IPC::Run::IO::BEGIN@489";
+	"IPC::Run::IO::BEGIN@70";
+}
+subgraph cluster_B_Deparse {
+	label="B::Deparse";
+	"B::Deparse::BEGIN@2060";
+	"B::Deparse::BEGIN@2792";
+	"B::Deparse::BEGIN@482";
+	"B::Deparse::BEGIN@3629";
+	"B::Deparse::BEGIN@11";
+	"B::Deparse::BEGIN@1244";
+	"B::Deparse::BEGIN@3435";
+	"B::Deparse::BEGIN@688";
+	"B::Deparse::BEGIN@3368";
+	"B::Deparse::BEGIN@2791";
+	"B::Deparse::BEGIN@3369";
+	"B::Deparse::BEGIN@3436";
+	"B::Deparse::BEGIN@30";
+	"B::Deparse::BEGIN@40";
+	"B::Deparse::BEGIN@613";
+	"B::Deparse::BEGIN@12";
+	"B::Deparse::CORE:sort";
+	"B::Deparse::BEGIN@31";
+	"B::Deparse::BEGIN@34";
+	"B::Deparse::BEGIN@32";
+	"B::Deparse::BEGIN@2789";
+	"B::Deparse::BEGIN@2029";
+	"B::Deparse::BEGIN@2790";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_Text_Tradition_Collation_RelationshipStore {
+	label="Text::Tradition::Collation::RelationshipStore";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@1073";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@632";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+	"Text::Tradition::Collation::RelationshipStore::new";
+	"Text::Tradition::Collation::RelationshipStore::relationship_valid";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@4";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@635";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@3";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@9";
+	"Text::Tradition::Collation::RelationshipStore::meta";
+	"Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+	"Text::Tradition::Collation::RelationshipStore::add_equivalence_edge";
+	"Text::Tradition::Collation::RelationshipStore::add_relationship";
+	"Text::Tradition::Collation::RelationshipStore::add_reading";
+}
+subgraph cluster_File_Which {
+	label="File::Which";
+	"File::Which::BEGIN@5";
+	"File::Which::BEGIN@18";
+	"File::Which::BEGIN@4";
+	"File::Which::BEGIN@8";
+	"File::Which::BEGIN@17";
+	"File::Which::BEGIN@3";
+	"File::Which::BEGIN@9";
+	"File::Which::BEGIN@16";
+	"File::Which::BEGIN@6";
+}
+subgraph cluster_Class_MOP_Class_ {
+	label="Class::MOP::Class:";
+	"Class::MOP::Class:::around";
+}
+subgraph cluster_XML_LibXML_CDATASection {
+	label="XML::LibXML::CDATASection";
+	"XML::LibXML::CDATASection::BEGIN@1795";
+}
+subgraph cluster_XSLoader {
+	label="XSLoader";
+	"XSLoader::load";
+}
+subgraph cluster_Text_Tradition_Witness {
+	label="Text::Tradition::Witness";
+	"Text::Tradition::Witness::is_layered";
+	"Text::Tradition::Witness::text";
+	"Text::Tradition::Witness::sigil";
+}
+subgraph cluster_Encode_Config {
+	label="Encode::Config";
+	"Encode::Config::BEGIN@7";
+	"Encode::Config::BEGIN@8";
+	"Encode::Config::CORE:match";
+}
+subgraph cluster_XML_LibXML_Dtd {
+	label="XML::LibXML::Dtd";
+	"XML::LibXML::Dtd::BEGIN@1826";
+}
+subgraph cluster_Class_MOP_Class {
+	label="Class::MOP::Class";
+	"Class::MOP::Class::make_immutable";
+}
+subgraph cluster_XML_LibXML {
+	label="XML::LibXML";
+	"XML::LibXML::BEGIN@178";
+	"XML::LibXML::BEGIN@21";
+	"XML::LibXML::BEGIN@36";
+	"XML::LibXML::BEGIN@170";
+	"XML::LibXML::BEGIN@166";
+	"XML::LibXML::BEGIN@169";
+	"XML::LibXML::BEGIN@13";
+	"XML::LibXML::BEGIN@19";
+	"XML::LibXML::BEGIN@164";
+	"XML::LibXML::BEGIN@165";
+	"XML::LibXML::BEGIN@160";
+	"XML::LibXML::BEGIN@176";
+	"XML::LibXML::BEGIN@163";
+	"XML::LibXML::BEGIN@162";
+	"XML::LibXML::BEGIN@171";
+	"XML::LibXML::BEGIN@175";
+	"XML::LibXML::BEGIN@172";
+	"XML::LibXML::LIBXML_VERSION";
+	"XML::LibXML::BEGIN@168";
+	"XML::LibXML::BEGIN@14";
+	"XML::LibXML::CORE:match";
+	"XML::LibXML::BEGIN@24";
+	"XML::LibXML::import";
+	"XML::LibXML::BEGIN@161";
+	"XML::LibXML::BEGIN@179";
+	"XML::LibXML::BEGIN@22";
+	"XML::LibXML::LIBXML_RUNTIME_VERSION";
+	"XML::LibXML::BEGIN@25";
+	"XML::LibXML::BEGIN@235";
+	"XML::LibXML::BEGIN@26";
+	"XML::LibXML::BEGIN@27";
+	"XML::LibXML::BEGIN@173";
+	"XML::LibXML::BEGIN@177";
+	"XML::LibXML::BEGIN@174";
+	"XML::LibXML::BEGIN@167";
+	"XML::LibXML::BEGIN@29";
+}
+subgraph cluster_XML_LibXML_Attr {
+	label="XML::LibXML::Attr";
+	"XML::LibXML::Attr::BEGIN@1804";
+}
+subgraph cluster_Moose {
+	label="Moose";
+	"Moose::around";
+	"Moose::has";
+}
+subgraph cluster_XML_LibXML_InputCallback {
+	label="XML::LibXML::InputCallback";
+	"XML::LibXML::InputCallback::BEGIN@2149";
+	"XML::LibXML::InputCallback::BEGIN@2151";
+}
+subgraph cluster_Encode_utf8 {
+	label="Encode::utf8";
+	"Encode::utf8::BEGIN@325";
+}
+subgraph cluster_XML_LibXML_Element {
+	label="XML::LibXML::Element";
+	"XML::LibXML::Element::BEGIN@1486";
+	"XML::LibXML::Element::BEGIN@1492";
+	"XML::LibXML::Element::BEGIN@1495";
+	"XML::LibXML::Element::BEGIN@1489";
+	"XML::LibXML::Element::BEGIN@1535";
+	"XML::LibXML::Element::BEGIN@1488";
+	"XML::LibXML::Element::BEGIN@1490";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_XML_LibXML_Document {
+	label="XML::LibXML::Document";
+	"XML::LibXML::Document::BEGIN@1367";
+}
+subgraph cluster_Devel_Declare {
+	label="Devel::Declare";
+	"Devel::Declare::done_declare";
+	"Devel::Declare::linestr_callback";
+}
+subgraph cluster_Text_Tradition {
+	label="Text::Tradition";
+	"Text::Tradition::BEGIN@6";
+	"Text::Tradition::witnesses";
+}
+subgraph cluster_Text_Tradition_Collation_Reading {
+	label="Text::Tradition::Collation::Reading";
+	"Text::Tradition::Collation::Reading::text";
+	"Text::Tradition::Collation::Reading::new";
+	"Text::Tradition::Collation::Reading::is_meta";
+	"Text::Tradition::Collation::Reading::BEGIN@4";
+	"Text::Tradition::Collation::Reading::_stringify";
+	"Text::Tradition::Collation::Reading::meta";
+	"Text::Tradition::Collation::Reading::BEGIN@331";
+	"Text::Tradition::Collation::Reading::BEGIN@3";
+	"Text::Tradition::Collation::Reading::id";
+}
+subgraph cluster_Graph {
+	label="Graph";
+	"Graph::add_vertex";
+	"Graph::BEGIN@3";
+	"Graph::BEGIN@13";
+	"Graph::BEGIN@31";
+	"Graph::BEGIN@38";
+	"Graph::BEGIN@34";
+	"Graph::BEGIN@30";
+	"Graph::add_edge";
+	"Graph::BEGIN@36";
+	"Graph::BEGIN@55";
+	"Graph::BEGIN@28";
+	"Graph::BEGIN@15";
+	"Graph::new";
+	"Graph::BEGIN@29";
+	"Graph::BEGIN@116";
+	"Graph::BEGIN@1733";
+	"Graph::BEGIN@32";
+	"Graph::get_edge_attributes";
+	"Graph::BEGIN@40";
+	"Graph::edges_from";
+	"Graph::BEGIN@86";
+	"Graph::has_edge_attribute";
+	"Graph::BEGIN@42";
+	"Graph::BEGIN@5";
+	"Graph::BEGIN@39";
+	"Graph::set_edge_attribute";
+	"Graph::has_edge";
+	"Graph::BEGIN@35";
+	"Graph::BEGIN@2155";
+	"Graph::BEGIN@178";
+	"Graph::edges_to";
+	"Graph::BEGIN@33";
+}
+subgraph cluster_B {
+	label="B";
+	"B::threadsv_names";
+}
+subgraph cluster_Text_Tradition_Collation_Reading_Morphology {
+	label="Text::Tradition::Collation::Reading::Morphology";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@340";
+	"Text::Tradition::Collation::Reading::Morphology::BEGIN@413";
+	"Text::Tradition::Collation::Reading::Morphology::meta";
+}
+subgraph cluster_XML_LibXML_PI {
+	label="XML::LibXML::PI";
+	"XML::LibXML::PI::BEGIN@1837";
+}
+subgraph cluster_IPC_Run_Timer {
+	label="IPC::Run::Timer";
+	"IPC::Run::Timer::BEGIN@162";
+	"IPC::Run::Timer::BEGIN@165";
+	"IPC::Run::Timer::BEGIN@188";
+	"IPC::Run::Timer::BEGIN@163";
+	"IPC::Run::Timer::BEGIN@161";
+	"IPC::Run::Timer::BEGIN@164";
+	"IPC::Run::Timer::BEGIN@160";
+	"IPC::Run::Timer::BEGIN@159";
+}
+subgraph cluster_Encode {
+	label="Encode";
+	"Encode::CORE:match";
+	"Encode::BEGIN@13";
+	"Encode::predefine_encodings";
+	"Encode::BEGIN@242";
+	"Encode::BEGIN@8";
+	"Encode::BEGIN@48";
+	"Encode::BEGIN@6";
+	"Encode::BEGIN@9";
+	"Encode::BEGIN@5";
+}
+subgraph cluster_XML_LibXML__SAXParser {
+	label="XML::LibXML::_SAXParser";
+	"XML::LibXML::_SAXParser::BEGIN@2005";
+}
+subgraph cluster_XML_LibXML_NamedNodeMap {
+	label="XML::LibXML::NamedNodeMap";
+	"XML::LibXML::NamedNodeMap::BEGIN@1903";
+}
+subgraph cluster_IPC_Run {
+	label="IPC::Run";
+	"IPC::Run::BEGIN@1053";
+	"IPC::Run::BEGIN@1054";
+	"IPC::Run::BEGIN@1055";
+	"IPC::Run::BEGIN@1052";
+	"IPC::Run::BEGIN@1445";
+	"IPC::Run::BEGIN@2";
+	"IPC::Run::BEGIN@1048";
+	"IPC::Run::BEGIN@1081";
+	"IPC::Run::BEGIN@1051";
+	"IPC::Run::BEGIN@1014";
+	"IPC::Run::BEGIN@3615";
+	"IPC::Run::BEGIN@1049";
+	"IPC::Run::BEGIN@1016";
+	"IPC::Run::BEGIN@1013";
+	"IPC::Run::BEGIN@1015";
+	"IPC::Run::BEGIN@1082";
+	"IPC::Run::BEGIN@1061";
+	"IPC::Run::BEGIN@1114";
+	"IPC::Run::BEGIN@1237";
+	"IPC::Run::BEGIN@1050";
+	"IPC::Run::BEGIN@1059";
+	"IPC::Run::BEGIN@1063";
+	"IPC::Run::BEGIN@1056";
+	"IPC::Run::BEGIN@1080";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+}
+subgraph cluster_B_Hooks_EndOfScope {
+	label="B::Hooks::EndOfScope";
+	"B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+}
+subgraph cluster_XML_LibXML_Text {
+	label="XML::LibXML::Text";
+	"XML::LibXML::Text::BEGIN@1743";
+}
+subgraph cluster_Text_CSV {
+	label="Text::CSV";
+	"Text::CSV::BEGIN@6";
+	"Text::CSV::BEGIN@196";
+	"Text::CSV::_load_pp";
+	"Text::CSV::_load_xs";
+	"Text::CSV::import";
+	"Text::CSV::BEGIN@5";
+	"Text::CSV::BEGIN@8";
+	"Text::CSV::BEGIN@4";
+	"Text::CSV::BEGIN@136";
+}
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1495";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1488";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::_charclass_regexp";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::_witnesses_of_label";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@25";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3436";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::CORE:subst";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@176";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@70";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@179";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@159";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@38";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::CORE:sort";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@66";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::CDATASection::BEGIN@1795";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@26";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@5";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::Reading::text";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1051";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::sequence";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::sequence";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::sequence";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::sequence";
+"Text::Tradition::Collation::path_witnesses" -> "Text::Tradition::Collation::sequence";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@242";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@188";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@31";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@170";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@32";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@26";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@160";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@172";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@14";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::LIBXML_RUNTIME_VERSION";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@40";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@5";
+"Text::Tradition::Collation::BUILD" -> "Text::Tradition::Collation::RelationshipStore::new";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@21";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@28";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@688";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@15";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@162";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::_stringify_args";
+"Text::Tradition::Collation::add_relationship" -> "Text::Tradition::Collation::_stringify_args";
+"Class::MOP::Class:::around" -> "Text::Tradition::Collation::_stringify_args";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@34";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@7";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::meta";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1014";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@174";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1114";
+"Text::Tradition::Collation::new" -> "Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:20]";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::ac_label";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::ac_label";
+"Text::Tradition::Collation::BEGIN@9" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::BEGIN@10" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::BEGIN@14" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::BEGIN@11" -> "UNIVERSAL::import";
+"Text::Tradition::Collation::_find_linked_reading" -> "Graph::has_edge_attribute";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@48";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3368";
+"Text::Tradition::Collation::BEGIN@9" -> "Moose::has";
+"Text::Tradition::Collation::BEGIN@10" -> "Moose::has";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@178";
+"Text::Tradition::Collation::reading_witnesses" -> "Graph::get_edge_attributes";
+"Text::Tradition::Collation::path_witnesses" -> "Graph::get_edge_attributes";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::predefine_encodings";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@7";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@1733";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@162";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1080";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@1800";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::tradition";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@9";
+"Text::Tradition::Collation::next_reading" -> "Text::Tradition::Collation::_find_linked_reading";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@11";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@163";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@29";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::CORE:regcomp";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::_SAXParser::BEGIN@2005";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::CORE:qr";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2060";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1053";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@167";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::InputCallback::BEGIN@2151";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::witnesses";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@169";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::_load_xs";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@9";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::meta";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@22";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@235";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2792";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1492";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@40";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::relations";
+"Text::Tradition::Collation::add_relationship" -> "Text::Tradition::Collation::relations";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::relations";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@11";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1061";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@31";
+"Text::Tradition::Collation::add_path" -> "Graph::set_edge_attribute";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::Morphology::BEGIN@340";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1055";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Comment::BEGIN@1788";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@36";
+"Text::Tradition::Collation::BUILD" -> "Text::Tradition::Collation::_set_end";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::CORE:match";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::CORE:match";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@165";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@331";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::BEGIN@3";
+"Text::Tradition::Collation::BUILD" -> "Text::Tradition::Collation::_set_relations";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@30";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@160";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@68";
+"Text::Tradition::Collation::BEGIN@10" -> "B::Hooks::EndOfScope::__ANON__[B/Hooks/EndOfScope.pm:26]";
+"Text::Tradition::Collation::BEGIN@3" -> "XSLoader::load";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@74";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1490";
+"Text::Tradition::Collation::BEGIN@1800" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:678]";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@942";
+"Text::Tradition::Collation::BEGIN@15" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@635";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::utf8::BEGIN@325";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1237";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2029";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::InputCallback::BEGIN@2149";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Collation::next_reading" -> "Text::Tradition::Collation::reading";
+"Text::Tradition::Collation::BEGIN@9" -> "Moose::around";
+"Text::Tradition::Collation::BEGIN@10" -> "Moose::around";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1016";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@16";
+"Text::Tradition::Collation::BEGIN@7" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@4" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@12" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@5" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@3" -> "Exporter::import";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Witness::is_layered";
+"Text::Tradition::Collation::RelationshipStore::relationship_valid" -> "Text::Tradition::Collation::reading_witnesses";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1050";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::NamedNodeMap::BEGIN@1903";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1048";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@24";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@613";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@3";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@9";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3435";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@171";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@33";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::baselabel";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_path";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1486";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::reading_sequence";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@178";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@18";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@165";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@32";
+"Text::Tradition::Collation::reading_sequence" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::_stringify_args" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::Reading::id";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@196";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::import";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@632";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@65";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@6";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::Reading::is_meta";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1489";
+"Text::Tradition::Collation::BEGIN@10" -> "Devel::Declare::done_declare";
+"Text::Tradition::Collation::reading_sequence" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::Reading::_stringify";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@29";
+"Text::Tradition::Collation::_is_within" -> "Text::Tradition::Collation::CORE:match";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::CORE:match";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::DocumentFragment::BEGIN@1463";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1052";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Text::BEGIN@1743";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@34";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1063";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@39";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::import";
+"Text::Tradition::Collation::add_path" -> "Graph::add_edge";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1081";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@177";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Element::BEGIN@1535";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@482";
+"Text::Tradition::Collation::BEGIN@9" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::BEGIN@10" -> "Class::MOP::Class::make_immutable";
+"Text::Tradition::Collation::new" -> "Text::Tradition::Collation::BUILD";
+"Text::Tradition::Collation::BUILD" -> "Text::Tradition::Collation::_set_start";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::text_from_paths";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@2155";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@35";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@4";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@168";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@27";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@3615";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::Morphology::BEGIN@413";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1013";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_relationship";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@36";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@55";
+"Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:20]" -> "Graph::new";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@71";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@42";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1059";
+"Text::Tradition::Collation::BEGIN@9" -> "Text::Tradition::Collation::Reading::Morphology::meta";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@14";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Witness::text";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@25";
+"Text::Tradition::Collation::BEGIN@6" -> "B::threadsv_names";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2789";
+"Text::Tradition::Collation::add_reading" -> "Graph::add_vertex";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@1244";
+"Text::Tradition::Collation::_is_within" -> "Text::Tradition::Collation::CORE:regcomp";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::CORE:regcomp";
+"Text::Tradition::Collation::_witnesses_of_label" -> "Text::Tradition::Collation::CORE:regcomp";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::CORE:regcomp";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@73";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::end";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::PI::BEGIN@1837";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@161";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3629";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Collation::start";
+"Text::Tradition::Collation::reading_witnesses" -> "Text::Tradition::Collation::start";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2791";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::Config::BEGIN@7";
+"Text::Tradition::Collation::BEGIN@10" -> "Devel::Declare::linestr_callback";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::CORE:sort";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@17";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Document::BEGIN@1367";
+"Text::Tradition::Collation::BEGIN@5" -> "File::Which::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@3369";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@12";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@19";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@175";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::Timer::BEGIN@164";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@30";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@6";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@9";
+"Text::Tradition::Collation::BEGIN@6" -> "B::Deparse::BEGIN@2790";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@2";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@86";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@163";
+"Text::Tradition::Collation::add_path" -> "Graph::has_edge";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@489";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::Reading::new";
+"Text::Tradition::Parser::Self::parse" -> "Text::Tradition::Collation::add_reading";
+"Text::Tradition::Collation::BUILD" -> "Text::Tradition::Collation::add_reading";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@116";
+"Text::Tradition::Collation::BEGIN@12" -> "XML::Easy::Syntax::BEGIN@31";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::_graphcalc_done";
+"Text::Tradition::Collation::add_relationship" -> "Text::Tradition::Collation::_graphcalc_done";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::_graphcalc_done";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1015";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1054";
+"Text::Tradition::Collation::text_from_paths" -> "Text::Tradition::Witness::sigil";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@166";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@15";
+"Text::Tradition::Collation::reading_sequence" -> "Text::Tradition::Collation::next_reading";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1082";
+"Text::Tradition::Collation::reading_witnesses" -> "Graph::edges_to";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::RelationshipStore::add_reading";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@5";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::BEGIN@8";
+"Text::Tradition::Collation::new" -> "Text::Tradition::Collation::__ANON__[lib/Text/Tradition/Collation.pm:57]";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@27";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1445";
+"Text::Tradition::Collation::_witnesses_of_label" -> "Text::Tradition::Collation::wit_list_separator";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@164";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::BEGIN@136";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@10";
+"Text::Tradition::Collation::BEGIN@8" -> "Text::CSV::_load_pp";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Attr::BEGIN@1804";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1056";
+"Text::Tradition::Collation::BEGIN@6" -> "Graph::BEGIN@13";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@173";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::path_witnesses";
+"Text::Tradition::Collation::add_relationship" -> "Text::Tradition::Collation::RelationshipStore::add_relationship";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@3";
+"Text::Tradition::BEGIN@6" -> "Text::Tradition::Collation::BEGIN@8";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::LIBXML_VERSION";
+"Text::Tradition::Collation::add_reading" -> "Text::Tradition::Collation::_add_reading";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::BEGIN@161";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::BEGIN@1049";
+"Text::Tradition::Collation::BEGIN@13" -> "XML::LibXML::Dtd::BEGIN@1826";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@67";
+"Text::Tradition::Collation::BEGIN@3" -> "Encode::CORE:match";
+"Text::Tradition::Collation::_find_linked_reading" -> "Graph::edges_from";
+"Text::Tradition::Collation::_find_linked_reading" -> "Text::Tradition::Collation::_is_within";
+"Text::Tradition::Collation::BEGIN@10" -> "Text::Tradition::Collation::RelationshipStore::BEGIN@1073";
+"Text::Tradition::Collation::add_path" -> "Text::Tradition::Collation::RelationshipStore::add_equivalence_edge";
+}

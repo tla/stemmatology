@@ -1,0 +1,143 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_DynaLoader {
+	label="DynaLoader";
+	"DynaLoader::bootstrap";
+}
+subgraph cluster_String_Formatter {
+	label="String::Formatter";
+	"String::Formatter::BEGIN@239";
+	"String::Formatter::BEGIN@4";
+	"String::Formatter::BEGIN@13";
+	"String::Formatter::CORE:qr";
+	"String::Formatter::BEGIN@12";
+	"String::Formatter::new";
+	"String::Formatter::BEGIN@51";
+	"String::Formatter::BEGIN@59";
+}
+subgraph cluster_String_Errf {
+	label="String::Errf";
+	"String::Errf::default_hunk_formatter";
+	"String::Errf::BEGIN@2";
+	"String::Errf::BEGIN@18";
+	"String::Errf::__ANON__[String/Errf.pm:24]";
+	"String::Errf::BEGIN@11";
+	"String::Errf::CORE:qr";
+	"String::Errf::BEGIN@15";
+	"String::Errf::BEGIN@4";
+	"String::Errf::default_string_replacer";
+	"String::Errf::BEGIN@8";
+	"String::Errf::default_input_processor";
+	"String::Errf::BEGIN@1";
+	"String::Errf::BEGIN@16";
+	"String::Errf::BEGIN@7";
+	"String::Errf::BEGIN@14";
+	"String::Errf::default_codes";
+	"String::Errf::default_format_hunker";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_Role_HasMessage_Errf {
+	label="Role::HasMessage::Errf";
+	"Role::HasMessage::Errf::BEGIN@1";
+	"Role::HasMessage::Errf::BEGIN@2.10";
+	"Role::HasMessage::Errf::BEGIN@9";
+}
+subgraph cluster_warnings {
+	label="warnings";
+	"warnings::import";
+}
+subgraph cluster_Time_Piece {
+	label="Time::Piece";
+	"Time::Piece::BEGIN@40";
+	"Time::Piece::BEGIN@510";
+	"Time::Piece::BEGIN@41";
+	"Time::Piece::BEGIN@8";
+	"Time::Piece::BEGIN@43";
+	"Time::Piece::BEGIN@7";
+	"Time::Piece::BEGIN@42";
+	"Time::Piece::BEGIN@39";
+	"Time::Piece::BEGIN@37";
+	"Time::Piece::BEGIN@9";
+	"Time::Piece::BEGIN@34";
+	"Time::Piece::BEGIN@533";
+	"Time::Piece::BEGIN@36";
+	"Time::Piece::BEGIN@121";
+	"Time::Piece::BEGIN@35";
+	"Time::Piece::BEGIN@122";
+	"Time::Piece::BEGIN@575";
+	"Time::Piece::BEGIN@3";
+	"Time::Piece::BEGIN@38";
+	"Time::Piece::BEGIN@44";
+	"Time::Piece::BEGIN@422";
+}
+subgraph cluster_base {
+	label="base";
+	"base::import";
+}
+subgraph cluster_Sub_Exporter {
+	label="Sub::Exporter";
+	"Sub::Exporter::default_generator";
+	"Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@7";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@4";
+"String::Formatter::new" -> "String::Errf::default_input_processor";
+"String::Errf::__ANON__[String/Errf.pm:24]" -> "String::Formatter::new";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@3";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@16";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@11";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@121";
+"Sub::Exporter::default_generator" -> "String::Errf::__ANON__[String/Errf.pm:24]";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@34";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@12";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@43";
+"String::Formatter::new" -> "String::Errf::default_hunk_formatter";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@41";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@39";
+"String::Formatter::new" -> "String::Errf::default_codes";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@18";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@510";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@575";
+"String::Formatter::new" -> "String::Errf::default_format_hunker";
+"String::Errf::BEGIN@18" -> "Sub::Exporter::__ANON__[Sub/Exporter.pm:756]";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@51";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@4";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@239";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::CORE:qr";
+"Role::HasMessage::Errf::BEGIN@1" -> "strict::import";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@14";
+"String::Errf::BEGIN@7" -> "String::Errf::BEGIN@1";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@36";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@59";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@35";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@9";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@533";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@122";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@8";
+"String::Errf::BEGIN@8" -> "base::import";
+"Role::HasMessage::Errf::BEGIN@2.10" -> "warnings::import";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@42";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@40";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@38";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@7";
+"String::Errf::BEGIN@7" -> "String::Formatter::BEGIN@13";
+"Role::HasMessage::Errf::BEGIN@9" -> "Role::HasMessage::Errf::BEGIN@2.10";
+"String::Errf::BEGIN@7" -> "String::Errf::BEGIN@2";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@8";
+"Role::HasMessage::Errf::BEGIN@9" -> "Role::HasMessage::Errf::BEGIN@1";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@422";
+"Role::HasMessage::Errf::BEGIN@9" -> "String::Errf::BEGIN@15";
+"String::Errf::BEGIN@7" -> "UNIVERSAL::VERSION";
+"String::Errf::BEGIN@15" -> "DynaLoader::bootstrap";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@44";
+"String::Errf::BEGIN@7" -> "String::Formatter::CORE:qr";
+"String::Errf::BEGIN@15" -> "Time::Piece::BEGIN@37";
+"String::Formatter::new" -> "String::Errf::default_string_replacer";
+}

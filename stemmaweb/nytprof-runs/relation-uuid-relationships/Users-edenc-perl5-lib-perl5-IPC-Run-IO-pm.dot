@@ -1,0 +1,53 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_Text_Tradition_Collation {
+	label="Text::Tradition::Collation";
+	"Text::Tradition::Collation::BEGIN@7";
+}
+subgraph cluster_constant {
+	label="constant";
+	"constant::__ANON__[constant.pm:142]";
+}
+subgraph cluster_IPC_Run_IO {
+	label="IPC::Run::IO";
+	"IPC::Run::IO::BEGIN@65";
+	"IPC::Run::IO::BEGIN@74";
+	"IPC::Run::IO::BEGIN@71";
+	"IPC::Run::IO::BEGIN@67";
+	"IPC::Run::IO::BEGIN@66";
+	"IPC::Run::IO::BEGIN@68";
+	"IPC::Run::IO::BEGIN@73";
+	"IPC::Run::IO::BEGIN@489";
+	"IPC::Run::IO::BEGIN@70";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_vars {
+	label="vars";
+	"vars::import";
+}
+subgraph cluster_strict {
+	label="strict";
+	"strict::import";
+}
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@70";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@66";
+"IPC::Run::IO::BEGIN@65" -> "strict::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@68";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@74";
+"IPC::Run::IO::BEGIN@70" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@66" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@71" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@68" -> "Exporter::import";
+"IPC::Run::IO::BEGIN@67" -> "Exporter::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@65";
+"IPC::Run::IO::BEGIN@73" -> "vars::import";
+"IPC::Run::IO::BEGIN@489" -> "vars::import";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@71";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@73";
+"IPC::Run::IO::BEGIN@74" -> "constant::__ANON__[constant.pm:142]";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@489";
+"Text::Tradition::Collation::BEGIN@7" -> "IPC::Run::IO::BEGIN@67";
+}

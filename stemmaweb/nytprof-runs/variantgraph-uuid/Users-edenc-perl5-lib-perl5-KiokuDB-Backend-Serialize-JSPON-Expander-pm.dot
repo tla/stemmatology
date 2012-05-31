@@ -1,0 +1,44 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON_Expander {
+	label="KiokuDB::Backend::Serialize::JSPON::Expander";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@10";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@7";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@9";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@6";
+	"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::import";
+}
+subgraph cluster_namespace_clean {
+	label="namespace::clean";
+	"namespace::clean::import";
+}
+subgraph cluster_Exporter {
+	label="Exporter";
+	"Exporter::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_KiokuDB_Backend_Serialize_JSPON {
+	label="KiokuDB::Backend::Serialize::JSPON";
+	"KiokuDB::Backend::Serialize::JSPON::BEGIN@6";
+}
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@7";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@10";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@10" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@9" -> "UNIVERSAL::import";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@12" -> "namespace::clean::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@6";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@7" -> "Exporter::import";
+"KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@6" -> "Exporter::import";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@4";
+"KiokuDB::Backend::Serialize::JSPON::BEGIN@6" -> "KiokuDB::Backend::Serialize::JSPON::Expander::BEGIN@9";
+}

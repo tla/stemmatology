@@ -1,0 +1,42 @@
+digraph {
+graph [overlap=false]
+subgraph cluster_MooseX_Role_WithOverloading_Meta_Role {
+	label="MooseX::Role::WithOverloading::Meta::Role";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@12";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@2";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@11";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@5";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@13";
+	"MooseX::Role::WithOverloading::Meta::Role::BEGIN@10";
+}
+subgraph cluster_UNIVERSAL {
+	label="UNIVERSAL";
+	"UNIVERSAL::VERSION";
+}
+subgraph cluster_MooseX_Role_WithOverloading {
+	label="MooseX::Role::WithOverloading";
+	"MooseX::Role::WithOverloading::BEGIN@1";
+}
+subgraph cluster_aliased {
+	label="aliased";
+	"aliased::import";
+}
+subgraph cluster_Moose_Exporter {
+	label="Moose::Exporter";
+	"Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+}
+subgraph cluster_namespace_autoclean {
+	label="namespace::autoclean";
+	"namespace::autoclean::import";
+}
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@12" -> "aliased::import";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@5";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@12";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@2";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@11";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@11" -> "Moose::Exporter::__ANON__[Moose/Exporter.pm:492]";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@13";
+"MooseX::Role::WithOverloading::BEGIN@1" -> "MooseX::Role::WithOverloading::Meta::Role::BEGIN@10";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@13" -> "namespace::autoclean::import";
+"MooseX::Role::WithOverloading::Meta::Role::BEGIN@10" -> "UNIVERSAL::VERSION";
+}
