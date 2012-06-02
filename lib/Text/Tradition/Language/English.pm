@@ -2,7 +2,8 @@ package Text::Tradition::Language::English;
 
 use strict;
 use warnings;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger
+	lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -57,6 +58,16 @@ sub reading_lookup {
 		'path' => \@path,
 		);
 	return reading_lookup_treetagger( %opts );
+}
+
+=head2 morphology_tags
+
+Return a data structure describing the available parts of speech and their attributes.
+
+=cut
+
+sub morphology_tags {
+	return lfs_morph_tags();
 }
 
 # Utility function to turn a TreeTagger result into a WordForm

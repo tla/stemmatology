@@ -68,9 +68,8 @@ around BUILDARGS => sub {
 	my $class = shift;
 	my $args = @_ == 1 ? $_[0] : { @_ };
 	if( exists $args->{'JSON'} ) {
-		$DB::single = 1;
 		my @data = split( / \/\/ /, $args->{'JSON'} );
-		print STDERR "Attempting to parse " . $data[2] . " into structure";
+		# print STDERR "Attempting to parse " . $data[2] . " into structure";
 		my $morph = Lingua::Features::Structure->from_string( $data[2] );
 		$args = { 'language' => $data[0], 'lemma' => $data[1],
 			'morphology' => $morph };

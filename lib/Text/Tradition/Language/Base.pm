@@ -14,7 +14,7 @@ use Text::Tradition::Collation::Reading::WordForm;
 use TryCatch;
 
 @EXPORT_OK = qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct
-	multext_struct /;
+	multext_struct lfs_morph_tags /;
 
 =head1 NAME
 
@@ -256,6 +256,40 @@ sub multext_struct {
 	my $pos = shift;
 	# No known hacks needed
 	return Lingua::TagSet::Multext->tag2structure( $pos );
+}
+
+=head2 lfs_morph_tags
+
+Return a data structure describing the available parts of speech and their attributes
+from the Lingua::Features::Structure class currently defined.
+
+=cut
+
+sub lfs_morph_tags {
+	load('Lingua::Features::StructureType');
+	my $tagset = { 'structures' => [], 'features' => {} };
+	foreach my $lfs ( sort { _by_structid( $a->id, $b->id ) } Lingua::Features::StructureType->types() ) {
+		my $tsstruct = { 'id' => $lfs->id, 'use_features' => [] };
+		foreach my $ftid ( Lingua::Features::StructureType->type($lfs->id)->features ) {
+			my $ftype = $lfs->feature_type( $ftid );
+			my $tfstruct = { 'id' => $ftid, 'values' => [] };
+			foreach my $fval( $ftype->values ) {
+				push( @{$tfstruct->{'values'}}, 
+					{ 'short' => $fval, 'long' => $ftype->value_name( $fval ) } );
+			}
+			push( @{$tsstruct->{'use_features'}}, $ftid );
+			$tagset->{'features'}->{$ftid} = $tfstruct;
+		}
+		push( @{$tagset->{'structures'}}, $tsstruct );
+	}
+	return $tagset;
+}
+
+sub _by_structid {
+	my( $a, $b ) = @_;
+	return -1 if $a eq 'cat';
+	return 1 if $b eq 'cat';
+	return $a cmp $b;
 }
 
 1;

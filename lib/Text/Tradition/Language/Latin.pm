@@ -3,7 +3,9 @@ package Text::Tradition::Language::Latin;
 use strict;
 use warnings;
 use Module::Load;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger treetagger_struct /;
+use Morph::Perseus::Structure;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger treetagger_struct 
+	lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -85,6 +87,22 @@ sub reading_lookup {
 	my @words = @_;
 	return map { _perseus_lookup_str( $_ ) } @words;
 }
+
+=head2 morphology_tags
+
+Return a data structure describing the available parts of speech and their attributes.
+
+=cut
+
+sub morphology_tags {
+	try {
+		load 'Morph::Perseus::Structure';
+	} catch {
+		warn "Not using Perseus Latin tags";
+	}
+	return lfs_morph_tags();
+}
+
 
 {
 	my $morph;
@@ -172,9 +190,10 @@ sub reading_lookup {
 		}
 		@ret = @orig unless @ret;
 		
-		my @wordforms;
+		my %unique_wordforms;
 		foreach my $obj ( @ret ) {
-			push( @wordforms, _wordform_from_row( $obj ) );
+			my $wf = _wordform_from_row( $obj );
+			$unique_wordforms{$wf->to_string} = $wf;
 		}
 		## TODO Use TreeTagger info - requires serious hacking of Lingua::TagSet
 		# Discard results that don't match the given TreeTagger POS, unless
@@ -186,7 +205,7 @@ sub reading_lookup {
 # 			@ttmatch = @wordforms;
 # 		}
 # 		return @ttmatch;
-		return @wordforms;
+		return values( %unique_wordforms );
 	}
 	
 	sub _perseus_lookup_str {
@@ -208,7 +227,6 @@ sub _wordform_from_row {
 		warn "Could not create morphology structure from "
 			. $rowobj->code . ": $!";
 	}
-	$DB::single = 1 unless $mpstruct;
 	my $lemma = $rowobj->lemma;
 	$lemma =~ s/^(\D+)\d*$/$1/;
 	my $wf = Text::Tradition::Collation::Reading::WordForm->new(

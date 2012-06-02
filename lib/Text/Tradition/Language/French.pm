@@ -3,7 +3,7 @@ package Text::Tradition::Language::French;
 use strict;
 use warnings;
 use Module::Load qw/ load /;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct multext_struct /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct multext_struct lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -101,6 +101,16 @@ sub reading_lookup {
 		'path' => \@path,
 		);
 	return reading_lookup_treetagger( %opts );
+}
+
+=head2 morphology_tags
+
+Return a data structure describing the available parts of speech and their attributes.
+
+=cut
+
+sub morphology_tags {
+	return lfs_morph_tags();
 }
 
 # Closure and utility function for the package lemmatizer
