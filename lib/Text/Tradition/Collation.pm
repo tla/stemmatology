@@ -887,6 +887,13 @@ is( scalar $st->collation->readings, $READINGS, "Reparsed collation has all read
 is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
 is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
 
+# Now add a stemma, write to GraphML, and parse again.
+my $stemma = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
+is( ref( $stemma ), 'Text::Tradition::Stemma', "Parsed dotfile into stemma" );
+is( $tradition->stemmata, 1, "Tradition now has the stemma" );
+$graphml = $c->as_graphml;
+like( $graphml, qr/digraph/, "Digraph declaration exists in GraphML" );
+
 =end testing
 
 =cut
@@ -957,6 +964,8 @@ sub as_graphml {
 		next unless $save_types{$attr->type_constraint->name};
 		$graph_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
+    # Extra custom key for the tradition stemma(ta)
+    $graph_attributes{'stemmata'} = 'string';
 	
     foreach my $datum ( sort keys %graph_attributes ) {
     	$graph_data_keys{$datum} = 'dg'.$gdi++;
@@ -1030,11 +1039,16 @@ sub as_graphml {
     $sgraph->setAttribute( 'parse.nodes', 0 ); # fill in later
     $sgraph->setAttribute( 'parse.order', 'nodesfirst' );
     	    
-    # Collation attribute data
+    # Tradition/collation attribute data
     foreach my $datum ( keys %graph_attributes ) {
     	my $value;
     	if( $datum eq 'version' ) {
-    		$value = '3.1';
+    		$value = '3.2';
+    	} elsif( $datum eq 'stemmata' ) {
+    		my @stemstrs;
+    		map { push( @stemstrs, $_->editable( {linesep => ''} ) ) } 
+    			$self->tradition->stemmata;
+    		$value = join( "\n", @stemstrs );
     	} elsif( $gattr_from{$datum} eq 'Tradition' ) {
     		$value = $self->tradition->$datum;
     	} else {

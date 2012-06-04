@@ -27,9 +27,10 @@ if( $t ) {
     is( scalar $t->witnesses, 13, "Collation has all witnesses" );
 }
 
-# TODO add a relationship, write graphml, reparse it, check that the rel
-# is still there
+# TODO add a relationship, add a stemma, write graphml, reparse it, check that 
+# the new data is there
 $t->language('Greek');
+$t->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 $t->collation->add_relationship( 'w12', 'w13', 
 	{ 'type' => 'grammatical', 'scope' => 'global', 
 	  'annotation' => 'This is some note' } );
@@ -47,6 +48,8 @@ if( $newt ) {
     my $rel = $newt->collation->get_relationship( 'w12', 'w13' );
     ok( $rel, "Found set relationship" );
     is( $rel->annotation, 'This is some note', "Relationship has its properties" );
+    is( scalar $newt->stemmata, 1, "Tradition has its stemma" );
+    is( $newt->stemma(0)->witnesses, $t->stemma(0)->witnesses, "Stemma has correct length witness list" );
 }
 }
 

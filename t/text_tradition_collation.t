@@ -84,6 +84,13 @@ my $st = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml );
 is( scalar $st->collation->readings, $READINGS, "Reparsed collation has all readings" );
 is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
 is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
+
+# Now add a stemma, write to GraphML, and parse again.
+my $stemma = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
+is( ref( $stemma ), 'Text::Tradition::Stemma', "Parsed dotfile into stemma" );
+is( $tradition->stemmata, 1, "Tradition now has the stemma" );
+$graphml = $c->as_graphml;
+like( $graphml, qr/digraph/, "Digraph declaration exists in GraphML" );
 }
 
 
