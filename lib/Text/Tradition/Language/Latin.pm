@@ -3,7 +3,6 @@ package Text::Tradition::Language::Latin;
 use strict;
 use warnings;
 use Module::Load;
-use Morph::Perseus::Structure;
 use Text::Tradition::Language::Base qw/ lemmatize_treetagger treetagger_struct 
 	lfs_morph_tags /;
 use TryCatch;
@@ -163,6 +162,7 @@ sub morphology_tags {
 	sub _perseus_lookup_tt {
 		my( $orig, $pos, $lemma ) = split( /\t/, $_[0] );
 		_morph_connect();
+		return unlesss $morph;
 		my $result = $morph->lookup( $orig );
 		# Discard results that don't match the lemma, unless lemma is unknown
 		my @orig = @{$result->{'objects'}};
@@ -211,6 +211,7 @@ sub morphology_tags {
 	sub _perseus_lookup_str {
 		my( $orig ) = @_;
 		_morph_connect();
+		return unless $morph;
 		# Simple morph DB lookup, and return the results.
 		my $result = $morph->lookup( $orig );
 		return map { _wordform_from_row( $_ ) } @{$result->{'objects'}};
@@ -222,6 +223,7 @@ sub _wordform_from_row {
 	my( $rowobj ) = @_;
 	my $mpstruct;
 	try {
+		# M::P::St will be loaded already if we got here
 		$mpstruct = Morph::Perseus::Structure->from_tag( $rowobj->code );
 	} catch {
 		warn "Could not create morphology structure from "
