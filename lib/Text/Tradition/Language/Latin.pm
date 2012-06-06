@@ -3,8 +3,7 @@ package Text::Tradition::Language::Latin;
 use strict;
 use warnings;
 use Module::Load;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger treetagger_struct 
-	lfs_morph_tags /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -14,10 +13,7 @@ Text::Tradition::Language::Latin - language-specific module for Latin
 =head1 DESCRIPTION
 
 Implements morphology lookup for French words in context.  This module
-depends on the Morph::Perseus module for access to PhiloLogic database data.
-It also depends on the TreeTagger software
-(L<http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/>), which is
-(for now) expected to be installed in $MORPHDIR/TreeTagger.
+depends on the Lingua::Morph::Perseus module for access to PhiloLogic database data.
 
 =head1 SUBROUTINES
 
@@ -30,11 +26,11 @@ Evaluates the string using the Flemm package, and returns the results.
 use Text::Tradition;
 use_ok( 'Text::Tradition::Language::Latin' );
 
-eval "use Morph::Perseus";
+eval "use Lingua::Morph::Perseus";
 my $err = $@;
 
 SKIP: {
-	skip "Package Morph::Perseus not found" if $err;
+	skip "Package Lingua::Morph::Perseus not found" if $err;
 
 	my $trad = Text::Tradition->new(
 		'language' => 'Latin',
@@ -58,7 +54,7 @@ SKIP: {
 			$ambig++;
 		}
 	}
-	is( $ambig, 7, "Found 7 ambiguous forms as expected" );
+	is( $ambig, 4, "Found 4 ambiguous forms as expected" );
 }
 
 =end testing
@@ -94,11 +90,6 @@ Return a data structure describing the available parts of speech and their attri
 =cut
 
 sub morphology_tags {
-	try {
-		load 'Morph::Perseus::Structure';
-	} catch {
-		warn "Not using Perseus Latin tags";
-	}
 	return lfs_morph_tags();
 }
 
@@ -109,11 +100,10 @@ sub morphology_tags {
 	sub _morph_connect {
 		unless( $morph ) {
 			try {
-				load 'Morph::Perseus';
-				load 'Morph::Perseus::Structure';
-				$morph = Morph::Perseus->connect( 'Latin' );
+				load 'Lingua::Morph::Perseus';
+				$morph = Lingua::Morph::Perseus->connect( 'Latin' );
 			} catch {
-				warn "Cannot do Latin word lemmatization without Morph::Perseus: @_";
+				warn "Cannot do Latin word lemmatization without Lingua::Morph::Perseus: @_";
 				return;
 			}
 		}
@@ -127,7 +117,6 @@ sub morphology_tags {
 	#  T carne -> carnis
 	#  T melius -> bonus
 	
-
 	my %excep = (
 		'absens' => 'absum',
 		'aperte' => 'apertus',
@@ -162,49 +151,33 @@ sub morphology_tags {
 	sub _perseus_lookup_tt {
 		my( $orig, $pos, $lemma ) = split( /\t/, $_[0] );
 		_morph_connect();
-		return unlesss $morph;
-		my $result = $morph->lookup( $orig );
+		return unless $morph;
 		# Discard results that don't match the lemma, unless lemma is unknown
-		my @orig = @{$result->{'objects'}};
-		my @ret;
+		my $lookupopts = {};
 		unless( $lemma eq '<unknown>' || $lemma =~ /^\W+$/ ) {
 			# TODO Perseus lemma might have a number on the end, yuck.
 			#  multiple lemmata separated with |
 			$lemma =~ s/[^\w|]//g;
 			$lemma = $excep{$lemma} if exists $excep{$lemma};
 			$lemma =~ s/j/i/g;
-			my %lems;
-			my @forms = 
-			map { $lems{$_} = 1; $lems{lc($_)} = 1 } split( /\|/, $lemma );
-			# Now match the lemmata from Treetagger to the lemmata and alt_ls 
-			# from Perseus.
-			@ret = grep { 
-				my $x = $_->lemma; 
-				$x =~ s/\d+$//;
-				my $y = $_->alt_lex || '';
-				$y =~ s/\d+$//;
-				$lems{$x} || $lems{$y};
-				} @orig;
-			warn "TreeTagger lemma $lemma matched no results from Perseus for $orig"
-				if @orig && !@ret;
+			if( $lemma ) { # if we have anything left...
+				my %lems;
+				map { $lems{$_} = 1; $lems{lc($_)} = 1 } split( /\|/, $lemma );
+				$lookupopts->{'lemma'} = [ keys %lems ];
+			}
 		}
-		@ret = @orig unless @ret;
+		$lookupopts->{'ttpos'} = $pos if $pos;
 		
+		my $result = $morph->lexicon_lookup( $orig, $lookupopts );
+		# unless( !keys( %$lookupopts ) ||  $result->{'filtered'} ) {
+		# 	warn "Filter on $pos / $lemma returned no results; using all results";
+		# }
+		my @ret = @{$result->{'objects'}};
 		my %unique_wordforms;
 		foreach my $obj ( @ret ) {
 			my $wf = _wordform_from_row( $obj );
 			$unique_wordforms{$wf->to_string} = $wf;
 		}
-		## TODO Use TreeTagger info - requires serious hacking of Lingua::TagSet
-		# Discard results that don't match the given TreeTagger POS, unless
-		# that leaves zero results
-# 		my $ttstruct = treetagger_struct( $pos );
-# 		my @ttmatch = grep { $ttstruct->is_compatible( $_->morphology ) } @wordforms;
-# 		unless( @ttmatch ) {
-# 			warn "TreeTagger POS $pos matched no results from Perseus for $orig";
-# 			@ttmatch = @wordforms;
-# 		}
-# 		return @ttmatch;
 		return values( %unique_wordforms );
 	}
 	
@@ -221,20 +194,12 @@ sub morphology_tags {
 
 sub _wordform_from_row {
 	my( $rowobj ) = @_;
-	my $mpstruct;
-	try {
-		# M::P::St will be loaded already if we got here
-		$mpstruct = Morph::Perseus::Structure->from_tag( $rowobj->code );
-	} catch {
-		warn "Could not create morphology structure from "
-			. $rowobj->code . ": $!";
-	}
 	my $lemma = $rowobj->lemma;
 	$lemma =~ s/^(\D+)\d*$/$1/;
 	my $wf = Text::Tradition::Collation::Reading::WordForm->new(
 		'language' => 'Latin',
 		'lemma' => $lemma,
-		'morphology' => $mpstruct,
+		'morphology' => $rowobj->morphology,
 		);
 	return $wf;
 }

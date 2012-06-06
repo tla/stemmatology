@@ -2,6 +2,7 @@ package Text::Tradition::Language::English;
 
 use strict;
 use warnings;
+use Lingua::TagSet::TreeTagger::English;
 use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger
 	lfs_morph_tags /;
 use TryCatch;
@@ -74,15 +75,17 @@ sub morphology_tags {
 sub _parse_wordform {
 	my $tagresult = shift;
 	my( $orig, $tag, $lemma ) = split( /\t/, $tagresult );
-	my $morphobj = Lingua::TagSet::TreeTagger->tag2structure( $tag );
+	return () unless $tag =~ /\w/; # skip punct-only "tags"
+	my $morphobj = Lingua::TagSet::TreeTagger::English->tag2structure( $tag );
 	if( $morphobj ) {
-		return Text::Tradition::Collation::Reading::WordForm->new(
+		return ( Text::Tradition::Collation::Reading::WordForm->new(
 			'language' => 'English',
 			'lemma' => $lemma,
 			'morphology' => $morphobj,
-			);
+			) );
 	} else {
-		warn "No morphology found for word: $_";
+		warn "No morphology found for word: $tagresult";
+		return ();
 	}
 }
 

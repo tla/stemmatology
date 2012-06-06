@@ -33,7 +33,8 @@ requires( 'XML::LibXML::XPathContext' );
 requires( 'YAML::XS' );
 # For the morphology stuff
 requires( 'Lingua::TagSet::Multext' );
-requires( 'Lingua::TagSet::TreeTagger' );
+requires( 'Lingua::TagSet::TreeTagger::French' );
+requires( 'Lingua::TagSet::TreeTagger::English' );
 requires( 'Lingua::Features::Structure' );
 build_requires( 'Test::Warn' );
 # Modules needed for morphology but not trivially CPANnable

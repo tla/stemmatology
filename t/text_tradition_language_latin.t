@@ -11,11 +11,11 @@ $| = 1;
 use Text::Tradition;
 use_ok( 'Text::Tradition::Language::Latin' );
 
-eval "use Morph::Perseus";
+eval "use Lingua::Morph::Perseus";
 my $err = $@;
 
 SKIP: {
-	skip "Package Morph::Perseus not found" if $err;
+	skip "Package Lingua::Morph::Perseus not found" if $err;
 
 	my $trad = Text::Tradition->new(
 		'language' => 'Latin',
@@ -39,7 +39,7 @@ SKIP: {
 			$ambig++;
 		}
 	}
-	is( $ambig, 7, "Found 7 ambiguous forms as expected" );
+	is( $ambig, 4, "Found 4 ambiguous forms as expected" );
 }
 }
 

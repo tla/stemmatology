@@ -2,8 +2,10 @@ package Text::Tradition::Language::French;
 
 use strict;
 use warnings;
+use Lingua::TagSet::Multext;
+use Lingua::TagSet::TreeTagger::French;
 use Module::Load qw/ load /;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger treetagger_struct multext_struct lfs_morph_tags /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -46,6 +48,7 @@ SKIP: {
 	# Test the lemmatization. How many readings now have morphological info?
 	# Do the lexemes match the reading?
 	my $ambig = 0;
+	my $flemmed = 0;
 	foreach my $r ( $tf->collation->readings ) {
 		next if $r->is_meta;
 		ok( $r->has_lexemes, "Reading $r has one or more lexemes" );
@@ -55,13 +58,16 @@ SKIP: {
 		$textstr =~ s/\s+//g;
 		is( $textstr, $lexstr, "Lexemes for reading $r match the reading" );
 		foreach my $l ( @lex ) {
+			# Check to see if Flemm actually ran
+			foreach my $wf ( $l->matching_forms ) {
+				$flemmed++ if $wf->morphology->get_feature('num');
+			}
 			next if $l->is_disambiguated;
-	# 		printf( "Ambiguous lexeme %s for reading %s:\n\t%s\n", $l->string, $r->id,
-	# 			join( "\n\t", map { $_->lemma . ': ' . $_->morphology->to_string } $l->matching_forms ) );
 			$ambig++;
 		}
 	}
 	is( $ambig, 102, "Found 102 ambiguous forms as expected" );
+	ok( $flemmed > 500, "Found enough Flemm info in wordforms" );
 	
 	# Try setting the normal form of a reading and re-analyzing
 	my $mr = $tf->collation->reading('r99.2');
@@ -69,7 +75,11 @@ SKIP: {
 	is( $mr->language, 'French', "Reading has correct language setting" );
 	$mr->normal_form( "m'inspire" );
 	$mr->lemmatize;
-	is( $mr->lexemes, 2, "Got two lexemes for new m'inspire reading" );
+	my @l = $mr->lexemes;
+	is( @l, 2, "Got two lexemes for new m'inspire reading" );
+	is( $l[0]->form->to_string,
+		'"French // se|le|lui // cat@pron type@pers pers@1 num@sing case@acc|dat"',
+		"New reading has correct first lexeme" );
 }
 
 =end testing
@@ -144,10 +154,10 @@ sub _parse_wordform {
 		my( $pos, $morph ) = split( /:/, $tag );
 		my $morphobj;
 		if( $morph ) {
-			$morphobj = multext_struct( $morph );
+			$morphobj = Lingua::TagSet::Multext->tag2structure( $morph );
 		} else {
 			# Use the TreeTagger info if there is no Flemm morphology.
-			$morphobj = treetagger_struct( $pos );
+			$morphobj = Lingua::TagSet::TreeTagger::French->tag2structure( $pos );
 		}
 		if( $morphobj ) {
 			my $wf = Text::Tradition::Collation::Reading::WordForm->new(
