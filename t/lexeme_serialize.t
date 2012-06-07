@@ -37,4 +37,11 @@ foreach my $r ( $tf->collation->readings ) {
 	}
 }
 
+# Test a snippet of tradition with possibly-problematic saved lexemes
+my $tf3 = Text::Tradition->new(
+	'input' => 'Self',
+	'file' => 't/data/lexformat.xml' );
+is( ref $tf3, 'Text::Tradition', 
+	"Successfully parsed tradition with incomplete lexemes" );
+
 done_testing();
