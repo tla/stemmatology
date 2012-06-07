@@ -14,9 +14,9 @@ binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
 my( $informat, $inbase, $outformat, $help, $language, $name, $sep, $stemmafile, 
-	$dsn, $dbuser, $dbpass, $from, $to ) 
+	$dsn, $dbuser, $dbpass, $from, $to, $dbid ) 
     = ( '', '', '', '', 'Default', 'Tradition', "\t", '',
-    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef, undef, undef );
+    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef, undef, undef, undef );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -31,6 +31,7 @@ GetOptions( 'i|in=s'    => \$informat,
             't|to=s'    => \$to,
             'sep=s'		=> \$sep,
             'dsn=s'		=> \$dsn,
+	    'dbid=s'    => \$dbid,
     );
 
 if( $help ) {
@@ -98,7 +99,12 @@ if( $outformat eq 'stemma' ) {
 	my $dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
 		'extra_args' => $extra_args );
 	my $scope = $dir->new_scope;
-	my $uuid = $dir->store( $tradition );
+	my $uuid;
+	if( $dbid ) {
+		$uuid = $dir->store( $dbid => $tradition );
+	} else {
+		$uuid = $dir->store( $tradition );
+	}
 	print STDERR "Saved tradition to database with ID $uuid\n";
 } else {
     my $output = "as_$outformat";
