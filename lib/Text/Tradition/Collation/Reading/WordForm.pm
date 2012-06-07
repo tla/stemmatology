@@ -3,6 +3,8 @@ package Text::Tradition::Collation::Reading::WordForm;
 use Lingua::Features::Structure;
 use JSON ();
 use Moose;
+use Text::Tradition::Error;
+use TryCatch;
 
 =head1 NAME
 
@@ -70,7 +72,12 @@ around BUILDARGS => sub {
 	if( exists $args->{'JSON'} ) {
 		my @data = split( / \/\/ /, $args->{'JSON'} );
 		# print STDERR "Attempting to parse " . $data[2] . " into structure";
-		my $morph = Lingua::Features::Structure->from_string( $data[2] );
+		my $morph;
+		try {
+			$morph = Lingua::Features::Structure->from_string( $data[2] );
+		} catch {
+			throw("Could not parse string " . $data[2] . " into morphological structure");
+		}
 		$args = { 'language' => $data[0], 'lemma' => $data[1],
 			'morphology' => $morph };
 	}
@@ -97,6 +104,13 @@ sub TO_JSON {
 		$self->morphology->to_string() );
 }
 	
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Wordform error',
+		'message' => $_[0],
+		);
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
