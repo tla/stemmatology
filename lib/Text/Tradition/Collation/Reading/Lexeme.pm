@@ -3,6 +3,7 @@ package Text::Tradition::Collation::Reading::Lexeme;
 use Moose;
 use JSON ();
 use Module::Load;
+use Text::Tradition::Collation::Reading::WordForm;
 
 =head1 NAME
 
@@ -78,6 +79,7 @@ has 'wordform_matchlist' => (
 		'matching_form' => 'get',
 		'add_matching_form' => 'push',
 		},
+	default => sub { [] },
 	);
 
 has 'is_disambiguated' => (
