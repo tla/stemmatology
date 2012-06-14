@@ -54,6 +54,13 @@ has 'stemmata' => (
 	default => sub { [] },
 	);
   
+has 'initialized' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	writer => '_init_done',
+	); 
+
 # Create the witness before trying to add it
 around 'add_witness' => sub {
     my $orig = shift;
@@ -288,6 +295,7 @@ sub BUILD {
             $mod->can('parse')->( $self, $init_args );
         }
     }
+    $self->_init_done( 1 );
     return $self;
 }
 
