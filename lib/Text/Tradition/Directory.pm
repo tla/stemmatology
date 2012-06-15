@@ -163,8 +163,6 @@ has +typemap => (
           KiokuDB::TypeMap::Entry::Naive->new(),
         "Graph" => Text::Tradition::TypeMap::Entry->new(),
         "Graph::AdjacencyMap" => Text::Tradition::TypeMap::Entry->new(),
-		"Lingua::Features::Structure" => Text::Tradition::TypeMap::Entry->new,
-		"Lingua::Features::FeatureType" => Text::Tradition::TypeMap::Entry->new,
       }
     );
   },
