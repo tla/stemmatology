@@ -54,7 +54,7 @@ entire tradition, but can also be used to (re-)analyze individual readings.
 sub reading_lookup {
 	my( @path ) = @_;
 	my %opts = ( 
-		'language' => 'French',
+		'language' => 'English',
 		'callback' => sub { _parse_wordform( @_ ) },
 		'path' => \@path,
 		);
