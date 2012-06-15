@@ -13,10 +13,11 @@ binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
-my( $informat, $inbase, $outformat, $help, $language, $name, $sep, $stemmafile, 
-	$dsn, $dbuser, $dbpass, $from, $to, $dbid ) 
-    = ( '', '', '', '', 'Default', 'Tradition', "\t", '',
-    	"dbi:SQLite:dbname=stemmaweb/db/traditions.db", undef, undef, undef, undef, undef );
+# Variables with defaults
+my( $informat, $outformat, $language, $name, $sep, $dsn )  = ( '', '', 'Default', 
+	'Tradition', "\t", "dbi:SQLite:dbname=stemmaweb/db/traditions.db" );
+# Variables with no default
+my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, $debug );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -32,6 +33,7 @@ GetOptions( 'i|in=s'    => \$informat,
             'sep=s'		=> \$sep,
             'dsn=s'		=> \$dsn,
 	    'dbid=s'    => \$dbid,
+	    	'debug'     => \$debug
     );
 
 if( $help ) {
@@ -111,6 +113,7 @@ if( $outformat eq 'stemma' ) {
     my $opts = {};
     $opts->{'from'} = $from if $from;
     $opts->{'to'} = $to if $to;
+    $opts->{'nocalc'} = 1 if $debug;
     print $tradition->collation->$output( $opts );
 }
 

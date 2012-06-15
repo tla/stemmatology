@@ -132,13 +132,18 @@ sub parse {
 				$collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
 			}
         } else { # type 'relationship'
-        	$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY},
-        		{ 'type' => 'transposition' } );
+        	if( $collation->linear ) {
+				$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY},
+					{ 'type' => 'transposition' } );
+			} else {
+				$collation->merge_readings( $from->{$IDKEY}, $to->{$IDKEY} );
+			}
         }
     }
 
     # Rank the readings.
-    $collation->calculate_common_readings(); # will implicitly rank
+    $collation->calculate_common_readings()
+    	if $collation->linear; # will implicitly rank
 
     # Save the text for each witness so that we can ensure consistency
     # later on

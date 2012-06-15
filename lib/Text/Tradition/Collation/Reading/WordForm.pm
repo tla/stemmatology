@@ -46,22 +46,15 @@ has 'language' => (
 	required => 1,
 	);
 	
-# TODO do we need this?
-has 'form' => (
-	is => 'ro',
-	isa => 'Str',
-	# required => 1,
-	);
-	
 has 'lemma' => (
 	is => 'ro',
 	isa => 'Str',
 	required => 1,
 	);
 	
-has 'morphology' => (
+has 'morphstr' => (
 	is => 'ro',
-	isa => 'Lingua::Features::Structure',
+	isa => 'Str',
 	required => 1,
 	);
 	
@@ -72,17 +65,34 @@ around BUILDARGS => sub {
 	if( exists $args->{'JSON'} ) {
 		my @data = split( / \/\/ /, $args->{'JSON'} );
 		# print STDERR "Attempting to parse " . $data[2] . " into structure";
-		my $morph;
-		try {
-			$morph = Lingua::Features::Structure->from_string( $data[2] );
-		} catch {
-			throw("Could not parse string " . $data[2] . " into morphological structure");
-		}
 		$args = { 'language' => $data[0], 'lemma' => $data[1],
-			'morphology' => $morph };
+			'morphstr' => $data[2] };
+	} elsif( exists $args->{'morphology'} ) {
+		# Backwards compat
+		my $mobj = delete $args->{'morphology'};
+		$args->{'morphstr'} = $mobj->to_string()
+			if ref $mobj;
 	}
 	$class->$orig( $args );
 };
+
+=head2 morphology
+
+Returns a Lingua::Features::Structure object that corresponds to morphstr.
+
+=cut
+
+sub morphology {
+	my $self = shift;
+	return unless $self->morphstr;
+	my $struct;
+	try {
+		$struct = Lingua::Features::Structure->from_string( $self->morphstr );
+	} catch {
+		throw( "Morphology string " . $self->morphstr . " does not parse" );
+	}
+	return $struct;
+}
 	
 =head2 to_string
 
@@ -101,7 +111,7 @@ sub to_string {
 sub TO_JSON {
 	my $self = shift;
 	return sprintf( "%s // %s // %s", $self->language, $self->lemma,
-		$self->morphology->to_string() );
+		$self->morphstr );
 }
 	
 sub throw {

@@ -373,7 +373,7 @@ sub merge_readings {
 	# objects themselves.
     my( $kept, $deleted, $combine, $combine_char ) = $self->_stringify_args( @_ );
 	$self->_graphcalc_done(0);
-
+	
     # The kept reading should inherit the paths and the relationships
     # of the deleted reading.
 	foreach my $path ( $self->sequence->edges_at( $deleted ) ) {
@@ -387,7 +387,7 @@ sub merge_readings {
 		@wits{keys %$fwits} = values %$fwits;
 		$self->sequence->set_edge_attributes( @vector, \%wits );
 	}
-	$self->relations->merge_readings( $kept, $deleted, $combine_char );
+	$self->relations->merge_readings( $kept, $deleted, $combine );
 	
 	# Do the deletion deed.
 	if( $combine ) {
@@ -560,7 +560,8 @@ sub as_svg {
     throw( "Need GraphViz installed to output SVG" )
     	unless File::Which::which( 'dot' );
     my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
-    $self->calculate_ranks() unless( $self->_graphcalc_done || $opts->{'nocalc'} );
+    $self->calculate_ranks() 
+    	unless( $self->_graphcalc_done || $opts->{'nocalc'} || !$self->linear );
     if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
 		my @cmd = qw/dot -Tsvg/;
 		my( $svg, $err );
@@ -817,6 +818,7 @@ sub _path_display_label {
 	
 	# See if we are in a majority situation.
 	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
+	$maj = $maj > 5 ? $maj : 5;
 	if( scalar keys %wits > $maj ) {
 		unshift( @disp_ac, 'majority' );
 		return join( ', ', @disp_ac );

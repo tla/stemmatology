@@ -564,10 +564,12 @@ sub relationship_valid {
     my( $self, $source, $target, $rel, $mustdrop ) = @_;
     $mustdrop = [] unless $mustdrop; # in case we were passed nothing
     my $c = $self->collation;
+    ## Assume validity is okay if we are initializing from scratch.
+    return ( 1, "initializing" ) unless $c->tradition->_initialized;
+    
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
-		# TODO this might be called before witness paths are set...
 		my %seen_wits;
 		map { $seen_wits{$_} = 1 } $c->reading_witnesses( $source );
 		foreach my $w ( $c->reading_witnesses( $target ) ) {
@@ -750,7 +752,7 @@ sub merge_readings {
 		$rel = $self->get_relationship( @$edge );
 		$self->_set_relationship( $rel, @vector );
 	}
-	$self->_make_equivalence( $deleted, $kept );
+	$self->_make_equivalence( $deleted, $kept, 1 );
 }
 
 ### Equivalence logic
@@ -760,10 +762,12 @@ sub _remove_equivalence_node {
 	my $group = $self->equivalence( $node );
 	my $nodelist = $self->eqreadings( $group );
 	if( @$nodelist == 1 && $nodelist->[0] eq $node ) {
+		$self->equivalence_graph->delete_vertex( $group );
 		$self->remove_eqreadings( $group );
+		$self->remove_equivalence( $group );
 	} elsif( @$nodelist == 1 ) {
-		warn "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
-			" in group that should have only $node";
+		throw( "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
+			" in group that should have only $node" );
 	} else {
  		my @newlist = grep { $_ ne $node } @$nodelist;
 		$self->set_eqreadings( $group, \@newlist );
@@ -807,27 +811,33 @@ sub _is_disconnected {
 
 # Equate two readings in the equivalence graph
 sub _make_equivalence {
-	my( $self, $source, $target ) = @_;
+	my( $self, $source, $target, $removing ) = @_;
 	# Get the source equivalent readings
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
 	# Nothing to do if they are already equivalent...
 	return if $seq eq $teq;
-	my $sourcepool = $self->eqreadings( $seq );
+	# Get the readings equivalent to source
+	my @sourcepool = @{$self->eqreadings( $seq )};
+	# If we are removing the source reading entirely, don't push
+	# it into the target pool.
+	@sourcepool = grep { $_ ne $seq } @sourcepool if $removing;
 	# and add them to the target readings.
-	push( @{$self->eqreadings( $teq )}, @$sourcepool );
-	map { $self->set_equivalence( $_, $teq ) } @$sourcepool;
+	push( @{$self->eqreadings( $teq )}, @sourcepool );
+	map { $self->set_equivalence( $_, $teq ) } @sourcepool;
 	# Then merge the nodes in the equivalence graph.
 	foreach my $pred ( $self->equivalence_graph->predecessors( $seq ) ) {
-		$self->equivalence_graph->add_edge( $pred, $teq );
+		$self->equivalence_graph->add_edge( $pred, $teq )
+			unless $teq eq $pred;
 	}
 	foreach my $succ ( $self->equivalence_graph->successors( $seq ) ) {
-		$self->equivalence_graph->add_edge( $teq, $succ );
+		$self->equivalence_graph->add_edge( $teq, $succ )
+			unless $teq eq $succ;
 	}
 	$self->equivalence_graph->delete_vertex( $seq );
 	# TODO enable this after collation parsing is done
-# 	throw( "Graph got disconnected making $source / $target equivalence" )
-# 		if $self->_is_disconnected;
+	throw( "Graph got disconnected making $source / $target equivalence" )
+		if $self->_is_disconnected && $self->collation->tradition->_initialized;
 }
 
 =head2 test_equivalence
@@ -964,8 +974,8 @@ sub _break_equivalence {
 		}
 	}
 	# TODO enable this after collation parsing is done
-# 	throw( "Graph got disconnected breaking $source / $target equivalence" )
-# 		if $self->_is_disconnected;
+	throw( "Graph got disconnected breaking $source / $target equivalence" )
+		if $self->_is_disconnected && $self->collation->tradition->_initialized;
 }
 
 sub _find_equiv_without {
