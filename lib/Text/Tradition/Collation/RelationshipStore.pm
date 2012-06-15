@@ -565,7 +565,7 @@ sub relationship_valid {
     $mustdrop = [] unless $mustdrop; # in case we were passed nothing
     my $c = $self->collation;
     ## Assume validity is okay if we are initializing from scratch.
-    return ( 1, "initializing" ) unless $c->tradition->initialized;
+    return ( 1, "initializing" ) unless $c->tradition->_initialized;
     
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
@@ -762,10 +762,12 @@ sub _remove_equivalence_node {
 	my $group = $self->equivalence( $node );
 	my $nodelist = $self->eqreadings( $group );
 	if( @$nodelist == 1 && $nodelist->[0] eq $node ) {
+		$self->equivalence_graph->delete_vertex( $group );
 		$self->remove_eqreadings( $group );
+		$self->remove_equivalence( $group );
 	} elsif( @$nodelist == 1 ) {
-		warn "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
-			" in group that should have only $node";
+		throw( "DATA INCONSISTENCY in equivalence graph: " . $nodelist->[0] .
+			" in group that should have only $node" );
 	} else {
  		my @newlist = grep { $_ ne $node } @$nodelist;
 		$self->set_eqreadings( $group, \@newlist );
@@ -835,7 +837,7 @@ sub _make_equivalence {
 	$self->equivalence_graph->delete_vertex( $seq );
 	# TODO enable this after collation parsing is done
 	throw( "Graph got disconnected making $source / $target equivalence" )
-		if $self->_is_disconnected && $self->collation->tradition->initialized;
+		if $self->_is_disconnected && $self->collation->tradition->_initialized;
 }
 
 =head2 test_equivalence
@@ -973,7 +975,7 @@ sub _break_equivalence {
 	}
 	# TODO enable this after collation parsing is done
 	throw( "Graph got disconnected breaking $source / $target equivalence" )
-		if $self->_is_disconnected && $self->collation->tradition->initialized;
+		if $self->_is_disconnected && $self->collation->tradition->_initialized;
 }
 
 sub _find_equiv_without {

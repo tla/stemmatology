@@ -54,7 +54,7 @@ has 'stemmata' => (
 	default => sub { [] },
 	);
   
-has 'initialized' => (
+has '_initialized' => (
 	is => 'ro',
 	isa => 'Bool',
 	default => undef,
