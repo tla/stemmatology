@@ -18,7 +18,7 @@ my $dir = Text::Tradition::Directory->new( $connect_args );
 
 foreach my $text ( $dir->traditionlist ) {
 	my $id = $text->{'id'};
-	next unless $text->{'name'} =~ /punctuat/;
+	next unless $text->{'name'} =~ /Heinrichi/;
 	my $scope = $dir->new_scope;
 	my $tradition = $dir->lookup( $id );
 	print STDERR "Processing tradition " . $tradition->name . "\n";
@@ -38,11 +38,12 @@ foreach my $text ( $dir->traditionlist ) {
 						. $r->text . ")\n";
 					$merged{$om->id} = 1;
 					$c->merge_readings( $r, $om ); 
-				} elsif ( !$c->get_relationship( $r, $om ) ) {
+				} else {
 					print STDERR sprintf( "Adding orthographic link for %s and %s (%s / %s)\n", 
 						$r->id, $om->id, $r->text, $om->text );
-					$c->add_relationship( $r, $om, 
-						{ 'type' => 'orthographic', 'scope' => 'global' } );
+					eval { $c->add_relationship( $r, $om, 
+						{ 'type' => 'orthographic', 'scope' => 'global' } ); };
+					print STDERR $@ if $@;
 				}
 			}
 		}		
