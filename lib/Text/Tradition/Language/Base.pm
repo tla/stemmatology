@@ -229,7 +229,7 @@ sub _treetag_string {
 	}
 	# OK, we can run it then.
 	# First upgrade to UTF8 for necessary languages.
-	my @utf8_supported = qw/ French /;
+	my @utf8_supported = qw/ French Latin Greek /;
 	my %ttopts = ( 'language' => $lang, 'options' => [ qw/ -token -lemma / ] );
 	if( grep { $_ eq $lang } @utf8_supported ) {
 		$ttopts{'use_utf8'} = 1;

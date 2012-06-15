@@ -108,46 +108,7 @@ sub morphology_tags {
 			}
 		}
 	}
-		
-	# TODO special case:
-	#  passive verbs (-or)
-	#  T sapientia -> sapientia
-	#  T primus -> unus
-	#  T occulta -> occultus (with occulo in next field, hmm...)
-	#  T carne -> carnis
-	#  T melius -> bonus
-	
-	my %excep = (
-		'absens' => 'absum',
-		'aperte' => 'apertus',
-		'evolvo' => 'exvolvo',
-		'inquiam' => 'inquam',
-		'intelligo' => 'intellego',
-		'itaque' => 'ita',
-		'iuste' => 'iustus',
-		'longe' => 'longus',
-		'male' => 'malus|malum',
-		'multum' => 'multus',
-		'nec' => 'neque',
-		'nos' => 'ego',
-		'occultum' => 'occultus',
-		'peregrinans' => 'peregrinor',
-		'perfectus' => 'perficio',
-		'potius' => 'potis',
-		'praesente' => 'praesens',
-		'prius' => 'prior',
-		'quotidianus' => 'cottidianus',
-		'se' => 'sui',
-		'septem' => 'septimus',
-		'Spiritum' => 'spiritus',
-		'viriliter' => 'virilis', # TODO special case -iter?
-		'vos' => 'tu',
-		
-		'datum' => 'do|data|datus',
-		'forte' => 'fors|fortis',
-		'vere' => 'verum|verus',
-		);
-		
+				
 	sub _perseus_lookup_tt {
 		my( $orig, $pos, $lemma ) = split( /\t/, $_[0] );
 		_morph_connect();
@@ -155,16 +116,9 @@ sub morphology_tags {
 		# Discard results that don't match the lemma, unless lemma is unknown
 		my $lookupopts = {};
 		unless( $lemma eq '<unknown>' || $lemma =~ /^\W+$/ ) {
-			# TODO Perseus lemma might have a number on the end, yuck.
-			#  multiple lemmata separated with |
-			$lemma =~ s/[^\w|]//g;
-			$lemma = $excep{$lemma} if exists $excep{$lemma};
-			$lemma =~ s/j/i/g;
-			if( $lemma ) { # if we have anything left...
-				my %lems;
-				map { $lems{$_} = 1; $lems{lc($_)} = 1 } split( /\|/, $lemma );
-				$lookupopts->{'lemma'} = [ keys %lems ];
-			}
+			my %lems;
+			map { $lems{$_} = 1; $lems{lc($_)} = 1 } split( /\|/, $lemma );
+			$lookupopts->{'lemma'} = [ keys %lems ];
 		}
 		$lookupopts->{'ttpos'} = $pos if $pos;
 		
