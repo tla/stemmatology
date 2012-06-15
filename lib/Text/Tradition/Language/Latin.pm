@@ -140,7 +140,7 @@ sub morphology_tags {
 		_morph_connect();
 		return unless $morph;
 		# Simple morph DB lookup, and return the results.
-		my $result = $morph->lookup( $orig );
+		my $result = $morph->lexicon_lookup( $orig );
 		return map { _wordform_from_row( $_ ) } @{$result->{'objects'}};
 	}
 	
