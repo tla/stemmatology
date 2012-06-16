@@ -4,6 +4,7 @@ use Moose;
 use JSON ();
 use Module::Load;
 use Text::Tradition::Collation::Reading::WordForm;
+use Text::Tradition::Error;
 
 =head1 NAME
 
@@ -188,6 +189,14 @@ sub TO_JSON {
 	$hash->{'wordform_matchlist'} = [ $self->matching_forms ] if $self->matches;
 	return $hash;
 }
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Lexeme error',
+		'message' => $_[0],
+		);
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
