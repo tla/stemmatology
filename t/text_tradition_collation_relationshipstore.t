@@ -93,6 +93,16 @@ try {
 		"Relationship link prevented for a meta reading" );
 }
 
+# Test 1.4: try to break a relationship near a meta reading
+$c1->add_relationship( 'r7.6', 'r7.3', { type => 'orthographic' } );
+try {
+	$c1->del_relationship( 'r7.6', 'r7.7' );
+	$c1->del_relationship( 'r7.6', 'r7.3' );
+	ok( 1, "Relationship broken with a meta reading as neighbor" );
+} catch {
+	ok( 0, "Relationship deletion failed with a meta reading as neighbor" );
+}
+
 # Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2;
