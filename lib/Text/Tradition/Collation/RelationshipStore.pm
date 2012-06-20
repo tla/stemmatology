@@ -31,10 +31,10 @@ use_ok( 'Text::Tradition::Collation::RelationshipStore' );
 
 my $cxfile = 't/data/Collatex-16.xml';
 my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'CollateX',
-    'file'  => $cxfile,
-    );
+	'name'  => 'inline', 
+	'input' => 'CollateX',
+	'file'  => $cxfile,
+	);
 my $c = $t->collation;
 
 my @v1 = $c->add_relationship( 'n21', 'n22', { 'type' => 'lexical' } );
@@ -260,10 +260,16 @@ add_relationship.
 
 =begin testing
 
+use Test::Warn;
 use Text::Tradition;
 use TryCatch;
 
-my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+my $t1;
+warning_is {
+	$t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+	"Got expected relationship drop warning on parse";
+
 # Test 1.1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
@@ -307,7 +313,11 @@ try {
 
 # Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
-my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+my $t2;
+warning_is {
+	$t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+	"Got expected relationship drop warning on parse";
 my $c2 = $t2->collation;
 $c2->add_relationship( 'r9.2', 'r9.3', { 'type' => 'lexical' } );
 my $trel2 = $c2->get_relationship( 'r9.2', 'r9.3' );
@@ -566,10 +576,10 @@ sub relationship_valid {
     my $c = $self->collation;
     ## Assume validity is okay if we are initializing from scratch.
     return ( 1, "initializing" ) unless $c->tradition->_initialized;
-    
-    if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
+        if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
+		# TODO this might be called before witness paths are set...
 		my %seen_wits;
 		map { $seen_wits{$_} = 1 } $c->reading_witnesses( $source );
 		foreach my $w ( $c->reading_witnesses( $target ) ) {
@@ -752,7 +762,7 @@ sub merge_readings {
 		$rel = $self->get_relationship( @$edge );
 		$self->_set_relationship( $rel, @vector );
 	}
-	$self->_make_equivalence( $deleted, $kept, 1 );
+	$self->_make_equivalence( $deleted, $kept );
 }
 
 ### Equivalence logic
@@ -786,6 +796,7 @@ sub add_equivalence_edge {
 	my( $self, $source, $target ) = @_;
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
+	return unless $seq && $teq;
 	$self->equivalence_graph->add_edge( $seq, $teq );
 }
 
@@ -811,28 +822,22 @@ sub _is_disconnected {
 
 # Equate two readings in the equivalence graph
 sub _make_equivalence {
-	my( $self, $source, $target, $removing ) = @_;
+	my( $self, $source, $target ) = @_;
 	# Get the source equivalent readings
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
 	# Nothing to do if they are already equivalent...
 	return if $seq eq $teq;
-	# Get the readings equivalent to source
-	my @sourcepool = @{$self->eqreadings( $seq )};
-	# If we are removing the source reading entirely, don't push
-	# it into the target pool.
-	@sourcepool = grep { $_ ne $seq } @sourcepool if $removing;
+	my $sourcepool = $self->eqreadings( $seq );
 	# and add them to the target readings.
-	push( @{$self->eqreadings( $teq )}, @sourcepool );
-	map { $self->set_equivalence( $_, $teq ) } @sourcepool;
+	push( @{$self->eqreadings( $teq )}, @$sourcepool );
+	map { $self->set_equivalence( $_, $teq ) } @$sourcepool;
 	# Then merge the nodes in the equivalence graph.
 	foreach my $pred ( $self->equivalence_graph->predecessors( $seq ) ) {
-		$self->equivalence_graph->add_edge( $pred, $teq )
-			unless $teq eq $pred;
+		$self->equivalence_graph->add_edge( $pred, $teq );
 	}
 	foreach my $succ ( $self->equivalence_graph->successors( $seq ) ) {
-		$self->equivalence_graph->add_edge( $teq, $succ )
-			unless $teq eq $succ;
+		$self->equivalence_graph->add_edge( $teq, $succ );
 	}
 	$self->equivalence_graph->delete_vertex( $seq );
 	# TODO enable this after collation parsing is done
@@ -1035,6 +1040,61 @@ sub rebuild_equivalence {
 		next unless $relobj && $relobj->colocated;
 		$self->_make_equivalence( @$rel );
 	}
+}
+
+=head2 equivalence_ranks 
+
+Rank all vertices in the equivalence graph, and return a hash reference with
+vertex => rank mapping.
+
+=cut
+
+sub equivalence_ranks {
+	my $self = shift;
+	my $eqstart = $self->equivalence( $self->collation->start );
+	my $eqranks = { $eqstart => 0 };
+	my $rankeqs = { 0 => [ $eqstart ] };
+	my @curr_origin = ( $eqstart );
+    # A little iterative function.
+    while( @curr_origin ) {
+        @curr_origin = $self->_assign_rank( $eqranks, $rankeqs, @curr_origin );
+    }
+	return( $eqranks, $rankeqs );
+}
+
+sub _assign_rank {
+    my( $self, $node_ranks, $rank_nodes, @current_nodes ) = @_;
+    my $graph = $self->equivalence_graph;
+    # Look at each of the children of @current_nodes.  If all the child's 
+    # parents have a rank, assign it the highest rank + 1 and add it to 
+    # @next_nodes.  Otherwise skip it; we will return when the highest-ranked
+    # parent gets a rank.
+    my @next_nodes;
+    foreach my $c ( @current_nodes ) {
+        warn "Current reading $c has no rank!"
+            unless exists $node_ranks->{$c};
+        foreach my $child ( $graph->successors( $c ) ) {
+            next if exists $node_ranks->{$child};
+            my $highest_rank = -1;
+            my $skip = 0;
+            foreach my $parent ( $graph->predecessors( $child ) ) {
+                if( exists $node_ranks->{$parent} ) {
+                    $highest_rank = $node_ranks->{$parent} 
+                        if $highest_rank <= $node_ranks->{$parent};
+                } else {
+                    $skip = 1;
+                    last;
+                }
+            }
+            next if $skip;
+            my $c_rank = $highest_rank + 1;
+            # print STDERR "Assigning rank $c_rank to node $child \n";
+            $node_ranks->{$child} = $c_rank if $node_ranks;
+            push( @{$rank_nodes->{$c_rank}}, $child ) if $rank_nodes;
+            push( @next_nodes, $child );
+        }
+    }
+    return @next_nodes;
 }
 
 ### Output logic

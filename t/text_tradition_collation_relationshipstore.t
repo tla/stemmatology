@@ -17,10 +17,10 @@ use_ok( 'Text::Tradition::Collation::RelationshipStore' );
 
 my $cxfile = 't/data/Collatex-16.xml';
 my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'CollateX',
-    'file'  => $cxfile,
-    );
+	'name'  => 'inline', 
+	'input' => 'CollateX',
+	'file'  => $cxfile,
+	);
 my $c = $t->collation;
 
 my @v1 = $c->add_relationship( 'n21', 'n22', { 'type' => 'lexical' } );
@@ -42,10 +42,16 @@ is( scalar @v3, 0, "Nothing deleted on non-existent relationship" );
 
 # =begin testing
 {
+use Test::Warn;
 use Text::Tradition;
 use TryCatch;
 
-my $t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+my $t1;
+warning_is {
+	$t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+	"Got expected relationship drop warning on parse";
+
 # Test 1.1: try to equate nodes that are prevented with an intermediate collation
 ok( $t1, "Parsed test fragment file" );
 my $c1 = $t1->collation;
@@ -89,7 +95,11 @@ try {
 
 # Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
-my $t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+my $t2;
+warning_is {
+	$t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+	"Got expected relationship drop warning on parse";
 my $c2 = $t2->collation;
 $c2->add_relationship( 'r9.2', 'r9.3', { 'type' => 'lexical' } );
 my $trel2 = $c2->get_relationship( 'r9.2', 'r9.3' );

@@ -299,7 +299,10 @@ sub add_reading {
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
 	$self->sequence->add_vertex( $reading->id );
-	$self->relations->add_reading( $reading->id );
+	# All meta readings save 'start' and 'end' get disregarded for relationships.
+	unless( $reading->is_nonrel ) {
+		$self->relations->add_reading( $reading->id );
+	}
 	return $reading;
 };
 
@@ -308,17 +311,19 @@ around del_reading => sub {
 	my $self = shift;
 	my $arg = shift;
 	
-	if( ref( $arg ) eq 'Text::Tradition::Collation::Reading' ) {
-		$arg = $arg->id;
+	unless( ref( $arg ) eq 'Text::Tradition::Collation::Reading' ) {
+		$arg = $self->reading( $arg )
 	}
+	my $argid = $arg->id;
 	# Remove the reading from the graphs.
 	$self->_graphcalc_done(0);
 	$self->_clear_cache; # Explicitly clear caches to GC the reading
-	$self->sequence->delete_vertex( $arg );
-	$self->relations->delete_reading( $arg );
+	$self->sequence->delete_vertex( $argid );
+	$self->relations->delete_reading( $argid )
+		unless $arg->is_nonrel;
 	
 	# Carry on.
-	$self->$orig( $arg );
+	$self->$orig( $argid );
 };
 
 =begin testing
@@ -369,9 +374,21 @@ is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
 sub merge_readings {
 	my $self = shift;
 
+	# Sanity check
+	my( $kept_obj, $del_obj, $combine, $combine_char ) = $self->_objectify_args( @_ );
+	my $mergemeta = $kept_obj->is_meta;
+	throw( "Cannot merge meta and non-meta reading" )
+		unless ( $mergemeta && $del_obj->is_meta )
+			|| ( !$mergemeta && !$del_obj->is_meta );
+	if( $mergemeta ) {
+		throw( "Cannot merge with start or end node" )
+			if( $kept_obj eq $self->start || $kept_obj eq $self->end
+				|| $del_obj eq $self->start || $del_obj eq $self->end );
+	}
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $kept, $deleted, $combine, $combine_char ) = $self->_stringify_args( @_ );
+	my $kept = $kept_obj->id;
+	my $deleted = $del_obj->id;
 	$self->_graphcalc_done(0);
 	
     # The kept reading should inherit the paths and the relationships
@@ -387,12 +404,11 @@ sub merge_readings {
 		@wits{keys %$fwits} = values %$fwits;
 		$self->sequence->set_edge_attributes( @vector, \%wits );
 	}
-	$self->relations->merge_readings( $kept, $deleted, $combine );
+	$self->relations->merge_readings( $kept, $deleted, $combine )
+		unless $mergemeta;
 	
 	# Do the deletion deed.
 	if( $combine ) {
-		my $kept_obj = $self->reading( $kept );
-		my $del_obj = $self->reading( $deleted );
 		my $joinstr = $combine_char;
 		unless( defined $joinstr ) {
 			$joinstr = '' if $kept_obj->join_next || $del_obj->join_prior;
@@ -430,7 +446,7 @@ sub add_path {
 
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $source, $target, $wit ) = $self->_stringify_args( @_ );
+    my( $source, $target, $wit ) = $self->_objectify_args( @_ );
 
 	$self->_graphcalc_done(0);
 	# Connect the readings
@@ -1522,17 +1538,21 @@ sub calculate_ranks {
 
     # Do the rankings based on the relationship equivalence graph, starting 
     # with the start node.
-    my $topo_start = $self->equivalence( $self->start->id );
-    my $node_ranks = { $topo_start => 0 };
-    my @curr_origin = ( $topo_start );
-    # A little iterative function.
-    while( @curr_origin ) {
-        @curr_origin = _assign_rank( $self->equivalence_graph, 
-        	$node_ranks, @curr_origin );
-    }
+    my ( $node_ranks, $rank_nodes ) = $self->relations->equivalence_ranks();
+
     # Transfer our rankings from the topological graph to the real one.
     foreach my $r ( $self->readings ) {
-        if( defined $node_ranks->{$self->equivalence( $r->id )} ) {
+        if( $r->is_nonrel ) {
+        	# These are not in the equivalence graph.  Grab the rank of the highest
+        	# predecessor + 1.
+        	my @preds = $self->sequence->predecessors( $r );
+        	my $mrank = 0;
+        	map { my $rk = $node_ranks->{$self->equivalence( $_ )} + 1;
+        		$mrank = $rk > $mrank ? $rk : $mrank; } 
+        		$self->sequence->predecessors( $r );
+        	throw( "All predecessors of $r unranked!" ) unless $mrank;
+        	$r->rank( $mrank );
+        } elsif( defined $node_ranks->{$self->equivalence( $r->id )} ) {
             $r->rank( $node_ranks->{$self->equivalence( $r->id )} );
         } else {
         	# Die. Find the last rank we calculated.
@@ -1557,41 +1577,6 @@ sub calculate_ranks {
     }
 	# The graph calculation information is now up to date.
 	$self->_graphcalc_done(1);
-}
-
-sub _assign_rank {
-    my( $graph, $node_ranks, @current_nodes ) = @_;
-    # Look at each of the children of @current_nodes.  If all the child's 
-    # parents have a rank, assign it the highest rank + 1 and add it to 
-    # @next_nodes.  Otherwise skip it; we will return when the highest-ranked
-    # parent gets a rank.
-    my @next_nodes;
-    foreach my $c ( @current_nodes ) {
-        warn "Current reading $c has no rank!"
-            unless exists $node_ranks->{$c};
-        # print STDERR "Looking at child of node $c, rank " 
-        #     . $node_ranks->{$c} . "\n";
-        foreach my $child ( $graph->successors( $c ) ) {
-            next if exists $node_ranks->{$child};
-            my $highest_rank = -1;
-            my $skip = 0;
-            foreach my $parent ( $graph->predecessors( $child ) ) {
-                if( exists $node_ranks->{$parent} ) {
-                    $highest_rank = $node_ranks->{$parent} 
-                        if $highest_rank <= $node_ranks->{$parent};
-                } else {
-                    $skip = 1;
-                    last;
-                }
-            }
-            next if $skip;
-            my $c_rank = $highest_rank + 1;
-            # print STDERR "Assigning rank $c_rank to node $child \n";
-            $node_ranks->{$child} = $c_rank;
-            push( @next_nodes, $child );
-        }
-    }
-    return @next_nodes;
 }
 
 sub _clear_cache {
