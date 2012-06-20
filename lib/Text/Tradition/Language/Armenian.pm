@@ -1,4 +1,4 @@
-package Text::Tradition::Language::Latin;
+package Text::Tradition::Language::Armenian;
 
 use strict;
 use warnings;
@@ -7,11 +7,11 @@ use parent qw/ Text::Tradition::Language::Perseus /;
 
 =head1 NAME
 
-Text::Tradition::Language::Latin - language-specific module for Latin
+Text::Tradition::Language::Armenian - language-specific module for Armenian
 
 =head1 DESCRIPTION
 
-Implements morphology lookup for Latin words in context.  This module
+Implements morphology lookup for Armenian (Grabar) words in context.  This module
 depends on the Lingua::Morph::Perseus module for access to PhiloLogic database data.
 
 =head1 SUBROUTINES
@@ -23,16 +23,16 @@ Evaluates the string using Treetagger and Perseus, and returns the results.
 =begin testing
 
 use Text::Tradition;
-use_ok( 'Text::Tradition::Language::Latin' );
+use_ok( 'Text::Tradition::Language::Armenian' );
 
 eval "use Lingua::Morph::Perseus";
 my $err = $@;
 
 SKIP: {
-	skip "Package Lingua::Morph::Perseus not found" if $err;
+	skip "No Armenian test data yet";
 
 	my $trad = Text::Tradition->new(
-		'language' => 'Latin',
+		'language' => 'Armenian',
 		'file' => 't/data/legendfrag.xml',
 		'input' => 'Self' );
 	$trad->lemmatize();

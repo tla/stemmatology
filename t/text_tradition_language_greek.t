@@ -1,39 +1,25 @@
-package Text::Tradition::Language::Latin;
+#!/usr/bin/perl -w
 
 use strict;
-use warnings;
-use Module::Load;
-use parent qw/ Text::Tradition::Language::Perseus /;
+use Test::More 'no_plan';
+$| = 1;
 
-=head1 NAME
 
-Text::Tradition::Language::Latin - language-specific module for Latin
 
-=head1 DESCRIPTION
-
-Implements morphology lookup for Latin words in context.  This module
-depends on the Lingua::Morph::Perseus module for access to PhiloLogic database data.
-
-=head1 SUBROUTINES
-
-=head2 lemmatize( $text )
-
-Evaluates the string using Treetagger and Perseus, and returns the results.
-
-=begin testing
-
+# =begin testing
+{
 use Text::Tradition;
-use_ok( 'Text::Tradition::Language::Latin' );
+use_ok( 'Text::Tradition::Language::Greek' );
 
 eval "use Lingua::Morph::Perseus";
 my $err = $@;
 
 SKIP: {
-	skip "Package Lingua::Morph::Perseus not found" if $err;
+	skip "Greek linguistic data not read yet";
 
 	my $trad = Text::Tradition->new(
-		'language' => 'Latin',
-		'file' => 't/data/legendfrag.xml',
+		'language' => 'Greek',
+		'file' => 't/data/florilegium_graphml.xml',
 		'input' => 'Self' );
 	$trad->lemmatize();
 	my $ambig = 0;
@@ -55,19 +41,9 @@ SKIP: {
 	}
 	is( $ambig, 4, "Found 4 ambiguous forms as expected" );
 }
-
-=end testing
-
-=cut
-
-our $dbhandle;
-
-sub lemmatize {
-	return __PACKAGE__->perseus_lemmatize( @_ );
 }
 
-sub reading_lookup {
-	return __PACKAGE__->perseus_reading_lookup( @_ );
-}
+
+
 
 1;
