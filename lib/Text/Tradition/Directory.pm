@@ -216,11 +216,11 @@ before [ qw/ delete / ] => sub {
 
 # TODO Garbage collection doesn't work. Suck it up and live with the 
 # inflated DB.
-# after delete => sub {
-# 	my $self = shift;
-# 	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
-# 	$self->directory->backend->delete( $gc->garbage->members );
-# };
+after delete => sub {
+	my $self = shift;
+	my $gc = KiokuDB::GC::Naive->new( backend => $self->directory->backend );
+	$self->directory->backend->delete( $gc->garbage->members );
+};
 
 sub save {
 	my $self = shift;
