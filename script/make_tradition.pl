@@ -40,7 +40,7 @@ if( $help ) {
     help();
 }
 
-unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|stone$/i ) {
+unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|stone|db$/i ) {
     help( "Input format must be one of CollateX, CSV, CTE, Self, TEI" );
 }
 $informat = 'CollateX' if $informat =~ /^c(ollate)?x$/i;
@@ -67,20 +67,30 @@ if( $informat =~ /^(KUL|CollateText)$/ && !$inbase ) {
 $sep = "\t" if $sep eq 'tab';
 
 my $input = $ARGV[0];
-
-# First: read the base. Make a graph, but also note which
-# nodes represent line beginnings.
-my %args = ( 'input' => $informat,
-             'file' => $input );
-$args{'base'} = $inbase if $inbase;
-$args{'language'} = $language if $language;
-$args{'name'} = $name if $name;
-$args{'sep_char'} = $sep if $informat eq 'Tabular';
-### Custom hacking for Stone
-if( $informat eq 'CollateText' ) {
-    $args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
+my $tradition;
+my $dir;
+if( $informat eq 'db' ) {
+	my $dbargs = { dsn => $dsn };
+	$dbargs->{'extra_args'}->{'user'} = $dbuser if $dbuser;
+	$dbargs->{'extra_args'}->{'password'} = $dbpass if $dbpass;
+	$dir = Text::Tradition::Directory->new( $dbargs );
+	my $scope = $dir->new_scope();
+	$tradition = $dir->lookup( $input );
+} else {
+	# First: read the base. Make a graph, but also note which
+	# nodes represent line beginnings.
+	my %args = ( 'input' => $informat,
+				 'file' => $input );
+	$args{'base'} = $inbase if $inbase;
+	$args{'language'} = $language if $language;
+	$args{'name'} = $name if $name;
+	$args{'sep_char'} = $sep if $informat eq 'Tabular';
+	### Custom hacking for Stone
+	if( $informat eq 'CollateText' ) {
+		$args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
+	}
+	$tradition = Text::Tradition->new( %args );
 }
-my $tradition = Text::Tradition->new( %args );
 if( $stemmafile ) {
 	my $stemma = $tradition->add_stemma( dotfile => $stemmafile );
 	print STDERR "Saved stemma at $stemmafile\n" if $stemma;
@@ -95,11 +105,13 @@ if( $outformat eq 'stemma' ) {
         print STDERR "Bad result: " . $e->message;
     }
 } elsif( $outformat eq 'db' ) {
-	my $extra_args = { 'create' => 1 };
-	$extra_args->{'user'} = $dbuser if $dbuser;
-	$extra_args->{'password'} = $dbpass if $dbpass;
-	my $dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
-		'extra_args' => $extra_args );
+	unless( $dir ) {
+		my $extra_args = { 'create' => 1 };
+		$extra_args->{'user'} = $dbuser if $dbuser;
+		$extra_args->{'password'} = $dbpass if $dbpass;
+		$dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
+			'extra_args' => $extra_args );
+	}
 	my $scope = $dir->new_scope;
 	my $uuid;
 	if( $dbid ) {
