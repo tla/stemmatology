@@ -113,8 +113,7 @@ sub _lemmatize_treetagger_sequence {
 				warn "Ran out of readings in sequence at $lexeme";
 				last;
 			}
-			my $curr_rdg_text = $curr_rdg->has_normal_form 
-				? $curr_rdg->normal_form : $curr_rdg->text;
+			my $curr_rdg_text = $curr_rdg->normal_form;
 			if( $unused_rdg_part &&
 				$unused_rdg_part =~ /^\Q$lexeme\E(\s*)(.*)$/ ) {
 				# Nth part of curr_rdg
@@ -134,7 +133,7 @@ sub _lemmatize_treetagger_sequence {
 				my @lookahead;
 				my $matched;
 				while( my $nr = shift @path ) {
-					my $nrtext = $nr->has_normal_form ? $nr->normal_form : $nr->text;
+					my $nrtext = $nr->normal_form;
 					if( $nrtext =~ /^\Q$lexeme\E/ ) {
 						$curr_rdg = $lookahead[-1] if @lookahead;
 						$matched = 1;
@@ -209,8 +208,7 @@ sub _text_from_path {
 		unless ( $r->join_prior || !$last || $last->join_next ) {
 			$pathtext .= ' ';
 		} 
-		$pathtext .= ( $normalize && $r->has_normal_form ) 
-			? $r->normal_form : $r->text;
+		$pathtext .= $normalize ? $r->normal_form : $r->text;
 		$last = $r;
 	}
 	return $pathtext;

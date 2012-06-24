@@ -159,7 +159,8 @@ has 'is_nonsense' => (
 has 'normal_form' => (
 	is => 'rw',
 	isa => 'Str',
-	predicate => 'has_normal_form',
+	predicate => '_has_normal_form',
+	clearer => '_clear_normal_form',
 	);
 
 # Holds the lexemes for the reading.
@@ -235,6 +236,21 @@ sub BUILD {
 		$self->_deserialize_lexemes( $args->{'lexemes'} );
 	}
 }
+
+# Make normal_form default to text, transparently.
+around 'normal_form' => sub {
+	my $orig = shift;
+	my $self = shift;
+	my( $arg ) = @_;
+	if( $arg && $arg eq $self->text ) {
+		$self->_clear_normal_form;
+		return $arg;
+	} elsif( !$arg && !$self->_has_normal_form ) {
+		return $self->text;
+	} else {
+		$self->$orig( @_ );
+	}
+};
 
 =head2 is_meta
 
