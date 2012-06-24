@@ -1095,6 +1095,8 @@ sub as_graphml {
 				# serialize them. Otherwise set nval to undef so that the
 				# key is excluded from this reading.
         		$nval = $nval ? $n->_serialize_lexemes : undef;
+        	} elsif( $d eq 'normal_form' && $n->normal_form eq $n->text ) {
+        		$nval = undef;
         	}
         	if( $rankoffset && $d eq 'rank' && $n ne $self->start ) {
         		# Adjust the ranks within the subgraph.
