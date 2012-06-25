@@ -204,16 +204,16 @@ around BUILDARGS => sub {
 			
 	# If one of our special booleans is set, we change the text and the
 	# ID to match.
-	if( exists $args->{'is_lacuna'} && !exists $args->{'text'} ) {
+	if( exists $args->{'is_lacuna'} && $args->{'is_lacuna'} && !exists $args->{'text'} ) {
 		$args->{'text'} = '#LACUNA#';
-	} elsif( exists $args->{'is_start'} ) {
+	} elsif( exists $args->{'is_start'} && $args->{'is_start'} ) {
 		$args->{'id'} = '__START__';  # Change the ID to ensure we have only one
 		$args->{'text'} = '#START#';
 		$args->{'rank'} = 0;
-	} elsif( exists $args->{'is_end'} ) {
+	} elsif( exists $args->{'is_end'} && $args->{'is_end'} ) {
 		$args->{'id'} = '__END__';	# Change the ID to ensure we have only one
 		$args->{'text'} = '#END#';
-	} elsif( exists $args->{'is_ph'} ) {
+	} elsif( exists $args->{'is_ph'} && $args->{'is_ph'} ) {
 		$args->{'text'} = $args->{'id'};
 	}
 	
@@ -414,6 +414,12 @@ sub _deserialize_lexemes {
 	}
 	$self->clear_lexemes;
 	$self->add_lexeme( @lexemes );
+}
+
+sub disambiguated {
+	my $self = shift;
+	return 0 unless $self->has_lexemes;
+	return !grep { !$_->is_disambiguated } $self->lexemes;
 }
 
 ## Utility methods
