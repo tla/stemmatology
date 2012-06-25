@@ -3,7 +3,8 @@ package Text::Tradition::Language::Perseus;
 use strict;
 use warnings;
 use Module::Load;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger lfs_morph_tags /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger
+	 lfs_morph_tags /;
 use TryCatch;
 
 =head1 NAME
@@ -45,7 +46,12 @@ match for the word string(s) in the morphology DB.
 
 sub perseus_reading_lookup {
 	my( $self, @words ) = @_;
-	return map { $self->_perseus_lookup_str( $_ ) } @words;
+	my %opts = ( 
+		'language' => $self->_get_lang(),
+		'callback' => sub { _perseus_lookup_str( $self, @_ ) },
+		'path' => \@words,
+		);
+	return reading_lookup_treetagger( %opts );
 }
 
 =head2 morphology_tags
@@ -106,10 +112,11 @@ sub _perseus_lookup_tt {
 }
 
 sub _perseus_lookup_str {
-	my( $self, $orig ) = @_;
+	my $self = shift;
+	my ( $orig, $pos, $lemma ) = split( /\t/, $_[0] );
 	$self->_morph_connect();
 	return unless $self::dbhandle;
-	# Simple morph DB lookup, and return the results.
+	# Simple morph DB lookup, and return the results. Disregard the treetagger.
 	my $result = $self::dbhandle->lexicon_lookup( $orig );
 	return map { $self->_wordform_from_row( $_ ) } @{$result->{'objects'}};
 }
