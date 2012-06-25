@@ -1603,8 +1603,17 @@ sub flatten_ranks {
         next unless $rdg->has_rank;
         my $key = $rdg->rank . "||" . $rdg->text;
         if( exists $unique_rank_rdg{$key} ) {
+        	# Make sure they don't have different grammatical forms
+			my $ur = $unique_rank_rdg{$key};
+			if( $rdg->disambiguated && $ur->disambiguated ) {
+				my $rform = join( '//', map { $_->form->to_string } $rdg->lexemes );
+				my $uform = join( '//', map { $_->form->to_string } $ur->lexemes );
+				next unless $rform eq $uform;
+			} elsif( $rdg->disambiguated xor $ur->disambiguated ) {
+				next;
+			}
             # Combine!
-        	# print STDERR "Combining readings at same rank: $key\n";
+        	print STDERR "Combining readings at same rank: $key\n";
         	$changed = 1;
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
             # TODO see if this now makes a common point.
