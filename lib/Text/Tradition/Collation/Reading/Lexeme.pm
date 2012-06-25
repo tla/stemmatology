@@ -79,6 +79,7 @@ has 'wordform_matchlist' => (
 		'matching_forms' => 'elements',
 		'matching_form' => 'get',
 		'add_matching_form' => 'push',
+		'clear_matching_forms' => 'clear',
 		},
 	default => sub { [] },
 	);
