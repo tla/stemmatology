@@ -48,6 +48,10 @@ or across all traditions.
 
 =item * annotation - (Optional) A freeform note to attach to the relationship.
 
+=item * alters_meaning - Indicate whether, in context, the related words cause
+the text to have different meanings. Possible values are 0 (no), 1 (slightly),
+and >1 (yes).
+
 =item * non_correctable - (Optional) True if the reading would not have been 
 corrected independently.
 
@@ -109,6 +113,12 @@ has 'annotation' => (
 	isa => 'Str',
 	predicate => 'has_annotation',
 	);
+	
+has 'alters_meaning' => (
+	is => 'rw',
+	isa => 'Int',
+	default => 0,
+	);
 
 has 'non_correctable' => (
 	is => 'ro',
@@ -119,6 +129,21 @@ has 'non_independent' => (
 	is => 'ro',
 	isa => 'Bool',
 	);
+	
+around 'alters_meaning' => sub {
+	my $orig = shift;
+	my $self = shift;
+	if( @_ ) {
+		if( $_[0] eq 'no' ) {
+			return $self->$orig( 0 );
+		} elsif( $_[0] eq 'slightly' ) {
+			return $self->$orig( 1 );
+		} elsif( $_[0] eq 'yes' ) {
+			return $self->$orig( 2 );
+		} 
+	}
+	return $self->$orig( @_ );
+};		
 	
 # A read-only meta-Boolean attribute.
 

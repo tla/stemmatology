@@ -296,7 +296,7 @@ sub extend_graph {
 	
 	# Iterate through, adding a.c. witnesses
 	my $actag = $self->collation->ac_label;
-	my $graph = $self->graph->copy;
+	my $graph = $self->graph->deep_copy;
 	foreach my $lw ( @$layerwits ) {
 		# Add the layered witness and set it with the same attributes as
 		# its 'main' analogue

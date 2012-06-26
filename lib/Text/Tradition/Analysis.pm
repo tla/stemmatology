@@ -166,9 +166,13 @@ sub run_analysis {
 	my @groups;
 	my @use_ranks;
 	my %lacunae;
+	my $moved = {};
 	foreach my $rank ( @ranks ) {
 		my $missing = [ @lacunose ];
-		my $rankgroup = group_variants( $tradition, $rank, $missing, \@collapse );
+		my $rankgroup = group_variants( $tradition, $rank, $missing, $moved, \@collapse );
+		# Filter out any empty rankgroups 
+		# (e.g. from the later rank for a transposition)
+		next unless keys %$rankgroup;
 		if( $opts{'exclude_type1'} ) {
 			# Check to see whether this is a "useful" group.
 			my( $rdgs, $grps ) = _useful_variant( $rankgroup, 
@@ -188,39 +192,26 @@ sub run_analysis {
 	foreach my $idx ( 0 .. $#use_ranks ) {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
-		$location->{'id'} = $use_ranks[$idx];
+		my $rank = $use_ranks[$idx];
+		$location->{'id'} = $rank;
 		# Note what our lacunae are
 		my %lmiss;
 		map { $lmiss{$_} = 1 } @{$lacunae{$use_ranks[$idx]}};
-		# Run through the reading groups and add as 'lacunae' any redundant
-		# a.c. witnesses (yes, we have to do this before the analysis, thus
-		# identical loops before and after. Boo.)
-		# TODO Consider making these callbacks to analyze_location
-		foreach my $rdghash ( @{$location->{'readings'}} ) {
-			my %rwits;
-			map { $rwits{$_} = 1 } @{$rdghash->{'group'}};
-			foreach my $rw ( keys %rwits ) {
-				if( $rw =~ /^(.*)\Q$aclabel\E$/ ) {
-					if( exists $rwits{$1} ) {
-						$lmiss{$rw} = 1;
-						delete $rwits{$rw};
-					}
-				}
-			}
-			$rdghash->{'group'} = [ keys %rwits ];
-		}
 		$location->{'missing'} = [ keys %lmiss ];
 		
 		# Run the extra analysis we need.
-		analyze_location( $tradition, $stemma->graph, $location );
+		analyze_location( $tradition, $stemma->graph, $location, \%lmiss );
 
 		# Do the final post-analysis tidying up of the data.
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
 			$conflict_count++ 
 				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
-			# Add the reading text back in
+			# Add the reading text back in, setting display value as needed
 			my $rdg = $c->reading( $rdghash->{'readingid'} );
-			$rdghash->{'text'} = $rdg ? $rdg->text : $rdghash->{'readingid'};
+			if( $rdg ) {
+				$rdghash->{'text'} = $rdg->text . 
+					( $rdg->rank == $rank ? '' : ' [' . $rdg->rank . ']' );
+			}
 			# Remove lacunose witnesses from this reading's list now that the
 			# analysis is done 
 			my @realgroup;
@@ -240,7 +231,8 @@ sub run_analysis {
 Groups the variants at the given $rank of the collation, treating any
 relationships in @merge_relationship_types as equivalent.  $lacunose should
 be a reference to an array, to which the sigla of lacunose witnesses at this 
-rank will be appended.
+rank will be appended; $transposed should be a reference to a hash, wherein
+the identities of transposed readings and their relatives will be stored.
 
 Returns a hash $group_readings where $rdg is attested by the witnesses listed 
 in $group_readings->{$rdg}.
@@ -249,30 +241,51 @@ in $group_readings->{$rdg}.
 
 # Return group_readings, groups, lacunose
 sub group_variants {
-	my( $tradition, $rank, $lacunose, $collapse ) = @_;
+	my( $tradition, $rank, $lacunose, $transposed, $collapse ) = @_;
 	my $c = $tradition->collation;
 	my $aclabel = $c->ac_label;
-
 	# Get the alignment table readings
 	my %readings_at_rank;
 	my %is_lacunose; # lookup table for $lacunose
 	map { $is_lacunose{$_} = 1 } @$lacunose;
-	my @gap_wits;
+	my @check_for_gaps;
+	my %moved_wits;
 	foreach my $tablewit ( @{$c->alignment_table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		my $wit = $tablewit->{'witness'};
 		# Exclude the witness if it is "lacunose" which if we got here
 		# means "not in the stemma".
 		next if $is_lacunose{$wit};
+		# Note if the witness is actually in a lacuna
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
 			_add_to_witlist( $wit, $lacunose, $aclabel );
+		# Otherwise the witness either has a positive reading...
 		} elsif( $rdg ) {
-			$readings_at_rank{$rdg->{'t'}->text} = $rdg->{'t'};
+			# If the reading has been counted elsewhere as a transposition, ignore it.
+			if( $transposed->{$rdg->{'t'}->id} ) {
+				# TODO This doesn't cope with three-way transpositions
+				map { $moved_wits{$_} = 1 } @{$transposed->{$rdg->{'t'}->id}};
+				next;
+			}
+			# Otherwise, record it...
+			$readings_at_rank{$rdg->{'t'}->id} = $rdg->{'t'};
+			# ...and grab any transpositions, and their relations.
+			my @transp = grep { $_->rank != $rank } $rdg->{'t'}->related_readings();
+			foreach my $trdg ( @transp ) {
+				map { $moved_wits{$_} = 1 } $trdg->witnesses;
+				$transposed->{$trdg->id} = [ $rdg->{'t'}->witnesses ];
+				$readings_at_rank{$trdg->id} = $trdg;
+			}
+		# ...or it is empty, ergo a gap.
 		} else {
-			_add_to_witlist( $wit, \@gap_wits, $aclabel );
+			push( @check_for_gaps, $wit );
 		}
 	}
-	
+	my @gap_wits;
+	map { _add_to_witlist( $_, \@gap_wits, $aclabel ) 
+		unless $moved_wits{$_} } @check_for_gaps;
+	# TODO check for, and break into a new row, any doubled-up witness readings
+	#    after transposition...
 	# Group the readings, collapsing groups by relationship if needed
 	my %grouped_readings;
 	foreach my $rdg ( values %readings_at_rank ) {
@@ -387,7 +400,6 @@ sub solve_variants {
 	}
 	
 	## For each distinct graph, send its groups to the solver.
-	$DB::single = 1;
 	my $solver_url = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
 	my $ua = LWP::UserAgent->new();
 	## Witness map is a HACK to get around limitations in node names from IDP
@@ -401,6 +413,7 @@ sub solve_variants {
 		my $json = encode_json( _safe_wit_strings( $graph, $stemma->collation,
 			$groupings, $witness_map ) );
 		# Send it off and get the result
+		#print STDERR "Sending request: $json\n";
 		my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
 							  'Content' => $json );							  
 		my $answer;
@@ -552,22 +565,37 @@ conflict, reading_parents, independent_occurrence, followed, not_followed, and f
 =cut
 
 sub analyze_location {
-	my ( $tradition, $graph, $variant_row ) = @_;
+	my ( $tradition, $graph, $variant_row, $lacunose ) = @_;
+	my $c = $tradition->collation;
 	
 	# Make a hash of all known node memberships, and make the subgraphs.
 	my $contig = {};
 	my $reading_roots = {};
 	my $subgraph = {};
+	$DB::single = 1 if $variant_row->{id} == 6;
+	# Note which witnesses positively belong to which group
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
     	my $rid = $rdghash->{'readingid'};
 		map { $contig->{$_} = $rid } @{$rdghash->{'group'}};
-        
+	}
+	
+	# Now, armed with that knowledge, make a subgraph for each reading
+	# and note the root(s) of each subgraph.
+	foreach my $rdghash( @{$variant_row->{'readings'}} ) {
+    	my $rid = $rdghash->{'readingid'};
+        my %rdgwits;
         # Make the subgraph.
         my $part = $graph->copy;
-		my %these_vertices;
-		map { $these_vertices{$_} = 1 } @{$rdghash->{'group'}};
-		$part->delete_vertices( grep { !$these_vertices{$_} } $part->vertices );
+        my @todelete = grep { exists $contig->{$_} && $contig->{$_} ne $rid }
+        	keys %$contig;
+        $part->delete_vertices( @todelete );
+        _prune_subtree( $part, $lacunose );
 		$subgraph->{$rid} = $part;
+		# Record the remaining lacunose nodes as part of this group, if
+		# we are dealing with a non-genealogical reading.
+		unless( $variant_row->{'genealogical'} ) {
+			map { $contig->{$_} = $rid } $part->vertices;
+		}
 		# Get the reading roots.
 		map { $reading_roots->{$_} = $rid } $part->predecessorless_vertices;
 	}
@@ -576,18 +604,16 @@ sub analyze_location {
     # non-followed/unknown values for each reading.  Also figure out the
     # reading's evident parent(s).
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
-    	# Group string key - TODO do we need this?
-        my $gst = wit_stringify( $rdghash->{'group'} );
         my $rid = $rdghash->{'readingid'};
         # Get the subgraph
         my $part = $subgraph->{$rid};
         
         # Start figuring things out.  
-        my @roots = $part->predecessorless_vertices;
-        $rdghash->{'independent_occurrence'} = scalar @roots;
+        my @roots = grep { $reading_roots->{$_} eq $rid } keys %$reading_roots;
+        $rdghash->{'independent_occurrence'} = \@roots;
         $rdghash->{'followed'} = scalar( $part->vertices ) - scalar( @roots );
         # Find the parent readings, if any, of this reading.
-        my %rdgparents;
+        my $rdgparents = {};
         foreach my $wit ( @roots ) {
         	# Look in the main stemma to find this witness's extant or known-reading
         	# immediate ancestor(s), and look up the reading that each ancestor olds.
@@ -597,7 +623,7 @@ sub analyze_location {
 				foreach my $wparent( @check ) {
 					my $preading = $contig->{$wparent};
 					if( $preading ) {
-						$rdgparents{$preading} = 1;
+						$rdgparents->{$preading} = 1;
 					} else {
 						push( @next, $graph->predecessors( $wparent ) );
 					}
@@ -605,7 +631,25 @@ sub analyze_location {
 				@check = @next;
 			}
 		}
-		$rdghash->{'reading_parents'} = [ keys %rdgparents ];
+		foreach my $p ( keys %$rdgparents ) {
+			# Resolve the relationship of the parent to the reading, and
+			# save it in our hash.
+			my $pobj = $c->reading( $p );
+			my $relation;
+			my $prep = $pobj ? $pobj->id . ' (' . $pobj->text . ')' : $p;
+			if( $pobj ) {
+				my $rel = $c->get_relationship( $p, $rdghash->{readingid} );
+				if( $rel ) {
+					$relation = { type => $rel->type };
+					if( $rel->has_annotation ) {
+						$relation->{'annotation'} = $rel->annotation;
+					}
+				}
+			}	
+			$rdgparents->{$p} = { 'label' => $prep, 'relation' => $relation };
+		}
+			
+		$rdghash->{'reading_parents'} = $rdgparents;
 		
 		# Find the number of times this reading was altered, and the number of
 		# times we're not sure.
@@ -702,7 +746,7 @@ sub _solve_variant_location {
 			# that implicitly later.
 			foreach my $root ( @roots ) {
 				# Prune the tree to get rid of extraneous hypotheticals.
-				$root = _prune_subtree( $part, $root, $contig );
+				$root = _prune_subtree_old( $part, $root, $contig );
 				next unless $root;
 				# Save this root for our group.
 				push( @group_roots, $root );
@@ -836,23 +880,46 @@ sub _solve_variant_location {
 
 sub _prune_group {
 	my( $group, $stemma, $graph ) = @_;
-	# Get these into a form prune_subtree will recognize. Make a "contighash"
-	my $hypohash = {};
-	map { $hypohash->{$_} = 1 } @$group;
-	# ...with reference values for hypotheticals.
-	map { $hypohash->{$_} = [] } $stemma->hypotheticals;
+	my $lacunose = {};
+	map { $lacunose->{$_} = 1 } $stemma->hypotheticals;
+	map { $lacunose->{$_} = 0 } @$group;
 	# Make our subgraph
 	my $subgraph = $graph->copy;
-	map { $subgraph->delete_vertex( $_ ) unless exists $hypohash->{$_} }
+	map { $subgraph->delete_vertex( $_ ) unless exists $lacunose->{$_} }
 		$subgraph->vertices;
 	# ...and find the root.
-	my( $root ) = $subgraph->predecessorless_vertices;
 	# Now prune and return the remaining vertices.
-	_prune_subtree( $subgraph, $root, $hypohash );
+	_prune_subtree( $subgraph, $lacunose );
 	return $subgraph->vertices;
 }
 
 sub _prune_subtree {
+	my( $tree, $lacunose ) = @_;
+	
+	# Delete lacunose witnesses that have no successors
+    my @orphan_hypotheticals;
+    my $ctr = 0;
+    do {
+    	die "Infinite loop on leaves" if $ctr > 100;
+    	@orphan_hypotheticals = grep { $lacunose->{$_} } 
+        	$tree->successorless_vertices;
+        $tree->delete_vertices( @orphan_hypotheticals );
+        $ctr++;
+    } while( @orphan_hypotheticals );
+	
+	# Delete lacunose roots that have a single successor
+	my @redundant_root;
+	$ctr = 0;
+	do {
+    	die "Infinite loop on roots" if $ctr > 100;
+		@redundant_root = grep { $lacunose->{$_} && $tree->successors( $_ ) == 1 } 
+			$tree->predecessorless_vertices;
+		$tree->delete_vertices( @redundant_root );
+		$ctr++;
+	} while( @redundant_root );
+}
+
+sub _prune_subtree_old {
     my( $tree, $root, $contighash ) = @_;
     # First, delete hypothetical leaves / orphans until there are none left.
     my @orphan_hypotheticals = grep { ref( $contighash->{$_} ) } 
