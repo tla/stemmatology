@@ -806,7 +806,6 @@ sub add_equivalence_edge {
 	my( $self, $source, $target ) = @_;
 	my $seq = $self->equivalence( $source );
 	my $teq = $self->equivalence( $target );
-	return unless $seq && $teq;
 	$self->equivalence_graph->add_edge( $seq, $teq );
 }
 

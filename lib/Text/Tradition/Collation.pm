@@ -299,10 +299,7 @@ sub add_reading {
 	$self->_add_reading( $reading->id => $reading );
 	# Once the reading has been added, put it in both graphs.
 	$self->sequence->add_vertex( $reading->id );
-	# All meta readings save 'start' and 'end' get disregarded for relationships.
-	unless( $reading->is_nonrel ) {
-		$self->relations->add_reading( $reading->id );
-	}
+	$self->relations->add_reading( $reading->id );
 	return $reading;
 };
 
@@ -311,19 +308,17 @@ around del_reading => sub {
 	my $self = shift;
 	my $arg = shift;
 	
-	unless( ref( $arg ) eq 'Text::Tradition::Collation::Reading' ) {
-		$arg = $self->reading( $arg )
+	if( ref( $arg ) eq 'Text::Tradition::Collation::Reading' ) {
+		$arg = $arg->id;
 	}
-	my $argid = $arg->id;
 	# Remove the reading from the graphs.
 	$self->_graphcalc_done(0);
 	$self->_clear_cache; # Explicitly clear caches to GC the reading
-	$self->sequence->delete_vertex( $argid );
-	$self->relations->delete_reading( $argid )
-		unless $arg->is_nonrel;
+	$self->sequence->delete_vertex( $arg );
+	$self->relations->delete_reading( $arg );
 	
 	# Carry on.
-	$self->$orig( $argid );
+	$self->$orig( $arg );
 };
 
 =begin testing
@@ -404,8 +399,7 @@ sub merge_readings {
 		@wits{keys %$fwits} = values %$fwits;
 		$self->sequence->set_edge_attributes( @vector, \%wits );
 	}
-	$self->relations->merge_readings( $kept, $deleted, $combine )
-		unless $mergemeta;
+	$self->relations->merge_readings( $kept, $deleted, $combine );
 	
 	# Do the deletion deed.
 	if( $combine ) {
@@ -446,7 +440,7 @@ sub add_path {
 
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
-    my( $source, $target, $wit ) = $self->_objectify_args( @_ );
+    my( $source, $target, $wit ) = $self->_stringify_args( @_ );
 
 	$self->_graphcalc_done(0);
 	# Connect the readings
@@ -1544,17 +1538,7 @@ sub calculate_ranks {
 
     # Transfer our rankings from the topological graph to the real one.
     foreach my $r ( $self->readings ) {
-        if( $r->is_nonrel ) {
-        	# These are not in the equivalence graph.  Grab the rank of the highest
-        	# predecessor + 1.
-        	my @preds = $self->sequence->predecessors( $r );
-        	my $mrank = 0;
-        	map { my $rk = $node_ranks->{$self->equivalence( $_ )} + 1;
-        		$mrank = $rk > $mrank ? $rk : $mrank; } 
-        		$self->sequence->predecessors( $r );
-        	throw( "All predecessors of $r unranked!" ) unless $mrank;
-        	$r->rank( $mrank );
-        } elsif( defined $node_ranks->{$self->equivalence( $r->id )} ) {
+        if( defined $node_ranks->{$self->equivalence( $r->id )} ) {
             $r->rank( $node_ranks->{$self->equivalence( $r->id )} );
         } else {
         	# Die. Find the last rank we calculated.
@@ -1613,7 +1597,7 @@ sub flatten_ranks {
 				next;
 			}
             # Combine!
-        	print STDERR "Combining readings at same rank: $key\n";
+        	#print STDERR "Combining readings at same rank: $key\n";
         	$changed = 1;
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
             # TODO see if this now makes a common point.

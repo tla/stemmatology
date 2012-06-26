@@ -265,17 +265,6 @@ sub is_meta {
 	return $self->is_start || $self->is_end || $self->is_lacuna || $self->is_ph;	
 }
 
-=head2 is_nonrel
-
-Similar to is_meta, but returns false for the start and end readings.
-
-=cut
-
-sub is_nonrel {
-	my $self = shift;
-	return $self->is_lacuna || $self->is_ph;
-}
-
 =head1 Convenience methods
 
 =head2 related_readings
