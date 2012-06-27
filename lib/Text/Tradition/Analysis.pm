@@ -200,8 +200,9 @@ sub run_analysis {
 		$location->{'missing'} = [ keys %lmiss ];
 		
 		# Run the extra analysis we need.
-		analyze_location( $tradition, $stemma->graph, $location, \%lmiss );
+		analyze_location( $tradition, $stemma, $location, \%lmiss );
 
+		my @layerwits;
 		# Do the final post-analysis tidying up of the data.
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
 			$conflict_count++ 
@@ -217,9 +218,14 @@ sub run_analysis {
 			my @realgroup;
 			map { push( @realgroup, $_ ) unless $lmiss{$_} } @{$rdghash->{'group'}};
 			$rdghash->{'group'} = \@realgroup;
-			# TODO Record hypotheticals used to create group, if we end up
-			# needing it
+			# Note any layered witnesses that appear in this group
+			foreach( @realgroup ) {
+				if( $_ =~ /^(.*)\Q$aclabel\E$/ ) {
+					push( @layerwits, $1 );
+				}
+			}
 		}
+		$location->{'layerwits'} = \@layerwits if @layerwits;
 	}
 	$answer->{'conflict_count'} = $conflict_count;
 	
@@ -565,19 +571,29 @@ conflict, reading_parents, independent_occurrence, followed, not_followed, and f
 =cut
 
 sub analyze_location {
-	my ( $tradition, $graph, $variant_row, $lacunose ) = @_;
+	my ( $tradition, $stemma, $variant_row, $lacunose ) = @_;
 	my $c = $tradition->collation;
 	
 	# Make a hash of all known node memberships, and make the subgraphs.
 	my $contig = {};
 	my $reading_roots = {};
 	my $subgraph = {};
-	$DB::single = 1 if $variant_row->{id} == 6;
+	my $acstr = $c->ac_label;
+	my @acwits;
+	$DB::single = 1 if $variant_row->{id} == 87;
 	# Note which witnesses positively belong to which group
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
     	my $rid = $rdghash->{'readingid'};
-		map { $contig->{$_} = $rid } @{$rdghash->{'group'}};
+    	foreach my $wit ( @{$rdghash->{'group'}} ) {
+    		$contig->{$wit} = $rid;
+    	    if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
+    	    	push( @acwits, $1 );
+    	    }
+    	}
 	}
+	
+	# Get the actual graph we should work with
+	my $graph = @acwits ? $stemma->extend_graph( \@acwits ) : $stemma->graph;
 	
 	# Now, armed with that knowledge, make a subgraph for each reading
 	# and note the root(s) of each subgraph.
