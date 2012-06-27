@@ -17,7 +17,7 @@ eval { no warnings; binmode $DB::OUT, ":utf8"; };
 my( $informat, $outformat, $language, $name, $sep, $dsn )  = ( '', '', 'Default', 
 	'Tradition', "\t", "dbi:SQLite:dbname=stemmaweb/db/traditions.db" );
 # Variables with no default
-my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, $debug );
+my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, $debug, $nonlinear );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -30,6 +30,7 @@ GetOptions( 'i|in=s'    => \$informat,
             'p|pass=s'  => \$dbpass,
             'f|from=s'  => \$from,
             't|to=s'    => \$to,
+            'nl|nonlinear' => \$nonlinear,
             'sep=s'		=> \$sep,
             'dsn=s'		=> \$dsn,
 	    'dbid=s'    => \$dbid,
@@ -81,6 +82,7 @@ if( $informat eq 'db' ) {
 	# nodes represent line beginnings.
 	my %args = ( 'input' => $informat,
 				 'file' => $input );
+	$args{'linear'} = 0 if $nonlinear;
 	$args{'base'} = $inbase if $inbase;
 	$args{'language'} = $language if $language;
 	$args{'name'} = $name if $name;
