@@ -274,8 +274,10 @@ See L<Text::Tradition::Collation::Relationship> for the available options.
 sub BUILD {
     my $self = shift;
     $self->_set_relations( Text::Tradition::Collation::RelationshipStore->new( 'collation' => $self ) );
-    $self->_set_start( $self->add_reading( { 'collation' => $self, 'is_start' => 1 } ) );
-    $self->_set_end( $self->add_reading( { 'collation' => $self, 'is_end' => 1 } ) );
+    $self->_set_start( $self->add_reading( 
+    	{ 'collation' => $self, 'is_start' => 1, 'init' => 1 } ) );
+    $self->_set_end( $self->add_reading( 
+    	{ 'collation' => $self, 'is_end' => 1, 'init' => 1 } ) );
 }
 
 ### Reading construct/destruct functions
@@ -284,7 +286,11 @@ sub add_reading {
 	my( $self, $reading ) = @_;
 	unless( ref( $reading ) eq 'Text::Tradition::Collation::Reading' ) {
 		my %args = %$reading;
-		if( $self->tradition->has_language && !exists $args{'language'} ) {
+		if( $args{'init'} ) {
+			# If we are initializing an empty collation, don't assume that we
+			# have set a tradition.
+			delete $args{'init'};
+		} elsif( $self->tradition->has_language && !exists $args{'language'} ) {
 			$args{'language'} = $self->tradition->language;
 		}
 		$reading = Text::Tradition::Collation::Reading->new( 
