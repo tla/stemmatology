@@ -107,7 +107,7 @@ has graph => (
     isa => 'Graph',
     predicate => 'has_graph',
     );
-        
+        	
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
@@ -349,8 +349,27 @@ sub as_svg {
     # Get rid of width and height attributes to allow scaling.
     my $parser = XML::LibXML->new();
     my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
-	$svgdoc->documentElement->removeAttribute('width');
-	$svgdoc->documentElement->removeAttribute('height');
+    if( $opts->{'size'} ) {
+    	my( $ew, $eh ) = @{$opts->{'size'}};
+    	# If the graph is wider than it is tall, set width to ew and remove height.
+    	# Otherwise set height to eh and remove width.
+		my $width = $svgdoc->documentElement->getAttribute('width');
+		my $height = $svgdoc->documentElement->getAttribute('height');
+		$width =~ s/\D+//g;
+		$height =~ s/\D+//g;
+		my( $remove, $keep, $val );
+		if( $width > $height ) {
+			$remove = 'height';
+			$keep = 'width';
+			$val = $ew . 'px';
+		} else {
+			$remove = 'width';
+			$keep = 'height';
+			$val = $eh . 'px';
+		}
+		$svgdoc->documentElement->removeAttribute( $remove );
+		$svgdoc->documentElement->setAttribute( $keep, $val );
+	}
     # Return the result
     return decode_utf8( $svgdoc->toString );
 }
