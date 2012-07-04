@@ -326,9 +326,9 @@ sub group_variants {
 		
 	# If something was transposed, check the groups for doubled-up readings
 	if( $has_transposition ) {
-		print STDERR "Group for rank $rank:\n";
-		map { print STDERR "\t$_: " . join( ' ' , @{$grouped_readings->{$_}} ) . "\n" } 
-			keys %$grouped_readings;
+		# print STDERR "Group for rank $rank:\n";
+		# map { print STDERR "\t$_: " . join( ' ' , @{$grouped_readings->{$_}} ) . "\n" } 
+		# 	keys %$grouped_readings;
 		_check_transposed_consistency( $c, $rank, $transposed, $grouped_readings );
 	}
 	
@@ -401,7 +401,7 @@ sub _check_transposed_consistency {
 				delete $groupings->{$rdg};
 				# If we found a group match, assume there is a symmetry happening.
 				# TODO think more about this
-				print STDERR "*** Deleting symmetric reading $rdg\n";
+				# print STDERR "*** Deleting symmetric reading $rdg\n";
 				unless( $matched ) {
 					delete $transposed->{$rdg};
 					warn "Found problem in evident symmetry with reading $rdg";
@@ -414,7 +414,7 @@ sub _check_transposed_consistency {
 			foreach my $rdg ( @{$seen_wits{$dup}} ) {
 				next if $thisrank{$rdg};
 				next unless exists $groupings->{$rdg};
-				print STDERR "*** Deleting asymmetric doubled-up reading $rdg\n";
+				# print STDERR "*** Deleting asymmetric doubled-up reading $rdg\n";
 				delete $groupings->{$rdg};
 				delete $transposed->{$rdg};
 			}
