@@ -10,6 +10,7 @@ use JSON qw/ encode_json decode_json /;
 use LWP::UserAgent;
 use Text::Tradition;
 use Text::Tradition::Stemma;
+use TryCatch;
 
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
@@ -250,13 +251,15 @@ sub group_variants {
 	my( $tradition, $rank, $lacunose, $transposed, $collapse ) = @_;
 	my $c = $tradition->collation;
 	my $aclabel = $c->ac_label;
+	my $table = $c->alignment_table;
 	# Get the alignment table readings
 	my %readings_at_rank;
-	my %is_lacunose; # lookup table for $lacunose
-	map { $is_lacunose{$_} = 1 } @$lacunose;
+	my %is_lacunose; # lookup table for witnesses not in stemma
+	map { $is_lacunose{$_} = 1; $is_lacunose{$_.$aclabel} = 1 } @$lacunose;
 	my @check_for_gaps;
 	my %moved_wits;
-	foreach my $tablewit ( @{$c->alignment_table->{'alignment'}} ) {
+	my $has_transposition;
+	foreach my $tablewit ( @{$table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		my $wit = $tablewit->{'witness'};
 		# Exclude the witness if it is "lacunose" which if we got here
@@ -269,7 +272,7 @@ sub group_variants {
 		} elsif( $rdg ) {
 			# If the reading has been counted elsewhere as a transposition, ignore it.
 			if( $transposed->{$rdg->{'t'}->id} ) {
-				# TODO This doesn't cope with three-way transpositions
+				# TODO Does this cope with three-way transpositions?
 				map { $moved_wits{$_} = 1 } @{$transposed->{$rdg->{'t'}->id}};
 				next;
 			}
@@ -278,51 +281,76 @@ sub group_variants {
 			# ...and grab any transpositions, and their relations.
 			my @transp = grep { $_->rank != $rank } $rdg->{'t'}->related_readings();
 			foreach my $trdg ( @transp ) {
-				map { $moved_wits{$_} = 1 } $trdg->witnesses;
-				$transposed->{$trdg->id} = [ $rdg->{'t'}->witnesses ];
+				next if exists $readings_at_rank{$trdg->id};
+				$has_transposition = 1;
+				my @affected_wits = _table_witnesses( 
+					$table, $trdg, \%is_lacunose, $aclabel );
+				next unless @affected_wits;
+				map { $moved_wits{$_} = 1 } @affected_wits;
+				$transposed->{$trdg->id} = 
+					[ _table_witnesses( $table, $rdg->{'t'}, \%is_lacunose, $aclabel ) ];
 				$readings_at_rank{$trdg->id} = $trdg;
 			}
 		# ...or it is empty, ergo a gap.
 		} else {
-			push( @check_for_gaps, $wit );
+			_add_to_witlist( $wit, \@check_for_gaps, $aclabel );
 		}
 	}
 	my @gap_wits;
 	map { _add_to_witlist( $_, \@gap_wits, $aclabel ) 
 		unless $moved_wits{$_} } @check_for_gaps;
-	# TODO check for, and break into a new row, any doubled-up witness readings
-	#    after transposition...
 	# Group the readings, collapsing groups by relationship if needed
-	my %grouped_readings;
+	my $grouped_readings = {};
 	foreach my $rdg ( values %readings_at_rank ) {
 		# Skip readings that have been collapsed into others.
-		next if exists $grouped_readings{$rdg->id} && !$grouped_readings{$rdg->id};
+		next if exists $grouped_readings->{$rdg->id} 
+			&& $grouped_readings->{$rdg->id} eq 'COLLAPSE';
 		# Get the witness list, including from readings collapsed into this one.
-		my @wits = $rdg->witnesses;
-		if( $collapse ) {
+		my @wits = _table_witnesses( $table, $rdg, \%is_lacunose, $aclabel );
+		if( $collapse && @$collapse ) {
 			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
-				my @otherwits = $other->witnesses;
+				my @otherwits = _table_witnesses( 
+					$table, $other, \%is_lacunose, $aclabel );
 				push( @wits, @otherwits );
-				$grouped_readings{$other->id} = 0;
+				$grouped_readings->{$other->id} = 'COLLAPSE';
 			}
 		}
-		# Filter the group to those witnesses in the stemma
-		my @use_wits;
-		foreach my $wit ( @wits ) {
-			next if $is_lacunose{$wit};
-			push( @use_wits, $wit );
-		}
-		$grouped_readings{$rdg->id} = \@use_wits;	
+		$grouped_readings->{$rdg->id} = \@wits;
 	}
-	$grouped_readings{'(omitted)'} = \@gap_wits if @gap_wits;
+	$grouped_readings->{'(omitted)'} = \@gap_wits if @gap_wits;
 	# Get rid of our collapsed readings
-	map { delete $grouped_readings{$_} unless $grouped_readings{$_} } 
-		keys %grouped_readings 
+	map { delete $grouped_readings->{$_} if $grouped_readings->{$_} eq 'COLLAPSE' } 
+		keys %$grouped_readings 
 		if $collapse;
+		
+	# If something was transposed, check the groups for doubled-up readings
+	if( $has_transposition ) {
+		print STDERR "Group for rank $rank:\n";
+		map { print STDERR "\t$_: " . join( ' ' , @{$grouped_readings->{$_}} ) . "\n" } 
+			keys %$grouped_readings;
+		_check_transposed_consistency( $c, $rank, $transposed, $grouped_readings );
+	}
 	
 	# Return the result
-	return \%grouped_readings;
+	return $grouped_readings;
+}
+
+# Helper function to query the alignment table for all witnesses (a.c. included)
+# that have a given reading at its rank.
+sub _table_witnesses {
+	my( $table, $trdg, $lacunose, $aclabel ) = @_;
+	my $tableidx = $trdg->rank - 1;
+	my @has_reading;
+	foreach my $row ( @{$table->{'alignment'}} ) {
+		my $wit = $row->{'witness'};
+		next if $lacunose->{$wit};
+		my $rdg = $row->{'tokens'}->[$tableidx];
+		next unless exists $rdg->{'t'} && defined $rdg->{'t'};
+		_add_to_witlist( $wit, \@has_reading, $aclabel )
+			if $rdg->{'t'}->id eq $trdg->id;
+	}
+	return @has_reading;
 }
 
 # Helper function to ensure that X and X a.c. never appear in the same list.
@@ -343,6 +371,60 @@ sub _add_to_witlist {
 			$list->[$i] = $wit;
 		} else {
 			push( @$list, $wit );
+		}
+	}
+}
+
+sub _check_transposed_consistency {
+	my( $c, $rank, $transposed, $groupings ) = @_;
+	my %seen_wits;
+	my %thisrank;
+	# Note which readings are actually at this rank, and which witnesses
+	# belong to which reading.
+	foreach my $rdg ( keys %$groupings ) {
+		my $rdgobj = $c->reading( $rdg );
+		# Count '(omitted)' as a reading at this rank
+		$thisrank{$rdg} = 1 if !$rdgobj || $rdgobj->rank == $rank;
+		map { push( @{$seen_wits{$_}}, $rdg ) } @{$groupings->{$rdg}};
+	}
+	# Our work is done if we have no witness belonging to more than one
+	# reading.
+	my @doubled = grep { scalar @{$seen_wits{$_}} > 1 } keys %seen_wits;
+	return unless @doubled;
+	# If we have a symmetric related transposition, drop the non-rank readings.
+	if( @doubled == scalar keys %seen_wits ) {
+		foreach my $rdg ( keys %$groupings ) {
+			if( !$thisrank{$rdg} ) {
+				my $groupstr = wit_stringify( $groupings->{$rdg} );
+				my ( $matched ) = grep { $groupstr eq wit_stringify( $groupings->{$_} ) }
+					keys %thisrank;
+				delete $groupings->{$rdg};
+				# If we found a group match, assume there is a symmetry happening.
+				# TODO think more about this
+				print STDERR "*** Deleting symmetric reading $rdg\n";
+				unless( $matched ) {
+					delete $transposed->{$rdg};
+					warn "Found problem in evident symmetry with reading $rdg";
+				}
+			}
+		}
+	# Otherwise 'unhook' the transposed reading(s) that have duplicates.
+	} else {
+		foreach my $dup ( @doubled ) {
+			foreach my $rdg ( @{$seen_wits{$dup}} ) {
+				next if $thisrank{$rdg};
+				next unless exists $groupings->{$rdg};
+				print STDERR "*** Deleting asymmetric doubled-up reading $rdg\n";
+				delete $groupings->{$rdg};
+				delete $transposed->{$rdg};
+			}
+		}
+		# and put any now-orphaned readings into an 'omitted' reading.
+		foreach my $wit ( keys %seen_wits ) {
+			unless( grep { exists $groupings->{$_} } @{$seen_wits{$wit}} ) {
+				$groupings->{'(omitted)'} = [] unless exists $groupings->{'(omitted)'};
+				_add_to_witlist( $wit, $groupings->{'(omitted)'}, $c->ac_label );
+			}
 		}
 	}
 }
@@ -398,7 +480,12 @@ sub solve_variants {
 		
 		# Finally, add the group to the list to be calculated for this graph.
 		map { s/\Q$aclabel\E$// } @acwits;
-		my $graph = $stemma->extend_graph( \@acwits );
+		my $graph;
+		try {
+			$graph = $stemma->extend_graph( \@acwits );
+		} catch {
+			die "Unable to extend graph with @acwits";
+		}
 		unless( exists $graph_problems->{"$graph"} ) {
 			$graph_problems->{"$graph"} = { 'object' => $graph, 'groups' => [] };
 		}
@@ -593,7 +680,12 @@ sub analyze_location {
 	}
 	
 	# Get the actual graph we should work with
-	my $graph = @acwits ? $stemma->extend_graph( \@acwits ) : $stemma->graph;
+	my $graph;
+	try {
+		$graph = @acwits ? $stemma->extend_graph( \@acwits ) : $stemma->graph;
+	} catch {
+		die "Could not extend graph with a.c. witnesses @acwits";
+	}
 	
 	# Now, armed with that knowledge, make a subgraph for each reading
 	# and note the root(s) of each subgraph.
