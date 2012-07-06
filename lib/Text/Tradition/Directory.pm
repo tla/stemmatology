@@ -378,7 +378,7 @@ sub add_user {
     my $user = Text::Tradition::User->new(
         id => $username,
         password => ($password ? crypt_password($password) : ''),
-        display => ($userinfo->{display} ? $userinfo->{display} : $username),
+        email => ($userinfo->{email} ? $userinfo->{email} : $username),
         role => $role,
     );
 
@@ -413,7 +413,7 @@ sub extract_openid_data {
         ## Somewhat ugly attribute extension reponse, contains
         ## google-email string which we can use as the id
 
-        $userinfo->{display} = $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'};
+        $userinfo->{email} = $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'};
     }
 
     return;
@@ -442,7 +442,7 @@ sub find_user {
     my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
     return if(!$user || !$user->active);
 
-    print STDERR "Found user, $username, display is :", $user->display, ":\n";
+    print STDERR "Found user, $username, email is :", $user->email, ":\n";
 
     return $user;
 }
