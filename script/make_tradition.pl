@@ -57,8 +57,8 @@ unless( $outformat =~ /^(graphml|svg|dot|stemma|csv|db)$/ ) {
 }
 
 if( $from || $to ) {
-	help( "Subgraphs only supported in GraphML format" ) 
-		unless $outformat eq 'graphml';
+	help( "Subgraphs only supported in GraphML, dot, or SVG format" ) 
+		unless $outformat =~ /^(graphml|dot|svg)$/;
 }
 
 # Do we have a base if we need it?
