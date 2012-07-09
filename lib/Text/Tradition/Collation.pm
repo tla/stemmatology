@@ -729,23 +729,28 @@ sub as_dot {
 			$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n", 
 				$edge->[0], $edge->[1], $varopts );
         } elsif( $used{$edge->[0]} ) {
-        	$subend{$edge->[0]} = 1;
+        	$subend{$edge->[0]} = $edge->[1];
         } elsif( $used{$edge->[1]} ) {
-        	$substart{$edge->[1]} = 1;
+        	$substart{$edge->[1]} = $edge->[0];
         }
     }
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
-    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->path_witnesses( $substart{$node}, $node ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
+    	my $nrdg = $self->reading( $node );
+    	if( $nrdg->has_rank && $nrdg->rank > $startrank ) {
+    		# Substart is actually one lower than $startrank
+    		$variables->{'minlen'} = $nrdg->rank - ( $startrank - 1 );
+    	}	
         my $varopts = _dot_attr_string( $variables );
-        $dot .= "\t\"__SUBSTART__\" -> \"$node\" $varopts;";
+        $dot .= "\t\"__SUBSTART__\" -> \"$node\" $varopts;\n";
 	}
     foreach my $node ( keys %subend ) {
-    	my $witstr = $self->_path_display_label ( $self->reading_witnesses( $self->reading( $node ) ) );
+    	my $witstr = $self->_path_display_label ( $self->path_witnesses( $node, $subend{$node} ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
-        $dot .= "\t\"$node\" -> \"__SUBEND__\" $varopts;";
+        $dot .= "\t\"$node\" -> \"__SUBEND__\" $varopts;\n";
 	}
 	# HACK part 2
 	if( $STRAIGHTENHACK ) {
