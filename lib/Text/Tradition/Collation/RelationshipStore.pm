@@ -196,18 +196,9 @@ sub create {
 		}
 	}
 	
-	# Check to see if a nonlocal relationship is defined for the two readings
-	$rel = $self->scoped_relationship( $options->{'reading_a'}, 
-		$options->{'reading_b'} );
-	if( $rel && $rel->type eq $options->{'type'} ) {
-		return $rel;
-	} elsif( $rel ) {
-		throw( sprintf( "Relationship of type %s with scope %s already defined for readings %s and %s", $rel->type, $rel->scope, $options->{'reading_a'}, $options->{'reading_b'} ) );
-	} else {
-		$rel = Text::Tradition::Collation::Relationship->new( $options );
-		$self->add_scoped_relationship( $rel ) if $rel->nonlocal;
-		return $rel;
-	}
+	$rel = Text::Tradition::Collation::Relationship->new( $options );
+	$self->add_scoped_relationship( $rel ) if $rel->nonlocal;
+	return $rel;
 }
 
 =head2 add_scoped_relationship( $rel )
@@ -435,8 +426,10 @@ sub add_relationship {
 			my $otherrel = $self->scoped_relationship( $rdga, $rdgb );
 			if( $otherrel && $otherrel->type eq $options->{type}
 				&& $otherrel->scope eq $options->{scope} ) {
-				warn "Applying existing scoped relationship";
+				warn "Applying existing scoped relationship for $rdga / $rdgb";
 				$relationship = $otherrel;
+			} elsif( $otherrel ) {
+				throw( "Conflicting scoped relationship for $rdga / $rdgb at $source / $target" );
 			}
     	}
 		$relationship = $self->create( $options ) unless $relationship;  # Will throw on error
