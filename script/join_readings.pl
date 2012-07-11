@@ -41,40 +41,19 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 	# Anywhere in the graph that there is a reading that joins only to a single
 	# successor, and neither of these have any relationships, just join the two
 	# readings.
-	my %gobbled;
-	foreach my $rdg ( sort { $a->rank <=> $b->rank } $c->readings ) {
-		next if $rdg->is_meta;
-		next if $gobbled{$rdg->id};
-		next if $rdg->grammar_invalid || $rdg->is_nonsense;
-		next if $rdg->related_readings();
-		my %seen;
-		while( $c->sequence->successors( $rdg ) == 1 ) {
-			my( $next ) = $c->reading( $c->sequence->successors( $rdg ) );
-			die "Infinite loop" if $seen{$next->id};
-			$seen{$next->id} = 1;
-			last if $c->sequence->predecessors( $next ) > 1;
-			last if $next->is_meta;
-			last if $next->grammar_invalid || $next->is_nonsense;
-			last if $next->related_readings();
-			say "Joining readings $rdg and $next";
-			$c->merge_readings( $rdg, $next, 1 );
-		}
-	}
-	# Make sure we haven't screwed anything up
+	
+	# Save/update the current path texts
 	foreach my $wit ( $tradition->witnesses ) {
-		my $pathtext = $c->path_text( $wit->sigil );
-		my $origtext = join( ' ', @{$wit->text} );
-		die "Text differs for witness " . $wit->sigil 
-			unless $pathtext eq $origtext;
+		my @pathtext = split( /\s+/, $c->path_text( $wit->sigil ) );
+		$wit->text( \@pathtext );
 		if( $wit->is_layered ) {
-			$pathtext = $c->path_text( $wit->sigil.$c->ac_label );
-			$origtext = join( ' ', @{$wit->layertext} );
-			die "Ante-corr text differs for witness " . $wit->sigil
-				unless $pathtext eq $origtext;
+			my @layertext = split( /\s+/, $c->path_text( $wit->sigil.$c->ac_label ) );
+			$wit->layertext( \@layertext );
 		}
 	}
-
-	$c->relations->rebuild_equivalence();
-	$c->calculate_ranks();
+	
+	# Do the deed
+	$c->compress_readings();
+	# ...and save it.
 	$dir->save( $tradition );
 }

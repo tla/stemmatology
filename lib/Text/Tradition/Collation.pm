@@ -1,5 +1,6 @@
 package Text::Tradition::Collation;
 
+use feature 'say';
 use Encode qw( decode_utf8 );
 use File::Temp;
 use File::Which;
@@ -426,6 +427,59 @@ sub merge_readings {
 	$self->del_reading( $deleted );
 }
 
+=head2 compress_readings
+
+Where possible in the graph, compresses plain sequences of readings into a
+single reading. The sequences must consist of readings with no
+relationships to other readings, with only a single witness path between
+them and no other witness paths from either that would skip the other. The
+readings must also not be marked as nonsense or bad grammar.
+
+WARNING: This operation cannot be undone.
+
+=cut
+
+sub compress_readings {
+	my $self = shift;
+	# Anywhere in the graph that there is a reading that joins only to a single
+	# successor, and neither of these have any relationships, just join the two
+	# readings.
+	my %gobbled;
+	foreach my $rdg ( sort { $a->rank <=> $b->rank } $self->readings ) {
+		next if $rdg->is_meta;
+		next if $gobbled{$rdg->id};
+		next if $rdg->grammar_invalid || $rdg->is_nonsense;
+		next if $rdg->related_readings();
+		my %seen;
+		while( $self->sequence->successors( $rdg ) == 1 ) {
+			my( $next ) = $self->reading( $self->sequence->successors( $rdg ) );
+			throw( "Infinite loop" ) if $seen{$next->id};
+			$seen{$next->id} = 1;
+			last if $self->sequence->predecessors( $next ) > 1;
+			last if $next->is_meta;
+			last if $next->grammar_invalid || $next->is_nonsense;
+			last if $next->related_readings();
+			say "Joining readings $rdg and $next";
+			$self->merge_readings( $rdg, $next, 1 );
+		}
+	}
+	# Make sure we haven't screwed anything up
+	foreach my $wit ( $self->tradition->witnesses ) {
+		my $pathtext = $self->path_text( $wit->sigil );
+		my $origtext = join( ' ', @{$wit->text} );
+		throw( "Text differs for witness " . $wit->sigil )
+			unless $pathtext eq $origtext;
+		if( $wit->is_layered ) {
+			$pathtext = $self->path_text( $wit->sigil.$self->ac_label );
+			$origtext = join( ' ', @{$wit->layertext} );
+			throw( "Ante-corr text differs for witness " . $wit->sigil )
+				unless $pathtext eq $origtext;
+		}
+	}
+
+	$self->relations->rebuild_equivalence();
+	$self->calculate_ranks();
+}
 
 # Helper function for manipulating the graph.
 sub _stringify_args {
@@ -1234,7 +1288,7 @@ sub alignment_table {
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {
-        # print STDERR "Making witness row(s) for " . $wit->sigil . "\n";
+        # say STDERR "Making witness row(s) for " . $wit->sigil;
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
         my @row = _make_witness_row( \@wit_path, \@all_pos );
         push( @{$table->{'alignment'}}, 
@@ -1259,8 +1313,8 @@ sub _make_witness_row {
     foreach my $rdg ( @$path ) {
         my $rtext = $rdg->text;
         $rtext = '#LACUNA#' if $rdg->is_lacuna;
-        print STDERR "rank " . $rdg->rank . "\n" if $debug;
-        # print STDERR "No rank for " . $rdg->id . "\n" unless defined $rdg->rank;
+        say STDERR "rank " . $rdg->rank if $debug;
+        # say STDERR "No rank for " . $rdg->id unless defined $rdg->rank;
         $char_hash{$rdg->rank} = { 't' => $rdg };
     }
     my @row = map { $char_hash{$_} } @$positions;
@@ -1484,7 +1538,7 @@ Call make_witness_path for all witnesses in the tradition.
 sub make_witness_paths {
     my( $self ) = @_;
     foreach my $wit ( $self->tradition->witnesses ) {
-        # print STDERR "Making path for " . $wit->sigil . "\n";
+        # say STDERR "Making path for " . $wit->sigil;
         $self->make_witness_path( $wit );
     }
 }
@@ -1615,7 +1669,7 @@ sub flatten_ranks {
 				next;
 			}
             # Combine!
-        	#print STDERR "Combining readings at same rank: $key\n";
+        	#say STDERR "Combining readings at same rank: $key";
         	$changed = 1;
             $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
             # TODO see if this now makes a common point.
@@ -1777,7 +1831,7 @@ sub _common_in_path {
 	my @last_r2 = ( $r2 );
 	# my %all_seen = ( $r1 => 'r1', $r2 => 'r2' );
 	my %all_seen;
-	# print STDERR "Finding common $dir for $r1, $r2\n";
+	# say STDERR "Finding common $dir for $r1, $r2";
 	while( !@candidates ) {
 		last unless $iter--;  # Avoid looping infinitely
 		# Iterate separately down the graph from r1 and r2
@@ -1785,7 +1839,7 @@ sub _common_in_path {
 		foreach my $lc ( @last_r1 ) {
 			foreach my $p ( $lc->$dir ) {
 				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r1' ) {
-					# print STDERR "Path candidate $p from $lc\n";
+					# say STDERR "Path candidate $p from $lc";
 					push( @candidates, $p );
 				} elsif( !$all_seen{$p->id} ) {
 					$all_seen{$p->id} = 'r1';
@@ -1796,7 +1850,7 @@ sub _common_in_path {
 		foreach my $lc ( @last_r2 ) {
 			foreach my $p ( $lc->$dir ) {
 				if( $all_seen{$p->id} && $all_seen{$p->id} ne 'r2' ) {
-					# print STDERR "Path candidate $p from $lc\n";
+					# say STDERR "Path candidate $p from $lc";
 					push( @candidates, $p );
 				} elsif( !$all_seen{$p->id} ) {
 					$all_seen{$p->id} = 'r2';
