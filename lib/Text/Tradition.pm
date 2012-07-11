@@ -6,6 +6,7 @@ use Moose;
 use Text::Tradition::Collation;
 use Text::Tradition::Stemma;
 use Text::Tradition::Witness;
+use Text::Tradition::User;
 
 use vars qw( $VERSION );
 $VERSION = "0.5";
@@ -60,6 +61,21 @@ has '_initialized' => (
 	default => undef,
 	writer => '_init_done',
 	); 
+
+has 'user' => (
+    is => 'rw',
+    isa => 'Text::Tradition::User',
+    required => 0,
+    predicate => 'has_user',
+    clearer => 'clear_user',
+    );
+
+has 'public' => (
+    is => 'rw',
+    isa => 'Bool',
+    required => 0,
+    default => sub { 0; },
+    );
 
 # Create the witness before trying to add it
 around 'add_witness' => sub {

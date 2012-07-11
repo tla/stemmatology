@@ -10,6 +10,10 @@ use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
 use Text::Tradition::Error;
 
+## users
+use KiokuX::User::Util qw(crypt_password);
+use Text::Tradition::User;
+
 extends 'KiokuX::Model';
 
 =head1 NAME
@@ -31,10 +35,36 @@ Text::Tradition::Directory - a KiokuDB interface for storing and retrieving trad
   foreach my $id ( $d->traditions ) {
   	print $d->tradition( $id )->name;
   }
+
+  ## Users:
+  my $userstore = Text::Tradition::UserStore->new(dsn => 'dbi:SQLite:foo.db');
+  my $newuser = $userstore->add_user({ username => 'fred',
+                                       password => 'somepassword' });
+
+  my $fetchuser = $userstore->find_user({ username => 'fred' });
+  if($fetchuser->check_password('somepassword')) { 
+     ## login user or .. whatever
+  }
+
+  my $user = $userstore->deactivate_user({ username => 'fred' });
+  if(!$user->active) { 
+    ## shouldnt be able to login etc
+  }
     
 =head1 DESCRIPTION
 
 Text::Tradition::Directory is an interface for storing and retrieving text traditions and all their data, including an associated stemma hypothesis.  It is an instantiation of a KiokuDB::Model, storing traditions and associated stemmas by UUID.
+
+=head1 ATTRIBUTES
+
+=head2 MIN_PASS_LEN
+
+Constant for the minimum password length when validating passwords,
+defaults to "8".
+
+=cut
+
+has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 
 =head1 METHODS
 
@@ -194,12 +224,14 @@ around BUILDARGS => sub {
 	return $class->$orig( $args );
 };
 
+## These checks don't cover store($id, $obj)
 # before [ qw/ store update insert delete / ] => sub {
 before [ qw/ delete / ] => sub {
 	my $self = shift;
 	my @nontrad;
 	foreach my $obj ( @_ ) {
-		if( ref( $obj ) && ref( $obj ) ne 'Text::Tradition' ) {
+		if( ref( $obj ) && ref( $obj ) ne 'Text::Tradition'
+            && ref ($obj) ne 'Text::Tradition::User' ) {
 			# Is it an id => Tradition hash?
 			if( ref( $obj ) eq 'HASH' && keys( %$obj ) == 1 ) {
 				my( $k ) = keys %$obj;
@@ -245,11 +277,43 @@ sub tradition {
 	return $obj;
 }
 
+sub user_traditionlist {
+    my ($self, $user) = @_;
+
+    my @tlist;
+    if(ref $user && $user->is_admin) {
+        ## Admin sees all
+        return $self->traditionlist();
+    } elsif(ref $user) {
+        ## We have a user object already, so just fetch its traditions and use tose
+        foreach my $t (@{ $user->traditions }) {
+            push( @tlist, { 'id' => $self->object_to_id( $t ), 
+                            'name' => $t->name } );
+        }
+        return @tlist;
+    } elsif($user ne 'public') {
+        die "Passed neither a user object nor 'public' to user_traditionlist";
+    }
+    
+    ## Search for all traditions which allow public viewing
+    ## When they exist!
+## This needs to be more sophisticated, probably needs Search::GIN
+#    my $list = $self->search({ public => 1 });
+    
+    ## For now, just fetch all
+    ## (could use all_objects or grep down there?)
+    return $self->traditionlist();
+}
+
 sub traditionlist {
 	my $self = shift;
+    my ($user) = @_;
+
+    return $self->user_traditionlist($user) if($user);
+
+	my @tlist;
 	# If we are using DBI, we can do it the easy way; if not, the hard way.
 	# Easy way still involves making a separate DBI connection. Ew.
-	my @tlist;
 	if( $self->dsn =~ /^dbi:(\w+):/ ) {
 		my $dbtype = $1;
 		my @connection = @{$self->directory->backend->connect_info};
@@ -279,6 +343,258 @@ sub throw {
 		'ident' => 'database error',
 		'message' => $_[0],
 		);
+}
+
+
+# has 'directory' => ( 
+#     is => 'rw', 
+#     isa => 'KiokuX::Model',
+#     handles => []
+#     );
+
+## TODO: Some of these methods should probably optionally take $user objects
+## instead of hashrefs.
+
+## It also occurs to me that all these methods don't need to be named
+## XX_user, but leaving that way for now incase we merge this code
+## into ::Directory for one-store.
+
+## To die or not to die, on error, this is the question.
+
+=head2 add_user
+
+Takes a hashref of C<username>, C<password>.
+
+Create a new user object, store in the KiokuDB backend, and return it.
+
+=cut
+
+sub add_user {
+    my ($self, $userinfo) = @_;
+
+    my $username = $userinfo->{username};
+    my $password = $userinfo->{password};
+    my $role = $userinfo->{role} || 'user';
+
+    return unless ($username =~ /^https?:/ 
+                   || ($username && $self->validate_password($password))) ;
+
+    my $user = Text::Tradition::User->new(
+        id => $username,
+        password => ($password ? crypt_password($password) : ''),
+        email => ($userinfo->{email} ? $userinfo->{email} : $username),
+        role => $role,
+    );
+
+    $self->store($user->kiokudb_object_id, $user);
+
+    return $user;
+}
+
+sub create_user {
+    my ($self, $userinfo) = @_;
+
+    ## No username means probably an OpenID based user
+    if(!exists $userinfo->{username}) {
+        extract_openid_data($userinfo);
+    }
+
+    return $self->add_user($userinfo);
+}
+
+## Not quite sure where this method should be.. Auth /
+## Credential::OpenID just pass us back the chunk of extension data
+sub extract_openid_data {
+    my ($userinfo) = @_;
+
+    ## Spec says SHOULD use url as identifier
+    $userinfo->{username} = $userinfo->{url};
+
+    ## Use email addy as display if available
+    if(exists $userinfo->{extensions} &&
+         exists $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'} &&
+         defined $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'}) {
+        ## Somewhat ugly attribute extension reponse, contains
+        ## google-email string which we can use as the id
+
+        $userinfo->{email} = $userinfo->{extensions}{'http://openid.net/srv/ax/1.0'}{'value.email'};
+    }
+
+    return;
+}
+
+=head2 find_user
+
+Takes a hashref of C<username>, and possibly openIDish results from
+L<Net::OpenID::Consumer>.
+
+Fetches the user object for the given username and returns it.
+
+=cut
+
+sub find_user {
+    my ($self, $userinfo) = @_;
+
+    ## No username means probably an OpenID based user
+    if(!exists $userinfo->{username}) {
+        extract_openid_data($userinfo);
+    }
+
+    my $username = $userinfo->{username};
+
+    ## No logins if user is deactivated (use lookup to fetch to re-activate)
+    my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
+    return if(!$user || !$user->active);
+
+    print STDERR "Found user, $username, email is :", $user->email, ":\n";
+
+    return $user;
+}
+
+=head2 modify_user
+
+Takes a hashref of C<username> and C<password> (same as add_user).
+
+Retrieves the user, and updates it with the new information. Username
+changing is not currently supported.
+
+Returns the updated user object, or undef if not found.
+
+=cut
+
+sub modify_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+    my $password = $userinfo->{password};
+    my $role = $userinfo->{role};
+
+    return unless $username;
+    return if($password && !$self->validate_password($password));
+
+    my $user = $self->find_user({ username => $username });
+    return unless $user;
+
+    if($password) {
+        $user->password(crypt_password($password));
+    }
+    if($role) {
+        $user->role($role);
+    }
+
+    $self->update($user);
+
+    return $user;
+}
+
+=head2 deactivate_user
+
+Takes a hashref of C<username>.
+
+Sets the users C<active> flag to false (0), and sets all traditions
+assigned to them to non-public, updates the storage and returns the
+deactivated user.
+
+Returns undef if user not found.
+
+=cut
+
+sub deactivate_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->find_user({ username => $username });
+    return if !$user;
+
+    $user->active(0);
+    foreach my $tradition (@{ $user->traditions }) {
+        ## Not implemented yet
+        # $tradition->public(0);
+    }
+
+    ## Should we be using Text::Tradition::Directory also?
+    $self->update(@{ $user->traditions });
+
+    $self->update($user);
+
+    return $user;
+}
+
+=head2 reactivate_user
+
+Takes a hashref of C<username>.
+
+Returns the user object if already activated. Activates (sets the
+active flag to true (1)), updates the storage and returns the user.
+
+Returns undef if the user is not found.
+
+=cut
+
+sub reactivate_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
+    return if !$user;
+
+    return $user if $user->active;
+
+    $user->active(1);
+    $self->update($user);
+
+    return $user;    
+}
+
+=head2 delete_user
+
+CAUTION: Deletes actual data!
+
+Takes a hashref of C<username>.
+
+Returns undef if the user doesn't exist.
+
+Removes the user from the store and returns 1.
+
+=cut
+
+sub delete_user {
+    my ($self, $userinfo) = @_;
+    my $username = $userinfo->{username};
+
+    return if !$username;
+
+    my $user = $self->find_user({ username => $username });
+    return if !$user;
+
+    ## Should we be using Text::Tradition::Directory for this bit?
+    $self->delete( @{ $user->traditions });
+
+    ## Poof, gone.
+    $self->delete($user);
+
+    return 1;
+}
+
+=head2 validate_password
+
+Takes a password string. Returns true if it is longer than
+L</MIN_PASS_LEN>, false otherwise.
+
+Used internally by L</add_user>.
+
+=cut
+
+sub validate_password {
+    my ($self, $password) = @_;
+
+    return if !$password;
+    return if length($password) < $self->MIN_PASS_LEN;
+
+    return 1;
 }
 
 1;
