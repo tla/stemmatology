@@ -717,6 +717,9 @@ sub related_readings {
 		# Backwards compat
 		if( $filter eq 'colocated' ) {
 			$filter = sub { $_[0]->colocated };
+		} elsif( !ref( $filter ) ) {
+			my $type = $filter;
+			$filter = sub { $_[0]->type eq $type };
 		}
 		my %found = ( $reading => 1 );
 		my $check = [ $reading ];
