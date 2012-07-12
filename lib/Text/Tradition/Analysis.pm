@@ -8,6 +8,7 @@ use Exporter 'import';
 use Graph;
 use JSON qw/ encode_json decode_json /;
 use LWP::UserAgent;
+use Text::LevenshteinXS qw/ distance /;
 use Text::Tradition;
 use Text::Tradition::Stemma;
 use TryCatch;
@@ -669,7 +670,6 @@ sub analyze_location {
 	my $subgraph = {};
 	my $acstr = $c->ac_label;
 	my @acwits;
-	$DB::single = 1 if $variant_row->{id} == 87;
 	# Note which witnesses positively belong to which group
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
     	my $rid = $rdghash->{'readingid'};
@@ -745,19 +745,36 @@ sub analyze_location {
 			# Resolve the relationship of the parent to the reading, and
 			# save it in our hash.
 			my $pobj = $c->reading( $p );
-			my $relation;
 			my $prep = $pobj ? $pobj->id . ' (' . $pobj->text . ')' : $p;
+			my $phash = { 'label' => $prep };
 			if( $pobj ) {
 				my $rel = $c->get_relationship( $p, $rdghash->{readingid} );
 				if( $rel ) {
-					$relation = { type => $rel->type };
+					$phash->{relation} = { type => $rel->type };
 					if( $rel->has_annotation ) {
-						$relation->{'annotation'} = $rel->annotation;
+						$phash->{relation}->{'annotation'} = $rel->annotation;
+					}
+				} elsif( $rdghash->{readingid} eq '(omitted)' ) {
+					$phash->{relation} = { type => 'deletion' };
+				} elsif( $rdghash->{text} ) {
+					# Check for sheer word similarity.
+					my $rtext = $rdghash->{text};
+					my $ptext = $pobj->text;
+					my $min = length( $rtext ) > length( $ptext )
+						? length( $ptext ) : length( $rtext );
+					my $distance = distance( $rtext, $ptext );
+					if( $distance < $min ) {
+						$phash->{relation} = { type => 'wordsimilar' };
 					}
 				}
+				# Get the attributes of the parent object while we are here
+				$phash->{'text'} = $pobj->text if $pobj;
+				$phash->{'is_nonsense'} = $pobj->is_nonsense;
+				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
+			} elsif( $p eq '(omitted)' ) {
+				$phash->{relation} = { type => 'addition' };
 			}
-			my $phash = { 'label' => $prep, 'relation' => $relation };
-			$phash->{'text'} = $pobj->text if $pobj;
+			# Save it
 			$rdgparents->{$p} = $phash;
 		}
 			
