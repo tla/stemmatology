@@ -183,12 +183,14 @@ has 'join_prior' => (
 	is => 'ro',
 	isa => 'Bool',
 	default => undef,
+	writer => '_set_join_prior',
 	);
 	
 has 'join_next' => (
 	is => 'ro',
 	isa => 'Bool',
 	default => undef,
+	writer => '_set_join_next',
 	);
 
 

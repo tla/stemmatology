@@ -1,27 +1,40 @@
 #!/usr/bin/env perl
 
 use lib 'lib';
+use feature 'say';
 use strict;
 use warnings;
+use Getopt::Long;
 use Text::Tradition::Directory;
+use TryCatch;
 
-binmode STDERR, ':utf8';
 binmode STDOUT, ':utf8';
-eval { no warnings; binmode $DB::OUT, ':utf8' };
+binmode STDERR, ':utf8';
+eval { no warnings; binmode $DB::OUT, ':utf8'; $DB::deep = 1000 };
 
-my( $dsn, $user, $pass ) = @ARGV;
+my( $dbuser, $dbpass );
+my $dsn = 'dbi:SQLite:dbname=stemmaweb/db/traditions.db';
+my $testrun;
 
-my $connect_args = { dsn => $dsn };
-$connect_args->{'extra_args'} = { user => $user, password => $pass }
-	if $user && $pass;
-my $dir = Text::Tradition::Directory->new( $connect_args );
+GetOptions( 
+	'dsn=s'    => \$dsn,
+	'u|user=s' => \$dbuser,
+	'p|pass=s' => \$dbpass,
+	'n|test'   => \$testrun,
+	);
 
-foreach my $text ( $dir->traditionlist ) {
-	my $id = $text->{'id'};
-	next unless $text->{'name'} =~ /Heinrichi/;
-	my $scope = $dir->new_scope;
-	my $tradition = $dir->lookup( $id );
-	print STDERR "Processing tradition " . $tradition->name . "\n";
+my $dbopts = { dsn => $dsn };
+$dbopts->{extra_args}->{user} = $dbuser if $dbuser;
+$dbopts->{extra_args}->{password} = $dbpass if $dbpass;
+
+my $dir = Text::Tradition::Directory->new( $dbopts );
+
+my $scope = $dir->new_scope();
+my $lookfor = $ARGV[0] || '';
+foreach my $tinfo ( $dir->traditionlist() ) {
+	next unless $tinfo->{'name'} =~ /$lookfor/ || $tinfo->{'id'} eq $lookfor;
+	my $tradition = $dir->lookup( $tinfo->{id} );
+	say STDERR "Processing tradition " . $tradition->name;
 	my $c = $tradition->collation;
 	$c->flatten_ranks(); # just in case
 	foreach my $rank ( 1 .. $c->end->rank - 1 ) {
@@ -34,16 +47,19 @@ foreach my $text ( $dir->traditionlist ) {
 			my @orthmatch = grep { lc( $r->text ) eq lc( $_->text ) } @readings;
 			foreach my $om ( @orthmatch ) {
 				if( $r->text eq $om->text ) {
-					print STDERR "Merging identical readings $r and $om (" 
-						. $r->text . ")\n";
+					say STDERR "Merging identical readings $r and $om (" 
+						. $r->text . ")";
 					$merged{$om->id} = 1;
 					$c->merge_readings( $r, $om ); 
 				} else {
-					print STDERR sprintf( "Adding orthographic link for %s and %s (%s / %s)\n", 
+					say STDERR sprintf( "Adding orthographic link for %s and %s (%s / %s)", 
 						$r->id, $om->id, $r->text, $om->text );
-					eval { $c->add_relationship( $r, $om, 
-						{ 'type' => 'orthographic', 'scope' => 'global' } ); };
-					print STDERR $@ if $@;
+					try { 
+						$c->add_relationship( $r, $om, 
+							{ 'type' => 'orthographic', 'scope' => 'global' } ); };
+					} catch ( Text::Tradition::Error $e ) {
+						say STDERR "Relationship skipped: " . $e->message;
+					}
 				}
 			}
 		}		

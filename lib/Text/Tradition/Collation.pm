@@ -417,6 +417,8 @@ sub merge_readings {
 			$joinstr = $self->wordsep unless defined $joinstr;
 		}
 		$kept_obj->alter_text( join( $joinstr, $kept_obj->text, $del_obj->text ) );
+		# Change this reading to a joining one if necessary
+		$kept_obj->_set_join_next( $del_obj->join_next );
 		$kept_obj->normal_form( 
 			join( $joinstr, $kept_obj->normal_form, $del_obj->normal_form ) );
 		# Combine the lexemes present in the readings

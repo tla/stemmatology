@@ -180,11 +180,14 @@ sub parse {
     	$is_layer ? $wit->layertext( \@words ) : $wit->text( \@words );
     }    
     
+    my $nocollate = ( scalar( @witnesses ) * scalar @$alignment_table ) > 150000;
+    print STDERR "Tradition too big for row collation\n" if $nocollate;
+    
     # Now for the next rows, make nodes as necessary, assign their ranks, and 
     # add them to the witness paths.
     foreach my $idx ( 1 .. $#{$alignment_table} ) {
         my $row = $alignment_table->[$idx];
-        my $nodes = _make_nodes( $c, $row, $idx );
+        my $nodes = _make_nodes( $c, $row, $idx, $nocollate );
         foreach my $w ( 0 .. $#{$row} ) {
             # push the appropriate node onto the appropriate witness path
             my $word = $row->[$w];
@@ -252,11 +255,11 @@ sub parse {
 	# Note that our ranks and common readings are set.
 	$c->_graphcalc_done(1);
 	# Remove redundant collation relationships.
-	$c->relations->filter_collations();
+	$c->relations->filter_collations() unless $nocollate;
 }
 
 sub _make_nodes {
-    my( $collation, $row, $index ) = @_;
+    my( $collation, $row, $index, $nocollate ) = @_;
     my %unique;
     my $commonctr = 0; # Holds the number of unique readings + gaps, ex. lacunae.
     foreach my $w ( @$row ) {
@@ -280,24 +283,25 @@ sub _make_nodes {
         $ctr++;
     }
     # Collate this sequence of readings via a single 'collation' relationship.
-    my @rankrdgs = values %unique;
-    my $collation_rel;
-    while( @rankrdgs ) {
-    	my $r = shift @rankrdgs;
-    	next if $r->is_meta;
-    	foreach my $nr ( @rankrdgs ) {
-    		next if $nr->is_meta;
-    		if( $collation_rel ) {
-    			$collation->add_relationship( $r, $nr, $collation_rel );
-    		} else {
-    			$collation->add_relationship( $r, $nr, 
-    				{ 'type' => 'collated', 
-    				  'annotation' => "Parsed together for rank $index" } );
-    			$collation_rel = $collation->get_relationship( $r, $nr );
-    		}
-    	}
-    }
-    
+    unless( $nocollate ) {
+		my @rankrdgs = values %unique;
+		my $collation_rel;
+		while( @rankrdgs ) {
+			my $r = shift @rankrdgs;
+			next if $r->is_meta;
+			foreach my $nr ( @rankrdgs ) {
+				next if $nr->is_meta;
+				if( $collation_rel ) {
+					$collation->add_relationship( $r, $nr, $collation_rel );
+				} else {
+					$collation->add_relationship( $r, $nr, 
+						{ 'type' => 'collated', 
+						  'annotation' => "Parsed together for rank $index" } );
+					$collation_rel = $collation->get_relationship( $r, $nr );
+				}
+			}
+		}
+	}    
     return \%unique;
 }
 

@@ -5,9 +5,7 @@ use feature 'say';
 use strict;
 use warnings;
 use Getopt::Long;
-use Lingua::Features::Structure;
 use Text::Tradition::Directory;
-use XML::Easy::Syntax qw/ $xml10_name_rx $xml10_namestartchar_rx /;
 use TryCatch;
 
 binmode STDOUT, ':utf8';
