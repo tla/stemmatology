@@ -111,6 +111,7 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 				next unless $rdg->has_lexemes;
 				next if grep { !$_->is_disambiguated } $rdg->lexemes;
 				next if is_sameword( $c, $r, $rdg );
+				# Do the grammatical link if applicable
 				my $gram;
 				if( join( ' ', map { $_->form->lemma } $rdg->lexemes ) eq $rlem
 					&& $rlem !~ /\<unknown\>/ ) {
@@ -119,6 +120,17 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 					$c->add_relationship( $r, $rdg, { 'type' => 'grammatical' } );
 					$gram = 1;
 				}
+				
+				# Do a punctuation link (instead of a lexical link) if applicable
+				my $punct;
+				if( $rdg->text =~ /^[[:punct:]]$/ && $r->text =~ /^[[:punct:]]$/ ) {
+					say sprintf( "Linking %s (%s) and %s (%s) with punctuation rel",
+						$r, $r->text, $rdg, $rdg->text );
+					$c->add_relationship( $r, $rdg, { 'type' => 'punctuation' } );
+					$punct = 1;
+				}
+				
+				# Do the lexical link if applicable
 				my @rdgpos = map { $_->form->morphstr } $rdg->lexemes;
 				next unless @rpos == @rdgpos;
 				my $lex = 1;
@@ -134,7 +146,7 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 						$lex = 0;
 					}
 				}
-				if( $lex ) {
+				if( $lex && !$punct ) {
 					if( $gram ) {
 						warn sprintf( "Grammatical link already made for %s (%s) / %s (%s)",
 							$r, $r->text, $rdg, $rdg->text );

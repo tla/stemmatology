@@ -4,7 +4,7 @@ use Moose;
 use Moose::Util::TypeConstraints;
 
 enum 'RelationshipType' => qw( spelling orthographic grammatical lexical
-							   collated repetition transposition );
+							   collated repetition transposition punctuation );
 
 enum 'RelationshipScope' => qw( local document global );
 

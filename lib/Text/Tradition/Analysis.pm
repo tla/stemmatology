@@ -213,6 +213,8 @@ sub run_analysis {
 			if( $rdg ) {
 				$rdghash->{'text'} = $rdg->text . 
 					( $rdg->rank == $rank ? '' : ' [' . $rdg->rank . ']' );
+				$rdghash->{'is_ungrammatical'} = $rdg->grammar_invalid;
+				$rdghash->{'is_nonsense'} = $rdg->is_nonsense;
 			}
 			# Remove lacunose witnesses from this reading's list now that the
 			# analysis is done 
@@ -753,8 +755,10 @@ sub analyze_location {
 						$relation->{'annotation'} = $rel->annotation;
 					}
 				}
-			}	
-			$rdgparents->{$p} = { 'label' => $prep, 'relation' => $relation };
+			}
+			my $phash = { 'label' => $prep, 'relation' => $relation };
+			$phash->{'text'} = $pobj->text if $pobj;
+			$rdgparents->{$p} = $phash;
 		}
 			
 		$rdghash->{'reading_parents'} = $rdgparents;
