@@ -1029,6 +1029,7 @@ sub rebuild_equivalence {
 	$self->_clear_equivalence;
 	$self->_clear_eqreadings;
 	
+	$self->collation->tradition->_init_done(0);
 	# Add the readings
 	foreach my $r ( $self->collation->readings ) {
 		my $rid = $r->id;
@@ -1049,6 +1050,7 @@ sub rebuild_equivalence {
 		next unless $relobj && $relobj->colocated;
 		$self->_make_equivalence( @$rel );
 	}
+	$self->collation->tradition->_init_done(1);
 }
 
 =head2 equivalence_ranks 
