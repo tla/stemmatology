@@ -5,6 +5,7 @@ use warnings;
 
 use Moose;
 use KiokuX::User::Util qw(crypt_password);
+use Text::Tradition::Error;
 
 extends 'Text::Tradition::Directory';
 # extends 'KiokuX::Model';
@@ -65,8 +66,6 @@ has MIN_PASS_LEN => ( is => 'ro', isa => 'Num', default => sub { 8 } );
 ## XX_user, but leaving that way for now incase we merge this code
 ## into ::Directory for one-store.
 
-## To die or not to die, on error, this is the question.
-
 =head2 METHODS
 
 =head3 add_user
@@ -82,9 +81,10 @@ sub add_user {
     my $username = $userinfo->{url} || $userinfo->{username};
     my $password = $userinfo->{password};
 
-    return unless ($username =~ /^https?:/ 
-                   || ($username && $self->validate_password($password))) ;
-
+	throw( "No username given" ) unless $username;
+	throw( "Invalid password - too short?" )
+		unless ( $self->validate_password($password) || $username =~ /^https?:/ );
+    
     my $user = Text::Tradition::User->new(
         id => $username,
         password => ($password ? crypt_password($password) : ''),
@@ -126,9 +126,8 @@ sub find_user {
 Takes a hashref of C<username> and C<password> (same as add_user).
 
 Retrieves the user, and updates it with the new information. Username
-changing is not currently supported.
-
-Returns the updated user object, or undef if not found.
+changing is not currently supported. Returns the updated user object.
+Throws an error if user not found.
 
 =cut
 
@@ -137,10 +136,11 @@ sub modify_user {
     my $username = $userinfo->{username};
     my $password = $userinfo->{password};
 
-    return unless $username && $self->validate_password($password);
+    throw( "Missing username or bad password" )
+    	unless $username && $self->validate_password($password);
 
     my $user = $self->find_user({ username => $username });
-    return unless $user;
+    throw( "Could not find user $username" ) unless $user;
 
     my $scope = $self->new_scope;
     $user->password(crypt_password($password));
@@ -158,7 +158,7 @@ Sets the users C<active> flag to false (0), and sets all traditions
 assigned to them to non-public, updates the storage and returns the
 deactivated user.
 
-Returns undef if user not found.
+Throws an error if user not found.
 
 =cut
 
@@ -166,10 +166,10 @@ sub deactivate_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for deactivation" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     $user->active(0);
     foreach my $tradition (@{ $user->traditions }) {
@@ -193,7 +193,7 @@ Takes a hashref of C<username>.
 Returns the user object if already activated. Activates (sets the
 active flag to true (1)), updates the storage and returns the user.
 
-Returns undef if the user is not found.
+Throws an error if the user is not found.
 
 =cut
 
@@ -201,10 +201,10 @@ sub reactivate_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for reactivation" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     return $user if $user->active;
 
@@ -221,7 +221,7 @@ CAUTION: Delets actual data!
 
 Takes a hashref of C<username>.
 
-Returns undef if the user doesn't exist.
+Throws an error if the user doesn't exist.
 
 Removes the user from the store and returns 1.
 
@@ -231,10 +231,10 @@ sub delete_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for deletion" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     my $scope = $self->new_scope;
 
@@ -263,6 +263,13 @@ sub validate_password {
     return if length($password) < $self->MIN_PASS_LEN;
 
     return 1;
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'UserStore error',
+		'message' => $_[0],
+		);
 }
 
 1;
