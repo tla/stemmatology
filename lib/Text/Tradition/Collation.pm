@@ -973,12 +973,22 @@ is( scalar $st->collation->readings, $READINGS, "Reparsed collation has all read
 is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
 is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
 
-# Now add a stemma, write to GraphML, and parse again.
+# Now add a stemma, write to GraphML, and look at the output.
 my $stemma = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Parsed dotfile into stemma" );
 is( $tradition->stemmata, 1, "Tradition now has the stemma" );
 $graphml = $c->as_graphml;
 like( $graphml, qr/digraph/, "Digraph declaration exists in GraphML" );
+
+# Now add a user, write to GraphML, and look at the output.
+unlike( $graphml, qr/testuser/, "Test user name does not exist in GraphML yet" );
+my $testuser = Text::Tradition::User->new( 
+	id => 'testuser', password => 'testpass' );
+is( ref( $testuser ), 'Text::Tradition::User', "Created test user object" );
+$testuser->add_tradition( $tradition );
+is( $tradition->user->id, $testuser->id, "Tradition assigned to test user" );
+$graphml = $c->as_graphml;
+like( $graphml, qr/testuser/, "Test user name now exists in GraphML" );
 
 =end testing
 
@@ -1050,14 +1060,25 @@ sub as_graphml {
 		next unless $save_types{$attr->type_constraint->name};
 		$graph_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
-    # Extra custom key for the tradition stemma(ta)
-    $graph_attributes{'stemmata'} = 'string';
+    # Extra custom keys for complex objects that should be saved in some form.
+    # The subroutine should return a string, or undef/empty.
+    $graph_attributes{'stemmata'} = sub { 
+    	my @stemstrs;
+		map { push( @stemstrs, $_->editable( {linesep => ''} ) ) } 
+			$self->tradition->stemmata;
+		join( "\n", @stemstrs );
+	};
+    $graph_attributes{'user'} = sub { 
+    	$self->tradition->user ? $self->tradition->user->id : undef 
+    };
 	
     foreach my $datum ( sort keys %graph_attributes ) {
     	$graph_data_keys{$datum} = 'dg'.$gdi++;
         my $key = $root->addNewChild( $graphml_ns, 'key' );
+        my $dtype = ref( $graph_attributes{$datum} ) ? 'string' 
+        	: $graph_attributes{$datum};
         $key->setAttribute( 'attr.name', $datum );
-        $key->setAttribute( 'attr.type', $graph_attributes{$datum} );
+        $key->setAttribute( 'attr.type', $dtype );
         $key->setAttribute( 'for', 'graph' );
         $key->setAttribute( 'id', $graph_data_keys{$datum} );    	
     }
@@ -1130,11 +1151,9 @@ sub as_graphml {
     	my $value;
     	if( $datum eq 'version' ) {
     		$value = '3.2';
-    	} elsif( $datum eq 'stemmata' ) {
-    		my @stemstrs;
-    		map { push( @stemstrs, $_->editable( {linesep => ''} ) ) } 
-    			$self->tradition->stemmata;
-    		$value = join( "\n", @stemstrs );
+    	} elsif( ref( $graph_attributes{$datum} ) ) {
+    		my $sub = $graph_attributes{$datum};
+    		$value = &$sub();
     	} elsif( $gattr_from{$datum} eq 'Tradition' ) {
     		$value = $self->tradition->$datum;
     	} else {
