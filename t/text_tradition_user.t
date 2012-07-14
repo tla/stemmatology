@@ -5,6 +5,7 @@ use warnings;
 
 use Test::More 'no_plan';
 use File::Temp;
+use TryCatch;
 
 use_ok('Text::Tradition::Directory');
 
@@ -21,6 +22,15 @@ my $scope = $user_store->new_scope;
 ## passwords
 my $shortpass = 'bloggs';
 ok(!$user_store->validate_password($shortpass), '"bloggs" is too short for a password');
+try {
+	my $dud_user = $user_store->add_user({ username => 'joe',
+										   password => $shortpass });
+	ok( 0, "User with short password should not have been created" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, "Invalid password - must be at least " 
+		. $user_store->MIN_PASS_LEN . " characters long",
+		"Attempt to add user with too-short password threw correct error" );
+}
 
 ## create user
 my $new_user = $user_store->add_user({ username => 'fred',

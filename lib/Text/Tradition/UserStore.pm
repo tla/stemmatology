@@ -82,7 +82,8 @@ sub add_user {
     my $password = $userinfo->{password};
 
 	throw( "No username given" ) unless $username;
-	throw( "Invalid password - too short?" )
+	throw( "Invalid password - must be at least " . $self->MIN_PASS_LEN 
+		. " characters long" )
 		unless ( $self->validate_password($password) || $username =~ /^https?:/ );
     
     my $user = Text::Tradition::User->new(

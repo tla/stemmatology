@@ -376,8 +376,10 @@ sub add_user {
     my $password = $userinfo->{password};
     my $role = $userinfo->{role} || 'user';
 
-    return unless ($username =~ /^https?:/ 
-                   || ($username && $self->validate_password($password))) ;
+	throw( "No username given" ) unless $username;
+	throw( "Invalid password - must be at least " . $self->MIN_PASS_LEN 
+		. " characters long" )
+		unless ( $self->validate_password($password) || $username =~ /^https?:/ );
 
     my $user = Text::Tradition::User->new(
         id => $username,
@@ -468,11 +470,11 @@ sub modify_user {
     my $password = $userinfo->{password};
     my $role = $userinfo->{role};
 
-    return unless $username;
-    return if($password && !$self->validate_password($password));
+    throw( "Missing username or bad password" )
+    	unless $username && $self->validate_password($password);
 
     my $user = $self->find_user({ username => $username });
-    return unless $user;
+    throw( "Could not find user $username" ) unless $user;
 
     if($password) {
         $user->password(crypt_password($password));
@@ -502,10 +504,10 @@ sub deactivate_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for deactivation" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     $user->active(0);
     foreach my $tradition (@{ $user->traditions }) {
@@ -536,10 +538,10 @@ sub reactivate_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for reactivation" ) unless $username;
 
     my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     return $user if $user->active;
 
@@ -565,10 +567,10 @@ sub delete_user {
     my ($self, $userinfo) = @_;
     my $username = $userinfo->{username};
 
-    return if !$username;
+    throw( "Need to specify a username for deletion" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
-    return if !$user;
+    throw( "User $username not found" ) unless $user;
 
     ## Should we be using Text::Tradition::Directory for this bit?
     $self->delete( @{ $user->traditions });
