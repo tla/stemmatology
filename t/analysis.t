@@ -130,15 +130,15 @@ foreach my $row ( @{$results->{'variants'}} ) {
 			my %is_parent;
 			my @has_no_parent;
 			foreach my $rdg ( @{$row->{'readings'}} ) {
-				my $parents = $rdg->{'reading_parents'} || [];
-				foreach my $p ( @$parents ) {
+				my $parents = $rdg->{'reading_parents'} || {};
+				foreach my $p ( keys %$parents ) {
 					push( @{$is_parent{$p}}, $rdg->{'readingid'} );
 				}
-				push( @has_no_parent, $rdg->{'readingid'} ) unless @$parents;
+				push( @has_no_parent, $rdg->{'readingid'} ) unless keys %$parents;
 			}
 			# Test some stuff
 			foreach my $rdg ( @{$row->{'readings'}} ) {
-				is( $rdg->{'independent_occurrence'}, 1, 
+				is( @{$rdg->{'independent_occurrence'}}, 1, 
 					"Genealogical reading originates exactly once" );
 			}
 			is( @has_no_parent, 1, "Only one genealogical reading lacks a parent" );

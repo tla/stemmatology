@@ -32,8 +32,10 @@ my $dir = Text::Tradition::Directory->new( $dbopts );
 my $scope = $dir->new_scope();
 my $lookfor = $ARGV[0] || '';
 foreach my $tinfo ( $dir->traditionlist() ) {
+	next if $tinfo->{'name'} eq 'xxxxx';
 	next unless $tinfo->{'name'} =~ /$lookfor/ || $tinfo->{'id'} eq $lookfor;
 	my $tradition = $dir->lookup( $tinfo->{'id'} );
+	say "Looking at tradition " . $tradition->name;
 	my $c = $tradition->collation;
 
 	# Anywhere in the graph that there is a reading that joins only to a single

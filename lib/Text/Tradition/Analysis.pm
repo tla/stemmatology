@@ -2,13 +2,13 @@ package Text::Tradition::Analysis;
 
 use strict;
 use warnings;
+use Algorithm::Diff;  # for word similarity measure
 use Benchmark;
 use Encode qw/ encode_utf8 /;
 use Exporter 'import';
 use Graph;
 use JSON qw/ encode_json decode_json /;
 use LWP::UserAgent;
-use Text::LevenshteinXS qw/ distance /;
 use Text::Tradition;
 use Text::Tradition::Stemma;
 use TryCatch;
@@ -202,6 +202,8 @@ sub run_analysis {
 		$location->{'missing'} = [ keys %lmiss ];
 		
 		# Run the extra analysis we need.
+		## TODO We run through all the variants in this call, so
+		## why not add the reading data there instead of here below?
 		analyze_location( $tradition, $stemma, $location, \%lmiss );
 
 		my @layerwits;
@@ -680,7 +682,6 @@ sub analyze_location {
     	    }
     	}
 	}
-	
 	# Get the actual graph we should work with
 	my $graph;
 	try {
@@ -715,6 +716,7 @@ sub analyze_location {
     # reading's evident parent(s).
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
         my $rid = $rdghash->{'readingid'};
+        my $rdg = $c->reading( $rid );
         # Get the subgraph
         my $part = $subgraph->{$rid};
         
@@ -732,7 +734,11 @@ sub analyze_location {
 				my @next;
 				foreach my $wparent( @check ) {
 					my $preading = $contig->{$wparent};
-					if( $preading ) {
+					# IDP assigns all nodes, hypothetical included, to a reading
+					# in the case of genealogical sets. We prune non-necessary
+					# hypothetical readings, but they are still in $contig, so
+					# we account for that here.
+					if( $preading && $preading ne $rid ) {
 						$rdgparents->{$preading} = 1;
 					} else {
 						push( @next, $graph->predecessors( $wparent ) );
@@ -750,22 +756,40 @@ sub analyze_location {
 			if( $pobj ) {
 				my $rel = $c->get_relationship( $p, $rdghash->{readingid} );
 				if( $rel ) {
-					$phash->{relation} = { type => $rel->type };
-					if( $rel->has_annotation ) {
-						$phash->{relation}->{'annotation'} = $rel->annotation;
+					_add_to_hash( $rel, $phash );
+				} elsif( $rdg ) {
+					# First check for a transposed relationship
+					if( $rdg->rank != $pobj->rank ) {
+						foreach my $ti ( $rdg->related_readings( 'transposition' ) ) {
+							next unless $ti->text eq $rdg->text;
+							$rel = $c->get_relationship( $ti, $pobj );
+							if( $rel ) {
+								_add_to_hash( $rel, $phash, 1 );
+								last;
+							}
+						}
+						unless( $rel ) {
+							foreach my $ti ( $pobj->related_readings( 'transposition' ) ) {
+								next unless $ti->text eq $pobj->text;
+								$rel = $c->get_relationship( $ti, $rdg );
+								if( $rel ) {
+									_add_to_hash( $rel, $phash, 1 );
+									last;
+								}
+							}
+						}
 					}
-				} elsif( $rdghash->{readingid} eq '(omitted)' ) {
+					unless( $rel ) {
+						# and then check for sheer word similarity.
+						my $rtext = $rdg->text;
+						my $ptext = $pobj->text;
+						if( similar( $rtext, $ptext ) ) {
+							# say STDERR "Words $rtext and $ptext judged similar";
+							$phash->{relation} = { type => 'wordsimilar' };
+						} 
+					}
+				} else {
 					$phash->{relation} = { type => 'deletion' };
-				} elsif( $rdghash->{text} ) {
-					# Check for sheer word similarity.
-					my $rtext = $rdghash->{text};
-					my $ptext = $pobj->text;
-					my $min = length( $rtext ) > length( $ptext )
-						? length( $ptext ) : length( $rtext );
-					my $distance = distance( $rtext, $ptext );
-					if( $distance < $min ) {
-						$phash->{relation} = { type => 'wordsimilar' };
-					}
 				}
 				# Get the attributes of the parent object while we are here
 				$phash->{'text'} = $pobj->text if $pobj;
@@ -806,6 +830,51 @@ sub analyze_location {
 		}		
     }
 }
+
+sub _add_to_hash {
+	my( $rel, $phash, $is_transposed ) = @_;
+	$phash->{relation} = { type => $rel->type };
+	$phash->{relation}->{transposed} = 1 if $is_transposed;
+	$phash->{relation}->{annotation} = $rel->annotation
+		if $rel->has_annotation;
+}
+
+=head2 similar( $word1, $word2 )
+
+Use Algorithm::Diff to get a sense of how close the words are to each other.
+This will hopefully handle substitutions a bit more nicely than Levenshtein.
+
+=cut
+
+#!/usr/bin/env perl
+
+sub similar {
+	my( $word1, $word2 ) = sort { length($a) <=> length($b) } @_;
+	my @let1 = split( '', lc( $word1 ) );
+	my @let2 = split( '', lc( $word2 ) );
+	my $diff = Algorithm::Diff->new( \@let1, \@let2 );
+	my $mag = 0;
+	while( $diff->Next ) {
+		if( $diff->Same ) {
+			# Take off points for longer strings
+			my $cs = $diff->Range(1) - 2;
+			$cs = 0 if $cs < 0;
+			$mag -= $cs;
+		} elsif( !$diff->Items(1) ) {
+			$mag += $diff->Range(2);
+		} elsif( !$diff->Items(2) ) {
+			$mag += $diff->Range(1);
+		} else {
+			# Split the difference for substitutions
+			my $c1 = $diff->Range(1) || 1;
+			my $c2 = $diff->Range(2) || 1;
+			my $cd = ( $c1 + $c2 ) / 2;
+			$mag += $cd;
+		}
+	}
+	return ( $mag <= length( $word1 ) / 2 );
+}
+
 
 
 =head2 perl_solver( $tradition, $rank, $stemma_id, @merge_relationship_types )

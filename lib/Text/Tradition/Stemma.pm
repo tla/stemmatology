@@ -8,7 +8,6 @@ use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
 use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
-use XML::LibXML;
 use Moose;
 
 =head1 NAME
@@ -347,9 +346,10 @@ sub as_svg {
     run( \@cmd, ">", binary(), \$svg );
     # HACK: Parse the SVG and change the dimensions.
     # Get rid of width and height attributes to allow scaling.
-    my $parser = XML::LibXML->new();
-    my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
     if( $opts->{'size'} ) {
+    	require XML::LibXML;
+		my $parser = XML::LibXML->new();
+		my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
     	my( $ew, $eh ) = @{$opts->{'size'}};
     	# If the graph is wider than it is tall, set width to ew and remove height.
     	# Otherwise set height to eh and remove width.
@@ -369,9 +369,10 @@ sub as_svg {
 		}
 		$svgdoc->documentElement->removeAttribute( $remove );
 		$svgdoc->documentElement->setAttribute( $keep, $val );
+		$svg = $svgdoc->toString();
 	}
     # Return the result
-    return decode_utf8( $svgdoc->toString );
+    return decode_utf8( $svg );
 }
 
 =head2 witnesses
