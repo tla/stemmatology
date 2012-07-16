@@ -508,8 +508,10 @@ sub solve_variants {
 	foreach my $graphkey ( keys %$graph_problems ) {
 		my $graph = $graph_problems->{$graphkey}->{'object'};
 		my $groupings = $graph_problems->{$graphkey}->{'groups'};
-		my $json = encode_json( _safe_wit_strings( $graph, $stemma->collation,
-			$groupings, $witness_map ) );
+		my $req = _safe_wit_strings( $graph, $stemma->collation,
+			$groupings, $witness_map );
+		$req->{'command'} = 'findGroupings';
+		my $json = encode_json( $req );
 		# Send it off and get the result
 		#print STDERR "Sending request: $json\n";
 		my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
