@@ -348,6 +348,7 @@ sub _init_from_xmldesc {
 		}
 		$xmlobj = $self->object;
 	} else {
+		require XML::LibXML;
 		my $parser = XML::LibXML->new();
 		my $parsersub = $self->has_file ? 'parse_file' : 'parse_string';
 		try {

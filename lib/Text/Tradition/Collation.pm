@@ -11,8 +11,6 @@ use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
 use XML::Easy::Syntax qw( $xml10_namestartchar_rx $xml10_namechar_rx );
-use XML::LibXML;
-use XML::LibXML::XPathContext;
 use Moose;
 
 has 'sequence' => (
@@ -441,6 +439,15 @@ sub compress_readings {
 	# readings.
 	my %gobbled;
 	foreach my $rdg ( sort { $a->rank <=> $b->rank } $self->readings ) {
+		# While we are here, get rid of any extra wordforms from a disambiguated
+		# reading.
+		if( $rdg->disambiguated ) {
+			foreach my $lex ( $rdg->lexemes ) {
+				$lex->clear_matching_forms();
+				$lex->add_matching_form( $lex->form );
+			}
+		}
+		# Now look for readings that can be joined to their successors.
 		next if $rdg->is_meta;
 		next if $gobbled{$rdg->id};
 		next if $rdg->grammar_invalid || $rdg->is_nonsense;
@@ -1009,6 +1016,7 @@ sub as_graphml {
         'http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd';
 
     # Create the document and root node
+    require XML::LibXML;
     my $graphml = XML::LibXML->createDocument( "1.0", "UTF-8" );
     my $root = $graphml->createElementNS( $graphml_ns, 'graphml' );
     $graphml->setDocumentElement( $root );
@@ -1039,7 +1047,6 @@ sub as_graphml {
 	map { $gattr_from{$_->name} = 'Collation' } $cmeta->get_all_attributes;
 	foreach my $attr ( ( $tmeta->get_all_attributes, $cmeta->get_all_attributes ) ) {
 		next if $attr->name =~ /^_/;
-		next if $skipsave{$attr->name};
 		next unless $save_types{$attr->type_constraint->name};
 		$graph_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
@@ -1071,7 +1078,6 @@ sub as_graphml {
     my $rmeta = Text::Tradition::Collation::Reading->meta;
     foreach my $attr( $rmeta->get_all_attributes ) {
 		next if $attr->name =~ /^_/;
-		next if $skipsave{$attr->name};
 		next unless $save_types{$attr->type_constraint->name};
 		$reading_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
@@ -1101,7 +1107,6 @@ sub as_graphml {
     my $pmeta = Text::Tradition::Collation::Relationship->meta;
     foreach my $attr( $pmeta->get_all_attributes ) {
 		next if $attr->name =~ /^_/;
-		next if $skipsave{$attr->name};
 		next unless $save_types{$attr->type_constraint->name};
 		$edge_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}

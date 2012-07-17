@@ -2,19 +2,22 @@ package Text::Tradition::Analysis;
 
 use strict;
 use warnings;
+use Algorithm::Diff;  # for word similarity measure
 use Benchmark;
 use Encode qw/ encode_utf8 /;
 use Exporter 'import';
 use Graph;
 use JSON qw/ encode_json decode_json /;
 use LWP::UserAgent;
-use Text::LevenshteinXS qw/ distance /;
 use Text::Tradition;
 use Text::Tradition::Stemma;
 use TryCatch;
 
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
+
+my $SOLVER_URL = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
+	
 
 =head1 NAME
 
@@ -202,6 +205,8 @@ sub run_analysis {
 		$location->{'missing'} = [ keys %lmiss ];
 		
 		# Run the extra analysis we need.
+		## TODO We run through all the variants in this call, so
+		## why not add the reading data there instead of here below?
 		analyze_location( $tradition, $stemma, $location, \%lmiss );
 
 		my @layerwits;
@@ -451,12 +456,131 @@ The answer has the form
 
 sub solve_variants {
 	my( $stemma, @groups ) = @_;
-	my $aclabel = $stemma->collation->ac_label;
 
 	# Filter the groups down to distinct groups, and work out what graph
 	# should be used in the calculation of each group. We want to send each
 	# distinct problem to the solver only once.
 	# We need a whole bunch of lookup tables for this.
+	my( $index_groupkeys, $group_indices, $graph_problems ) = _prepare_groups( @_ );
+
+	## For each distinct graph, send its groups to the solver.
+	my $ua = LWP::UserAgent->new();
+	## Witness map is a HACK to get around limitations in node names from IDP
+	my $witness_map = {};
+	## Variables to store answers as they come back
+	my $variants = [ ( undef ) x ( scalar keys %$index_groupkeys ) ];
+	my $genealogical = 0;
+	foreach my $graphkey ( keys %$graph_problems ) {
+		my $graph = $graph_problems->{$graphkey}->{'object'};
+		my $groupings = [ values %{$graph_problems->{$graphkey}->{'groups'}} ];
+		my $req = _safe_wit_strings( $graph, $stemma->collation,
+			$groupings, $witness_map );
+		$req->{'command'} = 'findGroupings';
+		my $json = encode_json( $req );
+		# Send it off and get the result
+		# print STDERR "Sending request: " . to_json( $req ) . "\n";
+		my $resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
+							  'Content' => $json );							  
+		my $answer;
+		if( $resp->is_success ) {
+			$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
+		} else {
+			# Fall back to the old method.
+			die "IDP solver returned " . $resp->status_line . " / " . $resp->content
+				. "; cannot run graph analysis";
+		}
+		
+		## If IDP worked, asked it the other two questions for this dataset.
+		my $more_eval = {};
+		foreach my $test ( qw/ findSources findClasses / ) {
+			$req->{'command'} = $test;
+			$json = encode_json( $req );
+			$resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
+							   'Content' => $json );
+			if( $resp->is_success ) {
+				$more_eval->{$test} = _desanitize_names( 
+					decode_json( $resp->content ), $witness_map );
+			} else {
+				warn "IDP solver for $test returned " . $resp->status_line . 
+					" / " . $resp->content;
+				# TODO arrange fallback
+			}
+		}
+		
+		## The answer is the evaluated groupings, plus a boolean for whether
+		## they were genealogical.  Reconstruct our original groups.
+		foreach my $gidx ( 0 .. $#{$groupings} ) {
+			my( $calc_groups, $result ) = @{$answer->[$gidx]};
+			# Keep track of the total # of genealogical readings
+			$genealogical++ if $result;
+			
+			my( $sources, $classes );
+			# Use the expanded groups from findSources if that got calculated.
+			if( exists( $more_eval->{'findSources'} ) ) {
+				( $calc_groups, $sources ) = @{$more_eval->{'findSources'}->[$gidx]};
+			}
+			# Use the (same) expanded groups from findClasses if that got calculated
+			# and is relevant.
+			if( exists( $more_eval->{'findClasses'} ) && !$result ) {
+				( $calc_groups, $classes ) = @{$more_eval->{'findClasses'}->[$gidx]};
+			}
+			
+			# Prune the calculated groups, in case the IDP solver failed to.
+			if( $sources || $result ) {
+				my @pruned_groups;
+				my @pruned_roots;
+				foreach my $cg ( @$calc_groups ) {
+					my( $pg, $pr ) = _prune_group( $cg, $graph );
+					push( @pruned_groups, $pg );
+					push( @pruned_roots, @$pr );
+				}
+				$calc_groups = \@pruned_groups;
+				say STDERR "Pruned roots from @$sources to @pruned_roots"
+					unless wit_stringify( [ sort @$sources ] ) 
+						eq wit_stringify( [ sort @pruned_roots ] );
+				$sources = \@pruned_roots;
+			}
+			
+			# Convert the source list into a lookup hash
+			my $roots = {};
+			map { $roots->{$_} = 1 } @$sources;
+			# Convert the class list into a lookup hash
+			if( $classes ) {
+				$classes = _invert_hash( $classes );
+			}
+			
+			# Retrieve the key for the original group that went to the solver
+			my $input_group = wit_stringify( $groupings->[$gidx] );
+
+			# Make the variant hash for each location that had this particular
+			# grouping on this particular stemma situation
+			foreach my $oidx ( @{$group_indices->{$input_group}} ) {
+				my @readings = @{$index_groupkeys->{$oidx}};
+				my $vstruct = {
+					'genealogical' => $result,
+					'readings' => [],
+				};
+				foreach my $ridx ( 0 .. $#readings ) {
+					push( @{$vstruct->{'readings'}},
+						{ 'readingid' => $readings[$ridx],
+						  'group' => $calc_groups->[$ridx] } );
+				}
+				$vstruct->{'reading_roots'} = $roots if $roots;
+				$vstruct->{'reading_types'} = $classes if $classes;
+				$variants->[$oidx] = $vstruct;
+			}
+		}
+	}
+	
+	return { 'variants' => $variants, 
+			 'variant_count' => scalar @$variants,
+			 'genealogical_count' => $genealogical };
+}
+
+sub _prepare_groups {
+	my( $stemma, @groups ) = @_;
+	my $aclabel = $stemma->collation->ac_label;
+
 	my $index_groupkeys = {};	# Save the order of readings
 	my $group_indices = {};		# Save the indices that have a given grouping
 	my $graph_problems = {};	# Save the groupings for the given graph
@@ -467,11 +591,13 @@ sub solve_variants {
 		# Sort the groupings from big to little, and scan for a.c. witnesses
 		# that would need an extended graph.
 		my @acwits;   # note which AC witnesses crop up at this rank
+		my $extant;   # note which witnesses crop up at this rank full stop
 		my @idxkeys = sort { scalar @{$ghash->{$b}} <=> scalar @{$ghash->{$a}} }
 			keys %$ghash;
 		foreach my $rdg ( @idxkeys ) {
 			my @sg = sort @{$ghash->{$rdg}};
 			push( @acwits, grep { $_ =~ /\Q$aclabel\E$/ } @sg );
+			map { $extant->{$_} = 1 } @sg;
 			push( @grouping, \@sg );
 		}
 		# Save the reading order
@@ -484,94 +610,31 @@ sub solve_variants {
 		# Finally, add the group to the list to be calculated for this graph.
 		map { s/\Q$aclabel\E$// } @acwits;
 		my $graph;
+		## TODO When we get rid of the safe_wit_strings HACK we should also
+		## be able to save the graph here as a dotstring rather than as an
+		## object, thus simplifying life enormously.
 		try {
-			$graph = $stemma->extend_graph( \@acwits );
+			$graph = $stemma->situation_graph( $extant, \@acwits );
 		} catch {
+			$DB::single = 1;
 			die "Unable to extend graph with @acwits";
 		}
-		unless( exists $graph_problems->{"$graph"} ) {
-			$graph_problems->{"$graph"} = { 'object' => $graph, 'groups' => [] };
+		my $graphkey = "$graph || " . wit_stringify( [ sort keys %$extant ] );
+		unless( exists $graph_problems->{$graphkey} ) {
+			$graph_problems->{$graphkey} = { 'object' => $graph, 'groups' => {} };
 		}
-		push( @{$graph_problems->{"$graph"}->{'groups'}}, \@grouping );
+		$graph_problems->{$graphkey}->{'groups'}->{wit_stringify( \@grouping )} = \@grouping;
 	}
-	
-	## For each distinct graph, send its groups to the solver.
-	my $solver_url = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
-	my $ua = LWP::UserAgent->new();
-	## Witness map is a HACK to get around limitations in node names from IDP
-	my $witness_map = {};
-	## Variables to store answers as they come back
-	my $variants = [ ( undef ) x ( scalar keys %$index_groupkeys ) ];
-	my $genealogical = 0;
-	foreach my $graphkey ( keys %$graph_problems ) {
-		my $graph = $graph_problems->{$graphkey}->{'object'};
-		my $groupings = $graph_problems->{$graphkey}->{'groups'};
-		my $json = encode_json( _safe_wit_strings( $graph, $stemma->collation,
-			$groupings, $witness_map ) );
-		# Send it off and get the result
-		#print STDERR "Sending request: $json\n";
-		my $resp = $ua->post( $solver_url, 'Content-Type' => 'application/json', 
-							  'Content' => $json );							  
-		my $answer;
-		my $used_idp;
-		if( $resp->is_success ) {
-			$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
-			$used_idp = 1;
-		} else {
-			# Fall back to the old method.
-			warn "IDP solver returned " . $resp->status_line . " / " . $resp->content
-				. "; falling back to perl method";
-			$answer = perl_solver( $graph, @$groupings );
-		}
-		## The answer is the evaluated groupings, plus a boolean for whether
-		## they were genealogical.  Reconstruct our original groups.
-		foreach my $gidx ( 0 .. $#{$groupings} ) {
-			my( $calc_groups, $result ) = @{$answer->[$gidx]};
-			if( $result ) {
-				$genealogical++;
-				# Prune the calculated groups, in case the IDP solver failed to.
-				if( $used_idp ) {
-					my @pruned_groups;
-					foreach my $cg ( @$calc_groups ) {
-						# This is a little wasteful but the path of least
-						# resistance. Send both the stemma, which knows what
-						# its hypotheticals are, and the actual graph used.
-						my @pg = _prune_group( $cg, $stemma, $graph );
-						push( @pruned_groups, \@pg );
-					}
-					$calc_groups = \@pruned_groups;
-				}
-			}
-			# Retrieve the key for the original group that went to the solver
-			my $input_group = wit_stringify( $groupings->[$gidx] );
-			foreach my $oidx ( @{$group_indices->{$input_group}} ) {
-				my @readings = @{$index_groupkeys->{$oidx}};
-				my $vstruct = {
-					'genealogical' => $result,
-					'readings' => [],
-				};
-				foreach my $ridx ( 0 .. $#readings ) {
-					push( @{$vstruct->{'readings'}},
-						{ 'readingid' => $readings[$ridx],
-						  'group' => $calc_groups->[$ridx] } );
-				}
-				$variants->[$oidx] = $vstruct;
-			}
-		}
-	}
-	
-	return { 'variants' => $variants, 
-			 'variant_count' => scalar @$variants,
-			 'genealogical_count' => $genealogical };
+	say STDERR "Created " . scalar( keys %$graph_problems ). " distinct graph(s)";
+	return( $index_groupkeys, $group_indices, $graph_problems );	
 }
 
 #### HACKERY to cope with IDP's limited idea of what a node name looks like ###
 
 sub _safe_wit_strings {
 	my( $graph, $c, $groupings, $witness_map ) = @_;
-	# Parse the graph we were given into a stemma.
-	my $safegraph = Graph->new();
 	# Convert the graph to a safe representation and store the conversion.
+	my $safegraph = Graph->new();
 	foreach my $n ( $graph->vertices ) {
 		my $sn = _safe_witstr( $n );
 		if( exists $witness_map->{$sn} ) {
@@ -588,8 +651,6 @@ sub _safe_wit_strings {
 		my @safe_e = ( _safe_witstr( $e->[0] ), _safe_witstr( $e->[1] ) );
 		$safegraph->add_edge( @safe_e );
 	}
-	my $safe_stemma = Text::Tradition::Stemma->new( 
-		'collation' => $c, 'graph' => $safegraph );
 		
 	# Now convert the witness groupings to a safe representation.
 	my $safe_groupings = [];
@@ -611,7 +672,8 @@ sub _safe_wit_strings {
 	
 	# Return it all in the struct we expect.  We have stored the reductions
 	# in the $witness_map that we were passed.
-	return { 'graph' => $safe_stemma->editable( { 'linesep' => ' ' } ), 
+	return { 'graph' => Text::Tradition::Stemma::editable_graph(
+				$safegraph, { 'linesep' => ' ' } ), 
 			 'groupings' => $safe_groupings };
 }
 
@@ -623,31 +685,38 @@ sub _safe_witstr {
 }
 
 sub _desanitize_names {
-	my( $jsonstruct, $witness_map ) = @_;
+	my( $element, $witness_map ) = @_;
 	my $result = [];
-	foreach my $grouping ( @$jsonstruct ) {
-		my $real_grouping = [];
-		foreach my $element ( @$grouping ) {
-			if( ref( $element ) eq 'ARRAY' ) {
-				# it's the groupset.
-				my $real_groupset = [];
-				foreach my $group ( @$element ) {
-					my $real_group = [];
-					foreach my $n ( @$group ) {
-						my $rn = $witness_map->{$n};
-						push( @$real_group, $rn );
-					}
-					push( @$real_groupset, $real_group );
-				}
-				push( @$real_grouping, $real_groupset );
-			} else {
-				# It is the boolean, not actually a group.
-				push( @$real_grouping, $element );
-			}
+	if( ref( $element ) eq 'ARRAY' ) {
+		foreach my $n ( @$element ) {
+			push( @$result, _desanitize_names( $n, $witness_map ) );
 		}
-		push( @$result, $real_grouping );
+	} elsif( ref( $element ) eq 'HASH' ) {
+		my $real_hash = {};
+		map { $real_hash->{$_} = _desanitize_names( $element->{$_}, $witness_map ) }
+			keys %$element;
+		$result = $real_hash;
+	} elsif( exists $witness_map->{$element} ) {
+		$result = $witness_map->{$element}
+	} else {
+		$result = $element;
 	}
 	return $result;
+}
+
+sub _invert_hash {
+	my( $hash ) = @_;
+	my $newhash;
+	foreach my $k ( keys %$hash ) {
+		if( ref( $hash->{$k} ) eq 'ARRAY' ) {
+			foreach my $v ( @{$hash->{$k}} ) {
+				$newhash->{$v} = $k;
+			}
+		} else {
+			$newhash->{$hash->{$k}} = $k;
+		}
+	}
+	return $newhash;
 }
 
 ### END HACKERY ###
@@ -656,7 +725,8 @@ sub _desanitize_names {
 
 Given the tradition, its stemma graph, and the solution from the graph solver,
 work out the rest of the information we want.  For each reading we need missing, 
-conflict, reading_parents, independent_occurrence, followed, not_followed, and follow_unknown.  Alters the location_hash in place.
+conflict, reading_parents, independent_occurrence, followed, not_followed,
+and follow_unknown.  Alters the location_hash in place.
 
 =cut
 
@@ -670,69 +740,69 @@ sub analyze_location {
 	my $subgraph = {};
 	my $acstr = $c->ac_label;
 	my @acwits;
-	# Note which witnesses positively belong to which group
+	
+	my $NO_IDP;
+	if( exists $variant_row->{'reading_roots'} ) {
+		$reading_roots = delete $variant_row->{'reading_roots'};
+	} else {
+		warn "No reading source information from IDP - proceed at your own risk";
+		$NO_IDP = 1;
+	}
+	
+	# Note which witnesses positively belong to which group. This information
+	# comes ultimately from the IDP solver.
+	# Also make a note of the reading's roots.
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
     	my $rid = $rdghash->{'readingid'};
+    	my @roots;
     	foreach my $wit ( @{$rdghash->{'group'}} ) {
     		$contig->{$wit} = $rid;
     	    if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
     	    	push( @acwits, $1 );
     	    }
+    	    if( exists $reading_roots->{$wit} && $reading_roots->{$wit} ) {
+    	    	push( @roots, $wit );
+    	    }
     	}
+		$rdghash->{'independent_occurrence'} = \@roots;
 	}
 	
 	# Get the actual graph we should work with
 	my $graph;
 	try {
-		$graph = @acwits ? $stemma->extend_graph( \@acwits ) : $stemma->graph;
+		# contig contains all extant wits and all hypothetical wits
+		# needed to make up the groups.
+		$graph = $stemma->situation_graph( $contig, \@acwits );
+	} catch ( Text::Tradition::Error $e ) {
+		die "Could not extend graph with given extant and a.c. witnesses: "
+			. $e->message;
 	} catch {
 		die "Could not extend graph with a.c. witnesses @acwits";
 	}
 	
-	# Now, armed with that knowledge, make a subgraph for each reading
-	# and note the root(s) of each subgraph.
-	foreach my $rdghash( @{$variant_row->{'readings'}} ) {
-    	my $rid = $rdghash->{'readingid'};
-        my %rdgwits;
-        # Make the subgraph.
-        my $part = $graph->copy;
-        my @todelete = grep { exists $contig->{$_} && $contig->{$_} ne $rid }
-        	keys %$contig;
-        $part->delete_vertices( @todelete );
-        _prune_subtree( $part, $lacunose );
-		$subgraph->{$rid} = $part;
-		# Record the remaining lacunose nodes as part of this group, if
-		# we are dealing with a non-genealogical reading.
-		unless( $variant_row->{'genealogical'} ) {
-			map { $contig->{$_} = $rid } $part->vertices;
-		}
-		# Get the reading roots.
-		map { $reading_roots->{$_} = $rid } $part->predecessorless_vertices;
-	}
-	
+		
 	# Now that we have all the node group memberships, calculate followed/
     # non-followed/unknown values for each reading.  Also figure out the
     # reading's evident parent(s).
     foreach my $rdghash ( @{$variant_row->{'readings'}} ) {
         my $rid = $rdghash->{'readingid'};
-        # Get the subgraph
-        my $part = $subgraph->{$rid};
+        my $rdg = $c->reading( $rid );
+        my @roots = @{$rdghash->{'independent_occurrence'}};
+        my @group = @{$rdghash->{'group'}};
         
         # Start figuring things out.  
-        my @roots = grep { $reading_roots->{$_} eq $rid } keys %$reading_roots;
-        $rdghash->{'independent_occurrence'} = \@roots;
-        $rdghash->{'followed'} = scalar( $part->vertices ) - scalar( @roots );
+        $rdghash->{'followed'} = scalar( @group ) - scalar( @roots );
         # Find the parent readings, if any, of this reading.
         my $rdgparents = {};
         foreach my $wit ( @roots ) {
-        	# Look in the main stemma to find this witness's extant or known-reading
+        	# Look in the stemma graph to find this witness's extant or known-reading
         	# immediate ancestor(s), and look up the reading that each ancestor olds.
 			my @check = $graph->predecessors( $wit );
 			while( @check ) {
 				my @next;
 				foreach my $wparent( @check ) {
 					my $preading = $contig->{$wparent};
-					if( $preading ) {
+					if( $preading && $preading ne $rid ) {
 						$rdgparents->{$preading} = 1;
 					} else {
 						push( @next, $graph->predecessors( $wparent ) );
@@ -750,22 +820,40 @@ sub analyze_location {
 			if( $pobj ) {
 				my $rel = $c->get_relationship( $p, $rdghash->{readingid} );
 				if( $rel ) {
-					$phash->{relation} = { type => $rel->type };
-					if( $rel->has_annotation ) {
-						$phash->{relation}->{'annotation'} = $rel->annotation;
+					_add_to_hash( $rel, $phash );
+				} elsif( $rdg ) {
+					# First check for a transposed relationship
+					if( $rdg->rank != $pobj->rank ) {
+						foreach my $ti ( $rdg->related_readings( 'transposition' ) ) {
+							next unless $ti->text eq $rdg->text;
+							$rel = $c->get_relationship( $ti, $pobj );
+							if( $rel ) {
+								_add_to_hash( $rel, $phash, 1 );
+								last;
+							}
+						}
+						unless( $rel ) {
+							foreach my $ti ( $pobj->related_readings( 'transposition' ) ) {
+								next unless $ti->text eq $pobj->text;
+								$rel = $c->get_relationship( $ti, $rdg );
+								if( $rel ) {
+									_add_to_hash( $rel, $phash, 1 );
+									last;
+								}
+							}
+						}
 					}
-				} elsif( $rdghash->{readingid} eq '(omitted)' ) {
+					unless( $rel ) {
+						# and then check for sheer word similarity.
+						my $rtext = $rdg->text;
+						my $ptext = $pobj->text;
+						if( similar( $rtext, $ptext ) ) {
+							# say STDERR "Words $rtext and $ptext judged similar";
+							$phash->{relation} = { type => 'wordsimilar' };
+						} 
+					}
+				} else {
 					$phash->{relation} = { type => 'deletion' };
-				} elsif( $rdghash->{text} ) {
-					# Check for sheer word similarity.
-					my $rtext = $rdghash->{text};
-					my $ptext = $pobj->text;
-					my $min = length( $rtext ) > length( $ptext )
-						? length( $ptext ) : length( $rtext );
-					my $distance = distance( $rtext, $ptext );
-					if( $distance < $min ) {
-						$phash->{relation} = { type => 'wordsimilar' };
-					}
 				}
 				# Get the attributes of the parent object while we are here
 				$phash->{'text'} = $pobj->text if $pobj;
@@ -783,18 +871,19 @@ sub analyze_location {
 		# Find the number of times this reading was altered, and the number of
 		# times we're not sure.
 		my( %nofollow, %unknownfollow );
-		foreach my $wit ( $part->vertices ) {
+		foreach my $wit ( @{$rdghash->{'group'}} ) {
 			foreach my $wchild ( $graph->successors( $wit ) ) {
-				next if $part->has_vertex( $wchild );
-				if( $reading_roots->{$wchild} && $contig->{$wchild} ) {
+				if( $reading_roots->{$wchild} && $contig->{$wchild}
+					&& $contig->{$wchild} ne $rid ) {
 					# It definitely changed here.
 					$nofollow{$wchild} = 1;
 				} elsif( !($contig->{$wchild}) ) {
 					# The child is a hypothetical node not definitely in
 					# any group. Answer is unknown.
 					$unknownfollow{$wchild} = 1;
-				} # else it's a non-root node in a known group, and therefore
-				  # is presumed to have its reading from its group, not this link.
+				} # else it is either in our group, or it is a non-root node in a 
+				  # known group and therefore is presumed to have its reading from 
+				  # its group, not this link.
 			}
 		}
 		$rdghash->{'not_followed'} = keys %nofollow;
@@ -802,283 +891,117 @@ sub analyze_location {
 		
 		# Now say whether this reading represents a conflict.
 		unless( $variant_row->{'genealogical'} ) {
-			$rdghash->{'conflict'} = @roots != 1;
+			my @trueroots;
+			if( exists $variant_row->{'classes'} ) {
+				# We have tested for reversions. Use the information.
+				my @reversions;
+				foreach my $rdgroot ( @roots ) {
+					## TODO This needs IDP to prune itself in order to be
+					## correct.
+					if( $variant_row->{'classes'}->{$rdgroot} eq 'revert' ) {
+						push( @reversions, $rdgroot );
+					} else {
+						push( @trueroots, $rdgroot );
+					}
+				}
+				$rdghash->{'independent_occurrence'} = \@trueroots;
+				$rdghash->{'reversion'} = \@reversions if @reversions;
+			} else {
+				@trueroots = @roots;
+			}
+			$rdghash->{'conflict'} = @trueroots != 1;
 		}		
     }
 }
 
+sub _add_to_hash {
+	my( $rel, $phash, $is_transposed ) = @_;
+	$phash->{relation} = { type => $rel->type };
+	$phash->{relation}->{transposed} = 1 if $is_transposed;
+	$phash->{relation}->{annotation} = $rel->annotation
+		if $rel->has_annotation;
+}
 
-=head2 perl_solver( $tradition, $rank, $stemma_id, @merge_relationship_types )
+=head2 similar( $word1, $word2 )
 
-** NOTE ** This method should hopefully not be called - it is not guaranteed 
-to be correct.  Serves as a backup for the real solver.
-
-Runs an analysis of the given tradition, at the location given in $rank, 
-against the graph of the stemma specified in $stemma_id.  The argument 
-@merge_relationship_types is an optional list of relationship types for
-which readings so related should be treated as equivalent.
-
-Returns a nested array data structure as follows:
-
- [ [ group_list, is_genealogical ], [ group_list, is_genealogical ] ... ]
- 
-where the group list is the array of arrays passed in for each element of @groups,
-possibly with the addition of hypothetical readings.
- 
+Use Algorithm::Diff to get a sense of how close the words are to each other.
+This will hopefully handle substitutions a bit more nicely than Levenshtein.
 
 =cut
 
-sub perl_solver {
-	my( $graph, @groups ) = @_;
-	my @answer;
-	foreach my $g ( @groups ) {
-		push( @answer, _solve_variant_location( $graph, $g ) );
-	}
-	return \@answer;
-}
+#!/usr/bin/env perl
 
-sub _solve_variant_location {
-	my( $graph, $groups ) = @_;
-	# Now do the work.	
-    my $contig = {};
-    my $subgraph = {};
-    my $is_conflicted;
-    my $conflict = {};
-
-    # Mark each ms as in its own group, first.
-    foreach my $g ( @$groups ) {
-        my $gst = wit_stringify( $g );
-        map { $contig->{$_} = $gst } @$g;
-    }
-
-    # Now for each unmarked node in the graph, initialize an array
-    # for possible group memberships.  We will use this later to
-    # resolve potential conflicts.
-    map { $contig->{$_} = [] unless $contig->{$_} } $graph->vertices;
-    foreach my $g ( sort { scalar @$b <=> scalar @$a } @$groups ) {
-        my $gst = wit_stringify( $g );  # This is the group name
-        # Copy the graph, and delete all non-members from the new graph.
-        my $part = $graph->copy;
-        my @group_roots;
-        $part->delete_vertices( 
-            grep { !ref( $contig->{$_} ) && $contig->{$_} ne $gst } $graph->vertices );
-                
-        # Now look to see if our group is connected.
-		if( @$g > 1 ) {
-			# We have to take directionality into account.
-			# How many root nodes do we have?
-			my @roots = grep { ref( $contig->{$_} ) || $contig->{$_} eq $gst } 
-				$part->predecessorless_vertices;
-			# Assuming that @$g > 1, find the first root node that has at
-			# least one successor belonging to our group. If this reading
-			# is genealogical, there should be only one, but we will check
-			# that implicitly later.
-			foreach my $root ( @roots ) {
-				# Prune the tree to get rid of extraneous hypotheticals.
-				$root = _prune_subtree_old( $part, $root, $contig );
-				next unless $root;
-				# Save this root for our group.
-				push( @group_roots, $root );
-				# Get all the successor nodes of our root.
-			}
+sub similar {
+	my( $word1, $word2 ) = sort { length($a) <=> length($b) } @_;
+	my @let1 = split( '', lc( $word1 ) );
+	my @let2 = split( '', lc( $word2 ) );
+	my $diff = Algorithm::Diff->new( \@let1, \@let2 );
+	my $mag = 0;
+	while( $diff->Next ) {
+		if( $diff->Same ) {
+			# Take off points for longer strings
+			my $cs = $diff->Range(1) - 2;
+			$cs = 0 if $cs < 0;
+			$mag -= $cs;
+		} elsif( !$diff->Items(1) ) {
+			$mag += $diff->Range(2);
+		} elsif( !$diff->Items(2) ) {
+			$mag += $diff->Range(1);
 		} else {
-			# Dispense with the trivial case of one reading.
-			my $wit = $g->[0];
-			@group_roots = ( $wit );
-			foreach my $v ( $part->vertices ) {
-				$part->delete_vertex( $v ) unless $v eq $wit;
-			}
-        }
-        
-        if( @group_roots > 1 ) {
-        	$conflict->{$gst} = 1;
-        	$is_conflicted = 1;
-        }
-        # Paint the 'hypotheticals' with our group.
-		foreach my $wit ( $part->vertices ) {
-			if( ref( $contig->{$wit} ) ) {
-				push( @{$contig->{$wit}}, $gst );
-			} elsif( $contig->{$wit} ne $gst ) {
-				warn "How did we get here?";
-			}
-		}
-        
-        
-		# Save the relevant subgraph.
-		$subgraph->{$gst} = $part;
-    }
-    
-	# For each of our hypothetical readings, flatten its 'contig' array if
-	# the array contains zero or one group.  If we have any unflattened arrays,
-	# we may need to run the resolution process. If the reading is already known
-	# to have a conflict, flatten the 'contig' array to nothing; we won't resolve
-	# it.
-	my @resolve;
-	foreach my $wit ( keys %$contig ) {
-		next unless ref( $contig->{$wit} );
-		if( @{$contig->{$wit}} > 1 ) {
-			if( $is_conflicted ) {
-				$contig->{$wit} = '';  # We aren't going to decide.
-			} else {
-				push( @resolve, $wit );			
-			}
-		} else {
-			my $gst = pop @{$contig->{$wit}};
-			$contig->{$wit} = $gst || '';
+			# Split the difference for substitutions
+			my $c1 = $diff->Range(1) || 1;
+			my $c2 = $diff->Range(2) || 1;
+			my $cd = ( $c1 + $c2 ) / 2;
+			$mag += $cd;
 		}
 	}
-	
-    if( @resolve ) {
-        my $still_contig = {};
-        foreach my $h ( @resolve ) {
-            # For each of the hypothetical readings with more than one possibility,
-            # try deleting it from each of its member subgraphs in turn, and see
-            # if that breaks the contiguous grouping.
-            # TODO This can still break in a corner case where group A can use 
-            # either vertex 1 or 2, and group B can use either vertex 2 or 1.
-            # Revisit this if necessary; it could get brute-force nasty.
-            foreach my $gst ( @{$contig->{$h}} ) {
-                my $gpart = $subgraph->{$gst}->copy();
-                # If we have come this far, there is only one root and everything
-                # is reachable from it.
-                my( $root ) = $gpart->predecessorless_vertices;    
-                my $reachable = {};
-                map { $reachable->{$_} = 1 } $gpart->vertices;
-
-                # Try deleting the hypothetical node. 
-                $gpart->delete_vertex( $h );
-                if( $h eq $root ) {
-                	# See if we still have a single root.
-                	my @roots = $gpart->predecessorless_vertices;
-                	warn "This shouldn't have happened" unless @roots;
-                	if( @roots > 1 ) {
-                		# $h is needed by this group.
-                		if( exists( $still_contig->{$h} ) ) {
-                			# Conflict!
-                			$conflict->{$gst} = 1;
-                			$still_contig->{$h} = '';
-                		} else {
-                			$still_contig->{$h} = $gst;
-                		}
-                	}
-                } else {
-                	# $h is somewhere in the middle. See if everything
-                	# else can still be reached from the root.
-					my %still_reachable = ( $root => 1 );
-					map { $still_reachable{$_} = 1 }
-						$gpart->all_successors( $root );
-					foreach my $v ( keys %$reachable ) {
-						next if $v eq $h;
-						if( !$still_reachable{$v}
-							&& ( $contig->{$v} eq $gst 
-								 || ( exists $still_contig->{$v} 
-									  && $still_contig->{$v} eq $gst ) ) ) {
-							# We need $h.
-							if( exists $still_contig->{$h} ) {
-								# Conflict!
-								$conflict->{$gst} = 1;
-								$still_contig->{$h} = '';
-							} else {
-								$still_contig->{$h} = $gst;
-							}
-							last;
-						} # else we don't need $h in this group.
-					} # end foreach $v
-				} # endif $h eq $root
-            } # end foreach $gst
-        } # end foreach $h
-        
-        # Now we have some hypothetical vertices in $still_contig that are the 
-        # "real" group memberships.  Replace these in $contig.
-		foreach my $v ( keys %$contig ) {
-			next unless ref $contig->{$v};
-			$contig->{$v} = $still_contig->{$v};
-		}
-    } # end if @resolve
-    
-    my $is_genealogical = keys %$conflict ? JSON::false : JSON::true;
-	my $variant_row = [ [], $is_genealogical ];
-	# Fill in the groupings from $contig.
-	foreach my $g ( @$groups ) {
-    	my $gst = wit_stringify( $g );
-    	my @realgroup = grep { $contig->{$_} eq $gst } keys %$contig;
-    	push( @{$variant_row->[0]}, \@realgroup );
-    }
-    return $variant_row;
+	return ( $mag <= length( $word1 ) / 2 );
 }
 
 sub _prune_group {
-	my( $group, $stemma, $graph ) = @_;
-	my $lacunose = {};
-	map { $lacunose->{$_} = 1 } $stemma->hypotheticals;
-	map { $lacunose->{$_} = 0 } @$group;
+	my( $group, $graph ) = @_;
+	my $relevant = {};
+	# Record the existence of the vertices in the group
+	map { $relevant->{$_} = 1 } @$group;
 	# Make our subgraph
-	my $subgraph = $graph->copy;
-	map { $subgraph->delete_vertex( $_ ) unless exists $lacunose->{$_} }
+	my $subgraph = $graph->deep_copy;
+	map { $subgraph->delete_vertex( $_ ) unless $relevant->{$_} }
 		$subgraph->vertices;
-	# ...and find the root.
 	# Now prune and return the remaining vertices.
-	_prune_subtree( $subgraph, $lacunose );
-	return $subgraph->vertices;
+	_prune_subtree( $subgraph );
+	# Return the list of vertices and the list of roots.
+	my $pruned_group = [ sort $subgraph->vertices ];
+	my $pruned_roots = [ $subgraph->predecessorless_vertices ];
+	return( $pruned_group, $pruned_roots );
 }
 
 sub _prune_subtree {
-	my( $tree, $lacunose ) = @_;
+	my( $tree ) = @_;
 	
 	# Delete lacunose witnesses that have no successors
-    my @orphan_hypotheticals;
-    my $ctr = 0;
-    do {
-    	die "Infinite loop on leaves" if $ctr > 100;
-    	@orphan_hypotheticals = grep { $lacunose->{$_} } 
-        	$tree->successorless_vertices;
-        $tree->delete_vertices( @orphan_hypotheticals );
-        $ctr++;
-    } while( @orphan_hypotheticals );
+	my @orphan_hypotheticals;
+	my $ctr = 0;
+	do {
+		die "Infinite loop on leaves" if $ctr > 100;
+		@orphan_hypotheticals = 
+			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' } 
+				$tree->successorless_vertices;
+		$tree->delete_vertices( @orphan_hypotheticals );
+		$ctr++;
+	} while( @orphan_hypotheticals );
 	
 	# Delete lacunose roots that have a single successor
 	my @redundant_root;
 	$ctr = 0;
 	do {
-    	die "Infinite loop on roots" if $ctr > 100;
-		@redundant_root = grep { $lacunose->{$_} && $tree->successors( $_ ) == 1 } 
-			$tree->predecessorless_vertices;
+		die "Infinite loop on roots" if $ctr > 100;
+		@redundant_root = 
+			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' 
+				   && $tree->successors( $_ ) == 1 } 
+				$tree->predecessorless_vertices;
 		$tree->delete_vertices( @redundant_root );
 		$ctr++;
 	} while( @redundant_root );
-}
-
-sub _prune_subtree_old {
-    my( $tree, $root, $contighash ) = @_;
-    # First, delete hypothetical leaves / orphans until there are none left.
-    my @orphan_hypotheticals = grep { ref( $contighash->{$_} ) } 
-        $tree->successorless_vertices;
-    while( @orphan_hypotheticals ) {
-        $tree->delete_vertices( @orphan_hypotheticals );
-        @orphan_hypotheticals = grep { ref( $contighash->{$_} ) } 
-            $tree->successorless_vertices;
-    }
-    # Then delete a hypothetical root with only one successor, moving the
-    # root to the first child that has no other predecessors.
-    while( $tree->successors( $root ) == 1 && ref $contighash->{$root} ) {
-        my @nextroot = $tree->successors( $root );
-        $tree->delete_vertex( $root );
-        ( $root ) = grep { $tree->is_predecessorless_vertex( $_ ) } @nextroot;
-    }
-    # The tree has been modified in place, but we need to know the new root.
-    $root = undef unless $root && $tree->has_vertex( $root );
-    return $root;
-}
-# Add the variant, subject to a.c. representation logic.
-# This assumes that we will see the 'main' version before the a.c. version.
-sub add_variant_wit {
-    my( $arr, $wit, $acstr ) = @_;
-    my $skip;
-    if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
-        my $real = $1;
-        $skip = grep { $_ =~ /^\Q$real\E$/ } @$arr;
-    } 
-    push( @$arr, $wit ) unless $skip;
 }
 
 sub _useful_variant {

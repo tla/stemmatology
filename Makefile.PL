@@ -19,6 +19,7 @@ requires( 'KiokuDB::GC::Naive' );
 requires( 'KiokuDB::TypeMap' );
 requires( 'KiokuDB::TypeMap::Entry::Naive' );
 requires( 'KiokuX::Model' );
+requires( 'KiokuX::User::Util' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );

@@ -232,8 +232,12 @@ between the two reading strings. Returns undef if there is no general relationsh
 sub scoped_relationship {
 	my( $self, $rdga, $rdgb ) = @_;
 	my( $first, $second ) = sort( $rdga, $rdgb );
+	my( $lcfirst, $lcsecond ) = sort( lc( $rdga ), lc( $rdgb ) );
 	if( exists $self->scopedrels->{$first}->{$second} ) {
 		return $self->scopedrels->{$first}->{$second};
+	} elsif( exists $self->scopedrels->{$lcfirst}->{$lcsecond} ) {
+		my $rel = $self->scopedrels->{$lcfirst}->{$lcsecond};
+		return $rel->type ne 'orthographic' ? $rel : undef;
 	} else {
 		return undef;
 	}
@@ -419,10 +423,8 @@ sub add_relationship {
     	if( $options->{'scope'} ne 'local' ) {
 			# Is there a relationship with this a & b already?
 			# Case-insensitive for non-orthographics.
-			my $rdga = $options->{'type'} eq 'orthographic' 
-				? $options->{'reading_a'} : lc( $options->{'reading_a'} );
-			my $rdgb = $options->{'type'} eq 'orthographic' 
-				? $options->{'reading_b'} : lc( $options->{'reading_b'} );
+			my $rdga = $options->{'reading_a'};
+			my $rdgb = $options->{'reading_b'};
 			my $otherrel = $self->scoped_relationship( $rdga, $rdgb );
 			if( $otherrel && $otherrel->type eq $options->{type}
 				&& $otherrel->scope eq $options->{scope} ) {
@@ -436,12 +438,6 @@ sub add_relationship {
     }
 
 
-	# Find all the pairs for which we need to set the relationship.
-	my @vectors;
-    if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
-    	push( @vectors, $self->_find_applicable( $relationship ) );
-    }
-        
     # Now set the relationship(s).
     my @pairs_set;
 	my $rel = $self->get_relationship( $source, $target );
@@ -464,18 +460,57 @@ sub add_relationship {
 	$self->_set_relationship( $relationship, $source, $target ) unless $skip;
 	push( @pairs_set, [ $source, $target ] );
     
-    # Set any additional relationships that might be in @vectors.
-    foreach my $v ( @vectors ) {
-    	next if $v->[0] eq $source && $v->[1] eq $target;
-    	next if $v->[1] eq $source && $v->[0] eq $target;
-    	my @added = $self->add_relationship( @$v, $relationship );
-    	push( @pairs_set, @added );
+	# Find all the pairs for which we need to set the relationship.
+    if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
+		push( @pairs_set, $self->add_global_relationship( $relationship ) );
     }
-    
     # Finally, restore whatever collations we can, and return.
     $self->_restore_collations( @$droppedcolls );
     return @pairs_set;
 }
+
+=head2 add_global_relationship( $options, $skipvector )
+
+Adds the relationship specified wherever the relevant readings appear together 
+in the graph.  Options as in add_relationship above. 
+
+=cut
+
+sub add_global_relationship {
+	my( $self, $options ) = @_;
+	# First see if we are dealing with a relationship object already
+	my $relationship;
+	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
+		$relationship = $options;
+	} else {
+		# Then see if a scoped relationship already applies for the words.
+		my $scopedrel = $self->scoped_relationship( 
+			$options->{reading_a}, $options->{reading_b} );
+		$relationship = $scopedrel ? $scopedrel 
+			: $self->create( $options );
+	}
+	# Sanity checking
+	throw( "Relationship passed to add_global is not global" )
+		unless $relationship->nonlocal;
+	throw( "Relationship passed to add_global is not a valid global type" )
+		unless $relationship->colocated && $relationship->type ne 'collated';
+		
+	# Apply the relationship wherever it is valid
+	my @pairs_set;
+    foreach my $v ( $self->_find_applicable( $relationship ) ) {
+    	my $exists = $self->get_relationship( @$v );
+    	if( $exists && $exists->type ne 'collated' ) {
+    		throw( "Found conflicting relationship at @$v" )
+    			unless $exists->type eq $relationship->type
+    				&& $exists->scope eq $relationship->scope;
+    	} else {
+	    	my @added = $self->add_relationship( @$v, $relationship );
+    		push( @pairs_set, @added );
+    	}
+    }
+	return @pairs_set;	
+}
+
 
 =head2 del_scoped_relationship( $reading_a, $reading_b )
 

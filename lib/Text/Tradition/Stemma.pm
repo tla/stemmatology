@@ -8,7 +8,6 @@ use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
 use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
-use XML::LibXML;
 use Moose;
 
 =head1 NAME
@@ -159,7 +158,9 @@ sub as_dot {
 	## See if we are including any a.c. witnesses in this graph.
 	my $graph = $self->graph;
 	if( exists $opts->{'layerwits'} ) {
-		$graph = $self->extend_graph( $opts->{'layerwits'} );
+		my $extant = {};
+		map { $extant->{$_} = 1 } $self->witnesses;
+		$graph = $self->situation_graph( $extant, $opts->{'layerwits'} );
 	}
 
     # Get default and specified options
@@ -213,30 +214,39 @@ sub as_dot {
 
 =head2 editable( $opts )
 
+=head2 editable_graph( $graph, $opts )
+
 Returns a version of the graph rendered in our definition format.  The
 output separates statements with a newline; set $opts->{'linesep'} to the 
 empty string or to a space if the result is to be sent via JSON.
 
-Any layer witnesses to be included should be passed via $opts->{'layerwits'}.
+If a situational version of the stemma is required, the arguments for 
+situation_graph should be passed via $opts->{'extant'} and $opts->{'layerwits'}.
 
 =cut
 
 sub editable {
-	my( $self, $opts ) = @_;
-	
-	## See if we are including any a.c. witnesses in this graph.
+	my( $self, $opts ) = @_;	
 	my $graph = $self->graph;
-	if( exists $opts->{'layerwits'} ) {
-		$graph = $self->extend_graph( $opts->{'layerwits'} );
+	## See if we need an editable version of a situational graph.
+	if( exists $opts->{'layerwits'} || exists $opts->{'extant'} ) {
+		my $extant = delete $opts->{'extant'} || {};
+		my $layerwits = delete $opts->{'layerwits'} || [];
+		$graph = $self->situation_graph( $extant, $layerwits );
 	}
+	return editable_graph( $graph, $opts );
+}
+
+sub editable_graph {
+	my( $graph, $opts ) = @_;
 
 	# Create the graph
 	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
 	my @dotlines;
 	push( @dotlines, 'digraph stemma {' );
 	my @real; # A cheap sort
-    foreach my $n ( sort $self->graph->vertices ) {
-    	my $c = $self->graph->get_vertex_attribute( $n, 'class' );
+    foreach my $n ( sort $graph->vertices ) {
+    	my $c = $graph->get_vertex_attribute( $n, 'class' );
     	$c = 'extant' unless $c;
     	if( $c eq 'extant' ) {
     		push( @real, $n );
@@ -248,7 +258,7 @@ sub editable {
 	foreach my $n ( @real ) {
 		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
 	}
-	foreach my $e ( sort _by_vertex $self->graph->edges ) {
+	foreach my $e ( sort _by_vertex $graph->edges ) {
 		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
 		push( @dotlines, "  $from -> $to;" );
 	}
@@ -278,29 +288,40 @@ sub _by_vertex {
 	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
 }
 
-=head2 extend_graph( $layered_witnesses )
+=head2 situation_graph( $extant, $layered )
 
-Returns a graph which is the original stemma with witness layers added for the
-list in @$layered_witnesses.  A layered (a.c.) witness is added as a parent
-of its main version, and additionally shares all other parents and children with
-that version.
+Returns a graph which is the original stemma with all witnesses not in the
+%$extant hash marked as hypothetical, and witness layers added to the graph
+according to the list in @$layered.  A layered (a.c.) witness is added as a
+parent of its main version, and additionally shares all other parents and
+children with that version.
 
 =cut
 
-sub extend_graph {
-	my( $self, $layerwits ) = @_;
+sub situation_graph {
+	my( $self, $extant, $layerwits ) = @_;
+	
+	my $graph = $self->graph->copy;
+	foreach my $vertex ( $graph->vertices ) {
+		# Set as extant any vertex that is extant in the stemma AND 
+		# exists in the $extant hash.
+		my $class = 'hypothetical';
+		$class = 'extant' if exists $extant->{$vertex} && $extant->{$vertex} &&
+			$self->graph->get_vertex_attribute( $vertex, 'class' ) ne 'hypothetical';
+		$graph->set_vertex_attribute( $vertex, 'class', $class );
+	}
+	
 	# For each 'layered' witness in the layerwits array, add it to the graph
 	# as an ancestor of the 'main' witness, and otherwise with the same parent/
 	# child links as its main analogue.
 	# TOOD Handle case where B is copied from A but corrected from C
-	
-	# Iterate through, adding a.c. witnesses
-	my $actag = $self->collation->ac_label;
-	my $graph = $self->graph->deep_copy;
+	my $aclabel = $self->collation->ac_label;
 	foreach my $lw ( @$layerwits ) {
 		# Add the layered witness and set it with the same attributes as
 		# its 'main' analogue
-		my $lwac = $lw . $self->collation->ac_label;
+		throw( "Cannot add a layer to a hypothetical witness $lw" )
+			unless $graph->get_vertex_attribute( $lw, 'class' ) eq 'extant';
+		my $lwac = $lw . $aclabel;
 		$graph->add_vertex( $lwac );
 		$graph->set_vertex_attributes( $lwac,
 			$graph->get_vertex_attributes( $lw ) );
@@ -314,14 +335,14 @@ sub extend_graph {
 		foreach my $v ( $graph->predecessors( $lw ) ) {
 			next if $v eq $lwac; # Don't add a loop
 			$graph->add_edge( $v, $lwac );
-			$graph->add_edge( $v.$self->collation->ac_label, $lwac )
-				if $graph->has_vertex( $v.$self->collation->ac_label );
+			$graph->add_edge( $v.$aclabel, $lwac )
+				if $graph->has_vertex( $v.$aclabel );
 		}
 		foreach my $v ( $graph->successors( $lw ) ) {
 			next if $v eq $lwac; # but this shouldn't occur
 			$graph->add_edge( $lwac, $v );
-			$graph->add_edge( $lwac, $v.$self->collation->ac_label )
-				if $graph->has_vertex( $v.$self->collation->ac_label );
+			$graph->add_edge( $lwac, $v.$aclabel )
+				if $graph->has_vertex( $v.$aclabel );
 		}
 	}
 	return $graph;
@@ -347,9 +368,10 @@ sub as_svg {
     run( \@cmd, ">", binary(), \$svg );
     # HACK: Parse the SVG and change the dimensions.
     # Get rid of width and height attributes to allow scaling.
-    my $parser = XML::LibXML->new();
-    my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
     if( $opts->{'size'} ) {
+    	require XML::LibXML;
+		my $parser = XML::LibXML->new();
+		my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
     	my( $ew, $eh ) = @{$opts->{'size'}};
     	# If the graph is wider than it is tall, set width to ew and remove height.
     	# Otherwise set height to eh and remove width.
@@ -369,9 +391,10 @@ sub as_svg {
 		}
 		$svgdoc->documentElement->removeAttribute( $remove );
 		$svgdoc->documentElement->setAttribute( $keep, $val );
+		$svg = $svgdoc->toString();
 	}
     # Return the result
-    return decode_utf8( $svgdoc->toString );
+    return decode_utf8( $svg );
 }
 
 =head2 witnesses

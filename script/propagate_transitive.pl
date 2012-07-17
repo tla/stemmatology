@@ -40,8 +40,10 @@ my $dir = Text::Tradition::Directory->new( $dbopts );
 my $scope = $dir->new_scope();
 my $lookfor = $ARGV[0] || '';
 foreach my $tinfo ( $dir->traditionlist() ) {
+	next if $tinfo->{'name'} eq 'xxxxx';
 	next unless $tinfo->{'name'} =~ /$lookfor/ || $tinfo->{'id'} eq $lookfor;
 	my $tradition = $dir->lookup( $tinfo->{'id'} );
+	say "Looking at tradition " . $tradition->name;
 	my $c = $tradition->collation;
 
 	my $represented_by = {};
@@ -58,16 +60,22 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 	# the same word.
 	foreach my $rel ( $c->relationships ) {
 		my $relobj = $c->get_relationship( $rel );
-		next unless $relobj->type =~ /^(grammatical|lexical)$/;
-		my $r1pool = $represented_by->{$representative->{$rel->[0]}};
-		my $r2pool = $represented_by->{$representative->{$rel->[1]}};
-		# Error check
-		if( check_distinct( $r1pool, $r2pool ) ) {
-			map { propagate_rel( $c, $relobj->type, $_, @$r2pool ) } @$r1pool;
-		} else {
-			warn "Pools not distinct for " . join( ' and ', @$rel );
+		if( $relobj->type =~ /^(grammatical|lexical)$/ ) {
+			my $r1pool = $represented_by->{$representative->{$rel->[0]}};
+			my $r2pool = $represented_by->{$representative->{$rel->[1]}};
+			# Error check
+			if( check_distinct( $r1pool, $r2pool ) ) {
+				map { propagate_rel( $c, $relobj->type, $_, @$r2pool ) } @$r1pool;
+			} else {
+				warn "Pools not distinct for " . join( ' and ', @$rel );
+			}
+		} elsif( $relobj->type eq 'transposition' ) {
+			# We also need to propagate transposition links, but rather more strictly.
+			propagate_rel( $c, 'transposition', map { $c->reading( $_ ) } @$rel );
 		}
 	}
+	
+	
 	$dir->save( $tradition ) unless $testrun;
 }
 
@@ -77,14 +85,28 @@ sub propagate_rel {
 	while( @list ) {
 		foreach my $r ( @list ) {
 			next if $curr eq $r;
-			my $hasrel = $c->get_relationship( $curr, $r );
-			if( !$hasrel || $hasrel->type eq 'collated' ) {
-				say STDERR "Propagating $type relationship $curr -> $r";
-				$c->add_relationship( $curr, $r, { type => $type } );
-			} elsif( $hasrel->type ne $type ) {
-				warn "Found relationship conflict at $curr / $r: "
-					. $hasrel->type . " instead of $type"
-					unless( $TYPEVALUES{$hasrel->type} < $TYPEVALUES{$type} );
+			# Check that the given relationship type exists between $curr and $r.
+			# Also check that the given relationship type exists between $curr and
+			# the same-type relationships of $r.
+			my @candidates = ( $r );
+			foreach my $rrel ( $r->related_readings() ) {
+				next if $curr eq $rrel;
+				my $rrelobj = $c->get_relationship( $r, $rrel );
+				if( $rrelobj && $rrelobj->type eq $type ) {
+					my $hasrrel = $c->get_relationship( $curr, $rrel );
+					push( @candidates, $rrel ) unless $hasrrel;
+				}
+			}
+			foreach my $cand ( @candidates ) {
+				my $hasrel = $c->get_relationship( $curr, $cand );
+				if( !$hasrel || $hasrel->type eq 'collated' ) {
+					say STDERR "Propagating $type relationship $curr -> $cand";
+					$c->add_relationship( $curr, $cand, { type => $type } );
+				} elsif( $hasrel->type ne $type ) {
+					warn "Found relationship conflict at $curr / $cand: "
+						. $hasrel->type . " instead of $type"
+						unless( $TYPEVALUES{$hasrel->type} < $TYPEVALUES{$type} );
+				}
 			}
 		}
 		$curr = shift @list;
