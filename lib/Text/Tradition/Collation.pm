@@ -102,13 +102,6 @@ has 'end' => (
 	weak_ref => 1,
 	);
 	
-has 'cached_svg' => (
-	is => 'rw',
-	isa => 'Str',
-	predicate => 'has_cached_svg',
-	clearer => 'wipe_svg',
-	);
-	
 has 'cached_table' => (
 	is => 'rw',
 	isa => 'HashRef',
@@ -641,22 +634,17 @@ sub as_svg {
     my $want_subgraph = exists $opts->{'from'} || exists $opts->{'to'};
     $self->calculate_ranks() 
     	unless( $self->_graphcalc_done || $opts->{'nocalc'} || !$self->linear );
-    if( !$self->has_cached_svg || $opts->{'recalc'}	|| $want_subgraph ) {        
-		my @cmd = qw/dot -Tsvg/;
-		my( $svg, $err );
-		my $dotfile = File::Temp->new();
-		## USE FOR DEBUGGING
-		# $dotfile->unlink_on_destroy(0);
-		binmode $dotfile, ':utf8';
-		print $dotfile $self->as_dot( $opts );
-		push( @cmd, $dotfile->filename );
-		run( \@cmd, ">", binary(), \$svg );
-		$svg = decode_utf8( $svg );
-		$self->cached_svg( $svg ) unless $want_subgraph;
-		return $svg;
-	} else {
-		return $self->cached_svg;
-	}
+	my @cmd = qw/dot -Tsvg/;
+	my( $svg, $err );
+	my $dotfile = File::Temp->new();
+	## USE FOR DEBUGGING
+	# $dotfile->unlink_on_destroy(0);
+	binmode $dotfile, ':utf8';
+	print $dotfile $self->as_dot( $opts );
+	push( @cmd, $dotfile->filename );
+	run( \@cmd, ">", binary(), \$svg );
+	$svg = decode_utf8( $svg );
+	return $svg;
 }
 
 
@@ -1038,11 +1026,6 @@ sub as_graphml {
     	'RelationshipScope' => 'string',
     );
     
-    # List of attribute names *not* to save on our objects.
-    # We will also not save any attribute beginning with _.
-    my %skipsave;
-    map { $skipsave{$_} = 1 } qw/ cached_svg /;
-
     # Add the data keys for the graph. Include an extra key 'version' for the
     # GraphML output version.
     my %graph_data_keys;
@@ -1643,7 +1626,7 @@ sub calculate_ranks {
         }
     }
     # Do we need to invalidate the cached data?
-    if( $self->has_cached_svg || $self->has_cached_table ) {
+    if( $self->has_cached_table ) {
     	foreach my $r ( $self->readings ) {
     		next if defined( $existing_ranks{$r} ) 
     			&& $existing_ranks{$r} == $r->rank;
@@ -1660,7 +1643,6 @@ sub calculate_ranks {
 
 sub _clear_cache {
 	my $self = shift;
-	$self->wipe_svg if $self->has_cached_svg;
 	$self->wipe_table if $self->has_cached_table;
 }	
 
