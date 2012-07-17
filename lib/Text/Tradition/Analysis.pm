@@ -522,23 +522,8 @@ sub solve_variants {
 			# Use the (same) expanded groups from findClasses if that got calculated
 			# and is relevant.
 			if( exists( $more_eval->{'findClasses'} ) && !$result ) {
-				( $calc_groups, $classes ) = @{$more_eval->{'findClasses'}->[$gidx]};
-			}
-			
-			# Prune the calculated groups, in case the IDP solver failed to.
-			if( $sources || $result ) {
-				my @pruned_groups;
-				my @pruned_roots;
-				foreach my $cg ( @$calc_groups ) {
-					my( $pg, $pr ) = _prune_group( $cg, $graph );
-					push( @pruned_groups, $pg );
-					push( @pruned_roots, @$pr );
-				}
-				$calc_groups = \@pruned_groups;
-				say STDERR "Pruned roots from @$sources to @pruned_roots"
-					unless wit_stringify( [ sort @$sources ] ) 
-						eq wit_stringify( [ sort @pruned_roots ] );
-				$sources = \@pruned_roots;
+				my $throwaway_groups;
+				( $throwaway_groups, $classes ) = @{$more_eval->{'findClasses'}->[$gidx]};
 			}
 			
 			# Convert the source list into a lookup hash
@@ -616,7 +601,6 @@ sub _prepare_groups {
 		try {
 			$graph = $stemma->situation_graph( $extant, \@acwits );
 		} catch {
-			$DB::single = 1;
 			die "Unable to extend graph with @acwits";
 		}
 		my $graphkey = "$graph || " . wit_stringify( [ sort keys %$extant ] );
@@ -892,13 +876,12 @@ sub analyze_location {
 		# Now say whether this reading represents a conflict.
 		unless( $variant_row->{'genealogical'} ) {
 			my @trueroots;
-			if( exists $variant_row->{'classes'} ) {
+			if( exists $variant_row->{'reading_types'} ) {
+				my $classinfo = delete $variant_row->{'reading_types'};
 				# We have tested for reversions. Use the information.
 				my @reversions;
 				foreach my $rdgroot ( @roots ) {
-					## TODO This needs IDP to prune itself in order to be
-					## correct.
-					if( $variant_row->{'classes'}->{$rdgroot} eq 'revert' ) {
+					if( $classinfo->{$rdgroot} eq 'revert' ) {
 						push( @reversions, $rdgroot );
 					} else {
 						push( @trueroots, $rdgroot );
