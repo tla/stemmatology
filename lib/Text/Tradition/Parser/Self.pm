@@ -168,19 +168,20 @@ is( $usert->user->id, $testuser->id, "Parsed tradition with userstore points to 
 =end testing
 
 =cut
-
+use Data::Dump;
 sub parse {
     my( $tradition, $opts ) = @_;
     
     # Collation data is in the first graph; relationship-specific stuff 
     # is in the second.
     my( $graph_data, $rel_data ) = graphml_parse( $opts );
-    
+
     my $collation = $tradition->collation;
     my %witnesses;
     
     # print STDERR "Setting graph globals\n";
     $tradition->name( $graph_data->{'name'} );
+
     my $use_version;
     my $tmeta = $tradition->meta;
     my $cmeta = $collation->meta;
@@ -227,8 +228,14 @@ sub parse {
     foreach my $n ( @{$graph_data->{'nodes'}} ) {    	
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
-    	next if( defined $n->{'is_start'} );
+        if( defined $n->{'is_start'} ) {
+	  warn Data::Dump::dump($n);
+	  warn $collation->start->id;
+	  $collation->start->rank($n->{'rank'});
+          next;
+        }
     	if( defined $n->{'is_end'} ) {
+	  warn Data::Dump::dump($n);
     		$collation->end->rank( $n->{'rank'} );
     		next;
     	}

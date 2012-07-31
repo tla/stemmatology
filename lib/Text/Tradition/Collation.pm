@@ -51,6 +51,7 @@ has 'readings' => (
         _add_reading => 'set',
         del_reading => 'delete',
         has_reading => 'exists',
+#        reading_keys => 'keys',
         readings   => 'values',
     },
     default => sub { {} },
