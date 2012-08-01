@@ -190,7 +190,7 @@ has +typemap => (
     KiokuDB::TypeMap->new(
       isa_entries => {
         "Text::Tradition" =>
-          KiokuDB::TypeMap::Entry::Naive->new(),
+          Text::Tradition::TypeMap::Entry->new(),
         "Graph" => Text::Tradition::TypeMap::Entry->new(),
         "Graph::AdjacencyMap" => Text::Tradition::TypeMap::Entry->new(),
         "Set::Scalar" => Text::Tradition::TypeMap::Entry->new(),
