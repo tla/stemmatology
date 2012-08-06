@@ -105,6 +105,27 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
     my $fetched_t = $user_store->tradition($tlist[0]->{id});
     is($fetched_t->user->id, $user->id, 'Traditionlist returns item belonging to this user');
 
+    {
+	# change attribute in the user object
+	my $email = $user->email;
+	$user->email('foo@bar.baz');
+	$user_store->update($user);
+
+	# refetch tradition
+	$fetched_t = $user_store->tradition($tlist[0]->{id});
+	# assert that the associated user also changed
+	is($fetched_t->user->email, 'foo@bar.baz');
+
+	# change the email back to what it was
+	$user->email($email);
+	$user_store->update($user);
+
+	# refetch tradition
+	$fetched_t = $user_store->tradition($tlist[0]->{id});
+	# assert that email has actually been reverted
+	is($fetched_t->user->email, $email);
+    }
+
     ## add a second, not owned by this user, we shouldn't return it from
     ## traditionslist
     my $t2 = Text::Tradition->new( 
