@@ -49,7 +49,7 @@ my %expected_genealogical = (
 	243 => 1,
 );
 
-my $data = run_analysis( $tradition );
+my $data = run_analysis( $tradition, calcdsn => 'dbi:SQLite:dbname=t/data/analysis.db' );
 my $c = $tradition->collation;
 foreach my $row ( @{$data->{'variants'}} ) {
 	# Account for rows that used to be "not useful"

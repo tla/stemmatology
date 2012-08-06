@@ -193,6 +193,7 @@ has +typemap => (
           KiokuDB::TypeMap::Entry::Naive->new(),
         "Graph" => Text::Tradition::TypeMap::Entry->new(),
         "Graph::AdjacencyMap" => Text::Tradition::TypeMap::Entry->new(),
+        "Set::Scalar" => Text::Tradition::TypeMap::Entry->new(),
       }
     );
   },

@@ -4,20 +4,22 @@ use strict;
 use warnings;
 use Algorithm::Diff;  # for word similarity measure
 use Benchmark;
+use Digest::MD5 qw/ md5_hex /;
 use Encode qw/ encode_utf8 /;
 use Exporter 'import';
 use Graph;
-use JSON qw/ encode_json decode_json /;
-use LWP::UserAgent;
+use JSON qw/ to_json /;
+use Set::Scalar;
 use Text::Tradition;
+use Text::Tradition::Analysis::Result;
+use Text::Tradition::Directory;
 use Text::Tradition::Stemma;
 use TryCatch;
 
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
 
-my $SOLVER_URL = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
-	
+my $unsolved_problems = {};
 
 =head1 NAME
 
@@ -108,7 +110,7 @@ my %expected_genealogical = (
 	243 => 1,
 );
 
-my $data = run_analysis( $tradition );
+my $data = run_analysis( $tradition, calcdsn => 'dbi:SQLite:dbname=t/data/analysis.db' );
 my $c = $tradition->collation;
 foreach my $row ( @{$data->{'variants'}} ) {
 	# Account for rows that used to be "not useful"
@@ -142,10 +144,16 @@ is( $data->{'variant_count'}, 58, "Got right total variant number" );
 sub run_analysis {
 	my( $tradition, %opts ) = @_;
 	my $c = $tradition->collation;
+	my $aclabel = $c->ac_label;
 
 	my $stemma_id = $opts{'stemma_id'} || 0;
 	my @ranks = ref( $opts{'ranks'} ) eq 'ARRAY' ? @{$opts{'ranks'}} : ();
 	my @collapse = ref( $opts{'merge_types'} ) eq 'ARRAY' ? @{$opts{'merge_types'}} : ();
+	
+	# Make sure we have a lookup DB for graph calculation results; this will die
+	# if calcdir or calcdsn isn't passed.
+	my $dir = $opts{'calcdir'} ? delete $opts{'calcdir'}
+		: Text::Tradition::Directory->new( dsn => $opts{'calcdsn'} );
 
 	# Get the stemma	
 	my $stemma = $tradition->stemma( $stemma_id );
@@ -153,9 +161,10 @@ sub run_analysis {
 	# Figure out which witnesses we are working with - that is, the ones that
 	# appear both in the stemma and in the tradition. All others are 'lacunose'
 	# for our purposes.
-	my @lacunose = $stemma->hypotheticals;
-	my @tradition_wits = map { $_->sigil } $tradition->witnesses;
-	push( @lacunose, _symmdiff( [ $stemma->witnesses ], \@tradition_wits ) );
+	my $lacunose = Set::Scalar->new( $stemma->hypotheticals );
+	my $stemma_wits = Set::Scalar->new( $stemma->witnesses );
+	my $tradition_wits = Set::Scalar->new( map { $_->sigil } $tradition->witnesses );
+	$lacunose->insert( $stemma_wits->symmetric_difference( $tradition_wits )->members );
 
 	# Find and mark 'common' ranks for exclusion, unless they were
 	# explicitly specified.
@@ -173,27 +182,27 @@ sub run_analysis {
 	my %lacunae;
 	my $moved = {};
 	foreach my $rank ( @ranks ) {
-		my $missing = [ @lacunose ];
+		my $missing = $lacunose->clone();
 		my $rankgroup = group_variants( $tradition, $rank, $missing, $moved, \@collapse );
 		# Filter out any empty rankgroups 
 		# (e.g. from the later rank for a transposition)
 		next unless keys %$rankgroup;
+		# Get the graph for this rankgroup
+		my $rankgraph = _graph_for_grouping( $stemma, $rankgroup, $missing, $aclabel );
 		if( $opts{'exclude_type1'} ) {
 			# Check to see whether this is a "useful" group.
-			my( $rdgs, $grps ) = _useful_variant( $rankgroup, 
-				$stemma->graph, $c->ac_label );
-			next unless @$rdgs;
+			next unless _useful_variant( $rankgroup, $rankgraph, $aclabel );
 		}
 		push( @use_ranks, $rank );
-		push( @groups, $rankgroup );
+		push( @groups, { grouping => $rankgroup, graph => $rankgraph } );
 		$lacunae{$rank} = $missing;
 	}
 	# Run the solver
-	my $answer = solve_variants( $stemma, @groups );
+	my $answer = solve_variants( $dir, @groups );
 
 	# Do further analysis on the answer
 	my $conflict_count = 0;
-	my $aclabel = $c->ac_label;
+	my $reversion_count = 0;
 	foreach my $idx ( 0 .. $#use_ranks ) {
 		my $location = $answer->{'variants'}->[$idx];
 		# Add the rank back in
@@ -207,13 +216,15 @@ sub run_analysis {
 		# Run the extra analysis we need.
 		## TODO We run through all the variants in this call, so
 		## why not add the reading data there instead of here below?
-		analyze_location( $tradition, $stemma, $location, \%lmiss );
+		my $graph = $groups[$idx]->{graph};
+		analyze_location( $tradition, $graph, $location, \%lmiss );
 
 		my @layerwits;
 		# Do the final post-analysis tidying up of the data.
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
 			$conflict_count++ 
 				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
+			$reversion_count++ if $rdghash->{'reverted'};
 			# Add the reading text back in, setting display value as needed
 			my $rdg = $c->reading( $rdghash->{'readingid'} );
 			if( $rdg ) {
@@ -237,6 +248,7 @@ sub run_analysis {
 		$location->{'layerwits'} = \@layerwits if @layerwits;
 	}
 	$answer->{'conflict_count'} = $conflict_count;
+	$answer->{'reversion_count'} = $reversion_count;
 	
 	return $answer;
 }
@@ -262,9 +274,7 @@ sub group_variants {
 	my $table = $c->alignment_table;
 	# Get the alignment table readings
 	my %readings_at_rank;
-	my %is_lacunose; # lookup table for witnesses not in stemma
-	map { $is_lacunose{$_} = 1; $is_lacunose{$_.$aclabel} = 1 } @$lacunose;
-	my @check_for_gaps;
+	my $check_for_gaps = Set::Scalar->new();
 	my %moved_wits;
 	my $has_transposition;
 	foreach my $tablewit ( @{$table->{'alignment'}} ) {
@@ -272,7 +282,7 @@ sub group_variants {
 		my $wit = $tablewit->{'witness'};
 		# Exclude the witness if it is "lacunose" which if we got here
 		# means "not in the stemma".
-		next if $is_lacunose{$wit};
+		next if _is_lacunose( $wit, $lacunose, $aclabel );
 		# Note if the witness is actually in a lacuna
 		if( $rdg && $rdg->{'t'}->is_lacuna ) {
 			_add_to_witlist( $wit, $lacunose, $aclabel );
@@ -292,45 +302,49 @@ sub group_variants {
 				next if exists $readings_at_rank{$trdg->id};
 				$has_transposition = 1;
 				my @affected_wits = _table_witnesses( 
-					$table, $trdg, \%is_lacunose, $aclabel );
+					$table, $trdg, $lacunose, $aclabel );
 				next unless @affected_wits;
 				map { $moved_wits{$_} = 1 } @affected_wits;
 				$transposed->{$trdg->id} = 
-					[ _table_witnesses( $table, $rdg->{'t'}, \%is_lacunose, $aclabel ) ];
+					[ _table_witnesses( $table, $rdg->{'t'}, $lacunose, $aclabel ) ];
 				$readings_at_rank{$trdg->id} = $trdg;
 			}
 		# ...or it is empty, ergo a gap.
 		} else {
-			_add_to_witlist( $wit, \@check_for_gaps, $aclabel );
+			_add_to_witlist( $wit, $check_for_gaps, $aclabel );
 		}
 	}
-	my @gap_wits;
-	map { _add_to_witlist( $_, \@gap_wits, $aclabel ) 
-		unless $moved_wits{$_} } @check_for_gaps;
-	# Group the readings, collapsing groups by relationship if needed
+	my $gap_wits = Set::Scalar->new();
+	map { _add_to_witlist( $_, $gap_wits, $aclabel ) 
+		unless $moved_wits{$_} } $check_for_gaps->members;
+		
+	# Group the readings, collapsing groups by relationship if needed.	
 	my $grouped_readings = {};
 	foreach my $rdg ( values %readings_at_rank ) {
 		# Skip readings that have been collapsed into others.
 		next if exists $grouped_readings->{$rdg->id} 
 			&& $grouped_readings->{$rdg->id} eq 'COLLAPSE';
 		# Get the witness list, including from readings collapsed into this one.
-		my @wits = _table_witnesses( $table, $rdg, \%is_lacunose, $aclabel );
+		my @wits = _table_witnesses( $table, $rdg, $lacunose, $aclabel );
 		if( $collapse && @$collapse ) {
 			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
-				my @otherwits = _table_witnesses( 
-					$table, $other, \%is_lacunose, $aclabel );
+				my @otherwits = _table_witnesses( $table, $other, $lacunose, $aclabel );
 				push( @wits, @otherwits );
 				$grouped_readings->{$other->id} = 'COLLAPSE';
 			}
 		}
-		$grouped_readings->{$rdg->id} = \@wits;
+		$grouped_readings->{$rdg->id} = Set::Scalar->new( @wits );
 	}
-	$grouped_readings->{'(omitted)'} = \@gap_wits if @gap_wits;
+	if( $gap_wits->members ) {
+		$grouped_readings->{'(omitted)'} = $gap_wits;
+	}
+	
 	# Get rid of our collapsed readings
-	map { delete $grouped_readings->{$_} if $grouped_readings->{$_} eq 'COLLAPSE' } 
-		keys %$grouped_readings 
-		if $collapse;
+	map { delete $grouped_readings->{$_} if(
+			 $grouped_readings->{$_} eq 'COLLAPSE'
+			 || $grouped_readings->{$_}->is_empty ) } 
+		keys %$grouped_readings;
 		
 	# If something was transposed, check the groups for doubled-up readings
 	if( $has_transposition ) {
@@ -349,38 +363,39 @@ sub group_variants {
 sub _table_witnesses {
 	my( $table, $trdg, $lacunose, $aclabel ) = @_;
 	my $tableidx = $trdg->rank - 1;
-	my @has_reading;
+	my $has_reading = Set::Scalar->new();
 	foreach my $row ( @{$table->{'alignment'}} ) {
 		my $wit = $row->{'witness'};
-		next if $lacunose->{$wit};
+		next if _is_lacunose( $wit, $lacunose, $aclabel );
 		my $rdg = $row->{'tokens'}->[$tableidx];
 		next unless exists $rdg->{'t'} && defined $rdg->{'t'};
-		_add_to_witlist( $wit, \@has_reading, $aclabel )
+		_add_to_witlist( $wit, $has_reading, $aclabel )
 			if $rdg->{'t'}->id eq $trdg->id;
 	}
-	return @has_reading;
+	return $has_reading->members;
+}
+
+# Helper function to see if a witness is lacunose even if we are asking about
+# the a.c. version
+sub _is_lacunose {
+	my ( $wit, $lac, $acstr ) = @_;
+	if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
+		$wit = $1;
+	}
+	return $lac->has( $wit );
 }
 
 # Helper function to ensure that X and X a.c. never appear in the same list.
 sub _add_to_witlist {
 	my( $wit, $list, $acstr ) = @_;
-	my %inlist;
-	my $idx = 0;
-	map { $inlist{$_} = $idx++ } @$list;
 	if( $wit =~ /^(.*)\Q$acstr\E$/ ) {
-		my $acwit = $1;
-		unless( exists $inlist{$acwit} ) {
-			push( @$list, $acwit.$acstr );
-		}
+		# Don't add X a.c. if we already have X 
+		return if $list->has( $1 );
 	} else {
-		if( exists( $inlist{$wit.$acstr} ) ) {
-			# Replace the a.c. version with the main witness
-			my $i = $inlist{$wit.$acstr};
-			$list->[$i] = $wit;
-		} else {
-			push( @$list, $wit );
-		}
+		# Delete X a.c. if we are about to add X
+		$list->delete( $wit.$acstr );
 	}
+	$list->insert( $wit );
 }
 
 sub _check_transposed_consistency {
@@ -430,17 +445,46 @@ sub _check_transposed_consistency {
 		# and put any now-orphaned readings into an 'omitted' reading.
 		foreach my $wit ( keys %seen_wits ) {
 			unless( grep { exists $groupings->{$_} } @{$seen_wits{$wit}} ) {
-				$groupings->{'(omitted)'} = [] unless exists $groupings->{'(omitted)'};
+				$groupings->{'(omitted)'} = Set::Scalar->new()
+					 unless exists $groupings->{'(omitted)'};
 				_add_to_witlist( $wit, $groupings->{'(omitted)'}, $c->ac_label );
 			}
 		}
 	}
 }
 
-=head2 solve_variants( $graph, @groups ) 
+# For the given grouping, return its situation graph based on the stemma.
+sub _graph_for_grouping {
+	my( $stemma, $grouping, $lacunose, $aclabel ) = @_;
+	my $acwits = [];
+	my $extant = {};
+	foreach my $gs ( values %$grouping ) {
+		map { 
+			if( $_ =~ /^(.*)\Q$aclabel\E$/ ) {
+				push( @$acwits, $1 ) unless $lacunose->has( $1 );
+			} else {
+				$extant->{$_} = 1 unless $lacunose->has( $_ );
+			}
+		} $gs->members;
+	}
+	my $graph;
+	try {
+		# contig contains all extant wits and all hypothetical wits
+		# needed to make up the groups.
+		$graph = $stemma->situation_graph( $extant, $acwits );
+	} catch ( Text::Tradition::Error $e ) {
+		die "Could not extend graph with given extant and a.c. witnesses: "
+			. $e->message;
+	} catch {
+		die "Could not extend graph with a.c. witnesses @$acwits";
+	}
+	return $graph;
+}
 
-Sends the set of groups to the external graph solver service and returns
-a cleaned-up answer, adding the rank IDs back where they belong.
+=head2 solve_variants( $calcdir, @groups ) 
+
+Looks up the set of groups in the answers provided by the external graph solver 
+service and returns a cleaned-up answer, adding the rank IDs back where they belong.
 
 The JSON has the form 
   { "graph": [ stemmagraph DOT string without newlines ],
@@ -455,255 +499,98 @@ The answer has the form
 =cut
 
 sub solve_variants {
-	my( $stemma, @groups ) = @_;
+	my( $dir, @groups ) = @_;
 
-	# Filter the groups down to distinct groups, and work out what graph
-	# should be used in the calculation of each group. We want to send each
-	# distinct problem to the solver only once.
-	# We need a whole bunch of lookup tables for this.
-	my( $index_groupkeys, $group_indices, $graph_problems ) = _prepare_groups( @_ );
-
-	## For each distinct graph, send its groups to the solver.
-	my $ua = LWP::UserAgent->new();
+	## For each graph/group combo, look it up in the DB.
 	## Witness map is a HACK to get around limitations in node names from IDP
 	my $witness_map = {};
 	## Variables to store answers as they come back
-	my $variants = [ ( undef ) x ( scalar keys %$index_groupkeys ) ];
-	my $genealogical = 0;
-	foreach my $graphkey ( keys %$graph_problems ) {
-		my $graph = $graph_problems->{$graphkey}->{'object'};
-		my $groupings = [ values %{$graph_problems->{$graphkey}->{'groups'}} ];
-		my $req = _safe_wit_strings( $graph, $stemma->collation,
-			$groupings, $witness_map );
-		$req->{'command'} = 'findGroupings';
-		my $json = encode_json( $req );
-		# Send it off and get the result
-		# print STDERR "Sending request: " . to_json( $req ) . "\n";
-		my $resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
-							  'Content' => $json );							  
-		my $answer;
-		if( $resp->is_success ) {
-			$answer = _desanitize_names( decode_json( $resp->content ), $witness_map );
-		} else {
-			# Fall back to the old method.
-			die "IDP solver returned " . $resp->status_line . " / " . $resp->content
-				. "; cannot run graph analysis";
-		}
+	my $variants = [];
+	my $genealogical = 0; # counter
+	foreach my $graphproblem ( @groups ) {
+		# Initialize the result structure for this graph problem
+		my $vstruct = {	readings => [] };
+		push( @$variants, $vstruct );
 		
-		## If IDP worked, asked it the other two questions for this dataset.
-		my $more_eval = {};
-		foreach my $test ( qw/ findSources findClasses / ) {
-			$req->{'command'} = $test;
-			$json = encode_json( $req );
-			$resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
-							   'Content' => $json );
-			if( $resp->is_success ) {
-				$more_eval->{$test} = _desanitize_names( 
-					decode_json( $resp->content ), $witness_map );
-			} else {
-				warn "IDP solver for $test returned " . $resp->status_line . 
-					" / " . $resp->content;
-				# TODO arrange fallback
+		# Construct the calc result key and look up its answer
+		my $reqkey = _get_calc_key( $graphproblem );
+		my $scope = $dir->new_scope;
+		my $answer = $dir->lookup( $reqkey );
+		unless( $answer ) {
+			#warn "No answer found for graph problem $reqkey, moving on";
+			# Record the unsolved problem so that we can go get a solution
+			_save_problem( $graphproblem );
+			# Put just the request, with no real result, into vstruct
+			foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
+				push( @{$vstruct->{readings}}, { readingid => $rid, 
+					group => [ $graphproblem->{grouping}->{$rid}->members ] } );
 			}
+			next;
 		}
-		
-		## The answer is the evaluated groupings, plus a boolean for whether
-		## they were genealogical.  Reconstruct our original groups.
-		foreach my $gidx ( 0 .. $#{$groupings} ) {
-			my( $calc_groups, $result ) = @{$answer->[$gidx]};
-			# Keep track of the total # of genealogical readings
-			$genealogical++ if $result;
-			
-			my( $sources, $classes );
-			# Use the expanded groups from findSources if that got calculated.
-			if( exists( $more_eval->{'findSources'} ) ) {
-				( $calc_groups, $sources ) = @{$more_eval->{'findSources'}->[$gidx]};
-			}
-			# Use the (same) expanded groups from findClasses if that got calculated
-			# and is relevant.
-			if( exists( $more_eval->{'findClasses'} ) && !$result ) {
-				my $throwaway_groups;
-				( $throwaway_groups, $classes ) = @{$more_eval->{'findClasses'}->[$gidx]};
-			}
-			
-			# Convert the source list into a lookup hash
-			my $roots = {};
-			map { $roots->{$_} = 1 } @$sources;
-			# Convert the class list into a lookup hash
-			if( $classes ) {
-				$classes = _invert_hash( $classes );
-			}
-			
-			# Retrieve the key for the original group that went to the solver
-			my $input_group = wit_stringify( $groupings->[$gidx] );
 
-			# Make the variant hash for each location that had this particular
-			# grouping on this particular stemma situation
-			foreach my $oidx ( @{$group_indices->{$input_group}} ) {
-				my @readings = @{$index_groupkeys->{$oidx}};
-				my $vstruct = {
-					'genealogical' => $result,
-					'readings' => [],
-				};
-				foreach my $ridx ( 0 .. $#readings ) {
-					push( @{$vstruct->{'readings'}},
-						{ 'readingid' => $readings[$ridx],
-						  'group' => $calc_groups->[$ridx] } );
-				}
-				$vstruct->{'reading_roots'} = $roots if $roots;
-				$vstruct->{'reading_types'} = $classes if $classes;
-				$variants->[$oidx] = $vstruct;
-			}
+		## The answer is a Text::Tradition::Analysis::Result containing a bunch
+		## of information about this variant set. Record the information therein.
+		
+		# 1. Did the group evaluate as genealogical?
+		$vstruct->{genealogical} = $answer->is_genealogical;
+		$genealogical++ if $answer->is_genealogical;
+		
+		# 2. What are the calculated minimum groupings for each variant loc?
+		foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
+			my $inputset = $graphproblem->{grouping}->{$rid};
+			my $minset = $answer->minimum_grouping_for( $inputset );
+			push( @{$vstruct->{readings}}, { readingid => $rid, group => $minset } );
 		}
+		
+		# 3. What are the sources and classes calculated for each witness?
+		$vstruct->{witcopy_types} = { $answer->classes };
+		$vstruct->{reading_roots} = {};
+		map { $vstruct->{reading_roots}->{$_} = 1 } $answer->sources;
+		
 	}
+	
+	# Spit out any unsolved problems we encountered
+	_list_unsolved();
 	
 	return { 'variants' => $variants, 
 			 'variant_count' => scalar @$variants,
 			 'genealogical_count' => $genealogical };
 }
 
-sub _prepare_groups {
-	my( $stemma, @groups ) = @_;
-	my $aclabel = $stemma->collation->ac_label;
-
-	my $index_groupkeys = {};	# Save the order of readings
-	my $group_indices = {};		# Save the indices that have a given grouping
-	my $graph_problems = {};	# Save the groupings for the given graph
-
-	foreach my $idx ( 0..$#groups ) {
-		my $ghash = $groups[$idx];
-		my @grouping;
-		# Sort the groupings from big to little, and scan for a.c. witnesses
-		# that would need an extended graph.
-		my @acwits;   # note which AC witnesses crop up at this rank
-		my $extant;   # note which witnesses crop up at this rank full stop
-		my @idxkeys = sort { scalar @{$ghash->{$b}} <=> scalar @{$ghash->{$a}} }
-			keys %$ghash;
-		foreach my $rdg ( @idxkeys ) {
-			my @sg = sort @{$ghash->{$rdg}};
-			push( @acwits, grep { $_ =~ /\Q$aclabel\E$/ } @sg );
-			map { $extant->{$_} = 1 } @sg;
-			push( @grouping, \@sg );
-		}
-		# Save the reading order
-		$index_groupkeys->{$idx} = \@idxkeys;
-		
-		# Now associate the distinct group with this index
-		my $gstr = wit_stringify( \@grouping );
-		push( @{$group_indices->{$gstr}}, $idx );
-		
-		# Finally, add the group to the list to be calculated for this graph.
-		map { s/\Q$aclabel\E$// } @acwits;
-		my $graph;
-		## TODO When we get rid of the safe_wit_strings HACK we should also
-		## be able to save the graph here as a dotstring rather than as an
-		## object, thus simplifying life enormously.
-		try {
-			$graph = $stemma->situation_graph( $extant, \@acwits );
-		} catch {
-			die "Unable to extend graph with @acwits";
-		}
-		my $graphkey = "$graph || " . wit_stringify( [ sort keys %$extant ] );
-		unless( exists $graph_problems->{$graphkey} ) {
-			$graph_problems->{$graphkey} = { 'object' => $graph, 'groups' => {} };
-		}
-		$graph_problems->{$graphkey}->{'groups'}->{wit_stringify( \@grouping )} = \@grouping;
-	}
-	say STDERR "Created " . scalar( keys %$graph_problems ). " distinct graph(s)";
-	return( $index_groupkeys, $group_indices, $graph_problems );	
+sub _get_calc_key {
+	my( $graphproblem ) = @_;
+	my $graph = $graphproblem->{graph};
+	my $grouping = [ values %{$graphproblem->{grouping}} ];
+	my $key = Text::Tradition::Analysis::Result::string_from_graph_problem( 
+		$graph,	$grouping );
+	return md5_hex( encode_utf8( $key ) );
 }
 
-#### HACKERY to cope with IDP's limited idea of what a node name looks like ###
-
-sub _safe_wit_strings {
-	my( $graph, $c, $groupings, $witness_map ) = @_;
-	# Convert the graph to a safe representation and store the conversion.
-	my $safegraph = Graph->new();
-	foreach my $n ( $graph->vertices ) {
-		my $sn = _safe_witstr( $n );
-		if( exists $witness_map->{$sn} ) {
-			warn "Ambiguous stringification $sn for $n and " . $witness_map->{$sn}
-				if $witness_map->{$sn} ne $n;
-		} else {
-			$witness_map->{$sn} = $n;
-		}
-		$safegraph->add_vertex( $sn );
-		$safegraph->set_vertex_attributes( $sn, 
-			$graph->get_vertex_attributes( $n ) );
+sub _save_problem {
+	my( $graphproblem ) = @_;
+	my $graphstr = Text::Tradition::Stemma::editable_graph( 
+		$graphproblem->{graph}, { 'linesep' => ' ' } );
+	unless( exists $unsolved_problems->{$graphstr} ) {
+		$unsolved_problems->{$graphstr} = {};
 	}
-	foreach my $e ( $graph->edges ) {
-		my @safe_e = ( _safe_witstr( $e->[0] ), _safe_witstr( $e->[1] ) );
-		$safegraph->add_edge( @safe_e );
+	my $grouping = [];
+	foreach my $set ( sort { Text::Tradition::Analysis::Result::by_size_and_alpha( $a, $b ) } values %{$graphproblem->{grouping}} ) {
+		push( @$grouping, [ sort $set->members ] );
 	}
-		
-	# Now convert the witness groupings to a safe representation.
-	my $safe_groupings = [];
-	foreach my $grouping ( @$groupings ) {
-		my $safe_grouping = [];
-		foreach my $group ( @$grouping ) {
-			my $safe_group = [];
-			foreach my $n ( @$group ) {
-				my $sn = _safe_witstr( $n );
-				warn "Ambiguous stringification $sn for $n and " . $witness_map->{$sn}
-					if exists $witness_map->{$sn} && $witness_map->{$sn} ne $n;
-				$witness_map->{$sn} = $n;
-				push( @$safe_group, $sn );
-			}
-			push( @$safe_grouping, $safe_group );
-		}
-		push( @$safe_groupings, $safe_grouping );
-	}
-	
-	# Return it all in the struct we expect.  We have stored the reductions
-	# in the $witness_map that we were passed.
-	return { 'graph' => Text::Tradition::Stemma::editable_graph(
-				$safegraph, { 'linesep' => ' ' } ), 
-			 'groupings' => $safe_groupings };
+	$unsolved_problems->{$graphstr}->{wit_stringify( $grouping )} = $grouping;
 }
 
-sub _safe_witstr {
-	my $witstr = shift;
-	$witstr =~ s/\s+/_/g;
-	$witstr =~ s/[^\w\d-]//g;
-	return $witstr;
-}
-
-sub _desanitize_names {
-	my( $element, $witness_map ) = @_;
-	my $result = [];
-	if( ref( $element ) eq 'ARRAY' ) {
-		foreach my $n ( @$element ) {
-			push( @$result, _desanitize_names( $n, $witness_map ) );
+sub _list_unsolved {
+	#say STDERR "Problems needing a solution:";
+	foreach my $graphstr ( keys %$unsolved_problems ) {
+		my $struct = { graph => $graphstr, groupings => [] };
+		foreach my $gp ( values %{$unsolved_problems->{$graphstr}} ) {
+			push( @{$struct->{groupings}}, $gp );
 		}
-	} elsif( ref( $element ) eq 'HASH' ) {
-		my $real_hash = {};
-		map { $real_hash->{$_} = _desanitize_names( $element->{$_}, $witness_map ) }
-			keys %$element;
-		$result = $real_hash;
-	} elsif( exists $witness_map->{$element} ) {
-		$result = $witness_map->{$element}
-	} else {
-		$result = $element;
+		my $json = to_json( $struct );
+		say STDERR "$json";
 	}
-	return $result;
 }
-
-sub _invert_hash {
-	my( $hash ) = @_;
-	my $newhash;
-	foreach my $k ( keys %$hash ) {
-		if( ref( $hash->{$k} ) eq 'ARRAY' ) {
-			foreach my $v ( @{$hash->{$k}} ) {
-				$newhash->{$v} = $k;
-			}
-		} else {
-			$newhash->{$hash->{$k}} = $k;
-		}
-	}
-	return $newhash;
-}
-
-### END HACKERY ###
 
 =head2 analyze_location ( $tradition, $graph, $location_hash )
 
@@ -715,7 +602,7 @@ and follow_unknown.  Alters the location_hash in place.
 =cut
 
 sub analyze_location {
-	my ( $tradition, $stemma, $variant_row, $lacunose ) = @_;
+	my ( $tradition, $graph, $variant_row, $lacunose ) = @_;
 	my $c = $tradition->collation;
 	
 	# Make a hash of all known node memberships, and make the subgraphs.
@@ -732,6 +619,7 @@ sub analyze_location {
 		warn "No reading source information from IDP - proceed at your own risk";
 		$NO_IDP = 1;
 	}
+	my $classinfo = delete $variant_row->{'witcopy_types'};
 	
 	# Note which witnesses positively belong to which group. This information
 	# comes ultimately from the IDP solver.
@@ -750,21 +638,7 @@ sub analyze_location {
     	}
 		$rdghash->{'independent_occurrence'} = \@roots;
 	}
-	
-	# Get the actual graph we should work with
-	my $graph;
-	try {
-		# contig contains all extant wits and all hypothetical wits
-		# needed to make up the groups.
-		$graph = $stemma->situation_graph( $contig, \@acwits );
-	} catch ( Text::Tradition::Error $e ) {
-		die "Could not extend graph with given extant and a.c. witnesses: "
-			. $e->message;
-	} catch {
-		die "Could not extend graph with a.c. witnesses @acwits";
-	}
-	
-		
+			
 	# Now that we have all the node group memberships, calculate followed/
     # non-followed/unknown values for each reading.  Also figure out the
     # reading's evident parent(s).
@@ -772,85 +646,25 @@ sub analyze_location {
         my $rid = $rdghash->{'readingid'};
         my $rdg = $c->reading( $rid );
         my @roots = @{$rdghash->{'independent_occurrence'}};
+        my @reversions;
+        if( $classinfo ) {
+        	@reversions = grep { $classinfo->{$_} eq 'revert' } 
+        		$rdghash->{'group'}->members;
+        }
         my @group = @{$rdghash->{'group'}};
         
         # Start figuring things out.  
-        $rdghash->{'followed'} = scalar( @group ) - scalar( @roots );
+        $rdghash->{'followed'} = scalar( @group ) 
+        	- ( scalar( @roots ) + scalar( @reversions ) );
         # Find the parent readings, if any, of this reading.
-        my $rdgparents = {};
-        foreach my $wit ( @roots ) {
-        	# Look in the stemma graph to find this witness's extant or known-reading
-        	# immediate ancestor(s), and look up the reading that each ancestor olds.
-			my @check = $graph->predecessors( $wit );
-			while( @check ) {
-				my @next;
-				foreach my $wparent( @check ) {
-					my $preading = $contig->{$wparent};
-					if( $preading && $preading ne $rid ) {
-						$rdgparents->{$preading} = 1;
-					} else {
-						push( @next, $graph->predecessors( $wparent ) );
-					}
-				}
-				@check = @next;
-			}
-		}
-		foreach my $p ( keys %$rdgparents ) {
-			# Resolve the relationship of the parent to the reading, and
-			# save it in our hash.
-			my $pobj = $c->reading( $p );
-			my $prep = $pobj ? $pobj->id . ' (' . $pobj->text . ')' : $p;
-			my $phash = { 'label' => $prep };
-			if( $pobj ) {
-				my $rel = $c->get_relationship( $p, $rdghash->{readingid} );
-				if( $rel ) {
-					_add_to_hash( $rel, $phash );
-				} elsif( $rdg ) {
-					# First check for a transposed relationship
-					if( $rdg->rank != $pobj->rank ) {
-						foreach my $ti ( $rdg->related_readings( 'transposition' ) ) {
-							next unless $ti->text eq $rdg->text;
-							$rel = $c->get_relationship( $ti, $pobj );
-							if( $rel ) {
-								_add_to_hash( $rel, $phash, 1 );
-								last;
-							}
-						}
-						unless( $rel ) {
-							foreach my $ti ( $pobj->related_readings( 'transposition' ) ) {
-								next unless $ti->text eq $pobj->text;
-								$rel = $c->get_relationship( $ti, $rdg );
-								if( $rel ) {
-									_add_to_hash( $rel, $phash, 1 );
-									last;
-								}
-							}
-						}
-					}
-					unless( $rel ) {
-						# and then check for sheer word similarity.
-						my $rtext = $rdg->text;
-						my $ptext = $pobj->text;
-						if( similar( $rtext, $ptext ) ) {
-							# say STDERR "Words $rtext and $ptext judged similar";
-							$phash->{relation} = { type => 'wordsimilar' };
-						} 
-					}
-				} else {
-					$phash->{relation} = { type => 'deletion' };
-				}
-				# Get the attributes of the parent object while we are here
-				$phash->{'text'} = $pobj->text if $pobj;
-				$phash->{'is_nonsense'} = $pobj->is_nonsense;
-				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
-			} elsif( $p eq '(omitted)' ) {
-				$phash->{relation} = { type => 'addition' };
-			}
-			# Save it
-			$rdgparents->{$p} = $phash;
-		}
+        my $sourceparents = _find_reading_parents( $rid, $graph, $contig, @roots );
+        my $revertparents = _find_reading_parents( $rid, $graph, $contig, @reversions );
+		# Work out relationships between readings and their non-followed parent.
+		_resolve_parent_relationships( $c, $rid, $rdg, $sourceparents );
+		_resolve_parent_relationships( $c, $rid, $rdg, $revertparents );
 			
-		$rdghash->{'reading_parents'} = $rdgparents;
+		$rdghash->{'reading_parents'} = $sourceparents;
+		$rdghash->{'reversion_parents'} = $revertparents;
 		
 		# Find the number of times this reading was altered, and the number of
 		# times we're not sure.
@@ -875,26 +689,97 @@ sub analyze_location {
 		
 		# Now say whether this reading represents a conflict.
 		unless( $variant_row->{'genealogical'} ) {
-			my @trueroots;
-			if( exists $variant_row->{'reading_types'} ) {
-				my $classinfo = delete $variant_row->{'reading_types'};
+			my @reversions;
+			if( $classinfo ) {
 				# We have tested for reversions. Use the information.
-				my @reversions;
-				foreach my $rdgroot ( @roots ) {
-					if( $classinfo->{$rdgroot} eq 'revert' ) {
-						push( @reversions, $rdgroot );
-					} else {
-						push( @trueroots, $rdgroot );
-					}
-				}
-				$rdghash->{'independent_occurrence'} = \@trueroots;
-				$rdghash->{'reversion'} = \@reversions if @reversions;
-			} else {
-				@trueroots = @roots;
+				@reversions = 
+				$rdghash->{'reversions'} = \@reversions if @reversions;
 			}
-			$rdghash->{'conflict'} = @trueroots != 1;
+			$rdghash->{'is_conflict'} = @roots != 1;
+			$rdghash->{'is_reverted'} = !!@reversions;
 		}		
     }
+}
+
+sub _find_reading_parents {
+	my( $rid, $graph, $contig, @list ) = @_;
+	my $parenthash = {};
+	foreach my $wit ( @list ) {
+		# Look in the stemma graph to find this witness's extant or known-reading
+		# immediate ancestor(s), and look up the reading that each ancestor holds.
+		my @check = $graph->predecessors( $wit );
+		while( @check ) {
+			my @next;
+			foreach my $wparent( @check ) {
+				my $preading = $contig->{$wparent};
+				if( $preading && $preading ne $rid ) {
+					$parenthash->{$preading} = 1;
+				} else {
+					push( @next, $graph->predecessors( $wparent ) );
+				}
+			}
+			@check = @next;
+		}
+	}
+	return $parenthash;
+}
+
+sub _resolve_parent_relationships {
+	my( $c, $rid, $rdg, $rdgparents ) = @_;
+	foreach my $p ( keys %$rdgparents ) {
+		# Resolve the relationship of the parent to the reading, and
+		# save it in our hash.
+		my $pobj = $c->reading( $p );
+		my $prep = $pobj ? $pobj->id . ' (' . $pobj->text . ')' : $p;
+		my $phash = { 'label' => $prep };
+		if( $pobj ) {
+			my $rel = $c->get_relationship( $p, $rid );
+			if( $rel ) {
+				_add_to_hash( $rel, $phash );
+			} elsif( $rdg ) {
+				# First check for a transposed relationship
+				if( $rdg->rank != $pobj->rank ) {
+					foreach my $ti ( $rdg->related_readings( 'transposition' ) ) {
+						next unless $ti->text eq $rdg->text;
+						$rel = $c->get_relationship( $ti, $pobj );
+						if( $rel ) {
+							_add_to_hash( $rel, $phash, 1 );
+							last;
+						}
+					}
+					unless( $rel ) {
+						foreach my $ti ( $pobj->related_readings( 'transposition' ) ) {
+							next unless $ti->text eq $pobj->text;
+							$rel = $c->get_relationship( $ti, $rdg );
+							if( $rel ) {
+								_add_to_hash( $rel, $phash, 1 );
+								last;
+							}
+						}
+					}
+				}
+				unless( $rel ) {
+					# and then check for sheer word similarity.
+					my $rtext = $rdg->text;
+					my $ptext = $pobj->text;
+					if( similar( $rtext, $ptext ) ) {
+						# say STDERR "Words $rtext and $ptext judged similar";
+						$phash->{relation} = { type => 'wordsimilar' };
+					} 
+				}
+			} else {
+				$phash->{relation} = { type => 'deletion' };
+			}
+			# Get the attributes of the parent object while we are here
+			$phash->{'text'} = $pobj->text if $pobj;
+			$phash->{'is_nonsense'} = $pobj->is_nonsense;
+			$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
+		} elsif( $p eq '(omitted)' ) {
+			$phash->{relation} = { type => 'addition' };
+		}
+		# Save it
+		$rdgparents->{$p} = $phash;
+	}
 }
 
 sub _add_to_hash {
@@ -988,30 +873,20 @@ sub _prune_subtree {
 }
 
 sub _useful_variant {
-	my( $group_readings, $graph, $acstr ) = @_;
-
-	# TODO Decide what to do with AC witnesses
+	my( $rankgroup, $rankgraph, $acstr ) = @_;
 
 	# Sort by group size and return
 	my $is_useful = 0;
-	my( @readings, @groups );   # The sorted groups for our answer.
-	foreach my $rdg ( sort { @{$group_readings->{$b}} <=> @{$group_readings->{$a}} } 
-		keys %$group_readings ) {
-		push( @readings, $rdg );
-		push( @groups, $group_readings->{$rdg} );
-		if( @{$group_readings->{$rdg}} > 1 ) {
+	foreach my $rdg ( keys %$rankgroup ) {
+		my @wits = $rankgroup->{$rdg}->members;
+		if( @wits > 1 ) {
 			$is_useful++;
 		} else {
-			my( $wit ) = @{$group_readings->{$rdg}};
-			$wit =~ s/^(.*)\Q$acstr\E$/$1/;
-			$is_useful++ unless( $graph->is_sink_vertex( $wit ) );
+			$is_useful++ unless( $rankgraph->is_sink_vertex( $wits[0] )
+				|| $wits[0] =~ /\Q$acstr\E$/ );
 		}
 	}
-	if( $is_useful > 1 ) {
-		return( \@readings, \@groups );
-	} else {
-		return( [], [] );
-	}
+	return $is_useful > 1;
 }
 
 =head2 wit_stringify( $groups )
@@ -1034,16 +909,6 @@ sub wit_stringify {
         push( @gst, '[' . join( ',', map { "'$_'" } @$g ) . ']' );
     }
     return join( ' / ', @gst );
-}
-
-sub _symmdiff {
-	my( $lista, $listb ) = @_;
-	my %union;
-	my %scalars;
-	map { $union{$_} = 1; $scalars{$_} = $_ } @$lista;
-	map { $union{$_} += 1; $scalars{$_} = $_ } @$listb;
-	my @set = grep { $union{$_} == 1 } keys %union;
-	return map { $scalars{$_} } @set;
 }
 
 1;

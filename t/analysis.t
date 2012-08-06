@@ -18,7 +18,9 @@ my $tradition = Text::Tradition->new(
 $tradition->add_stemma( 'dotfile' => 't/data/besoin.dot' );
 
 # Run the analysis of the tradition
-my $results = run_analysis( $tradition );
+## TODO Make proper test db
+my $calcdsn = 'dbi:SQLite:dbname=t/data/analysis.db';
+my $results = run_analysis( $tradition, calcdsn => $calcdsn );
 
 my %expected = (
     3 => 1,
