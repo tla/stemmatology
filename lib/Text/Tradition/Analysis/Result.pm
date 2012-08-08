@@ -125,12 +125,21 @@ around BUILDARGS => sub {
 	# Order the sets.
 	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } @sets ];
 	
-	# If we have been passed a Text::Tradition::Stemma, save only its graph.
-	if( ref( $args->{'graph'} ) eq 'Text::Tradition::Stemma' ) {
+	# If we have been passed a Text::Tradition::Stemma or a Graph, save only
+	# its string.
+	if( ref( $args->{'graph'} ) ) {
 		my $st = delete $args->{'graph'};
-		$args->{'graph'} = $st->editable;
-	}
-	
+		my $type = ref( $st );
+		my $gopt = { linesep => ' ' };
+		if( $type eq 'Text::Tradition::Stemma' ) {
+			$args->{'graph'} = $st->editable( $gopt );
+		} elsif( $type eq 'Graph' ) {
+			$args->{'graph'} = Text::Tradition::Stemma::editable_graph( $st, $gopt );
+		} else {
+			die "Passed argument to graph that is neither Stemma nor Graph";
+		}
+	} 
+		
 	return $class->$orig( $args );
 };
 
@@ -194,13 +203,23 @@ sub string_from_graph_problem {
 		join( ',', sort { by_size_and_alpha( $a, $b ) } @groupsets );
 }
 
+# This should work as $self->problem_json or as problem_json( @objects )
 sub problem_json {
-	my $self = shift;
-	my $phash = { graph => $self->graph };
-	my @groupings;
-	map { push( @groupings, [ $_->members ] ) } $self->sets;
-	$phash->{groupings} = \@groupings;
-	return to_json( $phash );
+	my( @objects ) = @_;
+	# There should be a distinct problem for each unique graph.
+	my %distinct_problems;
+	foreach my $o ( @objects ) {
+		unless( exists $distinct_problems{$o->graph} ) {
+			$distinct_problems{$o->graph} = [];
+		}
+		my @groupings;
+		map { push( @groupings, [ $_->members ] ) } $o->sets;
+		push( @{$distinct_problems{$o->graph}}, \@groupings );
+	}
+	my @pstrs = map { to_json( 
+		{ graph => $_, groupings => $distinct_problems{$_} } ) } 
+		keys %distinct_problems;
+	return @pstrs;
 }
 
 sub by_size_and_alpha {
