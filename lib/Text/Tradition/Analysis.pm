@@ -148,7 +148,12 @@ sub run_analysis {
 
 	my $stemma_id = $opts{'stemma_id'} || 0;
 	my @ranks = ref( $opts{'ranks'} ) eq 'ARRAY' ? @{$opts{'ranks'}} : ();
-	my @collapse = ref( $opts{'merge_types'} ) eq 'ARRAY' ? @{$opts{'merge_types'}} : ();
+	my $collapse = Set::Scalar->new();
+	if( $opts{'merge_types'} && ref( $opts{'merge_types'} ) eq 'ARRAY' ) {
+		$collapse->insert( @{$opts{'merge_types'}} );
+	} elsif( $opts{'merge_types'} ) {
+		$collapse->insert( $opts{'merge_types'} );
+	}
 	
 	# Make sure we have a lookup DB for graph calculation results; this will die
 	# if calcdir or calcdsn isn't passed.
@@ -183,7 +188,7 @@ sub run_analysis {
 	my $moved = {};
 	foreach my $rank ( @ranks ) {
 		my $missing = $lacunose->clone();
-		my $rankgroup = group_variants( $tradition, $rank, $missing, $moved, \@collapse );
+		my $rankgroup = group_variants( $tradition, $rank, $missing, $moved, $collapse );
 		# Filter out any empty rankgroups 
 		# (e.g. from the later rank for a transposition)
 		next unless keys %$rankgroup;
@@ -222,9 +227,8 @@ sub run_analysis {
 		my @layerwits;
 		# Do the final post-analysis tidying up of the data.
 		foreach my $rdghash ( @{$location->{'readings'}} ) {
-			$conflict_count++ 
-				if exists $rdghash->{'conflict'} && $rdghash->{'conflict'};
-			$reversion_count++ if $rdghash->{'reverted'};
+			$conflict_count++ if $rdghash->{'is_conflict'};
+			$reversion_count++ if $rdghash->{'is_reverted'};
 			# Add the reading text back in, setting display value as needed
 			my $rdg = $c->reading( $rdghash->{'readingid'} );
 			if( $rdg ) {
@@ -253,13 +257,14 @@ sub run_analysis {
 	return $answer;
 }
 
-=head2 group_variants( $tradition, $rank, $lacunose, @merge_relationship_types )
+=head2 group_variants( $tradition, $rank, $lacunose, $transposed, $merge_relationship_types )
 
 Groups the variants at the given $rank of the collation, treating any
-relationships in @merge_relationship_types as equivalent.  $lacunose should
-be a reference to an array, to which the sigla of lacunose witnesses at this 
-rank will be appended; $transposed should be a reference to a hash, wherein
-the identities of transposed readings and their relatives will be stored.
+relationships in the set $merge_relationship_types as equivalent. 
+$lacunose should be a reference to an array, to which the sigla of lacunose
+witnesses at this rank will be appended; $transposed should be a reference
+to a hash, wherein the identities of transposed readings and their
+relatives will be stored.
 
 Returns a hash $group_readings where $rdg is attested by the witnesses listed 
 in $group_readings->{$rdg}.
@@ -326,8 +331,8 @@ sub group_variants {
 			&& $grouped_readings->{$rdg->id} eq 'COLLAPSE';
 		# Get the witness list, including from readings collapsed into this one.
 		my @wits = _table_witnesses( $table, $rdg, $lacunose, $aclabel );
-		if( $collapse && @$collapse ) {
-			my $filter = sub { my $r = $_[0]; grep { $_ eq $r->type } @$collapse; };
+		if( $collapse && $collapse->size ) {
+			my $filter = sub { $collapse->has( $_[0]->type ) };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
 				my @otherwits = _table_witnesses( $table, $other, $lacunose, $aclabel );
 				push( @wits, @otherwits );
@@ -550,7 +555,7 @@ sub solve_variants {
 	}
 	
 	# Spit out any unsolved problems we encountered
-	_list_unsolved();
+	# _list_unsolved();
 	
 	return { 'variants' => $variants, 
 			 'variant_count' => scalar @$variants,
@@ -568,28 +573,22 @@ sub _get_calc_key {
 
 sub _save_problem {
 	my( $graphproblem ) = @_;
-	my $graphstr = Text::Tradition::Stemma::editable_graph( 
-		$graphproblem->{graph}, { 'linesep' => ' ' } );
-	unless( exists $unsolved_problems->{$graphstr} ) {
-		$unsolved_problems->{$graphstr} = {};
-	}
-	my $grouping = [];
-	foreach my $set ( sort { Text::Tradition::Analysis::Result::by_size_and_alpha( $a, $b ) } values %{$graphproblem->{grouping}} ) {
-		push( @$grouping, [ sort $set->members ] );
-	}
-	$unsolved_problems->{$graphstr}->{wit_stringify( $grouping )} = $grouping;
+	my $problem = Text::Tradition::Analysis::Result->new(
+		graph => $graphproblem->{graph},
+		setlist => [ values %{$graphproblem->{grouping}} ]
+	);
+	my $key = _get_calc_key( $graphproblem );
+	my( $str ) = $problem->problem_json;
+	say STDERR "Stashing unsolved problem $str at key $key";
+	$unsolved_problems->{$key} = $problem;
 }
 
 sub _list_unsolved {
 	#say STDERR "Problems needing a solution:";
-	foreach my $graphstr ( keys %$unsolved_problems ) {
-		my $struct = { graph => $graphstr, groupings => [] };
-		foreach my $gp ( values %{$unsolved_problems->{$graphstr}} ) {
-			push( @{$struct->{groupings}}, $gp );
-		}
-		my $json = to_json( $struct );
-		say STDERR "$json";
-	}
+	my @problems = values %$unsolved_problems;
+	return unless @problems;
+	my $first = shift @problems;
+	map { say STDERR $_ } $first->problem_json( @problems );
 }
 
 =head2 analyze_location ( $tradition, $graph, $location_hash )
@@ -658,13 +657,15 @@ sub analyze_location {
         	- ( scalar( @roots ) + scalar( @reversions ) );
         # Find the parent readings, if any, of this reading.
         my $sourceparents = _find_reading_parents( $rid, $graph, $contig, @roots );
-        my $revertparents = _find_reading_parents( $rid, $graph, $contig, @reversions );
 		# Work out relationships between readings and their non-followed parent.
 		_resolve_parent_relationships( $c, $rid, $rdg, $sourceparents );
-		_resolve_parent_relationships( $c, $rid, $rdg, $revertparents );
-			
 		$rdghash->{'reading_parents'} = $sourceparents;
-		$rdghash->{'reversion_parents'} = $revertparents;
+
+		if( @reversions ) {
+			my $revparents = _find_reading_parents( $rid, $graph, $contig, @reversions );
+			_resolve_parent_relationships( $c, $rid, $rdg, $revparents );
+			$rdghash->{'reversion_parents'} = $revparents;
+		}
 		
 		# Find the number of times this reading was altered, and the number of
 		# times we're not sure.
@@ -689,14 +690,8 @@ sub analyze_location {
 		
 		# Now say whether this reading represents a conflict.
 		unless( $variant_row->{'genealogical'} ) {
-			my @reversions;
-			if( $classinfo ) {
-				# We have tested for reversions. Use the information.
-				@reversions = 
-				$rdghash->{'reversions'} = \@reversions if @reversions;
-			}
 			$rdghash->{'is_conflict'} = @roots != 1;
-			$rdghash->{'is_reverted'} = !!@reversions;
+			$rdghash->{'is_reverted'} = scalar @reversions;
 		}		
     }
 }
