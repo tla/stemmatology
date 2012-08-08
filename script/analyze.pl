@@ -14,23 +14,29 @@ binmode STDERR, ':utf8';
 my $dir = Text::Tradition::Directory->new(
     'dsn' => 'dbi:SQLite:dbname=stemmaweb/db/traditions.db',
     );
+my $calcdsn = 'dbi:SQLite:dbname=db/graphs.db';
 
 my $scope = $dir->new_scope();
 my $lookfor = shift @ARGV || '';
-my $collapse = [ @ARGV ];
+my %collapse;
+map { $collapse{$_} = 1 } @ARGV;
 
-my @relation_types = qw/ orthographic spelling grammatical lexical
-	transposition addition deletion wordsimilar unknown /;
+my @relation_types = grep { !$collapse{$_} }
+	qw/ orthographic spelling grammatical lexical transposition addition deletion
+	    wordsimilar unknown /;
 
 my @resultfields = qw/
 	text_name loc_total loc_totalvariant loc_genealogical loc_genvariant 
-	loc_conflict loc_conflictvariant percent_genealogical percent_genvariant /;
+	loc_conflict loc_conflictvariant loc_reverted loc_revertvariant 
+	percent_genealogical percent_genvariant percent_genorrevert /;
 map { push( @resultfields, "gen_$_", "gen_${_}_nonsense", "gen_${_}_ungramm" ) }
 	@relation_types;
 map { push( @resultfields, "con_$_", "con_${_}_nonsense", "con_${_}_ungramm" ) }
 	@relation_types;
+map { push( @resultfields, "rev_$_", "rev_${_}_nonsense", "rev_${_}_ungramm" ) }
+	@relation_types;
 map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen" ) } @relation_types;
-map { push( @resultfields, "percent_con_$_" ) } @relation_types;
+map { push( @resultfields, "percent_con_$_", "percent_rev_$_" ) } @relation_types;
 	
 my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );
 open my $fh, ">:encoding(UTF-8)", "analysis.csv" or die "analysis.csv: $!";
@@ -54,25 +60,28 @@ foreach my $tinfo( $dir->traditionlist ) {
 	$datahash{text_name} = $tradition->name;
 	
 	# Run the analysis for each row in @rows
-	my %opts = ( exclude_type1 => 1 );
-	if( @$collapse ) {
-		$opts{merge_types} = $collapse;
+	my %opts = ( exclude_type1 => 1, calcdsn => $calcdsn );
+	if( keys %collapse ) {
+		$opts{merge_types} = [ keys %collapse ];
 	}
 	
 	my $result = run_analysis( $tradition, %opts );
 	$datahash{loc_total} = $result->{variant_count};
 	$datahash{loc_genealogical} = $result->{genealogical_count};
-	$datahash{loc_conflict} = $result->{variant_count} - $result->{genealogical_count};
 	$datahash{loc_conflictvariant} = $result->{conflict_count};
-	# Get the number of total and genealogical variants as we go below.
+	$datahash{loc_revertvariant} = $result->{reversion_count};
+	# Get the number of total and genealogical variants, and number of
+	# conflicted/reverted locations, as we go below.
 	my $totalvariant = 0;
 	my $genvariant = 0;
+	my $conflictloc = 0;
+	my $revertloc = 0;
 	my @unknown;
 	foreach my $loc ( @{$result->{variants}} ) {
 		# A transition is the relationship type between parent and child.
 		# Find each genealogical transition and get the relationship type (if any)
 		# Find each non-genealogical transition and get the relationship type (if any)
-		# Someday, look for reversions
+		my( $loc_conflict, $loc_reversion );
 		foreach my $rdghash( @{$loc->{readings}} ) {
 			# Weed out singletons
 			my @roots = @{$rdghash->{independent_occurrence}};
@@ -80,45 +89,52 @@ foreach my $tinfo( $dir->traditionlist ) {
 				&& !$rdghash->{'follow_unknown'};
 			# TODO Weed out punctuation
 			my $rdg = $tradition->collation->reading( $rdghash->{readingid} );
-			my $typekey = @roots == 1 ? 'gen_' : 'con_';
-			foreach my $p ( keys %{$rdghash->{reading_parents}} ) {
-				my $pdata = $rdghash->{reading_parents}->{$p};
-				my $relation;
-				if( $pdata->{relation} ) {
-					$relation = $pdata->{relation}->{type};
-				} else {
-					$relation = 'unknown';
-					if( !$rdg ) {
-						say "Unknown relation on missing reading object " 
-							. $rdghash->{readingid} . " at rank " . $loc->{id};
-					} elsif( !$pdata ) {
-						say "Unknown relation on missing parent object for " 
-							. $rdghash->{readingid} . " at rank " . $loc->{id};
-					
-					} else {
-						push( @unknown, [ $pdata->{label}, $rdg->id, $rdg->text, 
-							( @roots == 1 ? 'genealogical' : 'conflicting' ) ] );
-					}
-				}
-				$typekey .= $relation;
-				$datahash{$typekey}++;
-				## TODO distinguish parent-bad vs. rdg-bad
-				if( $rdg && $rdg->grammar_invalid ) {
-					$datahash{$typekey.'_ungramm'} = 1;
-				} elsif( $rdg && $rdg->is_nonsense ) {
-					$datahash{$typekey.'_nonsense'} = 1;
-				}
+			my $type;
+			if( $rdghash->{'is_conflict'} ) {
+				$type = 'conflict';
+				$loc_conflict = 1;
+			} elsif( $rdghash->{'is_reverted'} ) {
+				$type = 'reverted';
+				$loc_reversion = 1;
+			} elsif( @roots == 1 ) {
+				$type = 'genealogical';
+				$genvariant++;
+			} else {
+				warn "Reading $rdg neither conflict, genealogical, nor reverted. What?";
+				$type = 'ERROR';
 			}
+			my $typekey = substr( $type, 0, 3 ) . '_';
+			
+			# Add relation stats for reading parents. If the reading is reverted,
+			# treat it as genealogical for the parent.
+			_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,
+				( $type eq 'reverted' ? 'genealogical' : $type ),
+				$rdghash->{'reading_parents'}, \%datahash, \@unknown );
+			# Add relation stats for reading reversions if they exist.
+			if( $type eq 'reverted' ) {
+				# Get relationship between reverted readings and their non-matching
+				# parents.
+				_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,
+					$type, $rdghash->{'reversion_parents'}, \%datahash, \@unknown );
+			}
+			
 			$totalvariant++;
-			$genvariant++ if @roots == 1;
+		}
+		if( $loc_conflict ) {
+			$conflictloc++;
+		} elsif( $loc_reversion ) {
+			$revertloc++;
 		}
 	}
 	
 	# Add in the sums for the whole location
 	$datahash{'loc_genvariant'} = $genvariant;	
 	$datahash{'loc_totalvariant'} = $totalvariant;
+	$datahash{'loc_conflict'} = $conflictloc;
+	$datahash{'loc_reverted'} = $revertloc;
 	$datahash{'percent_genealogical'} = $datahash{loc_genealogical} / $datahash{loc_total};
 	$datahash{'percent_genvariant'} = $genvariant / $totalvariant;
+	$datahash{'percent_genorrevert'} = ( $genvariant + $datahash{loc_revertvariant} ) / $totalvariant;
 	foreach my $type ( @relation_types ) {
 		$datahash{"percent_gen_$type"} = $datahash{"gen_$type"} / $totalvariant;
 		$datahash{"percent_con_$type"} = $datahash{"con_$type"} / $totalvariant;
@@ -138,3 +154,31 @@ foreach my $tinfo( $dir->traditionlist ) {
 }
 
 close $fh;
+
+sub _add_reading_relations {
+	my( $rid, $rank, $robj, $type, $parenthash, $datahash, $unknown ) = @_;
+	foreach my $p ( keys %$parenthash ) {
+		my $pdata = $parenthash->{$p};
+		my $relation;
+		if( $pdata->{relation} ) {
+			$relation = $pdata->{relation}->{type};
+		} else {
+			$relation = 'unknown';
+			if( !$robj ) {
+				say "Unknown relation on missing reading object $rid at rank $rank";
+			} elsif( !$pdata ) {
+				say "Unknown relation on missing parent object for $rid at rank $rank";			
+			} else {
+				push( @$unknown, [ $pdata->{label}, $robj->id, $robj->text, $type ] );
+			}
+		}
+		my $typekey = substr( $type, 0, 3 ) . "_$relation";
+		$datahash->{$typekey}++;
+		## TODO distinguish parent-bad vs. rdg-bad
+		if( $robj && $robj->grammar_invalid ) {
+			$datahash->{$typekey.'_ungramm'} = 1;
+		} elsif( $robj && $robj->is_nonsense ) {
+			$datahash->{$typekey.'_nonsense'} = 1;
+		}
+	}
+}
