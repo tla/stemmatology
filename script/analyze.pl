@@ -109,7 +109,7 @@ foreach my $tinfo( $dir->traditionlist ) {
 			# treat it as genealogical for the parent.
 			_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,
 				( $type eq 'reverted' ? 'genealogical' : $type ),
-				$rdghash->{'reading_parents'}, \%datahash, \@unknown );
+				$rdghash->{'source_parents'}, \%datahash, \@unknown );
 			# Add relation stats for reading reversions if they exist.
 			if( $type eq 'reverted' ) {
 				# Get relationship between reverted readings and their non-matching

@@ -649,6 +649,7 @@ sub analyze_location {
         if( $classinfo ) {
         	@reversions = grep { $classinfo->{$_} eq 'revert' } 
         		$rdghash->{'group'}->members;
+        	$rdghash->{'reversions'} = \@reversions;
         }
         my @group = @{$rdghash->{'group'}};
         
@@ -659,7 +660,7 @@ sub analyze_location {
         my $sourceparents = _find_reading_parents( $rid, $graph, $contig, @roots );
 		# Work out relationships between readings and their non-followed parent.
 		_resolve_parent_relationships( $c, $rid, $rdg, $sourceparents );
-		$rdghash->{'reading_parents'} = $sourceparents;
+		$rdghash->{'source_parents'} = $sourceparents;
 
 		if( @reversions ) {
 			my $revparents = _find_reading_parents( $rid, $graph, $contig, @reversions );

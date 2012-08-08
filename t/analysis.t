@@ -94,7 +94,7 @@ foreach my $row ( @{$results->{'variants'}} ) {
 		say sprintf( "=== Looking at rank %d (%s) ===", $row->{'id'},
 			$row->{'genealogical'} ? 'genealogical' : 'not genealogical' );
 		foreach my $rdg ( @{$row->{'readings'}} ) {
-			my $parents = $rdg->{'reading_parents'};
+			my $parents = $rdg->{'source_parents'};
 			say sprintf( "Reading %s: %s", $rdg->{'readingid'}, 
 				$rdg->{'conflict'} ? '(conflicted)' : '' );
 			if( $parents && @$parents ) {
@@ -132,7 +132,7 @@ foreach my $row ( @{$results->{'variants'}} ) {
 			my %is_parent;
 			my @has_no_parent;
 			foreach my $rdg ( @{$row->{'readings'}} ) {
-				my $parents = $rdg->{'reading_parents'} || {};
+				my $parents = $rdg->{'source_parents'} || {};
 				foreach my $p ( keys %$parents ) {
 					push( @{$is_parent{$p}}, $rdg->{'readingid'} );
 				}
