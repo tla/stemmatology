@@ -17,6 +17,7 @@ my %TYPEVALUES = (
 	spelling => 2,
 	grammatical => 3,
 	lexical => 3,
+	punctuation => 4,
 	collated => 50,
 	);
 
@@ -82,6 +83,7 @@ foreach my $tinfo ( $dir->traditionlist() ) {
 sub propagate_rel {
 	my( $c, $type, @list ) = @_;
 	my $curr = shift @list;
+	push( @list, $curr ); # make sure we close the A -> B -> C -> A loop
 	while( @list ) {
 		foreach my $r ( @list ) {
 			next if $curr eq $r;
