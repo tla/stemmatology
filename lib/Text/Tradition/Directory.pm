@@ -449,7 +449,7 @@ sub find_user {
     my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
     return if(!$user || !$user->active);
 
-    print STDERR "Found user, $username, email is :", $user->email, ":\n";
+#    print STDERR "Found user, $username, email is :", $user->email, ":\n";
 
     return $user;
 }
