@@ -50,6 +50,7 @@ my $email = 'john@doe.com';
   my $user = $user_store->find_user( { username => 'fred' } );
   $user->email('foo@bar.baz');
   $user_store->update($user);
+  is(scalar @{$user->traditions}, 1);
 }
 
 {
