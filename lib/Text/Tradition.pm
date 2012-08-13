@@ -68,6 +68,7 @@ has 'user' => (
     required => 0,
     predicate => 'has_user',
     clearer => 'clear_user',
+    weak_ref => 1
     );
 
 has 'public' => (
