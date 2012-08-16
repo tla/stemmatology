@@ -14,14 +14,15 @@ my $file = $fh->filename;
 $fh->close;
 my $dsn = "dbi:SQLite:dbname=$file";
 
-my $user_store = Text::Tradition::Directory->new(
-  'dsn'        => $dsn,
-  'extra_args' => { 'create' => 1 }
-);
 
 my $uuid;
 my $email = 'john@doe.com';
 {
+  my $user_store = Text::Tradition::Directory->new(
+    'dsn'        => $dsn,
+    'extra_args' => { 'create' => 1 }
+  );
+
   my $scope = $user_store->new_scope;
 
 ## create user
@@ -40,20 +41,32 @@ my $email = 'john@doe.com';
   $uuid = $user_store->save($t);
   $new_user->add_tradition($t);
   $new_user->email($email);
+  ok( $t->user, 'sets user' );
   $user_store->update($new_user);
+  $user_store->save($t);
 }
 
 {
+  my $user_store = Text::Tradition::Directory->new(
+    'dsn'        => $dsn,
+    'extra_args' => { 'create' => 1 }
+  );
   my $scope = $user_store->new_scope;
 
   # change attribute in the user object
   my $user = $user_store->find_user( { username => 'fred' } );
   $user->email('foo@bar.baz');
   $user_store->update($user);
-  is(scalar @{$user->traditions}, 1);
+  is( scalar @{ $user->traditions }, 1 );
+  ok( $user->traditions->[0]->user,
+    'reinflated tradition object from user points to user' );
 }
 
 {
+  my $user_store = Text::Tradition::Directory->new(
+    'dsn'        => $dsn,
+    'extra_args' => { 'create' => 1 }
+  );
   my $scope = $user_store->new_scope;
 
   # refetch tradition
@@ -64,6 +77,10 @@ my $email = 'john@doe.com';
 }
 
 {
+  my $user_store = Text::Tradition::Directory->new(
+    'dsn'        => $dsn,
+    'extra_args' => { 'create' => 1 }
+  );
   my $scope = $user_store->new_scope;
   my $user = $user_store->find_user( { username => 'fred' } );
 
@@ -73,10 +90,14 @@ my $email = 'john@doe.com';
 }
 
 {
+  my $user_store = Text::Tradition::Directory->new(
+    'dsn'        => $dsn,
+    'extra_args' => { 'create' => 1 }
+  );
   my $scope = $user_store->new_scope;
 
   # refetch tradition
-  my $fetched_t = $user_store->tradition( $uuid );
+  my $fetched_t = $user_store->tradition($uuid);
 
   # assert that email has actually been reverted
   is( $fetched_t->user->email, $email );
