@@ -229,13 +229,13 @@ sub parse {
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
         if( defined $n->{'is_start'} ) {
-	  warn Data::Dump::dump($n);
-	  warn $collation->start->id;
+#	  warn Data::Dump::dump($n);
+#	  warn $collation->start->id;
 	  $collation->start->rank($n->{'rank'});
           next;
         }
     	if( defined $n->{'is_end'} ) {
-	  warn Data::Dump::dump($n);
+#	  warn Data::Dump::dump($n);
     		$collation->end->rank( $n->{'rank'} );
     		next;
     	}

@@ -16,7 +16,6 @@ sub compile_collapse_body {
         my ( $self, %args ) = @_;
 
         my $object = $args{object};
-
         return $self->make_entry(
             %args,
             data => YAML::XS::Dump($object)
@@ -29,9 +28,9 @@ sub compile_expand {
 
     return sub {
         my ( $self, $entry ) = @_;
-        $self->inflate_data( YAML::XS::Load($entry->data), \( my $obj ), $entry );
-
+	$self->inflate_data( YAML::XS::Load($entry->data), \(my $obj), $entry );
         bless $obj, $class;
+	return $obj;
     };
 }
 
