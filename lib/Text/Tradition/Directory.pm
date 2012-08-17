@@ -12,7 +12,9 @@ use Text::Tradition::Error;
 
 ## users
 use KiokuX::User::Util qw(crypt_password);
+use Text::Tradition::Store;
 use Text::Tradition::User;
+use Text::Tradition::TypeMap::Entry;
 
 extends 'KiokuX::Model';
 
@@ -189,10 +191,20 @@ has +typemap => (
   default => sub {
     KiokuDB::TypeMap->new(
       isa_entries => {
+	# now that we fall back to YAML deflation, all attributes of
+	# Text::Tradition will be serialized to YAML as individual objects
+	# Except if we declare a specific entry type here
         "Text::Tradition" =>
-          Text::Tradition::TypeMap::Entry->new(),
-        "Graph" => Text::Tradition::TypeMap::Entry->new(),
-        "Graph::AdjacencyMap" => Text::Tradition::TypeMap::Entry->new()
+          KiokuDB::TypeMap::Entry::MOP->new(),
+	# We need users to be naive entries so that they hold
+	# references to the original tradition objects, not clones
+        "Text::Tradition::User" =>
+          KiokuDB::TypeMap::Entry::MOP->new(),
+        "Text::Tradition::Collation" =>
+          KiokuDB::TypeMap::Entry::MOP->new(),
+        "Text::Tradition::Witness" =>
+          KiokuDB::TypeMap::Entry::MOP->new(),
+        "Graph" => Text::Tradition::TypeMap::Entry->new()
       }
     );
   },
@@ -208,20 +220,32 @@ around BUILDARGS => sub {
 	} else {
 		$args = { @_ };
 	}
+	my @column_args;
 	if( $args->{'dsn'} =~ /^dbi/ ) { # We're using Backend::DBI
-		my @column_args = ( 'columns',
+		@column_args = ( 'columns',
 			[ 'name' => { 'data_type' => 'varchar', 'is_nullable' => 1 } ] );
-		my $ea = $args->{'extra_args'};
-		if( ref( $ea ) eq 'ARRAY' ) {
-			push( @$ea, @column_args );
-		} elsif( ref( $ea ) eq 'HASH' ) {
-			$ea = { %$ea, @column_args };
-		} else {
-			$ea = { @column_args };
-		}
-		$args->{'extra_args'} = $ea;
 	}
+	my $ea = $args->{'extra_args'};
+	if( ref( $ea ) eq 'ARRAY' ) {
+		push( @$ea, @column_args );
+	} elsif( ref( $ea ) eq 'HASH' ) {
+		$ea = { %$ea, @column_args };
+	} else {
+		$ea = { @column_args };
+	}
+	$args->{'extra_args'} = $ea;
+
 	return $class->$orig( $args );
+};
+
+override _build_directory => sub {
+  my($self) = @_;
+  Text::Tradition::Store->connect(@{ $self->_connect_args },
+    resolver_constructor => sub {
+      my($class) = @_;
+      $class->new({ typemap => $self->directory->merged_typemap,
+                    fallback_entry => Text::Tradition::TypeMap::Entry->new() });
+  });
 };
 
 ## These checks don't cover store($id, $obj)

@@ -11,6 +11,7 @@ use File::Path 'mkpath';
 use Text::Tradition;
 use Text::Tradition::Directory;
 use Test::More;
+use Test::Memory::Cycle;
 
 ## Don't run this test when running make test or prove, to run it use perl -Ilib t/load-save-speed.t
 
@@ -28,7 +29,7 @@ my $test_name = 'besoin';
 my $benchmark_file = 't/data/load-save-benchmark.json';
 
 ## SQL file (previously dumped KiokuDB) for testing tradition directory loading:
-my $load_sql = 't/data/speed_test_load.sql';
+# my $load_sql = 't/data/speed_test_load.sql';
 
 ## uuid to load from the above stored db:
 my $load_uuid = 'load-test';
@@ -61,12 +62,13 @@ $tradition->add_stemma(dotfile => "t/data/${test_name}.dot");
 #$fh->close;
 ## use t/var so you can look at the results after if neccessary:
 
-my $load_db = 't/var/speed_test_load.db';
-unlink($load_db) if(-e $load_db);
-my $load_dsn = "dbi:SQLite:dbname=$load_db";
+#my $load_db = 't/var/speed_test_load.db';
+#unlink($load_db) if(-e $load_db);
+#my $load_dsn = "dbi:SQLite:dbname=$load_db";
 ## Prime db from .sql file:
 ## ?? fails
-`sqlite3 $load_db < $load_sql`;
+
+#`sqlite3 $load_db < $load_sql`;
 
 my $save_db = 't/var/speed_test_save.db';
 unlink($save_db) if(-e $save_db);
@@ -85,21 +87,20 @@ my $test_save = sub {
     my $scope = $dir->new_scope;
 
     ## save the tradition (with stemma) to the db:
-    my $uuid = $dir->save($tradition);
+    $dir->save($load_uuid => $tradition);
 #    print STDERR "UUID: $uuid\n";
 
 };
 
-my $load_tradition;
 my $test_load = sub {
     my $dir = Text::Tradition::Directory->new(
-        dsn => $load_dsn,
+        dsn => $save_dsn,
     );
 
     ## This seems to be a required magic incantation:
     my $scope = $dir->new_scope;
-
-    $load_tradition = $dir->tradition($load_uuid);
+    my $t = $dir->tradition($load_uuid);
+    return $t;
 #    print STDERR $load_tradition->name, $tradition->name, "\n";
 };
 
@@ -112,24 +113,24 @@ if(!$last_benchmark) {
 }
 
 
-## Benchmark current code:
-## Should probably run the test the same number of times as the last time it ran
-## Or compare results more sanely
+# Benchmark current code:
+# Should probably run the test the same number of times as the last time it ran
+# Or compare results more sanely
 my $new_save_result = timethis(5, $test_save);
 
 my $new_save = $new_save_result->[1] + $new_save_result->[2];
-use Data::Dump;
+#use Data::Dump;
 
 my $old_save = $last_benchmark->{save_times}[1] + $last_benchmark->{save_times}[2];
 ok( $new_save < $old_save, "Saving to a Tradition Directory got faster: $new_save vs $old_save");
 
-my $new_load_result = timethis(20, $test_load);
+my $new_load_result = timethis(5, $test_load);
 
 my $new_load = $new_load_result->[1] + $new_load_result->[2];
 my $old_load = $last_benchmark->{load_times}[1] + $last_benchmark->{load_times}[2];
 ok($new_load < $old_load, "Loading from a Tradition Directory got faster: $new_load vs $old_load");
 
-$test_load->();
+my $load_tradition = $test_load->();
 isa_ok($load_tradition, 'Text::Tradition');
 ok($load_tradition->collation->as_svg());
 
@@ -144,7 +145,7 @@ if($git_hash) {
     save_benchmark($benchmark_file, $benchmark_data);
 }
 
-## -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 sub load_benchmark {
     my ($filename) = @_;
