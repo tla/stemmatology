@@ -18,8 +18,7 @@ my $calcdsn = 'dbi:SQLite:dbname=db/graphs.db';
 
 my $scope = $dir->new_scope();
 my $lookfor = shift @ARGV || '';
-my %collapse;
-map { $collapse{$_} = 1 } @ARGV;
+my @collapse = @ARGV;
 
 my @relation_types = grep { !$collapse{$_} }
 	qw/ orthographic spelling grammatical lexical transposition addition deletion
@@ -60,9 +59,12 @@ foreach my $tinfo( $dir->traditionlist ) {
 	$datahash{text_name} = $tradition->name;
 	
 	# Run the analysis for each row in @rows
-	my %opts = ( exclude_type1 => 1, calcdsn => $calcdsn );
-	if( keys %collapse ) {
-		$opts{merge_types} = [ keys %collapse ];
+	my %opts = ( 
+		exclude_type1 => 1,
+		merge_types => [ 'punctuation' ], 
+		calcdsn => $calcdsn );
+	if( @collapse ) {
+		push( @{$opts{merge_types}}, @collapse );
 	}
 	
 	my $result = run_analysis( $tradition, %opts );
@@ -87,7 +89,6 @@ foreach my $tinfo( $dir->traditionlist ) {
 			my @roots = @{$rdghash->{independent_occurrence}};
 			next if @roots == 1 && !$rdghash->{'followed'} && !$rdghash->{'not_followed'}
 				&& !$rdghash->{'follow_unknown'};
-			# TODO Weed out punctuation
 			my $rdg = $tradition->collation->reading( $rdghash->{readingid} );
 			my $type;
 			if( $rdghash->{'is_conflict'} ) {
