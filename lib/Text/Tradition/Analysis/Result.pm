@@ -1,6 +1,8 @@
 package Text::Tradition::Analysis::Result;
 
 use Moose;
+use Digest::MD5 qw/ md5_hex /;
+use Encode qw/ encode_utf8 /;
 use JSON qw/ to_json /;
 use Set::Scalar;
 use Text::Tradition::Error;
@@ -105,25 +107,9 @@ around BUILDARGS => sub {
 	# then alphabetically by first-sorted.
 	die "Must specify a set list to Analysis::Result->new()" 
 		unless ref( $args->{'setlist'} ) eq 'ARRAY'; 
-	my @sets;
-	foreach my $set ( @{$args->{'setlist'}} ) {
-		my $s = $set;
-		# Check uniqueness of the current set
-		if( ref( $set ) ne 'Set::Scalar' ) {
-			$s = Set::Scalar->new( @$set );
-			die "Duplicate element(s) in set passed to Analysis::Result->new()"
-				unless @$set == $s->elements;
-		}
-		# Check distinctness of the set from all other sets given so far
-		foreach my $ps ( @sets ) {
-			die "Two sets are not disjoint"
-				unless $s->is_disjoint( $ps );
-		}
-		# Save the set.
-		push( @sets, $s );
-	}
-	# Order the sets.
-	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } @sets ];
+	# Order the sets and make sure they are all distinct Set::Scalars.
+	$args->{'setlist'} = _check_set_args( $args->{'setlist'} );
+	$args->{'groupinglist'} = _check_set_args( $args->{'groupinglist'} );
 	
 	# If we have been passed a Text::Tradition::Stemma or a Graph, save only
 	# its string.
@@ -142,6 +128,28 @@ around BUILDARGS => sub {
 		
 	return $class->$orig( $args );
 };
+
+sub _check_set_args {
+	my $setlist = shift;
+	my @sets;
+	foreach my $set ( @{$setlist} ) {
+		my $s = $set;
+		# Check uniqueness of the current set
+		if( ref( $set ) ne 'Set::Scalar' ) {
+			$s = Set::Scalar->new( @$set );
+			die "Duplicate element(s) in set or group passed to Analysis::Result->new()"
+				unless @$set == $s->elements;
+		}
+		# Check distinctness of the set from all other sets given so far
+		foreach my $ps ( @sets ) {
+			die "Two sets are not disjoint"
+				unless $s->is_disjoint( $ps );
+		}
+		# Save the set.
+		push( @sets, $s );
+	}
+	return [ sort { by_size_and_alpha( $a, $b ) } @sets ];
+}	
 
 sub BUILD {
 	my $self = shift;
@@ -173,6 +181,11 @@ sub record_grouping {
 
 # A request string is the graph followed by the groups, which should form a unique
 # key for the result.
+sub object_key {
+	my $self = shift;
+	return md5_hex( encode_utf8( $self->request_string ) );
+}
+
 sub request_string {
 	my $self = shift;
 	return string_from_graph_problem( $self->graph, [ $self->sets ] );
@@ -242,6 +255,30 @@ sub minimum_grouping_for {
 	my $midx = $self->set_index( sub { "$set" eq "$_" } );
 	return undef unless defined $midx;
 	return $self->grouping( $midx );
+}
+
+sub TO_JSON {
+	my $self = shift;
+	# Graph and setlist
+	my $data = { 
+		graph => $self->graph, 
+		setlist => [],
+		groupinglist => [],
+		classlist => {}
+	};
+	$data->{is_genealogical} = 1 if $self->is_genealogical;
+	foreach my $set ( $self->sets ) {
+		push( @{$data->{setlist}}, [ $set->members ] );
+	}
+	# groupinglist
+	foreach my $group ( $self->groupings ) {
+		push( @{$data->{groupinglist}}, [ $group->members ] );
+	}
+	# classlist
+	foreach my $wit ( $self->assigned_wits ) {
+		$data->{classlist}->{$wit} = $self->class( $wit );
+	}
+	return $data;
 }
 
 sub throw {
