@@ -204,7 +204,7 @@ has +typemap => (
           KiokuDB::TypeMap::Entry::MOP->new(),
         "Text::Tradition::Witness" =>
           KiokuDB::TypeMap::Entry::MOP->new(),
-        "Graph" => Text::Tradition::TypeMap::Entry->new()
+        "Graph" => Text::Tradition::TypeMap::Entry->new(),
         "Set::Scalar" => Text::Tradition::TypeMap::Entry->new(),
       }
     );
