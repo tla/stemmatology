@@ -24,7 +24,6 @@ requires( 'KiokuX::User::Util' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
-requires( 'Set::Scalar' );
 requires( 'StackTrace::Auto' );
 requires( 'Text::CSV' );
 requires( 'Text::TEI::Markup' => '1.7' );
