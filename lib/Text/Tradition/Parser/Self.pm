@@ -147,10 +147,10 @@ my $fh = File::Temp->new();
 my $file = $fh->filename;
 $fh->close;
 my $dsn = "dbi:SQLite:dbname=$file";
-my $userstore = Text::Tradition::UserStore->new( { dsn => $dsn,
+my $userstore = Text::Tradition::Directory->new( { dsn => $dsn,
 	extra_args => { create => 1 } } );
 my $scope = $userstore->new_scope();
-my $testuser = $userstore->add_user( { url => 'http://example.com' } );
+my $testuser = $userstore->create_user( { url => 'http://example.com' } );
 is( ref( $testuser ), 'Text::Tradition::User', "Created test user via userstore" );
 $testuser->add_tradition( $newt );
 is( $newt->user->id, $testuser->id, "Assigned tradition to test user" );
@@ -161,7 +161,7 @@ warning_is {
 } 'DROPPING user assignment without a specified userstore',
 	"Got expected user drop warning on parse";
 $usert = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml_str,
-	'userstore' => { 'dsn' => $dsn } );
+	'userstore' => $userstore );
 is( $usert->user->id, $testuser->id, "Parsed tradition with userstore points to correct user" );
 
 
@@ -197,12 +197,7 @@ sub parse {
 		} elsif( $gkey eq 'user' ) {
 			# Assign the tradition to the user if we can
 			if( exists $opts->{'userstore'} ) {
-				my $userdir;
-				try {
-					$userdir = Text::Tradition::UserStore->new( $opts->{'userstore'} );
-				} catch {
-					warn( "Could not connect to specified user store; DROPPING user assignment" );
-				}
+				my $userdir = delete $opts->{'userstore'};
 				my $user = $userdir->find_user( { username => $val } );
 				if( $user ) {
 					$user->add_tradition( $tradition );
