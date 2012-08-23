@@ -108,8 +108,9 @@ around BUILDARGS => sub {
 	die "Must specify a set list to Analysis::Result->new()" 
 		unless ref( $args->{'setlist'} ) eq 'ARRAY'; 
 	# Order the sets and make sure they are all distinct Set::Scalars.
-	$args->{'setlist'} = _check_set_args( $args->{'setlist'} );
-	$args->{'groupinglist'} = _check_set_args( $args->{'groupinglist'} );
+	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } 
+							_check_set_args( $args->{'setlist'} ) ];
+	$args->{'groupinglist'} = [ _check_set_args( $args->{'groupinglist'} ) ];
 	
 	# If we have been passed a Text::Tradition::Stemma or a Graph, save only
 	# its string.
@@ -148,7 +149,7 @@ sub _check_set_args {
 		# Save the set.
 		push( @sets, $s );
 	}
-	return [ sort { by_size_and_alpha( $a, $b ) } @sets ];
+	return @sets;
 }	
 
 sub BUILD {
