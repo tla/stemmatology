@@ -204,6 +204,7 @@ has 'tradition' => (
 	'is' => 'ro',
 	'isa' => 'Text::Tradition',
 	'required' => 1,
+        weak_ref => 1
 	);
 
 # Sigil. Required identifier for a witness, but may be found inside

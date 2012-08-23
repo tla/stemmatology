@@ -7,34 +7,51 @@ use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
 use Text::CSV;
+use Text::Tradition::Collation::Data;
 use Text::Tradition::Collation::Reading;
 use Text::Tradition::Collation::RelationshipStore;
 use Text::Tradition::Error;
 use XML::Easy::Syntax qw( $xml10_namestartchar_rx $xml10_namechar_rx );
+use XML::LibXML;
+use XML::LibXML::XPathContext;
 use Moose;
 
-has 'sequence' => (
-    is => 'ro',
-    isa => 'Graph',
-    default => sub { Graph->new() },
-    handles => {
-    	paths => 'edges',
-    },
-    );
-    
-has 'relations' => (
-	is => 'ro',
-	isa => 'Text::Tradition::Collation::RelationshipStore',
-	handles => {
-		relationships => 'relationships',
-		related_readings => 'related_readings',
-		get_relationship => 'get_relationship',
-		del_relationship => 'del_relationship',
-		equivalence => 'equivalence',
-		equivalence_graph => 'equivalence_graph',
-	},
-	writer => '_set_relations',
-	);
+has _data => (
+	isa      => 'Text::Tradition::Collation::Data',
+	is       => 'ro',
+	required => 1,
+	handles  => [ qw(
+		sequence
+		paths
+		_set_relations
+		relations
+		_set_start
+		_set_end
+		ac_label
+		has_cached_table
+		relationships
+		related_readings
+		get_relationship
+		del_relationship
+		equivalence
+		equivalence_graph
+		readings
+		reading
+		_add_reading
+		del_reading
+		has_reading
+		wit_list_separator
+		baselabel
+		linear
+		wordsep
+		start
+		end
+		cached_table
+		_graphcalc_done
+		has_cached_svg
+		wipe_table
+	)]
+);
 
 has 'tradition' => (
     is => 'ro',
@@ -42,77 +59,6 @@ has 'tradition' => (
     writer => '_set_tradition',
     weak_ref => 1,
     );
-
-has 'readings' => (
-	isa => 'HashRef[Text::Tradition::Collation::Reading]',
-	traits => ['Hash'],
-    handles => {
-        reading     => 'get',
-        _add_reading => 'set',
-        del_reading => 'delete',
-        has_reading => 'exists',
-#        reading_keys => 'keys',
-        readings   => 'values',
-    },
-    default => sub { {} },
-	);
-
-has 'wit_list_separator' => (
-    is => 'rw',
-    isa => 'Str',
-    default => ', ',
-    );
-
-has 'baselabel' => (
-    is => 'rw',
-    isa => 'Str',
-    default => 'base text',
-    );
-
-has 'linear' => (
-    is => 'rw',
-    isa => 'Bool',
-    default => 1,
-    );
-    
-has 'ac_label' => (
-    is => 'rw',
-    isa => 'Str',
-    default => ' (a.c.)',
-    );
-    
-has 'wordsep' => (
-	is => 'rw',
-	isa => 'Str',
-	default => ' ',
-	);
-    
-has 'start' => (
-	is => 'ro',
-	isa => 'Text::Tradition::Collation::Reading',
-	writer => '_set_start',
-	weak_ref => 1,
-	);
-
-has 'end' => (
-	is => 'ro',
-	isa => 'Text::Tradition::Collation::Reading',
-	writer => '_set_end',
-	weak_ref => 1,
-	);
-	
-has 'cached_table' => (
-	is => 'rw',
-	isa => 'HashRef',
-	predicate => 'has_cached_table',
-	clearer => 'wipe_table',
-	);
-	
-has '_graphcalc_done' => (
-	is => 'rw',
-	isa => 'Bool',
-	default => undef,
-	); 
 
 =head1 NAME
 
@@ -263,6 +209,20 @@ that were ultimately added.
 See L<Text::Tradition::Collation::Relationship> for the available options.
 
 =cut 
+
+sub BUILDARGS {
+	my ( $class, @args ) = @_;
+	my %args = @args == 1 ? %{ $args[0] } : @args;
+	# TODO determine these from the Moose::Meta object
+	my @delegate_attrs = qw(sequence relations readings wit_list_separator baselabel 
+		linear wordsep start end cached_table _graphcalc_done);
+	my %data_args;
+	for my $attr (@delegate_attrs) {
+		$data_args{$attr} = delete $args{$attr} if exists $args{$attr};
+	}
+	$args{_data} = Text::Tradition::Collation::Data->new(%data_args);
+	return \%args;
+}
 
 sub BUILD {
     my $self = shift;
