@@ -179,7 +179,7 @@ sub record_grouping {
 	# correct spot in our groupinglist.
 	my $idx = 0;
 	foreach my $set ( $self->sets ) {
-		if( $set->is_subset( $group ) ) {
+		if( _is_subset( $set, $group ) ) {
 			$self->_set_grouping( $idx, $group );
 			last;
 		}
@@ -188,6 +188,17 @@ sub record_grouping {
 	if( $idx == scalar( $self->sets ) ) {
 		throw( "Failed to find witness set that is a subset of $group" );
 	}
+}
+
+sub _is_subset {
+    # A replacement for the stupid Set::Scalar::is_subset
+    my( $set1, $set2 ) = @_;
+    my %all;
+    map { $all{$_} = 1 } $set2->members;
+    foreach my $m ( $set1->members ) {
+        return 0 unless $all{$m};
+    }
+    return 1;
 }
 
 # A request string is the graph followed by the groups, which should form a unique
