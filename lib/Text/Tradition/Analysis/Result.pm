@@ -68,6 +68,11 @@ has 'graph' => (
 	required => 1
 );
 
+has 'status' => (
+	is => 'rw',
+	isa => 'Str'
+);
+
 has 'is_genealogical' => (
 	is => 'rw',
 	isa => 'Bool',
@@ -126,6 +131,11 @@ around BUILDARGS => sub {
 			die "Passed argument to graph that is neither Stemma nor Graph";
 		}
 	} 
+	
+	# If our only args are graph and setlist, then status should be 'new'
+	if( scalar keys %$args == 2 ) {
+		$args->{'status'} = 'new';
+	}
 		
 	return $class->$orig( $args );
 };
