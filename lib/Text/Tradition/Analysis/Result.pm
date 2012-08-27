@@ -226,9 +226,9 @@ around BUILDARGS => sub {
 	
 	# Convert the set list into a list of Set::Scalars, ordered first by size and
 	# then alphabetically by first-sorted.
-	die "Must specify a set list to Analysis::Result->new()" 
+	throw( "Must specify a set list to Analysis::Result->new()" )
 		unless ref( $args->{'setlist'} ) eq 'ARRAY'; 
-	die "Empty set list specified to Analysis::Result->new()"
+	throw( "Empty set list specified to Analysis::Result->new()" )
 		unless @{$args->{'setlist'}};
 	# Order the sets and make sure they are all distinct Set::Scalars.
 	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } 
@@ -248,7 +248,7 @@ around BUILDARGS => sub {
 		} elsif( $type eq 'Graph' ) {
 			$args->{'graph'} = Text::Tradition::Stemma::editable_graph( $st, $gopt );
 		} else {
-			die "Passed argument to graph that is neither Stemma nor Graph";
+			throw( "Passed argument to graph that is neither Stemma nor Graph" );
 		}
 	} 
 	
@@ -268,12 +268,12 @@ sub _check_set_args {
 		# Check uniqueness of the current set
 		if( ref( $set ) ne 'Set::Scalar' ) {
 			$s = Set::Scalar->new( @$set );
-			die "Duplicate element(s) in set or group passed to Analysis::Result->new()"
+			throw( "Duplicate element(s) in set or group passed to Analysis::Result->new()" )
 				unless @$set == $s->elements;
 		}
 		# Check distinctness of the set from all other sets given so far
 		foreach my $ps ( @sets ) {
-			die "Two sets are not disjoint"
+			throw( "Two sets $s / $ps are not disjoint" )
 				unless $s->is_disjoint( $ps );
 		}
 		# Save the set.
