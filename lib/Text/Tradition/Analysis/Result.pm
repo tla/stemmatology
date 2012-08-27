@@ -50,6 +50,114 @@ Text::Tradition::Stemma::editable) against which the sets will be analyzed.
 
 =back
 
+All other properties should be calculated by IDP rather than set manually.
+These include:
+
+=over 4
+
+=item * is_genealogical - Boolean, indicating whether the witness sets form
+genealogical groupings on the graph.
+
+=item * status - String to indicate whether a solution has been calculated
+for this analysis problem. Recognized values are "OK" (calculated) and
+"running" (being calculated now). All other values, or no value, imply that
+the calculation has yet to take place.
+
+=item * groupings - These are extended (if necessary) versions of the witness
+sets, which include the hypothetical witnesses necessary to minimize coincidence
+of variation.
+
+=item * classes - These are key/value pairs, keyed by witness, indicating for
+each witness whether it is the source of a reading variant, whether it represents
+a reversion to an ancestor (but not parent) reading, or whether its reading 
+follows that of a parent on the graph.
+
+=back
+
+=begin testing
+
+use Test::More::UTF8;
+use Text::Tradition;
+use TryCatch;
+use_ok( 'Text::Tradition::Analysis::Result' );
+
+# Make a problem with a graph and a set of groupings
+
+my $datafile = 't/data/florilegium_tei_ps.xml';
+my $tradition = Text::Tradition->new( 'input' => 'TEI',
+                                      'name' => 'flortest',
+                                      'file' => $datafile );
+my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
+
+my $sets = [ [ qw/ D Q / ], [ qw/ F H / ], [ qw/ A B C P S T / ] ];
+my $extant = {};
+foreach my $set ( @$sets ) {
+	map { $extant->{$_} = 1 } @$set;
+}
+my $sitgraph = $s->editable( { extant => $extant } );
+my $result = Text::Tradition::Analysis::Result->new(
+	graph => $sitgraph,
+	setlist => $sets );
+is( ref( $result ), 'Text::Tradition::Analysis::Result', "Got a Result object" );
+is( $result->graph, $sitgraph, "Got identical graph string back" );
+is( $result->status, "new", "Calculation status of result set correctly" );
+my @rsets = $result->sets;
+is( $rsets[0], '(A B C P S T)', "First set is biggest set" );
+is( $rsets[1], '(D Q)', "Second set is by alphabetical order" );
+is( $rsets[2], '(F H)', "Second set is by alphabetical order" );
+
+# Add some calculation values
+$result->is_genealogical( 1 );
+$result->record_grouping( [ qw/ 4 5 D Q / ] );
+try {
+	$result->record_grouping( [ qw/ 3 4 D H / ] );
+	ok( 0, "Recorded a grouping that does not match the input sets" );
+} catch ( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Failed to find witness set that is a subset of/, 
+		"Correct error thrown on bad record_grouping attempt" );
+}
+$result->record_grouping( [ qw/ 3 F H / ] );
+my $gp1 = $result->grouping(1);
+is( $result->minimum_grouping_for( $rsets[1] ), $gp1, 
+	"Found a minimum grouping for D Q" );
+is( "$gp1", "(4 5 D Q)", "Retrieved minimum grouping is correct" );
+is( $result->minimum_grouping_for( $rsets[0] ), $rsets[0], 
+	"Default minimum grouping found for biggest group" );
+$result->record_grouping( [ qw/ 1 α δ A B C P S T / ] );
+my %classes = (
+	α => 'source',
+	3 => 'source',
+	4 => 'source' );
+foreach my $gp ( $result->groupings ) {
+	map { my $c = $classes{$_} || 'copy'; $result->set_class( $_, $c ) } @$gp;
+}
+foreach my $gp ( $result->groupings ) {
+	foreach my $wit ( @$gp ) {
+		my $expected = $classes{$wit} || 'copy';
+		is( $result->class( $wit ), $expected, "Got expected witness class for $wit" );
+	}
+}
+
+# Now write it out to JSON
+my $struct = $result->TO_JSON;
+my $newresult = Text::Tradition::Analysis::Result->new( $struct );
+is( $result->object_key, $newresult->object_key, 
+	"Object key stayed constant on export/import" );
+my $problem = Text::Tradition::Analysis::Result->new( graph => $sitgraph, setlist => $sets );
+is( $problem->object_key, $result->object_key, 
+	"Object key stayed constant for newly created problem" );
+
+
+=end testing
+
+=head1 METHODS
+
+=head2 $self->has_class( $witness )
+=head2 $self->class( $witness )
+
+If a class has been calculated for the given witness, has_class returns true
+and class returns the calculated answer.
+
 =cut
 
 has 'setlist' => (
@@ -115,7 +223,9 @@ around BUILDARGS => sub {
 	# Order the sets and make sure they are all distinct Set::Scalars.
 	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } 
 							_check_set_args( $args->{'setlist'} ) ];
-	$args->{'groupinglist'} = [ _check_set_args( $args->{'groupinglist'} ) ];
+	if( exists $args->{'groupinglist'} ) {
+		$args->{'groupinglist'} = [ _check_set_args( $args->{'groupinglist'} ) ];
+	}
 	
 	# If we have been passed a Text::Tradition::Stemma or a Graph, save only
 	# its string.
@@ -133,6 +243,7 @@ around BUILDARGS => sub {
 	} 
 	
 	# If our only args are graph and setlist, then status should be 'new'
+	$DB::single = 1;
 	if( scalar keys %$args == 2 ) {
 		$args->{'status'} = 'new';
 	}
@@ -169,6 +280,139 @@ sub BUILD {
 	map { $self->_add_grouping( $_ ) } $self->sets;
 }
 
+=head2 $self->object_key
+
+Returns a unique key that can be used to look up this graph/set combination in
+a database. Currently an MD5 hash of the request_string.
+
+=cut
+
+sub object_key {
+	my $self = shift;
+	return md5_hex( encode_utf8( $self->request_string ) );
+}
+
+=head2 $self->request_string
+
+A request string is the graph followed by the groups, which should form a unique
+key for the result.
+
+=cut
+
+sub request_string {
+	my $self = shift;
+	return string_from_graph_problem( $self->graph, [ $self->sets ] );
+}
+
+# TODO do we need this now?
+
+sub string_from_graph_problem {
+	my( $graph, $grouping ) = @_;
+	my( $graphstr, @groupsets );
+	# Get the graph string
+	if( ref( $graph ) && ref( $graph ) eq 'Graph' ) {
+		$graphstr = Text::Tradition::Stemma::editable_graph( $graph, { 'linesep' => ' ' } );
+	} else {
+		throw( "Passed non-graph object $graph to stringification" )
+			if ref( $graph );
+		$graphstr = $graph;
+	}
+	# Make sure all groupings are sets
+	foreach my $g ( @$grouping ) {
+		if( ref( $g ) eq 'ARRAY' ) {
+			push( @groupsets, Set::Scalar->new( @$g ) );
+		} elsif( ref( $g ) eq 'Set::Scalar' ) {
+			push( @groupsets, $g );
+		} else {
+			throw( "Tried to stringify grouping $g that is neither set nor array" );
+		}
+	}
+	return $graphstr . '//' . 
+		join( ',', sort { by_size_and_alpha( $a, $b ) } @groupsets );
+}
+
+# TODO do we need this?
+# This should work as $self->problem_json or as problem_json( @objects )
+sub problem_json {
+	my( @objects ) = @_;
+	# There should be a distinct problem for each unique graph.
+	my %distinct_problems;
+	foreach my $o ( @objects ) {
+		unless( exists $distinct_problems{$o->graph} ) {
+			$distinct_problems{$o->graph} = [];
+		}
+		my @groupings;
+		map { push( @groupings, [ $_->members ] ) } $o->sets;
+		push( @{$distinct_problems{$o->graph}}, \@groupings );
+	}
+	my @pstrs = map { to_json( 
+		{ graph => $_, groupings => $distinct_problems{$_} } ) } 
+		keys %distinct_problems;
+	return @pstrs;
+}
+
+=head2 by_size_and_alpha
+
+A useful utility function to sort Set::Scalar objects first in descending 
+order by size, then in ascending alphabetical order by first element (i.e. 
+by stringification.)
+
+=cut
+
+sub by_size_and_alpha {
+	my( $a, $b ) = @_;
+	my $size = $b->members <=> $a->members;
+	return $size if $size;
+	# Then sort by alphabetical order of set elements.
+	return "$a" cmp "$b";
+}
+
+=head2 $self->sources
+
+Return all 'source' class witnesses in these sets for this graph.
+
+=cut
+
+sub sources {
+	my $self = shift;
+	my @sources = grep { $self->class( $_ ) eq 'source' } $self->assigned_wits;
+	return @sources;
+}
+
+=head2 $self->minimum_grouping_for( $set )
+
+Return the minimum grouping (including necessary hypothetical witnesses) for
+the witness set specified. Will return undef if $set does not match one of
+the defined witness sets in $self->sets.
+
+=cut
+
+# Look for a matching set in our setlist, and return its corresponding group
+sub minimum_grouping_for {
+	my( $self, $set ) = @_;
+	my $midx = $self->set_index( sub { "$set" eq "$_" } );
+	return undef unless defined $midx;
+	return $self->grouping( $midx );
+}
+
+=head1 CALCULATION STORAGE METHODS
+
+=head2 $self->is_genealogical( $bool )
+
+Record that the sets are genealogical for this graph.
+
+=head2 $self->set_class( $witness, $class )
+
+Record that the witness in question is of the given class.
+
+=head2 $self->record_grouping( $group )
+
+Record that the group in question (either an arrayref or a Set::Scalar) forms
+a minimum grouping on the graph. Will throw an error unless the group is a
+(non-proper) superset of an existing witness set.
+
+=cut
+
 sub record_grouping {
 	my( $self, $group ) = @_;
 	unless( ref( $group ) eq 'Set::Scalar' ) {
@@ -201,102 +445,26 @@ sub _is_subset {
     return 1;
 }
 
-# A request string is the graph followed by the groups, which should form a unique
-# key for the result.
-sub object_key {
-	my $self = shift;
-	return md5_hex( encode_utf8( $self->request_string ) );
-}
-
-sub request_string {
-	my $self = shift;
-	return string_from_graph_problem( $self->graph, [ $self->sets ] );
-}
-
-sub string_from_graph_problem {
-	my( $graph, $grouping ) = @_;
-	my( $graphstr, @groupsets );
-	# Get the graph string
-	if( ref( $graph ) && ref( $graph ) eq 'Graph' ) {
-		$graphstr = Text::Tradition::Stemma::editable_graph( $graph, { 'linesep' => ' ' } );
-	} else {
-		throw( "Passed non-graph object $graph to stringification" )
-			if ref( $graph );
-		$graphstr = $graph;
-	}
-	# Make sure all groupings are sets
-	foreach my $g ( @$grouping ) {
-		if( ref( $g ) eq 'ARRAY' ) {
-			push( @groupsets, Set::Scalar->new( @$g ) );
-		} elsif( ref( $g ) eq 'Set::Scalar' ) {
-			push( @groupsets, $g );
-		} else {
-			throw( "Tried to stringify grouping $g that is neither set nor array" );
-		}
-	}
-	return $graphstr . '//' . 
-		join( ',', sort { by_size_and_alpha( $a, $b ) } @groupsets );
-}
-
-# This should work as $self->problem_json or as problem_json( @objects )
-sub problem_json {
-	my( @objects ) = @_;
-	# There should be a distinct problem for each unique graph.
-	my %distinct_problems;
-	foreach my $o ( @objects ) {
-		unless( exists $distinct_problems{$o->graph} ) {
-			$distinct_problems{$o->graph} = [];
-		}
-		my @groupings;
-		map { push( @groupings, [ $_->members ] ) } $o->sets;
-		push( @{$distinct_problems{$o->graph}}, \@groupings );
-	}
-	my @pstrs = map { to_json( 
-		{ graph => $_, groupings => $distinct_problems{$_} } ) } 
-		keys %distinct_problems;
-	return @pstrs;
-}
-
-sub by_size_and_alpha {
-	my( $a, $b ) = @_;
-	my $size = $b->members <=> $a->members;
-	return $size if $size;
-	# Then sort by alphabetical order of set elements.
-	return "$a" cmp "$b";
-}
-
-sub sources {
-	my $self = shift;
-	my @sources = grep { $self->class( $_ ) eq 'source' } $self->assigned_wits;
-	return @sources;
-}
-
-# Look for a matching set in our setlist, and return its corresponding group
-sub minimum_grouping_for {
-	my( $self, $set ) = @_;
-	my $midx = $self->set_index( sub { "$set" eq "$_" } );
-	return undef unless defined $midx;
-	return $self->grouping( $midx );
-}
-
 sub TO_JSON {
 	my $self = shift;
-	# Graph and setlist
+	# Required values: graph and setlist
 	my $data = { 
 		graph => $self->graph, 
 		setlist => [],
-		groupinglist => [],
-		classlist => {}
 	};
-	$data->{is_genealogical} = 1 if $self->is_genealogical;
 	foreach my $set ( $self->sets ) {
 		push( @{$data->{setlist}}, [ $set->members ] );
 	}
-	# groupinglist
+	# Scalar values, if they are set
+	$data->{is_genealogical} = 1 if $self->is_genealogical;
+	$data->{status} = $self->status if $self->status;
+	
+	# Set values, if they exist
+	$data->{groupinglist} = [] if $self->groupings;
 	foreach my $group ( $self->groupings ) {
 		push( @{$data->{groupinglist}}, [ $group->members ] );
 	}
-	# classlist
+	$data->{classlist} = {} if $self->assigned_wits;
 	foreach my $wit ( $self->assigned_wits ) {
 		$data->{classlist}->{$wit} = $self->class( $wit );
 	}
