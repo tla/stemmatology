@@ -175,7 +175,7 @@ my %num_readings;
 my @all_variant_ranks = sort { $a <=> $b } keys( %expected );
 # Look through the results
 my $c = $tradition->collation;
-my %analysis_opts = ( calcdsn => $calcdsn );
+my %analysis_opts;
 my $results = run_analysis( $tradition, %analysis_opts );
 my @analyzed;
 foreach my $row ( @{$results->{'variants'}} ) {
@@ -194,6 +194,8 @@ foreach my $row ( @{$results->{'variants'}} ) {
 	# every reading should independently occur exactly once, and the total
 	# number of changes + maybe-changes should equal the total number of
 	# readings who have that one as a parent.
+	ok( !exists $row->{'unsolved'}, "Got a solution for the stated problem" );
+	next if exists $row->{'unsolved'};
 	if( $row->{'genealogical'} ) {
 		# Make the mapping of parent -> child readings
 		my %is_parent;
@@ -223,6 +225,8 @@ $analysis_opts{'exclude_type1'} = 1;
 @analyzed = ();
 $results = run_analysis( $tradition, %analysis_opts );
 foreach my $row ( @{$results->{'variants'}} ) {
+	ok( !exists $row->{'unsolved'}, "Got a solution for the stated problem" );
+	next if exists $row->{'unsolved'};
 	push( @analyzed, $row->{id} );
 	my $type = 'genealogical';
 	if( grep { $_->{'is_conflict'} } @{$row->{'readings'}} ) {
@@ -248,6 +252,8 @@ $analysis_opts{'merge_types'} = [ qw/ orthographic spelling / ];
 $results = run_analysis( $tradition, %analysis_opts );
 foreach my $row ( @{$results->{'variants'}} ) {
 	push( @analyzed, $row->{id} );
+	ok( !exists $row->{'unsolved'}, "Got a solution for the stated problem" );
+	next if exists $row->{'unsolved'};
 	my $type = 'genealogical';
 	if( grep { $_->{'is_conflict'} } @{$row->{'readings'}} ) {
 		$type = 'conflict';

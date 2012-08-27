@@ -6,7 +6,7 @@ use Algorithm::Diff;  # for word similarity measure
 use Encode qw/ decode_utf8 encode_utf8 /;
 use Exporter 'import';
 use Graph;
-use JSON qw/ to_json /;
+use JSON qw/ to_json decode_json /;
 use LWP::UserAgent;
 use Set::Scalar;
 use Text::Tradition::Analysis::Result;
@@ -505,9 +505,10 @@ The answer has the form
 sub solve_variants {
 	my( @groups ) = @_;
 	
-	# Are we using a local result directory?
+	# Are we using a local result directory, or did we pass an empty value
+	# for the directory?
 	my $dir;
-	if( ref( $groups[0] ) eq 'Text::Tradition::Directory' ) {
+	unless( ref( $groups[0] ) eq 'HASH' ) {
 		$dir = shift @groups;
 	}
 
@@ -536,10 +537,9 @@ sub solve_variants {
 		my $ua = LWP::UserAgent->new();
 		my $resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
 							  'Content' => $json );	
-		my $answer;						  
+		my $answer;	
 		if( $resp->is_success ) {
-			$answer = Text::Tradition::Analysis::Result->new(
-				decode_json( $resp->content ) );
+			$answer = decode_json( $resp->content );
 			throw( "Unexpected answer from IDP: $answer" ) unless ref( $answer ) eq 'ARRAY';
 		} else {
 			throw( "IDP solver returned " . $resp->status_line . " / " . $resp->content
@@ -908,6 +908,13 @@ sub wit_stringify {
 }
 
 1;
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Analysis error',
+		'message' => $_[0],
+	);
+}
 
 =head1 LICENSE
 
