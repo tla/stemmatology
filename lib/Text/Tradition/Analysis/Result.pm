@@ -289,7 +289,8 @@ sub BUILD {
 	my @sets = $self->sets;
 	foreach my $idx( 0 .. $#sets ) {
 		unless( $self->grouping( $idx ) ) {
-			$self->_set_grouping( $idx, $sets[$idx] );
+			my $g = $sets[$idx]->clone();
+			$self->_set_grouping( $idx, $g );
 		}
 	}
 }
