@@ -220,6 +220,8 @@ around BUILDARGS => sub {
 	# then alphabetically by first-sorted.
 	die "Must specify a set list to Analysis::Result->new()" 
 		unless ref( $args->{'setlist'} ) eq 'ARRAY'; 
+	die "Empty set list specified to Analysis::Result->new()"
+		unless @{$args->{'setlist'}};
 	# Order the sets and make sure they are all distinct Set::Scalars.
 	$args->{'setlist'} = [ sort { by_size_and_alpha( $a, $b ) } 
 							_check_set_args( $args->{'setlist'} ) ];
@@ -243,7 +245,6 @@ around BUILDARGS => sub {
 	} 
 	
 	# If our only args are graph and setlist, then status should be 'new'
-	$DB::single = 1;
 	if( scalar keys %$args == 2 ) {
 		$args->{'status'} = 'new';
 	}
@@ -301,54 +302,7 @@ key for the result.
 
 sub request_string {
 	my $self = shift;
-	return string_from_graph_problem( $self->graph, [ $self->sets ] );
-}
-
-# TODO do we need this now?
-
-sub string_from_graph_problem {
-	my( $graph, $grouping ) = @_;
-	my( $graphstr, @groupsets );
-	# Get the graph string
-	if( ref( $graph ) && ref( $graph ) eq 'Graph' ) {
-		$graphstr = Text::Tradition::Stemma::editable_graph( $graph, { 'linesep' => ' ' } );
-	} else {
-		throw( "Passed non-graph object $graph to stringification" )
-			if ref( $graph );
-		$graphstr = $graph;
-	}
-	# Make sure all groupings are sets
-	foreach my $g ( @$grouping ) {
-		if( ref( $g ) eq 'ARRAY' ) {
-			push( @groupsets, Set::Scalar->new( @$g ) );
-		} elsif( ref( $g ) eq 'Set::Scalar' ) {
-			push( @groupsets, $g );
-		} else {
-			throw( "Tried to stringify grouping $g that is neither set nor array" );
-		}
-	}
-	return $graphstr . '//' . 
-		join( ',', sort { by_size_and_alpha( $a, $b ) } @groupsets );
-}
-
-# TODO do we need this?
-# This should work as $self->problem_json or as problem_json( @objects )
-sub problem_json {
-	my( @objects ) = @_;
-	# There should be a distinct problem for each unique graph.
-	my %distinct_problems;
-	foreach my $o ( @objects ) {
-		unless( exists $distinct_problems{$o->graph} ) {
-			$distinct_problems{$o->graph} = [];
-		}
-		my @groupings;
-		map { push( @groupings, [ $_->members ] ) } $o->sets;
-		push( @{$distinct_problems{$o->graph}}, \@groupings );
-	}
-	my @pstrs = map { to_json( 
-		{ graph => $_, groupings => $distinct_problems{$_} } ) } 
-		keys %distinct_problems;
-	return @pstrs;
+	return $self->graph . '//' . join( ',', $self->sets );
 }
 
 =head2 by_size_and_alpha

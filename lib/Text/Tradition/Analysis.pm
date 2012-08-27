@@ -3,14 +3,12 @@ package Text::Tradition::Analysis;
 use strict;
 use warnings;
 use Algorithm::Diff;  # for word similarity measure
-use Benchmark;
-use Digest::MD5 qw/ md5_hex /;
-use Encode qw/ encode_utf8 /;
+use Encode qw/ decode_utf8 encode_utf8 /;
 use Exporter 'import';
 use Graph;
 use JSON qw/ to_json /;
+use LWP::UserAgent;
 use Set::Scalar;
-use Text::Tradition;
 use Text::Tradition::Analysis::Result;
 use Text::Tradition::Directory;
 use Text::Tradition::Stemma;
@@ -19,6 +17,7 @@ use TryCatch;
 use vars qw/ @EXPORT_OK /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
 
+my $SOLVER_URL = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
 my $unsolved_problems = {};
 
 =head1 NAME
@@ -157,8 +156,12 @@ sub run_analysis {
 	
 	# Make sure we have a lookup DB for graph calculation results; this will die
 	# if calcdir or calcdsn isn't passed.
-	my $dir = $opts{'calcdir'} ? delete $opts{'calcdir'}
-		: Text::Tradition::Directory->new( dsn => $opts{'calcdsn'} );
+	my $dir;
+	if( exists $opts{'calcdir'} ) {
+		$dir = delete $opts{'calcdir'}
+	} elsif ( exists $opts{'calcdsn'} ) {
+		$dir = Text::Tradition::Directory->new( dsn => $opts{'calcdsn'} );
+	}
 
 	# Get the stemma	
 	my $stemma = $tradition->stemma( $stemma_id );
@@ -478,10 +481,10 @@ sub _graph_for_grouping {
 		# needed to make up the groups.
 		$graph = $stemma->situation_graph( $extant, $acwits );
 	} catch ( Text::Tradition::Error $e ) {
-		die "Could not extend graph with given extant and a.c. witnesses: "
-			. $e->message;
+		throw( "Could not extend graph with given extant and a.c. witnesses: "
+			. $e->message );
 	} catch {
-		die "Could not extend graph with a.c. witnesses @$acwits";
+		throw( "Could not extend graph with a.c. witnesses @$acwits" );
 	}
 	return $graph;
 }
@@ -491,10 +494,6 @@ sub _graph_for_grouping {
 Looks up the set of groups in the answers provided by the external graph solver 
 service and returns a cleaned-up answer, adding the rank IDs back where they belong.
 
-The JSON has the form 
-  { "graph": [ stemmagraph DOT string without newlines ],
-    "groupings": [ array of arrays of groups, one per rank ] }
-    
 The answer has the form 
   { "variants" => [ array of variant location structures ],
     "variant_count" => total,
@@ -504,91 +503,96 @@ The answer has the form
 =cut
 
 sub solve_variants {
-	my( $dir, @groups ) = @_;
+	my( @groups ) = @_;
+	
+	# Are we using a local result directory?
+	my $dir;
+	if( ref( $groups[0] ) eq 'Text::Tradition::Directory' ) {
+		$dir = shift @groups;
+	}
 
-	## For each graph/group combo, look it up in the DB.
-	## Witness map is a HACK to get around limitations in node names from IDP
-	my $witness_map = {};
-	## Variables to store answers as they come back
+	## For each graph/group combo, make a Text::Tradition::Analysis::Result
+	## object so that we can send it off for IDP lookup.
 	my $variants = [];
 	my $genealogical = 0; # counter
+	# TODO Optimize for unique graph problems
+	my @problems;
 	foreach my $graphproblem ( @groups ) {
+		# Construct the calc result key and look up its answer
+		my $problem = Text::Tradition::Analysis::Result->new(
+			graph => $graphproblem->{'graph'},
+			setlist => [ values %{$graphproblem->{'grouping'}} ] );
+		push( @problems, $problem );
+	}
+	
+	my @results;
+	if( $dir ) {
+		my $scope = $dir->new_scope;
+		@results = map { $dir->lookup( $_->object_key ) || $_ } @problems;
+	} else {	
+		my $json = JSON->new->allow_blessed->convert_blessed->utf8->encode( \@problems );
+		# Send it off and get the result
+		# print STDERR "Sending request: " . decode_utf8( $json ) . "\n";
+		my $ua = LWP::UserAgent->new();
+		my $resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
+							  'Content' => $json );	
+		my $answer;						  
+		if( $resp->is_success ) {
+			$answer = Text::Tradition::Analysis::Result->new(
+				decode_json( $resp->content ) );
+			throw( "Unexpected answer from IDP: $answer" ) unless ref( $answer ) eq 'ARRAY';
+		} else {
+			throw( "IDP solver returned " . $resp->status_line . " / " . $resp->content
+				. "; cannot run graph analysis" );
+		}
+		# One more sanity check
+		throw( "Something went wrong with answer symmetricity" )
+			unless @groups == @$answer;
+		# Convert the results
+		@results = map { Text::Tradition::Analysis::Result->new( $_ ) } @$answer;
+	}
+	
+	# We now have a single JSON-encoded Result object per problem sent. Fold its
+	# answers into our variant info structure.
+	foreach my $idx ( 0 .. $#groups ) {
+		my $graphproblem = $groups[$idx];
+		my $result = $results[$idx];
+		
 		# Initialize the result structure for this graph problem
 		my $vstruct = {	readings => [] };
 		push( @$variants, $vstruct );
 		
-		# Construct the calc result key and look up its answer
-		my $reqkey = _get_calc_key( $graphproblem );
-		my $scope = $dir->new_scope;
-		my $answer = $dir->lookup( $reqkey );
-		unless( $answer ) {
-			#warn "No answer found for graph problem $reqkey, moving on";
-			# Record the unsolved problem so that we can go get a solution
-			_save_problem( $graphproblem );
-			# Put just the request, with no real result, into vstruct
+		# 0. Do we have a calculated result at all?
+		unless( $result->status eq 'OK' ) {
+			$vstruct->{'unsolved'} = $result->status;
 			foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
 				push( @{$vstruct->{readings}}, { readingid => $rid, 
 					group => [ $graphproblem->{grouping}->{$rid}->members ] } );
 			}
 			next;
 		}
-
-		## The answer is a Text::Tradition::Analysis::Result containing a bunch
-		## of information about this variant set. Record the information therein.
 		
 		# 1. Did the group evaluate as genealogical?
-		$vstruct->{genealogical} = $answer->is_genealogical;
-		$genealogical++ if $answer->is_genealogical;
+		$vstruct->{genealogical} = $result->is_genealogical;
+		$genealogical++ if $result->is_genealogical;
 		
 		# 2. What are the calculated minimum groupings for each variant loc?
 		foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
 			my $inputset = $graphproblem->{grouping}->{$rid};
-			my $minset = $answer->minimum_grouping_for( $inputset );
+			my $minset = $result->minimum_grouping_for( $inputset );
 			push( @{$vstruct->{readings}}, { readingid => $rid, group => $minset } );
 		}
 		
 		# 3. What are the sources and classes calculated for each witness?
-		$vstruct->{witcopy_types} = { $answer->classes };
+		$vstruct->{witcopy_types} = { $result->classes };
 		$vstruct->{reading_roots} = {};
-		map { $vstruct->{reading_roots}->{$_} = 1 } $answer->sources;
+		map { $vstruct->{reading_roots}->{$_} = 1 } $result->sources;
 		
 	}
-	
-	# Spit out any unsolved problems we encountered
-	# _list_unsolved();
 	
 	return { 'variants' => $variants, 
 			 'variant_count' => scalar @$variants,
 			 'genealogical_count' => $genealogical };
-}
-
-sub _get_calc_key {
-	my( $graphproblem ) = @_;
-	my $graph = $graphproblem->{graph};
-	my $grouping = [ values %{$graphproblem->{grouping}} ];
-	my $key = Text::Tradition::Analysis::Result::string_from_graph_problem( 
-		$graph,	$grouping );
-	return md5_hex( encode_utf8( $key ) );
-}
-
-sub _save_problem {
-	my( $graphproblem ) = @_;
-	my $problem = Text::Tradition::Analysis::Result->new(
-		graph => $graphproblem->{graph},
-		setlist => [ values %{$graphproblem->{grouping}} ]
-	);
-	my $key = _get_calc_key( $graphproblem );
-	my( $str ) = $problem->problem_json;
-	say STDERR "Stashing unsolved problem $str at key $key";
-	$unsolved_problems->{$key} = $problem;
-}
-
-sub _list_unsolved {
-	#say STDERR "Problems needing a solution:";
-	my @problems = values %$unsolved_problems;
-	return unless @problems;
-	my $first = shift @problems;
-	map { say STDERR $_ } $first->problem_json( @problems );
 }
 
 =head2 analyze_location ( $tradition, $graph, $location_hash )
@@ -604,21 +608,17 @@ sub analyze_location {
 	my ( $tradition, $graph, $variant_row, $lacunose ) = @_;
 	my $c = $tradition->collation;
 	
+	if( exists $variant_row->{'unsolved'} ) {
+		return;
+	}
+	my $reading_roots = delete $variant_row->{'reading_roots'};
+	my $classinfo = delete $variant_row->{'witcopy_types'};
+	
 	# Make a hash of all known node memberships, and make the subgraphs.
 	my $contig = {};
-	my $reading_roots = {};
 	my $subgraph = {};
 	my $acstr = $c->ac_label;
 	my @acwits;
-	
-	my $NO_IDP;
-	if( exists $variant_row->{'reading_roots'} ) {
-		$reading_roots = delete $variant_row->{'reading_roots'};
-	} else {
-		warn "No reading source information from IDP - proceed at your own risk";
-		$NO_IDP = 1;
-	}
-	my $classinfo = delete $variant_row->{'witcopy_types'};
 	
 	# Note which witnesses positively belong to which group. This information
 	# comes ultimately from the IDP solver.
@@ -846,7 +846,7 @@ sub _prune_subtree {
 	my @orphan_hypotheticals;
 	my $ctr = 0;
 	do {
-		die "Infinite loop on leaves" if $ctr > 100;
+		throw( "Infinite loop on leaves" ) if $ctr > 100;
 		@orphan_hypotheticals = 
 			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' } 
 				$tree->successorless_vertices;
@@ -858,7 +858,7 @@ sub _prune_subtree {
 	my @redundant_root;
 	$ctr = 0;
 	do {
-		die "Infinite loop on roots" if $ctr > 100;
+		throw( "Infinite loop on roots" ) if $ctr > 100;
 		@redundant_root = 
 			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' 
 				   && $tree->successors( $_ ) == 1 } 
