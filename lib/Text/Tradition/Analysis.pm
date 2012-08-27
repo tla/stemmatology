@@ -517,21 +517,27 @@ sub solve_variants {
 	my $variants = [];
 	my $genealogical = 0; # counter
 	# TODO Optimize for unique graph problems
-	my @problems;
+	my %problems;
 	foreach my $graphproblem ( @groups ) {
 		# Construct the calc result key and look up its answer
 		my $problem = Text::Tradition::Analysis::Result->new(
 			graph => $graphproblem->{'graph'},
 			setlist => [ values %{$graphproblem->{'grouping'}} ] );
-		push( @problems, $problem );
+		if( exists $problems{$problem->object_key} ) {
+			$problem = $problems{$problem->object_key};
+		} else {
+			$problems{$problem->object_key} = $problem;
+		}
+		$graphproblem->{'object'} = $problem;
 	}
 	
-	my @results;
+	my %results;
 	if( $dir ) {
 		my $scope = $dir->new_scope;
-		@results = map { $dir->lookup( $_->object_key ) || $_ } @problems;
-	} else {	
-		my $json = JSON->new->allow_blessed->convert_blessed->utf8->encode( \@problems );
+		map { $results{$_} = $dir->lookup( $_ ) || $problems{$_} } keys %problems;
+	} else {
+		my $json = JSON->new->allow_blessed->convert_blessed->utf8->encode( 
+			[ values %problems ] );
 		# Send it off and get the result
 		# print STDERR "Sending request: " . decode_utf8( $json ) . "\n";
 		my $ua = LWP::UserAgent->new();
@@ -547,16 +553,19 @@ sub solve_variants {
 		}
 		# One more sanity check
 		throw( "Something went wrong with answer symmetricity" )
-			unless @groups == @$answer;
+			unless keys( %problems ) == @$answer;
 		# Convert the results
-		@results = map { Text::Tradition::Analysis::Result->new( $_ ) } @$answer;
+		foreach my $a ( @$answer ) {
+			my $r = Text::Tradition::Analysis::Result->new( $a );
+			$results{$r->object_key} = $r;
+		}
 	}
 	
 	# We now have a single JSON-encoded Result object per problem sent. Fold its
 	# answers into our variant info structure.
-	foreach my $idx ( 0 .. $#groups ) {
-		my $graphproblem = $groups[$idx];
-		my $result = $results[$idx];
+	foreach my $graphproblem ( @groups ) {
+		my $result = $results{$graphproblem->{'object'}->object_key}
+			|| $graphproblem->{'object'};
 		
 		# Initialize the result structure for this graph problem
 		my $vstruct = {	readings => [] };
@@ -820,52 +829,6 @@ sub similar {
 		}
 	}
 	return ( $mag <= length( $word1 ) / 2 );
-}
-
-sub _prune_group {
-	my( $group, $graph ) = @_;
-	my $relevant = {};
-	# Record the existence of the vertices in the group
-	map { $relevant->{$_} = 1 } @$group;
-	# Make our subgraph
-	my $subgraph = $graph->deep_copy;
-	map { $subgraph->delete_vertex( $_ ) unless $relevant->{$_} }
-		$subgraph->vertices;
-	# Now prune and return the remaining vertices.
-	_prune_subtree( $subgraph );
-	# Return the list of vertices and the list of roots.
-	my $pruned_group = [ sort $subgraph->vertices ];
-	my $pruned_roots = [ $subgraph->predecessorless_vertices ];
-	return( $pruned_group, $pruned_roots );
-}
-
-sub _prune_subtree {
-	my( $tree ) = @_;
-	
-	# Delete lacunose witnesses that have no successors
-	my @orphan_hypotheticals;
-	my $ctr = 0;
-	do {
-		throw( "Infinite loop on leaves" ) if $ctr > 100;
-		@orphan_hypotheticals = 
-			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' } 
-				$tree->successorless_vertices;
-		$tree->delete_vertices( @orphan_hypotheticals );
-		$ctr++;
-	} while( @orphan_hypotheticals );
-	
-	# Delete lacunose roots that have a single successor
-	my @redundant_root;
-	$ctr = 0;
-	do {
-		throw( "Infinite loop on roots" ) if $ctr > 100;
-		@redundant_root = 
-			grep { $tree->get_vertex_attribute( $_, 'class' ) eq 'hypothetical' 
-				   && $tree->successors( $_ ) == 1 } 
-				$tree->predecessorless_vertices;
-		$tree->delete_vertices( @redundant_root );
-		$ctr++;
-	} while( @redundant_root );
 }
 
 sub _useful_variant {
