@@ -76,6 +76,7 @@ follows that of a parent on the graph.
 
 =begin testing
 
+use Set::Scalar;
 use Test::More::UTF8;
 use Text::Tradition;
 use TryCatch;
@@ -115,6 +116,14 @@ try {
 } catch ( Text::Tradition::Error $e ) {
 	like( $e->message, qr/Failed to find witness set that is a subset of/, 
 		"Correct error thrown on bad record_grouping attempt" );
+}
+# Test manually setting an out-of-range group
+try {
+	$result->_set_grouping( 3, Set::Scalar->new( qw/ X Y / ) );
+	ok( 0, "Set a grouping at an invalid index" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Set / group index 3 out of range for set_grouping', 
+		"Caught attempt to set grouping at invalid index" );
 }
 $result->record_grouping( [ qw/ 3 F H / ] );
 my $gp1 = $result->grouping(1);
@@ -192,7 +201,6 @@ has 'groupinglist' => (
 	isa => 'ArrayRef[Set::Scalar]',
 	handles => {
 		groupings => 'elements',
-		_add_grouping => 'push',
 		_set_grouping => 'set',
 		grouping => 'get',
 	},
@@ -278,8 +286,22 @@ sub BUILD {
 	my $self = shift;
 	
 	# Initialize the groupings array
-	map { $self->_add_grouping( $_ ) } $self->sets;
+	my @sets = $self->sets;
+	foreach my $idx( 0 .. $#sets ) {
+		unless( $self->grouping( $idx ) ) {
+			$self->_set_grouping( $idx, $sets[$idx] );
+		}
+	}
 }
+
+before '_set_grouping' => sub {
+	my $self = shift;
+	my $idx = $_[0];
+	my $max = scalar $self->sets;
+	if( $idx >= $max ) {
+		throw( "Set / group index $idx out of range for set_grouping" );
+	}
+};
 
 =head2 $self->object_key
 

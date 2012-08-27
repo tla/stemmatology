@@ -8,6 +8,7 @@ $| = 1;
 
 # =begin testing
 {
+use Set::Scalar;
 use Test::More::UTF8;
 use Text::Tradition;
 use TryCatch;
@@ -47,6 +48,14 @@ try {
 } catch ( Text::Tradition::Error $e ) {
 	like( $e->message, qr/Failed to find witness set that is a subset of/, 
 		"Correct error thrown on bad record_grouping attempt" );
+}
+# Test manually setting an out-of-range group
+try {
+	$result->_set_grouping( 3, Set::Scalar->new( qw/ X Y / ) );
+	ok( 0, "Set a grouping at an invalid index" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Set / group index 3 out of range for set_grouping', 
+		"Caught attempt to set grouping at invalid index" );
 }
 $result->record_grouping( [ qw/ 3 F H / ] );
 my $gp1 = $result->grouping(1);
