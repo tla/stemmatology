@@ -12,7 +12,7 @@ use lib 'lib';
 
 use Text::Tradition::Directory;
 
-my ($dsn, $command) = ('dbi:SQLite:dbname=db/traditions.db', 'add');
+my ($dsn, $command) = ('dbi:SQLite:dbname=stemmaweb/db/traditions.db', 'add');
 my ($username, $password, $tradition_id, $rolename);
 
 GetOptions(

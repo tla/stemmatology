@@ -224,7 +224,8 @@ around BUILDARGS => sub {
 	my @column_args;
 	if( $args->{'dsn'} =~ /^dbi/ ) { # We're using Backend::DBI
 		@column_args = ( 'columns',
-			[ 'name' => { 'data_type' => 'varchar', 'is_nullable' => 1 } ] );
+			[ 'name' => { 'data_type' => 'varchar', 'is_nullable' => 1 },
+			  'public' => { 'data_type' => 'bool', 'is_nullable' => 1 } ] );
 	}
 	my $ea = $args->{'extra_args'};
 	if( ref( $ea ) eq 'ARRAY' ) {
@@ -304,7 +305,7 @@ sub tradition {
 
 sub user_traditionlist {
     my ($self, $user) = @_;
-
+    
     my @tlist;
     if(ref $user && $user->is_admin) {
         ## Admin sees all
@@ -321,13 +322,8 @@ sub user_traditionlist {
     }
     
     ## Search for all traditions which allow public viewing
-    ## When they exist!
-## This needs to be more sophisticated, probably needs Search::GIN
-#    my $list = $self->search({ public => 1 });
-    
-    ## For now, just fetch all
-    ## (could use all_objects or grep down there?)
-    return $self->traditionlist();
+	my @list = grep { $_->{public} } $self->traditionlist();
+	return @list;
 }
 
 sub traditionlist {
@@ -347,18 +343,19 @@ sub traditionlist {
 		$connection[3]->{'sqlite_unicode'} = 1 if $dbtype eq 'SQLite';
 		$connection[3]->{'pg_enable_utf8'} = 1 if $dbtype eq 'Pg';
 		my $dbh = DBI->connect( @connection );
-		my $q = $dbh->prepare( 'SELECT id, name from entries WHERE class = "Text::Tradition"' );
+		my $q = $dbh->prepare( 'SELECT id, name, public from entries WHERE class = "Text::Tradition"' );
 		$q->execute();
 		while( my @row = $q->fetchrow_array ) {
 			my( $id, $name ) = @row;
 			# Horrible horrible hack
 			$name = decode_utf8( $name ) if $dbtype eq 'mysql';
-			push( @tlist, { 'id' => $row[0], 'name' => $row[1] } );
+			push( @tlist, { 'id' => $row[0], 'name' => $row[1], 'public' => $row[2] } );
 		}
 	} else {
 		$self->scan( sub { my $o = shift; 
 						   push( @tlist, { 'id' => $self->object_to_id( $o ), 
-										   'name' => $o->name } ) } );
+										   'name' => $o->name,
+										   'public' => $o->public } ) } );
 	}
 	return @tlist;
 }
@@ -495,13 +492,13 @@ sub modify_user {
     my $password = $userinfo->{password};
     my $role = $userinfo->{role};
 
-    throw( "Missing username or bad password" )
-    	unless $username && $self->validate_password($password);
+    throw( "Missing username" ) unless $username;
 
     my $user = $self->find_user({ username => $username });
     throw( "Could not find user $username" ) unless $user;
 
     if($password) {
+    	throw( "Bad password" ) unless $self->validate_password($password);
         $user->password(crypt_password($password));
     }
     if($role) {
