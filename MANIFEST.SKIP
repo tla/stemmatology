@@ -6,5 +6,6 @@ lib/Text/Tradition/Analysis.pm
 lib/Text/Tradition/Analysis/Result.pm
 t/analysis.t
 t/text_tradition_analysis.t
+t/text_tradition_analysis_result.t
 .git/
 .gitignore
