@@ -67,7 +67,8 @@ if( $list ) {
 			next unless grep { $_ eq $tid } @uuids;
 		}
 		my $t = $kdb->lookup( $tid );
-		print STDERR "$tid: Tradition '" . $t->name . "'\n";
+		my $tstr = $t->public ? 'Public tradition' : 'Tradition';
+		print STDERR "$tid: $tstr '" . $t->name . "'\n";
 		my @wits = map { $_->sigil } $t->witnesses;
 		print STDERR "...with witnesses @wits\n";
 		my $c = $t->collation;
