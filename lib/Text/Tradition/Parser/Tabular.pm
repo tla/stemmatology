@@ -2,6 +2,7 @@ package Text::Tradition::Parser::Tabular;
 
 use strict;
 use warnings;
+use Encode qw/ decode_utf8 /;
 use Text::CSV;
 use Text::Tradition::Error;
 use TryCatch;
@@ -120,7 +121,7 @@ my $xt = Text::Tradition->new(
 	'name'  => 'excel test',
 	'input' => 'Tabular',
 	'file'  => $xls,
-	'xls'   => 1
+	'excel'   => 'xls'
 	);
 
 is( ref( $xt ), 'Text::Tradition', "Parsed test Excel 97-2004 file" );
@@ -138,96 +139,40 @@ is( scalar $xt->collation->paths, 13, "Got correct number of reading paths" );
 is( $xt->collation->reading('r5.1')->text, "\x{587}", 
 	"Correct decoding of at least one reading" );
 
+my $xlsx = 't/data/armexample.xlsx';
+my $xtx = Text::Tradition->new(
+	'name'  => 'excel test',
+	'input' => 'Tabular',
+	'file'  => $xlsx,
+	'excel'   => 'xlsx'
+	);
+
+is( ref( $xtx ), 'Text::Tradition', "Parsed test Excel 2007+ file" );
+my %xlsx_wits;
+map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+foreach my $wit ( $xtx->witnesses ) {
+	$xlsx_wits{$wit->sigil} = 1;
+}
+is( scalar keys %xlsx_wits, 3, "No extra witnesses were made" );
+foreach my $k ( keys %xlsx_wits ) {
+	ok( $xlsx_wits{$k}, "Witness $k still exists" );
+}
+is( scalar $xtx->collation->readings, 12, "Got correct number of test readings" );
+is( scalar $xtx->collation->paths, 14, "Got correct number of reading paths" );
+is( $xtx->collation->reading('r5.1')->text, "\x{587}", 
+	"Correct decoding of at least one reading" );
+
 =end testing
 
 =cut
 
 sub parse {
     my( $tradition, $opts ) = @_;
-    my $c = $tradition->collation; # shorthand
-    my $alignment_table;
-    if( $opts->{'xls'} ) {
-    	try {
-    		require Spreadsheet::ParseExcel;
-    	} catch {
-    		throw( "Need module Spreadsheet::ParseExcel to parse .xls files" );
-    	}
-    	unless( exists $opts->{'file'} ) {
-    		throw( "Must pass the filename for Excel parsing" );
-    	}
-    	my $parser = Spreadsheet::ParseExcel->new();
-		my $workbook = $parser->parse( $opts->{'file'} );
-		unless( defined $workbook && defined $workbook->worksheet(0) ) {
-			throw( "Failed to parse file " . $opts->{'file'} . ": " . $parser->error() );
-		}
-		# Use the first worksheet
-		my $sheet = $workbook->worksheet(0);
-		my( $rmin, $rmax ) = $sheet->row_range();
-		my( $cmin, $cmax ) = $sheet->col_range();
-		unless( $cmax && $rmax ) {
-			throw( "Found no rows or no columns in first worksheet" );
-		}
-		# Populate the alignment table. We only want columns that have
-		# a sigil in row zero.
-		my %sigcols = ();
-		push( @$alignment_table, [] );
-		foreach my $col ( $cmin .. $cmax ) {
-			my $cell = $sheet->get_cell( $rmin, $col );
-			my $cellval = $cell ? $cell->value() : undef;
-			if( $cellval ) {
-				$sigcols{$col} = 1;
-				push( @{$alignment_table->[0]}, $cellval );
-			}
-		}
-		# Now go through the rest of the rows and pick up the columns
-		# that were headed by a sigil.
-		foreach my $row ( $rmin+1 .. $rmax ) {
-			my @tablerow;
-			foreach my $col ( $cmin .. $cmax ) {
-				next unless $sigcols{$col};
-				my $cell = $sheet->get_cell( $row, $col );
-				my $cellval = $cell ? $cell->value() : undef;
-				push( @tablerow, $cell ? $cell->value() : undef );
-			}
-			push( @$alignment_table, \@tablerow );
-		}
-    } else {
-    	# Assume it is a comma-, tab-, or whatever-separated format.
-		my $csv_options = { 'binary' => 1 };
-		$csv_options->{'sep_char'} = $opts->{'sep_char'} || "\t";
-		if( $csv_options->{'sep_char'} eq "\t" ) {
-			# If it is really tab separated, nothing is an escape char.
-			$csv_options->{'quote_char'} = undef;
-			$csv_options->{'escape_char'} = undef;
-		}
-		my $csv = Text::CSV->new( $csv_options );
-		
-		if( exists $opts->{'string' } ) {
-			my @lines = split( "\n", $opts->{'string'} );
-			foreach my $l ( @lines ) {
-				my $status = $csv->parse( $l );
-				if( $status ) {
-					push( @$alignment_table, [ $csv->fields ] );
-				} else {
-					warn "Could not parse line $l: " . $csv->error_input;
-				}
-			}
-		} elsif( exists $opts->{'file'} ) {
-			open( my $fh, $opts->{'file'} ) 
-				or warn "Could not open input file " . $opts->{'file'};
-			binmode( $fh, ':utf8' );
-			while( my $row = $csv->getline( $fh ) ) {
-				push( @$alignment_table, $row );
-			}
-			close $fh;
-		} else {
-			warn "Could not find string or file option to parse";
-			return;
-		}
-	}
+    my $alignment_table = _table_from_input( $opts );
     # Set up the witnesses we find in the first line
     my @witnesses;
     my %ac_wits;  # Track layered witness -> main witness mapping
+    my $c = $tradition->collation; # shorthand
     my $aclabel = $c->ac_label;
     foreach my $sigil ( @{$alignment_table->[0]} ) {
         if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
@@ -332,6 +277,119 @@ sub parse {
 	$c->relations->filter_collations() unless $nocollate;
 }
 
+sub _table_from_input {
+	my $opts = shift;
+	my $alignment_table = [];
+    if( $opts->{'excel'} ) {
+    	my $sheet;
+    	my $need_decode;
+		unless( exists $opts->{'file'} ) {
+			throw( "Must pass the filename for Excel parsing" );
+		}
+    	if( $opts->{'excel'} eq 'xls' ) {
+			try {
+				require Spreadsheet::ParseExcel;
+			} catch {
+				throw( "Need module Spreadsheet::ParseExcel to parse .xls files" );
+			}
+			my $parser = Spreadsheet::ParseExcel->new();
+			my $workbook = $parser->parse( $opts->{'file'} );
+			unless( defined $workbook && defined $workbook->worksheet(0) ) {
+				throw( "Failed to parse file " . $opts->{'file'} . ": " . $parser->error() );
+			}
+			$sheet = $workbook->worksheet(0);
+		} elsif( $opts->{'excel'} eq 'xlsx' ) {
+			try {
+				require Spreadsheet::XLSX;
+			} catch {
+				throw( "Need module Spreadsheet::XLSX to parse .xlsx files" );
+			}
+			$need_decode = 1;
+			my $workbook;
+			try {
+				$workbook = Spreadsheet::XLSX->new( $opts->{'file'} );
+			} catch {
+				throw( "Failed to parse file " . $opts->{'file'} );
+			}
+			$sheet = $workbook->worksheet(0);
+		} else {
+			throw( "Unrecognized Excel variant" . $opts->{'excel'} );
+		}
+		$alignment_table = _alignment_from_worksheet( $sheet, $need_decode );
+    } else {
+    	# Assume it is a comma-, tab-, or whatever-separated format.
+		my $csv_options = { 'binary' => 1 };
+		$csv_options->{'sep_char'} = $opts->{'sep_char'} || "\t";
+		if( $csv_options->{'sep_char'} eq "\t" ) {
+			# If it is really tab separated, nothing is an escape char.
+			$csv_options->{'quote_char'} = undef;
+			$csv_options->{'escape_char'} = undef;
+		}
+		my $csv = Text::CSV->new( $csv_options );
+		
+		if( exists $opts->{'string' } ) {
+			my @lines = split( "\n", $opts->{'string'} );
+			foreach my $l ( @lines ) {
+				my $status = $csv->parse( $l );
+				if( $status ) {
+					push( @$alignment_table, [ $csv->fields ] );
+				} else {
+					throw( "Could not parse line $l: " . $csv->error_input );
+				}
+			}
+		} elsif( exists $opts->{'file'} ) {
+			open( my $fh, $opts->{'file'} ) 
+				or warn "Could not open input file " . $opts->{'file'};
+			binmode( $fh, ':utf8' );
+			while( my $row = $csv->getline( $fh ) ) {
+				push( @$alignment_table, $row );
+			}
+			close $fh;
+		} else {
+			throw( "Could not find string or file option to parse" );
+		}
+	}
+	return $alignment_table;
+}
+sub _alignment_from_worksheet {
+	my( $sheet, $decode ) = @_;
+	my $alignment_table = [];
+	
+	my( $rmin, $rmax ) = $sheet->row_range();
+	my( $cmin, $cmax ) = $sheet->col_range();
+	unless( $cmax && $rmax ) {
+		throw( "Found no rows or no columns in first worksheet" );
+	}
+	# Populate the alignment table. We only want columns that have
+	# a sigil in row zero.
+	my %sigcols = ();
+	push( @$alignment_table, [] );
+	foreach my $col ( $cmin .. $cmax ) {
+		my $cell = $sheet->get_cell( $rmin, $col );
+		my $cellval = $cell ? $cell->value() : undef;
+		if( $cellval ) {
+			$sigcols{$col} = 1;
+			push( @{$alignment_table->[0]}, $cellval );
+		}
+	}
+	# Now go through the rest of the rows and pick up the columns
+	# that were headed by a sigil.
+	foreach my $row ( $rmin+1 .. $rmax ) {
+		my @tablerow;
+		foreach my $col ( $cmin .. $cmax ) {
+			next unless $sigcols{$col};
+			my $cell = $sheet->get_cell( $row, $col );
+			my $cellval;
+			if( $cell ) {
+				$cellval = $decode ? decode_utf8( $cell->value ) : $cell->value;
+			}
+			push( @tablerow, $cellval );
+		}
+		push( @$alignment_table, \@tablerow );
+	}
+	return $alignment_table;
+}
+
 sub _make_nodes {
     my( $collation, $row, $index, $nocollate ) = @_;
     my %unique;
@@ -377,6 +435,13 @@ sub _make_nodes {
 		}
 	}    
     return \%unique;
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Parser::Tabular error',
+		'message' => $_[0],
+		);
 }
 
 1;

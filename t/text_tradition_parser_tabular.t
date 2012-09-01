@@ -75,7 +75,7 @@ my $xt = Text::Tradition->new(
 	'name'  => 'excel test',
 	'input' => 'Tabular',
 	'file'  => $xls,
-	'xls'   => 1
+	'excel'   => 'xls'
 	);
 
 is( ref( $xt ), 'Text::Tradition', "Parsed test Excel 97-2004 file" );
@@ -91,6 +91,29 @@ foreach my $k ( keys %xls_wits ) {
 is( scalar $xt->collation->readings, 11, "Got correct number of test readings" );
 is( scalar $xt->collation->paths, 13, "Got correct number of reading paths" );
 is( $xt->collation->reading('r5.1')->text, "\x{587}", 
+	"Correct decoding of at least one reading" );
+
+my $xlsx = 't/data/armexample.xlsx';
+my $xtx = Text::Tradition->new(
+	'name'  => 'excel test',
+	'input' => 'Tabular',
+	'file'  => $xlsx,
+	'excel'   => 'xlsx'
+	);
+
+is( ref( $xtx ), 'Text::Tradition', "Parsed test Excel 2007+ file" );
+my %xlsx_wits;
+map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+foreach my $wit ( $xtx->witnesses ) {
+	$xlsx_wits{$wit->sigil} = 1;
+}
+is( scalar keys %xlsx_wits, 3, "No extra witnesses were made" );
+foreach my $k ( keys %xlsx_wits ) {
+	ok( $xlsx_wits{$k}, "Witness $k still exists" );
+}
+is( scalar $xtx->collation->readings, 12, "Got correct number of test readings" );
+is( scalar $xtx->collation->paths, 14, "Got correct number of reading paths" );
+is( $xtx->collation->reading('r5.1')->text, "\x{587}", 
 	"Correct decoding of at least one reading" );
 }
 
