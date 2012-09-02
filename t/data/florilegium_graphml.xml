@@ -5,6 +5,7 @@
   <key attr.name="baselabel" attr.type="string" for="graph" id="dg2"/>
   <key attr.name="linear" attr.type="string" for="graph" id="dg3"/>
   <key attr.name="ac_label" attr.type="string" for="graph" id="dg4"/>
+  <key attr.name="public" attr.type="boolean" for="graph" id="dg5"/>
   <key attr.name="text" attr.type="string" for="node" id="dn0"/>
   <key attr.name="is_end" attr.type="boolean" for="node" id="dn1"/>
   <key attr.name="is_start" attr.type="boolean" for="node" id="dn2"/>
@@ -24,6 +25,7 @@
     <data key="dg2">base text</data>
     <data key="dg3">1</data>
     <data key="dg4"> (a.c.)</data>
+    <data key="dg5">1</data>
     <node id="n0">
       <data key="dn0">#END#</data>
       <data key="dn1">1</data>
