@@ -212,6 +212,20 @@ sub as_dot {
     return join( "\n", @dotlines );
 }
 
+=head2 alter_graph( $dotstring )
+
+Alters the graph of this stemma according to the definition specified
+in $dotstring.
+
+=cut
+
+sub alter_graph {
+	my( $self, $dotstring ) = @_;
+	my $dotfh;
+	open $dotfh, '<', \$dotstring;
+	$self->_graph_from_dot( $dotfh );
+}
+
 =head2 editable( $opts )
 
 =head2 editable_graph( $graph, $opts )
