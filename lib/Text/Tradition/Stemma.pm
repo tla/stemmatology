@@ -269,6 +269,7 @@ sub alter_graph {
 	my( $self, $dotstring ) = @_;
 	my $dotfh;
 	open $dotfh, '<', \$dotstring;
+	binmode $dotfh, ':utf8';
 	$self->_graph_from_dot( $dotfh );
 }
 
