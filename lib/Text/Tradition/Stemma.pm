@@ -424,14 +424,19 @@ sub as_svg {
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $dot;
+    close $dotfile;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     # HACK: Parse the SVG and change the dimensions.
     # Get rid of width and height attributes to allow scaling.
     if( $opts->{'size'} ) {
     	require XML::LibXML;
-		my $parser = XML::LibXML->new();
-		my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
+		my $parser = XML::LibXML->new( load_ext_dtd => 0 );
+		my $svgdoc;
+		eval {
+			$svgdoc = $parser->parse_string( decode_utf8( $svg ) );
+		};
+		throw( "Could not reparse SVG: $@" ) if $@;
     	my( $ew, $eh ) = @{$opts->{'size'}};
     	# If the graph is wider than it is tall, set width to ew and remove height.
     	# Otherwise set height to eh and remove width.
