@@ -206,7 +206,20 @@ sub run_analysis {
 		$lacunae{$rank} = $missing;
 	}
 	# Run the solver
-	my $answer = solve_variants( $dir, @groups );
+	my $answer;
+	try {
+		$answer = solve_variants( $dir, @groups );
+	} catch ( Text::Tradition::Error $e ) {
+		if( $e->message =~ /IDP/ ) {
+			# Something is wrong with the solver; make the variants table anyway
+			$answer->{'variants'} = [];
+			map { push( @{$answer->{'variants'}}, _init_unsolved( $_, 'IDP error' ) ) }
+				@groups;
+		} else {
+			# Something else is wrong; error out.
+			$e->throw;
+		}
+	}
 
 	# Do further analysis on the answer
 	my $conflict_count = 0;
@@ -568,19 +581,15 @@ sub solve_variants {
 			|| $graphproblem->{'object'};
 		
 		# Initialize the result structure for this graph problem
-		my $vstruct = {	readings => [] };
-		push( @$variants, $vstruct );
-		
-		# 0. Do we have a calculated result at all?
-		unless( $result->status eq 'OK' ) {
-			$vstruct->{'unsolved'} = $result->status;
-			foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
-				push( @{$vstruct->{readings}}, { readingid => $rid, 
-					group => [ $graphproblem->{grouping}->{$rid}->members ] } );
-			}
+		my $vstruct;
+		if( $result->status eq 'OK' ) {
+			$vstruct = { readings => [] };
+			push( @$variants, $vstruct );
+		} else {
+			push( @$variants, _init_unsolved( $graphproblem, $result->status ) );
 			next;
 		}
-		
+				
 		# 1. Did the group evaluate as genealogical?
 		$vstruct->{genealogical} = $result->is_genealogical;
 		$genealogical++ if $result->is_genealogical;
@@ -602,6 +611,17 @@ sub solve_variants {
 	return { 'variants' => $variants, 
 			 'variant_count' => scalar @$variants,
 			 'genealogical_count' => $genealogical };
+}
+
+sub _init_unsolved {
+	my( $graphproblem, $status ) = @_;
+	my $vstruct = { 'readings' => [] };
+	$vstruct->{'unsolved'} = $status;
+	foreach my $rid ( keys %{$graphproblem->{grouping}} ) {
+		push( @{$vstruct->{readings}}, { readingid => $rid, 
+			group => [ $graphproblem->{grouping}->{$rid}->members ] } );
+	}
+	return $vstruct;
 }
 
 =head2 analyze_location ( $tradition, $graph, $location_hash )
