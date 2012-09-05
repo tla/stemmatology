@@ -13,11 +13,13 @@ use lib 'lib';
 use Text::Tradition::Directory;
 
 my ($dsn, $command) = ('dbi:SQLite:dbname=stemmaweb/db/traditions.db', 'add');
-my ($username, $password, $tradition_id, $rolename);
+my ($username, $password, $tradition_id, $rolename, $dbuser, $dbpass);
 
 GetOptions(
     'c|command:s' => \$command,
     'dsn:s' => \$dsn,
+    'dbuser=s' => \$dbuser,
+    'dbpass=s' => \$dbpass,
     'u|username=s' => \$username,
     'p|password:s' => \$password,
     't|tradition:s' => \$tradition_id,
@@ -34,8 +36,11 @@ if(!$username) {
     usage();
 }
 
-# my $userstore = Text::Tradition::UserStore->new( dsn => $dsn);
-my $userstore = Text::Tradition::Directory->new( dsn => $dsn);
+my %connect_args = ( dsn => $dsn );
+if( $dbuser || $dbpass ) {
+    $connect_args{extra_args} = { user => $dbuser, password => $dbpass };
+}
+my $userstore = Text::Tradition::Directory->new( %connect_args );
 my $new_scope = $userstore->new_scope;
 
 given ($command) {
