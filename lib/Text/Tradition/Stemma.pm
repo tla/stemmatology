@@ -445,18 +445,24 @@ sub as_svg {
 		my $height = $svgdoc->documentElement->getAttribute('height');
 		$width =~ s/\D+//g;
 		$height =~ s/\D+//g;
-		my( $remove, $keep, $val );
+		my( $remove, $keep, $val, $viewbox );
 		if( $width > $height ) {
 			$remove = 'height';
 			$keep = 'width';
 			$val = $ew . 'px';
+			my $vbheight = $width / $ew * $height;
+			$viewbox = "0.00 0.00 $width.00" . sprintf( "%.2f", $vbheight );
 		} else {
 			$remove = 'width';
 			$keep = 'height';
 			$val = $eh . 'px';
+			my $vbwidth = $height / $eh * $width;
+			$viewbox = "0.00 0.00 " . sprintf( "%.2f", $vbwidth ) . " $height.00";
 		}
 		$svgdoc->documentElement->removeAttribute( $remove );
 		$svgdoc->documentElement->setAttribute( $keep, $val );
+		$svgdoc->documentElement->removeAttribute( 'viewBox' );
+		$svgdoc->documentElement->setAttribute( 'viewBox', $viewbox );
 		$svg = $svgdoc->toString();
 	}
     # Return the result
