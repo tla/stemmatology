@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter 'import';
 use vars qw/ @EXPORT_OK $xpc /;
-
+use Text::Tradition::Error;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
@@ -74,9 +74,14 @@ sub graphml_parse {
             $edgedata->{$keyid} = $keyname;
         }
     }
+    
+    my @graph_elements = $xpc->findnodes( '/g:graphml/g:graph' );
+	unless( @graph_elements ) {
+		throw( "No graph elements found in graph XML - is this really GraphML?" );
+	}
 
     my @returned_graphs;
-    foreach my $graph_el ( $xpc->findnodes( '/g:graphml/g:graph' ) ) {
+    foreach my $graph_el ( @graph_elements ) {
         my $graph_hash = { 'nodes' => [],
 						   'edges' => [],
 						   'name'  => $graph_el->getAttribute( 'id' ) };
@@ -146,6 +151,13 @@ sub _lookup_node_data {
     return $data;
 }
     
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Parser::GraphML error',
+		'message' => $_[0],
+		);
+}
+
 =head1 LICENSE
 
 This package is free software and is provided "as is" without express

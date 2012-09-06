@@ -24,6 +24,8 @@ requires( 'KiokuX::User::Util' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Util::TypeConstraints' );
+requires( 'Spreadsheet::ParseExcel' );
+requires( 'Spreadsheet::XLSX' );
 requires( 'StackTrace::Auto' );
 requires( 'Text::CSV' );
 requires( 'Text::TEI::Markup' => '1.7' );

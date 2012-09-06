@@ -67,6 +67,54 @@ foreach my $k ( keys %seen_wits ) {
 
 # Check that we only have collation relationships where we need them
 is( scalar $t->collation->relationships, 3, "Redundant collations were removed" );
+
+## Check excel parsing
+
+my $xls = 't/data/armexample.xls';
+my $xt = Text::Tradition->new(
+	'name'  => 'excel test',
+	'input' => 'Tabular',
+	'file'  => $xls,
+	'excel'   => 'xls'
+	);
+
+is( ref( $xt ), 'Text::Tradition', "Parsed test Excel 97-2004 file" );
+my %xls_wits;
+map { $xls_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+foreach my $wit ( $xt->witnesses ) {
+	$xls_wits{$wit->sigil} = 1;
+}
+is( scalar keys %xls_wits, 3, "No extra witnesses were made" );
+foreach my $k ( keys %xls_wits ) {
+	ok( $xls_wits{$k}, "Witness $k still exists" );
+}
+is( scalar $xt->collation->readings, 11, "Got correct number of test readings" );
+is( scalar $xt->collation->paths, 13, "Got correct number of reading paths" );
+is( $xt->collation->reading('r5.1')->text, "\x{587}", 
+	"Correct decoding of at least one reading" );
+
+my $xlsx = 't/data/armexample.xlsx';
+my $xtx = Text::Tradition->new(
+	'name'  => 'excel test',
+	'input' => 'Tabular',
+	'file'  => $xlsx,
+	'excel'   => 'xlsx'
+	);
+
+is( ref( $xtx ), 'Text::Tradition', "Parsed test Excel 2007+ file" );
+my %xlsx_wits;
+map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+foreach my $wit ( $xtx->witnesses ) {
+	$xlsx_wits{$wit->sigil} = 1;
+}
+is( scalar keys %xlsx_wits, 3, "No extra witnesses were made" );
+foreach my $k ( keys %xlsx_wits ) {
+	ok( $xlsx_wits{$k}, "Witness $k still exists" );
+}
+is( scalar $xtx->collation->readings, 12, "Got correct number of test readings" );
+is( scalar $xtx->collation->paths, 14, "Got correct number of reading paths" );
+is( $xtx->collation->reading('r5.1')->text, "\x{587}", 
+	"Correct decoding of at least one reading" );
 }
 
 

@@ -5,12 +5,12 @@ var original_svg;
 function handle_row_click( row ) {
 	var ridx = row.parent().parent().index()
 	var rs = readingstats[ridx];
-    var imghtml = '<img src="../images/ajax-loader.gif" alt="Loading SVG..."/>'
+    var imghtml = '<img src="../../images/ajax-loader.gif" alt="Loading SVG..."/>'
     $('#stemma_graph').empty();
     $('#stemma_graph').append( imghtml );
 	if( rs.layerwits ) {
 		var stemma_form = { 'dot': graphdot, 'layerwits': rs.layerwits };
-		$('#stemma_graph').load( 'graphsvg', stemma_form, function() {
+		$('#stemma_graph').load( '../graphsvg', stemma_form, function() {
 			color_row( row );
 			show_stats( rs );
 		});
@@ -63,8 +63,14 @@ function show_stats( rs ) {
 	var rshtml = $('#stats_template').clone();
 	rshtml.find('#statrank').append( rs.id );
 	if( "unsolved" in rs ) {
-		rshtml.find('.solutionstatus').append(
-			"(Not yet calculated for this location - please try later)");
+		var nocalcmsg;
+		if( rs.unsolved == 'IDP error' ) {
+			nocalcmsg = $('<span>').attr('class', 'error').append(
+				"(Could not reach calculation server - are you offline?)" );
+		} else {
+			nocalcmsg = "(Not yet calculated for this location - please try later)";
+		}
+		rshtml.find('.solutionstatus').append( nocalcmsg );
 	} else {
 		$.each( rs.readings, function( idx, rdghash ) {
 			var rdgstats = $('#reading_template').clone();

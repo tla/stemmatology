@@ -3,6 +3,7 @@ package Text::Tradition::Parser::CTE;
 use strict;
 use warnings;
 use Encode qw/ decode /;
+use Text::Tradition::Error;
 use Text::Tradition::Parser::Util qw/ collate_variants /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
@@ -131,7 +132,7 @@ sub _remove_formatting {
         warn "Could not find string or file option to parse";
         return;
     }
-    
+
     # Second, remove the formatting
 	my $xpc = XML::LibXML::XPathContext->new( $doc->documentElement );
 	my @useless = $xpc->findnodes( '//hi' );
@@ -147,8 +148,12 @@ sub _remove_formatting {
 	}
 	
 	# Third, write out and reparse to merge the text nodes.
-	my $result = decode( $doc->encoding, $doc->toString() );
+	my $enc = $doc->encoding || 'UTF-8';
+	my $result = decode( $enc, $doc->toString() );
 	my $tei = $parser->parse_string( $result )->documentElement;
+	unless( $tei->nodeName =~ /^tei(corpus)?$/i ) {
+		throw( "Parsed document has non-TEI root element " . $tei->nodeName );
+	}
 	$xpc = XML::LibXML::XPathContext->new( $tei );
 	return( $tei, $xpc );
 }
@@ -414,6 +419,13 @@ sub _add_wit_path {
         $c->add_path( $cur, $n, $wit );
         $cur = $n;
     }
+}
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Parser::CTE error',
+		'message' => $_[0],
+		);
 }
 
 =back

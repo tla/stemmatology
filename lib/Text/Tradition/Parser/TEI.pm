@@ -2,6 +2,7 @@ package Text::Tradition::Parser::TEI;
 
 use strict;
 use warnings;
+use Text::Tradition::Error;
 use Text::Tradition::Parser::Util qw( collate_variants );
 use XML::LibXML;
 use XML::LibXML::XPathContext;
@@ -112,6 +113,9 @@ sub parse {
         return;
     }
     my $tei = $doc->documentElement();
+	unless( $tei->nodeName =~ /^tei(corpus)?$/i ) {
+		throw( "Parsed document has non-TEI root element " . $tei->nodeName );
+	}
     my $xpc = XML::LibXML::XPathContext->new( $tei );
     my $ns;
     if( $tei->namespaceURI ) {
@@ -481,6 +485,13 @@ sub _get_sigla {
 }
 
 1;
+
+sub throw {
+	Text::Tradition::Error->throw( 
+		'ident' => 'Parser::TEI error',
+		'message' => $_[0],
+		);
+}
 
 =head1 BUGS / TODO
 

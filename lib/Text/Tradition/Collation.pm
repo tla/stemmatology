@@ -1281,8 +1281,6 @@ sub _make_witness_row {
     map { $char_hash{$_} = undef } @$positions;
     my $debug = 0;
     foreach my $rdg ( @$path ) {
-        my $rtext = $rdg->text;
-        $rtext = '#LACUNA#' if $rdg->is_lacuna;
         say STDERR "rank " . $rdg->rank if $debug;
         # say STDERR "No rank for " . $rdg->id unless defined $rdg->rank;
         $char_hash{$rdg->rank} = { 't' => $rdg };

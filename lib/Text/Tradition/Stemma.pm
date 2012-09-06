@@ -92,6 +92,42 @@ if called directly it takes the following options:
 
 =back
 
+=begin testing
+
+use Text::Tradition::Collation;
+use TryCatch;
+
+use_ok( 'Text::Tradition::Stemma' );
+
+# Placeholder collation to use in tests
+my $c = Text::Tradition::Collation->new();
+
+# Try to create a bad graph
+my $baddotfh;
+open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
+try {
+	my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $baddotfh );
+	ok( 0, "Created broken stemma from dotfile with syntax error" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
+}
+
+# Create a good graph
+my $dotfh;
+open( $dotfh, 't/data/florilegium.dot' ) or die "Could not open test dotfile";
+binmode( $dotfh, ':utf8' );
+my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $dotfh );
+is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
+is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
+is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
+my $found_unicode_sigil;
+foreach my $h ( $stemma->hypotheticals ) {
+	$found_unicode_sigil = 1 if $h eq "\x{3b1}";
+}
+ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
+
+=end testing
+
 =cut
 
 has collation => (
@@ -118,16 +154,26 @@ sub BUILD {
 sub _graph_from_dot {
 	my( $self, $dotfh ) = @_;
  	my $reader = Graph::Reader::Dot->new();
+ 	# Redirect STDOUT in order to trap any error messages - syntax errors
+ 	# are evidently not fatal.
+ 	my $reader_out;
+ 	my $saved_stderr;
+ 	open $saved_stderr, ">&STDOUT";
+ 	close STDOUT;
+ 	open STDOUT, ">", \$reader_out;
 	my $graph = $reader->read_graph( $dotfh );
-	if( $graph ) {
-		$self->graph( $graph );
-		# Go through the nodes and set any non-hypothetical node to extant.
-		foreach my $v ( $self->graph->vertices ) {
-			$self->graph->set_vertex_attribute( $v, 'class', 'extant' )
-				unless $self->graph->has_vertex_attribute( $v, 'class' );
-		}
-	} else {
-		throw( "Failed to parse dot in $dotfh" );
+	close STDOUT;
+	open STDOUT, ">", \$saved_stderr;
+	if( $reader_out && $reader_out =~ /error/s ) {
+		throw( "Error trying to parse dot: $reader_out" );
+	} elsif( !$graph ) {
+		throw( "Failed to create graph from dot" );
+	}
+	$self->graph( $graph );
+	# Go through the nodes and set any non-hypothetical node to extant.
+	foreach my $v ( $self->graph->vertices ) {
+		$self->graph->set_vertex_attribute( $v, 'class', 'extant' )
+			unless $self->graph->has_vertex_attribute( $v, 'class' );
 	}
 }
 
@@ -210,6 +256,21 @@ sub as_dot {
     push( @dotlines, '}' );
     
     return join( "\n", @dotlines );
+}
+
+=head2 alter_graph( $dotstring )
+
+Alters the graph of this stemma according to the definition specified
+in $dotstring.
+
+=cut
+
+sub alter_graph {
+	my( $self, $dotstring ) = @_;
+	my $dotfh;
+	open $dotfh, '<', \$dotstring;
+	binmode $dotfh, ':utf8';
+	$self->_graph_from_dot( $dotfh );
 }
 
 =head2 editable( $opts )
@@ -364,14 +425,19 @@ sub as_svg {
     # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $dot;
+    close $dotfile;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
     # HACK: Parse the SVG and change the dimensions.
     # Get rid of width and height attributes to allow scaling.
     if( $opts->{'size'} ) {
     	require XML::LibXML;
-		my $parser = XML::LibXML->new();
-		my $svgdoc = $parser->parse_string( decode_utf8( $svg ) );
+		my $parser = XML::LibXML->new( load_ext_dtd => 0 );
+		my $svgdoc;
+		eval {
+			$svgdoc = $parser->parse_string( decode_utf8( $svg ) );
+		};
+		throw( "Could not reparse SVG: $@" ) if $@;
     	my( $ew, $eh ) = @{$opts->{'size'}};
     	# If the graph is wider than it is tall, set width to ew and remove height.
     	# Otherwise set height to eh and remove width.
@@ -379,18 +445,24 @@ sub as_svg {
 		my $height = $svgdoc->documentElement->getAttribute('height');
 		$width =~ s/\D+//g;
 		$height =~ s/\D+//g;
-		my( $remove, $keep, $val );
+		my( $remove, $keep, $val, $viewbox );
 		if( $width > $height ) {
 			$remove = 'height';
 			$keep = 'width';
 			$val = $ew . 'px';
+			my $vbheight = $width / $ew * $height;
+			$viewbox = "0.00 0.00 $width.00" . sprintf( "%.2f", $vbheight );
 		} else {
 			$remove = 'width';
 			$keep = 'height';
 			$val = $eh . 'px';
+			my $vbwidth = $height / $eh * $width;
+			$viewbox = "0.00 0.00 " . sprintf( "%.2f", $vbwidth ) . " $height.00";
 		}
 		$svgdoc->documentElement->removeAttribute( $remove );
 		$svgdoc->documentElement->setAttribute( $keep, $val );
+		$svgdoc->documentElement->removeAttribute( 'viewBox' );
+		$svgdoc->documentElement->setAttribute( 'viewBox', $viewbox );
 		$svg = $svgdoc->toString();
 	}
     # Return the result
