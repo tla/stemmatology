@@ -375,7 +375,6 @@ sub add_stemma {
 	# Assume utf-8
 	binmode $stemma_fh, ':utf8';
 	my $stemma = Text::Tradition::Stemma->new( 
-		'collation' => $self->collation,
 		'dot' => $stemma_fh );
 	$self->_add_stemma( $stemma ) if $stemma;
 	return $stemma;
