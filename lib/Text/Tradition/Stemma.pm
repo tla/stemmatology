@@ -86,27 +86,21 @@ if called directly it takes the following options:
 
 =over
 
-=item * collation - The collation with which the stemma is associated.
-
 =item * dot - A filehandle open to a DOT representation of the stemma graph.
 
 =back
 
 =begin testing
 
-use Text::Tradition::Collation;
 use TryCatch;
 
 use_ok( 'Text::Tradition::Stemma' );
-
-# Placeholder collation to use in tests
-my $c = Text::Tradition::Collation->new();
 
 # Try to create a bad graph
 my $baddotfh;
 open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
 try {
-	my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $baddotfh );
+	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
 	ok( 0, "Created broken stemma from dotfile with syntax error" );
 } catch( Text::Tradition::Error $e ) {
 	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
@@ -116,7 +110,7 @@ try {
 my $dotfh;
 open( $dotfh, 't/data/florilegium.dot' ) or die "Could not open test dotfile";
 binmode( $dotfh, ':utf8' );
-my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $dotfh );
+my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
@@ -133,7 +127,7 @@ ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 has collation => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
-    required => 1,
+    clearer => 'clear_collation',
     weak_ref => 1,
     );  
 
@@ -360,7 +354,7 @@ children with that version.
 =cut
 
 sub situation_graph {
-	my( $self, $extant, $layerwits ) = @_;
+	my( $self, $extant, $layerwits, $layerlabel ) = @_;
 	
 	my $graph = $self->graph->copy;
 	foreach my $vertex ( $graph->vertices ) {
@@ -376,13 +370,13 @@ sub situation_graph {
 	# as an ancestor of the 'main' witness, and otherwise with the same parent/
 	# child links as its main analogue.
 	# TOOD Handle case where B is copied from A but corrected from C
-	my $aclabel = $self->collation->ac_label;
+	$layerlabel = ' (a.c.)' unless $layerlabel;
 	foreach my $lw ( @$layerwits ) {
 		# Add the layered witness and set it with the same attributes as
 		# its 'main' analogue
 		throw( "Cannot add a layer to a hypothetical witness $lw" )
 			unless $graph->get_vertex_attribute( $lw, 'class' ) eq 'extant';
-		my $lwac = $lw . $aclabel;
+		my $lwac = $lw . $layerlabel;
 		$graph->add_vertex( $lwac );
 		$graph->set_vertex_attributes( $lwac,
 			$graph->get_vertex_attributes( $lw ) );
@@ -396,14 +390,14 @@ sub situation_graph {
 		foreach my $v ( $graph->predecessors( $lw ) ) {
 			next if $v eq $lwac; # Don't add a loop
 			$graph->add_edge( $v, $lwac );
-			$graph->add_edge( $v.$aclabel, $lwac )
-				if $graph->has_vertex( $v.$aclabel );
+			$graph->add_edge( $v.$layerlabel, $lwac )
+				if $graph->has_vertex( $v.$layerlabel );
 		}
 		foreach my $v ( $graph->successors( $lw ) ) {
 			next if $v eq $lwac; # but this shouldn't occur
 			$graph->add_edge( $lwac, $v );
-			$graph->add_edge( $lwac, $v.$aclabel )
-				if $graph->has_vertex( $v.$aclabel );
+			$graph->add_edge( $lwac, $v.$layerlabel )
+				if $graph->has_vertex( $v.$layerlabel );
 		}
 	}
 	return $graph;

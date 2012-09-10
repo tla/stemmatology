@@ -8,19 +8,15 @@ $| = 1;
 
 # =begin testing
 {
-use Text::Tradition::Collation;
 use TryCatch;
 
 use_ok( 'Text::Tradition::Stemma' );
-
-# Placeholder collation to use in tests
-my $c = Text::Tradition::Collation->new();
 
 # Try to create a bad graph
 my $baddotfh;
 open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
 try {
-	my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $baddotfh );
+	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
 	ok( 0, "Created broken stemma from dotfile with syntax error" );
 } catch( Text::Tradition::Error $e ) {
 	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
@@ -30,7 +26,7 @@ try {
 my $dotfh;
 open( $dotfh, 't/data/florilegium.dot' ) or die "Could not open test dotfile";
 binmode( $dotfh, ':utf8' );
-my $stemma = Text::Tradition::Stemma->new( collation => $c, dot => $dotfh );
+my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
