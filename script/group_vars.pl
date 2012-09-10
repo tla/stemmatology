@@ -20,10 +20,7 @@ my %args = ( 'input' => $informat,
 my $tradition = Text::Tradition->new( %args );
 
 # Parse the stemma data
-my $stemma = Text::Tradition::Stemma->new(
-	'collation' => $tradition->collation,
-	'dot' => $ARGV[1],
-	);
+my $stemma = Text::Tradition::Stemma->new( 'dot' => $ARGV[1] );
 
 my $wits = {};
 map { $wits->{$_} = 1 } $stemma->witnesses;
