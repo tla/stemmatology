@@ -492,7 +492,7 @@ sub _graph_for_grouping {
 	try {
 		# contig contains all extant wits and all hypothetical wits
 		# needed to make up the groups.
-		$graph = $stemma->situation_graph( $extant, $acwits );
+		$graph = $stemma->situation_graph( $extant, $acwits, $aclabel );
 	} catch ( Text::Tradition::Error $e ) {
 		throw( "Could not extend graph with given extant and a.c. witnesses: "
 			. $e->message );
