@@ -186,14 +186,15 @@ sub _graph_from_dot {
  	my $reader = Graph::Reader::Dot->new();
  	# Redirect STDOUT in order to trap any error messages - syntax errors
  	# are evidently not fatal.
+	# TODO This breaks under FastCGI/Apache; reconsider.
  	my $reader_out;
- 	my $saved_stderr;
- 	open $saved_stderr, ">&STDOUT";
- 	close STDOUT;
- 	open STDOUT, ">", \$reader_out;
+ 	#my $saved_stderr;
+ 	#open $saved_stderr, ">&STDOUT";
+ 	#close STDOUT;
+ 	#open STDOUT, ">", \$reader_out;
 	my $graph = $reader->read_graph( $dotfh );
-	close STDOUT;
-	open STDOUT, ">", \$saved_stderr;
+	#close STDOUT;
+	#open STDOUT, ">", \$saved_stderr;
 	if( $reader_out && $reader_out =~ /error/s ) {
 		throw( "Error trying to parse dot: $reader_out" );
 	} elsif( !$graph ) {
