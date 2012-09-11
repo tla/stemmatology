@@ -7,7 +7,6 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
-use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
 use Moose;
 
 =head1 NAME
@@ -88,6 +87,13 @@ if called directly it takes the following options:
 
 =item * dot - A filehandle open to a DOT representation of the stemma graph.
 
+=item * graph - If no DOT specification is given, you can pass a Graph object
+instead.  The vertices of the graph should have an attribute 'class' set to
+either of the values 'extant' or 'hypothetical'.
+
+=item * is_undirected - If the graph specification (or graph object) is for an
+undirected graph (e.g. a phylogenetic tree), this should be set.
+
 =back
 
 =begin testing
@@ -97,13 +103,16 @@ use TryCatch;
 use_ok( 'Text::Tradition::Stemma' );
 
 # Try to create a bad graph
+TODO: {
+	local $TODO = "cannot use stdout redirection trick with FastCGI";
 my $baddotfh;
-open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
-try {
-	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
-	ok( 0, "Created broken stemma from dotfile with syntax error" );
-} catch( Text::Tradition::Error $e ) {
-	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
+	open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
+	try {
+		my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
+		ok( 0, "Created broken stemma from dotfile with syntax error" );
+	} catch( Text::Tradition::Error $e ) {
+		like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
+	}
 }
 
 # Create a good graph
@@ -120,6 +129,9 @@ foreach my $h ( $stemma->hypotheticals ) {
 }
 ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 
+# TODO Create stemma from graph, create stemma from undirected graph,
+# create stemma from incompletely-specified graph
+
 =end testing
 
 =cut
@@ -127,7 +139,7 @@ ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 has collation => (
     is => 'ro',
     isa => 'Text::Tradition::Collation',
-    clearer => 'clear_collation',
+    clearer => 'clear_collation', # interim measure to remove refs in DB
     weak_ref => 1,
     );  
 
@@ -136,14 +148,38 @@ has graph => (
     isa => 'Graph',
     predicate => 'has_graph',
     );
+    
+has is_undirected => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	writer => 'set_undirected',
+	);
         	
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
         $self->_graph_from_dot( $args->{'dot'} );
-    }
+    } else {
+	}
 }
+
+before 'graph' => sub {
+	my $self = shift;
+	if( @_ ) {
+		# Make sure all unclassed graph nodes are marked extant.
+		my $g = $_[0];
+		throw( "Cannot set graph to a non-Graph object" ) 
+			unless ref( $g ) eq 'Graph';
+		foreach my $v ( $g->vertices ) {
+			unless( $g->has_vertex_attribute( $v, 'class' ) ) {
+				$g->set_vertex_attribute( $v, 'class', 'extant' );
+			}
+		}
+		$self->set_undirected( $g->is_undirected );
+	}
+};
 
 sub _graph_from_dot {
 	my( $self, $dotfh ) = @_;
@@ -164,11 +200,6 @@ sub _graph_from_dot {
 		throw( "Failed to create graph from dot" );
 	}
 	$self->graph( $graph );
-	# Go through the nodes and set any non-hypothetical node to extant.
-	foreach my $v ( $self->graph->vertices ) {
-		$self->graph->set_vertex_attribute( $v, 'class', 'extant' )
-			unless $self->graph->has_vertex_attribute( $v, 'class' );
-	}
 }
 
 =head1 METHODS
@@ -224,8 +255,9 @@ sub as_dot {
 	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
 		if $opts->{'edge'};
 		
+	my $gdecl = $graph->is_directed ? 'digraph' : 'graph';
 	my @dotlines;
-	push( @dotlines, 'digraph stemma {' );
+	push( @dotlines, "$gdecl stemma {" );
 	## Print out the global attributes
 	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
 	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
@@ -245,7 +277,8 @@ sub as_dot {
     # Add each of our edges.
     foreach my $e ( $graph->edges ) {
     	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-    	push( @dotlines, "  $from -> $to;" );
+    	my $connector = $graph->is_directed ? '->' : '--';
+    	push( @dotlines, "  $from $connector $to;" );
     }
     push( @dotlines, '}' );
     
@@ -297,8 +330,9 @@ sub editable_graph {
 
 	# Create the graph
 	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
+	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
 	my @dotlines;
-	push( @dotlines, 'digraph stemma {' );
+	push( @dotlines, "$gdecl stemma {" );
 	my @real; # A cheap sort
     foreach my $n ( sort $graph->vertices ) {
     	my $c = $graph->get_vertex_attribute( $n, 'class' );
@@ -315,7 +349,8 @@ sub editable_graph {
 	}
 	foreach my $e ( sort _by_vertex $graph->edges ) {
 		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-		push( @dotlines, "  $from -> $to;" );
+		my $conn = $graph->is_undirected ? '--' : '->';
+		push( @dotlines, "  $from $conn $to;" );
 	}
     push( @dotlines, '}' );
     return join( $join, @dotlines );
@@ -345,11 +380,11 @@ sub _by_vertex {
 
 =head2 situation_graph( $extant, $layered )
 
-Returns a graph which is the original stemma with all witnesses not in the
-%$extant hash marked as hypothetical, and witness layers added to the graph
-according to the list in @$layered.  A layered (a.c.) witness is added as a
-parent of its main version, and additionally shares all other parents and
-children with that version.
+Returns a graph which is the original stemma graph with all witnesses not
+in the %$extant hash marked as hypothetical, and witness layers added to
+the graph according to the list in @$layered.  A layered (a.c.) witness is
+added as a parent of its main version, and additionally shares all other
+parents and children with that version.
 
 =cut
 
@@ -412,7 +447,8 @@ Returns an SVG representation of the graph, calling as_dot first.
 sub as_svg {
     my( $self, $opts ) = @_;
     my $dot = $self->as_dot( $opts );
-    my @cmd = qw/dot -Tsvg/;
+    my @cmd = ( '-Tsvg' );
+    unshift( @cmd, $self->is_undirected ? 'neato' : 'dot' );
     my $svg;
     my $dotfile = File::Temp->new();
     ## TODO REMOVE
@@ -435,6 +471,7 @@ sub as_svg {
     	my( $ew, $eh ) = @{$opts->{'size'}};
     	# If the graph is wider than it is tall, set width to ew and remove height.
     	# Otherwise set height to eh and remove width.
+    	# TODO Also scale the viewbox
 		my $width = $svgdoc->documentElement->getAttribute('width');
 		my $height = $svgdoc->documentElement->getAttribute('height');
 		$width =~ s/\D+//g;
@@ -489,6 +526,48 @@ sub hypotheticals {
         $self->graph->vertices;
     return @wits;
 }
+
+=head2 root( $root_vertex ) {
+
+If the stemma graph is undirected, make it directed with $root_vertex at the root.
+If it is directed, re-root it.
+
+=cut
+
+sub root_graph {
+	my( $self, $rootvertex ) = @_;
+	my $graph;
+	if( $self->is_undirected ) {
+		$graph = $self->graph;
+	} else {
+		# Make an undirected version of this graph.
+		$graph = $self->graph->undirected_copy();
+	}
+	my $rooted = Graph->new();
+	$rooted->add_vertex( $rootvertex );
+	my @next = ( $rootvertex );
+	while( @next ) {
+		my @children;
+		foreach my $v ( @next ) {
+			# Place its not-placed neighbors (ergo children) in the tree
+			# and connect them
+			foreach my $n ( grep { !$rooted->has_vertex( $_ ) } 
+				$graph->neighbors( $v ) ) {
+				$rooted->add_vertex( $n );
+				$rooted->add_edge( $v, $n );
+				push( @children, $n );
+			}
+		}
+		@next = @children;
+	}
+	# Set the vertex classes
+	map { $rooted->set_vertex_attribute( $_, 'class', 'hypothetical' ) }
+		$self->graph->hypotheticals;
+	map { $rooted->set_vertex_class( $_, 'class', 'extant' ) }
+		$self->graph->witnesses;
+	return $rooted;
+}
+
 
 sub throw {
 	Text::Tradition::Error->throw( 

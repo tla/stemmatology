@@ -13,6 +13,7 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
+use Text::Tradition::Stemma;
 @EXPORT_OK = qw/ character_input phylip_pars parse_newick newick_to_svg /;
 
 =head1 NAME
@@ -26,17 +27,39 @@ text collations.
 
 =head1 SUBROUTINES
 
-=head2 character_input( $alignment_table )
+=head2 character_input( $tradition, $opts )
 
 Returns a character matrix string suitable for Phylip programs, which 
 corresponds to the given alignment table.  See Text::Tradition::Collation 
-for a description of the alignment table format.
+for a description of the alignment table format. Options include:
+
+=over
+
+=item * exclude_layer - Exclude layered witnesses from the character input, 
+using only the 'main' text of the witnesses in the tradition.
+
+=item * collapse - A reference to an array of relationship names that should
+be treated as equivalent for the purposes of generating the character matrix.
+
+=back
 
 =cut
 
 sub character_input {
-    my $table = shift;
-    my $character_matrix = _make_character_matrix( $table );
+    my ( $tradition, $opts ) = @_;
+    my $table = $tradition->collation->alignment_table;
+    if( $opts->{exclude_layer} ) {
+    	# Filter out all alignment table rows that do not correspond
+    	# to a named witness - these are the layered witnesses.
+    	my $newtable = { alignment => [] };
+    	foreach my $row ( $table->{alignment} ) {
+    		if( $tradition->has_witness( $row->{witness} ) ) {
+    			push( @{$newtable->{alignment}}, $row );
+    		}
+    	}
+    	$table = $newtable;
+    }
+    my $character_matrix = _make_character_matrix( $table, $opts );
     my $input = '';
     my $rows = scalar @{$character_matrix};
     my $columns = scalar @{$character_matrix->[0]} - 1;
@@ -48,17 +71,15 @@ sub character_input {
 }
 
 sub _make_character_matrix {
-    my( $table ) = @_;
+    my( $table, $opts ) = @_;
     # Push the names of the witnesses to initialize the rows of the matrix.
     my @matrix = map { [ _normalize_witname( $_->{'witness'} ) ] } 
     				@{$table->{'alignment'}};
     foreach my $token_index ( 0 .. $table->{'length'} - 1) {
-        # First implementation: make dumb alignment table, caring about
-        # nothing except which reading is in which position.
-        my @pos_readings = map { $_->{'tokens'}->[$token_index] }
+        my @pos_tokens = map { $_->{'tokens'}->[$token_index] }
         						@{$table->{'alignment'}};
-        my @pos_text = map { $_ ? $_->{'t'} : $_ } @pos_readings;
-        my @chars = _convert_characters( \@pos_text );
+        my @pos_readings = map { $_ ? $_->{'t'} : $_ } @pos_tokens;
+        my @chars = _convert_characters( \@pos_readings, $opts );
         foreach my $idx ( 0 .. $#matrix ) {
             push( @{$matrix[$idx]}, $chars[$idx] );
         }
@@ -77,21 +98,32 @@ sub _normalize_witname {
 }
 
 sub _convert_characters {
-    my $row = shift;
+    my( $row, $opts ) = @_;
     # This is a simple algorithm that treats every reading as different.
     # Eventually we will want to be able to specify how relationships
     # affect the character matrix.
     my %unique = ( '__UNDEF__' => 'X',
                    '#LACUNA#'  => '?',
                  );
+    my %equivalent;
     my %count;
     my $ctr = 0;
-    foreach my $word ( @$row ) {
-        if( $word && !exists $unique{$word} ) {
-            $unique{$word} = chr( 65 + $ctr );
-            $ctr++;
-        }
-        $count{$word}++ if $word;
+    foreach my $rdg ( @$row ) {
+    	next unless $rdg;
+    	next if $rdg->is_lacuna;
+		next if exists $unique{$rdg->text};
+		if( ref( $opts->{'collapse'} ) eq 'ARRAY' ) {
+			my @exclude_types = @{$opts->{'collapse'}};
+			my @set = $rdg->related_readings( sub { my $rel = shift;
+				$rel->colocated && grep { $rel->type eq $_ } @exclude_types } );
+			push( @set, $rdg );
+			my $char = chr( 65 + $ctr++ );
+			map { $unique{$_->text} = $char } @set;
+			$count{$rdg->text} += scalar @set;
+		} else {
+			$unique{$rdg->text} = chr( 65 + $ctr++ );
+			$count{$rdg->text}++;			
+		}
     }
     # Try to keep variants under 8 by lacunizing any singletons.
     if( scalar( keys %unique ) > 8 ) {
@@ -105,7 +137,7 @@ sub _convert_characters {
     if( scalar( keys %u ) > 8 ) {
         warn "Have more than 8 variants on this location; phylip will break";
     }
-    my @chars = map { $_ ? $unique{$_} : $unique{'__UNDEF__' } } @$row;
+    my @chars = map { $_ ? $unique{$_->text} : $unique{'__UNDEF__' } } @$row;
     return @chars;
 }
 
@@ -184,13 +216,14 @@ sub phylip_pars {
 
 =head2 parse_newick( $newick_string )
 
-Parses the given Newick tree(s) into one or more undirected Graph objects.
+Parses the given Newick tree(s) into one or more Stemma objects with
+undirected graphs.
 
 =cut
 
 sub parse_newick {
     my $newick = shift;
-    my @trees;
+    my @stemmata;
     # Parse the result into a tree
     my $forest = Bio::Phylo::IO->parse( 
         -format => 'newick',
@@ -198,9 +231,47 @@ sub parse_newick {
         );
     # Turn the tree into a graph, starting with the root node
     foreach my $tree ( @{$forest->get_entities} ) {
-        push( @trees, _graph_from_bio( $tree ) );
+        my $stemma = Text::Tradition::Stemma->new(
+        	graph => _graph_from_bio( $tree ),
+        	is_undirected => 1 );
+        push( @stemmata, $stemma );
     }
-    return \@trees;
+    return \@stemmata;
+}
+
+sub _graph_from_bio {
+    my $tree = shift;
+    my $graph = Graph->new( 'undirected' => 1 );
+    # Give all the intermediate anonymous nodes a name.
+    my $i = 0;
+    my $classes = {};
+    foreach my $n ( @{$tree->get_terminals} ) {
+    	# The terminal nodes are our named witnesses.
+		$classes->{$n->get_name} = 'extant';
+	}
+	foreach my $n ( @{$tree->get_internals} ) {
+    	unless( defined $n->get_name && $n->get_name ne '' ) {
+    		# Get an integer, make sure it's a unique name
+    		while( exists $classes->{$i} ) {
+    			$i++;
+    		}
+    		$n->set_name( $i++ );
+    	}
+    	$classes->{$n->get_name} = 'hypothetical';
+    }
+    _add_tree_children( $graph, $classes, undef, [ $tree->get_root ]);
+    return $graph;
+}
+
+sub _add_tree_children {
+    my( $graph, $classes, $parent, $tree_children ) = @_;
+    foreach my $c ( @$tree_children ) {
+        my $child = $c->get_name;
+        $graph->add_vertex( $child );
+        $graph->set_vertex_attribute( $child, 'class', $classes->{$child} );
+        $graph->add_path( $parent, $child ) if defined $parent;
+        _add_tree_children( $graph, $classes, $child, $c->get_children() );
+    }
 }
 
 =head2 newick_to_svg( $newick_string )
@@ -223,31 +294,6 @@ sub newick_to_svg {
 	my @cmd = ( $program, '-graphic', 'SVG', $nfile );
     run( \@cmd, ">", binary(), \$svg );
     return decode_utf8( $svg );
-}
-
-sub _graph_from_bio {
-    my $tree = shift;
-    my $graph = Graph->new( 'undirected' => 1 );
-    # Give all the intermediate anonymous nodes a name.
-    my $i = 0;
-    foreach my $n ( @{$tree->get_entities} ) {
-        next if $n->get_name;
-        $n->set_name( $i++ );
-    }
-    my $root = $tree->get_root->get_name;
-    $graph->add_vertex( $root );
-    _add_tree_children( $graph, $root, $tree->get_root->get_children() );
-    return $graph;
-}
-
-sub _add_tree_children {
-    my( $graph, $parent, $tree_children ) = @_;
-    foreach my $c ( @$tree_children ) {
-        my $child = $c->get_name;
-        $graph->add_vertex( $child );
-        $graph->add_path( $parent, $child );
-        _add_tree_children( $graph, $child, $c->get_children() );
-    }
 }
 
 sub throw {
