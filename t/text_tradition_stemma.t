@@ -15,7 +15,7 @@ use_ok( 'Text::Tradition::Stemma' );
 # Try to create a bad graph
 TODO: {
 	local $TODO = "cannot use stdout redirection trick with FastCGI";
-my $baddotfh;
+	my $baddotfh;
 	open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
 	try {
 		my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
