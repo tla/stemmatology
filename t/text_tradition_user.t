@@ -132,40 +132,37 @@ ok($changed->check_password('passbloggs'), 'Modified & retrieved with correct ne
 }
 
 
-TODO: {
-    local $TODO = 'searching on public attr not implemented yet';
-    ## Fetch public traditions, not user traditions, when not fetching with a user
-    use Text::Tradition;
-    my $t = Text::Tradition->new( 
-        'name'  => 'inline', 
-        'input' => 'Tabular',
-        'file'  => 't/data/simple.txt',
-	);
+## Fetch public traditions, not user traditions, when not fetching with a user
+use Text::Tradition;
+my $t = Text::Tradition->new( 
+	'name'  => 'inline', 
+	'input' => 'Tabular',
+	'file'  => 't/data/simple.txt',
+);
 
-    $user_store->save($t);
-    my $user = $user_store->add_user({ username => 'testpublic',
-                                       password => 'testingtraditions' });
-    $user->add_tradition($t);
-    $user_store->update($user);
+$user_store->save($t);
+my $user = $user_store->add_user({ username => 'testpublic',
+								   password => 'testingtraditions' });
+$user->add_tradition($t);
+$user_store->update($user);
 
-    ## add a second, not owned by this user, we shouldn't return it from
-    ## traditionslist
-    my $t2 = Text::Tradition->new( 
-        'name'  => 'inline', 
-        'input' => 'Tabular',
-        'file'  => 't/data/simple.txt',
-	);
-    $t2->public(1);
-    my $uuid = $user_store->save($t2);
+## add a second, not owned by this user, we shouldn't return it from
+## traditionslist
+my $t2 = Text::Tradition->new( 
+	'name'  => 'inline', 
+	'input' => 'Tabular',
+	'file'  => 't/data/simple.txt',
+);
+$t2->public(1);
+my $uuid = $user_store->save($t2);
 
-    my @tlist = $user_store->traditionlist('public');
-    is(scalar @tlist, 1, 'Got one public tradition');
-    is($tlist[0]->{name}, $t2->name, 'Traditionlist returns same named user->tradition');
-    is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
-    my $fetched_t = $user_store->tradition($tlist[0]->{id});
-    ok($fetched_t->public, 'Traditionlist returns public item');
+my @tlist = $user_store->traditionlist('public');
+is(scalar @tlist, 1, 'Got one public tradition');
+is($tlist[0]->{name}, $t2->name, 'Traditionlist returns same named user->tradition');
+is($tlist[0]->{id}, $uuid, 'Traditionlist returns actual tradition with same uuid we put in earlier');
+my $fetched_t = $user_store->tradition($tlist[0]->{id});
+ok($fetched_t->public, 'Traditionlist returns public item');
 
-}
 
 {
 ## remove_tradition
