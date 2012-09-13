@@ -7,6 +7,9 @@ use Moose::Role;
 use Module::Load;
 use Text::Tradition::Collation::Reading::Lexeme;
 
+use vars qw/ $VERSION /;
+$VERSION = "0.1";
+
 =head1 NAME
 
 Text::Tradition::Morphology - add-on to associate lemma and part-of-speech 
