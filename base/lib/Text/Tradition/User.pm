@@ -61,9 +61,9 @@ Text::Tradition::User - Users which own traditions, and can login to the web app
 
 =head1 SYNOPSIS
 
-    ## Users are managed by Text::Tradition::UserStore
+    ## Users are managed by Text::Tradition::Directory
 
-    my $userstore = Text::Tradition::UserStore->new(dsn => 'dbi:SQLite:foo.db');
+    my $userstore = Text::Tradition::Directory->new(dsn => 'dbi:SQLite:foo.db');
     my $newuser = $userstore->add_user({ username => 'fred',
                                          password => 'somepassword' });
 
@@ -105,10 +105,24 @@ L<Text::Tradition::UserStore/deactivate_user>.
 
 Returns an ArrayRef of L<Text::Tradition> objects belonging to this user.
 
-=head2 METHODS
+=head1 METHODS
 
-=head3 check_password
+=head2 check_password
 
 Inherited from KiokuX::User, verifies a given password string against
 the stored encrypted version.
+
+=head2 add_tradition( $tradition )
+
+Assigns the given tradition to this user.
+
+=head2 remove_tradition( $tradition )
+
+Removes the specified tradition from the control of this user.
+
+=head2 is_admin
+
+Returns true if this user has administrative privileges.
+
+
 

@@ -7,11 +7,16 @@ use Text::Tradition::Stemma;
 
 =head1 NAME
 
-Text::Tradition::HasStemma - add-on to associate stemma hypotheses to Text::Tradition objects
+Text::Tradition::HasStemma - add-on to associate stemma hypotheses to
+Text::Tradition objects
 
 =head1 DESCRIPTION
 
-It is often the case that, for a given text tradition, the order of copying of the witnesses can or should be reconstructed (or at least the attempt should be made.) This class is a role that can be applied to Text::Tradition objects to record stemma hypotheses.  See the documentation for L<Text::Tradition::Stemma> for more information.
+It is often the case that, for a given text tradition, the order of copying
+of the witnesses can or should be reconstructed (or at least the attempt
+should be made.) This class is a role that can be applied to
+Text::Tradition objects to record stemma hypotheses.  See the documentation
+for L<Text::Tradition::Stemma> for more information.
 
 =head1 METHODS
 

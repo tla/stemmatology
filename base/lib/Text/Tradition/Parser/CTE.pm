@@ -19,9 +19,7 @@ Classical Text Editor.
 
 =head1 METHODS
 
-=over
-
-=item B<parse>
+=head2 parse
 
 my @apparatus = read( $xml_file );
 
@@ -100,7 +98,7 @@ sub parse {
     
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
-    expand_all_paths( $c );
+    _expand_all_paths( $c );
 
     # Save the text for each witness so that we can ensure consistency
     # later on
@@ -269,8 +267,9 @@ sub _add_readings {
     collate_variants( $c, \@lemma, values %wit_rdgs );
         
     # Now add the witness paths for each reading.
+    my $aclabel = $c->ac_label;
     foreach my $wit_id ( keys %wit_rdgs ) {
-        my $witstr = get_sigil( $wit_id, $c );
+        my $witstr = _get_sigil( $wit_id, $aclabel );
         my $rdg_list = $wit_rdgs{$wit_id};
         _add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
     }
@@ -289,6 +288,14 @@ sub _return_lemma {
         	$c->baselabel );
     return @nodes;
 }
+
+=head2 interpret( $reading, $lemma )
+
+Given a string in $reading and a corresponding lemma in $lemma, interpret what
+the actual reading should be. Used to deal with apparatus-ese shorthands for
+marking transpositions, prefixed or suffixed words, and the like.
+
+=cut
 
 sub interpret {
 	# A utility function to change apparatus-ese into a full variant.
@@ -372,17 +379,17 @@ sub _parse_wit_detail {
     } # else don't bother just yet
 }
 
-sub get_sigil {
-    my( $xml_id, $c ) = @_;
+sub _get_sigil {
+    my( $xml_id, $layerlabel ) = @_;
     if( $xml_id =~ /^(.*)_ac$/ ) {
         my $real_id = $1;
-        return $sigil_for{$real_id} . $c->ac_label;
+        return $sigil_for{$real_id} . $layerlabel;
     } else {
         return $sigil_for{$xml_id};
     }
 }
 
-sub expand_all_paths { 
+sub _expand_all_paths { 
     my( $c ) = @_;
     
     # Walk the collation and fish out the paths for each witness
@@ -427,8 +434,6 @@ sub throw {
 		'message' => $_[0],
 		);
 }
-
-=back
 
 =head1 LICENSE
 

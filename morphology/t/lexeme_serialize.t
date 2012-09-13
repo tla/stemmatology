@@ -20,6 +20,7 @@ $tf->lemmatize();
 my $graphmlstr = $tf->collation->as_graphml;
 like( $graphmlstr, qr/graphml xmlns/, 
 	"Serialized tradition after lemmatization" );
+like( $graphmlstr, qr/lexemes/, "Serialization contains lexeme info" );
 
 my $tf2 = Text::Tradition->new(
 	input => 'Self',

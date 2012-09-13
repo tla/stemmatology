@@ -3,7 +3,6 @@ package Text::Tradition::Parser::Self;
 use strict;
 use warnings;
 use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
-use Text::Tradition::UserStore;
 use TryCatch;
 
 =head1 NAME
@@ -100,6 +99,7 @@ use File::Temp;
 use Safe::Isa;
 use Test::Warn;
 use Text::Tradition;
+use Text::Tradition::Directory;
 use TryCatch;
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -249,24 +249,32 @@ sub parse {
     my %namechange = ( '#START#' => '__START__', '#END#' => '__END__' );
 
     # print STDERR "Adding collation readings\n";
+    my $need_morphology;
     foreach my $n ( @{$graph_data->{'nodes'}} ) {    	
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
         if( defined $n->{'is_start'} ) {
-#	  warn Data::Dump::dump($n);
-#	  warn $collation->start->id;
-	  $collation->start->rank($n->{'rank'});
-          next;
+			$collation->start->rank($n->{'rank'});
+			next;
         }
     	if( defined $n->{'is_end'} ) {
-#	  warn Data::Dump::dump($n);
     		$collation->end->rank( $n->{'rank'} );
     		next;
     	}
+    	# HACKY but no better way yet
+    	# If $n has a 'lexemes' property then we will need the morphology for
+    	# the whole tradition.
+    	$need_morphology = 1 if exists $n->{'lexemes'};
 		my $gnode = $collation->add_reading( $n );
 		if( $gnode->id ne $n->{'id'} ) {
 			$namechange{$n->{'id'}} = $gnode->id;
 		}
+    }
+    # HACK continued - if any of the readings had morphology info, we
+    # must enable it for the whole tradition. Just eval it, as we will
+    # have already been warned if the morphology extension isn't installed.
+    if( $need_morphology ) {
+    	eval { $tradition->enable_morphology };
     }
         
     # Now add the edges.

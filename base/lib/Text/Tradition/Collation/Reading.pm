@@ -1,12 +1,10 @@
 package Text::Tradition::Collation::Reading;
 
 use Moose;
+use Moose::Util qw/ does_role apply_all_roles /;
 use Moose::Util::TypeConstraints;
-use JSON qw/ from_json /;
-use Module::Load;
 use Text::Tradition::Error;
 use XML::Easy::Syntax qw( $xml10_name_rx $xml10_namestartchar_rx );
-use YAML::XS;
 use overload '""' => \&_stringify, 'fallback' => 1;
 
 subtype 'ReadingID',
@@ -142,41 +140,6 @@ has 'rank' => (
     clearer => 'clear_rank',
     );
     
-## For morphological analysis
-
-has 'grammar_invalid' => (
-	is => 'rw',
-	isa => 'Bool',
-	default => undef,
-	);
-	
-has 'is_nonsense' => (
-	is => 'rw',
-	isa => 'Bool',
-	default => undef,
-	);
-
-has 'normal_form' => (
-	is => 'rw',
-	isa => 'Str',
-	predicate => '_has_normal_form',
-	clearer => '_clear_normal_form',
-	);
-
-# Holds the lexemes for the reading.
-has 'reading_lexemes' => (
-	traits => ['Array'],
-	isa => 'ArrayRef[Text::Tradition::Collation::Reading::Lexeme]',
-	handles => {
-		lexeme => 'get',
-		lexemes => 'elements',
-		has_lexemes => 'count',
-		clear_lexemes => 'clear',
-		add_lexeme => 'push',
-		},
-	default => sub { [] },
-	);
-	
 ## For prefix/suffix readings
 
 has 'join_prior' => (
@@ -231,28 +194,21 @@ around BUILDARGS => sub {
 	$class->$orig( $args );
 };
 
-# Look for a lexeme-string argument in the build args.
+# Look for a lexeme-string argument in the build args; if there, pull in the
+# morphology role if possible.
 sub BUILD {
 	my( $self, $args ) = @_;
 	if( exists $args->{'lexemes'} ) {
+		unless( does_role( $self, 'Text::Tradition::Morphology' ) ) {
+			eval { apply_all_roles( $self, 'Text::Tradition::Morphology' ) };
+			if( $@ ) {
+				warn "No morphology package installed; DROPPING lexemes";
+				return;
+			}
+		}
 		$self->_deserialize_lexemes( $args->{'lexemes'} );
 	}
 }
-
-# Make normal_form default to text, transparently.
-around 'normal_form' => sub {
-	my $orig = shift;
-	my $self = shift;
-	my( $arg ) = @_;
-	if( $arg && $arg eq $self->text ) {
-		$self->_clear_normal_form;
-		return $arg;
-	} elsif( !$arg && !$self->_has_normal_form ) {
-		return $self->text;
-	} else {
-		$self->$orig( @_ );
-	}
-};
 
 =head2 is_meta
 
@@ -265,6 +221,43 @@ of text found in a witness.
 sub is_meta {
 	my $self = shift;
 	return $self->is_start || $self->is_end || $self->is_lacuna || $self->is_ph;	
+}
+
+=head2 is_identical( $other_reading )
+
+Returns true if the reading is identical to the other reading. The basic test
+is equality of ->text attributes, but this may be wrapped or overridden by 
+extensions.
+
+=cut
+
+sub is_identical {
+	my( $self, $other ) = @_;
+	return $self->text eq $other->text;
+}
+
+=head2 is_combinable
+
+Returns true if the reading may in theory be combined into a multi-reading
+segment within the collation graph. The reading must not be a meta reading,
+and it must not have any relationships in its own right with any others.
+This test may be wrapped or overridden by extensions.
+
+=cut
+
+sub is_combinable {
+	my $self = shift;
+	return undef if $self->is_meta;
+	return !$self->related_readings();
+}
+
+# Not really meant for public consumption. Adopt the text of the other reading
+# into this reading.
+sub _combine {
+	my( $self, $other, $joinstr ) = @_;
+	$self->alter_text( join( $joinstr, $self->text, $other->text ) );
+	# Change this reading to a joining one if necessary
+	$self->_set_join_next( $other->join_next );
 }
 
 =head1 Convenience methods
@@ -315,105 +308,12 @@ sub successors {
 	return map { $self->collation->reading( $_ ) } @succ;
 }
 
-=head2 set_identical( $other_reading)
-
-Backwards compatibility method, to add a transposition relationship
-between $self and $other_reading.  Don't use this.
-
-=cut
-
-sub set_identical {
-	my( $self, $other ) = @_;
-	return $self->collation->add_relationship( $self, $other, 
-		{ 'type' => 'transposition' } );
-}
+## Utility methods
 
 sub _stringify {
 	my $self = shift;
 	return $self->id;
 }
-
-=head1 MORPHOLOGY
-
-Methods for the morphological information (if any) attached to readings.
-A reading may be made up of multiple lexemes; the concatenated lexeme
-strings ought to match the reading's normalized form.
- 
-See L<Text::Tradition::Collation::Reading::Lexeme> for more information
-on Lexeme objects and their attributes.
-
-=head2 has_lexemes
-
-Returns a true value if the reading has any attached lexemes.
-
-=head2 lexemes
-
-Returns the Lexeme objects (if any) attached to the reading.
-
-=head2 clear_lexemes
-
-Wipes any associated Lexeme objects out of the reading.
-
-=head2 add_lexeme( $lexobj )
-
-Adds the Lexeme in $lexobj to the list of lexemes.
-
-=head2 lemmatize
-
-If the language of the reading is set, this method will use the appropriate
-Language model to determine the lexemes that belong to this reading.  See
-L<Text::Tradition::lemmatize> if you wish to lemmatize an entire tradition.
-
-=cut
-
-sub lemmatize {
-	my $self = shift;
-	unless( $self->has_language ) {
-		warn "Please set a language to lemmatize a tradition";
-		return;
-	}
-	my $mod = "Text::Tradition::Language::" . $self->language;
-	load( $mod );
-	$mod->can( 'reading_lookup' )->( $self );
-
-}
-
-# For graph serialization. Return a JSON representation of the associated
-# reading lexemes.
-sub _serialize_lexemes {
-	my $self = shift;
-	my $json = JSON->new->allow_blessed(1)->convert_blessed(1);
-	return $json->encode( [ $self->lexemes ] );
-}
-
-# Given a JSON representation of the lexemes, instantiate them and add
-# them to the reading.
-sub _deserialize_lexemes {
-	my( $self, $json ) = @_;
-	my $data = from_json( $json );
-	return unless @$data;
-	
-	# Need to have the lexeme module in order to have lexemes.
-	eval { use Text::Tradition::Collation::Reading::Lexeme; };
-	throw( $@ ) if $@;
-	
-	# Good to go - add the lexemes.
-	my @lexemes;
-	foreach my $lexhash ( @$data ) {
-		push( @lexemes, Text::Tradition::Collation::Reading::Lexeme->new(
-			'JSON' => $lexhash ) );
-	}
-	$self->clear_lexemes;
-	$self->add_lexeme( @lexemes );
-}
-
-sub disambiguated {
-	my $self = shift;
-	return 0 unless $self->has_lexemes;
-	return !grep { !$_->is_disambiguated } $self->lexemes;
-}
-
-## Utility methods
 
 sub TO_JSON {
 	my $self = shift;

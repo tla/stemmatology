@@ -1,3 +1,11 @@
+Version 1.0
+===========
+[far, far too many commits to list individually]
+
+* Modularization / split of stemma analysis logic and morphology logic
+* Support for tradition persistence, user logic
+* Months of redesigns and bugfixes.
+
 Version 0.3
 ===========
 

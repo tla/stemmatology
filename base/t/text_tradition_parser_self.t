@@ -12,6 +12,7 @@ use File::Temp;
 use Safe::Isa;
 use Test::Warn;
 use Text::Tradition;
+use Text::Tradition::Directory;
 use TryCatch;
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";

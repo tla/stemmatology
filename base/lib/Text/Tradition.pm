@@ -11,7 +11,7 @@ use Text::Tradition::User;
 use TryCatch;
 
 use vars qw( $VERSION );
-$VERSION = "0.5";
+$VERSION = "1.0";
 
 has 'collation' => (
     is => 'ro',
@@ -165,14 +165,13 @@ following:
 
 =item * CTE - a TEI XML format produced by Classical Text Editor
 
-=item * JSON - an alignment table in JSON format, as produced by CollateX and other tools
-
-=item * KUL - a specific CSV format for variants, not documented here
+=item * JSON - an alignment table in JSON format, as produced by CollateX and 
+other tools
 
 =item * TEI - a TEI parallel segmentation format file
 
-=item * Tabular - a comma- or tab-separated collation.  Takes an additional
-option, 'sep_char', which defaults to the tab character.
+=item * Tabular - a spreadsheet collation.  See the documentation for 
+L<Text::Tradition::Parser::Tabular> for an explanation of additional options.
 
 =back
 
@@ -181,9 +180,6 @@ or 'string' should be specified.
 
 =item B<string> - A text string that contains the data.  One of 'file' or
 'string' should be specified.
-
-=item B<base> - The name of a text file that contains the base text, to be
-used with input formats that require it (currently only KUL).
 
 =back
 
@@ -326,7 +322,7 @@ sub add_json_witnesses {
 
 =head1 PLUGIN HOOKS
 
-=head2 enable_stemmata();
+=head2 enable_stemmata
 
 If the tradition in question does not have the HasStemma role, make it so. Throws
 an error if the role (ergo, if the Analysis package) is not installed.
@@ -345,12 +341,45 @@ sub enable_stemmata {
 	return 1;
 }
 
+=head2 enable_morphology
+
+If the tradition in question has readings that do not include the Morphology
+role, apply the role to them. Throws an error if the role (ergo, if the 
+Morphology package) is not installed.
+
+=cut
+
+sub enable_morphology {
+	my $self = shift;
+	my $rolename = 'Text::Tradition::Morphology';
+	try {
+		load( $rolename );
+	} catch {
+		throw( "Cannot apply role to enable morphology; is the extension installed?" );
+	}
+	foreach my $r ( $self->collation->readings ) {
+		apply_all_roles( $r, $rolename )
+			unless does_role( $r, $rolename );
+	}
+	return 1;
+}
+
+=head2 lemmatize
+
+Calls the appropriate lemmatization function for the language of the
+tradition. Implicitly applies the Morphology role where appropriate (and
+throws an error if the package is not installed.)
+
+=cut
+
+# TODO find a better way to hook this
 sub lemmatize {
 	my $self = shift;
 	unless( $self->has_language ) {
 		warn "Please set a language to lemmatize a tradition";
 		return;
 	}
+	$self->enable_morphology;
 	my $mod = "Text::Tradition::Language::" . $self->language;
 	load( $mod );
 	$mod->can( 'lemmatize' )->( $self );

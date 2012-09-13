@@ -263,8 +263,10 @@ sub run_analysis {
 			if( $rdg ) {
 				$rdghash->{'text'} = $rdg->text . 
 					( $rdg->rank == $rank ? '' : ' [' . $rdg->rank . ']' );
-				$rdghash->{'is_ungrammatical'} = $rdg->grammar_invalid;
-				$rdghash->{'is_nonsense'} = $rdg->is_nonsense;
+				if( $rdg->does( 'Text::Tradition::Morphology' ) ) {
+					$rdghash->{'is_ungrammatical'} = $rdg->grammar_invalid;
+					$rdghash->{'is_nonsense'} = $rdg->is_nonsense;
+				}
 			}
 			# Remove lacunose witnesses from this reading's list now that the
 			# analysis is done 
@@ -810,8 +812,10 @@ sub _resolve_parent_relationships {
 			}
 			# Get the attributes of the parent object while we are here
 			$phash->{'text'} = $pobj->text if $pobj;
-			$phash->{'is_nonsense'} = $pobj->is_nonsense;
-			$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
+			if( $pobj && $pobj->does('Text::Tradition::Morphology') ) {
+				$phash->{'is_nonsense'} = $pobj->is_nonsense;
+				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
+			}
 		} elsif( $p eq '(omitted)' ) {
 			$phash->{relation} = { type => 'addition' };
 		}

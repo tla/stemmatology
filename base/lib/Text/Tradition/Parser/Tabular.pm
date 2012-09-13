@@ -31,7 +31,8 @@ Text::Tradition::Parser::Tabular
 
 =head1 DESCRIPTION
 
-Parser module for Text::Tradition to read an alignment table format, such as CSV.
+Parser module for Text::Tradition to read an alignment table format, such as 
+CSV or Excel.
 
 =head1 METHODS
 
@@ -39,15 +40,28 @@ Parser module for Text::Tradition to read an alignment table format, such as CSV
 
 Takes an initialized tradition and a set of options; creates the
 appropriate nodes and edges on the graph, as well as the appropriate
-witness objects.  The $option_hash must contain either a 'file' or a
-'string' argument with the table to be parsed; it may also contain a 
-'sep_char' argument to specify how the fields are separated.
+witness objects.  The $option_hash can contain the following:
 
-The table should have witnesses arranged in columns, with the witness sigla
-in the first row.  Empty cells are interpreted as omissions (and thus
-stemmatologically relevant.) Longer lacunae in the text, to be disregarded
-in cladistic analysis, may be represented by filling the appropriate cells
-with the tag '#LACUNA#'.
+=over
+
+=item * file - Name of file which contains the data
+
+=item * string - A string that itself contains the data. One of 'file' or 
+'string' is required.
+
+=item * sep_char - For plaintext formats, the field separation character.
+Defaults to "\t" (tab-separated); should be "," for comma-separated format.
+
+=item * excel - If the data is in an Excel file, this option should be set
+to 'xls' (for pre-2007 Excel format) or 'xlsx' (for Excel XML format.)
+
+=back
+
+The data should comprise a table with witnesses arranged in columns, with
+the witness sigla in the first row.  Empty cells are interpreted as
+omissions (and thus stemmatologically relevant.) Longer lacunae in the
+text, to be disregarded in cladistic analysis, may be represented by
+filling the appropriate cells with the tag '#LACUNA#'.
 
 If a witness name ends in the collation's ac_label, it will be treated as
 an 'ante-correction' version of the 'main' witness whose sigil it shares.

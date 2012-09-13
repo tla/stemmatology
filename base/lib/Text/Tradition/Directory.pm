@@ -315,29 +315,6 @@ sub tradition {
 	return $obj;
 }
 
-sub user_traditionlist {
-    my ($self, $user) = @_;
-    
-    my @tlist;
-    if(ref $user && $user->is_admin) {
-        ## Admin sees all
-        return $self->traditionlist();
-    } elsif(ref $user) {
-        ## We have a user object already, so just fetch its traditions and use tose
-        foreach my $t (@{ $user->traditions }) {
-            push( @tlist, { 'id' => $self->object_to_id( $t ), 
-                            'name' => $t->name } );
-        }
-        return @tlist;
-    } elsif($user ne 'public') {
-        die "Passed neither a user object nor 'public' to user_traditionlist";
-    }
-    
-    ## Search for all traditions which allow public viewing
-	my @list = grep { $_->{public} } $self->traditionlist();
-	return @list;
-}
-
 sub traditionlist {
 	my $self = shift;
     my ($user) = @_;
@@ -393,9 +370,9 @@ sub throw {
 ## XX_user, but leaving that way for now incase we merge this code
 ## into ::Directory for one-store.
 
-## To die or not to die, on error, this is the question.
+=head1 USER DIRECTORY METHODS
 
-=head2 add_user
+=head2 add_user( $userinfo )
 
 Takes a hashref of C<username>, C<password>.
 
@@ -427,12 +404,19 @@ sub add_user {
     return $user;
 }
 
+=head2 create_user( $userinfo )
+
+Takes a hashref that can either be suitable for add_user (see above) or be
+a hash of OpenID user information from Credential::OpenID.
+
+=cut
+
 sub create_user {
     my ($self, $userinfo) = @_;
 
     ## No username means probably an OpenID based user
     if(!exists $userinfo->{username}) {
-        extract_openid_data($userinfo);
+        _extract_openid_data($userinfo);
     }
 
     return $self->add_user($userinfo);
@@ -440,7 +424,7 @@ sub create_user {
 
 ## Not quite sure where this method should be.. Auth /
 ## Credential::OpenID just pass us back the chunk of extension data
-sub extract_openid_data {
+sub _extract_openid_data {
     my ($userinfo) = @_;
 
     ## Spec says SHOULD use url as identifier
@@ -459,7 +443,7 @@ sub extract_openid_data {
     return;
 }
 
-=head2 find_user
+=head2 find_user( $userinfo )
 
 Takes a hashref of C<username>, and possibly openIDish results from
 L<Net::OpenID::Consumer>.
@@ -473,7 +457,7 @@ sub find_user {
 
     ## No username means probably an OpenID based user
     if(!exists $userinfo->{username}) {
-        extract_openid_data($userinfo);
+        _extract_openid_data($userinfo);
     }
 
     my $username = $userinfo->{username};
@@ -487,7 +471,7 @@ sub find_user {
     return $user;
 }
 
-=head2 modify_user
+=head2 modify_user( $userinfo )
 
 Takes a hashref of C<username> and C<password> (same as add_user).
 
@@ -522,7 +506,7 @@ sub modify_user {
     return $user;
 }
 
-=head2 deactivate_user
+=head2 deactivate_user( $userinfo )
 
 Takes a hashref of C<username>.
 
@@ -557,7 +541,7 @@ sub deactivate_user {
     return $user;
 }
 
-=head2 reactivate_user
+=head2 reactivate_user( $userinfo )
 
 Takes a hashref of C<username>.
 
@@ -585,7 +569,7 @@ sub reactivate_user {
     return $user;    
 }
 
-=head2 delete_user
+=head2 delete_user( $userinfo )
 
 CAUTION: Deletes actual data!
 
@@ -615,7 +599,7 @@ sub delete_user {
     return 1;
 }
 
-=head2 validate_password
+=head2 validate_password( $password )
 
 Takes a password string. Returns true if it is longer than
 L</MIN_PASS_LEN>, false otherwise.
@@ -631,6 +615,37 @@ sub validate_password {
     return if length($password) < $self->MIN_PASS_LEN;
 
     return 1;
+}
+
+=head2 user_traditionlist( $user )
+
+Returns a tradition list (see specification above) but containing only
+those traditions visible to the specified user.  If $user is the string
+'public', returns only publicly-viewable traditions.
+
+=cut
+
+sub user_traditionlist {
+    my ($self, $user) = @_;
+    
+    my @tlist;
+    if(ref $user && $user->is_admin) {
+        ## Admin sees all
+        return $self->traditionlist();
+    } elsif(ref $user) {
+        ## We have a user object already, so just fetch its traditions and use tose
+        foreach my $t (@{ $user->traditions }) {
+            push( @tlist, { 'id' => $self->object_to_id( $t ), 
+                            'name' => $t->name } );
+        }
+        return @tlist;
+    } elsif($user ne 'public') {
+        die "Passed neither a user object nor 'public' to user_traditionlist";
+    }
+    
+    ## Search for all traditions which allow public viewing
+	my @list = grep { $_->{public} } $self->traditionlist();
+	return @list;
 }
 
 1;

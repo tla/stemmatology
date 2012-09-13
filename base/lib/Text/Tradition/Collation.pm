@@ -338,6 +338,7 @@ sub merge_readings {
 		throw( "Cannot merge with start or end node" )
 			if( $kept_obj eq $self->start || $kept_obj eq $self->end
 				|| $del_obj eq $self->start || $del_obj eq $self->end );
+		throw( "Cannot combine text of meta readings" ) if $combine;
 	}
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
@@ -368,15 +369,7 @@ sub merge_readings {
 			$joinstr = '' if $kept_obj->join_next || $del_obj->join_prior;
 			$joinstr = $self->wordsep unless defined $joinstr;
 		}
-		$kept_obj->alter_text( join( $joinstr, $kept_obj->text, $del_obj->text ) );
-		# Change this reading to a joining one if necessary
-		$kept_obj->_set_join_next( $del_obj->join_next );
-		$kept_obj->normal_form( 
-			join( $joinstr, $kept_obj->normal_form, $del_obj->normal_form ) );
-		# Combine the lexemes present in the readings
-		if( $kept_obj->has_lexemes && $del_obj->has_lexemes ) {
-			$kept_obj->add_lexeme( $del_obj->lexemes );
-		}
+		$kept_obj->_combine( $del_obj, $joinstr );
 	}
 	$self->del_reading( $deleted );
 }
@@ -398,30 +391,16 @@ sub compress_readings {
 	# Anywhere in the graph that there is a reading that joins only to a single
 	# successor, and neither of these have any relationships, just join the two
 	# readings.
-	my %gobbled;
 	foreach my $rdg ( sort { $a->rank <=> $b->rank } $self->readings ) {
-		# While we are here, get rid of any extra wordforms from a disambiguated
-		# reading.
-		if( $rdg->disambiguated ) {
-			foreach my $lex ( $rdg->lexemes ) {
-				$lex->clear_matching_forms();
-				$lex->add_matching_form( $lex->form );
-			}
-		}
 		# Now look for readings that can be joined to their successors.
-		next if $rdg->is_meta;
-		next if $gobbled{$rdg->id};
-		next if $rdg->grammar_invalid || $rdg->is_nonsense;
-		next if $rdg->related_readings();
+		next unless $rdg->is_combinable;
 		my %seen;
 		while( $self->sequence->successors( $rdg ) == 1 ) {
 			my( $next ) = $self->reading( $self->sequence->successors( $rdg ) );
 			throw( "Infinite loop" ) if $seen{$next->id};
 			$seen{$next->id} = 1;
 			last if $self->sequence->predecessors( $next ) > 1;
-			last if $next->is_meta;
-			last if $next->grammar_invalid || $next->is_nonsense;
-			last if $next->related_readings();
+			last unless $next->is_combinable;
 			say "Joining readings $rdg and $next";
 			$self->merge_readings( $rdg, $next, 1 );
 		}
@@ -960,7 +939,7 @@ like( $graphml, qr/testuser/, "Test user name now exists in GraphML" );
 
 =cut
 
-## TODO MOVE this to Tradition.pm
+## TODO MOVE this to Tradition.pm and modularize it better
 sub as_graphml {
     my( $self, $options ) = @_;
 	$self->calculate_ranks unless $self->_graphcalc_done;
@@ -1056,8 +1035,10 @@ sub as_graphml {
 		next unless $save_types{$attr->type_constraint->name};
 		$reading_attributes{$attr->name} = $save_types{$attr->type_constraint->name};
 	}
-	# Extra custom key for the reading morphology
-	$reading_attributes{'lexemes'} = 'string';
+	if( $self->start->does('Text::Tradition::Morphology' ) ) {
+		# Extra custom key for the reading morphology
+		$reading_attributes{'lexemes'} = 'string';
+	}
 	
     my %node_data_keys;
     my $ndi = 0;
@@ -1642,18 +1623,13 @@ sub flatten_ranks {
         if( exists $unique_rank_rdg{$key} ) {
         	# Make sure they don't have different grammatical forms
 			my $ur = $unique_rank_rdg{$key};
-			if( $rdg->disambiguated && $ur->disambiguated ) {
-				my $rform = join( '//', map { $_->form->to_string } $rdg->lexemes );
-				my $uform = join( '//', map { $_->form->to_string } $ur->lexemes );
-				next unless $rform eq $uform;
-			} elsif( $rdg->disambiguated xor $ur->disambiguated ) {
-				next;
+        	if( $rdg->is_identical( $ur ) ) {
+				# Combine!
+				#say STDERR "Combining readings at same rank: $key";
+				$changed = 1;
+				$self->merge_readings( $unique_rank_rdg{$key}, $rdg );
+				# TODO see if this now makes a common point.
 			}
-            # Combine!
-        	#say STDERR "Combining readings at same rank: $key";
-        	$changed = 1;
-            $self->merge_readings( $unique_rank_rdg{$key}, $rdg );
-            # TODO see if this now makes a common point.
         } else {
             $unique_rank_rdg{$key} = $rdg;
         }
@@ -1855,6 +1831,14 @@ sub throw {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+=head1 BUGS/TODO
+
+=over
+
+=item * Rework XML serialization in a more modular way
+
+=back
 
 =head1 LICENSE
 
