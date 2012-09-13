@@ -30,7 +30,7 @@ ok( $stemma->isa( 'Text::Tradition::Stemma' ), 'Got the right sort of object' );
 is( $stemma->graph, '1-2,1-A,2-B,2-C', "Got the correct graph" );
 
 # Test for character matrix creation
-my $mstr = character_input( $c->alignment_table() );
+my $mstr = character_input( $tradition );
  ## check number of rows
 my @mlines = split( "\n", $mstr );
 my $msig = shift @mlines;
@@ -60,8 +60,7 @@ SKIP: {
     is( scalar @$trees, 1, "Got a single tree" );
     # Test that the tree has all our witnesses
     my $tree = $trees->[0];
-    my @leaves = grep { $tree->degree( $_ ) == 1 } $tree->vertices;
-    is( scalar @leaves, 3, "All witnesses in the tree" );
+    is( scalar $tree->witnesses, 3, "All witnesses in the tree" );
 }
 
 # Test our dot output
