@@ -243,7 +243,7 @@ sub add_reading {
 			# If we are initializing an empty collation, don't assume that we
 			# have set a tradition.
 			delete $args{'init'};
-		} elsif( $self->tradition->has_language && !exists $args{'language'} ) {
+		} elsif( $self->tradition->can('language') && !exists $args{'language'} ) {
 			$args{'language'} = $self->tradition->language;
 		}
 		$reading = Text::Tradition::Collation::Reading->new( 

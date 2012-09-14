@@ -47,9 +47,9 @@ use Text::Tradition;
 use TryCatch;
 
 my $t1;
-warning_is {
+warnings_exist {
 	$t1 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
-} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+} [qr/Cannot set relationship on a meta reading/],
 	"Got expected relationship drop warning on parse";
 
 # Test 1.1: try to equate nodes that are prevented with an intermediate collation
@@ -106,9 +106,9 @@ try {
 # Test 2.1: try to equate nodes that are prevented with a real intermediate
 # equivalence
 my $t2;
-warning_is {
+warnings_exist {
 	$t2 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
-} 'DROPPING r14.2 -> r8.1: Cannot set relationship on a meta reading',
+} [qr/Cannot set relationship on a meta reading/],
 	"Got expected relationship drop warning on parse";
 my $c2 = $t2->collation;
 $c2->add_relationship( 'r9.2', 'r9.3', { 'type' => 'lexical' } );

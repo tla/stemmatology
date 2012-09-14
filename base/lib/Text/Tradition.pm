@@ -18,6 +18,7 @@ eval { with 'Text::Tradition::HasStemma'; };
 if( $@ ) {
 	warn "Text::Tradition::Analysis not found. Disabling stemma analysis functionality";
 };
+eval { with 'Text::Tradition::Language'; };
 
 has 'collation' => (
     is => 'ro',
@@ -43,12 +44,6 @@ has 'name' => (
     isa => 'Str',
     default => 'Tradition',
     );
-    
-has 'language' => (
-	is => 'rw',
-	isa => 'Str',
-	predicate => 'has_language',
-	);
     
 has '_initialized' => (
 	is => 'ro',
@@ -80,8 +75,6 @@ around 'add_witness' => sub {
     # TODO allow add of a Witness object?
     my %args = @_ == 1 ? %{$_[0]} : @_;
     $args{'tradition'} = $self;
-    $args{'language'} = $self->language 
-    	if( $self->language && !exists $args{'language'} );
     my $new_wit = Text::Tradition::Witness->new( %args );
     $self->$orig( $new_wit->sigil => $new_wit );
     return $new_wit;
@@ -324,25 +317,6 @@ sub add_json_witnesses {
 		$opts->{'object'} = $witspec;
 		$self->add_witness( $opts );
 	}
-}
-
-=head2 lemmatize
-
-Calls the appropriate lemmatization function for the language of the
-tradition. Will throw an error if the Morphology package is not installed.
-
-=cut
-
-# TODO find a better way to hook this
-sub lemmatize {
-	my $self = shift;
-	unless( $self->has_language ) {
-		warn "Please set a language to lemmatize a tradition";
-		return;
-	}
-	my $mod = "Text::Tradition::Language::" . $self->language;
-	load( $mod );
-	$mod->can( 'lemmatize' )->( $self );
 }
 
 sub throw {

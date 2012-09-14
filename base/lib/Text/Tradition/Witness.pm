@@ -53,10 +53,6 @@ behavior is to use the first defined text.  If this is not desired,
 use_text should be set to an XPath expression that will select the correct
 text.
 
-=item * language - The name of the applicable L<Text::Tradition::Lang>
-module for language handling. Usually inherited from the language set in
-the L<Text::Tradition> object, and defaults to Default.
-
 =item * identifier - The recognized name of the manuscript, e.g. a library
 identifier. Taken from the msDesc element for a TEI file.
 
@@ -106,10 +102,6 @@ An array of strings (words) that contains the layered
 text, if any, of the manuscript.  This should not change after the witness
 has been instantiated, and the path through the collation should always
 match it.
-
-=head2 language
-
-Accessor method to get the witness language.
 
 =head2 identifier
 
@@ -216,12 +208,6 @@ has 'sigil' => (
 	writer => '_set_sigil',
 	);
 	
-has 'language' => (
-    is => 'ro',
-    isa => 'Str',
-    default => 'Default',
-    );
-
 # Other identifying information
 has 'identifier' => (
 	is => 'rw',
@@ -605,7 +591,7 @@ sub _split_words {
  	my @words;
 	foreach my $w ( @raw_words ) {
 		my $id = $self->sigil . 'r'. $c++;
-		my %opts = ( 'text' => $w, 'id' => $id, 'language' => $self->language );
+		my %opts = ( 'text' => $w, 'id' => $id );
 		my $w_obj = $self->tradition->collation->add_reading( \%opts );
  		# Skip any words that have been canonized out of existence.
 		next if( length( $w_obj->text ) == 0 );

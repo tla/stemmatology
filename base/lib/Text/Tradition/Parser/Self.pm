@@ -121,7 +121,10 @@ if( $t ) {
 
 # TODO add a relationship, add a stemma, write graphml, reparse it, check that 
 # the new data is there
-$t->language('Greek');
+my $language_enabled = $t->can('language');
+if( $language_enabled ) {
+	$t->language('Greek');
+}
 my $stemma_enabled = $t->can('add_stemma');
 if( $stemma_enabled ) {
 	$t->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
@@ -139,7 +142,9 @@ if( $newt ) {
     is( scalar $newt->collation->paths, 376, "Collation has all paths" );
     is( scalar $newt->witnesses, 13, "Collation has all witnesses" );
     is( scalar $newt->collation->relationships, 1, "Collation has added relationship" );
-    is( $newt->language, 'Greek', "Tradition has correct language setting" );
+    if( $language_enabled ) {
+	    is( $newt->language, 'Greek', "Tradition has correct language setting" );
+	}
     my $rel = $newt->collation->get_relationship( 'w12', 'w13' );
     ok( $rel, "Found set relationship" );
     is( $rel->annotation, 'This is some note', "Relationship has its properties" );
@@ -213,6 +218,12 @@ sub parse {
 				}
 			} else {
 				warn "Analysis module not installed; DROPPING stemmata";
+			}
+		} elsif( $gkey eq 'language' ) {
+			if( $tradition->can('language') ) {
+				$tradition->language( $val );
+			} else {
+				warn "Morphology module not installed; DROPPING language";
 			}
 		} elsif( $gkey eq 'user' ) {
 			# Assign the tradition to the user if we can
