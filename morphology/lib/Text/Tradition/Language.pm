@@ -2,7 +2,10 @@ package Text::Tradition::Language;
 
 use strict;
 use warnings;
+use Module::Load;
 use Moose::Role;
+
+requires 'throw';
 
 =head1 NAME
 

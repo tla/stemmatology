@@ -17,6 +17,8 @@ information to Text::Tradition::Collation::Reading objects
 
 =cut
 
+requires 'is_identical', 'is_combinable', '_combine';
+
 has 'grammar_invalid' => (
 	is => 'rw',
 	isa => 'Bool',
