@@ -15,9 +15,10 @@ $VERSION = "1.1";
 
 # Enable plugin(s) if available
 eval { with 'Text::Tradition::HasStemma'; };
-if( $@ ) {
-	warn "Text::Tradition::Analysis not found. Disabling stemma analysis functionality";
-};
+# Don't warn normally
+# if( $@ ) {
+# 	warn "Text::Tradition::Analysis not found. Disabling stemma analysis functionality";
+# };
 eval { with 'Text::Tradition::Language'; };
 
 has 'collation' => (
