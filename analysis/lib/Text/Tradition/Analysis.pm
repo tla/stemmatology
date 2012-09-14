@@ -16,7 +16,7 @@ use TryCatch;
 
 use vars qw/ @EXPORT_OK $VERSION /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
-$VERSION = "1.0";
+$VERSION = "1.1";
 
 
 my $SOLVER_URL = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
@@ -34,7 +34,6 @@ Text::Tradition::Analysis - functions for stemma analysis of a tradition
     'name' => 'this is a text',
     'input' => 'TEI',
     'file' => '/path/to/tei_parallel_seg_file.xml' );
-  $t->enable_stemmata;
   $t->add_stemma( 'dotfile' => $stemmafile );
 
   my $variant_data = run_analysis( $tradition );
@@ -87,7 +86,6 @@ my $datafile = 't/data/florilegium_tei_ps.xml';
 my $tradition = Text::Tradition->new( 'input' => 'TEI',
                                       'name' => 'test0',
                                       'file' => $datafile );
-$tradition->enable_stemmata;
 my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 

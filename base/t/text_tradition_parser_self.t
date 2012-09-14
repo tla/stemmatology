@@ -35,12 +35,7 @@ if( $t ) {
 # TODO add a relationship, add a stemma, write graphml, reparse it, check that 
 # the new data is there
 $t->language('Greek');
-my $stemma_enabled;
-try {
-	$stemma_enabled = $t->enable_stemmata;
-} catch {
-	ok( 1, "Skipping stemma tests without Analysis module" );
-}
+my $stemma_enabled = $t->can('add_stemma');
 if( $stemma_enabled ) {
 	$t->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 }

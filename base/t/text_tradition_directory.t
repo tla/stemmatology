@@ -24,8 +24,7 @@ my $t = Text::Tradition->new(
 	'input' => 'Tabular',
 	'file'  => 't/data/simple.txt',
 	);
-my $stemma_enabled;
-eval { $stemma_enabled = $t->enable_stemmata; };
+my $stemma_enabled = $t->can( 'add_stemma' );
 
 {
 	my $d = Text::Tradition::Directory->new( 'dsn' => $dsn,

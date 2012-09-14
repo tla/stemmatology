@@ -32,8 +32,7 @@ Text::Tradition::Directory - a KiokuDB interface for storing and retrieving trad
   );
   
   my $tradition = Text::Tradition->new( @args );
-  $tradition->enable_stemmata;
-  my $stemma = $tradition->add_stemma( dotfile => $dotfile ); 
+  my $stemma = $tradition->add_stemma( dotfile => $dotfile ); # if Analysis module installed
   $d->save_tradition( $tradition );
   
   foreach my $id ( $d->traditions ) {
@@ -111,8 +110,7 @@ my $t = Text::Tradition->new(
 	'input' => 'Tabular',
 	'file'  => 't/data/simple.txt',
 	);
-my $stemma_enabled;
-eval { $stemma_enabled = $t->enable_stemmata; };
+my $stemma_enabled = $t->can( 'add_stemma' );
 
 {
 	my $d = Text::Tradition::Directory->new( 'dsn' => $dsn,

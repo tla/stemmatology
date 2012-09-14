@@ -11,7 +11,13 @@ use Text::Tradition::User;
 use TryCatch;
 
 use vars qw( $VERSION );
-$VERSION = "1.0";
+$VERSION = "1.1";
+
+# Enable plugin(s) if available
+eval { with 'Text::Tradition::HasStemma'; };
+if( $@ ) {
+	warn "Text::Tradition::Analysis not found. Disabling stemma analysis functionality";
+};
 
 has 'collation' => (
     is => 'ro',
@@ -320,55 +326,10 @@ sub add_json_witnesses {
 	}
 }
 
-=head1 PLUGIN HOOKS
-
-=head2 enable_stemmata
-
-If the tradition in question does not have the HasStemma role, make it so. Throws
-an error if the role (ergo, if the Analysis package) is not installed.
-
-=cut
-
-sub enable_stemmata {
-	my $self = shift;
-	my $rolename = 'Text::Tradition::HasStemma';
-	return 1 if does_role( $self, $rolename );
-	try {
-		apply_all_roles( $self, $rolename );
-	} catch {
-		throw( "Cannot apply role to enable stemmata; is the Analysis extension installed?" );
-	}
-	return 1;
-}
-
-=head2 enable_morphology
-
-If the tradition in question has readings that do not include the Morphology
-role, apply the role to them. Throws an error if the role (ergo, if the 
-Morphology package) is not installed.
-
-=cut
-
-sub enable_morphology {
-	my $self = shift;
-	my $rolename = 'Text::Tradition::Morphology';
-	try {
-		load( $rolename );
-	} catch {
-		throw( "Cannot apply role to enable morphology; is the extension installed?" );
-	}
-	foreach my $r ( $self->collation->readings ) {
-		apply_all_roles( $r, $rolename )
-			unless does_role( $r, $rolename );
-	}
-	return 1;
-}
-
 =head2 lemmatize
 
 Calls the appropriate lemmatization function for the language of the
-tradition. Implicitly applies the Morphology role where appropriate (and
-throws an error if the package is not installed.)
+tradition. Will throw an error if the Morphology package is not installed.
 
 =cut
 
@@ -379,7 +340,6 @@ sub lemmatize {
 		warn "Please set a language to lemmatize a tradition";
 		return;
 	}
-	$self->enable_morphology;
 	my $mod = "Text::Tradition::Language::" . $self->language;
 	load( $mod );
 	$mod->can( 'lemmatize' )->( $self );

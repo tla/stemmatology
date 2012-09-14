@@ -14,6 +14,13 @@ subtype 'ReadingID',
 	
 no Moose::Util::TypeConstraints;
 
+# Enable plugin(s) if available
+eval { with 'Text::Tradition::Morphology'; };
+# Morphology package is not on CPAN, so don't warn of its absence
+# if( $@ ) {
+# 	warn "Text::Tradition::Morphology not found: $@. Disabling lexeme functionality";
+# };
+
 =head1 NAME
 
 Text::Tradition::Collation::Reading - represents a reading (usually a word)
@@ -199,12 +206,9 @@ around BUILDARGS => sub {
 sub BUILD {
 	my( $self, $args ) = @_;
 	if( exists $args->{'lexemes'} ) {
-		unless( does_role( $self, 'Text::Tradition::Morphology' ) ) {
-			eval { apply_all_roles( $self, 'Text::Tradition::Morphology' ) };
-			if( $@ ) {
-				warn "No morphology package installed; DROPPING lexemes";
-				return;
-			}
+		unless( $self->can( '_deserialize_lexemes' ) ) {
+			warn "No morphology package installed; DROPPING lexemes";
+			return;
 		}
 		$self->_deserialize_lexemes( $args->{'lexemes'} );
 	}

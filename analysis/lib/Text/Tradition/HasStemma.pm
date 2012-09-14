@@ -66,7 +66,6 @@ my $t = Text::Tradition->new(
     'input' => 'Tabular',
     'file'  => 't/data/simple.txt',
     );
-$t->enable_stemmata;
 is( $t->stemma_count, 0, "No stemmas added yet" );
 my $s;
 ok( $s = $t->add_stemma( dotfile => 't/data/simple.dot' ), "Added a simple stemma" );

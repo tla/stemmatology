@@ -122,12 +122,7 @@ if( $t ) {
 # TODO add a relationship, add a stemma, write graphml, reparse it, check that 
 # the new data is there
 $t->language('Greek');
-my $stemma_enabled;
-try {
-	$stemma_enabled = $t->enable_stemmata;
-} catch {
-	ok( 1, "Skipping stemma tests without Analysis module" );
-}
+my $stemma_enabled = $t->can('add_stemma');
 if( $stemma_enabled ) {
 	$t->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 }
@@ -211,17 +206,13 @@ sub parse {
 			$use_version = $val;
 		} elsif( $gkey eq 'stemmata' ) {
 			# Make sure we can handle stemmata
-			my $stemma_enabled;
-			try {
-				$stemma_enabled = $tradition->enable_stemmata;
-			} catch {
-				warn "Analysis module not installed; DROPPING stemmata";
-			}
 			# Parse the stemmata into objects
-			if( $stemma_enabled ) {
+			if( $tradition->can('add_stemma') ) {
 				foreach my $dotstr ( split( /\n/, $val ) ) {
 					$tradition->add_stemma( 'dot' => $dotstr );
 				}
+			} else {
+				warn "Analysis module not installed; DROPPING stemmata";
 			}
 		} elsif( $gkey eq 'user' ) {
 			# Assign the tradition to the user if we can
@@ -249,7 +240,6 @@ sub parse {
     my %namechange = ( '#START#' => '__START__', '#END#' => '__END__' );
 
     # print STDERR "Adding collation readings\n";
-    my $need_morphology;
     foreach my $n ( @{$graph_data->{'nodes'}} ) {    	
     	# If it is the start or end node, we already have one, so
     	# grab the rank and go.
@@ -261,20 +251,10 @@ sub parse {
     		$collation->end->rank( $n->{'rank'} );
     		next;
     	}
-    	# HACKY but no better way yet
-    	# If $n has a 'lexemes' property then we will need the morphology for
-    	# the whole tradition.
-    	$need_morphology = 1 if exists $n->{'lexemes'};
 		my $gnode = $collation->add_reading( $n );
 		if( $gnode->id ne $n->{'id'} ) {
 			$namechange{$n->{'id'}} = $gnode->id;
 		}
-    }
-    # HACK continued - if any of the readings had morphology info, we
-    # must enable it for the whole tradition. Just eval it, as we will
-    # have already been warned if the morphology extension isn't installed.
-    if( $need_morphology ) {
-    	eval { $tradition->enable_morphology };
     }
         
     # Now add the edges.

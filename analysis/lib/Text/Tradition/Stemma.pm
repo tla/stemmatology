@@ -527,7 +527,7 @@ sub hypotheticals {
     return @wits;
 }
 
-=head2 root_graph( $root_vertex ) {
+=head2 root_graph( $root_vertex )
 
 If the stemma graph is undirected, make it directed with $root_vertex at the root.
 If it is directed, re-root it.

@@ -15,7 +15,6 @@ eval { no warnings; binmode $DB::OUT, ':utf8'; $DB::deep = 1000 };
 my $tradition = Text::Tradition->new(
 	'input' => 'Self',
 	'file' => 't/data/besoin.xml' );
-$tradition->enable_stemmata;
 $tradition->add_stemma( 'dotfile' => 't/data/besoin.dot' );
 
 # Run the analysis of the tradition

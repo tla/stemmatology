@@ -87,14 +87,8 @@ is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
 is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
 
 # Now add a stemma, write to GraphML, and look at the output.
-my $SKIP_STEMMA;
-try {
-	$tradition->enable_stemmata;
-} catch {
-	$SKIP_STEMMA = 1;
-}
 SKIP: {
-	skip "Analysis module not present", 3 if $SKIP_STEMMA;
+	skip "Analysis module not present", 3 unless $tradition->can( 'add_stemma' );
 	my $stemma = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 	is( ref( $stemma ), 'Text::Tradition::Stemma', "Parsed dotfile into stemma" );
 	is( $tradition->stemmata, 1, "Tradition now has the stemma" );

@@ -15,7 +15,6 @@ my $datafile = 't/data/florilegium_tei_ps.xml';
 my $tradition = Text::Tradition->new( 'input' => 'TEI',
                                       'name' => 'test0',
                                       'file' => $datafile );
-$tradition->enable_stemmata;
 my $s = $tradition->add_stemma( 'dotfile' => 't/data/florilegium.dot' );
 is( ref( $s ), 'Text::Tradition::Stemma', "Added stemma to tradition" );
 
