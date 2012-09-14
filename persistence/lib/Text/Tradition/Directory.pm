@@ -19,9 +19,13 @@ use Text::Tradition::TypeMap::Entry;
 
 extends 'KiokuX::Model';
 
+use vars qw/ $VERSION /;
+$VERSION = "1.0";
+
 =head1 NAME
 
-Text::Tradition::Directory - a KiokuDB interface for storing and retrieving traditions
+Text::Tradition::Directory - a KiokuDB interface for storing and retrieving 
+traditions and their owners
 
 =head1 SYNOPSIS
 
@@ -56,7 +60,16 @@ Text::Tradition::Directory - a KiokuDB interface for storing and retrieving trad
     
 =head1 DESCRIPTION
 
-Text::Tradition::Directory is an interface for storing and retrieving text traditions and all their data, including an associated stemma hypothesis.  It is an instantiation of a KiokuDB::Model, storing traditions and associated stemmas by UUID.
+Text::Tradition::Directory is an interface for storing and retrieving text
+traditions and all their data, including an associated stemma hypothesis
+and a user who has ownership rights to the tradition data. It is an
+instantiation of a KiokuDB::Model, storing traditions and associated
+stemmas by UUID.
+
+The Text::Tradition::Directory package also includes the
+L<Text::Tradition::User> class for user objects, and the
+L<Text::Tradition::Ownership> role which extends the Text::Tradition class
+to handle user ownership.
 
 =head1 ATTRIBUTES
 
@@ -654,6 +667,9 @@ This package is free software and is provided "as is" without express
 or implied warranty.  You can redistribute it and/or modify it under
 the same terms as Perl itself.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Tara L Andrews E<lt>aurum@cpan.orgE<gt>
+Tara L Andrews E<lt>aurum@cpan.orgE<gt> (initial release)
+
+Shadowcat Systems L<http://www.scsys.co.uk/> (user functionality; making it all work)
+

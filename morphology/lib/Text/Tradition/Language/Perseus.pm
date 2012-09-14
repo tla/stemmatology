@@ -135,12 +135,8 @@ sub _wordform_from_row {
 	
 1;
 
-=head1 LICENSE
+=head1 ACKNOWLEDGMENTS
 
-This package is free software and is provided "as is" without express
-or implied warranty.  You can redistribute it and/or modify it under
-the same terms as Perl itself.
-
-=head1 AUTHOR
-
-Tara L Andrews E<lt>aurum@cpan.orgE<gt>
+The Perseus model and its dependents (currently Latin and Greek) draws its
+data from the ARTFL project at the University of Chicago. The module author
+wishes to thank Helma Dik in particular for her kind assistance.

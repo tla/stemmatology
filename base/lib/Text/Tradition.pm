@@ -7,7 +7,6 @@ use Moose::Util qw/ does_role apply_all_roles /;
 use Text::Tradition::Collation;
 use Text::Tradition::Error;
 use Text::Tradition::Witness;
-use Text::Tradition::User;
 use TryCatch;
 
 use vars qw( $VERSION );
@@ -20,6 +19,7 @@ eval { with 'Text::Tradition::HasStemma'; };
 # 	warn "Text::Tradition::Analysis not found. Disabling stemma analysis functionality";
 # };
 eval { with 'Text::Tradition::Language'; };
+eval { with 'Text::Tradition::Ownership'; };
 
 has 'collation' => (
     is => 'ro',
@@ -52,22 +52,6 @@ has '_initialized' => (
 	default => undef,
 	writer => '_init_done',
 	); 
-
-has 'user' => (
-    is => 'rw',
-    isa => 'Text::Tradition::User',
-    required => 0,
-    predicate => 'has_user',
-    clearer => 'clear_user',
-    weak_ref => 1
-    );
-
-has 'public' => (
-    is => 'rw',
-    isa => 'Bool',
-    required => 0,
-    default => sub { 0; },
-    );
 
 # Create the witness before trying to add it
 around 'add_witness' => sub {

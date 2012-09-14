@@ -95,16 +95,6 @@ SKIP: {
 	$graphml = $c->as_graphml;
 	like( $graphml, qr/digraph/, "Digraph declaration exists in GraphML" );
 }
-
-# Now add a user, write to GraphML, and look at the output.
-unlike( $graphml, qr/testuser/, "Test user name does not exist in GraphML yet" );
-my $testuser = Text::Tradition::User->new( 
-	id => 'testuser', password => 'testpass' );
-is( ref( $testuser ), 'Text::Tradition::User', "Created test user object" );
-$testuser->add_tradition( $tradition );
-is( $tradition->user->id, $testuser->id, "Tradition assigned to test user" );
-$graphml = $c->as_graphml;
-like( $graphml, qr/testuser/, "Test user name now exists in GraphML" );
 }
 
 

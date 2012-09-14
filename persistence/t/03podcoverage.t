@@ -7,7 +7,7 @@ eval "use Test::Pod::Coverage 1.04";
 plan skip_all => 'Test::Pod::Coverage 1.04 required' if $@;
 plan skip_all => 'set TEST_POD to enable this test' unless $ENV{TEST_POD};
 
-my @exclude = qw/ Store Collation::Data TypeMap::Entry /;
+my @exclude = qw/ Store TypeMap::Entry /;
 
 my %mods;
 map { $mods{$_} = 1 } all_modules();

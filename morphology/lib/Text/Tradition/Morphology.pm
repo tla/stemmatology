@@ -12,8 +12,18 @@ $VERSION = "0.1";
 
 =head1 NAME
 
-Text::Tradition::Morphology - add-on to associate lemma and part-of-speech 
-information to Text::Tradition::Collation::Reading objects
+Text::Tradition::Morphology - morphology plugin for Text::Tradition
+
+=head1 DESCRIPTION
+
+The Text::Tradition::Morphology package enables lemma and part-of-speech
+information for traditions and their Reading objects. This distribution
+includes the L<Text::Tradition::Language> role for Traditions, the
+L<Text::Tradition::Morphology> role (this package) for Readings, and a set
+of Language::* modules for language-specific lemmatization.
+
+See L<Text::Tradition::Collation::Reading::Lexeme> for more about the 
+morphology object structure.
 
 =cut
 
@@ -69,7 +79,7 @@ around 'normal_form' => sub {
 	}
 };
 
-=head1 METHODS
+=head1 READING METHODS
 
 Methods for the morphological information (if any) attached to readings.
 A reading may be made up of multiple lexemes; the concatenated lexeme
@@ -98,7 +108,7 @@ Adds the Lexeme in $lexobj to the list of lexemes.
 
 If the language of the reading is set, this method will use the appropriate
 Language model to determine the lexemes that belong to this reading.  See
-L<Text::Tradition::lemmatize> if you wish to lemmatize an entire tradition.
+L<Text::Tradition::Language::lemmatize> if you wish to lemmatize an entire tradition.
 
 =cut
 

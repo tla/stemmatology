@@ -10,8 +10,9 @@ requires 'throw';
 =head1 NAME
 
 Text::Tradition::Language - add-on role to enable language awareness and 
-morphology functions to a Text::Tradition object.  See also 
-L<Text::Tradition::Morphology> for individual reading morphologies.
+morphology functions to a Text::Tradition object.  Please see
+L<Text::Tradition::Morphology> for more information on the morphology 
+add-on distribution.
 
 =head1 METHODS
 
@@ -59,12 +60,3 @@ sub lemmatize {
 
 1;
 
-=head1 LICENSE
-
-This package is free software and is provided "as is" without express
-or implied warranty.  You can redistribute it and/or modify it under
-the same terms as Perl itself.
-
-=head1 AUTHOR
-
-Tara L Andrews E<lt>aurum@cpan.orgE<gt>

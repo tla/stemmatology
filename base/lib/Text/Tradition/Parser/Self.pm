@@ -179,8 +179,6 @@ sub parse {
     $tradition->name( $graph_data->{'name'} );
 
     my $use_version;
-    my $tmeta = $tradition->meta;
-    my $cmeta = $collation->meta;
     foreach my $gkey ( keys %{$graph_data->{'global'}} ) {
 		my $val = $graph_data->{'global'}->{$gkey};
 		if( $gkey eq 'version' ) {
@@ -195,12 +193,6 @@ sub parse {
 			} else {
 				warn "Analysis module not installed; DROPPING stemmata";
 			}
-		} elsif( $gkey eq 'language' ) {
-			if( $tradition->can('language') ) {
-				$tradition->language( $val );
-			} else {
-				warn "Morphology module not installed; DROPPING language";
-			}
 		} elsif( $gkey eq 'user' ) {
 			# Assign the tradition to the user if we can
 			if( exists $opts->{'userstore'} ) {
@@ -214,10 +206,12 @@ sub parse {
 			} else {
 				warn( "DROPPING user assignment without a specified userstore" );
 			}
-		} elsif( $tmeta->has_attribute( $gkey ) ) {
+		} elsif( $tradition->can( $gkey ) ) {
 			$tradition->$gkey( $val );
-		} else {
+		} elsif( $collation->can( $gkey ) ) {
 			$collation->$gkey( $val );
+		} else {
+			warn( "DROPPING unsupported attribute $gkey" );
 		}
 	}
 		

@@ -18,9 +18,9 @@ requires( 'Moose' );
 requires( 'Moose::Role' );
 requires( 'Set::Scalar' );
 requires( 'Text::Tradition' );
-requires( 'Text::Tradition::Directory' );
 requires( 'Text::Tradition::Error' );
 requires( 'TryCatch' );
 
 build_requires( 'Test::More::UTF8' );
+build_requires( 'Text::Tradition::Directory' );
 &WriteAll;

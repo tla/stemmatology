@@ -11,6 +11,9 @@ use Text::Tradition::Directory;
 
 my $newt = Text::Tradition->new( 'input' => 'Self', 
 	'file' => 't/data/florilegium_graphml.xml' );
+	
+my $graphml = $newt->collation->as_graphml;
+unlike( $graphml, qr/testuser/, "Test user name does not exist in GraphML yet" );
 
 my $fh = File::Temp->new();
 my $file = $fh->filename;

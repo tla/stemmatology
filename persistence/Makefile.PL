@@ -15,6 +15,7 @@ requires( 'KiokuDB::TypeMap::Entry::Naive' );
 requires( 'KiokuX::Model' );
 requires( 'KiokuX::User::Util' );
 requires( 'Moose' );
+requires( 'Moose::Role' );
 requires( 'Safe::Isa' );
 requires( 'TryCatch' );
 requires( 'YAML::XS' );
