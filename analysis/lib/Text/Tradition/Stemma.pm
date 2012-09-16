@@ -237,6 +237,7 @@ sub as_dot {
     # Get default and specified options
     my %graphopts = (
     	# 'ratio' => 1,
+    	'bgcolor' => 'transparent',
     );
     my %nodeopts = (
 		'fontsize' => 11,
@@ -451,52 +452,11 @@ sub as_svg {
     unshift( @cmd, $self->is_undirected ? 'neato' : 'dot' );
     my $svg;
     my $dotfile = File::Temp->new();
-    ## TODO REMOVE
-    # $dotfile->unlink_on_destroy(0);
     binmode $dotfile, ':utf8';
     print $dotfile $dot;
     close $dotfile;
     push( @cmd, $dotfile->filename );
     run( \@cmd, ">", binary(), \$svg );
-    # HACK: Parse the SVG and change the dimensions.
-    # Get rid of width and height attributes to allow scaling.
-    if( $opts->{'size'} ) {
-    	require XML::LibXML;
-		my $parser = XML::LibXML->new( load_ext_dtd => 0 );
-		my $svgdoc;
-		eval {
-			$svgdoc = $parser->parse_string( decode_utf8( $svg ) );
-		};
-		throw( "Could not reparse SVG: $@" ) if $@;
-    	my( $ew, $eh ) = @{$opts->{'size'}};
-    	# If the graph is wider than it is tall, set width to ew and remove height.
-    	# Otherwise set height to eh and remove width.
-    	# TODO Also scale the viewbox
-		my $width = $svgdoc->documentElement->getAttribute('width');
-		my $height = $svgdoc->documentElement->getAttribute('height');
-		$width =~ s/\D+//g;
-		$height =~ s/\D+//g;
-		my( $remove, $keep, $val, $viewbox );
-		if( $width > $height ) {
-			$remove = 'height';
-			$keep = 'width';
-			$val = $ew . 'px';
-			my $vbheight = $width / $ew * $height;
-			$viewbox = "0.00 0.00 $width.00" . sprintf( "%.2f", $vbheight );
-		} else {
-			$remove = 'width';
-			$keep = 'height';
-			$val = $eh . 'px';
-			my $vbwidth = $height / $eh * $width;
-			$viewbox = "0.00 0.00 " . sprintf( "%.2f", $vbwidth ) . " $height.00";
-		}
-		$svgdoc->documentElement->removeAttribute( $remove );
-		$svgdoc->documentElement->setAttribute( $keep, $val );
-		$svgdoc->documentElement->removeAttribute( 'viewBox' );
-		$svgdoc->documentElement->setAttribute( 'viewBox', $viewbox );
-		$svg = $svgdoc->toString();
-	}
-    # Return the result
     return decode_utf8( $svg );
 }
 
