@@ -305,6 +305,7 @@ sub add_json_witnesses {
 }
 
 sub throw {
+	my $self = shift;
 	Text::Tradition::Error->throw( 
 		'ident' => 'Tradition error',
 		'message' => $_[0],

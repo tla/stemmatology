@@ -19,6 +19,7 @@ requires( 'Moose::Role' );
 requires( 'Text::Tradition' );
 requires( 'TryCatch' );
 build_requires( 'Safe::Isa' );
+build_requires( 'Test::Warn' );
 
 # Modules needed for morphology but not trivially CPANnable
 recommends( 'Lingua::TreeTagger' );
