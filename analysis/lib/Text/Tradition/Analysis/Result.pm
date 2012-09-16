@@ -9,6 +9,8 @@ use Text::Tradition::Error;
 
 =head1 NAME
 
+=encoding utf8
+
 Text::Tradition::Analysis::Result - object to express an IDP calculation result
 for a particular graph problem.
     
@@ -162,6 +164,7 @@ is( $problem->object_key, $result->object_key,
 =head1 METHODS
 
 =head2 $self->has_class( $witness )
+
 =head2 $self->class( $witness )
 
 If a class has been calculated for the given witness, has_class returns true
