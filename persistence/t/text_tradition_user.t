@@ -266,3 +266,11 @@ ok($fetched_t->public, 'Traditionlist returns public item');
     is($get_openid_user->id, 'http://blahblah.com/foo/bar/baz/lotsofjunk', 'Set id to unique url from openid');
     is($get_openid_user->email, 'fredbloggs@blahblah.com', 'Set email value to email from extension');
 }
+
+{
+	## Find the same openid user just by email
+	my $search_user = $user_store->find_user({ email => 'fredbloggs@blahblah.com' });
+	ok( $search_user, 'Found an OpenID user by email' );
+    is( $search_user->id, 'http://blahblah.com/foo/bar/baz/lotsofjunk', 'User has correct URL ID' );
+    is( $search_user->email, 'fredbloggs@blahblah.com', 'User has correct email' );
+}

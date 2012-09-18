@@ -456,7 +456,7 @@ sub _extract_openid_data {
 
 =head2 find_user( $userinfo )
 
-Takes a hashref of C<username>, and possibly openIDish results from
+Takes a hashref of C<username> or C<email>, and possibly openIDish results from
 L<Net::OpenID::Consumer>.
 
 Fetches the user object for the given username and returns it.
@@ -466,19 +466,27 @@ Fetches the user object for the given username and returns it.
 sub find_user {
     my ($self, $userinfo) = @_;
 
-    ## No username means probably an OpenID based user
-    if(!exists $userinfo->{username}) {
+    ## A URL field means probably an OpenID based user
+    if( exists $userinfo->{url} ) {
         _extract_openid_data($userinfo);
     }
 
-    my $username = $userinfo->{username};
-
-    ## No logins if user is deactivated (use lookup to fetch to re-activate)
-    my $user = $self->lookup(Text::Tradition::User->id_for_user($username));
-    return if(!$user || !$user->active);
-
+	my $user;
+	if( exists $userinfo->{username} ) {
+    	my $username = $userinfo->{username};
+		## No logins if user is deactivated (use lookup to fetch to re-activate)
+		$user = $self->lookup(Text::Tradition::User->id_for_user($username));
+		## If there is an inactive user, skip it
+		return if( $user && !$user->active );
+	} elsif( exists $userinfo->{email} ) {
+		## Scan the users looking for a matching email
+		my @matches;
+		$self->scan( sub { push( @matches, @_ ) 
+			if $_[0]->isa('Text::Tradition::User') 
+			&& $_[0]->email eq $userinfo->{email} } );
+		$user = shift @matches;
+	}
 #    print STDERR "Found user, $username, email is :", $user->email, ":\n";
-
     return $user;
 }
 
