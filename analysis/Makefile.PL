@@ -17,7 +17,7 @@ requires( 'LWP::UserAgent' );
 requires( 'Moose' );
 requires( 'Moose::Role' );
 requires( 'Set::Scalar' );
-requires( 'Text::Tradition' );
+requires( 'Text::Tradition' => '1.1' );
 requires( 'Text::Tradition::Error' );
 requires( 'TryCatch' );
 

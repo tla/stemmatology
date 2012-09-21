@@ -17,6 +17,7 @@ requires( 'KiokuX::User::Util' );
 requires( 'Moose' );
 requires( 'Moose::Role' );
 requires( 'Safe::Isa' );
+requires( 'Text::Tradition' => '1.1' );
 requires( 'TryCatch' );
 requires( 'YAML::XS' );
 requires( 'namespace::clean' );
