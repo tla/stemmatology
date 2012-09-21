@@ -266,14 +266,11 @@ sub as_dot {
 
 	# Add each of the nodes.
     foreach my $n ( $graph->vertices ) {
+    	my %vattr = ( 'id' => $n );  # Set the SVG element ID to the sigil itself
         if( $graph->has_vertex_attribute( $n, 'label' ) ) {
-        	my $ltext = $graph->get_vertex_attribute( $n, 'label' );
-        	push( @dotlines, _make_dotline( $n, 'label' => $ltext ) );
-        } else {
-        	# Use the default display settings.
-        	$n = _dotquote( $n );
-            push( @dotlines, "  $n;" );
+        	$vattr{'label'} = $graph->get_vertex_attribute( $n, 'label' );
         }
+		push( @dotlines, _make_dotline( $n, %vattr ) );
     }
     # Add each of our edges.
     foreach my $e ( $graph->edges ) {
