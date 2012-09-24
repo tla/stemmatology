@@ -10,8 +10,10 @@ use Module::Load;
 use Text::Tradition::Collation::Reading::Lexeme;
 use Text::Tradition::Collation::Reading::WordForm;
 use TryCatch;
+use Unicode::Normalize;
 
-@EXPORT_OK = qw/ lemmatize_treetagger reading_lookup_treetagger lfs_morph_tags /;
+@EXPORT_OK = qw/ lemmatize_treetagger reading_lookup_treetagger lfs_morph_tags 
+	unicode_regularize /;
 
 =head1 NAME
 
@@ -281,6 +283,24 @@ sub _by_structid {
 	return -1 if $a eq 'cat';
 	return 1 if $b eq 'cat';
 	return $a cmp $b;
+}
+
+=head2 unicode_regularize( $word )
+
+Returns a lowercased and accent-stripped version of the word.
+
+=cut
+
+sub unicode_regularize {
+	my $word = shift;
+	my @normalized;
+	my @letters = split( '', lc( $word ) );
+	foreach my $l ( @letters ) {
+		my $d = chr( ord( NFKD( $l ) ) );
+		next unless $d =~ /[[:alnum:]]/; # toss out e.g. Greek underdots
+		push( @normalized, $d );
+	}
+	return join( '', @normalized );
 }
 
 1;

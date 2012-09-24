@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Lingua::TagSet::TreeTagger::English;
 use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger
-	lfs_morph_tags /;
+	lfs_morph_tags unicode_regularize /;
 use TryCatch;
 
 =head1 NAME
@@ -90,6 +90,17 @@ sub _parse_wordform {
 }
 
 1;
+
+
+=head2 regularize( $text )
+
+Returns a regularized form of the reading for the purposes of collation.
+
+=cut
+
+sub regularize {
+	return unicode_regularize( @_ );
+}
 
 =head2 TODO
 

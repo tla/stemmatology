@@ -20,6 +20,10 @@ depends on the Lingua::Morph::Perseus module for access to PhiloLogic database d
 
 Evaluates the string using Treetagger and Perseus, and returns the results.
 
+=head2 reading_lookup( $word )
+
+Returns a single-word morphological lookup of the given word using Perseus.
+
 =begin testing
 
 use Text::Tradition;
@@ -68,6 +72,34 @@ sub lemmatize {
 
 sub reading_lookup {
 	return __PACKAGE__->perseus_reading_lookup( @_ );
+}
+
+=head2 regularize( $text )
+
+Returns a regularized form of the reading for the purposes of collation.
+
+=cut
+
+sub regularize {
+	my( $word ) = @_;
+	# We don't really distinguish between commas and semicolons properly
+	# in the manuscript.  Make them the same.
+	$word =~ s/\./\,/g;
+
+	# Get rid of accent marks.
+	$word =~ s/՛//g;
+	# Get rid of hyphen.
+	$word =~ s/֊//g;
+	# Get rid of any backtick that falls mid-word.
+	$word =~ s/՝(.)/$1/g;
+	# Standardize ligatures.
+	$word =~ s/աւ/օ/g;	# for easy vocalic comparison to ո
+	$word =~ s/և/եւ/g;
+	
+	# TODO split off suspected prefix/suffix markers?
+	# Downcase the word.
+	$word = lc( $word );
+	return $word;
 }
 
 1;

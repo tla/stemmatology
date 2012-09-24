@@ -5,7 +5,8 @@ use warnings;
 use Lingua::TagSet::Multext;
 use Lingua::TagSet::TreeTagger::French;
 use Module::Load qw/ load /;
-use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger lfs_morph_tags /;
+use Text::Tradition::Language::Base qw/ lemmatize_treetagger reading_lookup_treetagger 
+	lfs_morph_tags unicode_regularize /;
 use TryCatch;
 
 =head1 NAME
@@ -171,6 +172,16 @@ sub _parse_wordform {
 		}
 	}
 	return @forms;
+}
+
+=head2 regularize( $text )
+
+Returns a regularized form of the reading for the purposes of collation.
+
+=cut
+
+sub regularize {
+	return unicode_regularize( @_ );
 }
 
 1;

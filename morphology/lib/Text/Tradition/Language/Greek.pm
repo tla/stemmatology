@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Module::Load;
 use parent qw/ Text::Tradition::Language::Perseus /;
+use Text::Tradition::Language::Base qw/ unicode_regularize /;
 
 =head1 NAME
 
@@ -19,6 +20,10 @@ depends on the Lingua::Morph::Perseus module for access to PhiloLogic database d
 =head2 lemmatize( $text )
 
 Evaluates the string using Treetagger and Perseus, and returns the results.
+
+=head2 reading_lookup( $word )
+
+Returns a single-word morphological lookup of the given word using Perseus.
 
 =begin testing
 
@@ -68,6 +73,16 @@ sub lemmatize {
 
 sub reading_lookup {
 	return __PACKAGE__->perseus_reading_lookup( @_ );
+}
+
+=head2 regularize( $text )
+
+Returns a regularized form of the reading for the purposes of collation.
+
+=cut
+
+sub regularize {
+	return unicode_regularize( @_ );
 }
 
 1;
