@@ -180,6 +180,9 @@ if( $xpwit ) {
 
 =cut
 
+# Enable plugin(s) if available
+eval { with 'Text::Tradition::WitLanguage'; };
+	
 subtype 'SourceType',
 	as 'Str',
 	where { $_ =~ /^(xmldesc|plaintext|json|collation)$/ },
@@ -659,6 +662,9 @@ sub _init_from_json {
 
 sub _init_from_plaintext {
     my( $self ) = @_;
+    unless( $self->has_sigil ) {
+    	throw( "No sigil defined for the plaintext witness" );
+    }
     my $str;
     if( $self->has_file ) {
     	my $ok = open( INPUT, $self->file );
