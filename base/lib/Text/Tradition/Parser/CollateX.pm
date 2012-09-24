@@ -125,7 +125,9 @@ sub parse {
 			## Add the path for each witness listesd.
             # Create the witness objects if they does not yet exist.
             foreach my $wit ( split( /, /, $e->{$WITKEY} ) ) {
-				unless( $tradition->witness( $wit ) ) {
+				if( $tradition->witness( $wit ) ) {
+					$tradition->witness( $wit )->is_collated( 1 );
+				} else {
 					$tradition->add_witness( 
 						'sigil' => $wit, 'sourcetype' => 'collation' );
 				}

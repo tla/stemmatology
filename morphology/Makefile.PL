@@ -16,7 +16,7 @@ requires( 'Lingua::TagSet::TreeTagger::English' );
 requires( 'Module::Load' );
 requires( 'Moose' );
 requires( 'Moose::Role' );
-requires( 'Text::Tradition' => '1.1' );
+requires( 'Text::Tradition' => '1.2' );
 requires( 'TryCatch' );
 build_requires( 'Safe::Isa' );
 build_requires( 'Test::Warn' );

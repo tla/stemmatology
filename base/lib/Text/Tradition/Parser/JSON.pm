@@ -108,8 +108,14 @@ sub parse {
 	my @witnesses; # Keep the ordered list of our witnesses
     my %ac_wits;  # Track these for later removal
     foreach my $sigil ( map { $_->{'witness'} } @{$table->{'alignment'}} ) {
-        my $wit = $tradition->add_witness( 
-        	'sigil' => $sigil, 'sourcetype' => 'collation' );
+    	my $wit;
+    	if( $tradition->has_witness( $sigil ) {
+    		$wit = $tradition->witness( $sigil );
+    		$wit->is_collated( 1 );
+    	} else {
+			$wit = $tradition->add_witness( 
+				'sigil' => $sigil, 'sourcetype' => 'collation' );
+		}
         $wit->path( [ $c->start ] );
         push( @witnesses, $wit );
         my $aclabel = $c->ac_label;

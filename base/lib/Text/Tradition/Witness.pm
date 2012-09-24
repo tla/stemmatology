@@ -280,6 +280,11 @@ has 'layertext' => (
 	predicate => 'has_layertext',
 	);
 	
+has 'is_collated' => (
+	is => 'rw',
+	isa => 'Bool'
+	);
+	
 # Path.	 This is an array of Reading nodes that can be saved during
 # initialization, but should be cleared before saving in a DB.
 has 'path' => (
@@ -317,7 +322,10 @@ sub BUILD {
 		$self->$init_sub();
 		# Remove our XML / source objects; we no longer need them.
 		$self->clear_object if $self->has_object;
-		$self->tradition->collation->make_witness_path( $self );
+		# $self->tradition->collation->make_witness_path( $self );
+	}
+	if( $self->sourcetype eq 'collation' ) {
+		$self->is_collated( 1 );
 	}
 	return $self;
 }
