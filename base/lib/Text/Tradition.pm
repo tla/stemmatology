@@ -334,6 +334,19 @@ sub BUILD {
     return $self;
 }
 
+=head2 clear_collation
+
+Blow away the existing collation object and mark all witnesses as uncollated.
+Not to be used lightly.
+
+=cut
+
+sub clear_collation {
+	my $self = shift;
+	$self->_save_collation( Text::Tradition::Collation->new( tradition => $self ) );
+	map { $_->is_collated( 0 ) } $self->witnesses;
+}
+
 =head2 add_json_witnesses( $jsonstring, $options )
 
 Adds a set of witnesses from a JSON array specification. This is a wrapper
