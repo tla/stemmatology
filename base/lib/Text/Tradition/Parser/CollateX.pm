@@ -3,6 +3,7 @@ package Text::Tradition::Parser::CollateX;
 use strict;
 use warnings;
 use Text::Tradition::Parser::GraphML qw/ graphml_parse /;
+use TryCatch;
 
 =head1 NAME
 
@@ -114,6 +115,7 @@ sub parse {
     }
         
     # Now add the path edges.
+    my %transpositions;
     foreach my $e ( @{$graph_data->{'edges'}} ) {
         my $from = $e->{'source'};
         my $to = $e->{'target'};
@@ -133,24 +135,72 @@ sub parse {
 				}
 				$collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
 			}
-        } else { # type 'relationship'
-        	if( $collation->linear ) {
-				$collation->add_relationship( $from->{$IDKEY}, $to->{$IDKEY},
-					{ 'type' => 'transposition' } );
-			} else {
-				$collation->merge_readings( $from->{$IDKEY}, $to->{$IDKEY} );
-			}
+        } else { # CollateX-marked transpositions
+			# Save the transposition links so that we can apply them 
+			# once they are all collected.
+			$transpositions{ $from->{$IDKEY} } = $to->{$IDKEY};
         }
     }
-
-    # Rank the readings.
-    $collation->calculate_common_readings()
-    	if $collation->linear; # will implicitly rank
+    
+    # TODO Split readings by word unless we're asked not to    	
+    
+    # Mark initialization as done so that relationship validation turns on
+    $tradition->_init_done( 1 );
+    # Now apply transpositions as appropriate.
+    if( $collation->linear ) {
+    	# Sort the transpositions by reading length, then try first to merge them
+    	# and then to transpose them. Warn if the text isn't identical.
+    	foreach my $k ( sort { 
+				my $t1 = $collation->reading( $a )->text;
+				my $t2 = $collation->reading( $b )->text;
+				return length( $t2 ) <=> length( $t1 );
+    		} keys %transpositions ) {
+    		my $v = $transpositions{$k};
+    		my $merged;
+			try {
+				$collation->add_relationship( $k, $v, { type => 'collated' } );
+				$merged = 1;
+			} catch ( Text::Tradition::Error $e ) {
+				1;
+			}
+    		unless( $merged ) {
+    			my $transpopts = { type => 'transposition' };
+    			unless( $collation->reading( $k )->text eq $collation->reading( $v )->text ) {
+    				$transpopts->{annotation} = 'CollateX fuzzy match';
+    			}
+				try {
+					$collation->add_relationship( $k, $v, $transpopts );
+				} catch ( Text::Tradition::Error $e ) {
+					warn "Could neither merge nor transpose $k and $v; DROPPING transposition";
+				}
+	    	}		
+    	}
+    
+    	# Rank the readings and find the commonalities
+    	$collation->calculate_ranks();
+    	$collation->flatten_ranks();
+    	$collation->calculate_common_readings();
+    } else {
+    	my %merged;
+    	foreach my $k ( keys %transpositions ) {
+    		my $v = $transpositions{$k};
+    		$k = $merged{$k} if exists $merged{$k};
+    		$v = $merged{$v} if exists $merged{$v};
+    		next if $k eq $v;
+    		if( $collation->reading( $k )->text eq $collation->reading( $v )->text ) {
+    			$collation->merge_readings( $k, $v );
+    			$merged{$v} = $k;
+    		} else {
+    			warn "DROPPING transposition link for non-identical readings $k and $v";
+    		}
+    	}
+    }
 
     # Save the text for each witness so that we can ensure consistency
     # later on
 	$tradition->collation->text_from_paths();	
 }
+	
     
 =head1 BUGS / TODO
 
