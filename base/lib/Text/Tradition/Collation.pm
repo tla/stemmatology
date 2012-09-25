@@ -552,7 +552,7 @@ sub reading_witnesses {
 	# We need only check either the incoming or the outgoing edges; I have
 	# arbitrarily chosen "incoming".  Thus, special-case the start node.
 	if( $reading eq $self->start ) {
-		return map { $_->sigil } $self->tradition->witnesses;
+		return map { $_->sigil } grep { $_->is_collated } $self->tradition->witnesses;
 	}
 	my %all_witnesses;
 	foreach my $e ( $self->sequence->edges_to( $reading ) ) {
@@ -733,6 +733,32 @@ sub as_dot {
         	$substart{$edge->[1]} = $edge->[0];
         }
     }
+    
+    # If we are asked to, add relationship links
+    if( exists $opts->{show_relations} ) {
+    	my $filter = $opts->{show_relations}; # can be 'transposition' or 'all'
+    	if( $filter eq 'transposition' ) {
+    		$filter =~ qr/^transposition$/;
+    	}
+    	foreach my $redge ( $self->relationships ) {
+    		if( $used{$redge->[0]} && $used{$redge->[1]} ) {
+    			if( $filter ne 'all' ) {
+    				my $rel = $self->get_relationship( $redge );
+    				next unless $rel->type =~ /$filter/;
+					my $variables = { 
+						arrowhead => 'none',
+						color => '#FFA14F',
+						constraint => 'false',
+						label => uc( substr( $rel->type, 0, 4 ) ), 
+						penwidth => '3',
+					};
+					$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n",
+						$redge->[0], $redge->[1], _dot_attr_string( $variables ) );
+				}
+    		}
+    	}
+    }
+    
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
     	my $witstr = $self->_path_display_label ( $self->path_witnesses( $substart{$node}, $node ) );
@@ -1243,14 +1269,17 @@ sub alignment_table {
         # say STDERR "Making witness row(s) for " . $wit->sigil;
         my @wit_path = $self->reading_sequence( $self->start, $self->end, $wit->sigil );
         my @row = _make_witness_row( \@wit_path, \@all_pos );
-        push( @{$table->{'alignment'}}, 
-        	{ 'witness' => $wit->sigil, 'tokens' => \@row } );
+        my $witobj = { 'witness' => $wit->sigil, 'tokens' => \@row };
+        $witobj->{'identifier'} = $wit->identifier if $wit->identifier;
+        push( @{$table->{'alignment'}}, $witobj );
         if( $wit->is_layered ) {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
         		$wit->sigil.$self->ac_label );
             my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos );
-			push( @{$table->{'alignment'}},
-				{ 'witness' => $wit->sigil.$self->ac_label, 'tokens' => \@ac_row } );
+            my $witacobj = { 'witness' => $wit->sigil.$self->ac_label, 
+            	'tokens' => \@ac_row };
+            $witacobj->{'identifier'} = $wit->identifier if $wit->identifier;
+			push( @{$table->{'alignment'}}, $witacobj );
         }           
     }
     $self->cached_table( $table );
