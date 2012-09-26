@@ -138,10 +138,14 @@ sub _remove_formatting {
 		my $parent = $n->parentNode();
 		my @children = $n->childNodes();
 		my $first = shift @children;
-		$parent->replaceChild( $first, $n );
-		foreach my $c ( @children ) {
-			$parent->insertAfter( $c, $first );
-			$first = $c;
+		if( $first ) {
+			$parent->replaceChild( $first, $n );
+			foreach my $c ( @children ) {
+				$parent->insertAfter( $c, $first );
+				$first = $c;
+			}
+		} else {
+			$parent->removeChild( $n );
 		}
 	}
 	
@@ -176,7 +180,7 @@ sub _get_base {
 		# Anchor to mark the end of some apparatus; save its ID.
 		push( @readings, { 'type' => 'anchor', 
 		    'content' => $xn->getAttribute( 'xml:id' ) } );
-	} elsif ( $xn->nodeName ne 'note' ) {  # Any tag we don't know to disregard
+	} elsif ( $xn->nodeName !~ /^(note|seg)$/ ) {  # Any tag we don't know to disregard
 	    print STDERR "Unrecognized tag " . $xn->nodeName . "\n";
 	}
 	return @readings;
@@ -414,6 +418,13 @@ sub _expand_all_paths {
     
     # Make the path edges
     $c->make_witness_paths();
+    
+    # Now remove any orphan nodes, and warn that we are doing so.
+    foreach my $v ( $c->sequence->isolated_vertices ) {
+    	my $r = $c->reading( $v );
+    	print STDERR "Deleting orphan reading $r / " . $r->text;
+    	$c->del_reading( $r );
+    }
 }
 
 sub _add_wit_path {

@@ -109,7 +109,7 @@ sub parse {
     my %ac_wits;  # Track these for later removal
     foreach my $sigil ( map { $_->{'witness'} } @{$table->{'alignment'}} ) {
     	my $wit;
-    	if( $tradition->has_witness( $sigil ) {
+    	if( $tradition->has_witness( $sigil ) ) {
     		$wit = $tradition->witness( $sigil );
     		$wit->is_collated( 1 );
     	} else {
