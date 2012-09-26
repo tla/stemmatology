@@ -29,7 +29,7 @@ error( 400, 'Content type must be application/json' )
 # Get the post data, and decode it according to the given character set 
 my $jsonstr = decode( $encoding, $q->param('POSTDATA') );
 $jsonstr =~ s/\&/\n/g;
-# TODO eval this; if it breaks return an error.
+# Validate the JSON
 my $request;
 try {
     $request = from_json( $jsonstr );
@@ -84,7 +84,7 @@ foreach my $p ( @problems ) {
 if( @needcalc ) {
 	my $arg = join( ',', map { $_->object_key } @needcalc );
 	my $client = Gearman::Client->new;
-	$client->job_servers( '127.0.0.1' );
+	$client->job_servers( '127.0.0.1:4730' );
 	my $task = $client->dispatch_background( run_idp => $arg );
 	# See if it finishes quickly
 	my $wait = 3;

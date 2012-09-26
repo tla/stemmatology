@@ -23,7 +23,7 @@ my @idp_programs = qw/ findGroupings findClasses /;
 my $witness_map = {};
 
 my $worker = Gearman::Worker->new();
-$worker->job_servers('127.0.0.1');
+$worker->job_servers('127.0.0.1:4730');
 $worker->register_function( run_idp => \&run_idp );
 $worker->work while 1;
 
