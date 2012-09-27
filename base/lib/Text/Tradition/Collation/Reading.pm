@@ -104,12 +104,6 @@ has 'text' => (
 	writer => 'alter_text',
 	);
 	
-has 'language' => (
-	is => 'ro',
-	isa => 'Str',
-	predicate => 'has_language',
-	);
-	
 has 'is_start' => (
 	is => 'ro',
 	isa => 'Bool',
