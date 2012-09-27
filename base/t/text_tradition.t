@@ -44,7 +44,6 @@ try {
 	$s->rename_witness( 'D', 'Invalid Sigil' );
 	ok( 0, "Renamed witness with bad sigil" );
 } catch ( Text::Tradition::Error $e ) {
-	print STDERR $e->message . "\n";
 	is( $s->witness('D'), $wit_d, "Held onto witness during bad rename" );
 }
 
