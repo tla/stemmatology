@@ -3,9 +3,6 @@ package Text::Tradition::Collation::Relationship;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-enum 'RelationshipType' => qw( spelling orthographic grammatical lexical
-							   collated repetition transposition punctuation );
-
 enum 'RelationshipScope' => qw( local document global );
 
 no Moose::Util::TypeConstraints;
@@ -80,7 +77,7 @@ See the option descriptions above.
 
 has 'type' => (
 	is => 'ro',
-	isa => 'RelationshipType',
+	isa => 'Str',
 	required => 1,
 	);
 
@@ -168,6 +165,22 @@ Returns true if the relationship scope is anything other than 'local'.
 sub nonlocal {
 	my $self = shift;
 	return $self->scope ne 'local';
+}
+
+=head2 is_equivalent( $otherrel )
+
+Returns true if the type and scope of $otherrel match ours.
+
+=cut
+
+sub is_equivalent {
+	my( $self, $other, $check_ann ) = @_;
+	my $oksofar = $self->type eq $other->type && $self->scope eq $other->scope;
+	if( $check_ann ) {
+		return $oksofar && $self->annotation eq $other->annotation;
+	} else {
+		return $oksofar;
+	}
 }
 
 no Moose;

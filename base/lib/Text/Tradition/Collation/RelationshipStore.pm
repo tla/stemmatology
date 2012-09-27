@@ -2,8 +2,10 @@ package Text::Tradition::Collation::RelationshipStore;
 
 use strict;
 use warnings;
+use Safe::Isa;
 use Text::Tradition::Error;
 use Text::Tradition::Collation::Relationship;
+use Text::Tradition::Collation::RelationshipType;
 use TryCatch;
 
 use Moose;
@@ -67,6 +69,23 @@ has 'collation' => (
 	required => 1,
 	weak_ref => 1,
 	);
+	
+=head2 types 
+
+Registry of possible relationship types. See RelationshipType for more info.
+
+=cut
+	
+has 'relationship_types' => (
+	is => 'ro',
+	traits => ['Hash'],
+	handles => {
+		has_type => 'exists',
+		add_type => 'set',
+		type     => 'get',
+		del_type => 'delete'
+		},
+	);
 
 has 'scopedrels' => (
 	is => 'ro',
@@ -82,7 +101,7 @@ has 'graph' => (
     	relationships => 'edges',
     	add_reading => 'add_vertex',
     	delete_reading => 'delete_vertex',
-    },
+    	},
 	);
 	
 =head2 equivalence_graph()
@@ -108,7 +127,7 @@ has '_node_equivalences' => (
 		set_equivalence => 'set',
 		remove_equivalence => 'delete',
 		_clear_equivalence => 'clear',
-	},
+		},
 	);
 
 has '_equivalence_readings' => (
@@ -119,8 +138,49 @@ has '_equivalence_readings' => (
 		set_eqreadings => 'set',
 		remove_eqreadings => 'delete',
 		_clear_eqreadings => 'clear',
-	},
+		},
 	);
+	
+## Build function - here we have our default set of relationship types.
+
+sub BUILD {
+	my $self = shift;
+	
+	my $regularize = sub {
+		return $_[0]->can('regularize') ? $_[0]->regularize : $_[0]->text; };
+
+	my @DEFAULT_TYPES = (
+		{ name => 'collated', bindlevel => 50, is_weak => 1, is_transitive => 0, is_generalizable => 0 },
+		{ name => 'orthographic', bindlevel => 0 },
+		{ name => 'spelling', bindlevel => 1, record_sub => $regularize },
+		{ name => 'punctuation', bindlevel => 2, record_sub => $regularize },
+		{ name => 'grammatical', bindlevel => 2, record_sub => $regularize },
+		{ name => 'lexical', bindlevel => 2, record_sub => $regularize },
+		{ name => 'transposition', bindlevel => 50, is_colocation => 0, is_transitive => 0 },
+		{ name => 'repetition', bindlevel => 50, is_colocation => 0, is_transitive => 0 }
+		);
+	
+	foreach my $type ( @DEFAULT_TYPES ) {
+		$self->add_type( $type );
+	}
+}
+
+sub _regular_form {
+}
+
+around add_type => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $new_type;
+    if( @_ == 1 && $_[0]->$_isa( 'Text::Tradition::Collation::RelationshipType' ) ) {
+    	$new_type = shift;
+    } else {
+   		my %args = @_ == 1 ? %{$_[0]} : @_;
+		$new_type = Text::Tradition::Collation::RelationshipType->new( %args );
+	}
+    $self->$orig( $new_type->name => $new_type );
+    return $new_type;
+};
 	
 around add_reading => sub {
 	my $orig = shift;
@@ -184,8 +244,8 @@ sub create {
 	my $target = delete $options->{'orig_b'};
 	my $rel = $self->get_relationship( $source, $target );
 	if( $rel ) {
-		if( $rel->type eq 'collated' ) {
-			# Always replace a 'collated' relationship with a more descriptive
+		if( $self->type( $rel->type )->is_weak ) {
+			# Always replace a weak relationship with a more descriptive
 			# one, if asked.
 			$self->del_relationship( $source, $target );
 		} elsif( $rel->type ne $options->{'type'} ) {
@@ -197,6 +257,11 @@ sub create {
 	}
 	
 	$rel = Text::Tradition::Collation::Relationship->new( $options );
+	my $reltype = $self->type( $rel->type );
+	# Validate the options given against the relationship type wanted
+	throw( "Cannot set nonlocal scope on relationship of type " . $reltype->name )
+		if $rel->nonlocal && !$reltype->is_generalizable;
+	
 	$self->add_scoped_relationship( $rel ) if $rel->nonlocal;
 	return $rel;
 }
@@ -210,8 +275,8 @@ non-locally.  Key on whichever reading occurs first alphabetically.
 
 sub add_scoped_relationship {
 	my( $self, $rel ) = @_;
-	my $rdga = $rel->type eq 'orthographic' ? $rel->reading_a : lc( $rel->reading_a );
-	my $rdgb = $rel->type eq 'orthographic' ? $rel->reading_b : lc( $rel->reading_b );	
+	my $rdga = $rel->reading_a;
+	my $rdgb = $rel->reading_b;	
 	my $r = $self->scoped_relationship( $rdga, $rdgb );
 	if( $r ) {
 		warn sprintf( "Scoped relationship of type %s already exists between %s and %s",
@@ -232,15 +297,10 @@ between the two reading strings. Returns undef if there is no general relationsh
 sub scoped_relationship {
 	my( $self, $rdga, $rdgb ) = @_;
 	my( $first, $second ) = sort( $rdga, $rdgb );
-	my( $lcfirst, $lcsecond ) = sort( lc( $rdga ), lc( $rdgb ) );
 	if( exists $self->scopedrels->{$first}->{$second} ) {
 		return $self->scopedrels->{$first}->{$second};
-	} elsif( exists $self->scopedrels->{$lcfirst}->{$lcsecond} ) {
-		my $rel = $self->scopedrels->{$lcfirst}->{$lcsecond};
-		return $rel->type ne 'orthographic' ? $rel : undef;
-	} else {
-		return undef;
-	}
+	} 
+	return undef;
 }
 
 =head2 add_relationship( $self, $source, $sourcetext, $target, $targettext, $opts )
@@ -398,43 +458,60 @@ sub add_relationship {
 	throw( "Cannot set relationship on a meta reading" )
 		if( $sourceobj->is_meta || $targetobj->is_meta );
 	my $relationship;
+	my $reltype;
 	my $thispaironly;
 	my $droppedcolls = [];
 	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
 		$relationship = $options;
+		$reltype = $self->type( $relationship->type );
 		$thispaironly = 1;  # If existing rel, set only where asked.
+		# Test the validity
+		my( $is_valid, $reason ) = $self->relationship_valid( $source, $target, 
+			$relationship->type, $droppedcolls );
+		unless( $is_valid ) {
+			throw( "Invalid relationship: $reason" );
+		}
 	} else {
-		# Check the options
-		$options->{'scope'} = 'local' unless $options->{'scope'};
-		$options->{'scope'} = 'local' if $options->{'type'} eq 'collated';
-		$options->{'scope'} = 'local' if $options->{'type'} eq 'transposition';
+		$reltype = $self->type( $options->{type} );
 		
+		# Try to create the relationship object.
+		my $rdga = $reltype->record_sub->( $sourceobj );
+		my $rdgb = $reltype->record_sub->( $targetobj );
+		$options->{'orig_a'} = $sourceobj;
+		$options->{'orig_b'} = $targetobj;
+		$options->{'reading_a'} = $rdga;
+		$options->{'reading_b'} = $rdgb;
+    	if( exists $options->{'scope'} && $options->{'scope'} ne 'local' ) {
+			# Is there a relationship with this a & b already?
+			if( $rdga eq $rdgb ) {
+				# If we have canonified to the same thing for the relationship
+				# type we want, something is wrong.
+				# NOTE we want to allow this at the local level, as a cheap means
+				# of merging readings in the UI, until we get a better means.
+				throw( "Canonifier returns identical form $rdga for this relationship type" );
+			}
+			
+			my $otherrel = $self->scoped_relationship( $rdga, $rdgb );
+			if( $otherrel && $otherrel->type eq $options->{type}
+				&& $otherrel->scope eq $options->{scope} ) {
+				# warn "Applying existing scoped relationship for $rdga / $rdgb";
+				$relationship = $otherrel;
+			} elsif( $otherrel ) {
+				throw( 'Conflicting scoped relationship ' 
+					. join( '/', $otherrel->type, $otherrel->scope ) . ' vs. ' 
+					. join( '/', $options->{type}, $options->{scope} ) 
+					. " for $rdga / $rdgb at $source / $target" );
+			}
+    	}
+		$relationship = $self->create( $options ) unless $relationship;  
+		# ... Will throw on error
+
+		# See if the relationship is actually valid here
 		my( $is_valid, $reason ) = $self->relationship_valid( $source, $target, 
 			$options->{'type'}, $droppedcolls );
 		unless( $is_valid ) {
 			throw( "Invalid relationship: $reason" );
 		}
-		
-		# Try to create the relationship object.
-		$options->{'reading_a'} = $sourceobj->text;
-		$options->{'reading_b'} = $targetobj->text;
-		$options->{'orig_a'} = $source;
-		$options->{'orig_b'} = $target;
-    	if( $options->{'scope'} ne 'local' ) {
-			# Is there a relationship with this a & b already?
-			# Case-insensitive for non-orthographics.
-			my $rdga = $options->{'reading_a'};
-			my $rdgb = $options->{'reading_b'};
-			my $otherrel = $self->scoped_relationship( $rdga, $rdgb );
-			if( $otherrel && $otherrel->type eq $options->{type}
-				&& $otherrel->scope eq $options->{scope} ) {
-				warn "Applying existing scoped relationship for $rdga / $rdgb";
-				$relationship = $otherrel;
-			} elsif( $otherrel ) {
-				throw( "Conflicting scoped relationship for $rdga / $rdgb at $source / $target" );
-			}
-    	}
-		$relationship = $self->create( $options ) unless $relationship;  # Will throw on error
     }
 
 
@@ -445,16 +522,16 @@ sub add_relationship {
 	if( $rel && $rel ne $relationship ) {
 		if( $rel->nonlocal ) {
 			throw( "Found conflicting relationship at $source - $target" );
-		} elsif( $rel->type ne 'collated' ) {
-			# Replace a collation relationship; leave any other sort in place.
+		} elsif( !$reltype->is_weak ) {
+			# Replace a weak relationship; leave any other sort in place.
 			my $r1ann = $rel->has_annotation ? $rel->annotation : '';
 			my $r2ann = $relationship->has_annotation ? $relationship->annotation : '';
 			unless( $rel->type eq $relationship->type && $r1ann eq $r2ann ) {
 				warn sprintf( "Not overriding local relationship %s with global %s " 
 					. "set at %s -> %s (%s -> %s)", $rel->type, $relationship->type,
 					$source, $target, $rel->reading_a, $rel->reading_b );
-				$skip = 1;
 			}
+			$skip = 1;
 		}
 	}
 	$self->_set_relationship( $relationship, $source, $target ) unless $skip;
@@ -465,7 +542,7 @@ sub add_relationship {
 		push( @pairs_set, $self->add_global_relationship( $relationship ) );
     }
     # Finally, restore whatever collations we can, and return.
-    $self->_restore_collations( @$droppedcolls );
+    $self->_restore_weak( @$droppedcolls );
     return @pairs_set;
 }
 
@@ -477,35 +554,33 @@ in the graph.  Options as in add_relationship above.
 =cut
 
 sub add_global_relationship {
-	my( $self, $options ) = @_;
-	# First see if we are dealing with a relationship object already
-	my $relationship;
-	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
-		$relationship = $options;
-	} else {
-		# Then see if a scoped relationship already applies for the words.
-		my $scopedrel = $self->scoped_relationship( 
-			$options->{reading_a}, $options->{reading_b} );
-		$relationship = $scopedrel ? $scopedrel 
-			: $self->create( $options );
-	}
+	my( $self, $relationship ) = @_;
 	# Sanity checking
+	my $reltype = $self->type( $relationship->type );
 	throw( "Relationship passed to add_global is not global" )
 		unless $relationship->nonlocal;
 	throw( "Relationship passed to add_global is not a valid global type" )
-		unless $relationship->colocated && $relationship->type ne 'collated';
+		unless $reltype->is_generalizable;
 		
 	# Apply the relationship wherever it is valid
 	my @pairs_set;
     foreach my $v ( $self->_find_applicable( $relationship ) ) {
     	my $exists = $self->get_relationship( @$v );
-    	if( $exists && $exists->type ne 'collated' ) {
-    		throw( "Found conflicting relationship at @$v" )
-    			unless $exists->type eq $relationship->type
-    				&& $exists->scope eq $relationship->scope;
+    	my $etype = $exists ? $self->type( $exists->type ) : '';
+    	if( $exists && !$etype->is_weak ) {
+			unless( $exists->is_equivalent( $relationship ) ) {
+	    		throw( "Found conflicting relationship at @$v" );
+	    	}
     	} else {
-	    	my @added = $self->add_relationship( @$v, $relationship );
-    		push( @pairs_set, @added );
+    		my @added;
+    		try {
+		    	@added = $self->add_relationship( @$v, $relationship );
+		    } catch {
+		    	my $reldesc = sprintf( "%s %s -> %s", $relationship->type,
+		    		$relationship->reading_a, $relationship->reading_b );
+		    	print STDERR "Global relationship $reldesc not applicable at @$v\n";
+		    }
+    		push( @pairs_set, @added ) if @added;
     	}
     }
 	return @pairs_set;	
@@ -528,34 +603,25 @@ sub del_scoped_relationship {
 sub _find_applicable {
 	my( $self, $rel ) = @_;
 	my $c = $self->collation;
-	# TODO Someday we might use a case sensitive language.
+	my $reltype = $self->type( $rel->type );
 	my @vectors;
 	my @identical_readings;
-	if( $rel->type eq 'orthographic' ) {
-		@identical_readings = grep { $_->text eq $rel->reading_a } 
-			$c->readings;
-	} else {
-		@identical_readings = grep { lc( $_->text ) eq lc( $rel->reading_a ) }
-			$c->readings;
-	}
+	@identical_readings = grep { $reltype->record_sub->( $_ ) eq $rel->reading_a } 
+		$c->readings;
 	foreach my $ir ( @identical_readings ) {
 		my @itarget;
-		if( $rel->type eq 'orthographic' ) {
-			@itarget = grep { $_->rank == $ir->rank 
-							  && $_->text eq $rel->reading_b } $c->readings;
-		} else {
-			@itarget = grep { $_->rank == $ir->rank 
-							  && lc( $_->text ) eq lc( $rel->reading_b ) } $c->readings;
-		}
+		@itarget = grep { $reltype->record_sub->( $_ ) eq $rel->reading_b } 
+			$c->readings_at_rank( $ir->rank );
 		if( @itarget ) {
-			# Warn if there is more than one hit with no orth link between them.
+			# Warn if there is more than one hit with no closer link between them.
 			my $itmain = shift @itarget;
 			if( @itarget ) {
 				my %all_targets;
+				my $bindlevel = $reltype->bindlevel;
 				map { $all_targets{$_} = 1 } @itarget;
 				map { delete $all_targets{$_} } 
-					$self->related_readings( $itmain, 
-						sub { $_[0]->type eq 'orthographic' } );
+					$self->related_readings( $itmain, sub { 
+						$self->type( $_[0]->type )->bindlevel < $bindlevel } );
     			warn "More than one unrelated reading with text " . $itmain->text
     				. " at rank " . $ir->rank . "!" if keys %all_targets;
 			}
@@ -576,13 +642,13 @@ sub del_relationship {
 	my( $self, $source, $target ) = @_;
 	my $rel = $self->get_relationship( $source, $target );
 	return () unless $rel; # Nothing to delete; return an empty set.
+	my $reltype = $self->type( $rel->type );
 	my $colo = $rel->colocated;
 	my @vectors = ( [ $source, $target ] );
 	$self->_remove_relationship( $colo, $source, $target );
 	if( $rel->nonlocal ) {
 		# Remove the relationship wherever it occurs.
-		# Remove the relationship wherever it occurs.
-		my @rel_edges = grep { $self->get_relationship( @$_ ) == $rel }
+		my @rel_edges = grep { $self->get_relationship( @$_ ) eq $rel }
 			$self->relationships;
 		foreach my $re ( @rel_edges ) {
 			$self->_remove_relationship( $colo, @$re );
@@ -611,9 +677,11 @@ sub relationship_valid {
     my( $self, $source, $target, $rel, $mustdrop ) = @_;
     $mustdrop = [] unless $mustdrop; # in case we were passed nothing
     my $c = $self->collation;
+    my $reltype = $self->type( $rel );
     ## Assume validity is okay if we are initializing from scratch.
     return ( 1, "initializing" ) unless $c->tradition->_initialized;
-        if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
+    ## TODO Move this block to relationship type definition
+    if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
 		# TODO this might be called before witness paths are set...
@@ -629,17 +697,7 @@ sub relationship_valid {
 		return ( 0, "Readings occur only in distinct witnesses" )
 			if $rel eq 'repetition';
 	} 
-	if ( $rel eq 'transposition' ) {
-		# We also need to check both that the readings occur in distinct
-		# witnesses, and that they are not in the same place. That is,
-		# proposing to link them should cause a witness loop.
-		if( $self->test_equivalence( $source, $target ) ) {
-			return ( 0, "Readings appear to be colocated, not transposed" );
-		} else {
-			return ( 1, "ok" );
-		}
-		
-	} elsif( $rel ne 'repetition' ) {
+	if ( $reltype->is_colocation ) {
 		# Check that linking the source and target in a relationship won't lead
 		# to a path loop for any witness. 
 		# First, drop/stash any collations that might interfere
@@ -648,62 +706,71 @@ sub relationship_valid {
 		my $sourcerank = $sourceobj->has_rank ? $sourceobj->rank : -1;
 		my $targetrank = $targetobj->has_rank ? $targetobj->rank : -1;
 		unless( $rel eq 'collated' || $sourcerank == $targetrank ) {
-			push( @$mustdrop, $self->_drop_collations( $source ) );
-			push( @$mustdrop, $self->_drop_collations( $target ) );
+			push( @$mustdrop, $self->_drop_weak( $source ) );
+			push( @$mustdrop, $self->_drop_weak( $target ) );
 			if( $c->end->has_rank ) {
 				foreach my $rk ( $sourcerank .. $targetrank ) {
-					map { push( @$mustdrop, $self->_drop_collations( $_->id ) ) }
+					map { push( @$mustdrop, $self->_drop_weak( $_->id ) ) }
 						$c->readings_at_rank( $rk );
 				}
 			}
 		}
 		unless( $self->test_equivalence( $source, $target ) ) {
-			$self->_restore_collations( @$mustdrop );
+			$self->_restore_weak( @$mustdrop );
 			return( 0, "Relationship would create witness loop" );
 		}
 		return ( 1, "ok" );
+	} else {
+		# We also need to check that the readings are not in the same place. 
+		# That is, proposing to equate them should cause a witness loop.
+		if( $self->test_equivalence( $source, $target ) ) {
+			return ( 0, "Readings appear to be colocated" );
+		} else {
+			return ( 1, "ok" );
+		}
 	}
 }
 
-sub _drop_collations {
+sub _drop_weak {
 	my( $self, $reading ) = @_;
 	my @dropped;
 	foreach my $n ( $self->graph->neighbors( $reading ) ) {
-		if( $self->get_relationship( $reading, $n )->type eq 'collated' ) {
-			push( @dropped, [ $reading, $n ] );
+		my $nrel = $self->get_relationship( $reading, $n );
+		if( $self->type( $nrel->type )->is_weak ) {
+			push( @dropped, [ $reading, $n, $nrel->type ] );
 			$self->del_relationship( $reading, $n );
-			#print STDERR "Dropped collation $reading -> $n\n";
+			#print STDERR "Dropped weak relationship $reading -> $n\n";
 		}
 	}
 	return @dropped;
 }
 
-sub _restore_collations {
+sub _restore_weak {
 	my( $self, @vectors ) = @_;
 	foreach my $v ( @vectors ) {
-		try {
-			$self->add_relationship( @$v, { 'type' => 'collated' } );
-			#print STDERR "Restored collation @$v\n";
-		} catch {
-			print STDERR $v->[0] . " - " . $v->[1] . " no longer collate\n";
-		}
+		my $type = pop @$v;
+		eval {
+			$self->add_relationship( @$v, { 'type' => $type } );
+			#print STDERR "Restored weak relationship @$v\n";
+		}; # if it fails we don't care
 	}
 }
 
 =head2 filter_collations()
 
-Utility function. Removes any redundant 'collated' relationships from the graph.
-A collated relationship is redundant if the readings in question would occupy
+Utility function. Removes any redundant weak relationships from the graph.
+A weak relationship is redundant if the readings in question would occupy
 the same rank regardless of the existence of the relationship.
 
 =cut
 
+#TODO change name
 sub filter_collations {
 	my $self = shift;
 	my $c = $self->collation;
 	foreach my $r ( 1 .. $c->end->rank - 1 ) {
 		my $anchor;
-		my @need_collations;
+		my @need_weak;
 		foreach my $rdg ( $c->readings_at_rank( $r ) ) {
 			next if $rdg->is_meta;
 			my $ip = 0;
@@ -714,13 +781,14 @@ sub filter_collations {
 					last;
 				}
 			}
-			push( @need_collations, $rdg ) unless $ip;
-			$c->relations->_drop_collations( "$rdg" );
+			push( @need_weak, $rdg ) unless $ip;
+			$self->_drop_weak( $rdg->id );
 		}
 		$anchor
+			# TODO FIX HACK of adding explicit collation type
 			? map { $c->add_relationship( $anchor, $_, { 'type' => 'collated' } )
-						unless $c->get_relationship( $anchor, $_ ) } @need_collations
-			: warn "No anchor found at $r";
+						unless $c->get_relationship( $anchor, $_ ) } @need_weak
+			: print STDERR "No anchor found at $r\n";
 	}
 }
 

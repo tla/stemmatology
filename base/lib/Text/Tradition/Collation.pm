@@ -233,6 +233,15 @@ sub BUILD {
     	{ 'collation' => $self, 'is_end' => 1, 'init' => 1 } ) );
 }
 
+sub register_relationship_type {
+	my $self = shift;
+	my %args = @_ == 1 ? %{$_[0]} : @_;
+	if( $self->relations->has_type( $args{name} ) ) {
+		throw( 'Relationship type ' . $args{name} . ' already registered' );
+	}
+	$self->relations->add_type( %args );
+}
+
 ### Reading construct/destruct functions
 
 sub add_reading {
