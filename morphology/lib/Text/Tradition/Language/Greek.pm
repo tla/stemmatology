@@ -77,11 +77,21 @@ sub reading_lookup {
 
 =head2 regularize( $text )
 
-Returns a regularized form of the reading for the purposes of collation.
+Returns an orthographically regular form of the reading.
 
 =cut
 
 sub regularize {
+	return Text::Tradition::Language::Base::regularize( @_ );
+}
+
+=head2 collation_normalize( $text )
+
+Returns a normalized form of the reading for the purposes of collation.
+
+=cut
+
+sub collation_normalize {
 	return unicode_regularize( @_ );
 }
 

@@ -47,7 +47,7 @@ around 'language' => sub {
 		try {
 			load( "Text::Tradition::Language::".$_[0] );
 		} catch ( $e ) {
-			warn( "Cannot load language module for @_: $e" );
+			print STDERR "No language module defined for @_\n";
 		}
 	} elsif( !$self->has_language && $self->tradition->has_language ) {
 		return $self->tradition->language;
@@ -61,16 +61,16 @@ around 'export_as_json' => sub {
 	my $answer = $self->$orig( @_ );
 	if( $self->has_language || $self->tradition->has_language ) {
 		# If we do have a language, regularize the tokens in $answer.
-		my $mod = "Text::Tradition::Language::" . $self->language;
-		load( $mod );
-		my $rsub = $mod->can( 'regularize' );
+		my $mod = 'Text::Tradition::Language::' . $self->language;
+		eval { load( $mod ); };
+		# If a module doesn't exist for our language, use the base routine
+		$mod = 'Text::Tradition::Language::Base' if $@;
+		my $rsub = $mod->can( 'collation_normalize' ) || $mod->can( 'regularize' );
 		map { $_->{'n'} = $rsub->( $_->{'t'} ) } @{$answer->{tokens}};
 		if( exists $answer->{layertokens} ) {
 			map { $_->{'n'} = $rsub->( $_->{'t'} ) } @{$answer->{layertokens}};
 		}
-	} else {
-		warn "Please set a language to regularize a tradition";
-	}
+	} 
 	return $answer;
 };
 

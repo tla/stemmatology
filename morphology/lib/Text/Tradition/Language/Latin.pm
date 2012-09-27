@@ -87,11 +87,28 @@ sub reading_lookup {
 
 =head2 regularize( $text )
 
-Returns a regularized form of the reading for the purposes of collation.
+Returns an orthographically regular form of the reading.
 
 =cut
 
+# TODO Check this against Perseus regularization standards
+
 sub regularize {
+	my( $word ) = @_;
+	$word = lc( $word );
+	$word =~ s/v/u/g;
+	$word =~ s/w/u/g;
+	$word =~ s/j/i/g;
+	return $word;
+}
+
+=head2 collation_normalize( $text )
+
+Returns a normalized form of the reading for the purposes of collation.
+
+=cut
+
+sub collation_normalize {
 	my( $word ) = @_;
 	$word = lc( $word );
 	$word =~ s/v/u/g;

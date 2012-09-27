@@ -76,16 +76,12 @@ sub reading_lookup {
 
 =head2 regularize( $text )
 
-Returns a regularized form of the reading for the purposes of collation.
+Returns an orthographically regular form of the reading.
 
 =cut
 
 sub regularize {
 	my( $word ) = @_;
-	# We don't really distinguish between commas and semicolons properly
-	# in the manuscript.  Make them the same.
-	$word =~ s/\./\,/g;
-
 	# Get rid of accent marks.
 	$word =~ s/՛//g;
 	# Get rid of hyphen.
@@ -96,7 +92,6 @@ sub regularize {
 	$word =~ s/աւ/օ/g;	# for easy vocalic comparison to ո
 	$word =~ s/և/եւ/g;
 	
-	# TODO split off suspected prefix/suffix markers?
 	# Downcase the word.
 	$word = lc( $word );
 	return $word;

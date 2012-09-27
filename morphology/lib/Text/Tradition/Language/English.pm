@@ -94,12 +94,12 @@ sub _parse_wordform {
 
 =head2 regularize( $text )
 
-Returns a regularized form of the reading for the purposes of collation.
+Returns an orthographically regular form of the reading.
 
 =cut
 
 sub regularize {
-	return unicode_regularize( @_ );
+	return Text::Tradition::Language::Base::regularize( @_ );
 }
 
 =head2 TODO

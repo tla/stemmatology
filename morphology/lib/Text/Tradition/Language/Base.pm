@@ -303,6 +303,17 @@ sub unicode_regularize {
 	return join( '', @normalized );
 }
 
+=head2 regularize( $word )
+
+Fallback function for reading regularization in the event that it is not
+implemented by a module. Currently just lowercases the string.
+
+=cut
+
+sub regularize { 
+	return lc( $_[0] );
+}
+
 1;
 
 =head2 TODO
@@ -310,6 +321,8 @@ sub unicode_regularize {
 =over
 
 =item * Handle package dependencies more gracefully
+
+=item * Make this some kind of real base class for the language modules
 
 =back
 
