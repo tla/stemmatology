@@ -137,6 +137,7 @@ my $ptwit = $trad->add_witness(
 is( ref( $ptwit ), 'Text::Tradition::Witness', 'Created a witness' );
 if( $ptwit ) {
     is( $ptwit->sigil, 'A', "Witness has correct sigil" );
+    $c->make_witness_path( $ptwit );
     is( $c->path_text( $ptwit->sigil ), $str, "Witness has correct text" );
 }
 
@@ -196,10 +197,10 @@ subtype 'Sigil',
 no Moose::Util::TypeConstraints;
 
 has 'tradition' => (
-	'is' => 'ro',
-	'isa' => 'Text::Tradition',
-	'required' => 1,
-        weak_ref => 1
+	is => 'ro',
+	isa => 'Text::Tradition',
+	required => 1,
+	weak_ref => 1
 	);
 
 # Sigil. Required identifier for a witness, but may be found inside
@@ -776,7 +777,7 @@ sub export_as_json {
 		'name' => $self->identifier,
 	};
 	if( $self->is_layered ) {
-		my @lwlist = map { { 't' => $_ || '' } } @{$self->uncorrected};
+		my @lwlist = map { { 't' => $_ || '' } } @{$self->layertext};
 		$obj->{'layertokens'} = \@lwlist;
 	}
 	return $obj;

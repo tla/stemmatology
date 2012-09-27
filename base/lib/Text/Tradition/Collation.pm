@@ -1242,7 +1242,7 @@ sub as_csv {
     return join( "\n", @result );
 }
 
-=head2 alignment_table( $use_refs, $include_witnesses )
+=head2 alignment_table
 
 Return a reference to an alignment table, in a slightly enhanced CollateX
 format which looks like this:
@@ -1253,12 +1253,6 @@ format which looks like this:
                              tokens => [ { t => "TEXT" }, ... ] },
                            ... ],
             length => TEXTLEN };
-
-If $use_refs is set to 1, the reading object is returned in the table 
-instead of READINGTEXT; if not, the text of the reading is returned.
-
-If $include_witnesses is set to a hashref, only the witnesses whose sigil
-keys have a true hash value will be included.
 
 =cut
 
@@ -1320,6 +1314,7 @@ sub _make_witness_row {
     }
     return @filled_row;
 }
+
 
 =head1 NAVIGATION METHODS
 

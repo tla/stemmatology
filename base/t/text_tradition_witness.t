@@ -22,6 +22,7 @@ my $ptwit = $trad->add_witness(
 is( ref( $ptwit ), 'Text::Tradition::Witness', 'Created a witness' );
 if( $ptwit ) {
     is( $ptwit->sigil, 'A', "Witness has correct sigil" );
+    $c->make_witness_path( $ptwit );
     is( $c->path_text( $ptwit->sigil ), $str, "Witness has correct text" );
 }
 
