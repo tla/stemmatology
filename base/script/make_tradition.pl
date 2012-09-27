@@ -15,7 +15,7 @@ eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
 # Variables with defaults
 my( $informat, $outformat, $language, $name, $sep, $dsn )  = ( '', '', 'Default', 
-	'Tradition', "\t", "dbi:SQLite:dbname=stemmaweb/db/traditions.db" );
+	'Tradition', "\t", "dbi:SQLite:dbname=db/traditions.db" );
 # Variables with no default
 my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, $debug, $nonlinear );
 

@@ -12,7 +12,7 @@ binmode( STDOUT, ':utf8' );
 binmode( STDERR, ':utf8' );
 
 my( $name, $delete, $dbuser, $dbpass );
-my( $list, $dsn ) = ( 1, 'dbi:SQLite:dbname=stemmaweb/db/traditions.db' );
+my( $list, $dsn ) = ( 1, 'dbi:SQLite:dbname=db/traditions.db' );
 
 GetOptions( 
 	'r|rename=s' => \$name,
