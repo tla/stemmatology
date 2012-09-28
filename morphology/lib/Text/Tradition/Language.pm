@@ -30,7 +30,7 @@ use_ok( 'Text::Tradition' ); # with Language
 
 # Test setting and recovering language
 my $t = Text::Tradition->new( input => 'Self', file => 't/data/legendfrag.xml' );
-warning_like { $t->language( 'Klingon' ); } qr/^Cannot load language/,
+warning_like { $t->language( 'Klingon' ); } qr/^Cannot load any language/,
 	"Got expected warning for setting of unsupported language";
 $t->language( 'English' );
 is( $t->language, 'English', "Successfully set supported language" );
@@ -65,7 +65,7 @@ before 'language' => sub {
 		try {
 			load( "Text::Tradition::Language::".$_[0] );
 		} catch ( $e ) {
-			warn( "Cannot load language module for @_: $e" );
+			warn "Cannot load any language module for @_";
 		}
 	}
 };

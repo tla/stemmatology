@@ -187,7 +187,6 @@ sub regularize {
 	if( $self->has_language ) {
 		# If we do have a language, regularize the tokens in $answer.
 		my $mod = 'Text::Tradition::Language::' . $self->language;
-		my $rsub;
 		eval { load( $mod ); };
 		# If a module doesn't exist for our language, use the base routine
 		$mod = 'Text::Tradition::Language::Base' if $@;
