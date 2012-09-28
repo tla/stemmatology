@@ -189,7 +189,10 @@ sub regularize {
 		my $mod = 'Text::Tradition::Language::' . $self->language;
 		eval { load( $mod ); };
 		# If a module doesn't exist for our language, use the base routine
-		$mod = 'Text::Tradition::Language::Base' if $@;
+		if( $@ ) {
+			$mod = 'Text::Tradition::Language::Base';
+			load( $mod );
+		}
 		return $mod->can( 'regularize' )->( $self->text );
 	} else {
 		return $self->text;
