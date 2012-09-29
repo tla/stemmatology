@@ -489,7 +489,7 @@ sub del_path {
 	if( $self->sequence->has_edge_attribute( $source, $target, $wit ) ) {
 		$self->sequence->delete_edge_attribute( $source, $target, $wit );
 	}
-	unless( keys %{$self->sequence->get_edge_attributes( $source, $target )} ) {
+	unless( $self->sequence->has_edge_attributes( $source, $target ) ) {
 		$self->sequence->delete_edge( $source, $target );
 		$self->relations->delete_equivalence_edge( $source, $target );
 	}
