@@ -171,6 +171,24 @@ try {
 } catch ( Text::Tradition::Error $e ) {
 	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
+
+# TODO Test 4: make a global relationship that involves re-ranking a node first, when 
+# the prior rank has a potential match too
+my $t4 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/globalrel_test.xml' );
+my $c4 = $t4->collation;
+# Can we even add the relationship?
+try {
+	$c4->add_relationship( 'r463.2', 'r463.4', 
+		{ type => 'orthographic', scope => 'global' } );
+	ok( 1, "Added global relationship without error" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add global relationship when same-rank alternative exists: "
+		. $e->message );
+}
+$c4->calculate_ranks();
+# Do our readings now share a rank?
+is( $c4->reading('r463.2')->rank, $c4->reading('r463.4')->rank, 
+	"Expected readings now at same rank" );
 }
 
 

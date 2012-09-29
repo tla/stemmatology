@@ -445,7 +445,20 @@ try {
 # TODO Test 4: make a global relationship that involves re-ranking a node first, when 
 # the prior rank has a potential match too
 my $t4 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/globalrel_test.xml' );
-
+my $c4 = $t4->collation;
+# Can we even add the relationship?
+try {
+	$c4->add_relationship( 'r463.2', 'r463.4', 
+		{ type => 'orthographic', scope => 'global' } );
+	ok( 1, "Added global relationship without error" );
+} catch ( Text::Tradition::Error $e ) {
+	ok( 0, "Failed to add global relationship when same-rank alternative exists: "
+		. $e->message );
+}
+$c4->calculate_ranks();
+# Do our readings now share a rank?
+is( $c4->reading('r463.2')->rank, $c4->reading('r463.4')->rank, 
+	"Expected readings now at same rank" );
 
 =end testing
 
@@ -463,7 +476,6 @@ sub add_relationship {
 	my $reltype;
 	my $thispaironly = delete $options->{thispaironly};
 	my $droppedcolls = [];
-	$DB::single = 1 if $source eq 'r796.3' && $target eq 'r796.4';
 	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
 		$relationship = $options;
 		$reltype = $self->type( $relationship->type );
@@ -581,7 +593,7 @@ sub add_global_relationship {
 		    } catch {
 		    	my $reldesc = sprintf( "%s %s -> %s", $relationship->type,
 		    		$relationship->reading_a, $relationship->reading_b );
-		    	print STDERR "Global relationship $reldesc not applicable at @$v\n";
+		    	# print STDERR "Global relationship $reldesc not applicable at @$v\n";
 		    }
     		push( @pairs_set, @added ) if @added;
     	}
@@ -757,42 +769,6 @@ sub _restore_weak {
 			$self->add_relationship( @$v, { 'type' => $type } );
 			#print STDERR "Restored weak relationship @$v\n";
 		}; # if it fails we don't care
-	}
-}
-
-=head2 filter_collations()
-
-Utility function. Removes any redundant weak relationships from the graph.
-A weak relationship is redundant if the readings in question would occupy
-the same rank regardless of the existence of the relationship.
-
-=cut
-
-#TODO change name
-sub filter_collations {
-	my $self = shift;
-	my $c = $self->collation;
-	foreach my $r ( 1 .. $c->end->rank - 1 ) {
-		my $anchor;
-		my @need_weak;
-		foreach my $rdg ( $c->readings_at_rank( $r ) ) {
-			next if $rdg->is_meta;
-			my $ip = 0;
-			foreach my $pred ( $rdg->predecessors ) {
-				if( $pred->rank == $r - 1 ) {
-					$ip = 1;
-					$anchor = $rdg unless( $anchor );
-					last;
-				}
-			}
-			push( @need_weak, $rdg ) unless $ip;
-			$self->_drop_weak( $rdg->id );
-		}
-		$anchor
-			# TODO FIX HACK of adding explicit collation type
-			? map { $c->add_relationship( $anchor, $_, { 'type' => 'collated' } )
-						unless $c->get_relationship( $anchor, $_ ) } @need_weak
-			: print STDERR "No anchor found at $r\n";
 	}
 }
 
