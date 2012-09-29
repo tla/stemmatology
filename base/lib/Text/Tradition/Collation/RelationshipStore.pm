@@ -146,16 +146,15 @@ has '_equivalence_readings' => (
 sub BUILD {
 	my $self = shift;
 	
-	my $regularize = sub {
-		return $_[0]->can('regularize') ? $_[0]->regularize : $_[0]->text; };
-
 	my @DEFAULT_TYPES = (
 		{ name => 'collated', bindlevel => 50, is_weak => 1, is_transitive => 0, is_generalizable => 0 },
-		{ name => 'orthographic', bindlevel => 0 },
-		{ name => 'spelling', bindlevel => 1, record_sub => $regularize },
-		{ name => 'punctuation', bindlevel => 2, record_sub => $regularize },
-		{ name => 'grammatical', bindlevel => 2, record_sub => $regularize },
-		{ name => 'lexical', bindlevel => 2, record_sub => $regularize },
+		{ name => 'orthographic', bindlevel => 0, use_regular => 0 },
+		{ name => 'spelling', bindlevel => 1 },
+		{ name => 'punctuation', bindlevel => 2 },
+		{ name => 'grammatical', bindlevel => 2 },
+		{ name => 'lexical', bindlevel => 2 },
+		{ name => 'uncertain', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
+		{ name => 'other', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
 		{ name => 'transposition', bindlevel => 50, is_colocation => 0, is_transitive => 0 },
 		{ name => 'repetition', bindlevel => 50, is_colocation => 0, is_transitive => 0 }
 		);
@@ -163,9 +162,6 @@ sub BUILD {
 	foreach my $type ( @DEFAULT_TYPES ) {
 		$self->add_type( $type );
 	}
-}
-
-sub _regular_form {
 }
 
 around add_type => sub {
@@ -258,6 +254,7 @@ sub create {
 	
 	$rel = Text::Tradition::Collation::Relationship->new( $options );
 	my $reltype = $self->type( $rel->type );
+	throw( "Unrecognized relationship type " . $rel->type ) unless $reltype;
 	# Validate the options given against the relationship type wanted
 	throw( "Cannot set nonlocal scope on relationship of type " . $reltype->name )
 		if $rel->nonlocal && !$reltype->is_generalizable;
@@ -445,6 +442,11 @@ try {
 	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
+# TODO Test 4: make a global relationship that involves re-ranking a node first, when 
+# the prior rank has a potential match too
+my $t4 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/globalrel_test.xml' );
+
+
 =end testing
 
 =cut
@@ -459,8 +461,9 @@ sub add_relationship {
 		if( $sourceobj->is_meta || $targetobj->is_meta );
 	my $relationship;
 	my $reltype;
-	my $thispaironly;
+	my $thispaironly = delete $options->{thispaironly};
 	my $droppedcolls = [];
+	$DB::single = 1 if $source eq 'r796.3' && $target eq 'r796.4';
 	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
 		$relationship = $options;
 		$reltype = $self->type( $relationship->type );
@@ -475,8 +478,8 @@ sub add_relationship {
 		$reltype = $self->type( $options->{type} );
 		
 		# Try to create the relationship object.
-		my $rdga = $reltype->record_sub->( $sourceobj );
-		my $rdgb = $reltype->record_sub->( $targetobj );
+		my $rdga = $reltype->regularize( $sourceobj );
+		my $rdgb = $reltype->regularize( $targetobj );
 		$options->{'orig_a'} = $sourceobj;
 		$options->{'orig_b'} = $targetobj;
 		$options->{'reading_a'} = $rdga;
@@ -606,11 +609,11 @@ sub _find_applicable {
 	my $reltype = $self->type( $rel->type );
 	my @vectors;
 	my @identical_readings;
-	@identical_readings = grep { $reltype->record_sub->( $_ ) eq $rel->reading_a } 
+	@identical_readings = grep { $reltype->regularize( $_ ) eq $rel->reading_a } 
 		$c->readings;
 	foreach my $ir ( @identical_readings ) {
 		my @itarget;
-		@itarget = grep { $reltype->record_sub->( $_ ) eq $rel->reading_b } 
+		@itarget = grep { $reltype->regularize( $_ ) eq $rel->reading_b } 
 			$c->readings_at_rank( $ir->rank );
 		if( @itarget ) {
 			# Warn if there is more than one hit with no closer link between them.
@@ -680,7 +683,8 @@ sub relationship_valid {
     my $reltype = $self->type( $rel );
     ## Assume validity is okay if we are initializing from scratch.
     return ( 1, "initializing" ) unless $c->tradition->_initialized;
-    ## TODO Move this block to relationship type definition
+    ## TODO Move this block to relationship type definition when we can save
+    ## coderefs
     if ( $rel eq 'transposition' || $rel eq 'repetition' ) {
 		# Check that the two readings do (for a repetition) or do not (for
 		# a transposition) appear in the same witness.
@@ -1007,7 +1011,7 @@ sub test_equivalence {
 		$self->equivalence_graph->delete_edge( $teq, $succ ) if $added_succ{$succ};
 	}
 	unless( $self->equivalence_graph->eq( $checkstr ) ) {
-		warn "GRAPH CHANGED after testing";
+		throw( "GRAPH CHANGED after testing" );
 	}
 	# Return our answer
 	return $ret;
@@ -1269,6 +1273,14 @@ sub _add_graphml_data {
     my $data_el = $el->addNewChild( $el->namespaceURI, 'data' );
     $data_el->setAttribute( 'key', $key );
     $data_el->appendText( $value );
+}
+
+sub dump_segment {
+	my( $self, $from, $to ) = @_;
+	open( DUMP, ">debug.svg" ) or die "Could not open debug.svg";
+	binmode DUMP, ':utf8';
+	print DUMP $self->collation->as_svg({ from => $from, to => $to, nocalc => 1 });
+	close DUMP;
 }
 
 sub throw {

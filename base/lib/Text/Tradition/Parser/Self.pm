@@ -265,8 +265,19 @@ sub parse {
 	# Nodes are added via the call to add_reading above.  We only need
 	# add the relationships themselves.
 	# TODO check that scoping does trt
+	$tradition->_init_done( 1 ); # so that relationships get validated
 	$rel_data->{'edges'} ||= []; # so that the next line doesn't break on no rels
-	foreach my $e ( sort { _layersort_rel( $a, $b ) } @{$rel_data->{'edges'}} ) {
+	# Backward compatibility...
+	if( $use_version eq '2.0' || $use_version eq '3.0' ) {
+		foreach my $e ( @{$rel_data->{'edges'}} ) {
+			delete $e->{'class'};
+			$e->{'type'} = delete $e->{'relationship'} if exists $e->{'relationship'};
+		}
+	}
+
+	my $rg = $collation->relations;
+	foreach my $e ( sort { _apply_relationship_order( $a, $b, $rg ) } 
+						 @{$rel_data->{'edges'}} ) {
     	my $sourceid = exists $namechange{$e->{'source'}->{'id'}}
     		? $namechange{$e->{'source'}->{'id'}} : $e->{'source'}->{'id'};
     	my $targetid = exists $namechange{$e->{'target'}->{'id'}}
@@ -276,11 +287,6 @@ sub parse {
 		delete $e->{'source'};
 		delete $e->{'target'};
 		# The remaining keys are relationship attributes.
-		# Backward compatibility...
-		if( $use_version eq '2.0' || $use_version eq '3.0' ) {
-			delete $e->{'class'};
-			$e->{'type'} = delete $e->{'relationship'} if exists $e->{'relationship'};
-		}
 		# Add the specified relationship unless we already have done.
 		my $rel_exists;
 		if( $e->{'scope'} ne 'local' ) {
@@ -288,12 +294,16 @@ sub parse {
 			if( $relobj && $relobj->scope eq $e->{'scope'}
 				&& $relobj->type eq $e->{'type'} ) {
 				$rel_exists = 1;
+			} else {
+				# Don't propagate the relationship; all the propagations are
+				# already in the XML.
+				$e->{'thispaironly'} = 1;
 			}
 		}
 		try {
 			$collation->add_relationship( $from, $to, $e ) unless $rel_exists;
-		} catch( Text::Tradition::Error $e ) {
-			warn "DROPPING $from -> $to: " . $e->message;
+		} catch( Text::Tradition::Error $err ) {
+			warn "DROPPING " . $e->{type} . " rel on $from -> $to: " . $err->message;
 		}
 	}
 	
@@ -302,19 +312,19 @@ sub parse {
 	$collation->text_from_paths();	
 }
 
-## Return the relationship that comes first in priority.
-my %LAYERS = (
-	'collated' => 1,
-	'orthographic' => 2,
-	'spelling' => 3,
-	);
-
-sub _layersort_rel {
-	my( $a, $b ) = @_;
-	my $key = exists $a->{'type'} ? 'type' : 'relationship';
-	my $at = $LAYERS{$a->{$key}} || 99;
-	my $bt = $LAYERS{$b->{$key}} || 99;
-	return $at <=> $bt;
+# Helper sort function for applying the saved relationships in a
+# sensible order.
+sub _apply_relationship_order {
+	my( $a, $b, $rg ) = @_;
+	my $at = $rg->type( $a->{type} ); my $bt = $rg->type( $b->{type} );
+	# Apply strong relationships before weak
+	return -1 if $bt->is_weak && !$at->is_weak;
+	return 1 if $at->is_weak && !$bt->is_weak;
+	# Apply local before global
+	return -1 if $a->{scope} eq 'local' && $b->{scope} ne 'local';
+	return 1 if $b->{scope} eq 'local' && $a->{scope} ne 'local';
+	# Apply more tightly bound relationships first
+	return $at->bindlevel <=> $bt->bindlevel;
 }
 
 1;
@@ -324,10 +334,6 @@ sub _layersort_rel {
 =over
 
 =item * Make this into a stream parser with GraphML
-
-=item * Simply field -> attribute correspondence for nodes and edges
-
-=item * Share key name constants with Collation.pm
 
 =back
 
