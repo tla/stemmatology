@@ -559,6 +559,10 @@ is( scalar $c5->relationships, $numrel+4,
 
 # TODO test that attempts to cross boundaries on bindlevel-equal relationships fail.
 
+# TODO test that weak relationships don't interfere
+
+# TODO test that strong non-transitive relationships don't interfere
+
 =end testing
 
 =cut
