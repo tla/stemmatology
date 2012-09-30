@@ -155,7 +155,7 @@ sub BUILD {
 		{ name => 'lexical', bindlevel => 2 },
 		{ name => 'uncertain', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
 		{ name => 'other', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
-		{ name => 'transposition', bindlevel => 50, is_colocation => 0, is_transitive => 0 },
+		{ name => 'transposition', bindlevel => 50, is_colocation => 0 },
 		{ name => 'repetition', bindlevel => 50, is_colocation => 0, is_transitive => 0 }
 		);
 	
@@ -442,7 +442,7 @@ try {
 	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
-# TODO Test 4: make a global relationship that involves re-ranking a node first, when 
+# Test 4: make a global relationship that involves re-ranking a node first, when 
 # the prior rank has a potential match too
 my $t4 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/globalrel_test.xml' );
 my $c4 = $t4->collation;
@@ -459,6 +459,80 @@ $c4->calculate_ranks();
 # Do our readings now share a rank?
 is( $c4->reading('r463.2')->rank, $c4->reading('r463.4')->rank, 
 	"Expected readings now at same rank" );
+	
+# Test group 5: relationship transitivity.
+my $t5 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/john.xml' );
+my $c5 = $t5->collation;
+
+# Test 5.1: make a grammatical link to an orthographically-linked reading
+$c5->add_relationship( 'r13.5', 'r13.2', { type => 'orthographic' } );
+$c5->add_relationship( 'r13.1', 'r13.2', { type => 'grammatical', propagate => 1 } );
+my $impliedrel = $c5->get_relationship( 'r13.1', 'r13.5' );
+ok( $impliedrel, 'Relationship was made between indirectly linked readings' );
+if( $impliedrel ) {
+	is( $impliedrel->type, 'grammatical', 'Implicit inbound relationship has the correct type' );
+}
+
+# Test 5.2: make another orthographic link, see if the grammatical one propagates
+$c5->add_relationship( 'r13.3', 'r13.5', { type => 'orthographic', propagate => 1 } );
+foreach my $rdg ( qw/ r13.3 r13.5 / ) {
+	my $newgram = $c5->get_relationship( 'r13.1', $rdg );
+	ok( $newgram, 'Relationship was propagaged up between indirectly linked readings' );
+	if( $newgram ) {
+		is( $newgram->type, 'grammatical', 'Implicit outbound relationship has the correct type' );
+	}
+}
+my $neworth = $c5->get_relationship( 'r13.2', 'r13.3' );
+ok( $neworth, 'Relationship was made between indirectly linked siblings' );
+if( $neworth ) {
+	is( $neworth->type, 'orthographic', 'Implicit direct relationship has the correct type' );
+}
+
+# Test 5.3: make an intermediate (spelling) link to the remaining node
+$c5->add_relationship( 'r13.4', 'r13.2', { type => 'spelling', propagate => 1 } );
+# Should be linked grammatically to 12.1, spelling-wise to the rest
+my $newgram = $c5->get_relationship( 'r13.4', 'r13.1' );
+ok( $newgram, 'Relationship was made between indirectly linked readings' );
+if( $newgram ) {
+	is( $newgram->type, 'grammatical', 'Implicit intermediate-out relationship has the correct type' );
+}
+foreach my $rdg ( qw/ r13.3 r13.5 / ) {
+	my $newspel = $c5->get_relationship( 'r13.4', $rdg );
+	ok( $newspel, 'Relationship was made between indirectly linked readings' );
+	if( $newspel ) {
+		is( $newspel->type, 'spelling', 'Implicit intermediate-in relationship has the correct type' );
+	}
+}
+
+# Test 5.4: add a parallel but not sibling relationship
+$c5->add_relationship( 'r13.6', 'r13.2', { type => 'lexical', propagate => 1 } );
+ok( !$c5->get_relationship( 'r13.6', 'r13.1' ), 
+	"Lexical relationship did not affect grammatical" );
+foreach my $rdg ( qw/ r13.3 r13.4 r13.5 / ) {
+	my $newlex = $c5->get_relationship( 'r13.6', $rdg );
+	ok( $newlex, 'Parallel was made between indirectly linked readings' );
+	if( $newlex ) {
+		is( $newlex->type, 'lexical', 'Implicit parallel-down relationship has the correct type' );
+	}
+}
+
+# Test 5.5: try it with non-colocated relationships
+my $numrel = scalar $c5->relationships;
+$c5->add_relationship( 'r62.1', 'r64.1', { type => 'transposition', propagate => 1 } );
+is( scalar $c5->relationships, $numrel+1, 
+	"Adding non-colo relationship did not propagate" );
+# Add a pivot point
+$c5->add_relationship( 'r61.1', 'r61.5', { type => 'orthographic' } );
+# Add a third transposed node
+$c5->add_relationship( 'r62.1', 'r60.3', { type => 'transposition', propagate => 1 } );
+my $newtrans = $c5->get_relationship( 'r64.1', 'r60.3' );
+ok( $newtrans, 'Non-colo relationship was made between indirectly linked readings' );
+if( $newtrans ) {
+	is( $newtrans->type, 'transposition', 'Implicit non-colo relationship has the correct type' );
+}
+is( scalar $c5->relationships, $numrel+4, 
+	"Adding non-colo relationship only propagated on non-colos" );
+
 
 =end testing
 
@@ -475,6 +549,7 @@ sub add_relationship {
 	my $relationship;
 	my $reltype;
 	my $thispaironly = delete $options->{thispaironly};
+	my $propagate = delete $options->{propagate};
 	my $droppedcolls = [];
 	if( ref( $options ) eq 'Text::Tradition::Collation::Relationship' ) {
 		$relationship = $options;
@@ -550,12 +625,23 @@ sub add_relationship {
 		}
 	}
 	$self->_set_relationship( $relationship, $source, $target ) unless $skip;
-	push( @pairs_set, [ $source, $target ] );
+	push( @pairs_set, [ $source, $target, $relationship->type ] );
     
 	# Find all the pairs for which we need to set the relationship.
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
-		push( @pairs_set, $self->add_global_relationship( $relationship ) );
+    	my @global_set = $self->add_global_relationship( $relationship );
+    	map { push( @$_, $relationship->type ) } @global_set;
+		push( @pairs_set, @global_set );
     }
+    if( $propagate ) {
+		my @prop;
+    	foreach my $ps ( @pairs_set ) {
+    		my @extra = $self->propagate_relationship( $ps->[0], $ps->[1] );
+    		push( @prop, @extra );
+    	}
+    	push( @pairs_set, @prop ) if @prop;
+    }
+    	
     # Finally, restore whatever collations we can, and return.
     $self->_restore_weak( @$droppedcolls );
     return @pairs_set;
@@ -774,9 +860,9 @@ sub _restore_weak {
 
 =head2 related_readings( $reading, $filter )
 
-Returns a list of readings that are connected via relationship links to $reading.
-If $filter is set to a subroutine ref, returns only those related readings where
-$filter( $relationship ) returns a true value.
+Returns a list of readings that are connected via direct relationship links
+to $reading. If $filter is set to a subroutine ref, returns only those
+related readings where $filter( $relationship ) returns a true value.
 
 =cut
 
@@ -796,25 +882,10 @@ sub related_readings {
 			my $type = $filter;
 			$filter = sub { $_[0]->type eq $type };
 		}
-		my %found = ( $reading => 1 );
-		my $check = [ $reading ];
-		my $iter = 0;
-		while( @$check ) {
-			my $more = [];
-			foreach my $r ( @$check ) {
-				foreach my $nr ( $self->graph->neighbors( $r ) ) {
-					if( &$filter( $self->get_relationship( $r, $nr ) ) ) {
-						push( @$more, $nr ) unless exists $found{$nr};
-						$found{$nr} = 1;
-					}
-				}
-			}
-			$check = $more;
-		}
-		delete $found{$reading};
-		@answer = keys %found;
+		@answer = grep { &$filter( $self->get_relationship( $reading, $_ ) ) }
+			$self->graph->neighbors( $reading );
 	} else {
-		@answer = $self->graph->all_reachable( $reading );
+		@answer = $self->graph->neighbors( $reading );
 	}
 	if( $return_object ) {
 		my $c = $self->collation;
@@ -822,6 +893,124 @@ sub related_readings {
 	} else {
 		return @answer;
 	}
+}
+
+=head2 propagate_relationship( $rel )
+
+Apply the transitivity and binding level rules to propagate the consequences of
+the specified relationship link, ensuring all consequent relationships exist.
+For now, we only propagate colocation links if we are passed a colocation, and
+we only propagate displacement links if we are given a displacement.
+
+Returns an array of tuples ( rdg1, rdg2, type ) for each new reading set.
+
+=cut
+
+sub propagate_relationship {
+	my( $self, @rel ) = @_;
+	## Check that the vector is an arrayref
+	my $rel = @rel > 1 ? \@rel : $rel[0];
+	## Get the relationship info
+	my $relobj = $self->get_relationship( $rel );
+	my $reltype = $self->type( $relobj->type );
+	return () unless $reltype->is_transitive;
+	my @newly_set;
+	
+	my $colo = $reltype->is_colocation;
+	my $bindlevel = $reltype->bindlevel;
+	
+	## Find all readings that are linked via this relationship type
+	my %thislevel = ( $rel->[0] => 1, $rel->[1] => 1 );
+	my $check = $rel;
+	my $iter = 0;
+	while( @$check ) {
+		my $more = [];
+		foreach my $r ( @$check ) {
+			push( @$more, grep { !exists $thislevel{$_}
+				&& $self->get_relationship( $r, $_ )
+				&& $self->get_relationship( $r, $_ )->type eq $relobj->type }
+					$self->graph->neighbors( $r ) );
+		}
+		map { $thislevel{$_} = 1 } @$more;
+		$check = $more;
+	}
+	
+	## Make sure every reading of our relationship type is linked to every other
+	my @samelevel = keys %thislevel;
+	while( @samelevel ) {
+		my $r = shift @samelevel;
+		foreach my $nr ( @samelevel ) {
+			my $existing = $self->get_relationship( $r, $nr );
+			if( $existing ) {
+				# Check that it's a matching type
+				throw( "Conflicting existing relationship at $r, $nr trying to propagate "
+					. $relobj->type . " relationship at @$rel" )
+					unless $existing->type eq $relobj->type;
+			} else {
+				# Try to add a new relationship here
+				try {
+					my @new = $self->add_relationship( $r, $nr, { type => $relobj->type, 
+						annotation => "Propagated from relationship at @$rel" } );
+					push( @newly_set, @new );
+				} catch ( Text::Tradition::Error $e ) {
+					throw( "Could not propagate " . $relobj->type . 
+						" relationship (original @$rel) at $r -- $nr: " .
+						$e->message );
+				}
+			}
+		}
+
+		## Now for each sibling our set, look for its direct connections to 
+		## transitive readings of a different bindlevel, and make sure that 
+		## all siblings are related to those readings.
+		my @other;
+		foreach my $n ( $self->graph->neighbors( $r ) ) {
+			my $crel = $self->get_relationship( $r, $n );
+			next unless $crel;
+			my $crt = $self->type( $crel->type );
+			if( $crt->is_transitive && $crt->is_colocation == $colo ) {
+				next if $crt->bindlevel == $reltype->bindlevel;
+				my $nrel = $crt->bindlevel < $reltype->bindlevel 
+					? $reltype->name : $crt->name;
+				push( @other, [ $n, $nrel ] );
+			}
+		}
+		# The @other array now contains tuples of ( reading, type ) where the
+		# reading is the non-sibling and the type is the type of relationship 
+		# that the siblings should have to the non-sibling.	
+		foreach ( @other ) {
+			my( $nr, $nrtype ) = @$_;
+			foreach my $sib ( keys %thislevel ) {
+				next if $sib eq $r;
+				my $existing = $self->get_relationship( $sib, $nr );
+				if( $existing ) {
+					# Check that it's compatible. The existing relationship type
+					# should match the looser of the two relationships in play,
+					# whether the original relationship being worked on or the
+					# relationship between $r and $or.
+					if( $nrtype ne $existing->type ) {
+						throw( "Conflicting existing relationship at $nr ( -> "
+							. $self->get_relationship( $nr, $r )->type . " to $r) "
+							. " -- $sib trying to propagate " . $relobj->type 
+							. " relationship at @$rel" );
+					}
+				} else {
+					# Try to add a new relationship here
+					try {
+						my @new = $self->add_relationship( $sib, $nr, { type => $nrtype, 
+							annotation => "Propagated from relationship at @$rel" } );
+						push( @newly_set, @new );
+					} catch ( Text::Tradition::Error $e ) {
+						throw( "Could not propagate $nrtype relationship (original " . 
+							$relobj->type . " at @$rel) at $sib -- $nr: " .
+							$e->message );
+					}
+				}
+			}
+		}
+	}
+	
+	return @newly_set;
 }
 
 =head2 merge_readings( $kept, $deleted );

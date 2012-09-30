@@ -172,7 +172,7 @@ try {
 	ok( 0, "Failed to add normal transposition complement: " . $e->message );
 }
 
-# TODO Test 4: make a global relationship that involves re-ranking a node first, when 
+# Test 4: make a global relationship that involves re-ranking a node first, when 
 # the prior rank has a potential match too
 my $t4 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/globalrel_test.xml' );
 my $c4 = $t4->collation;
@@ -189,6 +189,79 @@ $c4->calculate_ranks();
 # Do our readings now share a rank?
 is( $c4->reading('r463.2')->rank, $c4->reading('r463.4')->rank, 
 	"Expected readings now at same rank" );
+	
+# Test group 5: relationship transitivity.
+my $t5 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/john.xml' );
+my $c5 = $t5->collation;
+
+# Test 5.1: make a grammatical link to an orthographically-linked reading
+$c5->add_relationship( 'r13.5', 'r13.2', { type => 'orthographic' } );
+$c5->add_relationship( 'r13.1', 'r13.2', { type => 'grammatical', propagate => 1 } );
+my $impliedrel = $c5->get_relationship( 'r13.1', 'r13.5' );
+ok( $impliedrel, 'Relationship was made between indirectly linked readings' );
+if( $impliedrel ) {
+	is( $impliedrel->type, 'grammatical', 'Implicit inbound relationship has the correct type' );
+}
+
+# Test 5.2: make another orthographic link, see if the grammatical one propagates
+$c5->add_relationship( 'r13.3', 'r13.5', { type => 'orthographic', propagate => 1 } );
+foreach my $rdg ( qw/ r13.3 r13.5 / ) {
+	my $newgram = $c5->get_relationship( 'r13.1', $rdg );
+	ok( $newgram, 'Relationship was propagaged up between indirectly linked readings' );
+	if( $newgram ) {
+		is( $newgram->type, 'grammatical', 'Implicit outbound relationship has the correct type' );
+	}
+}
+my $neworth = $c5->get_relationship( 'r13.2', 'r13.3' );
+ok( $neworth, 'Relationship was made between indirectly linked siblings' );
+if( $neworth ) {
+	is( $neworth->type, 'orthographic', 'Implicit direct relationship has the correct type' );
+}
+
+# Test 5.3: make an intermediate (spelling) link to the remaining node
+$c5->add_relationship( 'r13.4', 'r13.2', { type => 'spelling', propagate => 1 } );
+# Should be linked grammatically to 12.1, spelling-wise to the rest
+my $newgram = $c5->get_relationship( 'r13.4', 'r13.1' );
+ok( $newgram, 'Relationship was made between indirectly linked readings' );
+if( $newgram ) {
+	is( $newgram->type, 'grammatical', 'Implicit intermediate-out relationship has the correct type' );
+}
+foreach my $rdg ( qw/ r13.3 r13.5 / ) {
+	my $newspel = $c5->get_relationship( 'r13.4', $rdg );
+	ok( $newspel, 'Relationship was made between indirectly linked readings' );
+	if( $newspel ) {
+		is( $newspel->type, 'spelling', 'Implicit intermediate-in relationship has the correct type' );
+	}
+}
+
+# Test 5.4: add a parallel but not sibling relationship
+$c5->add_relationship( 'r13.6', 'r13.2', { type => 'lexical', propagate => 1 } );
+ok( !$c5->get_relationship( 'r13.6', 'r13.1' ), 
+	"Lexical relationship did not affect grammatical" );
+foreach my $rdg ( qw/ r13.3 r13.4 r13.5 / ) {
+	my $newlex = $c5->get_relationship( 'r13.6', $rdg );
+	ok( $newlex, 'Parallel was made between indirectly linked readings' );
+	if( $newlex ) {
+		is( $newlex->type, 'lexical', 'Implicit parallel-down relationship has the correct type' );
+	}
+}
+
+# Test 5.5: try it with non-colocated relationships
+my $numrel = scalar $c5->relationships;
+$c5->add_relationship( 'r62.1', 'r64.1', { type => 'transposition', propagate => 1 } );
+is( scalar $c5->relationships, $numrel+1, 
+	"Adding non-colo relationship did not propagate" );
+# Add a pivot point
+$c5->add_relationship( 'r61.1', 'r61.5', { type => 'orthographic' } );
+# Add a third transposed node
+$c5->add_relationship( 'r62.1', 'r60.3', { type => 'transposition', propagate => 1 } );
+my $newtrans = $c5->get_relationship( 'r64.1', 'r60.3' );
+ok( $newtrans, 'Non-colo relationship was made between indirectly linked readings' );
+if( $newtrans ) {
+	is( $newtrans->type, 'transposition', 'Implicit non-colo relationship has the correct type' );
+}
+is( scalar $c5->relationships, $numrel+4, 
+	"Adding non-colo relationship only propagated on non-colos" );
 }
 
 

@@ -438,7 +438,6 @@ sub _add_collations {
 	# reading at $rank-1.
 	my @collate_pairs;
 	foreach my $r ( 1 .. $collation->end->rank - 1 ) {
-		$DB::single = 1 if $r == 82 || $r == 104 || $r == 167;
 		my $anchor;
 		my @need_weak;
 		my @here = grep { !$_->is_meta } $collation->readings_at_rank( $r );
