@@ -234,7 +234,31 @@ foreach my $rdg ( qw/ r13.3 r13.5 / ) {
 	}
 }
 
-# Test 5.4: add a parallel but not sibling relationship
+# Test 5.4: delete a spelling relationship, add it again, make sure it doesn't 
+# throw and make sure all the relationships are the same
+my $numrel = scalar $c5->relationships;
+$c5->del_relationship( 'r13.4', 'r13.2' );
+try {
+	$c5->add_relationship( 'r13.4', 'r13.2', { type => 'spelling', propagate => 1 } );
+	ok( 1, "Managed not to throw an exception re-adding the relationship" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Threw an exception trying to re-add our intermediate relationship: " . $e->message );
+}
+is( $numrel, scalar $c5->relationships, "Number of relationships did not change" );
+foreach my $rdg ( qw/ r13.2 r13.3 r13.5 / ) {
+	my $newspel = $c5->get_relationship( 'r13.4', $rdg );
+	ok( $newspel, 'Relationship was made between indirectly linked readings' );
+	if( $newspel ) {
+		is( $newspel->type, 'spelling', 'Reinstated intermediate-in relationship has the correct type' );
+	}
+}
+my $stillgram = $c5->get_relationship( 'r13.4', 'r13.1' );
+ok( $stillgram, 'Relationship was made between indirectly linked readings' );
+if( $stillgram ) {
+	is( $stillgram->type, 'grammatical', 'Reinstated intermediate-out relationship has the correct type' );
+}
+
+# Test 5.5: add a parallel but not sibling relationship
 $c5->add_relationship( 'r13.6', 'r13.2', { type => 'lexical', propagate => 1 } );
 ok( !$c5->get_relationship( 'r13.6', 'r13.1' ), 
 	"Lexical relationship did not affect grammatical" );
@@ -246,8 +270,8 @@ foreach my $rdg ( qw/ r13.3 r13.4 r13.5 / ) {
 	}
 }
 
-# Test 5.5: try it with non-colocated relationships
-my $numrel = scalar $c5->relationships;
+# Test 5.6: try it with non-colocated relationships
+$numrel = scalar $c5->relationships;
 $c5->add_relationship( 'r62.1', 'r64.1', { type => 'transposition', propagate => 1 } );
 is( scalar $c5->relationships, $numrel+1, 
 	"Adding non-colo relationship did not propagate" );

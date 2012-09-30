@@ -504,7 +504,31 @@ foreach my $rdg ( qw/ r13.3 r13.5 / ) {
 	}
 }
 
-# Test 5.4: add a parallel but not sibling relationship
+# Test 5.4: delete a spelling relationship, add it again, make sure it doesn't 
+# throw and make sure all the relationships are the same
+my $numrel = scalar $c5->relationships;
+$c5->del_relationship( 'r13.4', 'r13.2' );
+try {
+	$c5->add_relationship( 'r13.4', 'r13.2', { type => 'spelling', propagate => 1 } );
+	ok( 1, "Managed not to throw an exception re-adding the relationship" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Threw an exception trying to re-add our intermediate relationship: " . $e->message );
+}
+is( $numrel, scalar $c5->relationships, "Number of relationships did not change" );
+foreach my $rdg ( qw/ r13.2 r13.3 r13.5 / ) {
+	my $newspel = $c5->get_relationship( 'r13.4', $rdg );
+	ok( $newspel, 'Relationship was made between indirectly linked readings' );
+	if( $newspel ) {
+		is( $newspel->type, 'spelling', 'Reinstated intermediate-in relationship has the correct type' );
+	}
+}
+my $stillgram = $c5->get_relationship( 'r13.4', 'r13.1' );
+ok( $stillgram, 'Relationship was made between indirectly linked readings' );
+if( $stillgram ) {
+	is( $stillgram->type, 'grammatical', 'Reinstated intermediate-out relationship has the correct type' );
+}
+
+# Test 5.5: add a parallel but not sibling relationship
 $c5->add_relationship( 'r13.6', 'r13.2', { type => 'lexical', propagate => 1 } );
 ok( !$c5->get_relationship( 'r13.6', 'r13.1' ), 
 	"Lexical relationship did not affect grammatical" );
@@ -516,8 +540,8 @@ foreach my $rdg ( qw/ r13.3 r13.4 r13.5 / ) {
 	}
 }
 
-# Test 5.5: try it with non-colocated relationships
-my $numrel = scalar $c5->relationships;
+# Test 5.6: try it with non-colocated relationships
+$numrel = scalar $c5->relationships;
 $c5->add_relationship( 'r62.1', 'r64.1', { type => 'transposition', propagate => 1 } );
 is( scalar $c5->relationships, $numrel+1, 
 	"Adding non-colo relationship did not propagate" );
@@ -533,6 +557,7 @@ if( $newtrans ) {
 is( scalar $c5->relationships, $numrel+4, 
 	"Adding non-colo relationship only propagated on non-colos" );
 
+# TODO test that attempts to cross boundaries on bindlevel-equal relationships fail.
 
 =end testing
 
@@ -941,12 +966,21 @@ sub propagate_relationship {
 		my $r = shift @samelevel;
 		foreach my $nr ( @samelevel ) {
 			my $existing = $self->get_relationship( $r, $nr );
+			my $skip;
 			if( $existing ) {
-				# Check that it's a matching type
-				throw( "Conflicting existing relationship at $r, $nr trying to propagate "
-					. $relobj->type . " relationship at @$rel" )
-					unless $existing->type eq $relobj->type;
-			} else {
+				my $extype = $self->type( $existing->type );
+				unless( $extype->is_weak ) {
+					# Check that it's a matching type, or a type subsumed by our
+					# bindlevel
+					throw( "Conflicting existing relationship of type "
+						. $existing->type . " at $r, $nr trying to propagate "
+						. $relobj->type . " relationship at @$rel" )
+						unless $existing->type eq $relobj->type
+							|| $extype->bindlevel <= $reltype->bindlevel;
+					$skip = 1;
+				}
+			}
+			unless( $skip ) {
 				# Try to add a new relationship here
 				try {
 					my @new = $self->add_relationship( $r, $nr, { type => $relobj->type, 
@@ -982,19 +1016,29 @@ sub propagate_relationship {
 			my( $nr, $nrtype ) = @$_;
 			foreach my $sib ( keys %thislevel ) {
 				next if $sib eq $r;
+				next if $sib eq $nr; # can happen if linked to $r by tightrel
+									 # but linked to a sib of $r by thisrel
+									 # e.g. when a rel has been part propagated
 				my $existing = $self->get_relationship( $sib, $nr );
+				my $skip;
 				if( $existing ) {
 					# Check that it's compatible. The existing relationship type
-					# should match the looser of the two relationships in play,
-					# whether the original relationship being worked on or the
-					# relationship between $r and $or.
-					if( $nrtype ne $existing->type ) {
-						throw( "Conflicting existing relationship at $nr ( -> "
-							. $self->get_relationship( $nr, $r )->type . " to $r) "
-							. " -- $sib trying to propagate " . $relobj->type 
-							. " relationship at @$rel" );
+					# should match or be subsumed by the looser of the two 
+					# relationships in play, whether the original relationship 
+					# being worked on or the relationship between $r and $or.
+					my $extype = $self->type( $existing->type );
+					unless( $extype->is_weak ) {
+						if( $nrtype ne $extype->name 
+							&& $self->type( $nrtype )->bindlevel <= $extype->bindlevel ) {
+							throw( "Conflicting existing relationship at $nr ( -> "
+								. $self->get_relationship( $nr, $r )->type . " to $r) "
+								. " -- $sib trying to propagate " . $relobj->type 
+								. " relationship at @$rel" );
+						}
+						$skip = 1;
 					}
-				} else {
+				} 
+				unless( $skip ) {
 					# Try to add a new relationship here
 					try {
 						my @new = $self->add_relationship( $sib, $nr, { type => $nrtype, 
@@ -1012,6 +1056,37 @@ sub propagate_relationship {
 	
 	return @newly_set;
 }
+
+=head2 propagate_all_relationships
+
+Apply propagation logic retroactively to all relationships in the tradition.
+
+=cut
+
+sub propagate_all_relationships {
+	my $self = shift;
+	my @allrels = sort { $self->_propagate_rel_order( $a, $b ) } $self->relationships;
+	foreach my $rel ( @allrels ) {
+		my $relobj = $self->get_relationship( $rel );
+		if( $self->type( $relobj->type )->is_transitive ) {
+			my @added = $self->propagate_relationship( $rel );
+		}
+	}
+}
+
+# Helper sorting function for retroactive propagation order.
+sub _propagate_rel_order {
+	my( $self, $a, $b ) = @_;
+	my $aobj = $self->get_relationship( $a ); 
+	my $bobj = $self->get_relationship( $b );
+	my $at = $self->type( $aobj->type ); my $bt = $self->type( $bobj->type );
+	# Apply strong relationships before weak
+	return -1 if $bt->is_weak && !$at->is_weak;
+	return 1 if $at->is_weak && !$bt->is_weak;
+	# Apply more tightly bound relationships first
+	return $at->bindlevel <=> $bt->bindlevel;
+}
+
 
 =head2 merge_readings( $kept, $deleted );
 
