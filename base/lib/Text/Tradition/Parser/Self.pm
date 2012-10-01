@@ -320,11 +320,12 @@ sub _apply_relationship_order {
 	# Apply strong relationships before weak
 	return -1 if $bt->is_weak && !$at->is_weak;
 	return 1 if $at->is_weak && !$bt->is_weak;
+	# Apply more tightly bound relationships first
+	my $blcmp = $at->bindlevel <=> $bt->bindlevel;
+	return $blcmp if $blcmp;
 	# Apply local before global
 	return -1 if $a->{scope} eq 'local' && $b->{scope} ne 'local';
 	return 1 if $b->{scope} eq 'local' && $a->{scope} ne 'local';
-	# Apply more tightly bound relationships first
-	return $at->bindlevel <=> $bt->bindlevel;
 }
 
 1;
