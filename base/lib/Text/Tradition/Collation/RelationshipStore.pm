@@ -82,8 +82,9 @@ has 'relationship_types' => (
 	handles => {
 		has_type => 'exists',
 		add_type => 'set',
+		del_type => 'delete',
 		type     => 'get',
-		del_type => 'delete'
+		types    => 'values'
 		},
 	);
 
