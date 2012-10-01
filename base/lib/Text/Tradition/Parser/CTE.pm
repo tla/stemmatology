@@ -367,7 +367,6 @@ sub interpret {
 
 sub _parse_wit_detail {
     my( $detail, $readings, $lemma ) = @_;
-    $DB::single = 1 if 
     my $wit = $detail->getAttribute( 'wit' );
     my $content = $detail->textContent;
     if( $content =~ /a\.\s*c\b/ ) {
