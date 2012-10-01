@@ -41,9 +41,10 @@ if( $help ) {
     help();
 }
 
-unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|stone|db$/i ) {
+unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|xlsx?|db$/i ) {
     help( "Input format must be one of CollateX, CSV, CTE, Self, TEI" );
 }
+my $excel = $informat =~ /^xls/i ? lc( $informat ) : undef;
 $informat = 'CollateX' if $informat =~ /^c(ollate)?x$/i;
 $informat = 'KUL' if $informat =~ /^kul$/i;
 $informat = 'CTE' if $informat =~ /^cte$/i;
@@ -51,6 +52,7 @@ $informat = 'Self' if $informat =~ /^self$/i;
 $informat = 'TEI' if $informat =~ /^tei$/i;
 $informat = 'Tabular' if $informat =~ /^tab$/i;
 $informat = 'CollateText' if $informat =~ /^stone$/i;
+$informat = 'Tabular' if $informat =~ /^xls/i;
 
 unless( $outformat =~ /^(graphml|svg|dot|stemma|csv|db)$/ ) {
     help( "Output format must be one of db, graphml, svg, csv, stemma, or dot" );
@@ -86,7 +88,13 @@ if( $informat eq 'db' ) {
 	$args{'base'} = $inbase if $inbase;
 	$args{'language'} = $language if $language;
 	$args{'name'} = $name if $name;
-	$args{'sep_char'} = $sep if $informat eq 'Tabular';
+	if( $informat eq 'Tabular' ) {
+		if( $excel ) {
+			$args{'excel'} = $excel;
+		} else {
+			$args{'sep_char'} = $sep;
+		}
+	}
 	### Custom hacking for Stone
 	if( $informat eq 'CollateText' ) {
 		$args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
