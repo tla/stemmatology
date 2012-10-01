@@ -659,7 +659,6 @@ sub add_relationship {
 	# Find all the pairs for which we need to set the relationship.
     if( $relationship->colocated && $relationship->nonlocal && !$thispaironly ) {
     	my @global_set = $self->add_global_relationship( $relationship );
-    	map { push( @$_, $relationship->type ) } @global_set;
 		push( @pairs_set, @global_set );
     }
     if( $propagate ) {
