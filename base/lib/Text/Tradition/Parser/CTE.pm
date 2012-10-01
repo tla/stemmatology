@@ -367,14 +367,15 @@ sub interpret {
 
 sub _parse_wit_detail {
     my( $detail, $readings, $lemma ) = @_;
+    $DB::single = 1 if 
     my $wit = $detail->getAttribute( 'wit' );
     my $content = $detail->textContent;
-    if( $content =~ /a\.\s*c\./ ) {
+    if( $content =~ /a\.\s*c\b/ ) {
         # Replace the key in the $readings hash
         my $rdg = delete $readings->{$wit};
         $readings->{$wit.'_ac'} = $rdg;
         $has_ac{$sigil_for{$wit}} = 1;
-    } elsif( $content =~ /p\.\s*c\./ ) {
+    } elsif( $content =~ /p\.\s*c\b/ ) {
         # If no key for the wit a.c. exists, add one pointing to the lemma
         unless( exists $readings->{$wit.'_ac'} ) {
             $readings->{$wit.'_ac'} = $lemma;
