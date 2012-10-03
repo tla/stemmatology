@@ -148,16 +148,26 @@ sub BUILD {
 	my $self = shift;
 	
 	my @DEFAULT_TYPES = (
-		{ name => 'collated', bindlevel => 50, is_weak => 1, is_transitive => 0, is_generalizable => 0 },
-		{ name => 'orthographic', bindlevel => 0, use_regular => 0 },
-		{ name => 'spelling', bindlevel => 1 },
-		{ name => 'punctuation', bindlevel => 2 },
-		{ name => 'grammatical', bindlevel => 2 },
-		{ name => 'lexical', bindlevel => 2 },
-		{ name => 'uncertain', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
-		{ name => 'other', bindlevel => 50, is_transitive => 0, is_generalizable => 0 },
-		{ name => 'transposition', bindlevel => 50, is_colocation => 0 },
-		{ name => 'repetition', bindlevel => 50, is_colocation => 0, is_transitive => 0 }
+		{ name => 'collated', bindlevel => 50, is_weak => 1, is_transitive => 0, 
+			is_generalizable => 0, description => 'Internal use only' },
+		{ name => 'orthographic', bindlevel => 0, use_regular => 0,
+			description => 'These are the same reading, neither unusually spelled.' },
+		{ name => 'punctuation', bindlevel => 0,
+			description => 'These are the same reading apart from punctuation.' },
+		{ name => 'spelling', bindlevel => 1,
+			description => 'These are the same reading, spelled differently.' },
+		{ name => 'grammatical', bindlevel => 2,
+			description => 'These readings share a root (lemma), but have different parts of speech (morphologies).' },
+		{ name => 'lexical', bindlevel => 2,
+			description => 'These readings share a part of speech (morphology), but have different roots (lemmata).' },
+		{ name => 'uncertain', bindlevel => 0, is_transitive => 0, is_generalizable => 0,
+			use_regular => 0, description => 'These readings are related, but a clear category cannot be assigned.' },
+		{ name => 'other', bindlevel => 0, is_transitive => 0, is_generalizable => 0,
+			description => 'These readings are related in a way not covered by the existing types.' },
+		{ name => 'transposition', bindlevel => 50, is_colocation => 0,
+			description => 'This is the same (or nearly the same) reading in a different location.' },
+		{ name => 'repetition', bindlevel => 50, is_colocation => 0, is_transitive => 0,
+			description => 'This is a reading that was repeated in one or more witnesses.' }
 		);
 	
 	foreach my $type ( @DEFAULT_TYPES ) {
@@ -464,6 +474,15 @@ is( $c4->reading('r463.2')->rank, $c4->reading('r463.4')->rank,
 # Test group 5: relationship transitivity.
 my $t5 = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/john.xml' );
 my $c5 = $t5->collation;
+# Test 5.0: propagate all existing transitive rels and make sure it succeeds
+my $orignumrels = scalar $c5->relationships();
+try {
+	$c5->relations->propagate_all_relationships();
+	ok( 1, "Propagated all existing transitive relationships" );
+} catch ( Text::Tradition::Error $err ) {
+	ok( 0, "Failed to propagate all existing relationships: " . $err->message );
+}
+ok( scalar( $c5->relationships ) > $orignumrels, "Added some relationships in propagation" );
 
 # Test 5.1: make a grammatical link to an orthographically-linked reading
 $c5->add_relationship( 'r13.5', 'r13.2', { type => 'orthographic' } );
@@ -558,11 +577,52 @@ if( $newtrans ) {
 is( scalar $c5->relationships, $numrel+4, 
 	"Adding non-colo relationship only propagated on non-colos" );
 
-# TODO test that attempts to cross boundaries on bindlevel-equal relationships fail.
+# Test 5.7: ensure that attempts to cross boundaries on bindlevel-equal 
+# relationships fail.
+try {
+	$c5->add_relationship( 'r39.6', 'r41.1', { type => 'grammatical', propagate => 1 } );
+	ok( 0, "Did not prevent add of conflicting relationship level" );
+} catch( Text::Tradition::Error $err ) {
+	like( $err->message, qr/Conflicting existing relationship/, "Got correct error message trying to add conflicting relationship level" );
+}
 
-# TODO test that weak relationships don't interfere
+# Test 5.8: ensure that weak relationships don't interfere
+$c5->add_relationship( 'r50.1', 'r50.2', { type => 'collated' } );
+$c5->add_relationship( 'r50.3', 'r50.4', { type => 'orthographic' } );
+try {
+	$c5->add_relationship( 'r50.4', 'r50.1', { type => 'grammatical', propagate => 1 } );
+	ok( 1, "Collation did not interfere with new relationship add" );
+} catch( Text::Tradition::Error $err ) {
+	ok( 0, "Collation interfered with new relationship add: " . $err->message );
+}
+my $crel = $c5->get_relationship( 'r50.1', 'r50.2' );
+ok( $crel, "Original relationship still exists" );
+if( $crel ) {
+	is( $crel->type, 'collated', "Original relationship still a collation" );
+}
 
-# TODO test that strong non-transitive relationships don't interfere
+try {
+	$c5->add_relationship( 'r50.1', 'r51.1', { type => 'spelling', propagate => 1 } );
+	ok( 1, "Collation did not interfere with relationship re-ranking" );
+} catch( Text::Tradition::Error $err ) {
+	ok( 0, "Collation interfered with relationship re-ranking: " . $err->message );
+}
+$crel = $c5->get_relationship( 'r50.1', 'r50.2' );
+ok( !$crel, "Collation relationship now gone" );
+
+# Test 5.9: ensure that strong non-transitive relationships don't interfere
+$c5->add_relationship( 'r66.1', 'r66.4', { type => 'grammatical' } );
+$c5->add_relationship( 'r66.2', 'r66.4', { type => 'uncertain', propagate => 1 } );
+try {
+	$c5->add_relationship( 'r66.1', 'r66.3', { type => 'grammatical', propagate => 1 } );
+	ok( 1, "Non-transitive relationship did not block grammatical add" );
+} catch( Text::Tradition::Error $err ) {
+	ok( 0, "Non-transitive relationship blocked grammatical add: " . $err->message );
+}
+is( scalar $c5->related_readings( 'r66.4' ), 3, "Reading 66.4 has all its links" );
+is( scalar $c5->related_readings( 'r66.2' ), 1, "Reading 66.2 has only one link" );
+is( scalar $c5->related_readings( 'r66.1' ), 2, "Reading 66.1 has all its links" );
+is( scalar $c5->related_readings( 'r66.3' ), 2, "Reading 66.3 has all its links" );
 
 =end testing
 
