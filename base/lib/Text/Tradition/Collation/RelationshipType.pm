@@ -82,6 +82,12 @@ has 'bindlevel' => (
 	required => 1
 	);
 	
+has 'description' => (
+	is => 'ro',
+	isa => 'Str',
+	required => 1
+	);
+	
 has 'is_weak' => (
 	is => 'ro',
 	isa => 'Bool',
