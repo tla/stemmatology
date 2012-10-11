@@ -12,30 +12,32 @@ binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
 my $dir = Text::Tradition::Directory->new(
-    'dsn' => 'dbi:SQLite:dbname=stemmaweb/db/traditions.db',
+    'dsn' => 'dbi:SQLite:dbname=../../stemmaweb/db/traditions.db',
     );
-my $calcdsn = 'dbi:SQLite:dbname=db/graphs.db';
-
-my $scope = $dir->new_scope();
+ my $scope = $dir->new_scope();
 my $lookfor = shift @ARGV || '';
-my @collapse = @ARGV;
+my %collapse;
+map { $collapse{$_} = 1 } @ARGV;
 
 my @relation_types = grep { !$collapse{$_} }
-	qw/ orthographic spelling grammatical lexical transposition addition deletion
-	    wordsimilar unknown /;
+	qw/ orthographic spelling grammatical lexical transposition repetition
+	    uncertain other addition deletion wordsimilar unknown /;
 
 my @resultfields = qw/
 	text_name loc_total loc_totalvariant loc_genealogical loc_genvariant 
 	loc_conflict loc_conflictvariant loc_reverted loc_revertvariant 
 	percent_genealogical percent_genvariant percent_genorrevert /;
-map { push( @resultfields, "gen_$_", "gen_${_}_nonsense", "gen_${_}_ungramm" ) }
-	@relation_types;
-map { push( @resultfields, "con_$_", "con_${_}_nonsense", "con_${_}_ungramm" ) }
-	@relation_types;
-map { push( @resultfields, "rev_$_", "rev_${_}_nonsense", "rev_${_}_ungramm" ) }
-	@relation_types;
-map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen" ) } @relation_types;
-map { push( @resultfields, "percent_con_$_", "percent_rev_$_" ) } @relation_types;
+map { push( @resultfields, "gen_$_", "con_$_", "rev_$_" ) } @relation_types;
+# map { push( @resultfields, "gen_$_", "gen_${_}_nonsense", "gen_${_}_ungramm" ) }
+# 	@relation_types;
+# map { push( @resultfields, "con_$_", "con_${_}_nonsense", "con_${_}_ungramm" ) }
+# 	@relation_types;
+# map { push( @resultfields, "rev_$_", "rev_${_}_nonsense", "rev_${_}_ungramm" ) }
+# 	@relation_types;
+map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen", 
+			"percent_${_}_notcon" ) } @relation_types;
+map { push( @resultfields, "percent_con_$_", "percent_rev_$_", 
+			"percent_noncon_$_" ) } @relation_types;
 	
 my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );
 open my $fh, ">:encoding(UTF-8)", "analysis.csv" or die "analysis.csv: $!";
@@ -61,10 +63,9 @@ foreach my $tinfo( $dir->traditionlist ) {
 	# Run the analysis for each row in @rows
 	my %opts = ( 
 		exclude_type1 => 1,
-		merge_types => [ 'punctuation' ], 
-		calcdsn => $calcdsn );
-	if( @collapse ) {
-		push( @{$opts{merge_types}}, @collapse );
+		merge_types => [ 'punctuation' ] );
+	if( keys %collapse ) {
+		push( @{$opts{merge_types}}, keys %collapse );
 	}
 	
 	my $result = run_analysis( $tradition, %opts );
@@ -84,6 +85,10 @@ foreach my $tinfo( $dir->traditionlist ) {
 		# Find each genealogical transition and get the relationship type (if any)
 		# Find each non-genealogical transition and get the relationship type (if any)
 		my( $loc_conflict, $loc_reversion );
+		if( exists $loc->{unsolved} ) {
+			say STDERR "Skipping unsolved location at " . $loc->{id};
+			next;
+		}
 		foreach my $rdghash( @{$loc->{readings}} ) {
 			# Weed out singletons
 			my @roots = @{$rdghash->{independent_occurrence}};
@@ -137,11 +142,19 @@ foreach my $tinfo( $dir->traditionlist ) {
 	$datahash{'percent_genvariant'} = $genvariant / $totalvariant;
 	$datahash{'percent_genorrevert'} = ( $genvariant + $datahash{loc_revertvariant} ) / $totalvariant;
 	foreach my $type ( @relation_types ) {
-		$datahash{"percent_gen_$type"} = $datahash{"gen_$type"} / $totalvariant;
-		$datahash{"percent_con_$type"} = $datahash{"con_$type"} / $totalvariant;
+		my $pgtype = $datahash{"gen_$type"};
+		my $pctype = $datahash{"con_$type"};
+		my $prtype = $datahash{"rev_$type"};
+		$datahash{"percent_gen_$type"} = $pgtype / $totalvariant;
+		$datahash{"percent_con_$type"} = $pctype / $totalvariant;
+		$datahash{"percent_rev_$type"} = $prtype / $totalvariant;
+		$datahash{"percent_notcon_$type"} = ( $pgtype + $prtype ) / $totalvariant;
 		$datahash{"percent_${type}_gen"} = 
-			$datahash{"gen_$type"} + $datahash{"con_$type"} == 0 ? 0 :
-			$datahash{"gen_$type"} / ( $datahash{"gen_$type"} + $datahash{"con_$type"} );
+			$pgtype + $pctype + $prtype == 0 
+				? 0 : $pgtype / ( $pgtype + $pctype + $prtype );
+		$datahash{"percent_${type}_notcon"} = 
+			$pgtype + $pctype + $prtype == 0 
+				? 0 : ( $pgtype + $prtype ) / ( $pgtype + $pctype + $prtype );
 	}
 	
 	# Write them out to CSV.
@@ -176,10 +189,10 @@ sub _add_reading_relations {
 		my $typekey = substr( $type, 0, 3 ) . "_$relation";
 		$datahash->{$typekey}++;
 		## TODO distinguish parent-bad vs. rdg-bad
-		if( $robj && $robj->grammar_invalid ) {
-			$datahash->{$typekey.'_ungramm'} = 1;
-		} elsif( $robj && $robj->is_nonsense ) {
-			$datahash->{$typekey.'_nonsense'} = 1;
-		}
+# 		if( $robj && $robj->grammar_invalid ) {
+# 			$datahash->{$typekey.'_ungramm'} = 1;
+# 		} elsif( $robj && $robj->is_nonsense ) {
+# 			$datahash->{$typekey.'_nonsense'} = 1;
+# 		}
 	}
 }

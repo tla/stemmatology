@@ -341,7 +341,7 @@ sub group_variants {
 			# Otherwise, record it...
 			$readings_at_rank{$rdg->{'t'}->id} = $rdg->{'t'};
 			# ...and grab any transpositions, and their relations.
-			my @transp = grep { $_->rank != $rank } $rdg->{'t'}->related_readings();
+			my @transp = grep { $_->rank != $rank } _all_related( $rdg->{'t'} );
 			foreach my $trdg ( @transp ) {
 				next if exists $readings_at_rank{$trdg->id};
 				$has_transposition = 1;
@@ -401,6 +401,14 @@ sub group_variants {
 	# Return the result
 	return $grouped_readings;
 }
+
+sub _all_related {
+	my $rdg = shift;
+	my $c = $rdg->collation;
+	my @all = map { $c->reading( $_ ) } $c->relations->graph->all_neighbors( $rdg );
+	return @all;
+}
+	
 
 # Helper function to query the alignment table for all witnesses (a.c. included)
 # that have a given reading at its rank.
@@ -517,6 +525,7 @@ sub _graph_for_grouping {
 		# needed to make up the groups.
 		$graph = $stemma->situation_graph( $extant, $acwits, $aclabel );
 	} catch ( Text::Tradition::Error $e ) {
+		$DB::single = 1;
 		throw( "Could not extend graph with given extant and a.c. witnesses: "
 			. $e->message );
 	} catch {
@@ -825,7 +834,14 @@ sub _resolve_parent_relationships {
 				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
 			}
 		} elsif( $p eq '(omitted)' ) {
-			$phash->{relation} = { type => 'addition' };
+			# Check to see if the reading in question is a repetition.
+			my @reps = $rdg->related_readings( 'repetition' );
+			if( @reps ) {
+				$phash->{relation} = { type => 'repetition', 
+					annotation => "of reading @reps" };
+			} else {
+				$phash->{relation} = { type => 'addition' };
+			}
 		}
 		# Save it
 		$rdgparents->{$p} = $phash;
