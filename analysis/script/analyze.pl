@@ -39,20 +39,9 @@ my @relation_types = grep { !$collapse{$_} }
 	    uncertain other addition deletion wordsimilar unknown /;
 
 my @resultfields = qw/
-	text_name loc_total loc_totalvariant loc_genealogical loc_genvariant 
-	loc_conflict loc_conflictvariant loc_reverted loc_revertvariant 
-	percent_genealogical percent_genvariant percent_genorrevert /;
+	text_name loc_total loc_singleton loc_totalvariant loc_genealogical loc_genvariant 
+	loc_conflict loc_conflictvariant loc_reverted loc_revertvariant /;
 map { push( @resultfields, "gen_$_", "con_$_", "rev_$_" ) } @relation_types;
-# map { push( @resultfields, "gen_$_", "gen_${_}_nonsense", "gen_${_}_ungramm" ) }
-# 	@relation_types;
-# map { push( @resultfields, "con_$_", "con_${_}_nonsense", "con_${_}_ungramm" ) }
-# 	@relation_types;
-# map { push( @resultfields, "rev_$_", "rev_${_}_nonsense", "rev_${_}_ungramm" ) }
-# 	@relation_types;
-#map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen", 
-#			"percent_${_}_notcon" ) } @relation_types;
-#map { push( @resultfields, "percent_con_$_", "percent_rev_$_", 
-#			"percent_noncon_$_" ) } @relation_types;
 	
 my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );
 open my $fh, ">:encoding(UTF-8)", "analysis.csv" or die "analysis.csv: $!";
@@ -94,23 +83,26 @@ foreach my $tinfo( $dir->traditionlist ) {
 	}
 	
 	my $result;
-	#try {
+	try {
 		$result = run_analysis( $tradition, %opts );
-	#} catch {
-	#	say STDERR "Analysis run failed on tradition " . $tradition->name . ": @_";
-	#	next;
-	#}
+	} catch {
+		say "Analysis run failed on tradition " . $tradition->name . ": @_";
+		next;
+	}
 	$datahash{loc_total} = $result->{variant_count};
-	$datahash{loc_genealogical} = $result->{genealogical_count};
-	$datahash{loc_conflictvariant} = $result->{conflict_count};
-	$datahash{loc_revertvariant} = $result->{reversion_count};
-	# Get the number of total and genealogical variants, and number of
-	# conflicted/reverted locations, as we go below.
+	#$datahash{loc_genealogical} = $result->{genealogical_count};
+	#$datahash{loc_conflictvariant} = $result->{conflict_count};
+	#$datahash{loc_revertvariant} = $result->{reversion_count};
+	# Get the totals by location and by variant as we go.
 	my $totalvariant = 0;
+	my $singleton = 0;
+	my $genloc = 0;
 	my $genvariant = 0;
 	my $conflictloc = 0;
+	my $conflictvariant = 0;
 	my $revertloc = 0;
-	my $msgd;
+	my $revertvariant = 0;
+	my $msgd; # for the HACK
 	my @unknown;
 	foreach my $loc ( @{$result->{variants}} ) {
 		# A transition is the relationship type between parent and child.
@@ -118,27 +110,36 @@ foreach my $tinfo( $dir->traditionlist ) {
 		# Find each non-genealogical transition and get the relationship type (if any)
 		my( $loc_conflict, $loc_reversion );
 		if( exists $loc->{unsolved} ) {
-			say STDERR "Skipping unsolved location at " . $loc->{id};
+			# Not solved; remove it from the total.
+			say "Skipping unsolved location at " . $loc->{id};
+			$datahash{loc_total}--;
 			next;
 		} elsif( $MAXRANK && $loc->{id} > $MAXRANK ) {
-			say STDERR "Skipping ranks above $MAXRANK"
+			# HACK until Chronicle tagging is done
+			say "Skipping ranks above $MAXRANK"
 				unless $msgd;
 			$msgd = 1;
 			next;
 		}
 		foreach my $rdghash( @{$loc->{readings}} ) {
 			# Weed out singletons
+			$totalvariant++;
 			my @roots = @{$rdghash->{independent_occurrence}};
-			next if @roots == 1 && !$rdghash->{'followed'} && !$rdghash->{'not_followed'}
-				&& !$rdghash->{'follow_unknown'};
+			if( @roots == 1 && !$rdghash->{'followed'} && !$rdghash->{'not_followed'}
+				&& !$rdghash->{'follow_unknown'} ) {
+				$singleton++;
+				next;
+			}
 			my $rdg = $tradition->collation->reading( $rdghash->{readingid} );
 			my $type;
 			if( $rdghash->{'is_conflict'} ) {
 				$type = 'conflict';
 				$loc_conflict = 1;
+				$conflictvariant++;
 			} elsif( $rdghash->{'is_reverted'} ) {
 				$type = 'reverted';
 				$loc_reversion = 1;
+				$revertvariant++;
 			} elsif( @roots == 1 ) {
 				$type = 'genealogical';
 				$genvariant++;
@@ -161,38 +162,28 @@ foreach my $tinfo( $dir->traditionlist ) {
 					$type, $rdghash->{'reversion_parents'}, \%datahash, \@unknown );
 			}
 			
-			$totalvariant++;
 		}
 		if( $loc_conflict ) {
 			$conflictloc++;
 		} elsif( $loc_reversion ) {
 			$revertloc++;
+		} else {
+			$genloc++;
 		}
 	}
 	
 	# Add in the sums for the whole location
-	$datahash{'loc_genvariant'} = $genvariant;	
-	$datahash{'loc_totalvariant'} = $totalvariant;
-	$datahash{'loc_conflict'} = $conflictloc;
-	$datahash{'loc_reverted'} = $revertloc;
-	$datahash{'percent_genealogical'} = $datahash{loc_genealogical} / $datahash{loc_total};
-	$datahash{'percent_genvariant'} = $genvariant / $totalvariant;
-	$datahash{'percent_genorrevert'} = ( $genvariant + $datahash{loc_revertvariant} ) / $totalvariant;
-	foreach my $type ( @relation_types ) {
-		my $pgtype = $datahash{"gen_$type"};
-		my $pctype = $datahash{"con_$type"};
-		my $prtype = $datahash{"rev_$type"};
-	#	$datahash{"percent_gen_$type"} = $pgtype / $totalvariant;
-	#	$datahash{"percent_con_$type"} = $pctype / $totalvariant;
-	#	$datahash{"percent_rev_$type"} = $prtype / $totalvariant;
-	#	$datahash{"percent_notcon_$type"} = ( $pgtype + $prtype ) / $totalvariant;
-	#	$datahash{"percent_${type}_gen"} = 
-	#		$pgtype + $pctype + $prtype == 0 
-	#			? 0 : $pgtype / ( $pgtype + $pctype + $prtype );
-	#	$datahash{"percent_${type}_notcon"} = 
-	#		$pgtype + $pctype + $prtype == 0 
-	#			? 0 : ( $pgtype + $prtype ) / ( $pgtype + $pctype + $prtype );
-	}
+	$datahash{loc_totalvariant} = $totalvariant;
+	$datahash{loc_genealogical} = $genloc;
+	$datahash{loc_genvariant} = $genvariant;	
+	$datahash{loc_conflict} = $conflictloc;
+	$datahash{loc_conflictvariant} = $conflictvariant;
+	$datahash{loc_reverted} = $revertloc;
+	$datahash{loc_revertvariant} = $revertvariant;
+	$datahash{loc_singleton} = $singleton;
+	$datahash{percent_genealogical} = $datahash{loc_genealogical} / $datahash{loc_total};
+	$datahash{percent_genvariant} = $genvariant / $totalvariant;
+	$datahash{percent_genorrevert} = ( $genvariant + $datahash{loc_revertvariant} ) / $totalvariant;
 	
 	# Write them out to CSV.
 	my @csvalues = map { $datahash{$_} } @resultfields;
