@@ -349,8 +349,20 @@ sub group_variants {
 					$table, $trdg, $lacunose, $aclabel );
 				next unless @affected_wits;
 				map { $moved_wits{$_} = 1 } @affected_wits;
-				$transposed->{$trdg->id} = 
-					[ _table_witnesses( $table, $rdg->{'t'}, $lacunose, $aclabel ) ];
+				my @thisloc_wits = _table_witnesses( $table, $rdg->{'t'}, 
+					$lacunose, $aclabel );
+				# Check to see if our affected wits have layers that do something
+				# wacky.
+				my %transploc_gaps;
+				map { $transploc_gaps{$_} = 1 } 
+					_table_witnesses( $table, undef, $lacunose, $aclabel );
+				foreach my $aw ( @affected_wits ) {
+					push( @thisloc_wits, $aw.$aclabel ) 
+						if $transploc_gaps{$aw.$aclabel};
+				}
+				# Record which witnesses we should count as already analyzed when we 
+				# get to the transposed reading's own rank.
+				$transposed->{$trdg->id} = \@thisloc_wits;
 				$readings_at_rank{$trdg->id} = $trdg;
 			}
 		# ...or it is empty, ergo a gap.
@@ -434,9 +446,21 @@ sub _table_witnesses {
 		my $wit = $row->{'witness'};
 		next if _is_lacunose( $wit, $lacunose, $aclabel );
 		my $rdg = $row->{'tokens'}->[$tableidx];
-		next unless exists $rdg->{'t'} && defined $rdg->{'t'};
-		_add_to_witlist( $wit, $has_reading, $aclabel )
-			if $rdg->{'t'}->id eq $trdg->id;
+		if( $trdg ) {
+			# We have some positive reading we want.
+			next unless exists $rdg->{'t'} && defined $rdg->{'t'};
+			if( $trdg->is_lacuna ) {
+				_add_to_witlist( $wit, $has_reading, $aclabel )
+				if $rdg->{'t'}->is_lacuna;
+			} else {
+				_add_to_witlist( $wit, $has_reading, $aclabel )
+					if $rdg->{'t'}->id eq $trdg->id;
+			}
+		} else {
+			# We want the omissions.
+			next if exists $rdg->{'t'} && defined $rdg->{'t'};
+			_add_to_witlist( $wit, $has_reading, $aclabel )
+		}
 	}
 	return $has_reading->members;
 }
