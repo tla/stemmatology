@@ -403,9 +403,23 @@ sub group_variants {
 }
 
 sub _all_related {
+	# Except by repetition
 	my $rdg = shift;
 	my $c = $rdg->collation;
-	my @all = map { $c->reading( $_ ) } $c->relations->graph->all_neighbors( $rdg );
+	my @check = ( $rdg );
+	my %seen;
+	while( @check ) {
+		my @next;
+		foreach my $ck ( @check ) {
+			$seen{"$ck"} = 1;
+			push( @next, grep { !$seen{"$_"} } 
+				$ck->related_readings( sub { $_[0]->type ne 'repetition' } ) );
+		}
+		@check = @next;
+	}
+			
+		
+	my @all = map { $c->reading( $_ ) } keys %seen;
 	return @all;
 }
 	
