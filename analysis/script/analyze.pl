@@ -4,20 +4,35 @@ use feature 'say';
 use lib 'lib';
 use strict;
 use warnings;
+use Getopt::Long;
 use Text::CSV_XS;
 use Text::Tradition::Analysis qw/ run_analysis /;
 use Text::Tradition::Directory;
+use TryCatch;
 
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
-my $dir = Text::Tradition::Directory->new(
-    'dsn' => 'dbi:SQLite:dbname=../../stemmaweb/db/traditions.db',
-    );
- my $scope = $dir->new_scope();
+my( $dsn, $dbuser, $dbpass );
+GetOptions(
+	'dsn=s' => \$dsn,
+	'u|user=s'   => \$dbuser,
+	'p|pass=s' => \$dbpass,
+);
+
+my %dbopts = ( dsn => $dsn );
+if( $dbuser || $dbpass ) {
+	$dbopts{extra_args} = { user => $dbuser, password => $dbpass }
+}
+
+my $dir = Text::Tradition::Directory->new( %dbopts );
+my $scope = $dir->new_scope();
 my $lookfor = shift @ARGV || '';
 my %collapse;
-map { $collapse{$_} = 1 } @ARGV;
+if( @ARGV ) {
+	say "Merging relationship types @ARGV";
+	map { $collapse{$_} = 1 } @ARGV;
+}
 
 my @relation_types = grep { !$collapse{$_} }
 	qw/ orthographic spelling grammatical lexical transposition repetition
@@ -34,10 +49,10 @@ map { push( @resultfields, "gen_$_", "con_$_", "rev_$_" ) } @relation_types;
 # 	@relation_types;
 # map { push( @resultfields, "rev_$_", "rev_${_}_nonsense", "rev_${_}_ungramm" ) }
 # 	@relation_types;
-map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen", 
-			"percent_${_}_notcon" ) } @relation_types;
-map { push( @resultfields, "percent_con_$_", "percent_rev_$_", 
-			"percent_noncon_$_" ) } @relation_types;
+#map { push( @resultfields, "percent_gen_$_", "percent_${_}_gen", 
+#			"percent_${_}_notcon" ) } @relation_types;
+#map { push( @resultfields, "percent_con_$_", "percent_rev_$_", 
+#			"percent_noncon_$_" ) } @relation_types;
 	
 my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );
 open my $fh, ">:encoding(UTF-8)", "analysis.csv" or die "analysis.csv: $!";
@@ -49,10 +64,20 @@ if( $csv->combine( @resultfields ) ) {
 
 foreach my $tinfo( $dir->traditionlist ) {
 	next if $tinfo->{'name'} eq 'xxxxx';
-	next unless $tinfo->{'id'} eq $lookfor
-		|| $tinfo->{'name'} =~ /$lookfor/;
+	next if $tinfo->{'name'} =~ /158/;
+	next if $tinfo->{'name'} =~ /Heinrichi part/;
+	if( $lookfor ) {
+		next unless $tinfo->{'id'} eq $lookfor
+			|| $tinfo->{'name'} =~ /$lookfor/;
+	}
 	my $tradition = $dir->lookup( $tinfo->{'id'} );
+	next unless $tradition->stemma_count;
 	say "Analyzing tradition " . $tradition->name;
+	## HACK
+	my $MAXRANK;
+	if( $tradition->name =~ /Chronicle/ ) {
+		$MAXRANK = $tradition->collation->reading('L1545')->rank;
+	}
 	my %datahash;
 	# Initialize everything with zeroes
 	map { $datahash{$_} = 0 } @resultfields;
@@ -68,7 +93,13 @@ foreach my $tinfo( $dir->traditionlist ) {
 		push( @{$opts{merge_types}}, keys %collapse );
 	}
 	
-	my $result = run_analysis( $tradition, %opts );
+	my $result;
+	#try {
+		$result = run_analysis( $tradition, %opts );
+	#} catch {
+	#	say STDERR "Analysis run failed on tradition " . $tradition->name . ": @_";
+	#	next;
+	#}
 	$datahash{loc_total} = $result->{variant_count};
 	$datahash{loc_genealogical} = $result->{genealogical_count};
 	$datahash{loc_conflictvariant} = $result->{conflict_count};
@@ -79,6 +110,7 @@ foreach my $tinfo( $dir->traditionlist ) {
 	my $genvariant = 0;
 	my $conflictloc = 0;
 	my $revertloc = 0;
+	my $msgd;
 	my @unknown;
 	foreach my $loc ( @{$result->{variants}} ) {
 		# A transition is the relationship type between parent and child.
@@ -87,6 +119,11 @@ foreach my $tinfo( $dir->traditionlist ) {
 		my( $loc_conflict, $loc_reversion );
 		if( exists $loc->{unsolved} ) {
 			say STDERR "Skipping unsolved location at " . $loc->{id};
+			next;
+		} elsif( $MAXRANK && $loc->{id} > $MAXRANK ) {
+			say STDERR "Skipping ranks above $MAXRANK"
+				unless $msgd;
+			$msgd = 1;
 			next;
 		}
 		foreach my $rdghash( @{$loc->{readings}} ) {
@@ -145,16 +182,16 @@ foreach my $tinfo( $dir->traditionlist ) {
 		my $pgtype = $datahash{"gen_$type"};
 		my $pctype = $datahash{"con_$type"};
 		my $prtype = $datahash{"rev_$type"};
-		$datahash{"percent_gen_$type"} = $pgtype / $totalvariant;
-		$datahash{"percent_con_$type"} = $pctype / $totalvariant;
-		$datahash{"percent_rev_$type"} = $prtype / $totalvariant;
-		$datahash{"percent_notcon_$type"} = ( $pgtype + $prtype ) / $totalvariant;
-		$datahash{"percent_${type}_gen"} = 
-			$pgtype + $pctype + $prtype == 0 
-				? 0 : $pgtype / ( $pgtype + $pctype + $prtype );
-		$datahash{"percent_${type}_notcon"} = 
-			$pgtype + $pctype + $prtype == 0 
-				? 0 : ( $pgtype + $prtype ) / ( $pgtype + $pctype + $prtype );
+	#	$datahash{"percent_gen_$type"} = $pgtype / $totalvariant;
+	#	$datahash{"percent_con_$type"} = $pctype / $totalvariant;
+	#	$datahash{"percent_rev_$type"} = $prtype / $totalvariant;
+	#	$datahash{"percent_notcon_$type"} = ( $pgtype + $prtype ) / $totalvariant;
+	#	$datahash{"percent_${type}_gen"} = 
+	#		$pgtype + $pctype + $prtype == 0 
+	#			? 0 : $pgtype / ( $pgtype + $pctype + $prtype );
+	#	$datahash{"percent_${type}_notcon"} = 
+	#		$pgtype + $pctype + $prtype == 0 
+	#			? 0 : ( $pgtype + $prtype ) / ( $pgtype + $pctype + $prtype );
 	}
 	
 	# Write them out to CSV.
@@ -164,7 +201,7 @@ foreach my $tinfo( $dir->traditionlist ) {
 	} else {
 		say "combine() failed on argument: " . $csv->error_input;
 	}
-	map { say sprintf( "Unknown transition %s -> %s (%s) :%s", @$_ ) } @unknown;
+	map { say STDERR sprintf( "Unknown transition %s -> %s (%s) :%s", @$_ ) } @unknown;
 }
 
 close $fh;
