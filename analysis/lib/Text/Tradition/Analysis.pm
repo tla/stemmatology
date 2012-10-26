@@ -321,6 +321,7 @@ sub group_variants {
 	my $check_for_gaps = Set::Scalar->new();
 	my %moved_wits;
 	my $has_transposition;
+	my @transp_acgap;
 	foreach my $tablewit ( @{$table->{'alignment'}} ) {
 		my $rdg = $tablewit->{'tokens'}->[$rank-1];
 		my $wit = $tablewit->{'witness'};
@@ -346,19 +347,21 @@ sub group_variants {
 				next if exists $readings_at_rank{$trdg->id};
 				$has_transposition = 1;
 				my @affected_wits = _table_witnesses( 
-					$table, $trdg, $lacunose, $aclabel );
+					$table, $trdg->rank, $trdg, $lacunose, $aclabel );
 				next unless @affected_wits;
 				map { $moved_wits{$_} = 1 } @affected_wits;
-				my @thisloc_wits = _table_witnesses( $table, $rdg->{'t'}, 
+				my @thisloc_wits = _table_witnesses( $table, $rank, $rdg->{'t'}, 
 					$lacunose, $aclabel );
 				# Check to see if our affected wits have layers that do something
 				# wacky.
 				my %transploc_gaps;
 				map { $transploc_gaps{$_} = 1 } 
-					_table_witnesses( $table, undef, $lacunose, $aclabel );
+					_table_witnesses( $table, $trdg->rank, undef, $lacunose, $aclabel );
 				foreach my $aw ( @affected_wits ) {
-					push( @thisloc_wits, $aw.$aclabel ) 
-						if $transploc_gaps{$aw.$aclabel};
+					if( $transploc_gaps{$aw.$aclabel} ) {
+						push( @thisloc_wits, $aw.$aclabel );
+						push( @transp_acgap, $aw.$aclabel );
+					}
 				}
 				# Record which witnesses we should count as already analyzed when we 
 				# get to the transposed reading's own rank.
@@ -370,6 +373,9 @@ sub group_variants {
 			_add_to_witlist( $wit, $check_for_gaps, $aclabel );
 		}
 	}
+	# Push all the transposition layer gaps onto our list
+	$check_for_gaps->insert( @transp_acgap );
+	# Now remove from our 'gaps' any witnesses known to have been dealt with elsewhere.
 	my $gap_wits = Set::Scalar->new();
 	map { _add_to_witlist( $_, $gap_wits, $aclabel ) 
 		unless $moved_wits{$_} } $check_for_gaps->members;
@@ -381,11 +387,11 @@ sub group_variants {
 		next if exists $grouped_readings->{$rdg->id} 
 			&& $grouped_readings->{$rdg->id} eq 'COLLAPSE';
 		# Get the witness list, including from readings collapsed into this one.
-		my @wits = _table_witnesses( $table, $rdg, $lacunose, $aclabel );
+		my @wits = _table_witnesses( $table, $rdg->rank, $rdg, $lacunose, $aclabel );
 		if( $collapse && $collapse->size ) {
 			my $filter = sub { $collapse->has( $_[0]->type ) };
 			foreach my $other ( $rdg->related_readings( $filter ) ) {
-				my @otherwits = _table_witnesses( $table, $other, $lacunose, $aclabel );
+				my @otherwits = _table_witnesses( $table, $other->rank, $other, $lacunose, $aclabel );
 				push( @wits, @otherwits );
 				$grouped_readings->{$other->id} = 'COLLAPSE';
 			}
@@ -439,8 +445,8 @@ sub _all_related {
 # Helper function to query the alignment table for all witnesses (a.c. included)
 # that have a given reading at its rank.
 sub _table_witnesses {
-	my( $table, $trdg, $lacunose, $aclabel ) = @_;
-	my $tableidx = $trdg->rank - 1;
+	my( $table, $rank, $trdg, $lacunose, $aclabel ) = @_;
+	my $tableidx = $rank - 1;
 	my $has_reading = Set::Scalar->new();
 	foreach my $row ( @{$table->{'alignment'}} ) {
 		my $wit = $row->{'witness'};
