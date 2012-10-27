@@ -569,7 +569,6 @@ sub _graph_for_grouping {
 		# needed to make up the groups.
 		$graph = $stemma->situation_graph( $extant, $acwits, $aclabel );
 	} catch ( Text::Tradition::Error $e ) {
-		$DB::single = 1;
 		throw( "Could not extend graph with given extant and a.c. witnesses: "
 			. $e->message );
 	} catch {
