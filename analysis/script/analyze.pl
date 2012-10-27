@@ -14,10 +14,12 @@ binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
 my( $dsn, $dbuser, $dbpass );
+my $filename = 'analysis.csv';
 GetOptions(
 	'dsn=s' => \$dsn,
 	'u|user=s'   => \$dbuser,
 	'p|pass=s' => \$dbpass,
+	'f|file=s' => \$filename
 );
 
 my %dbopts = ( dsn => $dsn );
@@ -36,15 +38,15 @@ if( @ARGV ) {
 
 my @relation_types = grep { !$collapse{$_} }
 	qw/ orthographic spelling grammatical lexical transposition repetition
-	    uncertain other addition deletion wordsimilar unknown /;
+	    uncertain other addition deletion wordsimilar unknown source /;
 
 my @resultfields = qw/
-	text_name loc_total loc_singleton loc_totalvariant loc_genealogical loc_genvariant 
+	text_name loc_total loc_singleton multiparent loc_totalvariant loc_genealogical loc_genvariant 
 	loc_conflict loc_conflictvariant loc_reverted loc_revertvariant /;
 map { push( @resultfields, "gen_$_", "con_$_", "rev_$_" ) } @relation_types;
 	
 my $csv = Text::CSV_XS->new( { binary => 1, quote_null => 0 } );
-open my $fh, ">:encoding(UTF-8)", "analysis.csv" or die "analysis.csv: $!";
+open my $fh, ">:encoding(UTF-8)", $filename or die "$filename: $!";
 if( $csv->combine( @resultfields ) ) {
 	say $fh $csv->string;
 } else {
@@ -90,6 +92,7 @@ foreach my $tinfo( $dir->traditionlist ) {
 		next;
 	}
 	$datahash{loc_total} = $result->{variant_count};
+	$datahash{multiparent} = 0;
 	#$datahash{loc_genealogical} = $result->{genealogical_count};
 	#$datahash{loc_conflictvariant} = $result->{conflict_count};
 	#$datahash{loc_revertvariant} = $result->{reversion_count};
@@ -151,17 +154,10 @@ foreach my $tinfo( $dir->traditionlist ) {
 			
 			# Add relation stats for reading parents. If the reading is reverted,
 			# treat it as genealogical for the parent.
+			my $phash = $type eq 'reverted' 
+				? $rdghash->{'reversion_parents'} : $rdghash->{'source_parents'};
 			_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,
-				( $type eq 'reverted' ? 'genealogical' : $type ),
-				$rdghash->{'source_parents'}, \%datahash, \@unknown );
-			# Add relation stats for reading reversions if they exist.
-			if( $type eq 'reverted' ) {
-				# Get relationship between reverted readings and their non-matching
-				# parents.
-				_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,
-					$type, $rdghash->{'reversion_parents'}, \%datahash, \@unknown );
-			}
-			
+				$type, $phash, \%datahash, \@unknown );
 		}
 		if( $loc_conflict ) {
 			$conflictloc++;
@@ -199,11 +195,20 @@ close $fh;
 
 sub _add_reading_relations {
 	my( $rid, $rank, $robj, $type, $parenthash, $datahash, $unknown ) = @_;
-	foreach my $p ( keys %$parenthash ) {
+	my @kp = keys ( %$parenthash );
+	unless( @kp ) {
+		_increment_typekey( $datahash, $type, 'source' );
+		return;
+	}
+	if( @kp > 1 ) {
+		$datahash->{multiparent} = @kp - 1;
+	}
+	foreach my $p ( @kp ) {
 		my $pdata = $parenthash->{$p};
 		my $relation;
 		if( $pdata->{relation} ) {
-			$relation = $pdata->{relation}->{type};
+			$relation = $pdata->{relation}->{transposed}
+				? 'transposition' : $pdata->{relation}->{type};
 		} else {
 			$relation = 'unknown';
 			if( !$robj ) {
@@ -214,13 +219,22 @@ sub _add_reading_relations {
 				push( @$unknown, [ $pdata->{label}, $robj->id, $robj->text, $type ] );
 			}
 		}
-		my $typekey = substr( $type, 0, 3 ) . "_$relation";
-		$datahash->{$typekey}++;
-		## TODO distinguish parent-bad vs. rdg-bad
-# 		if( $robj && $robj->grammar_invalid ) {
-# 			$datahash->{$typekey.'_ungramm'} = 1;
-# 		} elsif( $robj && $robj->is_nonsense ) {
-# 			$datahash->{$typekey.'_nonsense'} = 1;
-# 		}
+		_increment_typekey( $datahash, $type, $relation );
 	}
+}
+
+sub _increment_typekey {
+	my( $datahash, $type, $relation ) = @_;
+	my $typekey = substr( $type, 0, 3 ) . "_$relation";
+	unless( exists $datahash->{$typekey} ) {
+		$DB::single = 1;
+		warn "No field for $typekey";
+	}
+	$datahash->{$typekey}++;
+#	# TODO distinguish parent-bad vs. rdg-bad
+#	if( $robj && $robj->grammar_invalid ) {
+#		$datahash->{$typekey.'_ungramm'} = 1;
+#	} elsif( $robj && $robj->is_nonsense ) {
+#		$datahash->{$typekey.'_nonsense'} = 1;
+#	}
 }

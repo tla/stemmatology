@@ -835,6 +835,9 @@ sub _resolve_parent_relationships {
 		my $phash = { 'label' => $prep };
 		if( $pobj ) {
 			my $rel = $c->get_relationship( $p, $rid );
+			if( $rel && $rel->type eq 'collated' ) {
+				$rel = undef;
+			}
 			if( $rel ) {
 				_add_to_hash( $rel, $phash );
 			} elsif( $rdg ) {
