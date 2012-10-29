@@ -93,10 +93,10 @@ foreach my $tinfo( $dir->traditionlist ) {
 	# Run the analysis for each row in @rows
 	my $vanilla;  # Store the run with no extra exclusions 
 	my $result;
-	foreach my $type ( keys %relation_types ) {
-		say "...calculating on exclusion of $type";
-		if( $relation_types{$type} ) {
-			$result = run_exclude( $tradition, $type );
+	foreach my $rtype ( keys %relation_types ) {
+		say "...calculating on exclusion of $rtype";
+		if( $relation_types{$rtype} ) {
+			$result = run_exclude( $tradition, $rtype );
 		} elsif( !$vanilla ) {
 			$result = run_exclude( $tradition );
 			$vanilla = $result;
@@ -139,26 +139,39 @@ foreach my $tinfo( $dir->traditionlist ) {
 				my $type;
 				if( $rdghash->{'is_conflict'} ) {
 					$type = 'conflict';
-					$conflictvariant++;
 				} elsif( $rdghash->{'is_reverted'} ) {
 					$type = 'reverted';
-					$revertvariant++;
 				} elsif( @roots == 1 ) {
 					$type = 'genealogical';
-					$genvariant++;
 				} else {
 					warn 'Reading ' . $rdghash->{readingid} . ' neither conflict, genealogical, nor reverted. What?';
 					$type = 'ERROR';
 				}
+				# Get the relationship type stats for reading parents. 
+				my $rdg = $tradition->collation->reading( $rdghash->{readingid} );
+
+				my $phash = $type eq 'reverted' 
+					? $rdghash->{'reversion_parents'} : $rdghash->{'source_parents'};
+				my $rel = _get_reading_relations( $rdghash->{'readingid'}, $loc->{'id'},
+					$rdg, $type, $phash, \%datahash, \@unknown );
+				# If this is one of our exclusions, take it out of the total.
+				if( $rel eq $rtype ) {
+					$totalvariant--;
+					next;
+				}
+				# Otherwise add the variant type to our count.
+				$conflictvariant++ if $type eq 'conflict';
+				$revertvariant++ if $type eq 'reverted';
+				$genvariant++ if $type eq 'genealogical';
 			}
 		}
 	
 		# Add in the sums for the whole location
-		$datahash{"total_$type"} = $totalvariant - $singleton;
-		$datahash{"genealogical_ex_$type"} = $genvariant;
-		$datahash{"reverted_ex_$type"} = $revertvariant;
-		$datahash{"coincidental_ex_$type"} = $conflictvariant;
-		$datahash{"excoincidental_ex_type"} = $genvariant + $revertvariant;
+		$datahash{"total_$rtype"} = $totalvariant - $singleton;
+		$datahash{"genealogical_ex_$rtype"} = $genvariant;
+		$datahash{"reverted_ex_$rtype"} = $revertvariant;
+		$datahash{"coincidental_ex_$rtype"} = $conflictvariant;
+		$datahash{"excoincidental_ex_$rtype"} = $genvariant + $revertvariant;
 		$datahash{"exgenealogical_ex_type"} = $conflictvariant + $revertvariant;
 	}
 	
@@ -172,6 +185,36 @@ foreach my $tinfo( $dir->traditionlist ) {
 }
 
 close $fh;
+
+sub _get_reading_relations {
+	my( $rid, $rank, $robj, $type, $parenthash, $datahash, $unknown ) = @_;
+	my @kp = keys ( %$parenthash );
+	unless( @kp ) {
+		_increment_typekey( $datahash, $type, 'source' );
+		return;
+	}
+	if( @kp > 1 ) {
+		$datahash->{multiparent} = @kp - 1;
+	}
+	foreach my $p ( @kp ) {
+		my $pdata = $parenthash->{$p};
+		my $relation;
+		if( $pdata->{relation} ) {
+			$relation = $pdata->{relation}->{transposed}
+				? 'transposition' : $pdata->{relation}->{type};
+		} else {
+			$relation = 'unknown';
+			if( !$robj ) {
+				say "Unknown relation on missing reading object $rid at rank $rank";
+			} elsif( !$pdata ) {
+				say "Unknown relation on missing parent object for $rid at rank $rank";			
+			} else {
+				push( @$unknown, [ $pdata->{label}, $robj->id, $robj->text, $type ] );
+			}
+		}
+		return $relation;
+	}
+}
 
 sub run_exclude {
 	my( $tradition, $type ) = @_;
