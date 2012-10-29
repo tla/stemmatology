@@ -14,7 +14,7 @@ binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
 my( $dsn, $dbuser, $dbpass );
-my $filename = 'analysis.csv';
+my $filename = 'exclusions.csv';
 GetOptions(
 	'dsn=s' => \$dsn,
 	'u|user=s'   => \$dbuser,
@@ -40,20 +40,13 @@ if( @ARGV ) {
 ## analysis with basic set of exclusions", i.e. orth/spelling/punct, and exclude
 ## the variants in question later. True means "explicitly exclude this type too
 ## at analysis time."
-my %relation_types = ( 
-	sameword => undef,
-	grammatical => 1,
-	lexical => 1,
-	uncertain => 1,
-	other => 1,
-	addition => undef,
-	deletion => undef 
-);
+my @relation_types = qw/ sameword grammatical lexical uncertain other
+	addition deletion transposition /; 
 
 # Set up the things we want to calculate for each text
 my @calcs = qw/ total genealogical excoincidental reverted exgenealogical coincidental /;
 my @resultfields = ( 'text_name' );
-foreach my $rt ( keys %relation_types ) {
+foreach my $rt ( @relation_types ) {
 	foreach my $cc ( @calcs ) {
 		push( @resultfields, sprintf( "%s_ex_%s", $cc, $rt ) );
 	}
@@ -90,19 +83,16 @@ foreach my $tinfo( $dir->traditionlist ) {
 	$datahash{text_id} = $tinfo->{'id'};
 	$datahash{text_name} = $tradition->name;
 	
-	# Run the analysis for each row in @rows
-	my $vanilla;  # Store the run with no extra exclusions 
 	my $result;
-	foreach my $rtype ( keys %relation_types ) {
+	try {
+		$result = run_analysis( $tradition, exclude_type1 => 1,
+			merge_types => [ qw/ orthographic spelling punctuation / ] );
+	} catch {
+		say "Analysis run failed on tradition " . $tradition->name . ": @_";
+		return;
+	}
+	foreach my $rtype ( @relation_types ) {
 		say "...calculating on exclusion of $rtype";
-		if( $relation_types{$rtype} ) {
-			$result = run_exclude( $tradition, $rtype );
-		} elsif( !$vanilla ) {
-			$result = run_exclude( $tradition );
-			$vanilla = $result;
-		} else {
-			$result = $vanilla;
-		}
 			
 		# Get the totals by location and by variant as we go.
 		my $totalvariant = 0;
@@ -152,27 +142,31 @@ foreach my $tinfo( $dir->traditionlist ) {
 
 				my $phash = $type eq 'reverted' 
 					? $rdghash->{'reversion_parents'} : $rdghash->{'source_parents'};
-				my $rel = _get_reading_relations( $rdghash->{'readingid'}, $loc->{'id'},
+				my @rels = _get_reading_relations( $rdghash->{'readingid'}, $loc->{'id'},
 					$rdg, $type, $phash, \%datahash, \@unknown );
 				# If this is one of our exclusions, take it out of the total.
-				if( $rel eq $rtype ) {
-					$totalvariant--;
-					next;
-				}
+				foreach my $rel ( @rels ) {
+					$DB::single = 1 unless $rel;
+					if( $rel eq $rtype ) {
+						$totalvariant--;
+						next;
+					} else {
 				# Otherwise add the variant type to our count.
-				$conflictvariant++ if $type eq 'conflict';
-				$revertvariant++ if $type eq 'reverted';
-				$genvariant++ if $type eq 'genealogical';
+						$conflictvariant++ if $type eq 'conflict';
+						$revertvariant++ if $type eq 'reverted';
+						$genvariant++ if $type eq 'genealogical';
+					}
+				}
 			}
 		}
 	
 		# Add in the sums for the whole location
-		$datahash{"total_$rtype"} = $totalvariant - $singleton;
+		$datahash{"total_ex_$rtype"} = $totalvariant - $singleton;
 		$datahash{"genealogical_ex_$rtype"} = $genvariant;
 		$datahash{"reverted_ex_$rtype"} = $revertvariant;
 		$datahash{"coincidental_ex_$rtype"} = $conflictvariant;
 		$datahash{"excoincidental_ex_$rtype"} = $genvariant + $revertvariant;
-		$datahash{"exgenealogical_ex_type"} = $conflictvariant + $revertvariant;
+		$datahash{"exgenealogical_ex_$rtype"} = $conflictvariant + $revertvariant;
 	}
 	
 	# Write them out to CSV.
@@ -189,13 +183,7 @@ close $fh;
 sub _get_reading_relations {
 	my( $rid, $rank, $robj, $type, $parenthash, $datahash, $unknown ) = @_;
 	my @kp = keys ( %$parenthash );
-	unless( @kp ) {
-		_increment_typekey( $datahash, $type, 'source' );
-		return;
-	}
-	if( @kp > 1 ) {
-		$datahash->{multiparent} = @kp - 1;
-	}
+	my @rels;
 	foreach my $p ( @kp ) {
 		my $pdata = $parenthash->{$p};
 		my $relation;
@@ -212,24 +200,8 @@ sub _get_reading_relations {
 				push( @$unknown, [ $pdata->{label}, $robj->id, $robj->text, $type ] );
 			}
 		}
-		return $relation;
+		push( @rels, $relation );
 	}
+	return @rels;
 }
 
-sub run_exclude {
-	my( $tradition, $type ) = @_;
-	my $merge = [ qw/ orthographic spelling punctuation / ];
-	if( $type && $relation_types{$type} ) {
-		push( @$merge, $type );
-	}
-
-	my $result;
-	try {
-		$result = run_analysis( $tradition, exclude_type1 => 1,
-		merge_types => $merge );
-	} catch {
-		say "Analysis run failed on tradition " . $tradition->name . ": @_";
-		return;
-	}
-	return $result;
-}
