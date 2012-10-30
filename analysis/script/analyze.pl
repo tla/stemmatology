@@ -153,7 +153,8 @@ foreach my $tinfo( $dir->traditionlist ) {
 			my $typekey = substr( $type, 0, 3 ) . '_';
 			
 			# Add relation stats for reading parents. If the reading is reverted,
-			# treat it as genealogical for the parent.
+			# the 'parent' is the reversion parent rather than the parents of the
+			# reading source.
 			my $phash = $type eq 'reverted' 
 				? $rdghash->{'reversion_parents'} : $rdghash->{'source_parents'};
 			_add_reading_relations( $rdghash->{'readingid'}, $loc->{'id'}, $rdg,

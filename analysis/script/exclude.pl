@@ -30,17 +30,12 @@ if( $dbuser || $dbpass ) {
 my $dir = Text::Tradition::Directory->new( %dbopts );
 my $scope = $dir->new_scope();
 my $lookfor = shift @ARGV || '';
-my %collapse;
-if( @ARGV ) {
-	say "Merging relationship types @ARGV";
-	map { $collapse{$_} = 1 } @ARGV;
-}
 
 ## Set up the relationship types we will exclude in turn. False means "run 
 ## analysis with basic set of exclusions", i.e. orth/spelling/punct, and exclude
 ## the variants in question later. True means "explicitly exclude this type too
 ## at analysis time."
-my @relation_types = qw/ sameword grammatical lexical uncertain other
+my @relation_types = qw/ none sameword grammatical lexical uncertain other
 	addition deletion transposition /; 
 
 # Set up the things we want to calculate for each text
@@ -83,9 +78,11 @@ foreach my $tinfo( $dir->traditionlist ) {
 	$datahash{text_id} = $tinfo->{'id'};
 	$datahash{text_name} = $tradition->name;
 	
-	my $result;
+	my $fullresult;
+	my $noorthresult;
 	try {
-		$result = run_analysis( $tradition, exclude_type1 => 1,
+		$fullresult = run_analysis( $tradition, exclude_type1 => 1 );
+		$noorthresult = run_analysis( $tradition, exclude_type1 => 1,
 			merge_types => [ qw/ orthographic spelling punctuation / ] );
 	} catch {
 		say "Analysis run failed on tradition " . $tradition->name . ": @_";
@@ -93,6 +90,7 @@ foreach my $tinfo( $dir->traditionlist ) {
 	}
 	foreach my $rtype ( @relation_types ) {
 		say "...calculating on exclusion of $rtype";
+		my $result = $rtype eq 'none' ? $fullresult : $noorthresult;
 			
 		# Get the totals by location and by variant as we go.
 		my $totalvariant = 0;
@@ -146,7 +144,6 @@ foreach my $tinfo( $dir->traditionlist ) {
 					$rdg, $type, $phash, \%datahash, \@unknown );
 				# If this is one of our exclusions, take it out of the total.
 				foreach my $rel ( @rels ) {
-					$DB::single = 1 unless $rel;
 					if( $rel eq $rtype ) {
 						$totalvariant--;
 						next;
@@ -183,6 +180,8 @@ close $fh;
 sub _get_reading_relations {
 	my( $rid, $rank, $robj, $type, $parenthash, $datahash, $unknown ) = @_;
 	my @kp = keys ( %$parenthash );
+	return ( 'source' ) unless @kp; # In case there is no parent reading to relate.
+
 	my @rels;
 	foreach my $p ( @kp ) {
 		my $pdata = $parenthash->{$p};
