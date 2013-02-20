@@ -2,6 +2,7 @@ package Text::Tradition::Parser::CTE;
 
 use strict;
 use warnings;
+use feature 'say';
 use Encode qw/ decode /;
 use Text::Tradition::Error;
 use Text::Tradition::Parser::Util qw/ collate_variants /;
@@ -49,7 +50,7 @@ sub parse {
 		my $id= $wit_el->getAttribute( 'xml:id' );
 		my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
 		my $sig = _stringify_sigil( @sig_parts );
-		print STDERR "Adding witness $sig\n";
+		say STDERR "Adding witness $sig";
 		$tradition->add_witness( sigil => $sig, sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
@@ -60,7 +61,11 @@ sub parse {
 	my @base_text;
 	foreach my $pg_el ( $xpc->findnodes( '/TEI/text/body/p' ) ) {
 		foreach my $xn ( $pg_el->childNodes ) {
-			push( @base_text, _get_base( $xn ) );
+			my @items = _get_base( $xn );
+			foreach my $i ( @items ) {
+				$DB::single = 1 if $i->{'type'} eq 'anchor' && !$i->{'content'};
+			}
+			push( @base_text, @items );
 		}
 	}
 	# We now have to work through this array applying the alternate 
@@ -102,9 +107,11 @@ sub parse {
 
     # Save the text for each witness so that we can ensure consistency
     # later on
-	$tradition->collation->text_from_paths();	
-	$tradition->collation->calculate_ranks();
-	$tradition->collation->flatten_ranks();
+    unless( $opts->{'nocalc'} ) {
+		$tradition->collation->text_from_paths();	
+		$tradition->collation->calculate_ranks();
+		$tradition->collation->flatten_ranks();
+	}
 }
 
 sub _stringify_sigil {
@@ -178,10 +185,12 @@ sub _get_base {
 		push( @readings, { 'type' => 'app', 'content' => $xn } );
 	} elsif( $xn->nodeName eq 'anchor' ) {
 		# Anchor to mark the end of some apparatus; save its ID.
-		push( @readings, { 'type' => 'anchor', 
-		    'content' => $xn->getAttribute( 'xml:id' ) } );
-	} elsif ( $xn->nodeName !~ /^(note|seg)$/ ) {  # Any tag we don't know to disregard
-	    print STDERR "Unrecognized tag " . $xn->nodeName . "\n";
+		unless( $xn->getAttribute('type') ) {
+			push( @readings, { 'type' => 'anchor', 
+			    'content' => $xn->getAttribute( 'xml:id' ) } );
+		}
+	} elsif ( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
+	    say STDERR "Unrecognized tag " . $xn->nodeName;
 	}
 	return @readings;
 }
@@ -330,7 +339,7 @@ sub interpret {
 	} elsif( $reading =~ /^in[uv]\.$/ 
 			 || $reading eq 'transp.' ) {
 		# Hope it is two words.
-		print STDERR "WARNING: want to invert a lemma that is not two words\n" 
+		say STDERR "WARNING: want to invert a lemma that is not two words" 
 			unless scalar( @words ) == 2;
 		$reading = join( ' ', reverse( @words ) );
 	} elsif( $reading =~ /^iter(\.|at)$/ ) {
@@ -350,7 +359,7 @@ sub interpret {
 		my @end = split( /\s+/, $2 );
 		if( scalar( @begin ) + scalar ( @end ) > scalar( @words ) ) {
 			# Something is wrong and we can't do the splice.
-			print STDERR "ERROR: $lemma is too short to accommodate $oldreading\n";
+			say STDERR "ERROR: $lemma is too short to accommodate $oldreading";
 		} else {
 			splice( @words, 0, scalar @begin, @begin );
 			splice( @words, -(scalar @end), scalar @end, @end );
@@ -360,7 +369,7 @@ sub interpret {
 	if( $oldreading ne $reading || $flag || $oldreading =~ /\./ ) {
 		my $int = $reading;
 		$int .= " ($flag)" if $flag;
-		print STDERR "Interpreted $oldreading as $int given $lemma\n";
+		say STDERR "Interpreted $oldreading as $int given $lemma";
 	}
 	return( $reading, $flag );
 }
@@ -422,7 +431,7 @@ sub _expand_all_paths {
     # Now remove any orphan nodes, and warn that we are doing so.
     foreach my $v ( $c->sequence->isolated_vertices ) {
     	my $r = $c->reading( $v );
-    	print STDERR "Deleting orphan reading $r / " . $r->text;
+    	say STDERR "Deleting orphan reading $r / " . $r->text;
     	$c->del_reading( $r );
     }
 }

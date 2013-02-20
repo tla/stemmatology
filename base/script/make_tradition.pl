@@ -17,7 +17,8 @@ eval { no warnings; binmode $DB::OUT, ":utf8"; };
 my( $informat, $outformat, $language, $name, $sep, $dsn )  = ( '', '', 'Default', 
 	'Tradition', "\t", "dbi:SQLite:dbname=db/traditions.db" );
 # Variables with no default
-my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, $debug, $nonlinear );
+my( $inbase, $help, $stemmafile,  $dbuser, $dbpass, $from, $to, $dbid, 
+	$nocalc, $nonlinear );
 
 GetOptions( 'i|in=s'    => \$informat,
             'b|base=s'  => \$inbase,
@@ -33,8 +34,8 @@ GetOptions( 'i|in=s'    => \$informat,
             'nl|nonlinear' => \$nonlinear,
             'sep=s'		=> \$sep,
             'dsn=s'		=> \$dsn,
-	    'dbid=s'    => \$dbid,
-	    	'debug'     => \$debug
+            'dbid=s'    => \$dbid,
+            'nc|nocalc' => \$nocalc,
     );
 
 if( $help ) {
@@ -88,6 +89,7 @@ if( $informat eq 'db' ) {
 	$args{'base'} = $inbase if $inbase;
 	$args{'language'} = $language if $language;
 	$args{'name'} = $name if $name;
+	$args{'nocalc'} = 1 if $nocalc;
 	if( $informat eq 'Tabular' ) {
 		if( $excel ) {
 			$args{'excel'} = $excel;
@@ -135,7 +137,7 @@ if( $outformat eq 'stemma' ) {
     my $opts = {};
     $opts->{'from'} = $from if $from;
     $opts->{'to'} = $to if $to;
-    $opts->{'nocalc'} = 1 if $debug;
+    $opts->{'nocalc'} = 1 if $nocalc;
     print $tradition->collation->$output( $opts );
 }
 
