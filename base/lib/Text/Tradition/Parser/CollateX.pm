@@ -177,9 +177,11 @@ sub parse {
     	}
     
     	# Rank the readings and find the commonalities
-    	$collation->calculate_ranks();
-    	$collation->flatten_ranks();
-    	$collation->calculate_common_readings();
+    	unless( $opts->{'nocalc'} ) {
+			$collation->calculate_ranks();
+			$collation->flatten_ranks();
+			$collation->calculate_common_readings();
+		}
     } else {
     	my %merged;
     	foreach my $k ( keys %transpositions ) {

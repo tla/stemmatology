@@ -180,19 +180,21 @@ sub parse {
     # Now make our witness paths.
     $tradition->collation->make_witness_paths();
     
-    # Calculate the ranks for the nodes.
-	$tradition->collation->calculate_ranks();
-    
-    # Now that we have ranks, see if we have distinct nodes with identical
-    # text and identical rank that can be merged.
-    $tradition->collation->flatten_ranks();
-    
-    # And now that we've done that, calculate the common nodes.
-    $tradition->collation->calculate_common_readings();
-    
-    # Save the text for each witness so that we can ensure consistency
-    # later on
-	$tradition->collation->text_from_paths();	
+    unless( $opts->{'nocalc'} ) {
+		# Calculate the ranks for the nodes.
+		$tradition->collation->calculate_ranks();
+	
+		# Now that we have ranks, see if we have distinct nodes with identical
+		# text and identical rank that can be merged.
+		$tradition->collation->flatten_ranks();
+	
+		# And now that we've done that, calculate the common nodes.
+		$tradition->collation->calculate_common_readings();
+	
+		# Save the text for each witness so that we can ensure consistency
+		# later on
+		$tradition->collation->text_from_paths();	
+	}
 }
 
 sub _clean_sequence {

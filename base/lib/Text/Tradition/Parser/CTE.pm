@@ -61,11 +61,7 @@ sub parse {
 	my @base_text;
 	foreach my $pg_el ( $xpc->findnodes( '/TEI/text/body/p' ) ) {
 		foreach my $xn ( $pg_el->childNodes ) {
-			my @items = _get_base( $xn );
-			foreach my $i ( @items ) {
-				$DB::single = 1 if $i->{'type'} eq 'anchor' && !$i->{'content'};
-			}
-			push( @base_text, @items );
+			push( @base_text, _get_base( $xn ) );
 		}
 	}
 	# We now have to work through this array applying the alternate 
@@ -185,10 +181,10 @@ sub _get_base {
 		push( @readings, { 'type' => 'app', 'content' => $xn } );
 	} elsif( $xn->nodeName eq 'anchor' ) {
 		# Anchor to mark the end of some apparatus; save its ID.
-		unless( $xn->getAttribute('type') ) {
+		if( $xn->hasAttribute('xml:id') ) {
 			push( @readings, { 'type' => 'anchor', 
 			    'content' => $xn->getAttribute( 'xml:id' ) } );
-		}
+		} # if the anchor has no XML ID, it is not relevant to us.
 	} elsif ( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
 	    say STDERR "Unrecognized tag " . $xn->nodeName;
 	}
@@ -225,7 +221,7 @@ sub _add_readings {
     # Get the lemma, which is all the readings between app and anchor,
     # excluding other apps or anchors.
     my @lemma = _return_lemma( $c, $app_id, $anchor );
-    my $lemma_str = join( ' ', grep { $_ !~ /^__/ } map { $_->text } @lemma );
+    my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
     
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
@@ -318,6 +314,7 @@ sub interpret {
 	# $lemma =~ s/\s+[[:punct:]]+$//;
 	my $flag;  # In case of p.c. indications
 	my @words = split( /\s+/, $lemma );
+	$reading =~ s/[[:punct:]]?\bsic\b[[:punct:]]?//g;
 	if( $reading =~ /^(.*) praem.$/ ) {
 		$reading = "$1 $lemma";
 	} elsif( $reading =~ /^(.*) add.$/ ) {
@@ -429,10 +426,13 @@ sub _expand_all_paths {
     $c->make_witness_paths();
     
     # Now remove any orphan nodes, and warn that we are doing so.
-    foreach my $v ( $c->sequence->isolated_vertices ) {
-    	my $r = $c->reading( $v );
-    	say STDERR "Deleting orphan reading $r / " . $r->text;
-    	$c->del_reading( $r );
+    while( $c->sequence->predecessorless_vertices > 1 ) {
+    	foreach my $v ( $c->sequence->predecessorless_vertices ) {
+	    	my $r = $c->reading( $v );
+	    	next if $r->is_start;
+    		say STDERR "Deleting orphan reading $r / " . $r->text;
+    		$c->del_reading( $r );
+    	}
     }
 }
 
