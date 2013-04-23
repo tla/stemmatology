@@ -27,4 +27,5 @@ requires( 'XML::LibXML' );
 requires( 'XML::LibXML::XPathContext' );
 build_requires( 'Data::Dump' );
 build_requires( 'Test::Warn' );
+build_requires( 'Test::More::UTF8' );
 &WriteAll;
