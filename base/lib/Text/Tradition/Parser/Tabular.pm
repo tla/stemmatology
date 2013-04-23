@@ -68,6 +68,7 @@ an 'ante-correction' version of the 'main' witness whose sigil it shares.
 
 =begin testing
 
+use Test::More::UTF8;
 use Text::Tradition;
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -163,7 +164,8 @@ my $xtx = Text::Tradition->new(
 
 is( ref( $xtx ), 'Text::Tradition', "Parsed test Excel 2007+ file" );
 my %xlsx_wits;
-map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit3 /;
+$xlsx_wits{"\x{531}\x{562}2"} = 0;
 foreach my $wit ( $xtx->witnesses ) {
 	$xlsx_wits{$wit->sigil} = 1;
 }
@@ -379,7 +381,10 @@ sub _alignment_from_worksheet {
 	push( @$alignment_table, [] );
 	foreach my $col ( $cmin .. $cmax ) {
 		my $cell = $sheet->get_cell( $rmin, $col );
-		my $cellval = $cell ? $cell->value() : undef;
+		my $cellval;
+		if( $cell ) {
+			$cellval = $decode ? decode_utf8( $cell->value ) : $cell->value;
+		}
 		if( $cellval ) {
 			$sigcols{$col} = 1;
 			push( @{$alignment_table->[0]}, $cellval );

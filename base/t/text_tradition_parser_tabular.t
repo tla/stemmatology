@@ -8,6 +8,7 @@ $| = 1;
 
 # =begin testing
 {
+use Test::More::UTF8;
 use Text::Tradition;
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -103,7 +104,8 @@ my $xtx = Text::Tradition->new(
 
 is( ref( $xtx ), 'Text::Tradition', "Parsed test Excel 2007+ file" );
 my %xlsx_wits;
-map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit2 Wit3 /;
+map { $xlsx_wits{$_} = 0 } qw/ Wit1 Wit3 /;
+$xlsx_wits{"\x{531}\x{562}2"} = 0;
 foreach my $wit ( $xtx->witnesses ) {
 	$xlsx_wits{$wit->sigil} = 1;
 }
