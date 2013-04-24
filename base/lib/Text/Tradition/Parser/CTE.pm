@@ -366,7 +366,7 @@ sub interpret {
 	if( $oldreading ne $reading || $flag || $oldreading =~ /\./ ) {
 		my $int = $reading;
 		$int .= " ($flag)" if $flag;
-		say STDERR "Interpreted $oldreading as $int given $lemma";
+		# say STDERR "Interpreted $oldreading as $int given $lemma";
 	}
 	return( $reading, $flag );
 }

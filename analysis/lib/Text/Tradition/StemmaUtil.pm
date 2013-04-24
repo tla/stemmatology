@@ -50,8 +50,8 @@ sub character_input {
     if( $opts->{exclude_layer} ) {
     	# Filter out all alignment table rows that do not correspond
     	# to a named witness - these are the layered witnesses.
-    	my $newtable = { alignment => [] };
-    	foreach my $row ( $table->{alignment} ) {
+    	my $newtable = { alignment => [], length => $table->{length} };
+    	foreach my $row ( @{$table->{alignment}} ) {
     		if( $tradition->has_witness( $row->{witness} ) ) {
     			push( @{$newtable->{alignment}}, $row );
     		}
@@ -179,7 +179,7 @@ sub phylip_pars {
 
     # And then we run the program.
     my $program = File::Which::which( 'pars' );
-    unless( -x $program ) {
+    unless( $program && -x $program ) {
 		throw( "Phylip pars not found in path" );
     }
 

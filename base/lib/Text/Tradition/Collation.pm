@@ -1258,14 +1258,14 @@ format which looks like this:
 
 sub alignment_table {
     my( $self ) = @_;
-    $self->calculate_ranks() unless $self->_graphcalc_done;
     return $self->cached_table if $self->has_cached_table;
     
     # Make sure we can do this
 	throw( "Need a linear graph in order to make an alignment table" )
 		unless $self->linear;
-	$self->calculate_ranks unless $self->end->has_rank;
-	
+    $self->calculate_ranks() 
+    	unless $self->_graphcalc_done && $self->end->has_rank;
+
     my $table = { 'alignment' => [], 'length' => $self->end->rank - 1 };
     my @all_pos = ( 1 .. $self->end->rank - 1 );
     foreach my $wit ( sort { $a->sigil cmp $b->sigil } $self->tradition->witnesses ) {

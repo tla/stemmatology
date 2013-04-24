@@ -110,7 +110,7 @@ if( $stemmafile ) {
 
 # Now output what we have been asked to.
 if( $outformat eq 'stemma' ) {
-    my $cdata = character_input( $tradition->collation->alignment_table );
+    my $cdata = character_input( $tradition );
     try {
     	print phylip_pars( $cdata );
     } catch( Text::Tradition::Error $e ) {
