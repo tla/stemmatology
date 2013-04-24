@@ -117,8 +117,10 @@ ok( $c->has_cached_table, "Alignment table was cached" );
 is( $c->alignment_table, $table, "Cached table returned upon second call" );
 $c->calculate_ranks;
 is( $c->alignment_table, $table, "Cached table retained with no rank change" );
-$c->add_relationship( 'n24', 'n23', { 'type' => 'spelling' } );
-isnt( $c->alignment_table, $table, "Alignment table changed after relationship add" );
+$c->add_relationship( 'n13', 'n23', { type => 'repetition' } );
+is( $c->alignment_table, $table, "Alignment table unchanged after non-colo relationship add" );
+$c->add_relationship( 'n24', 'n23', { type => 'spelling' } );
+isnt( $c->alignment_table, $table, "Alignment table changed after colo relationship add" );
 }
 
 

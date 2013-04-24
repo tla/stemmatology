@@ -535,7 +535,15 @@ sub add_relationship {
 	my $self = shift;
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
     my( @vectors ) = $self->relations->add_relationship( $source, $target, $opts );
-	$self->_graphcalc_done(0);
+    foreach my $v ( @vectors ) {
+    	next unless $self->get_relationship( $v )->colocated;
+    	if( $self->reading( $v->[0] )->has_rank && $self->reading( $v->[1] )->has_rank
+    		&& $self->reading( $v->[0] )->rank ne $self->reading( $v->[1] )->rank ) {
+    			$self->_graphcalc_done(0);
+    			$self->_clear_cache;
+    			last;
+    	}
+    }
     return @vectors;
 }
 
@@ -1574,8 +1582,10 @@ ok( $c->has_cached_table, "Alignment table was cached" );
 is( $c->alignment_table, $table, "Cached table returned upon second call" );
 $c->calculate_ranks;
 is( $c->alignment_table, $table, "Cached table retained with no rank change" );
-$c->add_relationship( 'n24', 'n23', { 'type' => 'spelling' } );
-isnt( $c->alignment_table, $table, "Alignment table changed after relationship add" );
+$c->add_relationship( 'n13', 'n23', { type => 'repetition' } );
+is( $c->alignment_table, $table, "Alignment table unchanged after non-colo relationship add" );
+$c->add_relationship( 'n24', 'n23', { type => 'spelling' } );
+isnt( $c->alignment_table, $table, "Alignment table changed after colo relationship add" );
 
 =end testing
 
