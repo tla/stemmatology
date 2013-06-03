@@ -97,10 +97,22 @@ if( $informat eq 'db' ) {
 			$args{'sep_char'} = $sep;
 		}
 	}
+	# If we are writing to the database, use that DB as the userstore.
+	if( $outformat eq 'db' ) {
+	        unless( $dir ) {
+        	        my $extra_args = { 'create' => 1 };
+                	$extra_args->{'user'} = $dbuser if $dbuser;
+                	$extra_args->{'password'} = $dbpass if $dbpass;
+                	$dir = Text::Tradition::Directory->new( 'dsn' => $dsn,
+                	        'extra_args' => $extra_args );
+        	}
+		$args{'userstore'} = $dir;
+	}
 	### Custom hacking for Stone
 	if( $informat eq 'CollateText' ) {
 		$args{'sigla'} = [ qw/ S M X V Z Bb B K W L / ];
 	}
+	my $scope = $dir->new_scope() if $dir;
 	$tradition = Text::Tradition->new( %args );
 }
 if( $stemmafile ) {
