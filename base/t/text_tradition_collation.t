@@ -53,6 +53,40 @@ is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
 # =begin testing
 {
 use Text::Tradition;
+
+my $st = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/collatecorr.xml' );
+is( ref( $st ), 'Text::Tradition', "Got a tradition from test file" );
+ok( $st->has_witness('Ba96'), "Tradition has the affected witness" );
+
+my $sc = $st->collation;
+my $numr = 17;
+ok( $sc->reading('n131'), "Tradition has the affected reading" );
+is( scalar( $sc->readings ), $numr, "There are $numr readings in the graph" );
+is( $sc->end->rank, 14, "There are fourteen ranks in the graph" );
+
+# Detach the erroneously collated reading
+$sc->duplicate_reading( 'n131', 'Ba96' );
+ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
+is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
+is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
+
+# Check that the bad transposition is gone
+is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
+
+# Fix the collation
+ok( $sc->add_relationship( 'n124', 'n131_0', { type => 'collated', scope => 'local' } ),
+	"Collated the readings correctly" );
+$sc->calculate_ranks();
+$sc->flatten_ranks();
+is( $sc->end->rank, 11, "The ranks shifted appropriately" );
+is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
+}
+
+
+
+# =begin testing
+{
+use Text::Tradition;
 use TryCatch;
 
 my $READINGS = 311;

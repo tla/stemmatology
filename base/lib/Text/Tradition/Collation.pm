@@ -452,6 +452,141 @@ sub _objectify_args {
         unless ref( $second ) eq 'Text::Tradition::Collation::Reading';        
     return( $first, $second, $arg );
 }
+
+=head2 duplicate_reading( $reading, @witlist )
+
+Split the given reading into two, so that the new reading is in the path for
+the witnesses given in @witlist.
+
+=begin testing
+
+use Text::Tradition;
+
+my $st = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/collatecorr.xml' );
+is( ref( $st ), 'Text::Tradition', "Got a tradition from test file" );
+ok( $st->has_witness('Ba96'), "Tradition has the affected witness" );
+
+my $sc = $st->collation;
+my $numr = 17;
+ok( $sc->reading('n131'), "Tradition has the affected reading" );
+is( scalar( $sc->readings ), $numr, "There are $numr readings in the graph" );
+is( $sc->end->rank, 14, "There are fourteen ranks in the graph" );
+
+# Detach the erroneously collated reading
+$sc->duplicate_reading( 'n131', 'Ba96' );
+ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
+is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
+is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
+
+# Check that the bad transposition is gone
+is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
+
+# Fix the collation
+ok( $sc->add_relationship( 'n124', 'n131_0', { type => 'collated', scope => 'local' } ),
+	"Collated the readings correctly" );
+$sc->calculate_ranks();
+$sc->flatten_ranks();
+is( $sc->end->rank, 11, "The ranks shifted appropriately" );
+is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
+
+=end testing
+
+=cut
+
+sub duplicate_reading {
+	my( $self, $r, @wits ) = @_;
+	# Add the new reading, duplicating $r.
+	unless( ref( $r ) eq 'Text::Tradition::Collation::Reading' ) {
+		$r = $self->reading( $r );
+	}
+	throw( "Cannot duplicate a meta-reading" )
+		if $r->is_meta;
+	
+	# Get all the reading attributes and duplicate them.	
+	my $rmeta = Text::Tradition::Collation::Reading->meta;
+	my %args;
+    foreach my $attr( $rmeta->get_all_attributes ) {
+		next if $attr->name =~ /^_/;
+		my $acc = $attr->get_read_method;
+		if( !$acc && $attr->has_applied_traits ) {
+			my $tr = $attr->applied_traits;
+			if( $tr->[0] =~ /::(Array|Hash)$/ ) {
+				my $which = $1;
+				my %methods = reverse %{$attr->handles};
+				$acc = $methods{elements};
+				$args{$attr->name} = $which eq 'Array' 
+					? [ $r->$acc ] : { $r->$acc };
+			} 
+		} else {
+			$args{$attr->name} = $r->$acc if $acc;
+		}
+	}
+	# By definition the new reading will no longer be common.
+	$args{is_common} = 0;
+	# The new reading also needs its own ID.
+	$args{id} = $self->_generate_dup_id( $r->id );
+
+	# Try to make the new reading.
+	my $newr = $self->add_reading( \%args );
+	# The old reading is also no longer common.
+	$r->is_common( 0 );
+	
+	# For each of the witnesses, dissociate from the old reading and
+	# associate with the new.
+	foreach my $wit ( @wits ) {
+		my $prior = $self->prior_reading( $r, $wit );
+		my $next = $self->next_reading( $r, $wit );
+		$self->del_path( $prior, $r, $wit );
+		$self->add_path( $prior, $newr, $wit );
+		$self->del_path( $r, $next, $wit );
+		$self->add_path( $newr, $next, $wit );
+	}
+	
+	# Hash the reading ranks and find the closest common successor to our
+	# two readings
+	my %rrk;
+	my $succ;
+	if( $self->end->has_rank ) {
+		$succ = $self->common_successor( $r, $newr );
+		foreach my $rdg ( $self->readings ) {
+			$rrk{$rdg->id} = $rdg->rank;
+		}
+	}
+
+	# Rebuild the equivalence graph and calculate the new ranks	
+	$self->relations->rebuild_equivalence();
+	$self->calculate_ranks();
+	
+	# Check for invalid non-colocated relationships among changed-rank readings
+	# from where the ranks start changing up to $succ
+	if( $self->end->has_rank ) {
+		my $lastrank = $succ->rank;
+		foreach my $rdg ( $self->readings ) {
+			next if $rdg->rank > $lastrank;
+			next if $rdg->rank == $rrk{$rdg->id};
+			my @noncolo = $rdg->related_readings( sub { !$_[0]->colocated } );
+			next unless @noncolo;
+			foreach my $nc ( @noncolo ) {
+				$self->relations->verify_or_delete( $rdg, $nc );
+			}
+		}
+	}	
+}
+
+sub _generate_dup_id {
+	my( $self, $rid ) = @_;
+	my $newid;
+	my $i = 0;
+	while( !$newid ) {
+		$newid = $rid."_$i";
+		if( $self->has_reading( $newid ) ) {
+			$newid = '';
+			$i++;
+		}
+	}
+	return $newid;
+}
+
 ### Path logic
 
 sub add_path {
@@ -481,7 +616,7 @@ sub del_path {
 		@args = @_;
 	}
 
-	# We only need the IDs for adding paths to the graph, not the reading
+	# We only need the IDs for removing paths from the graph, not the reading
 	# objects themselves.
     my( $source, $target, $wit ) = $self->_stringify_args( @args );
 
@@ -1020,6 +1155,8 @@ sub as_graphml {
     my %graph_attributes = ( 'version' => 'string' );
 	# Graph attributes include those of Tradition and those of Collation.
 	my %gattr_from;
+	# TODO Use meta introspection method from duplicate_reading to do this
+	# instead of naming custom keys.
 	my $tmeta = $self->tradition->meta;
 	my $cmeta = $self->meta;
 	map { $gattr_from{$_->name} = 'Tradition' } $tmeta->get_all_attributes;

@@ -947,6 +947,26 @@ sub _restore_weak {
 	}
 }
 
+=head2 verify_or_delete( $reading1, $reading2 ) {
+
+Given the existing relationship at ( $reading1, $reading2 ), make sure it is
+still valid. If it is not still valid, delete it. Use this only to check
+non-colocated relationships!
+
+=cut
+
+sub verify_or_delete {
+	my( $self, @vector ) = @_;
+	my $rel = $self->get_relationship( @vector );
+	throw( "You should not now be verifying colocated relationships!" )
+		if $rel->colocated;
+	my( $ok, $reason ) = $self->relationship_valid( @vector, $rel->type );
+	unless( $ok ) {
+		$self->del_relationship( @vector );
+	}
+}
+	
+
 =head2 related_readings( $reading, $filter )
 
 Returns a list of readings that are connected via direct relationship links
@@ -1266,6 +1286,10 @@ Test whether, if two readings were equated with a 'colocated' relationship,
 the graph would still be valid.
 
 =cut
+
+# TODO Used the 'is_reachable' method; it killed performance. Think about doing away
+# with the equivalence graph in favor of a transitive closure graph (calculated ONCE)
+# on the sequence graph, and test that way.
 
 sub test_equivalence {
 	my( $self, $source, $target ) = @_;
