@@ -456,7 +456,9 @@ sub _objectify_args {
 =head2 duplicate_reading( $reading, @witlist )
 
 Split the given reading into two, so that the new reading is in the path for
-the witnesses given in @witlist.
+the witnesses given in @witlist. If the result is that certain non-colocated
+relationships (e.g. transpositions) are no longer valid, these will be removed.
+Returns the newly-created reading.
 
 =begin testing
 
@@ -473,7 +475,8 @@ is( scalar( $sc->readings ), $numr, "There are $numr readings in the graph" );
 is( $sc->end->rank, 14, "There are fourteen ranks in the graph" );
 
 # Detach the erroneously collated reading
-$sc->duplicate_reading( 'n131', 'Ba96' );
+my $newr = $sc->duplicate_reading( 'n131', 'Ba96' );
+ok( $newr, "New reading was created" );
 ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
 is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
 is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
@@ -570,7 +573,8 @@ sub duplicate_reading {
 				$self->relations->verify_or_delete( $rdg, $nc );
 			}
 		}
-	}	
+	}
+	return $newr;
 }
 
 sub _generate_dup_id {

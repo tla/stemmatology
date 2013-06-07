@@ -65,7 +65,8 @@ is( scalar( $sc->readings ), $numr, "There are $numr readings in the graph" );
 is( $sc->end->rank, 14, "There are fourteen ranks in the graph" );
 
 # Detach the erroneously collated reading
-$sc->duplicate_reading( 'n131', 'Ba96' );
+my $newr = $sc->duplicate_reading( 'n131', 'Ba96' );
+ok( $newr, "New reading was created" );
 ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
 is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
 is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
