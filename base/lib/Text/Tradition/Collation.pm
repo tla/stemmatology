@@ -159,15 +159,6 @@ See L<Text::Tradition::Collation::Reading> for the available arguments.
 Removes the given reading from the collation, implicitly removing its
 paths and relationships.
 
-=head2 merge_readings( $main, $second, $concatenate, $with_str )
-
-Merges the $second reading into the $main one. If $concatenate is true, then
-the merged node will carry the text of both readings, concatenated with either
-$with_str (if specified) or a sensible default (the empty string if the
-appropriate 'join_*' flag is set on either reading, or else $self->wordsep.)
-
-The first two arguments may be either readings or reading IDs.
-
 =head2 has_reading( $id )
 
 Predicate to see whether a given reading ID is in the graph.
@@ -289,6 +280,15 @@ around del_reading => sub {
 	# Carry on.
 	$self->$orig( $arg );
 };
+
+=head2 merge_readings( $main, $second, $concatenate, $with_str )
+
+Merges the $second reading into the $main one. If $concatenate is true, then
+the merged node will carry the text of both readings, concatenated with either
+$with_str (if specified) or a sensible default (the empty string if the
+appropriate 'join_*' flag is set on either reading, or else $self->wordsep.)
+
+The first two arguments may be either readings or reading IDs.
 
 =begin testing
 
@@ -481,16 +481,18 @@ ok( $newr, "New reading was created" );
 ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
 is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
 is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
+my $csucc = $sc->common_successor( 'n131', 'n131_0' );
+is( $csucc->id, 'n136', "Found correct common successor to duped reading" ); 
 
 # Check that the bad transposition is gone
 is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
 
 # Fix the collation
-ok( $sc->add_relationship( 'n124', 'n131_0', { type => 'collated', scope => 'local' } ),
-	"Collated the readings correctly" );
-$sc->calculate_ranks();
-$sc->flatten_ranks();
+ok( $sc->merge_readings( 'n124', 'n131_0' ), "Collated the readings correctly" );
+my @pairs = $sc->identical_readings( start => 'n124', end => $csucc->id );
 is( $sc->end->rank, 11, "The ranks shifted appropriately" );
+is( scalar @pairs, 3, "Found three more identical readings" );
+$sc->flatten_ranks();
 is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
 
 =end testing
@@ -546,24 +548,24 @@ sub duplicate_reading {
 		$self->add_path( $newr, $next, $wit );
 	}
 	
-	# Hash the reading ranks and find the closest common successor to our
-	# two readings
-	my %rrk;
+	# If the graph is ranked, we need to look for relationships that are now
+	# invalid (i.e. 'non-colocation' types that might now be colocated) and
+	# remove them. If not, we can skip it.
 	my $succ;
+	my %rrk;
 	if( $self->end->has_rank ) {
+		# Find the point where we can stop checking
 		$succ = $self->common_successor( $r, $newr );
+		
+		# Hash the existing ranks
 		foreach my $rdg ( $self->readings ) {
 			$rrk{$rdg->id} = $rdg->rank;
 		}
-	}
-
-	# Rebuild the equivalence graph and calculate the new ranks	
-	$self->relations->rebuild_equivalence();
-	$self->calculate_ranks();
+		# Calculate the new ranks	
+		$self->calculate_ranks();
 	
-	# Check for invalid non-colocated relationships among changed-rank readings
-	# from where the ranks start changing up to $succ
-	if( $self->end->has_rank ) {
+		# Check for invalid non-colocated relationships among changed-rank readings
+		# from where the ranks start changing up to $succ
 		my $lastrank = $succ->rank;
 		foreach my $rdg ( $self->readings ) {
 			next if $rdg->rank > $lastrank;
@@ -1814,6 +1816,7 @@ graph, specified either by node or by rank.
 sub identical_readings {
 	my ( $self, %args ) = @_;
     # Find where we should start and end.
+    $DB::single = 1;
     my $startrank = $args{startrank} || 0;
     if( $args{start} ) {
     	throw( "Starting reading has no rank" ) unless $self->reading( $args{start} ) 
@@ -1824,7 +1827,7 @@ sub identical_readings {
     if( $args{end} ) {
     	throw( "Ending reading has no rank" ) unless $self->reading( $args{end} ) 
     		&& $self->reading( $args{end} )->has_rank;
-    	$startrank = $self->reading( $args{end} )->rank;
+    	$endrank = $self->reading( $args{end} )->rank;
     }
     
     # Make sure the ranks are correct.
