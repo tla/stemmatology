@@ -310,6 +310,7 @@ $old_r->alter_text( 'to' );
 $c->del_path( 'n20', 'n21', 'A' );
 $c->add_path( 'n20', 'n21p0', 'A' );
 $c->add_path( 'n21p0', 'n21', 'A' );
+$c->add_relationship( 'n21', 'n22', { type => 'collated', scope => 'local' } );
 $c->flatten_ranks();
 ok( $c->reading( 'n21p0' ), "New reading exists" );
 is( scalar $c->readings, $rno, "Reading add offset by flatten_ranks" );
@@ -1788,26 +1789,68 @@ sub flatten_ranks {
     my $self = shift;
     my %unique_rank_rdg;
     my $changed;
-    foreach my $rdg ( $self->readings ) {
-        next unless $rdg->has_rank;
-        my $key = $rdg->rank . "||" . $rdg->text;
-        if( exists $unique_rank_rdg{$key} ) {
-        	# Make sure they don't have different grammatical forms
-			my $ur = $unique_rank_rdg{$key};
-        	if( $rdg->is_identical( $ur ) ) {
-				# Combine!
-				#say STDERR "Combining readings at same rank: $key";
+    foreach my $p ( $self->identical_readings ) {
+				# say STDERR "Combining readings at same rank: @$p";
 				$changed = 1;
-				$self->merge_readings( $unique_rank_rdg{$key}, $rdg );
+				$self->merge_readings( @$p );
 				# TODO see if this now makes a common point.
-			}
-        } else {
-            $unique_rank_rdg{$key} = $rdg;
-        }
     }
     # If we merged readings, the ranks are still fine but the alignment
     # table is wrong. Wipe it.
     $self->wipe_table() if $changed;
+}
+
+=head2 identical_readings
+=head2 identical_readings( start => $startnode, end => $endnode )
+=head2 identical_readings( startrank => $startrank, endrank => $endrank )
+
+Goes through the graph identifying all pairs of readings that appear to be
+identical, and therefore able to be merged into a single reading. Returns the 
+relevant identical pairs. Can be restricted to run over only a part of the 
+graph, specified either by node or by rank.
+
+=cut
+
+sub identical_readings {
+	my ( $self, %args ) = @_;
+    # Find where we should start and end.
+    my $startrank = $args{startrank} || 0;
+    if( $args{start} ) {
+    	throw( "Starting reading has no rank" ) unless $self->reading( $args{start} ) 
+    		&& $self->reading( $args{start} )->has_rank;
+    	$startrank = $self->reading( $args{start} )->rank;
+    }
+    my $endrank = $args{endrank} || $self->end->rank;
+    if( $args{end} ) {
+    	throw( "Ending reading has no rank" ) unless $self->reading( $args{end} ) 
+    		&& $self->reading( $args{end} )->has_rank;
+    	$startrank = $self->reading( $args{end} )->rank;
+    }
+    
+    # Make sure the ranks are correct.
+    unless( $self->_graphcalc_done ) {
+    	$self->calculate_ranks;
+    }
+    # Go through the readings looking for duplicates.
+    my %unique_rank_rdg;
+    my @pairs;
+    foreach my $rdg ( $self->readings ) {
+        next unless $rdg->has_rank;
+        my $rk = $rdg->rank;
+        next if $rk > $endrank || $rk < $startrank;
+        my $key = $rk . "||" . $rdg->text;
+        if( exists $unique_rank_rdg{$key} ) {
+        	# Make sure they don't have different grammatical forms
+			my $ur = $unique_rank_rdg{$key};
+        	if( $rdg->is_identical( $ur ) ) {
+				push( @pairs, [ $ur, $rdg ] );
+			}
+        } else {
+            $unique_rank_rdg{$key} = $rdg;
+        }
+    }	
+    
+    return @pairs;
 }
 	
 

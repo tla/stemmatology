@@ -26,6 +26,7 @@ $old_r->alter_text( 'to' );
 $c->del_path( 'n20', 'n21', 'A' );
 $c->add_path( 'n20', 'n21p0', 'A' );
 $c->add_path( 'n21p0', 'n21', 'A' );
+$c->add_relationship( 'n21', 'n22', { type => 'collated', scope => 'local' } );
 $c->flatten_ranks();
 ok( $c->reading( 'n21p0' ), "New reading exists" );
 is( scalar $c->readings, $rno, "Reading add offset by flatten_ranks" );
