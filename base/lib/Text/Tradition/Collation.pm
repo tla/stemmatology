@@ -303,7 +303,7 @@ my $t = Text::Tradition->new(
 my $c = $t->collation;
 
 my $rno = scalar $c->readings;
-# Split n21 for testing purposes
+# Split n21 ('unto') for testing purposes
 my $new_r = $c->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
 my $old_r = $c->reading( 'n21' );
 $old_r->alter_text( 'to' );
@@ -1786,14 +1786,14 @@ with the same text at the same rank, and merges any that are found.
 =cut
 
 sub flatten_ranks {
-    my $self = shift;
+    my ( $self, %args ) = shift;
     my %unique_rank_rdg;
     my $changed;
-    foreach my $p ( $self->identical_readings ) {
-				# say STDERR "Combining readings at same rank: @$p";
-				$changed = 1;
-				$self->merge_readings( @$p );
-				# TODO see if this now makes a common point.
+    foreach my $p ( $self->identical_readings( %args ) ) {
+		# say STDERR "Combining readings at same rank: @$p";
+		$changed = 1;
+		$self->merge_readings( @$p );
+		# TODO see if this now makes a common point.
     }
     # If we merged readings, the ranks are still fine but the alignment
     # table is wrong. Wipe it.
