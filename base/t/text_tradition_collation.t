@@ -77,11 +77,14 @@ is( $csucc->id, 'n136', "Found correct common successor to duped reading" );
 # Check that the bad transposition is gone
 is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
 
+# The collation should not be fixed
+my @pairs = $sc->identical_readings();
+is( scalar @pairs, 0, "Not re-collated yet" );
 # Fix the collation
 ok( $sc->merge_readings( 'n124', 'n131_0' ), "Collated the readings correctly" );
-my @pairs = $sc->identical_readings( start => 'n124', end => $csucc->id );
-is( $sc->end->rank, 11, "The ranks shifted appropriately" );
+@pairs = $sc->identical_readings( start => 'n124', end => $csucc->id );
 is( scalar @pairs, 3, "Found three more identical readings" );
+is( $sc->end->rank, 11, "The ranks shifted appropriately" );
 $sc->flatten_ranks();
 is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
 }
