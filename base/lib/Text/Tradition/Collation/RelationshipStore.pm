@@ -48,10 +48,16 @@ my @v2 = $c->add_relationship( 'n24', 'n23',
 is( scalar @v2, 2, "Added a global relationship with two instances" );
 @v1 = $c->del_relationship( 'n22', 'n21' );
 is( scalar @v1, 1, "Deleted first relationship" );
-@v2 = $c->del_relationship( 'n12', 'n13' );
+@v2 = $c->del_relationship( 'n12', 'n13', 1 );
 is( scalar @v2, 2, "Deleted second global relationship" );
 my @v3 = $c->del_relationship( 'n1', 'n2' );
 is( scalar @v3, 0, "Nothing deleted on non-existent relationship" );
+my @v4 = $c->add_relationship( 'n24', 'n23', 
+    { 'type' => 'spelling', 'scope' => 'global' } );
+is( @v4, 2, "Re-added global relationship" );
+@v4 = $c->del_relationship( 'n12', 'n13' );
+is( @v4, 1, "Only specified relationship deleted this time" );
+ok( $c->get_relationship( 'n24', 'n23' ), "Other globally-added relationship exists" );
 
 =end testing
 
@@ -221,7 +227,7 @@ sub get_relationship {
 		my $edge = shift;
 		@vector = @$edge;
 	} else {
-		@vector = @_;
+		@vector = @_[0,1];
 	}
 	my $relationship;
 	if( $self->graph->has_edge_attribute( @vector, 'object' ) ) {
@@ -821,22 +827,23 @@ sub _find_applicable {
 	return @vectors;
 }
 
-=head2 del_relationship( $source, $target )
+=head2 del_relationship( $source, $target, $allscope )
 
 Removes the relationship between the given readings. If the relationship is
-non-local, removes the relationship everywhere in the graph.
+non-local and $allscope is true, removes the relationship throughout the 
+relevant scope.
 
 =cut
 
 sub del_relationship {
-	my( $self, $source, $target ) = @_;
+	my( $self, $source, $target, $allscope ) = @_;
 	my $rel = $self->get_relationship( $source, $target );
 	return () unless $rel; # Nothing to delete; return an empty set.
 	my $reltype = $self->type( $rel->type );
 	my $colo = $rel->colocated;
 	my @vectors = ( [ $source, $target ] );
 	$self->_remove_relationship( $colo, $source, $target );
-	if( $rel->nonlocal ) {
+	if( $rel->nonlocal && $allscope ) {
 		# Remove the relationship wherever it occurs.
 		my @rel_edges = grep { $self->get_relationship( @$_ ) eq $rel }
 			$self->relationships;
