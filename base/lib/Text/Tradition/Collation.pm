@@ -1824,7 +1824,7 @@ sub identical_readings {
     if( $args{end} ) {
     	throw( "Ending reading has no rank" ) unless $self->reading( $args{end} ) 
     		&& $self->reading( $args{end} )->has_rank;
-    	$startrank = $self->reading( $args{end} )->rank;
+    	$endrank = $self->reading( $args{end} )->rank;
     }
     
     # Make sure the ranks are correct.
