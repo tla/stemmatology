@@ -32,10 +32,16 @@ my @v2 = $c->add_relationship( 'n24', 'n23',
 is( scalar @v2, 2, "Added a global relationship with two instances" );
 @v1 = $c->del_relationship( 'n22', 'n21' );
 is( scalar @v1, 1, "Deleted first relationship" );
-@v2 = $c->del_relationship( 'n12', 'n13' );
+@v2 = $c->del_relationship( 'n12', 'n13', 1 );
 is( scalar @v2, 2, "Deleted second global relationship" );
 my @v3 = $c->del_relationship( 'n1', 'n2' );
 is( scalar @v3, 0, "Nothing deleted on non-existent relationship" );
+my @v4 = $c->add_relationship( 'n24', 'n23', 
+    { 'type' => 'spelling', 'scope' => 'global' } );
+is( @v4, 2, "Re-added global relationship" );
+@v4 = $c->del_relationship( 'n12', 'n13' );
+is( @v4, 1, "Only specified relationship deleted this time" );
+ok( $c->get_relationship( 'n24', 'n23' ), "Other globally-added relationship exists" );
 }
 
 

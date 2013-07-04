@@ -19,7 +19,7 @@ my $t = Text::Tradition->new(
 my $c = $t->collation;
 
 my $rno = scalar $c->readings;
-# Split n21 for testing purposes
+# Split n21 ('unto') for testing purposes
 my $new_r = $c->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
 my $old_r = $c->reading( 'n21' );
 $old_r->alter_text( 'to' );
@@ -71,16 +71,21 @@ ok( $newr, "New reading was created" );
 ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
 is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
 is( $sc->end->rank, 10, "There are now only ten ranks in the graph" );
+my $csucc = $sc->common_successor( 'n131', 'n131_0' );
+is( $csucc->id, 'n136', "Found correct common successor to duped reading" ); 
 
 # Check that the bad transposition is gone
 is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
 
+# The collation should not be fixed
+my @pairs = $sc->identical_readings();
+is( scalar @pairs, 0, "Not re-collated yet" );
 # Fix the collation
-ok( $sc->add_relationship( 'n124', 'n131_0', { type => 'collated', scope => 'local' } ),
-	"Collated the readings correctly" );
-$sc->calculate_ranks();
-$sc->flatten_ranks();
+ok( $sc->merge_readings( 'n124', 'n131_0' ), "Collated the readings correctly" );
+@pairs = $sc->identical_readings( start => 'n124', end => $csucc->id );
+is( scalar @pairs, 3, "Found three more identical readings" );
 is( $sc->end->rank, 11, "The ranks shifted appropriately" );
+$sc->flatten_ranks();
 is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
 }
 
