@@ -13,7 +13,7 @@ binmode STDERR, ':utf8';
 
 # Get our arguments
 my( $traditionfile, $threshold ) = @ARGV;
-$threshold = 0.9 unless $threshold;
+$threshold = 0.99 unless $threshold;
 
 # Load up a tradition
 my $t;
@@ -29,7 +29,7 @@ my $c = $t->collation;
 my ( $matrix ) = make_matrix( $t );
 
 # For each relationship in the graph, see how it compares to other node pairs
-# rated > .9
+# rated > $threshold
 
 foreach my $pair ( $c->relationships ) {
 	my $rel = $c->get_relationship( $pair );
@@ -172,14 +172,4 @@ sub make_matrix {
 	}
 	
 	return $cosine_values;
-}
-
-sub calc_similarity {
-	my( $matrix, $vecindex ) = @_;
-	
-	my $values = {};
-	foreach my $val ( sort { $a <=> $b } keys %$values ) {
-		my $pairlist = join( ', ', @{$values->{$val}} );
-		say "$val: $pairlist";
-	}
 }
