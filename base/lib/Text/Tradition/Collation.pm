@@ -476,7 +476,7 @@ is( scalar( $sc->readings ), $numr, "There are $numr readings in the graph" );
 is( $sc->end->rank, 14, "There are fourteen ranks in the graph" );
 
 # Detach the erroneously collated reading
-my $newr = $sc->duplicate_reading( 'n131', 'Ba96' );
+my( $newr, @del_rdgs ) = $sc->duplicate_reading( 'n131', 'Ba96' );
 ok( $newr, "New reading was created" );
 ok( $sc->reading('n131_0'), "Detached the bad collation with a new reading" );
 is( scalar( $sc->readings ), $numr + 1, "A reading was added to the graph" );
@@ -485,6 +485,7 @@ my $csucc = $sc->common_successor( 'n131', 'n131_0' );
 is( $csucc->id, 'n136', "Found correct common successor to duped reading" ); 
 
 # Check that the bad transposition is gone
+is( scalar @del_rdgs, 1, "Deleted reading was returned by API call" );
 is( $sc->get_relationship( 'n130', 'n135' ), undef, "Bad transposition relationship is gone" );
 
 # The collation should not be fixed
@@ -556,6 +557,7 @@ sub duplicate_reading {
 	# remove them. If not, we can skip it.
 	my $succ;
 	my %rrk;
+	my @deleted_relations;
 	if( $self->end->has_rank ) {
 		# Find the point where we can stop checking
 		$succ = $self->common_successor( $r, $newr );
@@ -576,11 +578,13 @@ sub duplicate_reading {
 			my @noncolo = $rdg->related_readings( sub { !$_[0]->colocated } );
 			next unless @noncolo;
 			foreach my $nc ( @noncolo ) {
-				$self->relations->verify_or_delete( $rdg, $nc );
+				unless( $self->relations->verify_or_delete( $rdg, $nc ) ) {
+					push( @deleted_relations, $nc );
+				}
 			}
 		}
 	}
-	return $newr;
+	return ( $newr, @deleted_relations );
 }
 
 sub _generate_dup_id {

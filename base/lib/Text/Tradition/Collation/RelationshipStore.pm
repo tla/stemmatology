@@ -971,6 +971,7 @@ sub verify_or_delete {
 	unless( $ok ) {
 		$self->del_relationship( @vector );
 	}
+	return $ok;
 }
 	
 
