@@ -579,7 +579,7 @@ sub duplicate_reading {
 			next unless @noncolo;
 			foreach my $nc ( @noncolo ) {
 				unless( $self->relations->verify_or_delete( $rdg, $nc ) ) {
-					push( @deleted_relations, $nc );
+					push( @deleted_relations, [ $rdg->id, $nc->id ] );
 				}
 			}
 		}
