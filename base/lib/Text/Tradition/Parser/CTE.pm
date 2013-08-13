@@ -48,10 +48,22 @@ sub parse {
 	foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
 		# The witness xml:id is used internally, and is *not* the sigil name.
 		my $id= $wit_el->getAttribute( 'xml:id' );
-		my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
-		my $sig = _stringify_sigil( @sig_parts );
-		say STDERR "Adding witness $sig";
-		$tradition->add_witness( sigil => $sig, sourcetype => 'collation' );
+		# If the witness element has an abbr element, that is the sigil. Otherwise
+		# the whole thing is the sigil.
+		my $sig = $xpc->findvalue( 'abbr', $wit_el );
+		my $identifier = 'CTE witness';
+		if( $sig ) {
+			# The sigil is what is in the <abbr/> tag; the identifier is anything
+			# that follows. 
+			$identifier = _tidy_identifier( 
+				$xpc->findvalue( 'child::text()', $wit_el ) );
+		} else {
+			my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
+			$sig = _stringify_sigil( @sig_parts );
+		}
+		say STDERR "Adding witness $sig ($identifier)";
+		$tradition->add_witness( sigil => $sig, identifier => $identifier, 
+			sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
 	}
 	
@@ -118,6 +130,12 @@ sub _stringify_sigil {
     return $whole;
 }
 
+sub _tidy_identifier {
+	my( $str ) = @_;
+	$str =~ s/^\W+//;
+	return $str;
+}
+
 # Get rid of all the formatting elements that get in the way of tokenization.
 sub _remove_formatting {
 	my( $opts ) = @_;
@@ -175,17 +193,19 @@ sub _get_base {
 		my $str = $xn->data;
 		$str =~ s/^\s+//;
 		my @tokens = split( /\s+/, $str );
-		push( @readings, map { { 'type' => 'token', 'content' => $_ } } @tokens );
+		push( @readings, map { { type => 'token', content => $_ } } @tokens );
 	} elsif( $xn->nodeName eq 'app' ) {
 		# Apparatus, just save the entire XML node.
-		push( @readings, { 'type' => 'app', 'content' => $xn } );
+		push( @readings, { type => 'app', content => $xn } );
 	} elsif( $xn->nodeName eq 'anchor' ) {
 		# Anchor to mark the end of some apparatus; save its ID.
 		if( $xn->hasAttribute('xml:id') ) {
-			push( @readings, { 'type' => 'anchor', 
-			    'content' => $xn->getAttribute( 'xml:id' ) } );
+			push( @readings, { type => 'anchor', 
+			    content => $xn->getAttribute( 'xml:id' ) } );
 		} # if the anchor has no XML ID, it is not relevant to us.
-	} elsif ( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
+	} elsif( $xn->nodeName =~ /^wit(Start|End)$/ ){
+		push( @readings, { type => 'token', content => '#' . uc( $1 ) . '#' } );
+	} elsif( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
 	    say STDERR "Unrecognized tag " . $xn->nodeName;
 	}
 	return @readings;
@@ -217,12 +237,23 @@ sub _append_tokens {
 sub _add_readings {
     my( $c, $app_id ) = @_;
     my $xn = $apps{$app_id};
-    my $anchor = _anchor_name( $xn->getAttribute( 'to' ) );
+    # If the app is of type a1, it is an apparatus criticus.
+    # If it is of type a2, it is an apparatus codicum and might not
+    # have an anchor.
+    my $anchor;
+	if( $xn->hasAttribute('to') ) {
+		$anchor = _anchor_name( $xn->getAttribute( 'to' ) );
+	}
+    
     # Get the lemma, which is all the readings between app and anchor,
     # excluding other apps or anchors.
-    my @lemma = _return_lemma( $c, $app_id, $anchor );
-    my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
-    
+	my @lemma;
+	my $lemma_str = '';
+    if( $anchor ) {
+	    @lemma = _return_lemma( $c, $app_id, $anchor );
+    	$lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
+    }
+        
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
     my %wit_rdgs;  # Maps from witnesses to the variant text
@@ -247,12 +278,27 @@ sub _add_readings {
         	push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
         										 is_lacuna => 1 } ) );
         } else {
+        	if ( $flag && $flag eq 'START'
+	        	 && $c->prior_reading( $app_id, $c->baselabel ) ne $c->start ) {
+				# Add a lacuna for the witness start.
+				push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
+        										 	 is_lacuna => 1 } ) );	
+        		$flag = '';
+			}
 			foreach my $w ( split( /\s+/, $interpreted ) ) {
 				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 										   text => $w } );
 				push( @rdg_nodes, $r );
 			}
+			if( $flag && $flag eq 'END'
+        		&& $c->next_reading( $app_id, $c->baselabel ) ne $c->end ) {
+				# Add a lacuna for the witness end.
+				push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
+        										 	 is_lacuna => 1 } ) );
+        		$flag = '';
+        	}
         }
+        
         # For each listed wit, save the reading.
         foreach my $wit ( split( /\s+/, $rdg->getAttribute( 'wit' ) ) ) {
 			$wit .= $flag if $flag;
@@ -275,17 +321,21 @@ sub _add_readings {
     # Now collate the variant readings, since it is not done for us.
     collate_variants( $c, \@lemma, values %wit_rdgs );
         
-    # Now add the witness paths for each reading.
-    my $aclabel = $c->ac_label;
-    foreach my $wit_id ( keys %wit_rdgs ) {
-        my $witstr = _get_sigil( $wit_id, $aclabel );
-        my $rdg_list = $wit_rdgs{$wit_id};
-        _add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
-    }
+    # Now add the witness paths for each reading. If we don't have an anchor
+    # (e.g. with an initial witStart) there was no witness path to speak of.
+    if( $anchor ) {
+		my $aclabel = $c->ac_label;
+		foreach my $wit_id ( keys %wit_rdgs ) {
+			my $witstr = _get_sigil( $wit_id, $aclabel );
+			my $rdg_list = $wit_rdgs{$wit_id};
+			_add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
+		}
+	}
 }
 
 sub _anchor_name {
     my $xmlid = shift;
+    $DB::single = 1 unless $xmlid;
     $xmlid =~ s/^\#//;
     return sprintf( "__ANCHOR_%s__", $xmlid );
 }
@@ -346,7 +396,7 @@ sub interpret {
 		# There was nothing before a correction.
 		$reading = '';
 		$flag = '_ac';
-	} elsif( $reading =~ /^(.*?)\s*\(?sic([\s\w.]+)?\)?$/ ) {
+	} elsif( $reading =~ /^(.*?)\s*\(?sic([\s\w!.]+)?\)?$/ ) {
 		# Discard any 'sic' notation; indeed, indeed.
 		$reading = $1;
 	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
@@ -362,6 +412,12 @@ sub interpret {
 			splice( @words, -(scalar @end), scalar @end, @end );
 			$reading = join( ' ', @words );
 		}
+	} elsif( $reading =~ /^\#START\#\s*(.*)$/ ) {
+		$reading = $1;
+		$flag = 'START';
+	} elsif( $reading =~ /^(.*?)\s*\#END\#$/ ) {
+		$reading = $1;
+		$flag = 'END';
 	}
 	if( $oldreading ne $reading || $flag || $oldreading =~ /\./ ) {
 		my $int = $reading;

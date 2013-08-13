@@ -1,3 +1,19 @@
+Version 1.2
+===========
+* Generalize relationship scheme so that a user can define a set of relationships
+  for each text
+* Allow witness renaming in a tradition (before collation)
+* Allow clearing of collation object
+* Enable duplication (i.e. splitting) of readings within the collation
+* Propagate relationships logically according to their transitivity properties
+* Improvements to some of the parsers
+* Various bugfixes and improved tests
+
+Version 1.1
+===========
+* Split out text morphology functionality into separate package 
+* (unreleased, available from http://github.com/tla/stemmatology -> /morphology
+
 Version 1.0
 ===========
 [far, far too many commits to list individually]
