@@ -363,7 +363,7 @@ sub interpret {
 	# $lemma =~ s/\s+[[:punct:]]+$//;
 	my $flag;  # In case of p.c. indications
 	my @words = split( /\s+/, $lemma );
-	$reading =~ s/[[:punct:]]?\bsic\b[[:punct:]]?//g;
+	$reading =~ s/[[:punct:]]?\bsic\b([[:punct:]]+)?//g;
 	if( $reading =~ /^(.*) praem.$/ ) {
 		$reading = "$1 $lemma";
 	} elsif( $reading =~ /^(.*) add.$/ ) {
@@ -395,9 +395,6 @@ sub interpret {
 		# There was nothing before a correction.
 		$reading = '';
 		$flag = '_ac';
-	} elsif( $reading =~ /^(.*?)\s*\(?sic([\s\w!.]+)?\)?$/ ) {
-		# Discard any 'sic' notation; indeed, indeed.
-		$reading = $1;
 	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
 		# The first and last N words captured should replace the first and
 		# last N words of the lemma.
