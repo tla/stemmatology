@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use feature 'say';
-use lib '/Users/tla/Projects/cpanmods/Text-SenseClusters-1.03/lib';
+use lib '/home/tla/cpanmods/Text-SenseClusters-1.03/lib';
 use Text::SenseClusters::Simat;
 use Text::Tradition;
 use Text::WagnerFischer qw/distance/;
@@ -34,8 +34,6 @@ my ( $matrix ) = make_matrix( $t );
 foreach my $pair ( $c->relationships ) {
 	my $rel = $c->get_relationship( $pair );
 	my( $rx, $ry ) = map { $c->reading( $_ ) } sort @$pair;
-	next if $rx->rank > 100;
-	next if $ry->rank > 100;
 
 	say STDERR "Checking relationship $rx -- $ry, of type " . $rel->type;
 	my $matches = 0;
@@ -76,14 +74,12 @@ sub make_matrix {
 	my %analyzed;
 	my $rct = 0;
 	foreach my $rx ( $c->readings ) {
-		next if $rx->rank > 100;
 		next if $rx->is_meta();
 		# Have to compare each reading with each other, so do this only once
 		$analyzed{"$rx"} = 1;
 		$rct++;
 		say STDERR "Looking at reading $rct ( $rx )";
 		foreach my $ry ( $c->readings ) {
-			next if $ry->rank > 100;
 			next if $ry->is_meta();
 			next if $analyzed{"$ry"};
 		
