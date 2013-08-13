@@ -335,7 +335,6 @@ sub _add_readings {
 
 sub _anchor_name {
     my $xmlid = shift;
-    $DB::single = 1 unless $xmlid;
     $xmlid =~ s/^\#//;
     return sprintf( "__ANCHOR_%s__", $xmlid );
 }
