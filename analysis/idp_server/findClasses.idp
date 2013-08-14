@@ -1,0 +1,78 @@
+vocabulary V3 {
+  extern vocabulary V
+  type Class
+  ClassOf(Manuscript): Class
+  Copy: Class
+  Revert: Class
+  Source: Class
+  IndirectAncestor(Manuscript,Manuscript)
+  type N isa nat
+  NbOfSources : N
+  NbOfReverts : N
+}
+
+theory T3 : V3 {
+  ! x : (ClassOf(x)=Copy) <=> ? y : CopiedBy(y,x) & VariantOf(y) = VariantOf(x).  
+  ! x : (ClassOf(x)=Revert) <=> (ClassOf(x)~=Copy) & ? y : IndirectAncestor(y,x) & VariantOf(y) = VariantOf(x).  
+
+  { !x y: IndirectAncestor(x,y) <- ?z: CopiedBy(x,z) & IndirectAncestor(z,y).
+    !x y: IndirectAncestor(x,y) <- ?z: CopiedBy(x,z) & CopiedBy(z,y). }
+
+  NbOfSources = #{x: ClassOf(x)=Source}.
+  NbOfReverts = #{x: ClassOf(x)=Revert}.
+}
+
+term TotalCost : V3 {
+  3 * NbOfSources + NbOfReverts
+}
+
+procedure minSourcesAndReverts(sample) {
+  stdoptions.groundwithbounds=false
+  stdoptions.symmetrybreaking='static'
+  stdoptions.cpsupport=true
+  addClasses(sample)
+  return minimize(T3, sample, TotalCost)[1]
+}
+
+structure SClass : V3 {
+  Class = { copy; revert; source }
+  Copy = copy
+  Revert = revert
+  Source = source
+}
+
+procedure addClasses(struct) {
+  idpintern.setvocabulary(struct,V3) 
+  struct[V3::Class.type] = SClass[V3::Class.type]
+  struct[V3::Copy] = SClass[V3::Copy]
+  struct[V3::Revert] = SClass[V3::Revert]
+  struct[V3::Source] = SClass[V3::Source]
+  struct[V3::N.type] = range(0,#totable(struct[V::Manuscript.type]))
+}
+
+procedure findClasses(samples) {
+  local result = {}
+  for _,sample in ipairs(samples) do
+    local model = minSourcesAndReverts(sample)
+    if model then
+      table.insert(result,{ getGrouping(model), getClasses(model) })
+    else
+      table.insert(result,{ getGrouping(sample), {} })
+    end
+  end
+  return result
+}
+
+procedure getClasses(model) {
+  local classes = {}
+  for tuple in tuples(model[V3::ClassOf].graph.ct) do
+    local manuscript, class = tuple[1], tuple[2]
+    if classes[class] == nil then 
+      classes[class] = {manuscript}
+    else
+      table.insert(classes[class],manuscript)
+    end
+  end
+  return classes
+}
+

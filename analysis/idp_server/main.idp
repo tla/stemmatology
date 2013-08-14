@@ -1,0 +1,53 @@
+#include <mx>
+#include <table_utils>
+
+procedure main() {
+  exec(findGroupings) -- findGroupings | findSources | findClasses
+}
+
+procedure exec(task) {
+  input = io.read("*all")
+  output = process(input,task)
+  print(output)
+}
+
+/* ---------- Base vocabulary --------------------------------------------- */
+vocabulary V {
+  type Manuscript
+  type Variant
+  CopiedBy(Manuscript,Manuscript)
+  VariantOf(Manuscript): Variant
+}
+
+/* ---------- Three tasks ------------------------------------------------- */
+
+#include "findGroupings.idp"
+#include "findSources.idp"
+#include "findClasses.idp"
+
+/* ---------- Procedures for processing ----------------------------------- */
+#include "readData.idp"
+
+/** Process input in json format **/
+procedure process(input,task) {
+  require('json')
+  local input = json.decode(input)
+  local stemma = readStemma(input.graph)
+  local samples = readSamples(stemma,input.groupings)
+  local result = task(samples)
+  return json.encode(result)
+}
+
+/** Process input from two files **/
+procedure processFiles(stemmafile,samplefile,task) {
+  require('json')
+  local f = assert(io.open(stemmafile,"r"))
+  local stemma = readStemma(f:read("*all"))
+  f:close()
+  local f = assert(io.open(samplefile,"r"))
+  local samples = readSamples(stemma,json.decode(f:read("*all")))
+  f:close()
+  local result = task(samples)
+  return json.encode(result)
+}
+

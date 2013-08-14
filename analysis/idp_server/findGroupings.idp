@@ -1,0 +1,42 @@
+vocabulary V1 {
+  extern vocabulary V
+  SourceOf(Variant): Manuscript
+}
+
+theory T1 : V1 {
+  ! x : (x ~= SourceOf(VariantOf(x))) => ? y : CopiedBy(y,x) & VariantOf(y) = VariantOf(x).
+}
+
+procedure check(sample) {
+  stdoptions.groundwithbounds=false
+  stdoptions.symmetrybreaking='static'
+  idpintern.setvocabulary(sample,V1)
+  return onemodel(T1,sample)
+}
+
+procedure findGroupings(samples) {
+  local result = {}
+  for _,sample in ipairs(samples) do
+  -- Find out whether the sample fits the stemma.
+    local model = check(sample)
+    if model then
+      table.insert(result,{ getGrouping(model), true })
+    else
+      table.insert(result,{ getGrouping(sample), false })
+    end
+  end
+  return result
+}
+
+procedure getGrouping(model) {
+  local grouping = {}
+  for tuple in tuples(model[V::VariantOf].graph.ct) do
+    local manuscript, variant = tuple[1], tuple[2]
+    if grouping[variant] == nil then 
+      grouping[variant] = {manuscript}
+    else
+      table.insert(grouping[variant],manuscript)
+    end
+  end
+  return grouping
+}

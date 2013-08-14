@@ -1,0 +1,48 @@
+/** Create structure with stemma data, read from dot string **/
+procedure readStemma(stemmastring) {
+  local stemma = newstructure(V,"stemma")
+  local pipe = assert(io.popen("echo '"..stemmastring.."' | dot -Tplain"))
+  local s = pipe:read("*all")
+  pipe:close()
+-- Add nodes to the stemma.
+  local t = {}
+  for node in string.gmatch(s,"node%s(%S+)%s") do
+    table.insert(t,node)
+  end
+  stemma[V::Manuscript.type] = t
+-- Add edges to the stemma.
+  for n1,n2 in string.gmatch(s,"edge%s(%S+)%s(%S+)%s") do
+    maketrue(stemma[V::CopiedBy],{n1,n2})
+  end
+-- There are no more edges than the ones given.
+  stemma[V::CopiedBy].cf = stemma[V::CopiedBy].pf
+  return stemma
+}
+
+/** Create table of structures with sample data **/
+procedure readSamples(stemma,sampletable) {
+  local samples = {}
+  for i,groupings in ipairs(sampletable) do
+    local sample = newstructure(V,"sample"..tostring(i))
+    sample[V::Manuscript.type] = stemma[V::Manuscript.type]
+    sample[V::CopiedBy] = stemma[V::CopiedBy]
+    sample[V::Variant.type] = range(1,#groupings)
+  -- Add known equivalence relations to the sample.
+    for variant,grouping in ipairs(groupings) do
+      for _,element in ipairs(grouping) do
+        maketrue(sample[V::VariantOf].graph,{element,variant})
+      end
+    end
+    table.insert(samples,sample)
+  end
+  return samples
+}
+
+/** Show stemma using dot **/
+procedure showStemma(stemmastring) {
+  local f = assert(io.open("data/test.dot","w"))
+  f:write(stemmastring)
+  f:close()
+  os.execute("dotty data/test.dot &")
+}
+

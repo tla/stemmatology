@@ -1,0 +1,43 @@
+vocabulary V2 {
+  extern vocabulary V
+  IsSource(Manuscript)
+}
+
+theory T2 : V2 {
+  ! x : (~IsSource(x)) => ? y : CopiedBy(y,x) & VariantOf(y) = VariantOf(x).
+}
+
+term NbOfSources : V2 {
+  #{ x : IsSource(x) }
+}
+
+procedure minSources(sample) {
+  stdoptions.groundwithbounds=false
+  stdoptions.symmetrybreaking='static'
+  idpintern.setvocabulary(sample,V2)
+  return minimize(T2, sample, NbOfSources)[1]
+}
+
+procedure findSources(samples) {
+  local result = {}
+  for _,sample in ipairs(samples) do
+    local model = minSources(sample)
+    if model then
+      table.insert(result,{ getGrouping(model), getSources(model) })
+    else
+      table.insert(result,{ getGrouping(sample), {} })
+    end
+  end
+  return result
+} 
+
+procedure getSources(model) {
+  local sources = {}
+  for tuple in tuples(model[V2::IsSource].ct) do
+    local manuscript = tuple[1]
+    table.insert(sources,manuscript)
+  end
+  return sources
+}
+
+
