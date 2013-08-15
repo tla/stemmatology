@@ -84,7 +84,9 @@ sub parse {
 	# everything on the graph, from which we will delete the apps and
 	# anchors when we are done.
 	
-	# First, put the base tokens, apps, and anchors in the graph.
+	# First, put the base tokens, apps, and anchors in the graph. Save the
+	# app siglorum separately as it has to be processed in order.
+	my @app_sig;
 	my $counter = 0;
 	my $last = $c->start;
 	foreach my $item ( @base_text ) {
@@ -98,7 +100,12 @@ sub parse {
         } elsif ( $item->{'type'} eq 'app' ) {
             my $tag = '__APP_' . $counter++ . '__';
             $r = $c->add_reading( { id => $tag, is_ph => 1 } );
-            $apps{$tag} = $item->{'content'};
+            # Apparatus criticus is type a1; app siglorum is type a2
+            if( $item->{'content'}->getAttribute('type') eq 'a1' ) {
+	            $apps{$tag} = $item->{'content'};
+	        } else {
+	        	push( @app_sig, $item->{'content'} );
+	        }
         }
         $c->add_path( $last, $r, $c->baselabel );
         $last = $r;
@@ -110,6 +117,7 @@ sub parse {
     foreach my $app_id ( keys %apps ) {
         _add_readings( $c, $app_id, $opts );
     }
+    _add_lacunae( $c, @app_sig );
     
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
@@ -205,8 +213,6 @@ sub _get_base {
 			push( @readings, { type => 'anchor', 
 			    content => $xn->getAttribute( 'xml:id' ) } );
 		} # if the anchor has no XML ID, it is not relevant to us.
-	} elsif( $xn->nodeName =~ /^wit(Start|End)$/ ){
-		push( @readings, { type => 'token', content => '#' . uc( $1 ) . '#' } );
 	} elsif( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
 	    say STDERR "Unrecognized tag " . $xn->nodeName;
 	}
@@ -239,22 +245,12 @@ sub _append_tokens {
 sub _add_readings {
     my( $c, $app_id, $opts ) = @_;
     my $xn = $apps{$app_id};
-    # If the app is of type a1, it is an apparatus criticus.
-    # If it is of type a2, it is an apparatus codicum and might not
-    # have an anchor.
-    my $anchor;
-	if( $xn->hasAttribute('to') ) {
-		$anchor = _anchor_name( $xn->getAttribute( 'to' ) );
-	}
+    my $anchor = _anchor_name( $xn->getAttribute( 'to' ) );
     
     # Get the lemma, which is all the readings between app and anchor,
     # excluding other apps or anchors.
-	my @lemma;
-	my $lemma_str = '';
-    if( $anchor ) {
-	    @lemma = _return_lemma( $c, $app_id, $anchor );
-    	$lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
-    }
+	my @lemma = _return_lemma( $c, $app_id, $anchor );
+	my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
         
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
@@ -301,23 +297,11 @@ sub _add_readings {
 				}
 			}
         } else {
-        	if ( $flag->{'START'}
-	        	 && $c->prior_reading( $app_id, $c->baselabel ) ne $c->start ) {
-				# Add a lacuna for the witness start.
-				push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
-        										 	 is_lacuna => 1 } ) );	
-			}
 			foreach my $w ( split( /\s+/, $interpreted ) ) {
 				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 										   text => $w } );
 				push( @rdg_nodes, $r );
 			}
-			if( $flag->{'END'}
-        		&& $c->next_reading( $app_id, $c->baselabel ) ne $c->end ) {
-				# Add a lacuna for the witness end.
-				push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
-        										 	 is_lacuna => 1 } ) );
-        	}
         }
         
         # For each listed wit, save the reading.
@@ -352,13 +336,10 @@ sub _add_readings {
         
     # Now add the witness paths for each reading. If we don't have an anchor
     # (e.g. with an initial witStart) there was no witness path to speak of.
-    if( $anchor ) {
-		my $aclabel = $c->ac_label;
-		foreach my $wit_id ( keys %wit_rdgs ) {
-			my $witstr = _get_sigil( $wit_id, $aclabel );
-			my $rdg_list = $wit_rdgs{$wit_id};
-			_add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
-		}
+	foreach my $wit_id ( keys %wit_rdgs ) {
+		my $witstr = _get_sigil( $wit_id, $c->ac_label );
+		my $rdg_list = $wit_rdgs{$wit_id};
+		_add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
 	}
 }
 
@@ -501,13 +482,6 @@ sub interpret {
 		say STDERR "Will attempt transposition: $reading at $anchor";
 		$reading = $lemma;
 		$flag->{'TR'} = $+{lem};
-	# Look for processed witStart and witEnd tags
-	} elsif( $reading =~ /^\#START\#\s*(.*)$/ ) {
-		$reading = $1;
-		$flag->{'START'} = 1;
-	} elsif( $reading =~ /^(.*?)\s*\#END\#$/ ) {
-		$reading = $1;
-		$flag->{'END'} = 1;
 	}
 	return( $reading, $flag );
 }
@@ -530,6 +504,69 @@ sub _parse_wit_detail {
     } else {  #...not sure what it is?
     	say STDERR "WARNING: Unrecognized sigil addendum $content";
     }
+}
+
+sub _add_lacunae {
+	my( $c, @apps ) = @_;
+	# Go through the apparatus entries in order, noting where to start and stop our
+	# various witnesses.
+	my %lacunose;
+	my $ctr = 0;
+	foreach my $app ( @apps ) {
+		# Find the anchor, if any. This marks the point where the text starts
+		# or ends.
+		my $anchor = $app->getAttribute( 'to' );
+		my $aname;
+		if( $anchor ) {
+			$aname = _anchor_name( $anchor );
+		}
+
+		foreach my $rdg ( $app->getChildrenByTagName( 'rdg' ) ) {
+    		my @witlist = map { _get_sigil( $_, $c->ac_label ) }
+    			split( /\s+/, $rdg->getAttribute( 'wit' ) );
+			my @start = $rdg->getChildrenByTagName( 'witStart' );
+			my @end = $rdg->getChildrenByTagName( 'witEnd' );
+			if( @start && @end ) {
+				throw( "App sig entry at $anchor has both witStart and witEnd!" );
+			}
+			if( @start && $anchor &&
+				$c->prior_reading( $aname, $c->baselabel ) ne $c->start ) {
+				# We are picking back up after a hiatus. Find the last end and
+				# add a lacuna link between there and here.
+				foreach my $wit ( @witlist ) {
+					my $stoppoint = delete $lacunose{$wit};
+					$stoppoint = $c->start unless $stoppoint;
+					my $stopname = _anchor_name( $stoppoint );
+					say STDERR "Adding lacuna for $wit between $stoppoint and $anchor";
+					my $lacuna = $c->add_reading( { id => "as_$anchor.".$ctr++,
+        				is_lacuna => 1 } );
+        			_add_wit_path( $c, [ $lacuna ], $stopname, $aname, $wit );
+				}
+			} elsif( @end && $anchor && 
+				$c->next_reading( $aname, $c->baselabel ) ne $c->end ) {
+				# We are stopping. If we've already stopped for the given witness,
+				# flag an error; otherwise record the stopping point.
+				foreach my $wit ( @witlist ) {
+					if( $lacunose{$wit} ) {
+						throw( "Trying to end $wit at $anchor when already ended at "
+							. $lacunose{$wit} );
+					}
+					$lacunose{$wit} = $anchor;
+				}
+			}
+		}
+	}
+	
+	# For whatever remains in the %lacunose hash, add a lacuna between that spot and
+	# $c->end for each of the witnesses.
+	foreach my $wit ( keys %lacunose ) {
+		next unless $lacunose{$wit};
+		my $aname = _anchor_name( $lacunose{$wit} );
+		say STDERR "Adding lacuna for $wit from $aname to end";
+		my $lacuna = $c->add_reading( { id => 'as_'.$lacunose{$wit}.'.'.$ctr++,
+			is_lacuna => 1 } );
+		_add_wit_path( $c, [ $lacuna ], $aname, $c->end, $wit );
+	}
 }
 
 sub _get_sigil {
