@@ -11,6 +11,14 @@ use Text::Tradition::Directory;
 use Text::Tradition::Analysis::Result;
 use TryCatch;
 
+### Configurable variables
+use vars qw/ $DBDSN $DBUSER $DBPASS /;
+$DBDSN  = 'dbi:mysql:dbname=stemmaweb';
+$DBUSER = 'FILLMEIN';
+$DBPASS = 'FILLMEIN';
+
+### Main program
+
 my %status = (
     '400' => '400 Bad Request',
     '500' => '500 Internal Server Error',
@@ -61,9 +69,10 @@ unless( $first eq $request ) {
 # For each of the result objects, see if its key exists in the DB. Kick off the
 # calculation of any that need to be calculated, but don't wait more than two 
 # seconds for a result. Return the DB version of each of the objects.
-my $dir = Text::Tradition::Directory->new(
-    'dsn' => 'dbi:mysql:dbname=idpresult',
-    'extra_args' => { 'user' => 'stemmaweb', 'password' => 'l@chmann' } );
+my $dbargs = {};
+$dbargs->{user} = $DBUSER if $DBUSER;
+$dbargs->{password} = $DBPASS if $DBPASS;
+my $dir = Text::Tradition::Directory->new( 'dsn' => $DBDSN, 'extra_args' => $dbargs );
 my $scope = $dir->new_scope;
 my %results;
 my @resultorder;  # Keep track of the order in which we should return the results
