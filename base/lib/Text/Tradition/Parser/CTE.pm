@@ -277,7 +277,6 @@ sub _add_readings {
         next if( $interpreted eq $lemma_str ) && !keys %$flag;  # Reading is lemma.
         
         my @rdg_nodes;
-        my @transp_nodes;
         if( $interpreted eq '#LACUNA#' ) {
         	push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
         										 is_lacuna => 1 } ) );
@@ -286,14 +285,20 @@ sub _add_readings {
         	# down the collation base text and try to find it.
         	# The @rdg_nodes should remain blank here, so that the correct
         	# omission goes into the graph.
+	        my @transp_nodes;
         	foreach my $w ( split(  /\s+/, $interpreted ) ) {
         		my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 										   text => $w } );
 				push( @transp_nodes, $r );
 			}
 			if( $anchor && @lemma ) {
-				_attach_transposition( $c, \@lemma, $anchor, \@transp_nodes, 
-					\@witlist, $flag->{'TR'} );
+				my $success = _attach_transposition( $c, \@lemma, $anchor, 
+					\@transp_nodes, \@witlist, $flag->{'TR'} );
+				unless( $success ) {
+					# If we didn't manage to insert the displaced reading,
+					# then restore it here rather than silently deleting it.
+					push( @rdg_nodes, @transp_nodes );
+				}
 			}
         } else {
         	if ( $flag->{'START'}
@@ -375,6 +380,7 @@ sub _attach_transposition {
 	my @refwords = split( /\s+/, $reftxt );
 	my $checked = $c->reading( $anchor );
 	my $found;
+	my $success;
 	while( $checked ne $c->end && !$found ) {
 		my $next = $c->next_reading( $checked, $c->baselabel );
 		if( $next->text eq $refwords[0] ) {
@@ -405,13 +411,14 @@ sub _attach_transposition {
 				$c->add_relationship( $lemmaseq->[$i], $rdgseq->[$i],
 					{ type => 'transposition', annotation => 'Detected by CTE' } );
 			}
+		$success = 1;
 		} else {
 			say STDERR "ERROR: lemma and transposed sequence different lengths?!"
 		}
 	} else {
 		say STDERR "WARNING: Unable to find $reftxt in base text for transposition";
-		map { $c->del_reading( $_ ) } @$rdgseq;
 	}
+	return $success;
 }
 
 =head2 interpret( $reading, $lemma )
@@ -430,21 +437,17 @@ sub interpret {
 	# $lemma =~ s/\s+[[:punct:]]+$//;
 	my $flag = {};  # To pass back extra info about the interpretation
 	my @words = split( /\s+/, $lemma );
+	# Discard any 'sic' notation - that rather goes without saying.
 	$reading =~ s/[[:punct:]]?\bsic\b([[:punct:]]+)?//g;
-	if( $reading =~ /^(.*) praem.$/ ) {
+	
+	# Now look for common jargon.
+	if( $reading =~ /^(.*) praem.$/ || $reading =~ /^praem\. (.*)$/ ) {
 		$reading = "$1 $lemma";
-	} elsif( $reading =~ /^(.*) add.$/ ) {
+	} elsif( $reading =~ /^(.*) add.$/ || $reading =~ /^add\. (.*)$/ ) {
 		$reading = "$lemma $1";
-	} elsif( $reading =~ /add. alia manu/
-		|| $reading =~ /inscriptionem compegi e/ # TODO huh?
-		|| $reading eq 'inc.'  # TODO huh?
- 		) {
-		# Ignore it.
-		$reading = $lemma;
 	} elsif( $reading =~ /locus [uv]acuus/
 	    || $reading eq 'def.'
 	    || $reading eq 'illeg.'
-	    || $reading eq 'onleesbar'
 	    ) {
 		$reading = '#LACUNA#';
 	} elsif( $reading eq 'om.' ) {
@@ -462,13 +465,6 @@ sub interpret {
 		# There was nothing before a correction.
 		$reading = '';
 		$flag->{'AC'} = 1;
-	} elsif( $reading =~ /^(.*?)\s*\(?sic([\s\w!.]+)?\)?$/ ) {
-		# Discard any 'sic' notation; indeed, indeed.
-		$reading = $1;
-		if( $reading =~ /^(\W+)$/ ) {
-			# Nothing left but punctuation, so effectively it's the lemma.
-			$reading = $lemma;
-		}
 	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
 		# The first and last N words captured should replace the first and
 		# last N words of the lemma.
@@ -483,7 +479,7 @@ sub interpret {
 			$reading = join( ' ', @words );
 		}
 	} elsif( $opts->{interpret_transposition} &&
-			 $reading =~ /^\s*post\s*(.*?)\s*(tr(ans(p)?)?)?\.?\s*$/ ) {
+			 $reading =~ /^post\s*(.*?)\s+tr(ans(p)?)?\.$/ ) {
 		# Try to deal with transposed readings
 		## DEBUG
 		say STDERR "Will attempt transposition: $reading at $anchor";
