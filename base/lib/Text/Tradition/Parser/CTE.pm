@@ -321,13 +321,21 @@ sub _add_readings {
         }
         
         # For each listed wit, save the reading.
+        # If an A.C. or P.C. reading is implied rather than explicitly noted,
+        # this is where it will be dealt with.
         foreach my $wit ( @witlist ) {
 			$wit .= '_ac' if $flag->{'AC'};
             $wit_rdgs{$wit} = \@rdg_nodes;
+            # If the PC flag is set, there is a corresponding AC that
+            # follows the lemma and has to be explicitly declared.
+            if( $flag->{'PC'} ) {
+            	$wit_rdgs{$wit.'_ac'} = \@lemma;
+            }
         }
         		
         # Does the reading have an ID? If so it probably has a witDetail
-        # attached, and we need to read it.
+        # attached, and we need to read it. If an A.C. or P.C. reading is
+        # declared explicity, this is where it will be dealt with.
         if( $rdg->hasAttribute( 'xml:id' ) ) {
         	warn "Witdetail on meta reading" if $flag; # this could get complicated.
             my $rid = $rdg->getAttribute( 'xml:id' );
@@ -438,7 +446,7 @@ sub interpret {
 	my $flag = {};  # To pass back extra info about the interpretation
 	my @words = split( /\s+/, $lemma );
 	# Discard any 'sic' notation - that rather goes without saying.
-	$reading =~ s/[[:punct:]]?\bsic\b([[:punct:]]+)?//g;
+	$reading =~ s/([[:punct:]]+)?sic([[:punct:]]+)?//g;
 	
 	# Now look for common jargon.
 	if( $reading =~ /^(.*) praem.$/ || $reading =~ /^praem\. (.*)$/ ) {
@@ -448,12 +456,13 @@ sub interpret {
 	} elsif( $reading =~ /locus [uv]acuus/
 	    || $reading eq 'def.'
 	    || $reading eq 'illeg.'
+	    || $reading eq 'desunt'
 	    ) {
 		$reading = '#LACUNA#';
 	} elsif( $reading eq 'om.' ) {
 		$reading = '';
 	} elsif( $reading =~ /^in[uv]\.$/ 
-			 || $reading eq 'transp.' ) {
+			 || $reading =~ /^tr(ans(p)?)?\.$/ ) {
 		# Hope it is two words.
 		say STDERR "WARNING: want to invert a lemma that is not two words" 
 			unless scalar( @words ) == 2;
@@ -461,10 +470,16 @@ sub interpret {
 	} elsif( $reading =~ /^iter(\.|at)$/ ) {
 		# Repeat the lemma
 		$reading = "$lemma $lemma";
-	} elsif( $reading eq 'in marg.' ) {
-		# There was nothing before a correction.
-		$reading = '';
-		$flag->{'AC'} = 1;
+	} elsif( $reading =~ /^(.*?)\s*\(?in marg\.\)?$/ ) {
+		$reading = $1;
+		if( $reading ) {
+			# The given text is a correction.
+			$flag->{'PC'} = 1;
+		} else {
+			# The lemma itself was the correction; the witness carried
+			# no reading pre-correction.
+			$flag->{'AC'} = 1;
+		}
 	} elsif( $reading =~ /^(.*) \.\.\. (.*)$/ ) {
 		# The first and last N words captured should replace the first and
 		# last N words of the lemma.
@@ -479,12 +494,13 @@ sub interpret {
 			$reading = join( ' ', @words );
 		}
 	} elsif( $opts->{interpret_transposition} &&
-			 $reading =~ /^post\s*(.*?)\s+tr(ans(p)?)?\.$/ ) {
+			 ( $reading =~ /^post\s*(?<lem>.*?)\s+tr(ans(p)?)?\.$/ || 
+			   $reading =~ /^tr(ans(p)?)?\. post\s*(?<lem>.*)$/) ) {
 		# Try to deal with transposed readings
 		## DEBUG
 		say STDERR "Will attempt transposition: $reading at $anchor";
 		$reading = $lemma;
-		$flag->{'TR'} = $1;
+		$flag->{'TR'} = $+{lem};
 	# Look for processed witStart and witEnd tags
 	} elsif( $reading =~ /^\#START\#\s*(.*)$/ ) {
 		$reading = $1;
@@ -500,18 +516,20 @@ sub _parse_wit_detail {
     my( $detail, $readings, $lemma ) = @_;
     my $wit = $detail->getAttribute( 'wit' );
     my $content = $detail->textContent;
-    if( $content =~ /a\.\s*c\b/ ) {
+    if( $content =~ /^a\.?\s*c(orr)?\.$/ ) {
         # Replace the key in the $readings hash
         my $rdg = delete $readings->{$wit};
         $readings->{$wit.'_ac'} = $rdg;
         $has_ac{$sigil_for{$wit}} = 1;
-    } elsif( $content =~ /p\.\s*c\b/ ) {
+    } elsif( $content =~ /^p\.?\s*c(orr)?\.$/ || $content =~ /^s\.?\s*l\.$/ ) {
         # If no key for the wit a.c. exists, add one pointing to the lemma
         unless( exists $readings->{$wit.'_ac'} ) {
             $readings->{$wit.'_ac'} = $lemma;
         }
         $has_ac{$sigil_for{$wit}} = 1;
-    } # else don't bother just yet
+    } else {  #...not sure what it is?
+    	say STDERR "WARNING: Unrecognized sigil addendum $content";
+    }
 }
 
 sub _get_sigil {
