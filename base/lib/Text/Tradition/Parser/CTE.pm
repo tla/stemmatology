@@ -535,9 +535,9 @@ sub _add_lacunae {
 		# Find the anchor, if any. This marks the point where the text starts
 		# or ends.
 		my $anchor = $app->getAttribute( 'to' );
-		$anchor =~ s/^\#//;
 		my $aname;
 		if( $anchor ) {
+			$anchor =~ s/^\#//;
 			$aname = _anchor_name( $anchor );
 		}
 
