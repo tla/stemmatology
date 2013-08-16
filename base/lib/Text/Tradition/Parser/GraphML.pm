@@ -46,6 +46,8 @@ sub graphml_parse {
         $doc = $parser->parse_string( $opts->{'string'} );
     } elsif ( exists $opts->{'file'} ) {
         $doc = $parser->parse_file( $opts->{'file'} );
+    } elsif ( exists $opts->{'xmlobj'} ) {
+    	$doc = $opts->{'xmlobj'};
     } else {
         warn "Could not find string or file option to parse";
         return;

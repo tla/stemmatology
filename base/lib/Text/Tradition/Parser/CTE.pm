@@ -121,14 +121,22 @@ sub parse {
     
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
-    _expand_all_paths( $c );
+    try {
+	    _expand_all_paths( $c );
+	} catch( $err ) {
+		throw( $err );
+	}
 
     # Save the text for each witness so that we can ensure consistency
     # later on
     unless( $opts->{'nocalc'} ) {
-		$tradition->collation->text_from_paths();	
-		$tradition->collation->calculate_ranks();
-		$tradition->collation->flatten_ranks();
+    	try {
+			$tradition->collation->text_from_paths();	
+			$tradition->collation->calculate_ranks();
+			$tradition->collation->flatten_ranks();
+		} catch( $err ) {
+			throw( $err );
+		}
 	}
 }
 
@@ -157,6 +165,8 @@ sub _remove_formatting {
         $doc = $parser->parse_string( $opts->{'string'} );
     } elsif ( exists $opts->{'file'} ) {
         $doc = $parser->parse_file( $opts->{'file'} );
+    } elsif ( exists $opts->{'xmlobj'} ) {
+    	$doc = $opts->{'xmlobj'};
     } else {
         warn "Could not find string or file option to parse";
         return;
@@ -402,7 +412,7 @@ sub _attach_transposition {
 			}
 		$success = 1;
 		} else {
-			say STDERR "ERROR: lemma and transposed sequence different lengths?!"
+			throw( "Lemma at $found and transposed sequence different lengths?!" );
 		}
 	} else {
 		say STDERR "WARNING: Unable to find $reftxt in base text for transposition";
@@ -468,7 +478,7 @@ sub interpret {
 		my @end = split( /\s+/, $2 );
 		if( scalar( @begin ) + scalar ( @end ) > scalar( @words ) ) {
 			# Something is wrong and we can't do the splice.
-			say STDERR "ERROR: $lemma is too short to accommodate $oldreading";
+			throw( "$lemma is too short to accommodate $oldreading" );
 		} else {
 			splice( @words, 0, scalar @begin, @begin );
 			splice( @words, -(scalar @end), scalar @end, @end );
