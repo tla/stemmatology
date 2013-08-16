@@ -8,6 +8,7 @@ use Text::Tradition::Error;
 use Text::Tradition::Parser::Util qw/ collate_variants /;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
+use TryCatch;
 
 =head1 NAME
 
@@ -100,11 +101,15 @@ sub parse {
         } elsif ( $item->{'type'} eq 'app' ) {
             my $tag = '__APP_' . $counter++ . '__';
             $r = $c->add_reading( { id => $tag, is_ph => 1 } );
+            my $app = $item->{'content'};
+            # Apparatus should be differentiable by type attribute; apparently
+            # it is not. Peek at the content to categorize it.
             # Apparatus criticus is type a1; app siglorum is type a2
-            if( $item->{'content'}->getAttribute('type') eq 'a1' ) {
-	            $apps{$tag} = $item->{'content'};
+            my @sigtags = $xpc->findnodes( 'descendant::*[name(witStart) or name(witEnd)]', $app );
+            if( @sigtags ) {
+	        	push( @app_sig, $app );
 	        } else {
-	        	push( @app_sig, $item->{'content'} );
+	            $apps{$tag} = $app;
 	        }
         }
         $c->add_path( $last, $r, $c->baselabel );
@@ -123,8 +128,10 @@ sub parse {
     # the app/anchor tags.
     try {
 	    _expand_all_paths( $c );
-	} catch( $err ) {
-		throw( $err );
+	} catch( Text::Tradition::Error $e ) {
+		throw( $e->message );
+	} catch {
+		throw( $@ );
 	}
 
     # Save the text for each witness so that we can ensure consistency
@@ -134,8 +141,10 @@ sub parse {
 			$tradition->collation->text_from_paths();	
 			$tradition->collation->calculate_ranks();
 			$tradition->collation->flatten_ranks();
-		} catch( $err ) {
-			throw( $err );
+		} catch( Text::Tradition::Error $e ) {
+			throw( $e->message );
+		} catch {
+			throw( $@ );
 		}
 	}
 }
@@ -526,6 +535,7 @@ sub _add_lacunae {
 		# Find the anchor, if any. This marks the point where the text starts
 		# or ends.
 		my $anchor = $app->getAttribute( 'to' );
+		$anchor =~ s/^\#//;
 		my $aname;
 		if( $anchor ) {
 			$aname = _anchor_name( $anchor );
@@ -545,9 +555,9 @@ sub _add_lacunae {
 				# add a lacuna link between there and here.
 				foreach my $wit ( @witlist ) {
 					my $stoppoint = delete $lacunose{$wit};
-					$stoppoint = $c->start unless $stoppoint;
-					my $stopname = _anchor_name( $stoppoint );
-					say STDERR "Adding lacuna for $wit between $stoppoint and $anchor";
+					my $stopname = $stoppoint ? _anchor_name( $stoppoint ) : $c->start->id;
+					say STDERR "Adding lacuna for $wit between $stopname and $anchor";
+					$DB::single = 1;
 					my $lacuna = $c->add_reading( { id => "as_$anchor.".$ctr++,
         				is_lacuna => 1 } );
         			_add_wit_path( $c, [ $lacuna ], $stopname, $aname, $wit );
