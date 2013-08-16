@@ -9,7 +9,7 @@ theory T1 : V1 {
 
 procedure check(sample) {
   stdoptions.groundwithbounds=false
-  stdoptions.symmetrybreaking='static'
+  stdoptions.symmetrybreaking="static"
   idpintern.setvocabulary(sample,V1)
   return onemodel(T1,sample)
 }

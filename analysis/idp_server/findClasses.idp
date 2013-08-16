@@ -28,7 +28,7 @@ term TotalCost : V3 {
 
 procedure minSourcesAndReverts(sample) {
   stdoptions.groundwithbounds=false
-  stdoptions.symmetrybreaking='static'
+  stdoptions.symmetrybreaking="static"
   stdoptions.cpsupport=true
   addClasses(sample)
   return minimize(T3, sample, TotalCost)[1]

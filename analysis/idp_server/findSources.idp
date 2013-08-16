@@ -13,7 +13,7 @@ term NbOfSources : V2 {
 
 procedure minSources(sample) {
   stdoptions.groundwithbounds=false
-  stdoptions.symmetrybreaking='static'
+  stdoptions.symmetrybreaking="static"
   idpintern.setvocabulary(sample,V2)
   return minimize(T2, sample, NbOfSources)[1]
 }
