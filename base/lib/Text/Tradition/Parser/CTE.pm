@@ -557,7 +557,6 @@ sub _add_lacunae {
 					my $stoppoint = delete $lacunose{$wit};
 					my $stopname = $stoppoint ? _anchor_name( $stoppoint ) : $c->start->id;
 					say STDERR "Adding lacuna for $wit between $stopname and $anchor";
-					$DB::single = 1;
 					my $lacuna = $c->add_reading( { id => "as_$anchor.".$ctr++,
         				is_lacuna => 1 } );
         			_add_wit_path( $c, [ $lacuna ], $stopname, $aname, $wit );
