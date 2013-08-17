@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use lib '/home/tla/stemmatology/lib';
 use CGI;
 use Encode qw/ decode /;
 use Gearman::Client;
@@ -12,10 +11,35 @@ use Text::Tradition::Analysis::Result;
 use TryCatch;
 
 ### Configurable variables
-use vars qw/ $DBDSN $DBUSER $DBPASS /;
-$DBDSN  = 'dbi:mysql:dbname=stemmaweb';
-$DBUSER = 'FILLMEIN';
-$DBPASS = 'FILLMEIN';
+my %VARS = (
+	DBTYPE => 'mysql',
+	DBHOST => '127.0.0.1',
+	DBPORT => '3006',
+	DBNAME => 'idpresult',
+	DSN => undef,
+	DBUSER => undef,
+	DBPASS => undef,
+	GEARMAN_SERVER => '127.0.0.1:4730',
+);
+
+if( -f "/etc/graphcalc.conf" ) {
+	# Read the variables in from here.
+	open( GCCONF, "/etc/graphcalc.conf" ) 
+		or die "Could not open configuration file /etc/graphcalc.conf";
+	while(<GCCONF>) {
+		chomp;
+		s/^\s+//;
+		my( $name, $val ) = split( /\s*\=\s*/, $_ );
+		if( exists $VARS{$name} ) {
+			$VARS{$name} = $val;
+		}
+	}
+	close GCCONF;
+}
+unless( $VARS{DSN} ) {
+	$VARS{DSN} = sprintf( "dbi:%s:dbname=%s;host=%s;port=%s",
+		$VARS{DBTYPE}, $VARS{DBNAME}, $VARS{DBHOST}, $VARS{DBPORT} );
+}
 
 ### Main program
 
@@ -70,9 +94,10 @@ unless( $first eq $request ) {
 # calculation of any that need to be calculated, but don't wait more than two 
 # seconds for a result. Return the DB version of each of the objects.
 my $dbargs = {};
-$dbargs->{user} = $DBUSER if $DBUSER;
-$dbargs->{password} = $DBPASS if $DBPASS;
-my $dir = Text::Tradition::Directory->new( 'dsn' => $DBDSN, 'extra_args' => $dbargs );
+$dbargs->{user} = $VARS{DBUSER} if $VARS{DBUSER};
+$dbargs->{password} = $VARS{DBPASS} if $VARS{DBPASS};
+my $dir = Text::Tradition::Directory->new( 
+	'dsn' => $VARS{DSN}, 'extra_args' => $dbargs );
 my $scope = $dir->new_scope;
 my %results;
 my @resultorder;  # Keep track of the order in which we should return the results
@@ -93,7 +118,7 @@ foreach my $p ( @problems ) {
 if( @needcalc ) {
 	my $arg = join( ',', map { $_->object_key } @needcalc );
 	my $client = Gearman::Client->new;
-	$client->job_servers( '127.0.0.1:4730' );
+	$client->job_servers( $VARS{GEARMAN_SERVER} );
 	my $task = $client->dispatch_background( run_idp => $arg );
 	# See if it finishes quickly
 	my $wait = 3;

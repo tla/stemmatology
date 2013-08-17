@@ -15,15 +15,47 @@ use IPC::Run qw/ run /;
 use JSON;
 use TryCatch;
 
+my %VARS = (
+	DBTYPE => 'mysql',
+	DBHOST => '127.0.0.1',
+	DBPORT => '3006',
+	DBNAME => 'idpresult',
+	DSN => undef,
+	DBUSER => undef,
+	DBPASS => undef,
+	GEARMAN_SERVER => '127.0.0.1:4730',
+	IDPBINPATH => '/usr/local/idp/bin',
+	IDPSCRIPTPATH => '/usr/local/idp/script'
+);
+
+if( -f "/etc/graphcalc.conf" ) {
+	# Read the variables in from here.
+	open( GCCONF, "/etc/graphcalc.conf" ) 
+		or die "Could not open configuration file /etc/graphcalc.conf";
+	while(<GCCONF>) {
+		chomp;
+		s/^\s+//;
+		my( $name, $val ) = split( /\s*\=\s*/, $_ );
+		if( exists $VARS{$name} ) {
+			$VARS{$name} = $val;
+		}
+	}
+	close GCCONF;
+}
+unless( $VARS{DSN} ) {
+	$VARS{DSN} = sprintf( "dbi:%s:dbname=%s;host=%s;port=%s",
+		$VARS{DBTYPE}, $VARS{DBNAME}, $VARS{DBHOST}, $VARS{DBPORT} );
+}
+
 my $db = Text::Tradition::Directory->new(
-    'dsn' => 'dbi:mysql:dbname=idpresult',
-    'extra_args' => { 'user' => 'stemmaweb', 'password' => 'l@chmann' } );
+    'dsn' => $VARS{DSN}, 
+    'extra_args' => { 'user' => $VARS{DBUSER}, 'password' => $VARS{DBPASS} } );
 my @idp_programs = qw/ findGroupings findClasses /;
 # there is also findSources but it is redundant for now
 my $witness_map = {};
 
 my $worker = Gearman::Worker->new();
-$worker->job_servers('127.0.0.1:4730');
+$worker->job_servers( $VARS{GEARMAN_SERVER} );
 $worker->register_function( run_idp => \&run_idp );
 $worker->work while 1;
 
@@ -77,8 +109,8 @@ sub run_idp {
         my %idpanswer;
         foreach my $program ( @idp_programs ) {
             # Got the data, so send it to IDP.
-            $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
-            chdir('/usr/lib/byzantinist/idp');
+            $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin:'.$VARS{IDPBINPATH};
+            chdir( $VARS{IDPSCRIPTPATH} );
             my @cmd = qw! idp -e !;
             push( @cmd, "exec($program)", 'main.idp' );
             my( $ret, $err );
