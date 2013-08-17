@@ -68,6 +68,7 @@ open( IDPBACKUP, "$dumpfile" )
 binmode IDPBACKUP, ':utf8';
 my $nodel;
 my $ctr = 0;
+my $restored = 0;
 while( <IDPBACKUP> ) {
 	chomp;
 	$ctr++;
@@ -77,6 +78,7 @@ while( <IDPBACKUP> ) {
 	if( $result ) {
 		try {
 			$dir->store( $result->object_key => $result );
+			$restored++;
 		} catch ($err) {
 			$nodel = 1;
 			if( $err =~ /already in use / || $err =~ /Duplicate/) {
@@ -91,6 +93,6 @@ while( <IDPBACKUP> ) {
 	}
 }
 close IDPBACKUP;
-say "Done.";
+say "Restored $restored / $ctr results.";
 
 unlink( $dumpfile ) unless $nodel;
