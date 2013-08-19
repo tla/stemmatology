@@ -30,7 +30,7 @@ vocabulary V {
 
 /** Process input in json format **/
 procedure process(input,task) {
-  require('json')
+  require("json")
   local input = json.decode(input)
   local stemma = readStemma(input.graph)
   local samples = readSamples(stemma,input.groupings)
@@ -40,7 +40,7 @@ procedure process(input,task) {
 
 /** Process input from two files **/
 procedure processFiles(stemmafile,samplefile,task) {
-  require('json')
+  require("json")
   local f = assert(io.open(stemmafile,"r"))
   local stemma = readStemma(f:read("*all"))
   f:close()
