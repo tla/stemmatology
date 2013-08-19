@@ -628,7 +628,7 @@ sub _expand_all_paths {
     $c->make_witness_paths();
     
     # Now remove any orphan nodes, and warn that we are doing so.
-    my @suspect_apps;
+    my %suspect_apps;
     while( $c->sequence->predecessorless_vertices > 1 ) {
     	foreach my $v ( $c->sequence->predecessorless_vertices ) {
 	    	my $r = $c->reading( $v );
@@ -636,20 +636,22 @@ sub _expand_all_paths {
 	    	my $tag = $r->id;
 	    	$tag =~ s/^r(\d+)\.\d+/$1/;
     		say STDERR "Deleting orphan reading $r / " . $r->text;
-    		push( @suspect_apps, $tag );
+    		push( @{$suspect_apps{$tag}}, $r->id ) if $tag =~ /^\d+$/;
     		$c->del_reading( $r );
     	}
     }
     if( $c->sequence->successorless_vertices > 1 ) {
     	my @bad = grep { $_ ne $c->end->id } $c->sequence->successorless_vertices;
     	foreach( @bad ) {
-    		s/^r(\d+)\.\d+/$1/;
-    		push( @suspect_apps, $_ );
+    		my $tag = $_;
+    		next unless $tag =~ /^r/;
+    		$tag =~ s/^r(\d+)\.\d+/$1/;
+    		push( @{$suspect_apps{$tag}}, $_ );
     	}
-		_dump_suspects( @suspect_apps );
+		_dump_suspects( %suspect_apps );
     	throw( "Remaining hanging readings: @bad" );
 	}
-	_dump_suspects( @suspect_apps ) if @suspect_apps;
+	_dump_suspects( %suspect_apps ) if keys %suspect_apps;
 }
 
 sub _add_wit_path {
@@ -665,9 +667,12 @@ sub _add_wit_path {
 }
 
 sub _dump_suspects {
+	my %list = @_;
 	say STDERR "Suspect apparatus entries:";
-	foreach my $suspect ( sort { $a <=> $b } @_ ) {
-		say STDERR "---" . print_apparatus( $suspect );
+	foreach my $suspect ( sort { $a <=> $b } keys %list ) {
+		my @badrdgs = @{$list{$suspect}};
+		say STDERR print_apparatus( $suspect );
+		say STDERR "\t(Linked to readings @badrdgs)";
 	}
 }
 
@@ -682,6 +687,7 @@ sub print_apparatus {
 	if( $anchor ) {
 		# We have a lemma, so we construct it.
 		$anchor =~ s/^#//;
+		$appstring .= "(Anchor $anchor) ";
 		my $curr = $app;
 		while( $curr ) {
 			last if $curr->nodeType eq XML_ELEMENT_NODE 
@@ -691,7 +697,8 @@ sub print_apparatus {
 			$curr = $curr->nextSibling;
 		}
 	}
-	$appstring .= ': ';
+	$appstring .= '] ';
+	my @readings;
 	foreach my $rdg_el ( $xpc->findnodes( 'child::rdg' ) ) {
 		my $rdgtext = '';
 		my $startend = '';
@@ -708,7 +715,7 @@ sub print_apparatus {
 				}
 			}
 		}
-		$appstring .= "$rdgtext ";
+		
 		my @witlist;
 		foreach my $witrep (  map { _get_sigil( $_ ) } 
 			split( /\s+/, $rdg_el->getAttribute('wit') ) ) {
@@ -722,8 +729,10 @@ sub print_apparatus {
 			}
 			push( @witlist, $witrep );
 		}
-		$appstring .= "@witlist";
+		$rdgtext .= " @witlist";
+		push( @readings, $rdgtext );
 	}
+	$appstring .= join( '  ', @readings );
 	return $appstring;
 }
 
