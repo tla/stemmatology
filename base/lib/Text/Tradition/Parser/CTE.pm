@@ -88,6 +88,7 @@ sub parse {
 	# First, put the base tokens, apps, and anchors in the graph. Save the
 	# app siglorum separately as it has to be processed in order.
 	my @app_sig;
+	my @app_crit;
 	my $counter = 0;
 	my $last = $c->start;
 	foreach my $item ( @base_text ) {
@@ -102,14 +103,15 @@ sub parse {
             my $tag = '__APP_' . $counter++ . '__';
             $r = $c->add_reading( { id => $tag, is_ph => 1 } );
             my $app = $item->{'content'};
+            $apps{$tag} = $app;
             # Apparatus should be differentiable by type attribute; apparently
             # it is not. Peek at the content to categorize it.
             # Apparatus criticus is type a1; app siglorum is type a2
             my @sigtags = $xpc->findnodes( 'descendant::*[name(witStart) or name(witEnd)]', $app );
             if( @sigtags ) {
-	        	push( @app_sig, $app );
+	        	push( @app_sig, $tag );
 	        } else {
-	            $apps{$tag} = $app;
+	            push( @app_crit, $tag );
 	        }
         }
         $c->add_path( $last, $r, $c->baselabel );
@@ -119,7 +121,7 @@ sub parse {
     
     # Now we can parse the apparatus entries, and add the variant readings 
     # to the graph.
-    foreach my $app_id ( keys %apps ) {
+    foreach my $app_id ( @app_crit ) {
         _add_readings( $c, $app_id, $opts );
     }
     _add_lacunae( $c, @app_sig );
@@ -521,17 +523,18 @@ sub _parse_wit_detail {
         }
         $has_ac{$sigil_for{$wit}} = 1;
     } else {  #...not sure what it is?
-    	say STDERR "WARNING: Unrecognized sigil addendum $content";
+    	say STDERR "WARNING: Unrecognized sigil annotation $content";
     }
 }
 
 sub _add_lacunae {
-	my( $c, @apps ) = @_;
+	my( $c, @app_id ) = @_;
 	# Go through the apparatus entries in order, noting where to start and stop our
 	# various witnesses.
 	my %lacunose;
 	my $ctr = 0;
-	foreach my $app ( @apps ) {
+	foreach my $tag ( @app_id ) {
+		my $app = $apps{$tag};
 		# Find the anchor, if any. This marks the point where the text starts
 		# or ends.
 		my $anchor = $app->getAttribute( 'to' );
@@ -625,14 +628,28 @@ sub _expand_all_paths {
     $c->make_witness_paths();
     
     # Now remove any orphan nodes, and warn that we are doing so.
+    my @suspect_apps;
     while( $c->sequence->predecessorless_vertices > 1 ) {
     	foreach my $v ( $c->sequence->predecessorless_vertices ) {
 	    	my $r = $c->reading( $v );
 	    	next if $r->is_start;
+	    	my $tag = $r->id;
+	    	$tag =~ s/^r(\d+)\.\d+/$1/;
     		say STDERR "Deleting orphan reading $r / " . $r->text;
+    		push( @suspect_apps, $tag );
     		$c->del_reading( $r );
     	}
     }
+    if( $c->sequence->successorless_vertices > 1 ) {
+    	my @bad = grep { $_ ne $c->end->id } $c->sequence->successorless_vertices;
+    	foreach( @bad ) {
+    		s/^r(\d+)\.\d+/$1/;
+    		push( @suspect_apps, $_ );
+    	}
+		_dump_suspects( @suspect_apps );
+    	throw( "Remaining hanging readings: @bad" );
+	}
+	_dump_suspects( @suspect_apps ) if @suspect_apps;
 }
 
 sub _add_wit_path {
@@ -645,6 +662,69 @@ sub _add_wit_path {
         $c->add_path( $cur, $n, $wit );
         $cur = $n;
     }
+}
+
+sub _dump_suspects {
+	say STDERR "Suspect apparatus entries:";
+	foreach my $suspect ( sort { $a <=> $b } @_ ) {
+		say STDERR "---" . print_apparatus( $suspect );
+	}
+}
+
+sub print_apparatus {
+	my( $appid ) = @_;
+	my $tag = '__APP_' . $appid . '__';
+	my $app = $apps{$tag};
+	my $appstring = '';
+	# Interpret the XML - get the lemma and readings and print them out.
+	my $xpc = XML::LibXML::XPathContext->new( $app );
+	my $anchor = $app->getAttribute('to');
+	if( $anchor ) {
+		# We have a lemma, so we construct it.
+		$anchor =~ s/^#//;
+		my $curr = $app;
+		while( $curr ) {
+			last if $curr->nodeType eq XML_ELEMENT_NODE 
+				&& $curr->hasAttribute( 'xml:id' ) 
+				&& $curr->getAttribute( 'xml:id' ) eq $anchor;
+			$appstring .= $curr->data if $curr->nodeType eq XML_TEXT_NODE;
+			$curr = $curr->nextSibling;
+		}
+	}
+	$appstring .= ': ';
+	foreach my $rdg_el ( $xpc->findnodes( 'child::rdg' ) ) {
+		my $rdgtext = '';
+		my $startend = '';
+		my %detail;
+		foreach my $child_el ( $rdg_el->childNodes ) {
+			if( $child_el->nodeType eq XML_TEXT_NODE ) {
+				$rdgtext .= $child_el->data;
+			} elsif( $child_el->nodeName =~ /^wit(Start|End)$/ ) {
+				my $startend = lc( $1 );
+			} elsif( $child_el->nodeName eq 'witDetail' ) {
+				foreach my $wit ( map { _get_sigil( $_ ) } 
+					split( /\s+/, $child_el->getAttribute('wit') ) ) {
+					$detail{$wit} = $child_el->textContent;
+				}
+			}
+		}
+		$appstring .= "$rdgtext ";
+		my @witlist;
+		foreach my $witrep (  map { _get_sigil( $_ ) } 
+			split( /\s+/, $rdg_el->getAttribute('wit') ) ) {
+			if( exists $detail{$witrep} ) {
+				$witrep .= '(' . $detail{$witrep} . ')'
+			}
+			if( $startend eq 'start' ) {
+				$witrep = '*' . $witrep;
+			} elsif( $startend eq 'end' ) {
+				$witrep .= '*';
+			}
+			push( @witlist, $witrep );
+		}
+		$appstring .= "@witlist";
+	}
+	return $appstring;
 }
 
 sub throw {
