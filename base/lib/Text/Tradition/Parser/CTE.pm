@@ -271,7 +271,6 @@ sub _add_readings {
     # Get the lemma, which is all the readings between app and anchor,
     # excluding other apps or anchors.
 	my @lemma = _return_lemma( $c, $app_id, $anchor );
-	my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @lemma );
         
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
@@ -281,82 +280,54 @@ sub _add_readings {
     $tag =~ s/^\__APP_(.*)\__$/$1/;
 
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
-    	my @witlist = split( /\s+/, $rdg->getAttribute( 'wit' ) );
-        my @text;
-        foreach ( $rdg->childNodes ) {
-            push( @text, _get_base( $_ ) );
-        }
-        my( $interpreted, $flag ) = ( '', undef );
-        if( @text ) {
-        	( $interpreted, $flag ) = interpret( 
-        		join( ' ', map { $_->{'content'} } @text ), $lemma_str, $anchor, $opts );
-        }
-        next if( $interpreted eq $lemma_str ) && !keys %$flag;  # Reading is lemma.
-        
-        my @rdg_nodes;
-        if( $interpreted eq '#LACUNA#' ) {
-        	push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
-        										 is_lacuna => 1 } ) );
-        } elsif( $flag->{'TR'} ) {
-        	# Our reading is transposed to after the given string. Look
-        	# down the collation base text and try to find it.
-        	# The @rdg_nodes should remain blank here, so that the correct
-        	# omission goes into the graph.
-	        my @transp_nodes;
-        	foreach my $w ( split(  /\s+/, $interpreted ) ) {
-        		my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
-										   text => $w } );
-				push( @transp_nodes, $r );
-			}
-			if( $anchor && @lemma ) {
-				my $success = _attach_transposition( $c, \@lemma, $anchor, 
-					\@transp_nodes, \@witlist, $flag->{'TR'} );
-				unless( $success ) {
-					# If we didn't manage to insert the displaced reading,
-					# then restore it here rather than silently deleting it.
-					push( @rdg_nodes, @transp_nodes );
-				}
-			}
-        } else {
-			foreach my $w ( split( /\s+/, $interpreted ) ) {
-				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
-										   text => $w } );
-				push( @rdg_nodes, $r );
-			}
-        }
-        
-        # For each listed wit, save the reading.
-        # If an A.C. or P.C. reading is implied rather than explicitly noted,
-        # this is where it will be dealt with.
-        foreach my $wit ( @witlist ) {
-			$wit .= '_ac' if $flag->{'AC'};
-            $wit_rdgs{$wit} = \@rdg_nodes;
-            # If the PC flag is set, there is a corresponding AC that
-            # follows the lemma and has to be explicitly declared.
-            if( $flag->{'PC'} ) {
-            	$wit_rdgs{$wit.'_ac'} = \@lemma;
-            }
-        }
-        		
+    	# Get the relevant witnesses.
+    	my @witlist = map { $sigil_for{$_} } 
+    		split( /\s+/, $rdg->getAttribute( 'wit' ) );
+
         # Does the reading have an ID? If so it probably has a witDetail
         # attached, and we need to read it. If an A.C. or P.C. reading is
         # declared explicity, this is where it will be dealt with.
         if( $rdg->hasAttribute( 'xml:id' ) ) {
-        	warn "Witdetail on meta reading" if $flag; # this could get complicated.
             my $rid = $rdg->getAttribute( 'xml:id' );
             my $xpc = XML::LibXML::XPathContext->new( $xn );
             my @details = $xpc->findnodes( './witDetail[@target="'.$rid.'"]' );
             foreach my $d ( @details ) {
-                _parse_wit_detail( $d, \%wit_rdgs, \@lemma );
+                @witlist = _parse_wit_detail( $d, @witlist );
             }
         }
+
+		# Now we have our list of relevant witnesses for the reading, annotated
+		# with AC or PC if applicable. Interpret the reading in light of the 
+		# lemma, anything we already have for the witness, etc.
+        # If an A.C. or P.C. reading is implied rather than explicitly noted,
+        # this is where it will be dealt with.
+        
+		foreach my $wit ( @witlist ) {
+			# The lemma for this witness is either the actual lemma, or the
+			# reading that we have already determined.
+			my $hascorr;
+			if( $wit =~ /^(.*)_pc$/ ) {
+				$wit = $1;
+				$hascorr = 1;
+			}
+			## TODO think through ac/pc interaction from these specs
+			my $wit_lemma = $wit_rdgs{$wit} || \@lemma;
+			my @rdg_nodes;
+			( $wit, @rdg_nodes )= _read_reading( $rdg, $wit_lemma, $wit, 
+				$tag, $ctr, $anchor, $opts );
+			$wit_rdgs{$wit} = \@rdg_nodes;
+            # If the PC flag is set, there is a corresponding AC that
+            # follows the lemma and has to be explicitly declared.
+            if( $flag->{'PC'} ) {
+            	$wit_rdgs{$wit.'_ac'} = $wit_lemma;
+            }
+        }		
     }       
         
     # Now collate the variant readings, since it is not done for us.
     collate_variants( $c, \@lemma, values %wit_rdgs );
         
-    # Now add the witness paths for each reading. If we don't have an anchor
-    # (e.g. with an initial witStart) there was no witness path to speak of.
+    # Now add the witness paths for each reading.
 	foreach my $wit_id ( keys %wit_rdgs ) {
 		my $witstr = _get_sigil( $wit_id, $c->ac_label );
 		my $rdg_list = $wit_rdgs{$wit_id};
@@ -376,6 +347,93 @@ sub _return_lemma {
         $c->reading_sequence( $c->reading( $app ), $c->reading( $anchor ),
         	$c->baselabel );
     return @nodes;
+}
+
+sub _parse_wit_detail {
+	my $detail = shift;
+    my %wits;
+    map { $wits{$_} = $_ } @_;
+    my @changewits = map { $sigil_for{$_} } 
+    	split( /\s+/, $detail->getAttribute( 'wit' ) );
+    my $content = $detail->textContent;
+    if( $content =~ /^a\.?\s*c(orr)?\.$/ ) {
+        # Replace the key in the $readings hash
+        map { $wits{$_} = $_.'_ac' } @changewits;
+    } elsif( $content =~ /^p\.?\s*c(orr)?\.$/ || $content =~ /^s\.?\s*l\.$/
+    	|| $content =~ /^in marg\.?$/ ) {
+        # If no key for the wit a.c. exists, add one pointing to the lemma
+        map { $wits{$_} = $_.'_pc' } @changewits;
+    } else {  #...not sure what it is?
+    	say STDERR "WARNING: Unrecognized sigil annotation $content";
+    }
+    my @newwits = sort values %wits;
+    return @newwits;
+}
+
+sub _read_reading {
+	my( $rdg, $lemma, $witness, $tag, $ctr, $anchor, $opts ) = @_;
+
+	# Get the text of the lemma.	
+	my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @$lemma );
+
+	my @text;
+	foreach ( $rdg->childNodes ) {
+		push( @text, _get_base( $_ ) );
+	}
+	my( $interpreted, $flag ) = ( '', undef );
+	if( @text ) {
+		( $interpreted, $flag ) = interpret( 
+			join( ' ', map { $_->{'content'} } @text ), $lemma_str, $anchor, $opts );
+	}
+	if( ( $interpreted eq $lemma_str || $interpreted eq '__LEMMA__' ) 
+		&& !keys %$flag ) {
+		# The reading is the lemma. Pass it back.
+		return( $wit, @$lemma );
+	}
+	
+	my @rdg_nodes;
+	if( $interpreted eq '#LACUNA#' ) {
+		push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
+											 is_lacuna => 1 } ) );
+	} elsif( $flag->{'TR'} ) {
+		# Our reading is transposed to after the given string. Look
+		# down the collation base text and try to find it.
+		# The @rdg_nodes should remain blank here, so that the correct
+		# omission goes into the graph.
+		my @transp_nodes;
+		foreach my $w ( split(  /\s+/, $interpreted ) ) {
+			my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
+									   text => $w } );
+			push( @transp_nodes, $r );
+		}
+		if( $anchor && @lemma ) {
+			my $success = _attach_transposition( $c, $lemma, $anchor, 
+				\@transp_nodes, $witlist, $flag->{'TR'} );
+			unless( $success ) {
+				# If we didn't manage to insert the displaced reading,
+				# then restore it here rather than silently deleting it.
+				push( @rdg_nodes, @transp_nodes );
+			}
+		}
+	} else {
+		foreach my $w ( split( /\s+/, $interpreted ) ) {
+			if( $w eq '__LEMMA__' ) {
+				push( @rdg_nodes, @lemma );
+			} else {
+				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
+										   text => $w } );
+				push( @rdg_nodes, $r );
+			}
+		}
+	}
+	
+	# Note if the interpretation said that we're dealing with a correction.
+	if( $flag->{'AC'} ) {
+		$wit .= '_ac';
+	} elsif( $flag->{'PC'} ) {
+		$wit .= '_pc';
+	}
+	return( $wit, @rdg_nodes );
 }
 
 # Make a best-effort attempt to attach a transposition farther down the line.
@@ -450,11 +508,16 @@ sub interpret {
 	# Discard any 'sic' notation - that rather goes without saying.
 	$reading =~ s/([[:punct:]]+)?sic([[:punct:]]+)?//g;
 	
+	# Look to see if there is an implied add or praem masked by the XML.
+	# If so, undo it for purposes of reading identity.
+	$reading =~ s/^$lemma\b/__LEMMA__/;
+	$reading =~ s/\b$lemma$/__LEMMA__/;
+	
 	# Now look for common jargon.
 	if( $reading =~ /^(.*) praem.$/ || $reading =~ /^praem\. (.*)$/ ) {
-		$reading = "$1 $lemma";
+		$reading = "$1 __LEMMA__";
 	} elsif( $reading =~ /^(.*) add.$/ || $reading =~ /^add\. (.*)$/ ) {
-		$reading = "$lemma $1";
+		$reading = "__LEMMA__ $1";
 	} elsif( $reading =~ /locus [uv]acuus/
 	    || $reading eq 'def.'
 	    || $reading eq 'illeg.'
@@ -471,7 +534,7 @@ sub interpret {
 		$reading = join( ' ', reverse( @words ) );
 	} elsif( $reading =~ /^iter(\.|at)$/ ) {
 		# Repeat the lemma
-		$reading = "$lemma $lemma";
+		$reading = "__LEMMA__ $lemma";
 	} elsif( $reading =~ /^(.*?)\s*\(?in marg\.\)?$/ ) {
 		$reading = $1;
 		if( $reading ) {
@@ -501,30 +564,12 @@ sub interpret {
 		# Try to deal with transposed readings
 		## DEBUG
 		say STDERR "Will attempt transposition: $reading at $anchor";
+		# Copy the lemma into the reading string for insertion later
+		# in the text.
 		$reading = $lemma;
 		$flag->{'TR'} = $+{lem};
 	}
 	return( $reading, $flag );
-}
-
-sub _parse_wit_detail {
-    my( $detail, $readings, $lemma ) = @_;
-    my $wit = $detail->getAttribute( 'wit' );
-    my $content = $detail->textContent;
-    if( $content =~ /^a\.?\s*c(orr)?\.$/ ) {
-        # Replace the key in the $readings hash
-        my $rdg = delete $readings->{$wit};
-        $readings->{$wit.'_ac'} = $rdg;
-        $has_ac{$sigil_for{$wit}} = 1;
-    } elsif( $content =~ /^p\.?\s*c(orr)?\.$/ || $content =~ /^s\.?\s*l\.$/ ) {
-        # If no key for the wit a.c. exists, add one pointing to the lemma
-        unless( exists $readings->{$wit.'_ac'} ) {
-            $readings->{$wit.'_ac'} = $lemma;
-        }
-        $has_ac{$sigil_for{$wit}} = 1;
-    } else {  #...not sure what it is?
-    	say STDERR "WARNING: Unrecognized sigil annotation $content";
-    }
 }
 
 sub _add_lacunae {
