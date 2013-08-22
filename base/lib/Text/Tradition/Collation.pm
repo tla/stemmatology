@@ -867,7 +867,8 @@ sub as_dot {
     foreach my $edge ( @edges ) {
     	# Do we need to output this edge?
     	if( $used{$edge->[0]} && $used{$edge->[1]} ) {
-    		my $label = $self->_path_display_label( $self->path_witnesses( $edge ) );
+    		my $label = $self->_path_display_label( $opts,
+    			$self->path_witnesses( $edge ) );
 			my $variables = { %edge_attrs, 'label' => $label };
 			
 			# Account for the rank gap if necessary
@@ -927,7 +928,8 @@ sub as_dot {
     
     # Add substitute start and end edges if necessary
     foreach my $node ( keys %substart ) {
-    	my $witstr = $self->_path_display_label ( $self->path_witnesses( $substart{$node}, $node ) );
+    	my $witstr = $self->_path_display_label( $opts, 
+    		$self->path_witnesses( $substart{$node}, $node ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
     	my $nrdg = $self->reading( $node );
     	if( $nrdg->has_rank && $nrdg->rank > $startrank ) {
@@ -938,7 +940,8 @@ sub as_dot {
         $dot .= "\t\"__SUBSTART__\" -> \"$node\" $varopts;\n";
 	}
     foreach my $node ( keys %subend ) {
-    	my $witstr = $self->_path_display_label ( $self->path_witnesses( $node, $subend{$node} ) );
+    	my $witstr = $self->_path_display_label( $opts,
+    		$self->path_witnesses( $node, $subend{$node} ) );
     	my $variables = { %edge_attrs, 'label' => $witstr };
         my $varopts = _dot_attr_string( $variables );
         $dot .= "\t\"$node\" -> \"__SUBEND__\" $varopts;\n";
@@ -1011,6 +1014,7 @@ sub path_witnesses {
 # witnesses only where the main witness is not also in the list.
 sub _path_display_label {
 	my $self = shift;
+	my $opts = shift;
 	my %wits;
 	map { $wits{$_} = 1 } @_;
 
@@ -1028,14 +1032,18 @@ sub _path_display_label {
 		}
 	}
 	
-	# See if we are in a majority situation.
-	my $maj = scalar( $self->tradition->witnesses ) * 0.6;
-	$maj = $maj > 5 ? $maj : 5;
-	if( scalar keys %wits > $maj ) {
-		unshift( @disp_ac, 'majority' );
-		return join( ', ', @disp_ac );
-	} else {
+	if( $opts->{'explicit_wits'} ) {
 		return join( ', ', sort keys %wits );
+	} else {
+		# See if we are in a majority situation.
+		my $maj = scalar( $self->tradition->witnesses ) * 0.6;
+		$maj = $maj > 5 ? $maj : 5;
+		if( scalar keys %wits > $maj ) {
+			unshift( @disp_ac, 'majority' );
+			return join( ', ', @disp_ac );
+		} else {
+			return join( ', ', sort keys %wits );
+		}
 	}
 }
 
