@@ -107,8 +107,7 @@ sub parse {
             # Apparatus should be differentiable by type attribute; apparently
             # it is not. Peek at the content to categorize it.
             # Apparatus criticus is type a1; app siglorum is type a2
-            my @sigtags = $xpc->findnodes( 
-            	'descendant::*[name(witStart) or name(witEnd)]', $app );
+            my @sigtags = $xpc->findnodes( 'descendant::*[name(witStart) or name(witEnd)]', $app );
             if( @sigtags ) {
 	        	push( @app_sig, $tag );
 	        } else {
@@ -125,7 +124,7 @@ sub parse {
     foreach my $app_id ( @app_crit ) {
         _add_readings( $c, $app_id, $opts );
     }
-    _add_lacunae( $c, $opts, @app_sig );
+    _add_lacunae( $c, @app_sig );
     
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
@@ -235,8 +234,7 @@ sub _get_base {
 			push( @readings, { type => 'anchor', 
 			    content => $xn->getAttribute( 'xml:id' ) } );
 		} # if the anchor has no XML ID, it is not relevant to us.
-	} elsif( $xn->nodeName !~ /^(note|seg|milestone|emph|witStart|witEnd)$/ ) {  
-		# Any tag we don't know to disregard
+	} elsif( $xn->nodeName !~ /^(note|seg|milestone|emph)$/ ) {  # Any tag we don't know to disregard
 	    say STDERR "Unrecognized tag " . $xn->nodeName;
 	}
 	return @readings;
@@ -270,6 +268,10 @@ sub _add_readings {
     my $xn = $apps{$app_id};
     my $anchor = _anchor_name( $xn->getAttribute( 'to' ) );
     
+    # Get the lemma, which is all the readings between app and anchor,
+    # excluding other apps or anchors.
+	my @lemma = _return_lemma( $c, $app_id, $anchor );
+        
     # For each reading, send its text to 'interpret' along with the lemma,
     # and then save the list of witnesses that these tokens belong to.
     my %wit_rdgs;  # Maps from witnesses to the variant text
@@ -279,7 +281,8 @@ sub _add_readings {
 
     foreach my $rdg ( $xn->getChildrenByTagName( 'rdg' ) ) {
     	# Get the relevant witnesses.
-    	my @witlist = split( /\s+/, $rdg->getAttribute( 'wit' ) );
+    	my @witlist = map { $sigil_for{$_} } 
+    		split( /\s+/, $rdg->getAttribute( 'wit' ) );
 
         # Does the reading have an ID? If so it probably has a witDetail
         # attached, and we need to read it. If an A.C. or P.C. reading is
@@ -300,69 +303,35 @@ sub _add_readings {
         # this is where it will be dealt with.
         
 		foreach my $wit ( @witlist ) {
-			# First get the lemma for this witness. This is all the readings
-			# between app and anchor, excluding other apps or anchors.
-			my @testwits;
-			my $sigil;
-			my $acsigil;
+			# The lemma for this witness is either the actual lemma, or the
+			# reading that we have already determined.
+			my $hascorr;
 			if( $wit =~ /^(.*)_pc$/ ) {
-				# If this is a p.c., it is the 'main' witness and we need to
-				# track the a.c. version separately.
-				$sigil = _get_sigil( $1 );
-				$acsigil = $sigil . $c->ac_label;
-			} elsif ( $wit =~ /^(.*)_ac$/ ) {
-				# If this is an a.c., we use the main witness as backup in our
-				# lemma query.
-				my $basesigil = _get_sigil( $1 );
-				$sigil = $basesigil . $c->ac_label;
-				@testwits = ( $sigil, $basesigil );
+				$wit = $1;
+				$hascorr = 1;
 			}
-			@testwits = ( $sigil ) unless @testwits;
-			
-			my @lemma = _return_lemma( $c, $app_id, $anchor, @testwits );
-			my @aclemma;
-			if( $acsigil ) {
-				@aclemma = _return_lemma( $c, $app_id, $anchor, 
-					$acsigil, $testwits[0] ); # @testwits contains the sigil
-			}
-			
-			# Now remove the witness path temporarily - we will restore it
-			# after interpreting the reading.
-			my $from = $app_id;
-			foreach my $to ( ( @lemma, $anchor ) ) {
-				last if $to eq $anchor;
-				$c->del_path( $from, $to, $sigil );
-				$from = $to;
-			}
-			if( $acsigil ) {
-				# Do the same for the aclemma.
-				$from = $app_id;
-				foreach my $to ( ( @aclemma, $anchor ) ) {
-					last if $to eq $anchor;
-					$c->del_path( $from, $to, $acsigil );
-					$from = $to;
-				}
-        	}
-        	
-			my @rdg_nodes = _read_reading( $c, $rdg, $wit, \@lemma, \@aclemma, 
-				$tag, \$ctr, $anchor, $opts );
+			## TODO think through ac/pc interaction from these specs
+			my $wit_lemma = $wit_rdgs{$wit} || \@lemma;
+			my @rdg_nodes;
+			( $wit, @rdg_nodes )= _read_reading( $rdg, $wit_lemma, $wit, 
+				$tag, $ctr, $anchor, $opts );
 			$wit_rdgs{$wit} = \@rdg_nodes;
-			# If we now have a new lemma for a.c., set it.
-			if( @aclemma ) {
-				$wit_rdgs{$wit.'_ac'} = \@aclemma;
-			}
+            # If the PC flag is set, there is a corresponding AC that
+            # follows the lemma and has to be explicitly declared.
+            if( $flag->{'PC'} ) {
+            	$wit_rdgs{$wit.'_ac'} = $wit_lemma;
+            }
         }		
     }       
-    
-    my @baselemma = _return_lemma( $c, $app_id, $anchor );
+        
     # Now collate the variant readings, since it is not done for us.
-    collate_variants( $c, \@baselemma, values %wit_rdgs );
+    collate_variants( $c, \@lemma, values %wit_rdgs );
         
     # Now add the witness paths for each reading.
 	foreach my $wit_id ( keys %wit_rdgs ) {
-		my $sigil = _get_sigil( $wit_id, $c->ac_label );
+		my $witstr = _get_sigil( $wit_id, $c->ac_label );
 		my $rdg_list = $wit_rdgs{$wit_id};
-		_add_wit_path( $c, $rdg_list, $app_id, $anchor, $sigil );
+		_add_wit_path( $c, $rdg_list, $app_id, $anchor, $witstr );
 	}
 }
 
@@ -372,41 +341,37 @@ sub _anchor_name {
     return sprintf( "__ANCHOR_%s__", $xmlid );
 }
 
-# Return the reading sequence for the specified witness (and backup, if
-# applicable.) If no witness sigla are specified, use the base sequence.
 sub _return_lemma {
-    my( $c, $app, $anchor, @sigla ) = @_;
-    push( @sigla, $c->baselabel );
+    my( $c, $app, $anchor ) = @_;
     my @nodes = grep { $_->id !~ /^__A(PP|NCHOR)/ } 
-        $c->reading_sequence( $c->reading( $app ), $c->reading( $anchor ), @sigla );
+        $c->reading_sequence( $c->reading( $app ), $c->reading( $anchor ),
+        	$c->baselabel );
     return @nodes;
 }
 
-# Look at the witDetail and modify any affected witnesses. For example,
-# an a.c. annotation in the detail applied to witness #M206 will change
-# the list ( #M130, #M54, #M206 ) to ( #M130, #M54, #M206_ac ). Preserve
-# ordering.
 sub _parse_wit_detail {
-	my( $detail, @wits ) = @_;
-    my %witmap;
-    map { $witmap{$_} = $_ } @wits;
-    my @changewits = split( /\s+/, $detail->getAttribute( 'wit' ) );
+	my $detail = shift;
+    my %wits;
+    map { $wits{$_} = $_ } @_;
+    my @changewits = map { $sigil_for{$_} } 
+    	split( /\s+/, $detail->getAttribute( 'wit' ) );
     my $content = $detail->textContent;
     if( $content =~ /^a\.?\s*c(orr)?\.$/ ) {
-        # The witness in question is actually an a.c. witness
-        map { $witmap{$_} = $_.'_ac' } @changewits;
+        # Replace the key in the $readings hash
+        map { $wits{$_} = $_.'_ac' } @changewits;
     } elsif( $content =~ /^p\.?\s*c(orr)?\.$/ || $content =~ /^s\.?\s*l\.$/
     	|| $content =~ /^in marg\.?$/ ) {
-        # The witness in question is actually a p.c. witness
-        map { $witmap{$_} = $_.'_pc' } @changewits;
+        # If no key for the wit a.c. exists, add one pointing to the lemma
+        map { $wits{$_} = $_.'_pc' } @changewits;
     } else {  #...not sure what it is?
     	say STDERR "WARNING: Unrecognized sigil annotation $content";
     }
-    return map { $witmap{$_} } @wits;
+    my @newwits = sort values %wits;
+    return @newwits;
 }
 
 sub _read_reading {
-	my( $c, $rdg, $witness, $lemma, $aclemma, $tag, $ctr, $anchor, $opts ) = @_;
+	my( $rdg, $lemma, $witness, $tag, $ctr, $anchor, $opts ) = @_;
 
 	# Get the text of the lemma.	
 	my $lemma_str = join( ' ',  map { $_->text } grep { !$_->is_ph } @$lemma );
@@ -423,12 +388,12 @@ sub _read_reading {
 	if( ( $interpreted eq $lemma_str || $interpreted eq '__LEMMA__' ) 
 		&& !keys %$flag ) {
 		# The reading is the lemma. Pass it back.
-		return @$lemma;
+		return( $wit, @$lemma );
 	}
 	
 	my @rdg_nodes;
 	if( $interpreted eq '#LACUNA#' ) {
-		push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$$ctr++,
+		push( @rdg_nodes, $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 											 is_lacuna => 1 } ) );
 	} elsif( $flag->{'TR'} ) {
 		# Our reading is transposed to after the given string. Look
@@ -437,14 +402,13 @@ sub _read_reading {
 		# omission goes into the graph.
 		my @transp_nodes;
 		foreach my $w ( split(  /\s+/, $interpreted ) ) {
-			my $r = $c->add_reading( { id => 'r'.$tag.".".$$ctr++,
+			my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 									   text => $w } );
 			push( @transp_nodes, $r );
 		}
-		if( $anchor && $lemma ) {
-			my $aname = _anchor_name( $anchor );
-			my $success = _attach_transposition( $c, $lemma, $aname, 
-				\@transp_nodes, $witness, $flag->{'TR'} );
+		if( $anchor && @lemma ) {
+			my $success = _attach_transposition( $c, $lemma, $anchor, 
+				\@transp_nodes, $witlist, $flag->{'TR'} );
 			unless( $success ) {
 				# If we didn't manage to insert the displaced reading,
 				# then restore it here rather than silently deleting it.
@@ -452,50 +416,77 @@ sub _read_reading {
 			}
 		}
 	} else {
-		# Create the reading nodes.
-		# First figure out whether we are making an a.c. lemma, p.c. lemma,
-		# or main lemma, and adjust the list accordingly.
-		my $use_list = \@rdg_nodes;
-		if( $flag->{'AC'} ) {
-			# First check that we are not doubling up a.c. and p.c. designations
-			if( @$aclemma ) {
-				throw( "Cannot have a.c. designation in text on p.c. witness "
-						. "at $tag -> $anchor" );
-			} elsif( $witness =~ /_ac$/ ) {
-				throw( "Cannot have p.c. designation in text on a.c. witness "
-						. "at $tag -> $anchor" );
-			}
-			# Stick the interpreted reading into aclemma, and return the original
-			# lemma for the main witness.
-			$use_list = $aclemma;
-			push( @rdg_nodes, @$lemma );
-		} elsif( $flag->{'PC'} ) {
-			# First check that we are not doubling up a.c. and p.c. designations
-			if( @$aclemma ) {
-				throw( "Cannot have p.c. designation in text on p.c. witness "
-						. "at $tag -> $anchor" );
-			} elsif( $witness =~ /_ac$/ ) {
-				throw( "Cannot have p.c. designation in text on a.c. witness "
-						. "at $tag -> $anchor" );
-			}
-			# Stick the original lemma into aclemma, and return our interpretation
-			# for the main witness.			
-			@$aclemma = @$lemma;
-		}
-		
-		# Fill out the reading we will return.
 		foreach my $w ( split( /\s+/, $interpreted ) ) {
 			if( $w eq '__LEMMA__' ) {
-				push( @$use_list, @$lemma );
+				push( @rdg_nodes, @lemma );
 			} else {
-				my $r = $c->add_reading( { id => 'r'.$tag.".".$$ctr++,
+				my $r = $c->add_reading( { id => 'r'.$tag.".".$ctr++,
 										   text => $w } );
-				push( @$use_list, $r );
+				push( @rdg_nodes, $r );
 			}
 		}
 	}
 	
-	return @rdg_nodes;
+	# Note if the interpretation said that we're dealing with a correction.
+	if( $flag->{'AC'} ) {
+		$wit .= '_ac';
+	} elsif( $flag->{'PC'} ) {
+		$wit .= '_pc';
+	}
+	return( $wit, @rdg_nodes );
+}
+
+# Make a best-effort attempt to attach a transposition farther down the line.
+# $lemmaseq contains the Reading objects of the lemma
+# $anchor contains the point at which we should start scanning for a match
+# $rdgseq contains the Reading objects of the transposed reading 
+# 	(should be identical to the lemma)
+# $witlist contains the list of applicable witnesses
+# $reftxt contains the text to match, after which the $rdgseq should go.
+sub _attach_transposition {
+	my( $c, $lemmaseq, $anchor, $rdgseq, $witlist, $reftxt ) = @_;
+	my @refwords = split( /\s+/, $reftxt );
+	my $checked = $c->reading( $anchor );
+	my $found;
+	my $success;
+	while( $checked ne $c->end && !$found ) {
+		my $next = $c->next_reading( $checked, $c->baselabel );
+		if( $next->text eq $refwords[0] ) {
+			# See if the entire sequence of words matches.
+			$found = $next;
+			foreach my $w ( 1..$#refwords ) {
+				$found = $c->next_reading( $next, $c->baselabel );
+				unless( $found->text eq $refwords[$w] ) {
+					$found = undef;
+					last;
+				}
+			}
+		}
+		$checked = $next;
+	}
+	if( $found ) {
+		# The $found variable should now contain the reading after which we
+		# should stick the transposition.
+		my $fnext = $c->next_reading( $found, $c->baselabel );
+		my $aclabel = $c->ac_label;
+		foreach my $wit_id ( @$witlist ) {
+			my $witstr = _get_sigil( $wit_id, $aclabel );
+			_add_wit_path( $c, $rdgseq, $found->id, $fnext->id, $witstr );
+		}
+		# ...and add the transposition relationship between lemma and rdgseq.
+		if( @$lemmaseq == @$rdgseq ) {
+			foreach my $i ( 0..$#{$lemmaseq} ) {
+				$c->add_relationship( $lemmaseq->[$i], $rdgseq->[$i],
+					{ type => 'transposition', annotation => 'Detected by CTE' } );
+			}
+		$success = 1;
+		} else {
+			throw( "Lemma at $found and transposed sequence different lengths?!" );
+		}
+	} else {
+		say STDERR "WARNING: Unable to find $reftxt in base text for transposition";
+	}
+	return $success;
 }
 
 =head2 interpret( $reading, $lemma )
@@ -581,121 +572,53 @@ sub interpret {
 	return( $reading, $flag );
 }
 
-# Make a best-effort attempt to attach a transposition farther down the line.
-# $lemmaseq contains the Reading objects of the lemma
-# $anchor contains the point at which we should start scanning for a match
-# $rdgseq contains the Reading objects of the transposed reading 
-# 	(should be identical to the lemma)
-# $witness contains the applicable witness
-# $reftxt contains the text to match, after which the $rdgseq should go.
-sub _attach_transposition {
-	my( $c, $lemmaseq, $anchor, $rdgseq, $witness, $reftxt ) = @_;
-	my @refwords = split( /\s+/, $reftxt );
-	my $checked = $c->reading( $anchor );
-	my $found;
-	my $success;
-	while( $checked ne $c->end && !$found ) {
-		my $next = $c->next_reading( $checked, $c->baselabel );
-		if( $next->text eq $refwords[0] ) {
-			# See if the entire sequence of words matches.
-			$found = $next;
-			foreach my $w ( 1..$#refwords ) {
-				$found = $c->next_reading( $next, $c->baselabel );
-				unless( $found->text eq $refwords[$w] ) {
-					$found = undef;
-					last;
-				}
-			}
-		}
-		$checked = $next;
-	}
-	if( $found ) {
-		# The $found variable should now contain the reading after which we
-		# should stick the transposition.
-		my $fnext = $c->next_reading( $found, $c->baselabel );
-		my $sigil = _get_sigil( $witness, $c->ac_label );
-		_add_wit_path( $c, $rdgseq, $found->id, $fnext->id, $sigil );
-		# ...and add the transposition relationship between lemma and rdgseq.
-		if( @$lemmaseq == @$rdgseq ) {
-			foreach my $i ( 0..$#{$lemmaseq} ) {
-				$c->add_relationship( $lemmaseq->[$i], $rdgseq->[$i],
-					{ type => 'transposition', annotation => 'Detected by CTE' } );
-			}
-		$success = 1;
-		} else {
-			throw( "Lemma at $found and transposed sequence different lengths?!" );
-		}
-	} else {
-		say STDERR "WARNING: Unable to find $reftxt in base text for transposition";
-	}
-	return $success;
-}
-
 sub _add_lacunae {
-	my( $c, $opts, @app_ids ) = @_;
+	my( $c, @app_id ) = @_;
 	# Go through the apparatus entries in order, noting where to start and stop our
 	# various witnesses.
 	my %lacunose;
-	foreach my $app_id ( @app_ids ) {
-		my $app = $apps{$app_id};
-		my $ctr = 0;
-		# Find the anchor, if any. 
+	my $ctr = 0;
+	foreach my $tag ( @app_id ) {
+		my $app = $apps{$tag};
+		# Find the anchor, if any. This marks the point where the text starts
+		# or ends.
 		my $anchor = $app->getAttribute( 'to' );
-		next unless $anchor; # Skip any app without an anchor.
-							 # It is probably the initial witStart.
 		my $aname;
-		$anchor =~ s/^\#//;
-		$aname = _anchor_name( $anchor );
+		if( $anchor ) {
+			$anchor =~ s/^\#//;
+			$aname = _anchor_name( $anchor );
+		}
 
 		foreach my $rdg ( $app->getChildrenByTagName( 'rdg' ) ) {
-			# Get the affected witnesses. We are not parsing any witDetail right
-			# now so none of these will be a.c. or p.c. etc.
-    		my @witlist = split( /\s+/, $rdg->getAttribute( 'wit' ) );
+    		my @witlist = map { _get_sigil( $_, $c->ac_label ) }
+    			split( /\s+/, $rdg->getAttribute( 'wit' ) );
 			my @start = $rdg->getChildrenByTagName( 'witStart' );
 			my @end = $rdg->getChildrenByTagName( 'witEnd' );
 			if( @start && @end ) {
 				throw( "App sig entry at $anchor has both witStart and witEnd!" );
 			}
-			# Parse the reading itself
-			my $lacunanode;
-			foreach my $wit ( @witlist ) {
-				my $aclemma = []; # Should stay unused!!
-				my $tag = $app_id;
-				$tag =~ s/__APP_(.*)__$/$1/;
-				my $sigil = _get_sigil( $wit );
-				$DB::single = 1 if $app_id eq '__APP_1999__' && $aname eq '__ANCHOR_w1577__';
-				my @lemma = _return_lemma( $c, $app_id, $aname, $sigil );
-				my @rdg_nodes = _read_reading( $c, $rdg, $wit, \@lemma, $aclemma, 
-					$tag, \$ctr, $anchor, $opts );
-
-				if( @$aclemma ) {
-					throw( "Cannot have a.c. or p.c. notation where a witness starts "
-							. "or ends at $tag -> $anchor" );
-				}
-				if( @start && 
-					$c->prior_reading( $aname, $c->baselabel ) ne $c->start ) {
-					# We are picking back up after a hiatus. Find the last end and
-					# add a lacuna link between there and here.
-					my $stoppoint = delete $lacunose{$sigil};
+			if( @start && $anchor &&
+				$c->prior_reading( $aname, $c->baselabel ) ne $c->start ) {
+				# We are picking back up after a hiatus. Find the last end and
+				# add a lacuna link between there and here.
+				foreach my $wit ( @witlist ) {
+					my $stoppoint = delete $lacunose{$wit};
 					my $stopname = $stoppoint ? _anchor_name( $stoppoint ) : $c->start->id;
-					say STDERR "Adding lacuna for $sigil between $stopname and $anchor";
-					unless( $lacunanode ) {
-						$lacunanode = $c->add_reading( 
-							{ id => "as_$tag"."_$anchor".$ctr++, is_lacuna => 1 } );
+					say STDERR "Adding lacuna for $wit between $stopname and $anchor";
+					my $lacuna = $c->add_reading( { id => "as_$anchor.".$ctr++,
+        				is_lacuna => 1 } );
+        			_add_wit_path( $c, [ $lacuna ], $stopname, $aname, $wit );
+				}
+			} elsif( @end && $anchor && 
+				$c->next_reading( $aname, $c->baselabel ) ne $c->end ) {
+				# We are stopping. If we've already stopped for the given witness,
+				# flag an error; otherwise record the stopping point.
+				foreach my $wit ( @witlist ) {
+					if( $lacunose{$wit} ) {
+						throw( "Trying to end $wit at $anchor when already ended at "
+							. $lacunose{$wit} );
 					}
-					unshift( @rdg_nodes, $lacunanode );
-        			_add_wit_path( $c, \@rdg_nodes, $stopname, $aname, $sigil );
-				} elsif( @end && 
-					$c->next_reading( $aname, $c->baselabel ) ne $c->end ) {
-					# We are stopping. If we've already stopped for the given witness,
-					# flag an error; otherwise record the stopping point.
-					if( $lacunose{$sigil} ) {
-						throw( "Trying to end $sigil at $anchor when already ended at "
-							. $lacunose{$sigil} );
-					}
-					# Add in the interpreted reading, whatever it was.
-					_add_wit_path( $c, \@rdg_nodes, $app_id, $aname, $sigil );					
-					$lacunose{$sigil} = $anchor;
+					$lacunose{$wit} = $anchor;
 				}
 			}
 		}
@@ -703,31 +626,22 @@ sub _add_lacunae {
 	
 	# For whatever remains in the %lacunose hash, add a lacuna between that spot and
 	# $c->end for each of the witnesses.
-	my $ctr = 0;
-	foreach my $sigil ( keys %lacunose ) {
-		next unless $lacunose{$sigil};
-		my $anchor = $lacunose{$sigil};
-		my $aname = _anchor_name( $anchor );
-		say STDERR "Adding lacuna for $sigil from $aname to end";
-		my $lacuna = $c->add_reading( { id => "as_end_$anchor.".$ctr++,
+	foreach my $wit ( keys %lacunose ) {
+		next unless $lacunose{$wit};
+		my $aname = _anchor_name( $lacunose{$wit} );
+		say STDERR "Adding lacuna for $wit from $aname to end";
+		my $lacuna = $c->add_reading( { id => 'as_'.$lacunose{$wit}.'.'.$ctr++,
 			is_lacuna => 1 } );
-		_add_wit_path( $c, [ $lacuna ], $aname, $c->end, $sigil );
+		_add_wit_path( $c, [ $lacuna ], $aname, $c->end, $wit );
 	}
 }
 
-# Utility function to take an XML ID, e.g. #M206, and return the actual
-# sigil, e.g. Q. If _ac is part of the XML ID then it will be replaced
-# with the contents of $layerlabel.
 sub _get_sigil {
     my( $xml_id, $layerlabel ) = @_;
     if( $xml_id =~ /^(.*)_ac$/ ) {
         my $real_id = $1;
-        throw( "Tried to get a sigil for a layered witness with no layerlabel" )
-        	unless $layerlabel;
-        throw( "No sigil defined for $real_id" ) unless exists $sigil_for{$real_id};
         return $sigil_for{$real_id} . $layerlabel;
     } else {
-        throw( "No sigil defined for $xml_id" ) unless exists $sigil_for{$xml_id};
         return $sigil_for{$xml_id};
     }
 }
@@ -868,13 +782,9 @@ sub print_apparatus {
 }
 
 sub throw {
-	my( $message, $app ) = @_;
-	if( $app ) {
-		$message = "$message\nApparatus entry:\n" . print_apparatus( $app );
-	}
 	Text::Tradition::Error->throw( 
 		'ident' => 'Parser::CTE error',
-		'message' => $message,
+		'message' => $_[0],
 		);
 }
 
