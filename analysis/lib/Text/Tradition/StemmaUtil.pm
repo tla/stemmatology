@@ -231,8 +231,7 @@ sub parse_newick {
     # Turn the tree into a graph, starting with the root node
     foreach my $tree ( @{$forest->get_entities} ) {
         my $stemma = Text::Tradition::Stemma->new(
-        	graph => _graph_from_bio( $tree ),
-        	is_undirected => 1 );
+        	graph => _graph_from_bio( $tree ) );
         push( @stemmata, $stemma );
     }
     return \@stemmata;

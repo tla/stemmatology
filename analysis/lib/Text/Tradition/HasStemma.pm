@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Moose::Role;
 use Text::Tradition::Stemma;
+use Text::Tradition::StemmaUtil qw/ parse_newick /;
 
 =head1 NAME
 
@@ -36,6 +37,20 @@ Return the L<Text::Tradition::Stemma> object identified by the given index.
 
 Delete all stemma hypotheses associated with this tradition.
 
+=head2 has_stemweb_jobid
+
+Returns true if there is currently a Stemweb job ID, indicating that a
+stemma tree calculation from the Stemweb service is in process.
+
+=head2 stemweb_jobid
+
+Return the currently-running job ID (if any) for calculation of Stemweb 
+trees.
+
+=head2 set_stemweb_jobid( $jobid )
+
+Record a job ID for a Stemweb calculation.
+
 =cut
 
 has 'stemmata' => (
@@ -51,6 +66,21 @@ has 'stemmata' => (
 	default => sub { [] },
 	);
   
+has 'stemweb_jobid' => (
+	is => 'ro',
+	isa => 'Str',
+	writer => 'set_stemweb_jobid',
+	predicate => 'has_stemweb_jobid',
+	clearer => '_clear_stemweb_jobid',
+	);
+	
+before 'set_stemweb_jobid' => sub {
+	my( $self ) = shift;
+	if( $self->has_stemweb_jobid ) {
+		$self->throw( "Tradition already has a Stemweb jobid: "
+			. $self->stemweb_jobid );
+	}
+};
 
 =head2 add_stemma( $dotfile )
 
@@ -94,6 +124,30 @@ sub add_stemma {
 		'dot' => $stemma_fh );
 	$self->_add_stemma( $stemma ) if $stemma;
 	return $stemma;
+}
+
+=head2 record_stemweb_result( $format, $data )
+
+Records the result returned by a Stemweb calculation, and clears any
+existing job ID.
+
+TODO Test!
+
+=cut
+
+sub record_stemweb_result {
+	my( $self, $format, $data ) = @_;
+	if( $format eq 'dot' ) {
+		$self->add_stemma( dot => $data );
+	} elsif( $format eq 'newick' ) {
+		my $stemmata = parse_newick( $data );
+		foreach my $stemma ( @$stemmata ) {
+			$self->_add_stemma( $stemma );
+		}
+		$self->_clear_stemweb_jobid();
+	} else {
+		$self->throw( "Cannot parse tree results with format $format" );
+	}
 }
 
 1;

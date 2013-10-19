@@ -148,20 +148,19 @@ has graph => (
     predicate => 'has_graph',
     );
     
-has is_undirected => (
+has identifier => (
 	is => 'ro',
-	isa => 'Bool',
-	default => undef,
-	writer => 'set_undirected',
+	isa => 'Str',
+	writer => 'set_identifier',
+	predicate => 'has_identifier',
 	);
-        	
+    
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
     if( exists $args->{'dot'} ) {
         $self->_graph_from_dot( $args->{'dot'} );
-    } else {
-	}
+    } 
 }
 
 before 'graph' => sub {
@@ -176,7 +175,17 @@ before 'graph' => sub {
 				$g->set_vertex_attribute( $v, 'class', 'extant' );
 			}
 		}
-		$self->set_undirected( $g->is_undirected );
+	}
+};
+
+after 'graph' => sub {
+	my $self = shift;
+	return unless @_;
+	unless( $self->has_identifier ) {
+		## HORRIBLE HACK but there is no API access to graph attributes!
+		if( exists $_[0]->[4]->{'name'} ) {
+			$self->set_identifier( $_[0]->[4]->{'name'} );
+		}
 	}
 };
 
@@ -200,6 +209,12 @@ sub _graph_from_dot {
 		throw( "Failed to create graph from dot" );
 	}
 	$self->graph( $graph );
+}
+
+sub is_undirected {
+	my( $self ) = @_;
+	return undef unless $self->has_graph;
+	return $self->graph->is_undirected;
 }
 
 =head1 METHODS
