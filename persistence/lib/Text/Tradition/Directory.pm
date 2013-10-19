@@ -338,7 +338,11 @@ sub traditionlist {
     my ($user) = @_;
 
     return $self->user_traditionlist($user) if($user);
+	return $self->_get_object_idlist( 'Text::Tradition' );
+}
 
+sub _get_object_idlist {
+	my( $self, $objclass ) = @_;
 	my @tlist;
 	# If we are using DBI, we can do it the easy way; if not, the hard way.
 	# Easy way still involves making a separate DBI connection. Ew.
@@ -350,7 +354,8 @@ sub traditionlist {
 		$connection[3]->{'sqlite_unicode'} = 1 if $dbtype eq 'SQLite';
 		$connection[3]->{'pg_enable_utf8'} = 1 if $dbtype eq 'Pg';
 		my $dbh = DBI->connect( @connection );
-		my $q = $dbh->prepare( 'SELECT id, name, public from entries WHERE class = "Text::Tradition"' );
+		my $q = $dbh->prepare( 'SELECT id, name, public from entries WHERE class = "'
+			. $objclass . '"' );
 		$q->execute();
 		while( my @row = $q->fetchrow_array ) {
 			my( $id, $name ) = @row;
@@ -362,7 +367,8 @@ sub traditionlist {
 		$self->scan( sub { my $o = shift; 
 						   push( @tlist, { 'id' => $self->object_to_id( $o ), 
 										   'name' => $o->name,
-										   'public' => $o->public } ) } );
+										   'public' => $o->public } ) 
+								if( ref $o eq $objclass ) } );
 	}
 	return @tlist;
 }
