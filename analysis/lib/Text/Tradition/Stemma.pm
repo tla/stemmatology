@@ -102,16 +102,13 @@ use TryCatch;
 use_ok( 'Text::Tradition::Stemma' );
 
 # Try to create a bad graph
-TODO: {
-	local $TODO = "cannot use stdout redirection trick with FastCGI";
-	my $baddotfh;
-	open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
-	try {
-		my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
-		ok( 0, "Created broken stemma from dotfile with syntax error" );
-	} catch( Text::Tradition::Error $e ) {
-		like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
-	}
+my $baddotfh;
+open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
+try {
+	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
+	ok( 0, "Created broken stemma from dotfile with syntax error" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
 }
 
 # Create a good graph
@@ -196,15 +193,14 @@ sub _graph_from_dot {
  	my $reader = Graph::Reader::Dot->new();
  	# Redirect STDOUT in order to trap any error messages - syntax errors
  	# are evidently not fatal.
-	# TODO This breaks under FastCGI/Apache; reconsider.
- 	my $reader_out;
- 	#my $saved_stderr;
- 	#open $saved_stderr, ">&STDOUT";
- 	#close STDOUT;
- 	#open STDOUT, ">", \$reader_out;
-	my $graph = $reader->read_graph( $dotfh );
-	#close STDOUT;
-	#open STDOUT, ">", \$saved_stderr;
+	my $graph;
+	my $reader_out;
+	{
+		local(*STDOUT);
+		open( STDOUT, ">", \$reader_out );
+		$graph = $reader->read_graph( $dotfh );
+		close STDOUT;
+	}
 	if( $reader_out && $reader_out =~ /error/s ) {
 		throw( "Error trying to parse dot: $reader_out" );
 	} elsif( !$graph ) {
