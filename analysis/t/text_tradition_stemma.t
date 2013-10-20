@@ -33,6 +33,8 @@ my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
+ok( $stemma->has_identifier, "Stemma identifier was found in dot" );
+is( $stemma->identifier, 'Coislinianum lineage', "Correct stemma identifier was found in dot" );
 my $found_unicode_sigil;
 foreach my $h ( $stemma->hypotheticals ) {
 	$found_unicode_sigil = 1 if $h eq "\x{3b1}";

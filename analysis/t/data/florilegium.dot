@@ -1,4 +1,4 @@
-digraph Stemma {
+digraph "Coislinianum lineage" {
     "α" [ class=hypothetical ];
     "γ" [ class=hypothetical ];
     "δ" [ class=hypothetical ];

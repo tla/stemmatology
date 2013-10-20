@@ -36,7 +36,7 @@ syntax of GraphViz.
 
 Each stemma opens with the line
 
- digraph Stemma {
+ digraph "Name of Stemma" {
  
 and continues with a list of all manuscript witnesses in the stemma, whether
 extant witnesses or missing archetypes or hyparchetypes.  Each of these is
@@ -65,7 +65,7 @@ The final line in the definition should be the closing brace:
 Thus for a set of extant manuscripts A, B, and C, where A and B were copied 
 from the archetype O and C was copied from B, the definition would be:
 
- digraph Stemma {
+ digraph "Test stemma 1" {
      O [ class=hypothetical]
      A [ class=extant ]
      B [ class=extant ]
@@ -122,6 +122,8 @@ my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
+ok( $stemma->has_identifier, "Stemma identifier was found in dot" );
+is( $stemma->identifier, 'Coislinianum lineage', "Correct stemma identifier was found in dot" );
 my $found_unicode_sigil;
 foreach my $h ( $stemma->hypotheticals ) {
 	$found_unicode_sigil = 1 if $h eq "\x{3b1}";
@@ -272,8 +274,10 @@ sub as_dot {
 		if $opts->{'edge'};
 		
 	my $gdecl = $graph->is_directed ? 'digraph' : 'graph';
+	my $gname = $self->has_identifier ? '"' . $self->identifier . '"'
+		: 'stemma';
 	my @dotlines;
-	push( @dotlines, "$gdecl stemma {" );
+	push( @dotlines, "$gdecl $gname {" );
 	## Print out the global attributes
 	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
 	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
@@ -329,6 +333,9 @@ situation_graph should be passed via $opts->{'extant'} and $opts->{'layerwits'}.
 sub editable {
 	my( $self, $opts ) = @_;	
 	my $graph = $self->graph;
+	if( $self->has_identifier ) {
+		$opts->{'name'} = $self->identifier;
+	}
 	## See if we need an editable version of a situational graph.
 	if( exists $opts->{'layerwits'} || exists $opts->{'extant'} ) {
 		my $extant = delete $opts->{'extant'} || {};
@@ -344,8 +351,10 @@ sub editable_graph {
 	# Create the graph
 	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
 	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
+	my $gname = exists $opts->{'name'} ? '"' . $opts->{'name'} . '"'
+		: 'stemma';
 	my @dotlines;
-	push( @dotlines, "$gdecl stemma {" );
+	push( @dotlines, "$gdecl $gname {" );
 	my @real; # A cheap sort
     foreach my $n ( sort $graph->vertices ) {
     	my $c = $graph->get_vertex_attribute( $n, 'class' );
