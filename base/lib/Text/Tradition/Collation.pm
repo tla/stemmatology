@@ -1398,13 +1398,13 @@ sub as_csv {
     my @result;
     # Make the header row
     $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
-	push( @result, decode_utf8( $csv->string ) );
+	push( @result, $csv->string );
     # Make the rest of the rows
     foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
     	my @rowobjs = map { $_->{'tokens'}->[$idx] } @{$table->{'alignment'}};
     	my @row = map { $_ ? $_->{'t'}->text : $_ } @rowobjs;
         $csv->combine( @row );
-        push( @result, decode_utf8( $csv->string ) );
+        push( @result, $csv->string );
     }
     return join( "\n", @result );
 }
