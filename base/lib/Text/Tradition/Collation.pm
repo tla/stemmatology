@@ -1394,12 +1394,54 @@ row per witness (or witness uncorrected.)
 Returns a tab-separated alignment table representation of the collation graph, 
 one row per witness (or witness uncorrected.) 
 
+=begin testing
+
+use Text::Tradition;
+
+my $READINGS = 311;
+my $PATHS = 361;
+
+my $datafile = 't/data/florilegium_tei_ps.xml';
+my $tradition = Text::Tradition->new( 'input' => 'TEI',
+                                      'name' => 'test0',
+                                      'file' => $datafile,
+                                      'linear' => 1 );
+
+my $c = $tradition->collation;
+# Export the thing to CSV
+my $csvstr = $c->as_csv();
+my $t2 = Text::Tradition->new( input => 'Tabular',
+							   name => 'test2',
+							   string => $csvstr,
+							   sep_char => ',' );
+is( scalar $t2->collation->readings, $READINGS, "Reparsed CSV collation has all readings" );
+is( scalar $t2->collation->paths, $PATHS, "Reparsed CSV collation has all paths" );
+
+# Now do it with TSV
+my $tsvstr = $c->as_tsv();
+my $t3 = Text::Tradition->new( input => 'Tabular',
+							   name => 'test3',
+							   string => $tsvstr,
+							   sep_char => "\t" );
+is( scalar $t3->collation->readings, $READINGS, "Reparsed TSV collation has all readings" );
+is( scalar $t3->collation->paths, $PATHS, "Reparsed TSV collation has all paths" );
+
+
+=end testing
+
 =cut
 
 sub _tabular {
     my( $self, $fieldsep ) = @_;
     my $table = $self->alignment_table;
-    my $csv = Text::CSV->new( { binary => 1, quote_null => 0, sep_char => $fieldsep } );    
+	my $csv_options = { binary => 1, quote_null => 0 };
+	$csv_options->{'sep_char'} = $fieldsep;
+	if( $fieldsep eq "\t" ) {
+		# If it is really tab separated, nothing is an escape char.
+		$csv_options->{'quote_char'} = undef;
+		$csv_options->{'escape_char'} = '';
+	}
+    my $csv = Text::CSV->new( $csv_options );    
     my @result;
     # Make the header row
     $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
