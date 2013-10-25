@@ -67,6 +67,17 @@ if( $t ) {
     is( scalar $t->collation->paths, 361, "Collation has all paths" );
 }
 
+# Try to re-parse it, ensure we can use the parser twice in the same Perl
+# invocation
+
+my $t2 = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'TEI',
+    'file'  => $par_seg,
+    );
+
+is( ref( $t2 ), 'Text::Tradition', "Parsed parallel-segmentation TEI again" );
+
 =end testing
 
 =cut
@@ -81,10 +92,11 @@ my $app_count;          # Keep track of how many apps we have
 
 # Would really like to do this with varname variables, but apparently this
 # is considered a bad idea.  The long way round then.
-my( $LISTWIT, $WITNESS, $TEXT, $W, $SEG, $APP, $RDG, $LEM ) 
-    = ( 'listWit', 'witness', 'text', 'w', 'seg', 'app', 'rdg', 'lem' );
+my( $LISTWIT, $WITNESS, $TEXT, $W, $SEG, $APP, $RDG, $LEM ); 
 sub _make_tagnames {
     my( $ns ) = @_;
+    ( $LISTWIT, $WITNESS, $TEXT, $W, $SEG, $APP, $RDG, $LEM ) 
+    	= ( 'listWit', 'witness', 'text', 'w', 'seg', 'app', 'rdg', 'lem' );
     if( $ns ) {
         $LISTWIT = "$ns:$LISTWIT";
         $WITNESS = "$ns:$WITNESS";

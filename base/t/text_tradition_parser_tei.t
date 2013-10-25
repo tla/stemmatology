@@ -25,6 +25,17 @@ if( $t ) {
     is( scalar $t->collation->readings, 311, "Collation has all readings" );
     is( scalar $t->collation->paths, 361, "Collation has all paths" );
 }
+
+# Try to re-parse it, ensure we can use the parser twice in the same Perl
+# invocation
+
+my $t2 = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'TEI',
+    'file'  => $par_seg,
+    );
+
+is( ref( $t2 ), 'Text::Tradition', "Parsed parallel-segmentation TEI again" );
 }
 
 
