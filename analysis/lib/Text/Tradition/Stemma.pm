@@ -520,6 +520,12 @@ sub root_graph {
 		# Make an undirected version of this graph.
 		$graph = $self->graph->undirected_copy();
 	}
+	# First, ensure that the requested root is actually a vertex in the graph.
+	unless( $graph->has_vertex( $rootvertex ) ) {
+		throw( "Cannot orient graph $graph on nonexistent vertex $rootvertex" );
+	}
+	
+	# Now make a directed version of the graph.
 	my $rooted = Graph->new();
 	$rooted->add_vertex( $rootvertex );
 	my @next = ( $rootvertex );
@@ -539,10 +545,10 @@ sub root_graph {
 	}
 	# Set the vertex classes
 	map { $rooted->set_vertex_attribute( $_, 'class', 'hypothetical' ) }
-		$self->graph->hypotheticals;
-	map { $rooted->set_vertex_class( $_, 'class', 'extant' ) }
-		$self->graph->witnesses;
-	return $rooted;
+		$self->hypotheticals;
+	map { $rooted->set_vertex_attribute( $_, 'class', 'extant' ) }
+		$self->witnesses;
+	$self->graph( $rooted );
 }
 
 

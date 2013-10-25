@@ -70,4 +70,17 @@ ok( $display !~ /hypothetical/, "Graph is display rather than edit" );
 my $editable = $stemma->editable();
 ok( $editable =~ /digraph/, "Got a dot edit graph" );
 ok( $editable =~ /hypothetical/, "Graph contains an edit class" );
+
+# Test re-rooting of our graph
+try {
+	$stemma->root_graph('D');
+	ok( 0, "Made attempt to root stemma graph on nonexistent vertex" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Cannot orient graph(.*)on nonexistent vertex/,
+		"Exception raised for attempt to root graph on nonexistent vertex" );
+}
+$stemma->root_graph( 'B' );
+is( $stemma->graph, '1-A,2-1,2-C,B-2', 
+	"Stemma graph successfully re-rooted on vertex B" );
+
 done_testing();
