@@ -1389,12 +1389,17 @@ sub _add_graphml_data {
 Returns a CSV alignment table representation of the collation graph, one
 row per witness (or witness uncorrected.) 
 
+=head2 as_tsv
+
+Returns a tab-separated alignment table representation of the collation graph, 
+one row per witness (or witness uncorrected.) 
+
 =cut
 
-sub as_csv {
-    my( $self ) = @_;
+sub _tabular {
+    my( $self, $fieldsep ) = @_;
     my $table = $self->alignment_table;
-    my $csv = Text::CSV->new( { binary => 1, quote_null => 0 } );    
+    my $csv = Text::CSV->new( { binary => 1, quote_null => 0, sep_char => $fieldsep } );    
     my @result;
     # Make the header row
     $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
@@ -1407,6 +1412,16 @@ sub as_csv {
         push( @result, $csv->string );
     }
     return join( "\n", @result );
+}
+
+sub as_csv {
+	my $self = shift;
+	return $self->_tabular( ',' );
+}
+
+sub as_tsv {
+	my $self = shift;
+	return $self->_tabular( "\t" );
 }
 
 =head2 alignment_table

@@ -42,8 +42,8 @@ if( $help ) {
     help();
 }
 
-unless( $informat =~ /^(CSV|CTE|KUL|Self|TEI|CollateX|tab(ular)?)|xlsx?|db$/i ) {
-    help( "Input format must be one of CollateX, CSV, CTE, Self, TEI" );
+unless( $informat =~ /^(CTE|KUL|Self|TEI|CollateX|tab(ular)?)|xlsx?|db$/i ) {
+    help( "Input format must be one of CollateX, CTE, Self, TEI, Tabular, XLS(X), or DB" );
 }
 my $excel = $informat =~ /^xls/i ? lc( $informat ) : undef;
 $informat = 'CollateX' if $informat =~ /^c(ollate)?x$/i;
@@ -55,8 +55,8 @@ $informat = 'Tabular' if $informat =~ /^tab$/i;
 $informat = 'CollateText' if $informat =~ /^stone$/i;
 $informat = 'Tabular' if $informat =~ /^xls/i;
 
-unless( $outformat =~ /^(graphml|svg|dot|stemma|csv|db)$/ ) {
-    help( "Output format must be one of db, graphml, svg, csv, stemma, or dot" );
+unless( $outformat =~ /^(graphml|svg|dot|stemma|(c|t)sv|db)$/ ) {
+    help( "Output format must be one of db, graphml, svg, csv, tsv, stemma, or dot" );
 }
 
 if( $from || $to ) {
