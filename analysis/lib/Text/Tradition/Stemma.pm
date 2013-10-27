@@ -127,8 +127,15 @@ foreach my $h ( $stemma->hypotheticals ) {
 }
 ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 
-# TODO Create stemma from graph, create stemma from undirected graph,
-# create stemma from incompletely-specified graph
+# Create an undirected graph
+my $undirdotfh;
+open( $undirdotfh, 't/data/besoin_undirected.dot' ) or die "Could not open test dotfile";
+binmode( $undirdotfh, ':utf8' );
+my $udstemma = Text::Tradition::Stemma->new( dot => $undirdotfh );
+is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected dotfile" );
+is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
+is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
+ok( $udstemma->is_undirected, "Stemma was recorded as undirected" );
 
 =end testing
 
@@ -168,7 +175,7 @@ before 'graph' => sub {
 		# Make sure all unclassed graph nodes are marked extant.
 		my $g = $_[0];
 		throw( "Cannot set graph to a non-Graph object" ) 
-			unless ref( $g ) eq 'Graph';
+			unless $g->isa( 'Graph' );
 		foreach my $v ( $g->vertices ) {
 			unless( $g->has_vertex_attribute( $v, 'class' ) ) {
 				$g->set_vertex_attribute( $v, 'class', 'extant' );
@@ -195,16 +202,28 @@ sub _graph_from_dot {
  	# are evidently not fatal.
 	my $graph;
 	my $reader_out;
+	my $reader_err;
 	{
 		local(*STDOUT);
 		open( STDOUT, ">", \$reader_out );
+		local(*STDERR);
+		open( STDERR, ">", \$reader_err );
 		$graph = $reader->read_graph( $dotfh );
 		close STDOUT;
+		close STDERR;
 	}
 	if( $reader_out && $reader_out =~ /error/s ) {
 		throw( "Error trying to parse dot: $reader_out" );
 	} elsif( !$graph ) {
 		throw( "Failed to create graph from dot" );
+	}
+	# Correct for implicit graph -> digraph quirk of reader
+	if( $reader_err && $reader_err =~ /graph will be treated as digraph/ ) {
+		my $udgraph = $graph->undirected_copy;
+		foreach my $v ( $graph->vertices ) {
+			$udgraph->set_vertex_attributes( $v, $graph->get_vertex_attributes( $v ) );
+		}
+		$graph = $udgraph;
 	}
 	$self->graph( $graph );
 }

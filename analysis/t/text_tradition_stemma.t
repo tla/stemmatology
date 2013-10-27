@@ -38,6 +38,16 @@ foreach my $h ( $stemma->hypotheticals ) {
 }
 ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 
+# Create an undirected graph
+my $undirdotfh;
+open( $undirdotfh, 't/data/besoin_undirected.dot' ) or die "Could not open test dotfile";
+binmode( $undirdotfh, ':utf8' );
+my $udstemma = Text::Tradition::Stemma->new( dot => $undirdotfh );
+is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected dotfile" );
+is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
+is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
+ok( $udstemma->is_undirected, "Stemma was recorded as undirected" );
+
 # TODO Create stemma from graph, create stemma from undirected graph,
 # create stemma from incompletely-specified graph
 }
