@@ -47,9 +47,6 @@ is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected
 is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
 ok( $udstemma->is_undirected, "Stemma was recorded as undirected" );
-
-# TODO Create stemma from graph, create stemma from undirected graph,
-# create stemma from incompletely-specified graph
 }
 
 

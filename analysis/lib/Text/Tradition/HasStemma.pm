@@ -3,6 +3,7 @@ package Text::Tradition::HasStemma;
 use strict;
 use warnings;
 use Moose::Role;
+use Date::Parse;
 use Text::Tradition::Stemma;
 use Text::Tradition::StemmaUtil qw/ parse_newick /;
 
@@ -131,23 +132,50 @@ sub add_stemma {
 Records the result returned by a Stemweb calculation, and clears any
 existing job ID.
 
-TODO Test!
+=begin testing
+
+use Text::Tradition;
+use JSON qw/ from_json /;
+
+my $t = Text::Tradition->new( 
+    'name'  => 'Stemweb test', 
+    'input' => 'Self',
+    'file'  => 't/data/besoin.xml',
+    'stemweb_jobid' => '4',
+    );
+
+is( $t->stemma_count, 0, "No stemmas added yet" );
+
+my $answer = from_json( '{"status": 0, "job_id": "4", "algorithm": "RHM", "format": "newick", "start_time": "2013-10-26 10:44:14.050263", "result": "((((((((((((F,U),V),S),T1),T2),A),J),B),L),D),M),C);\n", "end_time": "2013-10-26 10:45:55.398944"}' );
+$t->record_stemweb_result( $answer );
+ok( !$t->has_stemweb_jobid, "Job ID was removed from tradition" );
+is( $t->stemma_count, 1, "Tradition has new stemma" );
+ok( $t->stemma(0)->is_undirected, "New stemma is undirected as it should be" );
+is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifier" );
+
+
+=end testing
 
 =cut
 
 sub record_stemweb_result {
-	my( $self, $format, $data ) = @_;
-	if( $format eq 'dot' ) {
-		$self->add_stemma( dot => $data );
-	} elsif( $format eq 'newick' ) {
-		my $stemmata = parse_newick( $data );
+	my( $self, $answer ) = @_;
+	if( $answer->{format} eq 'dot' ) {
+		$self->add_stemma( dot => $answer->{result} );
+	} elsif( $answer->{format} eq 'newick' ) {
+		my $stemmata = parse_newick( $answer->{result} );
+		my $title = sprintf( "%s %d", $answer->{algorithm}, 
+			str2time( $answer->{start_time} ) );
+		my $i = 0;
 		foreach my $stemma ( @$stemmata ) {
+			my $ititle = $title . "_$i"; $i++;
+			$stemma->set_identifier( $ititle );
 			$self->_add_stemma( $stemma );
 		}
-		$self->_clear_stemweb_jobid();
 	} else {
-		$self->throw( "Cannot parse tree results with format $format" );
+		$self->throw( "Cannot parse tree results with format " . $answer->{format} );
 	}
+	$self->_clear_stemweb_jobid();
 }
 
 1;
