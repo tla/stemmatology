@@ -7,6 +7,7 @@ perl_version( '5.012' );
 all_from( 'lib/Text/Tradition/Analysis.pm' );
 requires( 'Algorithm::Diff' );
 requires( 'Bio::Phylo::IO' );
+requires( 'Date::Parse' );
 requires( 'File::chdir' );
 requires( 'File::Which' );
 requires( 'Graph' );
