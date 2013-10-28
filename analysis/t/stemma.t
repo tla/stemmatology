@@ -64,12 +64,17 @@ SKIP: {
 
 # Test our dot output
 my $display = $stemma->as_dot();
-ok( $display =~ /digraph/, "Got a dot display graph" );
+like( $display, qr/^digraph \"?Stemma/, "Got a dot display graph" );
 ok( $display !~ /hypothetical/, "Graph is display rather than edit" );
 # Test our editable output
 my $editable = $stemma->editable();
-ok( $editable =~ /digraph/, "Got a dot edit graph" );
+like( $editable, qr/^digraph \"?Stemma/, "Got a dot edit graph" );
 ok( $editable =~ /hypothetical/, "Graph contains an edit class" );
+
+# Test changing the name of the Graph
+$editable =~ s/^(digraph )\"?Stemma\"?/$1"Simple test stemma"/;
+$stemma->alter_graph( $editable );
+is( $stemma->identifier, "Simple test stemma", "Successfully changed name of graph" );
 
 # Test re-rooting of our graph
 try {
@@ -82,5 +87,8 @@ try {
 $stemma->root_graph( 'B' );
 is( $stemma->graph, '1-A,2-1,2-C,B-2', 
 	"Stemma graph successfully re-rooted on vertex B" );
+is( $stemma->identifier, "Simple test stemma", 
+	"Stemma identifier survived re-rooting of graph" );
+
 
 done_testing();

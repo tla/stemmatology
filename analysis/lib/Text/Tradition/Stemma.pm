@@ -187,11 +187,12 @@ before 'graph' => sub {
 after 'graph' => sub {
 	my $self = shift;
 	return unless @_;
-	unless( $self->has_identifier ) {
-		## HORRIBLE HACK but there is no API access to graph attributes!
-		if( exists $_[0]->[4]->{'name'} ) {
-			$self->set_identifier( $_[0]->[4]->{'name'} );
-		}
+	## HORRIBLE HACK but there is no API access to graph attributes!
+	my $graph_id = exists $_[0]->[4]->{'name'} ? $_[0]->[4]->{'name'} : '';
+	if( $graph_id && !( $self->has_identifier && $self->identifier eq $graph_id ) ) {
+		$self->set_identifier( $graph_id );
+	} elsif ( !$graph_id && $self->has_identifier ) {
+		$self->set_identifier( 'stemma' );
 	}
 };
 
@@ -533,6 +534,7 @@ If it is directed, re-root it.
 sub root_graph {
 	my( $self, $rootvertex ) = @_;
 	my $graph;
+	my $ident = $self->identifier; # will have to restore this at the end
 	if( $self->is_undirected ) {
 		$graph = $self->graph;
 	} else {
@@ -568,6 +570,7 @@ sub root_graph {
 	map { $rooted->set_vertex_attribute( $_, 'class', 'extant' ) }
 		$self->witnesses;
 	$self->graph( $rooted );
+	$self->set_identifier( $ident );
 }
 
 
