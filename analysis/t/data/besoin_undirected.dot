@@ -1,4 +1,4 @@
-graph stemma {
+graph "RHM stemma" {
   0 [ class=hypothetical ];
   1 [ class=hypothetical ];
   10 [ class=hypothetical ];

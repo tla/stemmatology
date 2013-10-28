@@ -136,6 +136,7 @@ is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected
 is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
 ok( $udstemma->is_undirected, "Stemma was recorded as undirected" );
+is( $udstemma->identifier, "RHM stemma", "Undirected graph retained its name" );
 
 =end testing
 
@@ -184,18 +185,6 @@ before 'graph' => sub {
 	}
 };
 
-after 'graph' => sub {
-	my $self = shift;
-	return unless @_;
-	## HORRIBLE HACK but there is no API access to graph attributes!
-	my $graph_id = exists $_[0]->[4]->{'name'} ? $_[0]->[4]->{'name'} : '';
-	if( $graph_id && !( $self->has_identifier && $self->identifier eq $graph_id ) ) {
-		$self->set_identifier( $graph_id );
-	} elsif ( !$graph_id && $self->has_identifier ) {
-		$self->set_identifier( 'stemma' );
-	}
-};
-
 sub _graph_from_dot {
 	my( $self, $dotfh ) = @_;
  	my $reader = Graph::Reader::Dot->new();
@@ -218,6 +207,8 @@ sub _graph_from_dot {
 	} elsif( !$graph ) {
 		throw( "Failed to create graph from dot" );
 	}
+	## HORRIBLE HACK but there is no API access to graph attributes!
+	my $graph_id = exists $graph->[4]->{'name'} ? $graph->[4]->{'name'} : 'stemma';
 	# Correct for implicit graph -> digraph quirk of reader
 	if( $reader_err && $reader_err =~ /graph will be treated as digraph/ ) {
 		my $udgraph = $graph->undirected_copy;
@@ -227,6 +218,7 @@ sub _graph_from_dot {
 		$graph = $udgraph;
 	}
 	$self->graph( $graph );
+	$self->set_identifier( $graph_id );
 }
 
 sub is_undirected {
