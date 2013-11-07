@@ -161,6 +161,13 @@ has identifier => (
 	writer => 'set_identifier',
 	predicate => 'has_identifier',
 	);
+	
+has from_jobid => (
+	is => 'ro',
+	isa => 'Str',
+	predicate => 'came_from_jobid',
+	writer => '_set_from_jobid',
+	);
     
 sub BUILD {
     my( $self, $args ) = @_;

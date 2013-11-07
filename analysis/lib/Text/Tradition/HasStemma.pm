@@ -130,7 +130,7 @@ sub add_stemma {
 =head2 record_stemweb_result( $format, $data )
 
 Records the result returned by a Stemweb calculation, and clears any
-existing job ID.
+existing job ID. Returns any new stemmata that were created.
 
 =begin testing
 
@@ -147,11 +147,14 @@ my $t = Text::Tradition->new(
 is( $t->stemma_count, 0, "No stemmas added yet" );
 
 my $answer = from_json( '{"status": 0, "job_id": "4", "algorithm": "RHM", "format": "newick", "start_time": "2013-10-26 10:44:14.050263", "result": "((((((((((((F,U),V),S),T1),T2),A),J),B),L),D),M),C);\n", "end_time": "2013-10-26 10:45:55.398944"}' );
-$t->record_stemweb_result( $answer );
+my $newst = $t->record_stemweb_result( $answer );
+is( scalar @$newst, 1, "New stemma was returned from record_stemweb_result" );
+is( $newst->[0], $t->stemma(0), "Answer has the right object" );
 ok( !$t->has_stemweb_jobid, "Job ID was removed from tradition" );
 is( $t->stemma_count, 1, "Tradition has new stemma" );
 ok( $t->stemma(0)->is_undirected, "New stemma is undirected as it should be" );
 is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifier" );
+is( $t->stemma(0)->from_jobid, 4, "New stemma has correct associated job ID" );
 
 
 =end testing
@@ -160,22 +163,26 @@ is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifie
 
 sub record_stemweb_result {
 	my( $self, $answer ) = @_;
+	my $jobid = $self->stemweb_jobid;
+	my $stemmata = [];
 	if( $answer->{format} eq 'dot' ) {
 		$self->add_stemma( dot => $answer->{result} );
 	} elsif( $answer->{format} eq 'newick' ) {
-		my $stemmata = parse_newick( $answer->{result} );
+		$stemmata = parse_newick( $answer->{result} );
 		my $title = sprintf( "%s %d", $answer->{algorithm}, 
 			str2time( $answer->{start_time} ) );
 		my $i = 0;
 		foreach my $stemma ( @$stemmata ) {
 			my $ititle = $title . "_$i"; $i++;
 			$stemma->set_identifier( $ititle );
+			$stemma->_set_from_jobid( $jobid );
 			$self->_add_stemma( $stemma );
 		}
 	} else {
 		$self->throw( "Cannot parse tree results with format " . $answer->{format} );
 	}
 	$self->_clear_stemweb_jobid();
+	return $stemmata;
 }
 
 1;

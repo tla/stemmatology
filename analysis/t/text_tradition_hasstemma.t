@@ -40,11 +40,14 @@ my $t = Text::Tradition->new(
 is( $t->stemma_count, 0, "No stemmas added yet" );
 
 my $answer = from_json( '{"status": 0, "job_id": "4", "algorithm": "RHM", "format": "newick", "start_time": "2013-10-26 10:44:14.050263", "result": "((((((((((((F,U),V),S),T1),T2),A),J),B),L),D),M),C);\n", "end_time": "2013-10-26 10:45:55.398944"}' );
-$t->record_stemweb_result( $answer );
+my $newst = $t->record_stemweb_result( $answer );
+is( scalar @$newst, 1, "New stemma was returned from record_stemweb_result" );
+is( $newst->[0], $t->stemma(0), "Answer has the right object" );
 ok( !$t->has_stemweb_jobid, "Job ID was removed from tradition" );
 is( $t->stemma_count, 1, "Tradition has new stemma" );
 ok( $t->stemma(0)->is_undirected, "New stemma is undirected as it should be" );
 is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifier" );
+is( $t->stemma(0)->from_jobid, 4, "New stemma has correct associated job ID" );
 }
 
 
