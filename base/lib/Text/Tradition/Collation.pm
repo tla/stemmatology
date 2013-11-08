@@ -1418,6 +1418,9 @@ my $csv = Text::CSV->new({ sep_char => ',', binary => 1 });
 my @lines = split(/\n/, $csvstr );
 ok( $csv->parse( $lines[0] ), "Successfully parsed first line of CSV" );
 is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
+my @q_ac = grep { $_ eq 'Q'.$c->ac_label } $csv->fields;
+ok( @q_ac, "Found a layered witness" );
+
 my $t2 = Text::Tradition->new( input => 'Tabular',
 							   name => 'test2',
 							   string => $csvstr,
@@ -1441,6 +1444,13 @@ ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" 
 is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
 is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
 
+my $safecsv = $c->as_csv({ safe_ac => 1});
+my @safelines = split(/\n/, $safecsv );
+ok( $csv->parse( $safelines[0] ), "Successfully parsed first line of safe CSV" );
+is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
+@q_ac = grep { $_ eq 'Q__L' } $csv->fields;
+ok( @q_ac, "Found a sanitized layered witness" );
+is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
 
 =end testing
 
@@ -1502,10 +1512,8 @@ format which looks like this:
 sub alignment_table {
     my( $self, $opts ) = @_;
     if( $self->has_cached_table ) {
-    	# TODO if sanitizing & have cached table, just sanitize the existing table.
-    	if( !$opts->{noac} ) {
-    		return $self->cached_table;
-    	}
+		return $self->cached_table
+			unless $opts->{noac} || $opts->{safe_ac};
     }
     
     # Make sure we can do this
@@ -1527,13 +1535,15 @@ sub alignment_table {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
         		$wit->sigil.$self->ac_label );
             my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos );
-            my $witacobj = { 'witness' => $wit->sigil.$self->ac_label, 
+            my $witlabel = $opts->{safe_ac} 
+            	? $wit->sigil . '__L' : $wit->sigil.$self->ac_label;
+            my $witacobj = { 'witness' => $witlabel, 
             	'tokens' => \@ac_row };
             $witacobj->{'identifier'} = $wit->identifier if $wit->identifier;
 			push( @{$table->{'alignment'}}, $witacobj );
         }           
     }
-    unless( $opts->{noac} ) {
+    unless( $opts->{noac} || $opts->{safe_ac} ) {
 	    $self->cached_table( $table );
 	}
     return $table;

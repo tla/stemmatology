@@ -165,6 +165,9 @@ my $csv = Text::CSV->new({ sep_char => ',', binary => 1 });
 my @lines = split(/\n/, $csvstr );
 ok( $csv->parse( $lines[0] ), "Successfully parsed first line of CSV" );
 is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
+my @q_ac = grep { $_ eq 'Q'.$c->ac_label } $csv->fields;
+ok( @q_ac, "Found a layered witness" );
+
 my $t2 = Text::Tradition->new( input => 'Tabular',
 							   name => 'test2',
 							   string => $csvstr,
@@ -186,6 +189,14 @@ my $noaccsv = $c->as_csv({ noac => 1 });
 my @noaclines = split(/\n/, $noaccsv );
 ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" );
 is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
+is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
+
+my $safecsv = $c->as_csv({ safe_ac => 1});
+my @safelines = split(/\n/, $safecsv );
+ok( $csv->parse( $safelines[0] ), "Successfully parsed first line of safe CSV" );
+is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
+@q_ac = grep { $_ eq 'Q__L' } $csv->fields;
+ok( @q_ac, "Found a sanitized layered witness" );
 is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
 }
 
