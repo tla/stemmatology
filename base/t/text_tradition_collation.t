@@ -181,10 +181,12 @@ my $t3 = Text::Tradition->new( input => 'Tabular',
 is( scalar $t3->collation->readings, $READINGS, "Reparsed TSV collation has all readings" );
 is( scalar $t3->collation->paths, $PATHS, "Reparsed TSV collation has all paths" );
 
+my $table = $c->alignment_table;
 my $noaccsv = $c->as_csv({ noac => 1 });
 my @noaclines = split(/\n/, $noaccsv );
 ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" );
 is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
+is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
 }
 
 

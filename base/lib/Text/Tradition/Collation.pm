@@ -1434,10 +1434,12 @@ my $t3 = Text::Tradition->new( input => 'Tabular',
 is( scalar $t3->collation->readings, $READINGS, "Reparsed TSV collation has all readings" );
 is( scalar $t3->collation->paths, $PATHS, "Reparsed TSV collation has all paths" );
 
+my $table = $c->alignment_table;
 my $noaccsv = $c->as_csv({ noac => 1 });
 my @noaclines = split(/\n/, $noaccsv );
 ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" );
 is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
+is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
 
 
 =end testing
@@ -1499,8 +1501,12 @@ format which looks like this:
 
 sub alignment_table {
     my( $self, $opts ) = @_;
-    return $self->cached_table 
-    	if $self->has_cached_table && !$opts->{noac};
+    if( $self->has_cached_table ) {
+    	# TODO if sanitizing & have cached table, just sanitize the existing table.
+    	if( !$opts->{noac} ) {
+    		return $self->cached_table;
+    	}
+    }
     
     # Make sure we can do this
 	throw( "Need a linear graph in order to make an alignment table" )
@@ -1527,7 +1533,9 @@ sub alignment_table {
 			push( @{$table->{'alignment'}}, $witacobj );
         }           
     }
-    $self->cached_table( $table );
+    unless( $opts->{noac} ) {
+	    $self->cached_table( $table );
+	}
     return $table;
 }
 
