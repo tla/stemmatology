@@ -1397,9 +1397,12 @@ one row per witness (or witness uncorrected.)
 =begin testing
 
 use Text::Tradition;
+use Text::CSV;
 
 my $READINGS = 311;
 my $PATHS = 361;
+my $WITS = 13;
+my $WITAC = 4;
 
 my $datafile = 't/data/florilegium_tei_ps.xml';
 my $tradition = Text::Tradition->new( 'input' => 'TEI',
@@ -1410,6 +1413,11 @@ my $tradition = Text::Tradition->new( 'input' => 'TEI',
 my $c = $tradition->collation;
 # Export the thing to CSV
 my $csvstr = $c->as_csv();
+# Count the columns
+my $csv = Text::CSV->new({ sep_char => ',', binary => 1 });
+my @lines = split(/\n/, $csvstr );
+ok( $csv->parse( $lines[0] ), "Successfully parsed first line of CSV" );
+is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
 my $t2 = Text::Tradition->new( input => 'Tabular',
 							   name => 'test2',
 							   string => $csvstr,
@@ -1426,17 +1434,22 @@ my $t3 = Text::Tradition->new( input => 'Tabular',
 is( scalar $t3->collation->readings, $READINGS, "Reparsed TSV collation has all readings" );
 is( scalar $t3->collation->paths, $PATHS, "Reparsed TSV collation has all paths" );
 
+my $noaccsv = $c->as_csv({ noac => 1 });
+my @noaclines = split(/\n/, $noaccsv );
+ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" );
+is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
+
 
 =end testing
 
 =cut
 
 sub _tabular {
-    my( $self, $fieldsep ) = @_;
-    my $table = $self->alignment_table;
+    my( $self, $opts ) = @_;
+    my $table = $self->alignment_table( $opts );
 	my $csv_options = { binary => 1, quote_null => 0 };
-	$csv_options->{'sep_char'} = $fieldsep;
-	if( $fieldsep eq "\t" ) {
+	$csv_options->{'sep_char'} = $opts->{fieldsep};
+	if( $opts->{fieldsep} eq "\t" ) {
 		# If it is really tab separated, nothing is an escape char.
 		$csv_options->{'quote_char'} = undef;
 		$csv_options->{'escape_char'} = '';
@@ -1458,12 +1471,16 @@ sub _tabular {
 
 sub as_csv {
 	my $self = shift;
-	return $self->_tabular( ',' );
+	my $opts = shift || {};
+	$opts->{fieldsep} = ',';
+	return $self->_tabular( $opts );
 }
 
 sub as_tsv {
 	my $self = shift;
-	return $self->_tabular( "\t" );
+	my $opts = shift || {};
+	$opts->{fieldsep} = "\t";
+	return $self->_tabular( $opts );
 }
 
 =head2 alignment_table
@@ -1481,8 +1498,9 @@ format which looks like this:
 =cut
 
 sub alignment_table {
-    my( $self ) = @_;
-    return $self->cached_table if $self->has_cached_table;
+    my( $self, $opts ) = @_;
+    return $self->cached_table 
+    	if $self->has_cached_table && !$opts->{noac};
     
     # Make sure we can do this
 	throw( "Need a linear graph in order to make an alignment table" )
@@ -1499,7 +1517,7 @@ sub alignment_table {
         my $witobj = { 'witness' => $wit->sigil, 'tokens' => \@row };
         $witobj->{'identifier'} = $wit->identifier if $wit->identifier;
         push( @{$table->{'alignment'}}, $witobj );
-        if( $wit->is_layered ) {
+        if( $wit->is_layered && !$opts->{noac} ) {
         	my @wit_ac_path = $self->reading_sequence( $self->start, $self->end, 
         		$wit->sigil.$self->ac_label );
             my @ac_row = _make_witness_row( \@wit_ac_path, \@all_pos );

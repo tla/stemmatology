@@ -144,9 +144,12 @@ SKIP: {
 # =begin testing
 {
 use Text::Tradition;
+use Text::CSV;
 
 my $READINGS = 311;
 my $PATHS = 361;
+my $WITS = 13;
+my $WITAC = 4;
 
 my $datafile = 't/data/florilegium_tei_ps.xml';
 my $tradition = Text::Tradition->new( 'input' => 'TEI',
@@ -157,6 +160,11 @@ my $tradition = Text::Tradition->new( 'input' => 'TEI',
 my $c = $tradition->collation;
 # Export the thing to CSV
 my $csvstr = $c->as_csv();
+# Count the columns
+my $csv = Text::CSV->new({ sep_char => ',', binary => 1 });
+my @lines = split(/\n/, $csvstr );
+ok( $csv->parse( $lines[0] ), "Successfully parsed first line of CSV" );
+is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness columns" );
 my $t2 = Text::Tradition->new( input => 'Tabular',
 							   name => 'test2',
 							   string => $csvstr,
@@ -172,6 +180,11 @@ my $t3 = Text::Tradition->new( input => 'Tabular',
 							   sep_char => "\t" );
 is( scalar $t3->collation->readings, $READINGS, "Reparsed TSV collation has all readings" );
 is( scalar $t3->collation->paths, $PATHS, "Reparsed TSV collation has all paths" );
+
+my $noaccsv = $c->as_csv({ noac => 1 });
+my @noaclines = split(/\n/, $noaccsv );
+ok( $csv->parse( $noaclines[0] ), "Successfully parsed first line of no-ac CSV" );
+is( scalar( $csv->fields ), $WITS, "CSV has correct number of witness columns" );
 }
 
 
