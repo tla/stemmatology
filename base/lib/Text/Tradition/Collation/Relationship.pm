@@ -3,7 +3,7 @@ package Text::Tradition::Collation::Relationship;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-enum 'RelationshipScope' => qw( local document global );
+enum 'RelationshipScope' => [ qw( local document global ) ];
 
 no Moose::Util::TypeConstraints;
 
