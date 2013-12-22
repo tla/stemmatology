@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use CGI;
+use Data::Validate::IP qw/ is_ipv4 is_ipv6 /;
 use Encode qw/ decode /;
 use Gearman::Client;
 use JSON;
@@ -30,7 +31,18 @@ if( -f "/etc/graphcalc.conf" ) {
 		chomp;
 		s/^\s+//;
 		my( $name, $val ) = split( /\s*\=\s*/, $_ );
-		if( exists $VARS{$name} ) {
+ 		if( $name eq 'GEARMAN_SERVER' ) {
+ 			# Minimally validate and untaint the value.
+ 			my( $gsip, $gsport ) = split( /:/, $val );
+ 			my $ipv = Data::Validate::IP->new();
+ 			my $ugsip = $ipv->is_ipv4( $gsip );
+ 			unless( $ugsip ) {
+ 				$ugsip = $ipv->is_ipv6( $gsip );
+ 			}
+ 			if( $ugsip && $gsport =~ /^(\d+)$/ ) {
+ 				$VARS{$name} = "$ugsip:$1";
+ 			}
+ 		} elsif( exists $VARS{$name} ) {
 			$VARS{$name} = $val;
 		}
 	}
