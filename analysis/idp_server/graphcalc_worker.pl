@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use feature 'unicode_strings';
+use feature qw/ say unicode_strings /;
 use lib '/home/tla/stemmatology/lib';
 use Encode qw/ decode_utf8 /;
 use Fcntl qw/ :flock /;
@@ -65,7 +65,7 @@ $worker->work while 1;
 
 sub run_idp {
     my $job = shift;
-    print "Beginning IDP run for ID(s) " . $job->arg . "\n";
+    say scalar( localtime( time() ) ) . "\tBeginning IDP run for ID(s) " . $job->arg;
     my @problemids = split( /\s*,\s*/, $job->arg );
     my $scope = $db->new_scope();
     # Look up each problem ID and sort them into distinct groups by graph.
@@ -79,10 +79,10 @@ sub run_idp {
         if( $result ) {
             # Check to see if it already has an answer
             if( $result->status && $result->status eq 'OK' ) {
-                print STDERR "Solution already recorded for Analysis::Result problem $problem\n";
+                say STDERR "Solution already recorded for Analysis::Result problem $problem";
                 next;
             } elsif( $result->status && $result->status eq 'running' ) {
-                print STDERR "Already working on Analysis::Result problem $problem\n";
+                say STDERR "Already working on Analysis::Result problem $problem";
                 next;
             }
             # No? Then add it to our list.
@@ -96,7 +96,7 @@ sub run_idp {
                 unless exists $dgproblems{$result->graph};
             push( @{$dgproblems{$result->graph}}, $problem );
         } else {
-            print STDERR "Did not find Analysis::Result with ID $problem; skipping\n";
+            say STDERR "Did not find Analysis::Result with ID $problem; skipping";
         }
     }
 
@@ -117,15 +117,15 @@ sub run_idp {
             run( \@cmd, \$datastr, \$ret, \$err );
             
             my $got_error;
+            say STDERR "IDP run output:\n$err";
             if( $err =~ /^Error:/m ) {
-                print STDERR "Error running idp: $err\n";
                 $idpanswer{$program} = 'error';
             } else {
 				# Save the result for the given program
 				try {
 					$idpanswer{$program} = _desanitize_names( decode_json( $ret ) );
 				} catch {
-					print STDERR "Could not parse string '$ret' as JSON";
+					say STDERR "Could not parse string '$ret' as JSON";
 					$idpanswer{$program} = 'error';
 				}
 			}
@@ -152,7 +152,7 @@ sub run_idp {
 					map { $result->set_class( $_, $class ) } @$class_members;
 				}
 				$result->status('OK');
-				print "Saving new IDP result with ID key " . $result->object_key . "\n";
+				say "Saving new IDP result with ID key " . $result->object_key;
 			}
             $db->save( $result );
         }
