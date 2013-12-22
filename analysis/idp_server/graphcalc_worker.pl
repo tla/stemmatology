@@ -116,32 +116,44 @@ sub run_idp {
             my( $ret, $err );
             run( \@cmd, \$datastr, \$ret, \$err );
             
+            my $got_error;
             if( $err =~ /^Error:/m ) {
                 print STDERR "Error running idp: $err\n";
-                return;
-            }
-        
-            # Save the result for the given program
-            $idpanswer{$program} = _desanitize_names( decode_json( $ret ) );
+                $idpanswer{$program} = 'error';
+            } else {
+				# Save the result for the given program
+				try {
+					$idpanswer{$program} = _desanitize_names( decode_json( $ret ) );
+				} catch {
+					print STDERR "Could not parse string '$ret' as JSON";
+					$idpanswer{$program} = 'error';
+				}
+			}
         }
         # Now map the results from IDP back into the database.
         foreach my $idx ( 0 .. $#{$dgproblems{$dg}} ) {
             my $result = $db->lookup( $dgproblems{$dg}->[$idx] );
-            my $genanswer = $idpanswer{'findGroupings'}->[$idx];
-            $result->is_genealogical( $genanswer->[1] ? 1 : 0 );
+            my $groupstatus = $idpanswer{'findGroupings'};
+            my $classstatus = $idpanswer{'findClasses'};
+            if( $groupstatus eq 'error' || $classstatus eq 'error' ) {
+            	$result->status('error');
+            } else {
+				my $genanswer = $groupstatus->[$idx];
+				$result->is_genealogical( $genanswer->[1] ? 1 : 0 );
 
-            # We take the groupings as well as the classes from the 
-            # findClasses answer, to make sure they match
-            my $classanswer = $idpanswer{'findClasses'}->[$idx];
-            foreach my $grouping ( @{$classanswer->[0]} ) {
-                $result->record_grouping( $grouping );
-            }
-            foreach my $class ( keys %{$classanswer->[1]} ) {
-                my $class_members = $classanswer->[1]->{$class};
-                map { $result->set_class( $_, $class ) } @$class_members;
-            }
-            $result->status('OK');
-            print "Saving new IDP result with ID key " . $result->object_key . "\n";
+				# We take the groupings as well as the classes from the 
+				# findClasses answer, to make sure they match
+				my $classanswer = $classstatus->[$idx];
+				foreach my $grouping ( @{$classanswer->[0]} ) {
+					$result->record_grouping( $grouping );
+				}
+				foreach my $class ( keys %{$classanswer->[1]} ) {
+					my $class_members = $classanswer->[1]->{$class};
+					map { $result->set_class( $_, $class ) } @$class_members;
+				}
+				$result->status('OK');
+				print "Saving new IDP result with ID key " . $result->object_key . "\n";
+			}
             $db->save( $result );
         }
         
