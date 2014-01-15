@@ -15,10 +15,10 @@ use TryCatch;
 
 use vars qw/ @EXPORT_OK $VERSION /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
-$VERSION = "1.2";
+$VERSION = "1.3";
 
 
-my $SOLVER_URL = 'http://byzantini.st/cgi-bin/graphcalc.cgi';
+my $DEFAULT_SOLVER_URL = 'http://perf.byzantini.st/cgi-bin/graphcalc.cgi';
 my $unsolved_problems = {};
 
 =head1 NAME
@@ -170,18 +170,18 @@ sub run_analysis {
 		$collapse->insert( $opts{'merge_types'} );
 	}
 	
-	# Make sure we have a lookup DB for graph calculation results; this will die
-	# if calcdir or calcdsn isn't passed.
+	# If we have specified a local lookup DB for graph calculation results,
+	# make sure it exists and connect to it.
 	my $dir;
-	if( exists $opts{'calcdir'} ) {
-		$dir = delete $opts{'calcdir'}
-	} elsif ( exists $opts{'calcdsn'} ) {
+	if ( exists $opts{'calcdsn'} ) {
 		eval { require Text::Tradition::Directory };
 		if( $@ ) {
 			throw( "Could not instantiate a directory for " . $opts{'calcdsn'}
 				. ": $@" );
 		}
-		$dir = Text::Tradition::Directory->new( dsn => $opts{'calcdsn'} );
+		$opts{'dir'} = Text::Tradition::Directory->new( dsn => $opts{'calcdsn'} );
+	} elsif( !exists $opts{'solver_url'} ) {
+		$opts{'solver_url'} = $DEFAULT_SOLVER_URL;
 	}
 
 	# Get the stemma	
@@ -229,7 +229,7 @@ sub run_analysis {
 	# Run the solver
 	my $answer;
 	try {
-		$answer = solve_variants( $dir, @groups );
+		$answer = solve_variants( \%opts, @groups );
 	} catch ( Text::Tradition::Error $e ) {
 		if( $e->message =~ /IDP/ ) {
 			# Something is wrong with the solver; make the variants table anyway
@@ -591,14 +591,10 @@ The answer has the form
 =cut
 
 sub solve_variants {
-	my( @groups ) = @_;
+	my( $opts, @groups ) = @_;
 	
-	# Are we using a local result directory, or did we pass an empty value
-	# for the directory?
-	my $dir;
-	unless( ref( $groups[0] ) eq 'HASH' ) {
-		$dir = shift @groups;
-	}
+	# Are we using a local result directory?
+	my $dir = $opts->{dir};
 
 	## For each graph/group combo, make a Text::Tradition::Analysis::Result
 	## object so that we can send it off for IDP lookup.
@@ -624,12 +620,13 @@ sub solve_variants {
 		my $scope = $dir->new_scope;
 		map { $results{$_} = $dir->lookup( $_ ) || $problems{$_} } keys %problems;
 	} else {
+		# print STDERR "Using solver at " . $opts->{solver_url} . "\n";
 		my $json = JSON->new->allow_blessed->convert_blessed->utf8->encode( 
 			[ values %problems ] );
 		# Send it off and get the result
 		# print STDERR "Sending request: " . decode_utf8( $json ) . "\n";
 		my $ua = LWP::UserAgent->new();
-		my $resp = $ua->post( $SOLVER_URL, 'Content-Type' => 'application/json', 
+		my $resp = $ua->post( $opts->{solver_url}, 'Content-Type' => 'application/json', 
 							  'Content' => $json );	
 		my $answer;	
 		if( $resp->is_success ) {
