@@ -165,7 +165,6 @@ sub editable_graph {
 
 	# Create the graph
 	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
-	my $fq = $opts->{'forcequote'};
 	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
 	my $gname = exists $opts->{'name'} ? '"' . $opts->{'name'} . '"'
 		: 'stemma';
@@ -178,12 +177,12 @@ sub editable_graph {
     	if( $c eq 'extant' ) {
     		push( @real, $n );
     	} else {
-			push( @dotlines, _make_dotline( $n, 'class' => $c, 'forcequote' => $fq ) );
+			push( @dotlines, _make_dotline( $n, 'class' => $c ) );
 		}
     }
 	# Now do the real ones
 	foreach my $n ( @real ) {
-		push( @dotlines, _make_dotline( $n, 'class' => 'extant', 'forcequote' => $fq ) );
+		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
 	}
 	foreach my $e ( sort _by_vertex $graph->edges ) {
 		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
@@ -197,17 +196,16 @@ sub editable_graph {
 sub _make_dotline {
 	my( $obj, %attr ) = @_;
 	my @pairs;
-	my $fq = delete $attr{forcequote};
 	foreach my $k ( keys %attr ) {
-		my $v = _dotquote( $attr{$k}, $fq );
+		my $v = _dotquote( $attr{$k} );
 		push( @pairs, "$k=$v" );
 	}
 	return sprintf( "  %s [ %s ];", _dotquote( $obj ), join( ', ', @pairs ) );
 }
 	
 sub _dotquote {
-	my( $str, $force ) = @_;
-	return $str if $str =~ /^[A-Za-z0-9]+$/;
+	my( $str ) = @_;
+	return $str if $str =~ /^[A-Za-z0-9_]+$/;
 	$str =~ s/\"/\\\"/g;
 	$str = '"' . $str . '"';
 	return $str;
