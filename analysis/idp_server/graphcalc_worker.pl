@@ -118,8 +118,9 @@ sub run_idp {
             
             my $got_error;
             say STDERR "IDP run output:\n$err";
-            if( $err =~ /^Error:/m ) {
+            if( $err =~ / Error:/m ) {
                 $idpanswer{$program} = 'error';
+                say STDERR "Input data was " . decode_utf8( $datastr );
             } else {
 				# Save the result for the given program
 				try {
