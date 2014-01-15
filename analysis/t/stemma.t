@@ -72,7 +72,7 @@ like( $editable, qr/^digraph \"?Stemma/, "Got a dot edit graph" );
 ok( $editable =~ /hypothetical/, "Graph contains an edit class" );
 
 # Test changing the name of the Graph
-$editable =~ s/^(digraph )\"?Stemma\"?/$1"Simple test stemma"/;
+$editable =~ s/Stemma/Simple test stemma/;
 $stemma->alter_graph( $editable );
 is( $stemma->identifier, "Simple test stemma", "Successfully changed name of graph" );
 

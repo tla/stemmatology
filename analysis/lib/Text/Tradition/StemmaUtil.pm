@@ -10,9 +10,10 @@ use File::chdir;
 use File::Temp;
 use File::Which;
 use Graph;
+use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
-@EXPORT_OK = qw/ display_graph editable_graph 
+@EXPORT_OK = qw/ read_graph display_graph editable_graph 
 	character_input phylip_pars parse_newick newick_to_svg /;
 
 =head1 NAME
@@ -26,6 +27,69 @@ This package contains a set of utilities for displaying arbitrary stemmata and
 running phylogenetic analysis on text collations.
 
 =head1 SUBROUTINES
+
+=head2 read_graph( $dotstr) {
+
+Parses the graph specification on the filehandle in $dotstr and returns a Graph 
+object. This subroutine works around some deficiencies in Graph::Reader::Dot.
+
+=cut
+
+sub read_graph {
+	my $dotstr = shift;
+	# Graph::Reader::Dot does not handle bare non-ASCII Unicode word characters.
+	# We get around this by wrapping all words in double quotes, as long as they 
+	# aren't already wrapped, and as long as they aren't the initial '(di)?graph'.
+	# Also need to deal correctly with the graph title.
+	if( $dotstr =~ /^\s*((di)?graph)\s+(.*?)\s*\{(.*)$/s ) {
+		my( $decl, $ident, $rest ) = ( $1, $3, $4 );
+		unless( substr( $ident, 0, 1 ) eq '"' ) {
+			$ident = '"'.$ident.'"';
+		}
+		$rest =~ s/(?<!")\b(\w+)\b(?!")/"$1"/g;
+		$dotstr = "$decl $ident { $rest";
+	}
+		
+	# Now open a filehandle onto the string and pass it to Graph::Reader::Dot.
+	my $dotfh;
+	open $dotfh, '<', \$dotstr;
+	binmode $dotfh, ':utf8';
+ 	my $reader = Graph::Reader::Dot->new();
+ 	# Redirect STDOUT in order to trap any error messages - syntax errors
+ 	# are evidently not fatal.
+	my $graph;
+	my $reader_out;
+	my $reader_err;
+	{
+		local(*STDOUT);
+		open( STDOUT, ">", \$reader_out );
+		local(*STDERR);
+		open( STDERR, ">", \$reader_err );
+		$graph = $reader->read_graph( $dotfh );
+		close STDOUT;
+		close STDERR;
+	}
+	if( $reader_out && $reader_out =~ /error/s ) {
+		throw( "Error trying to parse dot: $reader_out" );
+	} elsif( !$graph ) {
+		throw( "Failed to create graph from dot" );
+	}
+	# Wrench the graph identifier out of the graph
+	## HORRIBLE HACK but there is no API access to the graph identifier!
+	$graph->set_graph_attribute( 'name', $graph->[4]->{'name'} );
+
+	# Correct for implicit graph -> digraph quirk of reader
+	if( $reader_err && $reader_err =~ /graph will be treated as digraph/ ) {
+		my $udgraph = $graph->undirected_copy;
+		$udgraph->set_graph_attributes( $graph->get_graph_attributes );
+		foreach my $v ( $graph->vertices ) {
+			$udgraph->set_vertex_attributes( $v, $graph->get_vertex_attributes( $v ) );
+		}
+		$graph = $udgraph;
+	}
+	
+	return $graph;
+}
 
 =head2 display_graph( $graph, $opts )
 

@@ -6,7 +6,8 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
-use Text::Tradition::StemmaUtil qw/ editable_graph display_graph parse_newick /;
+use Text::Tradition::StemmaUtil qw/ read_graph editable_graph display_graph 
+	parse_newick /;
 use Moose;
 
 =head1 NAME
@@ -103,20 +104,15 @@ use TryCatch;
 use_ok( 'Text::Tradition::Stemma' );
 
 # Try to create a bad graph
-my $baddotfh;
-open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
 try {
-	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
+	my $stemma = Text::Tradition::Stemma->new( dotfile => 't/data/besoin_bad.dot' );
 	ok( 0, "Created broken stemma from dotfile with syntax error" );
 } catch( Text::Tradition::Error $e ) {
 	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
 }
 
 # Create a good graph
-my $dotfh;
-open( $dotfh, 't/data/florilegium.dot' ) or die "Could not open test dotfile";
-binmode( $dotfh, ':utf8' );
-my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
+my $stemma = Text::Tradition::Stemma->new( dotfile => 't/data/florilegium.dot' );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
@@ -129,10 +125,7 @@ foreach my $h ( $stemma->hypotheticals ) {
 ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 
 # Create an undirected graph
-my $undirdotfh;
-open( $undirdotfh, 't/data/besoin_undirected.dot' ) or die "Could not open test dotfile";
-binmode( $undirdotfh, ':utf8' );
-my $udstemma = Text::Tradition::Stemma->new( dot => $undirdotfh );
+my $udstemma = Text::Tradition::Stemma->new( dotfile => 't/data/besoin_undirected.dot' );
 is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected dotfile" );
 is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
@@ -173,9 +166,20 @@ has from_jobid => (
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
+    my $dotstring;
     if( exists $args->{'dot'} ) {
-        $self->_graph_from_dot( $args->{'dot'} );
-    } 
+        $dotstring = $args->{'dot'};
+    } elsif( exists $args->{'dotfile'} ) {
+    	# Read the file into a string.
+    	my @dotlines;
+		open( DOTFH, $args->{'dotfile'} ) 
+			or throw( "Could not read specified dot file " . $args->{'dotfile'} );
+		binmode( DOTFH, ':encoding(UTF-8)' );
+		@dotlines = <DOTFH>;
+		close DOTFH;
+    	$dotstring = join( '', @dotlines );
+    }
+    $self->_graph_from_dot( $dotstring ) if $dotstring;
 }
 
 before 'graph' => sub {
@@ -194,37 +198,12 @@ before 'graph' => sub {
 };
 
 sub _graph_from_dot {
-	my( $self, $dotfh ) = @_;
- 	my $reader = Graph::Reader::Dot->new();
- 	# Redirect STDOUT in order to trap any error messages - syntax errors
- 	# are evidently not fatal.
-	my $graph;
-	my $reader_out;
-	my $reader_err;
-	{
-		local(*STDOUT);
-		open( STDOUT, ">", \$reader_out );
-		local(*STDERR);
-		open( STDERR, ">", \$reader_err );
-		$graph = $reader->read_graph( $dotfh );
-		close STDOUT;
-		close STDERR;
-	}
-	if( $reader_out && $reader_out =~ /error/s ) {
-		throw( "Error trying to parse dot: $reader_out" );
-	} elsif( !$graph ) {
-		throw( "Failed to create graph from dot" );
-	}
+	my( $self, $dotstring ) = @_;
+	my $graph = read_graph( $dotstring );
+	
 	## HORRIBLE HACK but there is no API access to graph attributes!
-	my $graph_id = exists $graph->[4]->{'name'} ? $graph->[4]->{'name'} : 'stemma';
-	# Correct for implicit graph -> digraph quirk of reader
-	if( $reader_err && $reader_err =~ /graph will be treated as digraph/ ) {
-		my $udgraph = $graph->undirected_copy;
-		foreach my $v ( $graph->vertices ) {
-			$udgraph->set_vertex_attributes( $v, $graph->get_vertex_attributes( $v ) );
-		}
-		$graph = $udgraph;
-	}
+	my $graph_id = $graph->has_graph_attribute( 'name' ) 
+		? $graph->get_graph_attribute( 'name' ) : 'stemma';
 	$self->graph( $graph );
 	$self->set_identifier( $graph_id );
 }
@@ -298,10 +277,7 @@ in $dotstring.
 
 sub alter_graph {
 	my( $self, $dotstring ) = @_;
-	my $dotfh;
-	open $dotfh, '<', \$dotstring;
-	binmode $dotfh, ':utf8';
-	$self->_graph_from_dot( $dotfh );
+	$self->_graph_from_dot( $dotstring );
 }
 
 =head2 editable( $opts )

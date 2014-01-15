@@ -82,7 +82,9 @@ before 'set_stemweb_jobid' => sub {
 	}
 };
 
-=head2 add_stemma( $dotfile )
+=head2 add_stemma( dotfile => $dotfile )
+=head2 add_stemma( dot => $dotstring )
+=head2 add_stemma( $stemma_obj )
 
 Initializes a Text::Tradition::Stemma object from the given dotfile,
 and associates it with the tradition.
@@ -109,19 +111,12 @@ is( $t->stemma(0), $s, "Tradition hands back the right stemma" );
 
 sub add_stemma {
 	my $self = shift;
-	my %opts = @_;
-	my $stemma_fh;
-	if( $opts{'dotfile'} ) {
-		open $stemma_fh, '<', $opts{'dotfile'}
-			or warn "Could not open file " . $opts{'dotfile'};
-	} elsif( $opts{'dot'} ) {
-		my $str = $opts{'dot'};
-		open $stemma_fh, '<', \$str;
+	my $stemma;
+	if( ref( @_ ) eq 'Text::Tradition::Stemma' ) {
+		$stemma = shift;
+	} else {
+		$stemma = Text::Tradition::Stemma->new( @_ );
 	}
-	# Assume utf-8
-	binmode $stemma_fh, ':utf8';
-	my $stemma = Text::Tradition::Stemma->new( 
-		'dot' => $stemma_fh );
 	$self->_add_stemma( $stemma ) if $stemma;
 	return $stemma;
 }
