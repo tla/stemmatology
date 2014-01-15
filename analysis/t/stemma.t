@@ -5,7 +5,7 @@ use File::Which;
 use Test::More;
 use lib 'lib';
 use Text::Tradition;
-use Text::Tradition::StemmaUtil qw/ character_input phylip_pars parse_newick /;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars /;
 use TryCatch;
 
 my $datafile = 't/data/Collatex-16.xml'; #TODO need other test data
@@ -54,7 +54,7 @@ SKIP: {
 	my $newick = phylip_pars( $mstr );
 	ok( $newick, "pars ran successfully" );
 
-	my $trees = parse_newick( $newick );
+	my $trees = Text::Tradition::Stemma->new_from_newick( $newick );
 	# Test that we get a tree
 	is( scalar @$trees, 1, "Got a single tree" );
 	# Test that the tree has all our witnesses

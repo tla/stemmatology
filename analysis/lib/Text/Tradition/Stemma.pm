@@ -6,6 +6,7 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
+use Text::Tradition::StemmaUtil qw/ editable_graph display_graph parse_newick /;
 use Moose;
 
 =head1 NAME
@@ -234,6 +235,23 @@ sub is_undirected {
 	return $self->graph->is_undirected;
 }
 
+=head2 new_from_newick( $newick_string )
+
+A constructor that will read a Newick-format tree specification and return one
+or more undirected Stemma objects. TODO test
+
+=cut
+
+sub new_from_newick {
+	my( $class, $nstring ) = @_;
+	my @stemmata;
+	foreach my $tree ( parse_newick( $nstring ) ) {
+        my $stemma = new( $class, graph => $tree );
+        push( @stemmata, $stemma );
+    }
+    return \@stemmata;
+}
+
 =head1 METHODS
 
 =head2 as_dot( \%options )
@@ -265,56 +283,10 @@ sub as_dot {
 		map { $extant->{$_} = 1 } $self->witnesses;
 		$graph = $self->situation_graph( $extant, $opts->{'layerwits'} );
 	}
-
-    # Get default and specified options
-    my %graphopts = (
-    	# 'ratio' => 1,
-    	'bgcolor' => 'transparent',
-    );
-    my %nodeopts = (
-		'fontsize' => 11,
-		'style' => 'filled',
-		'fillcolor' => 'white',
-		'color' => 'white',
-		'shape' => 'ellipse',	# Shape for the extant nodes
-	);
-	my %edgeopts = (
-		'arrowhead' => 'none',
-	);
-	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
-		if $opts->{'graph'};
-	@nodeopts{ keys %{$opts->{'node'}} } = values %{$opts->{'node'}} 
-		if $opts->{'node'};
-	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
-		if $opts->{'edge'};
-		
-	my $gdecl = $graph->is_directed ? 'digraph' : 'graph';
-	my $gname = $self->has_identifier ? '"' . $self->identifier . '"'
-		: 'stemma';
-	my @dotlines;
-	push( @dotlines, "$gdecl $gname {" );
-	## Print out the global attributes
-	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
-	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
-	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
-
-	# Add each of the nodes.
-    foreach my $n ( $graph->vertices ) {
-    	my %vattr = ( 'id' => $n );  # Set the SVG element ID to the sigil itself
-        if( $graph->has_vertex_attribute( $n, 'label' ) ) {
-        	$vattr{'label'} = $graph->get_vertex_attribute( $n, 'label' );
-        }
-		push( @dotlines, _make_dotline( $n, %vattr ) );
-    }
-    # Add each of our edges.
-    foreach my $e ( $graph->edges ) {
-    	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-    	my $connector = $graph->is_directed ? '->' : '--';
-    	push( @dotlines, "  $from $connector $to;" );
-    }
-    push( @dotlines, '}' );
-    
-    return join( "\n", @dotlines );
+	if( $self->has_identifier ) {
+		$opts->{'name'} = $self->identifier;
+	}
+	return display_graph( $graph, $opts );
 }
 
 =head2 alter_graph( $dotstring )
@@ -333,8 +305,6 @@ sub alter_graph {
 }
 
 =head2 editable( $opts )
-
-=head2 editable_graph( $graph, $opts )
 
 Returns a version of the graph rendered in our definition format.  The
 output separates statements with a newline; set $opts->{'linesep'} to the 
@@ -360,60 +330,6 @@ sub editable {
 	return editable_graph( $graph, $opts );
 }
 
-sub editable_graph {
-	my( $graph, $opts ) = @_;
-
-	# Create the graph
-	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
-	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
-	my $gname = exists $opts->{'name'} ? '"' . $opts->{'name'} . '"'
-		: 'stemma';
-	my @dotlines;
-	push( @dotlines, "$gdecl $gname {" );
-	my @real; # A cheap sort
-    foreach my $n ( sort $graph->vertices ) {
-    	my $c = $graph->get_vertex_attribute( $n, 'class' );
-    	$c = 'extant' unless $c;
-    	if( $c eq 'extant' ) {
-    		push( @real, $n );
-    	} else {
-			push( @dotlines, _make_dotline( $n, 'class' => $c ) );
-		}
-    }
-	# Now do the real ones
-	foreach my $n ( @real ) {
-		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
-	}
-	foreach my $e ( sort _by_vertex $graph->edges ) {
-		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-		my $conn = $graph->is_undirected ? '--' : '->';
-		push( @dotlines, "  $from $conn $to;" );
-	}
-    push( @dotlines, '}' );
-    return join( $join, @dotlines );
-}
-
-sub _make_dotline {
-	my( $obj, %attr ) = @_;
-	my @pairs;
-	foreach my $k ( keys %attr ) {
-		my $v = _dotquote( $attr{$k} );
-		push( @pairs, "$k=$v" );
-	}
-	return sprintf( "  %s [ %s ];", _dotquote( $obj ), join( ', ', @pairs ) );
-}
-	
-sub _dotquote {
-	my( $str ) = @_;
-	return $str if $str =~ /^[A-Za-z0-9]+$/;
-	$str =~ s/\"/\\\"/g;
-	$str = '"' . $str . '"';
-	return $str;
-}
-
-sub _by_vertex {
-	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
-}
 
 =head2 situation_graph( $extant, $layered )
 

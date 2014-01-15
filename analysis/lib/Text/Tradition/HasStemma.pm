@@ -5,7 +5,6 @@ use warnings;
 use Moose::Role;
 use Date::Parse;
 use Text::Tradition::Stemma;
-use Text::Tradition::StemmaUtil qw/ parse_newick /;
 
 =head1 NAME
 
@@ -168,7 +167,7 @@ sub record_stemweb_result {
 	if( $answer->{format} eq 'dot' ) {
 		$self->add_stemma( dot => $answer->{result} );
 	} elsif( $answer->{format} eq 'newick' ) {
-		$stemmata = parse_newick( $answer->{result} );
+		$stemmata = Text::Tradition::Stemma->new_from_newick( $answer->{result} );
 		my $title = sprintf( "%s %d", $answer->{algorithm}, 
 			str2time( $answer->{start_time} ) );
 		my $i = 0;

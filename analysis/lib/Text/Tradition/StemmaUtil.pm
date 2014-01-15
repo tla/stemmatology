@@ -12,19 +12,146 @@ use File::Which;
 use Graph;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
-use Text::Tradition::Stemma;
-@EXPORT_OK = qw/ character_input phylip_pars parse_newick newick_to_svg /;
+@EXPORT_OK = qw/ display_graph editable_graph 
+	character_input phylip_pars parse_newick newick_to_svg /;
 
 =head1 NAME
 
-Text::Tradition::StemmaUtil - standalone utilities for distance tree calculations
+Text::Tradition::StemmaUtil - standalone utilities for stemma graph display and
+distance tree calculations
 
 =head1 DESCRIPTION
 
-This package contains a set of utilities for running phylogenetic analysis on
-text collations.
+This package contains a set of utilities for displaying arbitrary stemmata and 
+running phylogenetic analysis on text collations.
 
 =head1 SUBROUTINES
+
+=head2 display_graph( $graph, $opts )
+
+Returns a dot specification intended for display, according to the logical 
+attributes of the witnesses.
+
+=cut
+
+sub display_graph {
+    my( $graph, $opts ) = @_;
+    
+    # Get default and specified options
+    my %graphopts = (
+    	# 'ratio' => 1,
+    	'bgcolor' => 'transparent',
+    );
+    my %nodeopts = (
+		'fontsize' => 11,
+		'style' => 'filled',
+		'fillcolor' => 'white',
+		'color' => 'white',
+		'shape' => 'ellipse',	# Shape for the extant nodes
+	);
+	my %edgeopts = (
+		'arrowhead' => 'none',
+	);
+	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
+		if $opts->{'graph'};
+	@nodeopts{ keys %{$opts->{'node'}} } = values %{$opts->{'node'}} 
+		if $opts->{'node'};
+	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
+		if $opts->{'edge'};
+		
+	my $gdecl = $graph->is_directed ? 'digraph' : 'graph';
+	my $gname = $opts->{'name'} ? '"' . $opts->{'name'} . '"'
+		: 'stemma';
+	my @dotlines;
+	push( @dotlines, "$gdecl $gname {" );
+	## Print out the global attributes
+	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
+	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
+	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
+
+	# Add each of the nodes.
+    foreach my $n ( $graph->vertices ) {
+    	my %vattr = ( 'id' => $n );  # Set the SVG element ID to the sigil itself
+        if( $graph->has_vertex_attribute( $n, 'label' ) ) {
+        	$vattr{'label'} = $graph->get_vertex_attribute( $n, 'label' );
+        }
+		push( @dotlines, _make_dotline( $n, %vattr ) );
+    }
+    # Add each of our edges.
+    foreach my $e ( $graph->edges ) {
+    	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
+    	my $connector = $graph->is_directed ? '->' : '--';
+    	push( @dotlines, "  $from $connector $to;" );
+    }
+    push( @dotlines, '}' );
+    
+    return join( "\n", @dotlines );
+}
+
+
+=head2 editable_graph( $graph, $opts )
+
+Returns a dot specification of a stemma graph with logical witness features,
+intended for editing the stemma definition.
+
+=cut
+
+sub editable_graph {
+	my( $graph, $opts ) = @_;
+
+	# Create the graph
+	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
+	my $fq = $opts->{'forcequote'};
+	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
+	my $gname = exists $opts->{'name'} ? '"' . $opts->{'name'} . '"'
+		: 'stemma';
+	my @dotlines;
+	push( @dotlines, "$gdecl $gname {" );
+	my @real; # A cheap sort
+    foreach my $n ( sort $graph->vertices ) {
+    	my $c = $graph->get_vertex_attribute( $n, 'class' );
+    	$c = 'extant' unless $c;
+    	if( $c eq 'extant' ) {
+    		push( @real, $n );
+    	} else {
+			push( @dotlines, _make_dotline( $n, 'class' => $c, 'forcequote' => $fq ) );
+		}
+    }
+	# Now do the real ones
+	foreach my $n ( @real ) {
+		push( @dotlines, _make_dotline( $n, 'class' => 'extant', 'forcequote' => $fq ) );
+	}
+	foreach my $e ( sort _by_vertex $graph->edges ) {
+		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
+		my $conn = $graph->is_undirected ? '--' : '->';
+		push( @dotlines, "  $from $conn $to;" );
+	}
+    push( @dotlines, '}' );
+    return join( $join, @dotlines );
+}
+
+sub _make_dotline {
+	my( $obj, %attr ) = @_;
+	my @pairs;
+	my $fq = delete $attr{forcequote};
+	foreach my $k ( keys %attr ) {
+		my $v = _dotquote( $attr{$k}, $fq );
+		push( @pairs, "$k=$v" );
+	}
+	return sprintf( "  %s [ %s ];", _dotquote( $obj ), join( ', ', @pairs ) );
+}
+	
+sub _dotquote {
+	my( $str, $force ) = @_;
+	return $str if $str =~ /^[A-Za-z0-9]+$/;
+	$str =~ s/\"/\\\"/g;
+	$str = '"' . $str . '"';
+	return $str;
+}
+
+sub _by_vertex {
+	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
+}
 
 =head2 character_input( $tradition, $opts )
 
@@ -222,19 +349,12 @@ undirected graphs.
 
 sub parse_newick {
     my $newick = shift;
-    my @stemmata;
-    # Parse the result into a tree
+    # Parse the result into a set of trees and return them.
     my $forest = Bio::Phylo::IO->parse( 
         -format => 'newick',
         -string => $newick,
         );
-    # Turn the tree into a graph, starting with the root node
-    foreach my $tree ( @{$forest->get_entities} ) {
-        my $stemma = Text::Tradition::Stemma->new(
-        	graph => _graph_from_bio( $tree ) );
-        push( @stemmata, $stemma );
-    }
-    return \@stemmata;
+    return map { _graph_from_bio( $_ ) } @{$forest->get_entities};
 }
 
 sub _graph_from_bio {
