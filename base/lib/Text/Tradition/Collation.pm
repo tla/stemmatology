@@ -463,7 +463,9 @@ Returns the newly-created reading.
 
 =begin testing
 
+use Test::More::UTF8;
 use Text::Tradition;
+use TryCatch;
 
 my $st = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/collatecorr.xml' );
 is( ref( $st ), 'Text::Tradition', "Got a tradition from test file" );
@@ -499,19 +501,46 @@ is( $sc->end->rank, 11, "The ranks shifted appropriately" );
 $sc->flatten_ranks();
 is( scalar( $sc->readings ), $numr - 3, "Now we are collated correctly" );
 
+# Check that we can't "duplicate" a reading with no wits or with all wits
+try {
+	my( $badr, @del_rdgs ) = $sc->duplicate_reading( 'n124' );
+	ok( 0, "Reading duplication without witnesses throws an error" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Must specify one or more witnesses/, 
+		"Reading duplication without witnesses throws the expected error" );
+} catch {
+	ok( 0, "Reading duplication without witnesses threw the wrong error" );
+}
+
+try {
+	my( $badr, @del_rdgs ) = $sc->duplicate_reading( 'n124', 'Ba96', 'Mü11475' );
+	ok( 0, "Reading duplication with all witnesses throws an error" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/Cannot join all witnesses/, 
+		"Reading duplication with all witnesses throws the expected error" );
+} catch {
+	ok( 0, "Reading duplication with all witnesses threw the wrong error" );
+}
+
 =end testing
 
 =cut
 
 sub duplicate_reading {
 	my( $self, $r, @wits ) = @_;
-	# Add the new reading, duplicating $r.
+	# Check that we are not doing anything unwise.
+	throw( "Must specify one or more witnesses for the duplicated reading" )
+		unless @wits;
 	unless( ref( $r ) eq 'Text::Tradition::Collation::Reading' ) {
 		$r = $self->reading( $r );
 	}
 	throw( "Cannot duplicate a meta-reading" )
 		if $r->is_meta;
-	
+	my $ordered_req_wits = join( ',', sort @wits );
+	my $ordered_rdg_wits = join( ',', $r->witnesses );
+	throw( "Cannot join all witnesses to the new reading" )
+		if $ordered_req_wits eq $ordered_rdg_wits;
+
 	# Get all the reading attributes and duplicate them.	
 	my $rmeta = Text::Tradition::Collation::Reading->meta;
 	my %args;
