@@ -6,6 +6,8 @@ use Graph;
 use Graph::Reader::Dot;
 use IPC::Run qw/ run binary /;
 use Text::Tradition::Error;
+use Text::Tradition::StemmaUtil qw/ read_graph editable_graph display_graph 
+	parse_newick /;
 use Moose;
 
 =head1 NAME
@@ -102,20 +104,15 @@ use TryCatch;
 use_ok( 'Text::Tradition::Stemma' );
 
 # Try to create a bad graph
-my $baddotfh;
-open( $baddotfh, 't/data/besoin_bad.dot' ) or die "Could not open test dotfile";
 try {
-	my $stemma = Text::Tradition::Stemma->new( dot => $baddotfh );
+	my $stemma = Text::Tradition::Stemma->new( dotfile => 't/data/besoin_bad.dot' );
 	ok( 0, "Created broken stemma from dotfile with syntax error" );
 } catch( Text::Tradition::Error $e ) {
 	like( $e->message, qr/^Error trying to parse/, "Syntax error in dot threw exception" );
 }
 
 # Create a good graph
-my $dotfh;
-open( $dotfh, 't/data/florilegium.dot' ) or die "Could not open test dotfile";
-binmode( $dotfh, ':utf8' );
-my $stemma = Text::Tradition::Stemma->new( dot => $dotfh );
+my $stemma = Text::Tradition::Stemma->new( dotfile => 't/data/florilegium.dot' );
 is( ref( $stemma ), 'Text::Tradition::Stemma', "Created stemma from good dotfile" );
 is( scalar $stemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $stemma->hypotheticals, 8, "Found correct number of extant hypotheticals" );
@@ -128,10 +125,7 @@ foreach my $h ( $stemma->hypotheticals ) {
 ok( $found_unicode_sigil, "Found a correctly encoded Unicode sigil" );
 
 # Create an undirected graph
-my $undirdotfh;
-open( $undirdotfh, 't/data/besoin_undirected.dot' ) or die "Could not open test dotfile";
-binmode( $undirdotfh, ':utf8' );
-my $udstemma = Text::Tradition::Stemma->new( dot => $undirdotfh );
+my $udstemma = Text::Tradition::Stemma->new( dotfile => 't/data/besoin_undirected.dot' );
 is( ref( $udstemma ), 'Text::Tradition::Stemma', "Created stemma from undirected dotfile" );
 is( scalar $udstemma->witnesses, 13, "Found correct number of extant witnesses" );
 is( scalar $udstemma->hypotheticals, 12, "Found correct number of hypotheticals" );
@@ -172,9 +166,20 @@ has from_jobid => (
 sub BUILD {
     my( $self, $args ) = @_;
     # If we have been handed a dotfile, initialize it into a graph.
+    my $dotstring;
     if( exists $args->{'dot'} ) {
-        $self->_graph_from_dot( $args->{'dot'} );
-    } 
+        $dotstring = $args->{'dot'};
+    } elsif( exists $args->{'dotfile'} ) {
+    	# Read the file into a string.
+    	my @dotlines;
+		open( DOTFH, $args->{'dotfile'} ) 
+			or throw( "Could not read specified dot file " . $args->{'dotfile'} );
+		binmode( DOTFH, ':encoding(UTF-8)' );
+		@dotlines = <DOTFH>;
+		close DOTFH;
+    	$dotstring = join( '', @dotlines );
+    }
+    $self->_graph_from_dot( $dotstring ) if $dotstring;
 }
 
 before 'graph' => sub {
@@ -193,37 +198,12 @@ before 'graph' => sub {
 };
 
 sub _graph_from_dot {
-	my( $self, $dotfh ) = @_;
- 	my $reader = Graph::Reader::Dot->new();
- 	# Redirect STDOUT in order to trap any error messages - syntax errors
- 	# are evidently not fatal.
-	my $graph;
-	my $reader_out;
-	my $reader_err;
-	{
-		local(*STDOUT);
-		open( STDOUT, ">", \$reader_out );
-		local(*STDERR);
-		open( STDERR, ">", \$reader_err );
-		$graph = $reader->read_graph( $dotfh );
-		close STDOUT;
-		close STDERR;
-	}
-	if( $reader_out && $reader_out =~ /error/s ) {
-		throw( "Error trying to parse dot: $reader_out" );
-	} elsif( !$graph ) {
-		throw( "Failed to create graph from dot" );
-	}
+	my( $self, $dotstring ) = @_;
+	my $graph = read_graph( $dotstring );
+	
 	## HORRIBLE HACK but there is no API access to graph attributes!
-	my $graph_id = exists $graph->[4]->{'name'} ? $graph->[4]->{'name'} : 'stemma';
-	# Correct for implicit graph -> digraph quirk of reader
-	if( $reader_err && $reader_err =~ /graph will be treated as digraph/ ) {
-		my $udgraph = $graph->undirected_copy;
-		foreach my $v ( $graph->vertices ) {
-			$udgraph->set_vertex_attributes( $v, $graph->get_vertex_attributes( $v ) );
-		}
-		$graph = $udgraph;
-	}
+	my $graph_id = $graph->has_graph_attribute( 'name' ) 
+		? $graph->get_graph_attribute( 'name' ) : 'stemma';
 	$self->graph( $graph );
 	$self->set_identifier( $graph_id );
 }
@@ -232,6 +212,23 @@ sub is_undirected {
 	my( $self ) = @_;
 	return undef unless $self->has_graph;
 	return $self->graph->is_undirected;
+}
+
+=head2 new_from_newick( $newick_string )
+
+A constructor that will read a Newick-format tree specification and return one
+or more undirected Stemma objects. TODO test
+
+=cut
+
+sub new_from_newick {
+	my( $class, $nstring ) = @_;
+	my @stemmata;
+	foreach my $tree ( parse_newick( $nstring ) ) {
+        my $stemma = new( $class, graph => $tree );
+        push( @stemmata, $stemma );
+    }
+    return \@stemmata;
 }
 
 =head1 METHODS
@@ -265,56 +262,10 @@ sub as_dot {
 		map { $extant->{$_} = 1 } $self->witnesses;
 		$graph = $self->situation_graph( $extant, $opts->{'layerwits'} );
 	}
-
-    # Get default and specified options
-    my %graphopts = (
-    	# 'ratio' => 1,
-    	'bgcolor' => 'transparent',
-    );
-    my %nodeopts = (
-		'fontsize' => 11,
-		'style' => 'filled',
-		'fillcolor' => 'white',
-		'color' => 'white',
-		'shape' => 'ellipse',	# Shape for the extant nodes
-	);
-	my %edgeopts = (
-		'arrowhead' => 'none',
-	);
-	@graphopts{ keys %{$opts->{'graph'}} } = values %{$opts->{'graph'}} 
-		if $opts->{'graph'};
-	@nodeopts{ keys %{$opts->{'node'}} } = values %{$opts->{'node'}} 
-		if $opts->{'node'};
-	@edgeopts{ keys %{$opts->{'edge'}} } = values %{$opts->{'edge'}} 
-		if $opts->{'edge'};
-		
-	my $gdecl = $graph->is_directed ? 'digraph' : 'graph';
-	my $gname = $self->has_identifier ? '"' . $self->identifier . '"'
-		: 'stemma';
-	my @dotlines;
-	push( @dotlines, "$gdecl $gname {" );
-	## Print out the global attributes
-	push( @dotlines, _make_dotline( 'graph', %graphopts ) ) if keys %graphopts;
-	push( @dotlines, _make_dotline( 'edge', %edgeopts ) ) if keys %edgeopts;
-	push( @dotlines, _make_dotline( 'node', %nodeopts ) ) if keys %nodeopts;
-
-	# Add each of the nodes.
-    foreach my $n ( $graph->vertices ) {
-    	my %vattr = ( 'id' => $n );  # Set the SVG element ID to the sigil itself
-        if( $graph->has_vertex_attribute( $n, 'label' ) ) {
-        	$vattr{'label'} = $graph->get_vertex_attribute( $n, 'label' );
-        }
-		push( @dotlines, _make_dotline( $n, %vattr ) );
-    }
-    # Add each of our edges.
-    foreach my $e ( $graph->edges ) {
-    	my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-    	my $connector = $graph->is_directed ? '->' : '--';
-    	push( @dotlines, "  $from $connector $to;" );
-    }
-    push( @dotlines, '}' );
-    
-    return join( "\n", @dotlines );
+	if( $self->has_identifier ) {
+		$opts->{'name'} = $self->identifier;
+	}
+	return display_graph( $graph, $opts );
 }
 
 =head2 alter_graph( $dotstring )
@@ -326,15 +277,10 @@ in $dotstring.
 
 sub alter_graph {
 	my( $self, $dotstring ) = @_;
-	my $dotfh;
-	open $dotfh, '<', \$dotstring;
-	binmode $dotfh, ':utf8';
-	$self->_graph_from_dot( $dotfh );
+	$self->_graph_from_dot( $dotstring );
 }
 
 =head2 editable( $opts )
-
-=head2 editable_graph( $graph, $opts )
 
 Returns a version of the graph rendered in our definition format.  The
 output separates statements with a newline; set $opts->{'linesep'} to the 
@@ -360,60 +306,6 @@ sub editable {
 	return editable_graph( $graph, $opts );
 }
 
-sub editable_graph {
-	my( $graph, $opts ) = @_;
-
-	# Create the graph
-	my $join = ( $opts && exists $opts->{'linesep'} ) ? $opts->{'linesep'} : "\n";
-	my $gdecl = $graph->is_undirected ? 'graph' : 'digraph';
-	my $gname = exists $opts->{'name'} ? '"' . $opts->{'name'} . '"'
-		: 'stemma';
-	my @dotlines;
-	push( @dotlines, "$gdecl $gname {" );
-	my @real; # A cheap sort
-    foreach my $n ( sort $graph->vertices ) {
-    	my $c = $graph->get_vertex_attribute( $n, 'class' );
-    	$c = 'extant' unless $c;
-    	if( $c eq 'extant' ) {
-    		push( @real, $n );
-    	} else {
-			push( @dotlines, _make_dotline( $n, 'class' => $c ) );
-		}
-    }
-	# Now do the real ones
-	foreach my $n ( @real ) {
-		push( @dotlines, _make_dotline( $n, 'class' => 'extant' ) );
-	}
-	foreach my $e ( sort _by_vertex $graph->edges ) {
-		my( $from, $to ) = map { _dotquote( $_ ) } @$e;
-		my $conn = $graph->is_undirected ? '--' : '->';
-		push( @dotlines, "  $from $conn $to;" );
-	}
-    push( @dotlines, '}' );
-    return join( $join, @dotlines );
-}
-
-sub _make_dotline {
-	my( $obj, %attr ) = @_;
-	my @pairs;
-	foreach my $k ( keys %attr ) {
-		my $v = _dotquote( $attr{$k} );
-		push( @pairs, "$k=$v" );
-	}
-	return sprintf( "  %s [ %s ];", _dotquote( $obj ), join( ', ', @pairs ) );
-}
-	
-sub _dotquote {
-	my( $str ) = @_;
-	return $str if $str =~ /^[A-Za-z0-9]+$/;
-	$str =~ s/\"/\\\"/g;
-	$str = '"' . $str . '"';
-	return $str;
-}
-
-sub _by_vertex {
-	return $a->[0].$a->[1] cmp $b->[0].$b->[1];
-}
 
 =head2 situation_graph( $extant, $layered )
 

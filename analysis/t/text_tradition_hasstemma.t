@@ -46,7 +46,7 @@ is( $newst->[0], $t->stemma(0), "Answer has the right object" );
 ok( !$t->has_stemweb_jobid, "Job ID was removed from tradition" );
 is( $t->stemma_count, 1, "Tradition has new stemma" );
 ok( $t->stemma(0)->is_undirected, "New stemma is undirected as it should be" );
-is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifier" );
+is( $t->stemma(0)->identifier, "RHM 1382784254_0", "Stemma has correct identifier" );
 is( $t->stemma(0)->from_jobid, 4, "New stemma has correct associated job ID" );
 }
 

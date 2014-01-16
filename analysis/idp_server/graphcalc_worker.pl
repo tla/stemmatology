@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use feature 'unicode_strings';
+use feature qw/ say unicode_strings /;
 use lib '/home/tla/stemmatology/lib';
 use Encode qw/ decode_utf8 /;
 use Fcntl qw/ :flock /;
@@ -65,7 +65,7 @@ $worker->work while 1;
 
 sub run_idp {
     my $job = shift;
-    print "Beginning IDP run for ID(s) " . $job->arg . "\n";
+    say scalar( localtime( time() ) ) . "\tBeginning IDP run for ID(s) " . $job->arg;
     my @problemids = split( /\s*,\s*/, $job->arg );
     my $scope = $db->new_scope();
     # Look up each problem ID and sort them into distinct groups by graph.
@@ -79,10 +79,10 @@ sub run_idp {
         if( $result ) {
             # Check to see if it already has an answer
             if( $result->status && $result->status eq 'OK' ) {
-                print STDERR "Solution already recorded for Analysis::Result problem $problem\n";
+                say STDERR "Solution already recorded for Analysis::Result problem $problem";
                 next;
             } elsif( $result->status && $result->status eq 'running' ) {
-                print STDERR "Already working on Analysis::Result problem $problem\n";
+                say STDERR "Already working on Analysis::Result problem $problem";
                 next;
             }
             # No? Then add it to our list.
@@ -96,7 +96,7 @@ sub run_idp {
                 unless exists $dgproblems{$result->graph};
             push( @{$dgproblems{$result->graph}}, $problem );
         } else {
-            print STDERR "Did not find Analysis::Result with ID $problem; skipping\n";
+            say STDERR "Did not find Analysis::Result with ID $problem; skipping";
         }
     }
 
@@ -116,32 +116,45 @@ sub run_idp {
             my( $ret, $err );
             run( \@cmd, \$datastr, \$ret, \$err );
             
-            if( $err =~ /^Error:/m ) {
-                print STDERR "Error running idp: $err\n";
-                return;
-            }
-        
-            # Save the result for the given program
-            $idpanswer{$program} = _desanitize_names( decode_json( $ret ) );
+            my $got_error;
+            say STDERR "IDP run output:\n$err";
+            if( $err =~ / Error:/m ) {
+                $idpanswer{$program} = 'error';
+                say STDERR "Input data was " . decode_utf8( $datastr );
+            } else {
+				# Save the result for the given program
+				try {
+					$idpanswer{$program} = _desanitize_names( decode_json( $ret ) );
+				} catch {
+					say STDERR "Could not parse string '$ret' as JSON";
+					$idpanswer{$program} = 'error';
+				}
+			}
         }
         # Now map the results from IDP back into the database.
         foreach my $idx ( 0 .. $#{$dgproblems{$dg}} ) {
             my $result = $db->lookup( $dgproblems{$dg}->[$idx] );
-            my $genanswer = $idpanswer{'findGroupings'}->[$idx];
-            $result->is_genealogical( $genanswer->[1] ? 1 : 0 );
+            my $groupstatus = $idpanswer{'findGroupings'};
+            my $classstatus = $idpanswer{'findClasses'};
+            if( $groupstatus eq 'error' || $classstatus eq 'error' ) {
+            	$result->status('error');
+            } else {
+				my $genanswer = $groupstatus->[$idx];
+				$result->is_genealogical( $genanswer->[1] ? 1 : 0 );
 
-            # We take the groupings as well as the classes from the 
-            # findClasses answer, to make sure they match
-            my $classanswer = $idpanswer{'findClasses'}->[$idx];
-            foreach my $grouping ( @{$classanswer->[0]} ) {
-                $result->record_grouping( $grouping );
-            }
-            foreach my $class ( keys %{$classanswer->[1]} ) {
-                my $class_members = $classanswer->[1]->{$class};
-                map { $result->set_class( $_, $class ) } @$class_members;
-            }
-            $result->status('OK');
-            print "Saving new IDP result with ID key " . $result->object_key . "\n";
+				# We take the groupings as well as the classes from the 
+				# findClasses answer, to make sure they match
+				my $classanswer = $classstatus->[$idx];
+				foreach my $grouping ( @{$classanswer->[0]} ) {
+					$result->record_grouping( $grouping );
+				}
+				foreach my $class ( keys %{$classanswer->[1]} ) {
+					my $class_members = $classanswer->[1]->{$class};
+					map { $result->set_class( $_, $class ) } @$class_members;
+				}
+				$result->status('OK');
+				say "Saving new IDP result with ID key " . $result->object_key;
+			}
             $db->save( $result );
         }
         

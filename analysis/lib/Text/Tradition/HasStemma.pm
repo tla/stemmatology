@@ -5,7 +5,6 @@ use warnings;
 use Moose::Role;
 use Date::Parse;
 use Text::Tradition::Stemma;
-use Text::Tradition::StemmaUtil qw/ parse_newick /;
 
 =head1 NAME
 
@@ -83,7 +82,9 @@ before 'set_stemweb_jobid' => sub {
 	}
 };
 
-=head2 add_stemma( $dotfile )
+=head2 add_stemma( dotfile => $dotfile )
+=head2 add_stemma( dot => $dotstring )
+=head2 add_stemma( $stemma_obj )
 
 Initializes a Text::Tradition::Stemma object from the given dotfile,
 and associates it with the tradition.
@@ -110,19 +111,12 @@ is( $t->stemma(0), $s, "Tradition hands back the right stemma" );
 
 sub add_stemma {
 	my $self = shift;
-	my %opts = @_;
-	my $stemma_fh;
-	if( $opts{'dotfile'} ) {
-		open $stemma_fh, '<', $opts{'dotfile'}
-			or warn "Could not open file " . $opts{'dotfile'};
-	} elsif( $opts{'dot'} ) {
-		my $str = $opts{'dot'};
-		open $stemma_fh, '<', \$str;
+	my $stemma;
+	if( ref( @_ ) eq 'Text::Tradition::Stemma' ) {
+		$stemma = shift;
+	} else {
+		$stemma = Text::Tradition::Stemma->new( @_ );
 	}
-	# Assume utf-8
-	binmode $stemma_fh, ':utf8';
-	my $stemma = Text::Tradition::Stemma->new( 
-		'dot' => $stemma_fh );
 	$self->_add_stemma( $stemma ) if $stemma;
 	return $stemma;
 }
@@ -153,7 +147,7 @@ is( $newst->[0], $t->stemma(0), "Answer has the right object" );
 ok( !$t->has_stemweb_jobid, "Job ID was removed from tradition" );
 is( $t->stemma_count, 1, "Tradition has new stemma" );
 ok( $t->stemma(0)->is_undirected, "New stemma is undirected as it should be" );
-is( $t->stemma(0)->identifier, "RHM 1382777054_0", "Stemma has correct identifier" );
+is( $t->stemma(0)->identifier, "RHM 1382784254_0", "Stemma has correct identifier" );
 is( $t->stemma(0)->from_jobid, 4, "New stemma has correct associated job ID" );
 
 
@@ -168,9 +162,9 @@ sub record_stemweb_result {
 	if( $answer->{format} eq 'dot' ) {
 		$self->add_stemma( dot => $answer->{result} );
 	} elsif( $answer->{format} eq 'newick' ) {
-		$stemmata = parse_newick( $answer->{result} );
+		$stemmata = Text::Tradition::Stemma->new_from_newick( $answer->{result} );
 		my $title = sprintf( "%s %d", $answer->{algorithm}, 
-			str2time( $answer->{start_time} ) );
+			str2time( $answer->{start_time}, 'UTC' ) );
 		my $i = 0;
 		foreach my $stemma ( @$stemmata ) {
 			my $ititle = $title . "_$i"; $i++;
