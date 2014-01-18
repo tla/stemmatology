@@ -104,6 +104,13 @@ has 'text' => (
 	writer => 'alter_text',
 	);
 	
+has 'is_lemma' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+	writer => 'make_lemma',
+	);
+	
 has 'is_start' => (
 	is => 'ro',
 	isa => 'Bool',

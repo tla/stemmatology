@@ -117,11 +117,16 @@ has 'alters_meaning' => (
 	default => 0,
 	);
 
-has 'non_correctable' => (
+has 'a_derivable_from_b' => (
 	is => 'ro',
 	isa => 'Bool',
 	);
-
+	
+has 'b_derivable_from_a' => (
+	is => 'ro',
+	isa => 'Bool',
+	);
+	
 has 'non_independent' => (
 	is => 'ro',
 	isa => 'Bool',
