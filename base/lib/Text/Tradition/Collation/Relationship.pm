@@ -49,8 +49,9 @@ or across all traditions.
 the text to have different meanings. Possible values are 0 (no), 1 (slightly),
 and >1 (yes).
 
-=item * non_correctable - (Optional) True if the reading would not have been 
-corrected independently.
+=item * a_derivable_from_b - (Optional) True if the first reading is likely to 
+
+=item * b_derivable_from_a - (Optional) True if the second reading is likely to
 
 =item * non_independent - (Optional) True if the variant is unlikely to have 
 occurred independently in unrelated witnesses.
@@ -67,7 +68,9 @@ occurred independently in unrelated witnesses.
 
 =head2 annotation
 
-=head2 non_correctable
+=head2 a_derivable_from_b
+
+=head2 b_derivable_from_a
 
 =head2 non_independent
 
