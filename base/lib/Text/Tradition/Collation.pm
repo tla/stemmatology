@@ -233,6 +233,12 @@ sub register_relationship_type {
 	$self->relations->add_type( %args );
 }
 
+sub get_relationship_type {
+	my( $self, $name ) = @_;
+		return $self->relations->has_type( $name ) 
+			? $self->relations->type( $name ) : undef;
+}
+
 ### Reading construct/destruct functions
 
 sub add_reading {
