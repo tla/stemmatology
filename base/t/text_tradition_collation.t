@@ -53,6 +53,55 @@ is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
 
 # =begin testing
 {
+use Text::Tradition;
+use TryCatch;
+
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Self',
+    'file'  => 't/data/legendfrag.xml',
+    );
+my $c = $t->collation;
+
+my %rdg_ids;
+map { $rdg_ids{$_} = 1 } $c->readings;
+$c->merge_related( 'orthographic' );
+is( scalar( $c->readings ), keys( %rdg_ids ) - 8, 
+	"Successfully collapsed orthographic variation" );
+map { $rdg_ids{$_} = undef } qw/ r13.3 r11.4 r8.5 r8.2 r7.7 r7.5 r7.4 r7.1 /;
+foreach my $rid ( keys %rdg_ids ) {
+	my $exp = $rdg_ids{$rid};
+	is( !$c->reading( $rid ), !$exp, "Reading $rid correctly " . 
+		( $exp ? "retained" : "removed" ) );
+}
+ok( $c->linear, "Graph is still linear" );
+try {
+	$c->calculate_ranks; # This should succeed
+	ok( 1, "Can still calculate ranks on the new graph" );
+} catch {
+	ok( 0, "Rank calculation on merged graph failed: $@" );
+}
+
+# Now add some transpositions
+$c->add_relationship( 'r8.4', 'r10.4', { type => 'transposition' } );
+$c->merge_related( 'transposition' );
+is( scalar( $c->readings ), keys( %rdg_ids ) - 9, 
+	"Transposed relationship is merged away" );
+ok( !$c->reading('r8.4'), "Correct transposed reading removed" );
+ok( !$c->linear, "Graph is no longer linear" );
+try {
+	$c->calculate_ranks; # This should fail
+	ok( 0, "Rank calculation happened on nonlinear graph?!" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Cannot calculate ranks on a non-linear graph', 
+		"Rank calculation on merged graph threw an error" );
+}
+}
+
+
+
+# =begin testing
+{
 use Test::More::UTF8;
 use Text::Tradition;
 use TryCatch;

@@ -385,6 +385,99 @@ sub merge_readings {
 	$self->del_reading( $deleted );
 }
 
+=head2 merge_related( @relationship_types )
+
+Merge all readings linked with the relationship types given. If any of the selected type(s) is not a colocation, the graph will no longer be linear. The majority/plurality reading in each case will be the one kept. 
+
+WARNING: This operation cannot be undone.
+
+=cut
+
+=begin testing
+
+use Text::Tradition;
+use TryCatch;
+
+my $t = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Self',
+    'file'  => 't/data/legendfrag.xml',
+    );
+my $c = $t->collation;
+
+my %rdg_ids;
+map { $rdg_ids{$_} = 1 } $c->readings;
+$c->merge_related( 'orthographic' );
+is( scalar( $c->readings ), keys( %rdg_ids ) - 8, 
+	"Successfully collapsed orthographic variation" );
+map { $rdg_ids{$_} = undef } qw/ r13.3 r11.4 r8.5 r8.2 r7.7 r7.5 r7.4 r7.1 /;
+foreach my $rid ( keys %rdg_ids ) {
+	my $exp = $rdg_ids{$rid};
+	is( !$c->reading( $rid ), !$exp, "Reading $rid correctly " . 
+		( $exp ? "retained" : "removed" ) );
+}
+ok( $c->linear, "Graph is still linear" );
+try {
+	$c->calculate_ranks; # This should succeed
+	ok( 1, "Can still calculate ranks on the new graph" );
+} catch {
+	ok( 0, "Rank calculation on merged graph failed: $@" );
+}
+
+# Now add some transpositions
+$c->add_relationship( 'r8.4', 'r10.4', { type => 'transposition' } );
+$c->merge_related( 'transposition' );
+is( scalar( $c->readings ), keys( %rdg_ids ) - 9, 
+	"Transposed relationship is merged away" );
+ok( !$c->reading('r8.4'), "Correct transposed reading removed" );
+ok( !$c->linear, "Graph is no longer linear" );
+try {
+	$c->calculate_ranks; # This should fail
+	ok( 0, "Rank calculation happened on nonlinear graph?!" );
+} catch ( Text::Tradition::Error $e ) {
+	is( $e->message, 'Cannot calculate ranks on a non-linear graph', 
+		"Rank calculation on merged graph threw an error" );
+}
+
+
+
+=end testing
+
+=cut
+
+# TODO: there should be a way to display merged without affecting the underlying data!
+
+sub merge_related {
+	my $self = shift;
+	my %reltypehash;
+	map { $reltypehash{$_} = 1 } @_;
+	
+	# Set up the filter for finding related readings
+	my $filter = sub {
+		exists $reltypehash{$_[0]->type};
+	};
+	
+	my $linear = 1;
+	# Go through all readings looking for related ones
+	foreach my $r ( $self->readings ) {
+		next unless $self->reading( "$r" ); # might have been deleted meanwhile
+		my @related = $self->related_readings( $r, $filter );
+		if( @related ) {
+			push( @related, $r );
+			@related = sort { 
+					scalar $b->witnesses <=> scalar $a->witnesses
+				} @related;
+			my $keep = shift @related;
+			foreach my $delr ( @related ) {
+				$linear = undef 
+					unless( $self->get_relationship( $keep, $delr )->colocated );
+				$self->merge_readings( $keep, $delr );
+			}
+		}
+	}
+	$self->linear( $linear );
+}
+
 =head2 compress_readings
 
 Where possible in the graph, compresses plain sequences of readings into a
@@ -1875,6 +1968,8 @@ isnt( $c->alignment_table, $table, "Alignment table changed after colo relations
 sub calculate_ranks {
     my $self = shift;
     # Save the existing ranks, in case we need to invalidate the cached SVG.
+    throw( "Cannot calculate ranks on a non-linear graph" ) 
+    	unless $self->linear;
     my %existing_ranks;
     map { $existing_ranks{$_} = $_->rank } $self->readings;
 
