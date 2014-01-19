@@ -6,6 +6,7 @@
   <key attr.name="linear" attr.type="string" for="graph" id="dg3"/>
   <key attr.name="ac_label" attr.type="string" for="graph" id="dg4"/>
   <key attr.name="public" attr.type="boolean" for="graph" id="dg5"/>
+  <key attr.name="name" attr.type="string" for="graph" id="dg6"/>
   <key attr.name="text" attr.type="string" for="node" id="dn0"/>
   <key attr.name="is_end" attr.type="boolean" for="node" id="dn1"/>
   <key attr.name="is_start" attr.type="boolean" for="node" id="dn2"/>
@@ -19,13 +20,14 @@
   <key attr.name="extra" attr.type="boolean" for="edge" id="de4"/>
   <key attr.name="class" attr.type="string" for="edge" id="de5"/>
   <key attr.name="colocated" attr.type="boolean" for="edge" id="de6"/>
-  <graph edgedefault="directed" id="Tradition" parse.edgeids="canonical" parse.edges="376" parse.nodeids="canonical" parse.nodes="319" parse.order="nodesfirst">
+  <graph edgedefault="directed" id="Florilegium_Coislinianum_β" parse.edgeids="canonical" parse.edges="376" parse.nodeids="canonical" parse.nodes="319" parse.order="nodesfirst">
     <data key="dg0">2.0</data>
     <data key="dg1">, </data>
     <data key="dg2">base text</data>
     <data key="dg3">1</data>
     <data key="dg4"> (a.c.)</data>
     <data key="dg5">1</data>
+    <data key="dg6">Florilegium Coislinianum β</data>
     <node id="n0">
       <data key="dn0">#END#</data>
       <data key="dn1">1</data>

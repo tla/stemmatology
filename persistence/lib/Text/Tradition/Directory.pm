@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Moose;
 use DBI;
-use Encode qw/ decode_utf8 /;
+use Encode qw/ encode decode_utf8 /;
 use KiokuDB::GC::Naive;
 use KiokuDB::TypeMap;
 use KiokuDB::TypeMap::Entry::Naive;
@@ -241,6 +241,12 @@ has +typemap => (
   },
 );
 
+has '_mysql_utf8_hack' => (
+	is => 'ro',
+	isa => 'Bool',
+	default => undef,
+);
+
 # Push some columns into the extra_args
 around BUILDARGS => sub {
 	my $orig = shift;
@@ -252,10 +258,20 @@ around BUILDARGS => sub {
 		$args = { @_ };
 	}
 	my @column_args;
-	if( $args->{'dsn'} =~ /^dbi/ ) { # We're using Backend::DBI
+	if( $args->{'dsn'} =~ /^dbi:(\w+):/ ) { # We're using Backend::DBI
+		my $dbtype = $1;
 		@column_args = ( 'columns',
 			[ 'name' => { 'data_type' => 'varchar', 'is_nullable' => 1 },
 			  'public' => { 'data_type' => 'bool', 'is_nullable' => 1 } ] );
+		if( $dbtype eq 'mysql' && 
+			exists $args->{extra_args}->{dbi_attrs} &&
+			$args->{extra_args}->{dbi_attrs}->{mysql_enable_utf8} ) {
+			# There is a bad interaction with MySQL in utf-8 mode.
+			# Work around it here.
+			# TODO fix the underlying storage problem
+			$args->{extra_args}->{dbi_attrs}->{mysql_enable_utf8} = undef;
+			$args->{_mysql_utf8_hack} = 1;
+		}
 	}
 	my $ea = $args->{'extra_args'};
 	if( ref( $ea ) eq 'ARRAY' ) {
@@ -358,9 +374,12 @@ sub _get_object_idlist {
 			. $objclass . '"' );
 		$q->execute();
 		while( my @row = $q->fetchrow_array ) {
-			my( $id, $name ) = @row;
-			# Horrible horrible hack
-			$name = decode_utf8( $name ) if $dbtype eq 'mysql';
+			# Horrible horrible hack. Re-convert the name to UTF-8.
+			if( $self->_mysql_utf8_hack ) {
+				# Convert the chars into a raw bytestring.
+				my $octets = encode( 'ISO-8859-1', $row[1] );
+				$row[1] = decode_utf8( $octets );
+			}
 			push( @tlist, { 'id' => $row[0], 'name' => $row[1], 'public' => $row[2] } );
 		}
 	} else {
