@@ -233,6 +233,12 @@ sub register_relationship_type {
 	$self->relations->add_type( %args );
 }
 
+sub get_relationship_type {
+	my( $self, $name ) = @_;
+		return $self->relations->has_type( $name ) 
+			? $self->relations->type( $name ) : undef;
+}
+
 ### Reading construct/destruct functions
 
 sub add_reading {
@@ -629,10 +635,8 @@ sub duplicate_reading {
 	}
 	throw( "Cannot duplicate a meta-reading" )
 		if $r->is_meta;
-	my $ordered_req_wits = join( ',', sort @wits );
-	my $ordered_rdg_wits = join( ',', $r->witnesses );
 	throw( "Cannot join all witnesses to the new reading" )
-		if $ordered_req_wits eq $ordered_rdg_wits;
+		if scalar( @wits ) == scalar( $r->witnesses );
 
 	# Get all the reading attributes and duplicate them.	
 	my $rmeta = Text::Tradition::Collation::Reading->meta;
