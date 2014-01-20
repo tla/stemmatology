@@ -1033,21 +1033,30 @@ sub as_dot {
     	if( $filter eq 'transposition' ) {
     		$filter =~ qr/^transposition$/;
     	}
+    	my %typecolors;
+    	my @types = sort( map { $_->name } $self->relations->types );
+    	if( exists $opts->{graphcolors} ) {
+    		foreach my $tdx ( 0 .. $#types ) {
+    			$typecolors{$types[$tdx]} = $opts->{graphcolors}->[$tdx];
+    		}
+    	} else {
+    		map { $typecolors{$_} = '#FFA14F' } @types;
+    	}
     	foreach my $redge ( $self->relationships ) {
     		if( $used{$redge->[0]} && $used{$redge->[1]} ) {
-    			if( $filter ne 'all' ) {
-    				my $rel = $self->get_relationship( $redge );
-    				next unless $rel->type =~ /$filter/;
-					my $variables = { 
-						arrowhead => 'none',
-						color => '#FFA14F',
-						constraint => 'false',
-						label => uc( substr( $rel->type, 0, 4 ) ), 
-						penwidth => '3',
-					};
-					$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n",
-						$redge->[0], $redge->[1], _dot_attr_string( $variables ) );
+				my $rel = $self->get_relationship( $redge );
+				next unless $filter eq 'all' || $rel->type =~ /$filter/;
+				my $variables = { 
+					arrowhead => 'none',
+					color => $typecolors{$rel->type},
+					constraint => 'false',
+					penwidth => '3',
+				};
+				unless( exists $opts->{graphcolors} ) {
+					$variables->{label} = uc( substr( $rel->type, 0, 4 ) ), 
 				}
+				$dot .= sprintf( "\t\"%s\" -> \"%s\" %s;\n",
+					$redge->[0], $redge->[1], _dot_attr_string( $variables ) );
     		}
     	}
     }
