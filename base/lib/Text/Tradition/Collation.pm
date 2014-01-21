@@ -357,6 +357,22 @@ sub merge_readings {
 				|| $del_obj eq $self->start || $del_obj eq $self->end );
 		throw( "Cannot combine text of meta readings" ) if $combine;
 	}
+	# We can only merge readings in a linear graph if:
+	# - they are contiguous with only one edge between them, OR
+	# - they are at equivalent ranks in the graph.
+	if( $self->linear ) {
+		my @delpred = $del_obj->predecessors;
+		my @keptsuc = $kept_obj->successors;
+		unless ( @delpred == 1 && $delpred[0] eq $kept_obj 
+			&& @keptsuc == 1 && $keptsuc[0] eq $del_obj ) {
+			my( $is_ok, $msg ) = $self->relations->relationship_valid( 
+				$kept_obj, $del_obj, 'collated' );
+			unless( $is_ok ) {
+				throw( "Readings $kept_obj and $del_obj can be neither concatenated nor collated" );
+			} 
+		}
+	}
+	
 	# We only need the IDs for adding paths to the graph, not the reading
 	# objects themselves.
 	my $kept = $kept_obj->id;
