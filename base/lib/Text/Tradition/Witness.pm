@@ -3,10 +3,9 @@ package Text::Tradition::Witness;
 use vars qw( %tags );
 use JSON;
 use Moose;
-use Moose::Util::TypeConstraints;
+use Text::Tradition::Datatypes;
 use Text::TEI::Markup qw( word_tag_wrap );
 use TryCatch;
-use XML::Easy::Syntax qw( $xml10_name_rx );
 
 =head1 NAME
 
@@ -184,18 +183,6 @@ if( $xpwit ) {
 # Enable plugin(s) if available
 eval { with 'Text::Tradition::WitLanguage'; };
 	
-subtype 'SourceType',
-	as 'Str',
-	where { $_ =~ /^(xmldesc|plaintext|json|collation)$/ },
-	message { 'Source type must be one of xmldesc, plaintext, json, collation' };
-	
-subtype 'Sigil',
-	as 'Str',
-	where { $_ =~ /\A$xml10_name_rx\z/ },
-	message { 'Sigil must be a valid XML attribute string' };
-
-no Moose::Util::TypeConstraints;
-
 has 'tradition' => (
 	is => 'ro',
 	isa => 'Text::Tradition',

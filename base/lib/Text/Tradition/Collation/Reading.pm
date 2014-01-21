@@ -2,17 +2,10 @@ package Text::Tradition::Collation::Reading;
 
 use Moose;
 use Moose::Util qw/ does_role apply_all_roles /;
-use Moose::Util::TypeConstraints;
+use Text::Tradition::Datatypes;
 use Text::Tradition::Error;
 use XML::Easy::Syntax qw( $xml10_name_rx $xml10_namestartchar_rx );
 use overload '""' => \&_stringify, 'fallback' => 1;
-
-subtype 'ReadingID',
-	as 'Str',
-	where { $_ =~ /\A$xml10_name_rx\z/ },
-	message { 'Reading ID must be a valid XML attribute string' };
-	
-no Moose::Util::TypeConstraints;
 
 # Enable plugin(s) if available
 eval { with 'Text::Tradition::Morphology'; };

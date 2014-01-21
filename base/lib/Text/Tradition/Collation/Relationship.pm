@@ -1,11 +1,7 @@
 package Text::Tradition::Collation::Relationship;
 
 use Moose;
-use Moose::Util::TypeConstraints;
-
-enum 'RelationshipScope' => [ qw( local document global ) ];
-
-no Moose::Util::TypeConstraints;
+use Text::Tradition::Datatypes;
 
 =head1 NAME
 
@@ -56,6 +52,10 @@ and >1 (yes).
 =item * non_independent - (Optional) True if the variant is unlikely to have 
 occurred independently in unrelated witnesses.
 
+=item * is_significant - (Optional) Indicates whether, in the opinion of the scholar,
+the variation in question is stemmatically significant. Possible values are 'yes',
+'maybe', and 'no'.
+
 =back
 
 =head1 ACCESSORS
@@ -73,6 +73,8 @@ occurred independently in unrelated witnesses.
 =head2 b_derivable_from_a
 
 =head2 non_independent
+
+=head2 is_significant
 
 See the option descriptions above.
 
@@ -133,6 +135,12 @@ has 'b_derivable_from_a' => (
 has 'non_independent' => (
 	is => 'ro',
 	isa => 'Bool',
+	);
+	
+has 'is_significant' => (
+	is => 'ro',
+	isa => 'Ternary',
+	default => 'no',
 	);
 	
 around 'alters_meaning' => sub {
