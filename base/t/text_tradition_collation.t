@@ -9,6 +9,7 @@ $| = 1;
 # =begin testing
 {
 use Text::Tradition;
+use TryCatch;
 
 my $cxfile = 't/data/Collatex-16.xml';
 my $t = Text::Tradition->new( 
@@ -41,26 +42,40 @@ $c->merge_readings( 'n9', 'n10' );
 ok( !$c->reading('n10'), "Reading n10 is gone" );
 is( $c->reading('n9')->text, 'rood', "Reading n9 has an unchanged word" );
 
-# Combine n21 and n21p0
+# Try to combine n21 and n21p0. This should break.
 my $remaining = $c->reading('n21');
 $remaining ||= $c->reading('n22');  # one of these should still exist
-$c->merge_readings( 'n21p0', $remaining, 1 );
-ok( !$c->reading('n21'), "Reading $remaining is gone" );
-is( $c->reading('n21p0')->text, 'unto', "Reading n21p0 merged correctly" );
+try {
+	$c->merge_readings( 'n21p0', $remaining, 1 );
+	ok( 0, "Bad reading merge changed the graph" );
+} catch( Text::Tradition::Error $e ) {
+	like( $e->message, qr/neither concatenated nor collated/, "Expected exception from bad concatenation" );
+} catch {
+	ok( 0, "Unexpected error on bad reading merge: $@" );
+}
+
+try {
+	$c->calculate_ranks();
+	ok( 1, "Graph is still evidently whole" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Caught a rank exception: " . $e->message );
+}
 }
 
 
 
 # =begin testing
 {
+use Test::Warn;
 use Text::Tradition;
 use TryCatch;
 
-my $t = Text::Tradition->new( 
-    'name'  => 'inline', 
-    'input' => 'Self',
-    'file'  => 't/data/legendfrag.xml',
-    );
+my $t;
+warnings_exist {
+	$t = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/legendfrag.xml' );
+} [qr/Cannot set relationship on a meta reading/],
+	"Got expected relationship drop warning on parse";
+
 my $c = $t->collation;
 
 my %rdg_ids;
@@ -159,6 +174,13 @@ try {
 		"Reading duplication with all witnesses throws the expected error" );
 } catch {
 	ok( 0, "Reading duplication with all witnesses threw the wrong error" );
+}
+
+try {
+	$sc->calculate_ranks();
+	ok( 1, "Graph is still evidently whole" );
+} catch( Text::Tradition::Error $e ) {
+	ok( 0, "Caught a rank exception: " . $e->message );
 }
 }
 
