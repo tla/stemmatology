@@ -1269,7 +1269,8 @@ is( scalar $c->relationships, 0, "Collation has all relationships" );
 # Add a few relationships
 $c->add_relationship( 'w123', 'w125', { 'type' => 'collated' } );
 $c->add_relationship( 'w193', 'w196', { 'type' => 'collated' } );
-$c->add_relationship( 'w257', 'w262', { 'type' => 'transposition' } );
+$c->add_relationship( 'w257', 'w262', { 'type' => 'transposition', 
+					  'is_significant' => 'yes' } );
 
 # Now write it to GraphML and parse it again.
 
@@ -1278,6 +1279,8 @@ my $st = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml );
 is( scalar $st->collation->readings, $READINGS, "Reparsed collation has all readings" );
 is( scalar $st->collation->paths, $PATHS, "Reparsed collation has all paths" );
 is( scalar $st->collation->relationships, 3, "Reparsed collation has new relationships" );
+my $sigrel = $st->collation->get_relationship( 'w257', 'w262' );
+is( $sigrel->is_significant, 'yes', "Ternary attribute value was restored" );
 
 # Now add a stemma, write to GraphML, and look at the output.
 SKIP: {
@@ -1337,6 +1340,7 @@ sub as_graphml {
     	'ReadingID' => 'string',
     	'RelationshipType' => 'string',
     	'RelationshipScope' => 'string',
+    	'Ternary' => 'string',
     );
     
     # Add the data keys for the graph. Include an extra key 'version' for the
