@@ -830,6 +830,13 @@ sub _resolve_parent_relationships {
 		my $prep = $pobj ? $pobj->id . ' (' . $pobj->text . ')' : $p;
 		my $phash = { 'label' => $prep };
 		if( $pobj ) {
+			# Get the attributes of the parent object while we are here
+			$phash->{'text'} = $pobj->text if $pobj;
+			if( $pobj && $pobj->does('Text::Tradition::Morphology') ) {
+				$phash->{'is_nonsense'} = $pobj->is_nonsense;
+				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
+			}
+			# Now look at the relationship
 			my $rel = $c->get_relationship( $p, $rid );
 			if( $rel && $rel->type eq 'collated' ) {
 				$rel = undef;
@@ -870,12 +877,6 @@ sub _resolve_parent_relationships {
 			} else {
 				$phash->{relation} = { type => 'deletion' };
 			}
-			# Get the attributes of the parent object while we are here
-			$phash->{'text'} = $pobj->text if $pobj;
-			if( $pobj && $pobj->does('Text::Tradition::Morphology') ) {
-				$phash->{'is_nonsense'} = $pobj->is_nonsense;
-				$phash->{'is_ungrammatical'} = $pobj->grammar_invalid;
-			}
 		} elsif( $p eq '(omitted)' ) {
 			# Check to see if the reading in question is a repetition.
 			my @reps = $rdg->related_readings( 'repetition' );
@@ -897,6 +898,14 @@ sub _add_to_hash {
 	$phash->{relation}->{transposed} = 1 if $is_transposed;
 	$phash->{relation}->{annotation} = $rel->annotation
 		if $rel->has_annotation;
+	# Get all the relevant relationship info.
+	foreach my $prop ( qw/ non_independent is_significant / ) {
+		$phash->{relation}->{$prop} = $rel->$prop;
+	}
+	# Figure out if the variant was judged revertible.
+	my $is_a = $rel->reading_a eq $phash->{text};
+	$phash->{revertible} = $is_a 
+		? $rel->a_derivable_from_b : $rel->b_derivable_from_a;
 }
 
 =head2 similar( $word1, $word2 )
