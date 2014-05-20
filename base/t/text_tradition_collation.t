@@ -81,9 +81,9 @@ my $c = $t->collation;
 my %rdg_ids;
 map { $rdg_ids{$_} = 1 } $c->readings;
 $c->merge_related( 'orthographic' );
-is( scalar( $c->readings ), keys( %rdg_ids ) - 8, 
+is( scalar( $c->readings ), keys( %rdg_ids ) - 9, 
 	"Successfully collapsed orthographic variation" );
-map { $rdg_ids{$_} = undef } qw/ r13.3 r11.4 r8.5 r8.2 r7.7 r7.5 r7.4 r7.1 /;
+map { $rdg_ids{$_} = undef } qw/ r13.3 r11.4 r8.5 r8.2 r7.7 r7.5 r7.4 r7.3 r7.1 /;
 foreach my $rid ( keys %rdg_ids ) {
 	my $exp = $rdg_ids{$rid};
 	is( !$c->reading( $rid ), !$exp, "Reading $rid correctly " . 
@@ -100,7 +100,7 @@ try {
 # Now add some transpositions
 $c->add_relationship( 'r8.4', 'r10.4', { type => 'transposition' } );
 $c->merge_related( 'transposition' );
-is( scalar( $c->readings ), keys( %rdg_ids ) - 9, 
+is( scalar( $c->readings ), keys( %rdg_ids ) - 10, 
 	"Transposed relationship is merged away" );
 ok( !$c->reading('r8.4'), "Correct transposed reading removed" );
 ok( !$c->linear, "Graph is no longer linear" );
