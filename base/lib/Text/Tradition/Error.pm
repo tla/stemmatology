@@ -8,6 +8,17 @@ use overload '""' => \&_stringify, 'fallback' => 1;
 with qw/ Throwable::X StackTrace::Auto /;
 use Throwable::X -all;
 
+around 'throw' => sub {
+	my $orig = shift;
+	my $self = shift;
+	my %args = @_;
+	my $msg = exists $args{message} ? $args{message} : undef;
+	if( $msg && UNIVERSAL::can( $msg, 'message' ) ) {
+		$args{message} = $msg->message;
+	}
+	$self->$orig( %args );
+};
+
 sub _stringify {
 	my $self = shift;
 	return "Error: " . $self->ident . " // " . $self->message
