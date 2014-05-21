@@ -5,7 +5,7 @@ use warnings;
 use Exporter 'import';
 use vars qw/ @EXPORT_OK /;
 use Bio::Phylo::IO;
-use Encode qw( decode_utf8 );
+use Encode qw( encode_utf8 decode_utf8 );
 use File::chdir;
 use File::Temp;
 use File::Which;
@@ -51,6 +51,7 @@ sub read_graph {
 	}
 		
 	# Now open a filehandle onto the string and pass it to Graph::Reader::Dot.
+	$dotstr = encode_utf8( $dotstr );
 	my $dotfh;
 	open $dotfh, '<', \$dotstr;
 	binmode $dotfh, ':utf8';
