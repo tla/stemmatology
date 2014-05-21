@@ -514,8 +514,8 @@ sub _check_transposed_consistency {
 	if( @doubled == scalar keys %seen_wits ) {
 		foreach my $rdg ( keys %$groupings ) {
 			if( !$thisrank{$rdg} ) {
-				my $groupstr = wit_stringify( $groupings->{$rdg} );
-				my ( $matched ) = grep { $groupstr eq wit_stringify( $groupings->{$_} ) }
+				# Groupings are Set::Scalar objects so we can compare them outright.
+				my ( $matched ) = grep { $groupings->{$rdg} == $groupings->{$_} }
 					keys %thisrank;
 				delete $groupings->{$rdg};
 				# If we found a group match, assume there is a symmetry happening.
