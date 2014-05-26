@@ -1612,7 +1612,7 @@ sub _add_graphml_data {
     $data_el->appendText( $value );
 }
 
-sub dump_segment {
+sub _dump_segment {
 	my( $self, $from, $to ) = @_;
 	open( DUMP, ">debug.svg" ) or die "Could not open debug.svg";
 	binmode DUMP, ':utf8';

@@ -224,6 +224,18 @@ sub BUILD {
     	{ 'collation' => $self, 'is_end' => 1, 'init' => 1 } ) );
 }
 
+=head2 register_relationship_type( %relationship_definition )
+
+Add a relationship type definition to this collation. The argument can be either a
+hash or a hashref, defining the properties of the relationship. For relationship types 
+and their properties, see L<Text::Tradition::Collation::RelationshipType>.
+
+=head2 get_relationship_type( $relationship_name )
+
+Retrieve the RelationshipType object for the relationship with the given name.
+
+=cut
+
 sub register_relationship_type {
 	my $self = shift;
 	my %args = @_ == 1 ? %{$_[0]} : @_;

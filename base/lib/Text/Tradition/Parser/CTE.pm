@@ -671,12 +671,12 @@ sub _dump_suspects {
 	say STDERR "Suspect apparatus entries:";
 	foreach my $suspect ( sort { $a <=> $b } keys %list ) {
 		my @badrdgs = @{$list{$suspect}};
-		say STDERR print_apparatus( $suspect );
+		say STDERR _print_apparatus( $suspect );
 		say STDERR "\t(Linked to readings @badrdgs)";
 	}
 }
 
-sub print_apparatus {
+sub _print_apparatus {
 	my( $appid ) = @_;
 	my $tag = '__APP_' . $appid . '__';
 	my $app = $apps{$tag};

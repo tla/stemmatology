@@ -222,6 +222,11 @@ Text::Tradition::Witness) and add it to the tradition.
 Delete the witness with the given sigil from the tradition.  Returns the
 witness object for the deleted witness.
 
+=head2 B<rename_witness>( $oldsigil, $newsigil )
+
+Safely rename (i.e., assign a new sigil to) the given witness. At the moment
+this can only be done when the witness does not yet appear in the collation.
+
 =begin testing
 
 use TryCatch;
