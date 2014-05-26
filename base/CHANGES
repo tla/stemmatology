@@ -1,7 +1,20 @@
+Version 1.3
+===========
+* Deal with Moose objectification of its exceptions
+* Add functionality to merge readings according to relationship type
+* Add attributes for reading relationships to indicate their significance
+* Move custom Moose datatypes to their own package
+* Allow specification of relationship colors for SVG output
+* Allow layered witnesses to be excluded from alignment table for 
+  phylogenetic data
+* Add functionality for tab-separated alignment table
+* Limited improvements to CTE parsing
+* Various and sundry bugfixes and POD fixes
+
 Version 1.2
 ===========
-* Generalize relationship scheme so that a user can define a set of relationships
-  for each text
+* Generalize relationship scheme so that a user can define a set of 
+  relationships for each text
 * Allow witness renaming in a tradition (before collation)
 * Allow clearing of collation object
 * Enable duplication (i.e. splitting) of readings within the collation
