@@ -60,6 +60,8 @@ has 'tradition' => (
     weak_ref => 1,
     );
 
+=encoding utf8
+
 =head1 NAME
 
 Text::Tradition::Collation - a software model for a text collation
@@ -1021,8 +1023,10 @@ sub as_dot {
         next if $reading->id eq $reading->text;
         my $rattrs;
         my $label = $reading->text;
-        $label .= '-' if $reading->join_next;
-        $label = "-$label" if $reading->join_prior;
+        unless( $label =~ /^[[:punct:]]+$/ ) {
+	        $label .= '-' if $reading->join_next;
+    	    $label = "-$label" if $reading->join_prior;
+    	}
         $label =~ s/\"/\\\"/g;
 		$rattrs->{'label'} = $label;
 		$rattrs->{'id'} = $reading->id;
