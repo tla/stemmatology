@@ -50,6 +50,7 @@ binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
 eval { no warnings; binmode $DB::OUT, ":utf8"; };
 
+# Test a simple CollateX input
 my $cxfile = 't/data/Collatex-16.xml';
 my $t = Text::Tradition->new( 
     'name'  => 'inline', 
@@ -69,6 +70,32 @@ if( $t ) {
     is( scalar @related, 1, "Reading links to transposed version" );
     is( $related[0]->id, 'n18', "Correct transposition link" );
 }
+
+# Now test a CollateX result with a.c. witnesses
+
+my $ct = Text::Tradition->new( 
+	name => 'florilegium',
+	input => 'CollateX',
+	file => 't/data/florilegium_cx.xml' );
+
+is( ref( $ct ), 'Text::Tradition', "Parsed the CollateX input" );
+if( $ct ) {
+    is( scalar $ct->collation->readings, 309, "Collation has all readings" );
+    is( scalar $ct->collation->paths, 361, "Collation has all paths" );
+    is( scalar $ct->witnesses, 13, "Collation has correct number of witnesses" );
+    
+    my %layered = ( E => 1, P => 1, Q => 1, T => 1 );
+    foreach my $w ( $ct->witnesses ) {
+    	is( $w->is_layered, $layered{$w->sigil}, 
+    		"Witness " . $w->sigil . " has correct layered setting" );
+    }
+    
+    my $pseq = $ct->witness('P')->text;
+    my $pseqac = $ct->witness('P')->layertext;
+    is( scalar @$pseq, 264, "Witness P has correct number of tokens" );
+    is( scalar @$pseqac, 261, "Witness P (a.c.) has correct number of tokens" );
+}
+    
 
 =end testing
 
@@ -127,11 +154,16 @@ sub parse {
 			## Add the path for each witness listesd.
             # Create the witness objects if they does not yet exist.
             foreach my $wit ( split( /, /, $e->{$WITKEY} ) ) {
-				if( $tradition->witness( $wit ) ) {
-					$tradition->witness( $wit )->is_collated( 1 );
-				} else {
-					$tradition->add_witness( 
-						'sigil' => $wit, 'sourcetype' => 'collation' );
+            	my $sigil = _base_sigil( $collation, $wit ) || $wit;
+            	my $wit_object = $tradition->witness( $sigil );
+				unless( $wit_object ) {
+					$wit_object = $tradition->add_witness( 
+						sigil => $sigil, 
+						sourcetype => 'collation' );
+				}
+				$wit_object->is_collated(1);
+				if( $wit ne $sigil ) {
+					$wit_object->is_layered(1);
 				}
 				$collation->add_path( $from->{$IDKEY}, $to->{$IDKEY}, $wit );
 			}
@@ -141,8 +173,6 @@ sub parse {
 			$transpositions{ $from->{$IDKEY} } = $to->{$IDKEY};
         }
     }
-    
-    # TODO Split readings by word unless we're asked not to    	
     
     # Mark initialization as done so that relationship validation turns on
     $tradition->_init_done( 1 );
@@ -201,6 +231,15 @@ sub parse {
     # Save the text for each witness so that we can ensure consistency
     # later on
 	$tradition->collation->text_from_paths();	
+}
+
+sub _base_sigil {
+	my( $collation, $sigil ) = @_;
+	my $acstr = $collation->ac_label;
+	if( $sigil =~ /^(.*)\Q$acstr\E$/ ) {
+		return $1;
+	}
+	return undef;
 }
 	
     

@@ -288,7 +288,9 @@ has 'uncorrected_path' => (
 	isa => 'ArrayRef[Text::Tradition::Collation::Reading]',
 	clearer => 'clear_uncorrected_path',
 	);
-	
+
+## TODO is_layered should be set automatically when an a.c. reading
+## is added to the graph.	
 has 'is_layered' => (
 	is => 'rw',
 	isa => 'Bool',
