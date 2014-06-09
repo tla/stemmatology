@@ -295,6 +295,18 @@ is( scalar( $csv->fields ), $WITS + $WITAC, "CSV has correct number of witness c
 @q_ac = grep { $_ eq 'Q__L' } $csv->fields;
 ok( @q_ac, "Found a sanitized layered witness" );
 is( $c->alignment_table, $table, "Request for CSV did not alter the alignment table" );
+
+# Test relationship collapse
+$c->add_relationship( $c->readings_at_rank( 37 ), { type => 'spelling' } );
+$c->add_relationship( $c->readings_at_rank( 60 ), { type => 'spelling' } );
+
+my $mergedtsv = $c->as_tsv({mergetypes => [ 'spelling', 'orthographic' ] });
+my $t4 = Text::Tradition->new( input => 'Tabular',
+							   name => 'test4',
+							   string => $mergedtsv,
+							   sep_char => "\t" );
+is( scalar $t4->collation->readings, $READINGS - 2, "Reparsed TSV merge collation has fewer readings" );
+is( scalar $t4->collation->paths, $PATHS - 4, "Reparsed TSV merge collation has fewer paths" );
 }
 
 
