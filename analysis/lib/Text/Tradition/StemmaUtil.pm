@@ -337,7 +337,7 @@ Runs Phylip Pars on the given character matrix.  Returns results in Newick forma
 =cut
 
 sub phylip_pars {
-	my( $charmatrix ) = @_;
+	my( $charmatrix, $opts ) = @_;
     # Set up a temporary directory for all the default Phylip files.
     my $phylip_dir = File::Temp->newdir();
     # $phylip_dir->unlink_on_destroy(0);
@@ -368,9 +368,9 @@ sub phylip_pars {
     close CMD;
 
     # And then we run the program.
-    my $program = File::Which::which( 'pars' );
+    my $program = $opts->{parspath} || File::Which::which( 'pars' );
     unless( $program && -x $program ) {
-		throw( "Phylip pars not found in path" );
+		throw( "Phylip pars $program not executable" );
     }
 
     {
