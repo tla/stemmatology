@@ -21,6 +21,7 @@ has 'relations' => (
 		del_relationship => 'del_relationship',
 		equivalence => 'equivalence',
 		equivalence_graph => 'equivalence_graph',
+		relationship_types => 'types'
 	},
 	writer => '_set_relations',
 	);

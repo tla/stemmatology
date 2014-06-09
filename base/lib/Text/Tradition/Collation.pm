@@ -30,6 +30,7 @@ has _data => (
 		ac_label
 		has_cached_table
 		relationships
+		relationship_types
 		related_readings
 		get_relationship
 		del_relationship
