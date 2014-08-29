@@ -10,6 +10,8 @@ use XML::LibXML;
 use XML::LibXML::XPathContext;
 use TryCatch;
 
+binmode( STDERR, ':utf8' );
+
 =head1 NAME
 
 Text::Tradition::Parser::CTE
@@ -49,6 +51,9 @@ sub parse {
 	# CTE uses a DTD rather than any xmlns-based parsing.  Thus we
 	# need no namespace handling.
 	# Get the witnesses and create the witness objects.
+	%sigil_for = ();
+	%apps = ();
+	%has_ac = ();
 	foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
 		# The witness xml:id is used internally, and is *not* the sigil name.
 		my $id= $wit_el->getAttribute( 'xml:id' );
@@ -65,7 +70,7 @@ sub parse {
 			my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
 			$sig = _stringify_sigil( @sig_parts );
 		}
-		say STDERR "Adding witness $sig ($identifier)";
+		do_warn( $opts, "Adding witness $sig ($identifier)" );
 		$tradition->add_witness( sigil => $sig, identifier => $identifier, 
 			sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
@@ -129,7 +134,7 @@ sub parse {
     # Finally, add explicit witness paths, remove the base paths, and remove
     # the app/anchor tags.
     try {
-	    _expand_all_paths( $c );
+	    _expand_all_paths( $c, $opts );
 	} catch( Text::Tradition::Error $e ) {
 		throw( $e->message );
 	} catch {
@@ -310,7 +315,7 @@ sub _add_readings {
 			}
 			if( $anchor && @lemma ) {
 				my $success = _attach_transposition( $c, \@lemma, $anchor, 
-					\@transp_nodes, \@witlist, $flag->{'TR'} );
+					\@transp_nodes, \@witlist, $flag->{'TR'}, $opts );
 				unless( $success ) {
 					# If we didn't manage to insert the displaced reading,
 					# then restore it here rather than silently deleting it.
@@ -386,7 +391,7 @@ sub _return_lemma {
 # $witlist contains the list of applicable witnesses
 # $reftxt contains the text to match, after which the $rdgseq should go.
 sub _attach_transposition {
-	my( $c, $lemmaseq, $anchor, $rdgseq, $witlist, $reftxt ) = @_;
+	my( $c, $lemmaseq, $anchor, $rdgseq, $witlist, $reftxt, $opts ) = @_;
 	my @refwords = split( /\s+/, $reftxt );
 	my $checked = $c->reading( $anchor );
 	my $found;
@@ -426,7 +431,7 @@ sub _attach_transposition {
 			throw( "Lemma at $found and transposed sequence different lengths?!" );
 		}
 	} else {
-		say STDERR "WARNING: Unable to find $reftxt in base text for transposition";
+		do_warn( $opts, "WARNING: Unable to find $reftxt in base text for transposition" );
 	}
 	return $success;
 }
@@ -466,7 +471,7 @@ sub interpret {
 	} elsif( $reading =~ /^in[uv]\.$/ 
 			 || $reading =~ /^tr(ans(p)?)?\.$/ ) {
 		# Hope it is two words.
-		say STDERR "WARNING: want to invert a lemma that is not two words" 
+		do_warn( $opts, "WARNING: want to invert a lemma that is not two words" )
 			unless scalar( @words ) == 2;
 		$reading = join( ' ', reverse( @words ) );
 	} elsif( $reading =~ /^iter(\.|at)$/ ) {
@@ -602,7 +607,7 @@ sub _get_sigil {
 }
 
 sub _expand_all_paths { 
-    my( $c ) = @_;
+    my( $c, $opts ) = @_;
     
     # Walk the collation and fish out the paths for each witness
     foreach my $wit ( $c->tradition->witnesses ) {
@@ -635,7 +640,7 @@ sub _expand_all_paths {
 	    	next if $r->is_start;
 	    	my $tag = $r->id;
 	    	$tag =~ s/^r(\d+)\.\d+/$1/;
-    		say STDERR "Deleting orphan reading $r / " . $r->text;
+    		do_warn( $opts, "Deleting orphan reading $r / " . $r->text );
     		push( @{$suspect_apps{$tag}}, $r->id ) if $tag =~ /^\d+$/;
     		$c->del_reading( $r );
     	}
@@ -648,10 +653,10 @@ sub _expand_all_paths {
     		$tag =~ s/^r(\d+)\.\d+/$1/;
     		push( @{$suspect_apps{$tag}}, $_ );
     	}
-		_dump_suspects( %suspect_apps );
+		_dump_suspects( $opts, %suspect_apps );
     	throw( "Remaining hanging readings: @bad" );
 	}
-	_dump_suspects( %suspect_apps ) if keys %suspect_apps;
+	_dump_suspects( $opts, %suspect_apps ) if keys %suspect_apps;
 }
 
 sub _add_wit_path {
@@ -667,13 +672,15 @@ sub _add_wit_path {
 }
 
 sub _dump_suspects {
+	my $opts = shift;
 	my %list = @_;
-	say STDERR "Suspect apparatus entries:";
+	my @warning = "Suspect apparatus entries:";
 	foreach my $suspect ( sort { $a <=> $b } keys %list ) {
 		my @badrdgs = @{$list{$suspect}};
-		say STDERR _print_apparatus( $suspect );
-		say STDERR "\t(Linked to readings @badrdgs)";
+		push( @warning, _print_apparatus( $suspect ) );
+		push( @warning, "\t(Linked to readings @badrdgs)" );
 	}
+	do_warn( $opts, join( "\n", @warning ) );
 }
 
 sub _print_apparatus {
@@ -734,6 +741,15 @@ sub _print_apparatus {
 	}
 	$appstring .= join( '  ', @readings );
 	return $appstring;
+}
+
+sub do_warn {
+	my( $opts, $message ) = @_;
+	if( $opts->{'warnings_to'} ) {
+		push( @{$opts->{'warnings_to'}}, $message );
+	} else {
+		say STDERR $message;
+	}
 }
 
 sub throw {
