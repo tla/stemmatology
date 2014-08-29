@@ -28,7 +28,7 @@ foreach my $item ( @dbconnect ) {
 }
 
 my $dir = Text::Tradition::Directory->new( 'dsn' => $dsn, 
-    'extra_args' => { 'user' => $user, 'password' => $pass,
+    'extra_args' => { 'user' => $user, 'password' => $pass, 'create' => 1,
 	dbi_attrs => { 'mysql_enable_utf8' => 1 } },
     );
 
