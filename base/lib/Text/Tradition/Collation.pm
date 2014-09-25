@@ -539,6 +539,17 @@ WARNING: This operation cannot be undone.
 
 sub compress_readings {
 	my $self = shift;
+	# Sanity check: first save the original text of each witness.
+	my %origtext;
+	foreach my $wit ( $self->tradition->witnesses ) {
+		$origtext{$wit->sigil} = $self->path_text( $wit->sigil );
+		if( $wit->is_layered ) {
+			my $acsig = $wit->sigil . $self->ac_label;
+			$origtext{$acsig} = $self->path_text( $acsig );
+		}
+	}
+	
+	# Now do the deed.
 	# Anywhere in the graph that there is a reading that joins only to a single
 	# successor, and neither of these have any relationships, just join the two
 	# readings.
@@ -556,17 +567,17 @@ sub compress_readings {
 			$self->merge_readings( $rdg, $next, 1 );
 		}
 	}
-	# Make sure we haven't screwed anything up
+	
+	# Finally, make sure we haven't screwed anything up.
 	foreach my $wit ( $self->tradition->witnesses ) {
 		my $pathtext = $self->path_text( $wit->sigil );
-		my $origtext = join( ' ', @{$wit->text} );
 		throw( "Text differs for witness " . $wit->sigil )
-			unless $pathtext eq $origtext;
+			unless $pathtext eq $origtext{$wit->sigil};
 		if( $wit->is_layered ) {
-			$pathtext = $self->path_text( $wit->sigil.$self->ac_label );
-			$origtext = join( ' ', @{$wit->layertext} );
-			throw( "Ante-corr text differs for witness " . $wit->sigil )
-				unless $pathtext eq $origtext;
+			my $acsig = $wit->sigil . $self->ac_label;
+			$pathtext = $self->path_text( $acsig );
+			throw( "Layered text differs for witness " . $wit->sigil )
+				unless $pathtext eq $origtext{$acsig};
 		}
 	}
 
