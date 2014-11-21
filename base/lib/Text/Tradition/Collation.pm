@@ -6,6 +6,7 @@ use File::Temp;
 use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
+use JSON qw/ to_json /;
 use Text::CSV;
 use Text::Tradition::Collation::Data;
 use Text::Tradition::Collation::Reading;
@@ -1046,9 +1047,7 @@ sub as_dot {
         $dot .= sprintf( "\t\"%s\" %s;\n", $reading->id, _dot_attr_string( $rattrs ) );
     }
     
-	# Add the real edges. Need to weight one edge per rank jump, in a
-	# continuous line.
-	# my $weighted = $self->_add_edge_weights;
+	# Add the real edges. 
     my @edges = $self->paths;
 	my( %substart, %subend );
     foreach my $edge ( @edges ) {
@@ -1162,32 +1161,6 @@ sub _dot_attr_string {
 	return( '[ ' . join( ', ', @attrs ) . ' ]' );
 }
 
-sub _add_edge_weights {
-	my $self = shift;
-	# Walk the graph from START to END, choosing the successor node with
-	# the largest number of witness paths each time.
-	my $weighted = {};
-	my $curr = $self->start->id;
-	my $ranked = $self->end->has_rank;
-	while( $curr ne $self->end->id ) {
-		my $rank = $ranked ? $self->reading( $curr )->rank : 0;
-		my @succ = sort { $self->path_witnesses( $curr, $a )
-							<=> $self->path_witnesses( $curr, $b ) } 
-			$self->sequence->successors( $curr );
-		my $next = pop @succ;
-		my $nextrank = $ranked ? $self->reading( $next )->rank : 0;
-		# Try to avoid lacunae in the weighted path.
-		while( @succ && 
-			   ( $self->reading( $next )->is_lacuna ||
-			   	 $nextrank - $rank > 1 ) ){
-			$next = pop @succ;
-		}
-		$weighted->{$curr} = $next;
-		$curr = $next;
-	}
-	return $weighted;	
-}
-
 =head2 path_witnesses( $edge )
 
 Returns the list of sigils whose witnesses are associated with the given edge.
@@ -1243,25 +1216,67 @@ sub _path_display_label {
 	}
 }
 
-=head2 readings_at_rank( $rank )
+=head2 as_adjacency_list
 
-Returns a list of readings at a given rank, taken from the alignment table.
+Returns a JSON structure that represents the collation sequence graph.
 
 =cut
 
-sub readings_at_rank {
-	my( $self, $rank ) = @_;
-	my $table = $self->alignment_table;
-	# Table rank is real rank - 1.
-	my @elements = map { $_->{'tokens'}->[$rank-1] } @{$table->{'alignment'}};
-	my %readings;
-	foreach my $e ( @elements ) {
-		next unless ref( $e ) eq 'HASH';
-		next unless exists $e->{'t'};
-		$readings{$e->{'t'}->id} = $e->{'t'};
+sub as_adjacency_list {
+	my( $self, $opts ) = @_;
+	# Make a structure that contains all the nodes, the nodes they point to,
+	# and the attributes of the edges that connect them. 
+	# [ { id: 'n0', label: 'Gallia', adjacent: [ 
+	#		{ id: 'n1', label: 'P Q' } , 
+	# 		{ id: 'n2', label: 'R S', minlen: 2 } ] },
+	#   { id: 'n1', label: 'est', adjacent: [ ... ] },
+	#   ... ]
+	my $startrank = $opts->{'from'} || 0;
+	my $endrank = $opts->{'to'} || $self->end->rank;
+	
+	my $list = [];
+	foreach my $rdg ( $self->readings ) {
+		my @successors;
+		my $phony = '';
+		if( $rdg eq $self->start && $startrank > 0 ) {
+			# Connect the start node with all the nodes at startrank.
+			@successors = $self->readings_at_rank( $startrank );
+			$phony = 'start';
+		} elsif( $rdg->rank < $startrank
+				 || $rdg->rank > $endrank && $rdg ne $self->end ) {
+			next;
+		} elsif( $rdg->rank eq $endrank && $rdg ne $self->end ) {
+			# Connect the reading directly to the end node.
+			@successors = ( $self->end );
+			$phony = 'end';
+		} else {
+			@successors = $rdg->successors;
+		}
+		
+		my $listitem = { id => $rdg->id, label => $rdg->text };
+		my $adjacent = [];
+		foreach my $succ ( @successors ) {
+			my @edgewits;
+			if( $phony eq 'start' ) {
+				@edgewits = $succ->witnesses;
+			} elsif( $phony eq 'end' ) {
+				@edgewits = $rdg->witnesses;
+			} else {
+				@edgewits = $self->path_witnesses( $rdg->id, $succ->id );
+			}
+			my $edgelabel = $self->_path_display_label( $opts, @edgewits );
+			my $edgedef = { id => $succ->id, label => $edgelabel };
+			my $rankoffset = $succ->rank - $rdg->rank;
+			if( $rankoffset > 1 and $succ ne $self->end ) {
+				$edgedef->{minlen} = $rankoffset;
+			}
+			push( @$adjacent, $edgedef );
+		}
+		$listitem->{adjacent} = $adjacent;
+		push( @$list, $listitem );
 	}
-	return values %readings;
-}		
+	return to_json( $list );
+}
 
 =head2 as_graphml
 
@@ -1854,6 +1869,26 @@ sub reading_sequence {
     
     return @readings;
 }
+
+=head2 readings_at_rank( $rank )
+
+Returns a list of readings at a given rank, taken from the alignment table.
+
+=cut
+
+sub readings_at_rank {
+	my( $self, $rank ) = @_;
+	my $table = $self->alignment_table;
+	# Table rank is real rank - 1.
+	my @elements = map { $_->{'tokens'}->[$rank-1] } @{$table->{'alignment'}};
+	my %readings;
+	foreach my $e ( @elements ) {
+		next unless ref( $e ) eq 'HASH';
+		next unless exists $e->{'t'};
+		$readings{$e->{'t'}->id} = $e->{'t'};
+	}
+	return values %readings;
+}		
 
 =head2 next_reading( $reading, $sigil );
 
