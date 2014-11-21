@@ -7,7 +7,7 @@ use Getopt::Long;
 use TryCatch;
 use Text::Tradition;
 use Text::Tradition::Directory;
-use Text::Tradition::StemmaUtil qw/ character_input phylip_pars /;
+use Text::Tradition::StemmaUtil qw/ character_input phylip_pars newick_to_svg /;
 
 binmode STDERR, ":utf8";
 binmode STDOUT, ":utf8";
@@ -55,7 +55,7 @@ $informat = 'Tabular' if $informat =~ /^tab$/i;
 $informat = 'CollateText' if $informat =~ /^stone$/i;
 $informat = 'Tabular' if $informat =~ /^xls/i;
 
-unless( $outformat =~ /^(graphml|svg|dot|stemma|(c|t)sv|db)$/ ) {
+unless( $outformat =~ /^(graphml|svg|dot|stemma(svg)?|(c|t)sv|db)$/ ) {
     help( "Output format must be one of db, graphml, svg, csv, tsv, stemma, or dot" );
 }
 
@@ -121,12 +121,20 @@ if( $stemmafile ) {
 }
 
 # Now output what we have been asked to.
-if( $outformat eq 'stemma' ) {
+if( $outformat =~ /^stemma(.*)$/ ) {
+    my $type = $1 || 'newick';
     my $cdata = character_input( $tradition );
+    my $newick;
     try {
-    	print phylip_pars( $cdata );
+    	$newick = phylip_pars( $cdata );
     } catch( Text::Tradition::Error $e ) {
-        print STDERR "Bad result: " . $e->message;
+        print STDERR "Bad result from pars: " . $e->message;
+        exit;
+    }
+    if( $type eq 'newick' ) {
+    	print $newick;
+    } elsif( $type eq 'svg' ) {
+    	print newick_to_svg( $newick );
     }
 } elsif( $outformat eq 'db' ) {
 	unless( $dir ) {
