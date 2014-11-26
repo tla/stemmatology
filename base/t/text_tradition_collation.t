@@ -188,6 +188,52 @@ try {
 
 # =begin testing
 {
+use JSON qw/ from_json /;
+use Text::Tradition;
+
+my $t = Text::Tradition->new( 
+	'input' => 'Self',
+	'file' => 't/data/florilegium_graphml.xml' );
+my $c = $t->collation;
+	
+# Make a connection so we can test rank preservation
+$c->add_relationship( 'w91', 'w92', { type => 'grammatical' } );
+
+# Create an adjacency list of the whole thing; test the output.
+my $adj_whole = from_json( $c->as_adjacency_list() );
+is( scalar @$adj_whole, scalar $c->readings(), 
+	"Same number of nodes in graph and adjacency list" );
+my @adj_whole_edges;
+map { push( @adj_whole_edges, @{$_->{adjacent}} ) } @$adj_whole;
+is( scalar @adj_whole_edges, scalar $c->sequence->edges,
+	"Same number of edges in graph and adjacency list" );
+# Find the reading whose rank should be preserved
+my( $test_rdg ) = grep { $_->{id} eq 'w89' } @$adj_whole;
+my( $test_edge ) = grep { $_->{id} eq 'w92' } @{$test_rdg->{adjacent}};
+is( $test_edge->{minlen}, 2, "Rank of test reading is preserved" );
+
+# Now create an adjacency list of just a portion. w76 to w122
+my $adj_part = from_json( $c->as_adjacency_list(
+	{ from => $c->reading('w76')->rank,
+	  to   => $c->reading('w122')->rank }));
+is( scalar @$adj_part, 48, "Correct number of nodes in partial graph" );
+my @adj_part_edges;
+map { push( @adj_part_edges, @{$_->{adjacent}} ) } @$adj_part;
+is( scalar @adj_part_edges, 58,
+	"Same number of edges in partial graph and adjacency list" );
+# Check for consistency
+my %part_nodes;
+map { $part_nodes{$_->{id}} = 1 } @$adj_part;
+foreach my $edge ( @adj_part_edges ) {
+	my $testid = $edge->{id};
+	ok( $part_nodes{$testid}, "ID $testid referenced in edge is given as node" );
+}
+}
+
+
+
+# =begin testing
+{
 use Text::Tradition;
 use TryCatch;
 

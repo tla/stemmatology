@@ -1066,13 +1066,6 @@ sub as_dot {
 				$variables->{'minlen'} = $rank1 - $rank0;
 			}
 			
-			# Add the calculated edge weights
-			# if( exists $weighted->{$edge->[0]} 
-			# 	&& $weighted->{$edge->[0]} eq $edge->[1] ) {
-			# 	# $variables->{'color'} = 'red';
-			# 	$variables->{'weight'} = 3.0;
-			# }
-
 			# EXPERIMENTAL: make edge width reflect no. of witnesses
 			my $extrawidth = scalar( $self->path_witnesses( $edge ) ) * 0.2;
 			$variables->{'penwidth'} = $extrawidth + 0.8; # gives 1 for a single wit
@@ -1220,6 +1213,51 @@ sub _path_display_label {
 
 Returns a JSON structure that represents the collation sequence graph.
 
+=begin testing
+
+use JSON qw/ from_json /;
+use Text::Tradition;
+
+my $t = Text::Tradition->new( 
+	'input' => 'Self',
+	'file' => 't/data/florilegium_graphml.xml' );
+my $c = $t->collation;
+	
+# Make a connection so we can test rank preservation
+$c->add_relationship( 'w91', 'w92', { type => 'grammatical' } );
+
+# Create an adjacency list of the whole thing; test the output.
+my $adj_whole = from_json( $c->as_adjacency_list() );
+is( scalar @$adj_whole, scalar $c->readings(), 
+	"Same number of nodes in graph and adjacency list" );
+my @adj_whole_edges;
+map { push( @adj_whole_edges, @{$_->{adjacent}} ) } @$adj_whole;
+is( scalar @adj_whole_edges, scalar $c->sequence->edges,
+	"Same number of edges in graph and adjacency list" );
+# Find the reading whose rank should be preserved
+my( $test_rdg ) = grep { $_->{id} eq 'w89' } @$adj_whole;
+my( $test_edge ) = grep { $_->{id} eq 'w92' } @{$test_rdg->{adjacent}};
+is( $test_edge->{minlen}, 2, "Rank of test reading is preserved" );
+
+# Now create an adjacency list of just a portion. w76 to w122
+my $adj_part = from_json( $c->as_adjacency_list(
+	{ from => $c->reading('w76')->rank,
+	  to   => $c->reading('w122')->rank }));
+is( scalar @$adj_part, 48, "Correct number of nodes in partial graph" );
+my @adj_part_edges;
+map { push( @adj_part_edges, @{$_->{adjacent}} ) } @$adj_part;
+is( scalar @adj_part_edges, 58,
+	"Same number of edges in partial graph and adjacency list" );
+# Check for consistency
+my %part_nodes;
+map { $part_nodes{$_->{id}} = 1 } @$adj_part;
+foreach my $edge ( @adj_part_edges ) {
+	my $testid = $edge->{id};
+	ok( $part_nodes{$testid}, "ID $testid referenced in edge is given as node" );
+}
+
+=end testing
+
 =cut
 
 sub as_adjacency_list {
@@ -1234,35 +1272,51 @@ sub as_adjacency_list {
 	my $startrank = $opts->{'from'} || 0;
 	my $endrank = $opts->{'to'} || $self->end->rank;
 	
+    $self->calculate_ranks() 
+    	unless( $self->_graphcalc_done || $opts->{'nocalc'} || !$self->linear );
 	my $list = [];
 	foreach my $rdg ( $self->readings ) {
 		my @successors;
 		my $phony = '';
+		# Figure out what the node's successors should be.
 		if( $rdg eq $self->start && $startrank > 0 ) {
 			# Connect the start node with all the nodes at startrank.
-			@successors = $self->readings_at_rank( $startrank );
+			# Lacunas should be included only if the node really has that rank.
+			@successors = $self->readings_at_rank( $startrank, 1 );
 			$phony = 'start';
 		} elsif( $rdg->rank < $startrank
 				 || $rdg->rank > $endrank && $rdg ne $self->end ) {
 			next;
-		} elsif( $rdg->rank eq $endrank && $rdg ne $self->end ) {
-			# Connect the reading directly to the end node.
-			@successors = ( $self->end );
-			$phony = 'end';
 		} else {
 			@successors = $rdg->successors;
+		}
+		# Make sure that the end node is at the end of the successors
+		# list if it is needed.
+		if( grep { $_ eq $self->end } @successors ) {
+			my @ts = grep { $_ ne $self->end } @successors;
+			@successors = ( @ts, $self->end );
+		} elsif ( grep { $_->rank > $endrank } @successors ) {
+			push( @successors, $self->end );
 		}
 		
 		my $listitem = { id => $rdg->id, label => $rdg->text };
 		my $adjacent = [];
+		my @endwits;
 		foreach my $succ ( @successors ) {
 			my @edgewits;
 			if( $phony eq 'start' ) {
 				@edgewits = $succ->witnesses;
-			} elsif( $phony eq 'end' ) {
-				@edgewits = $rdg->witnesses;
-			} else {
+			} elsif( $self->sequence->has_edge( $rdg->id, $succ->id ) ) {
 				@edgewits = $self->path_witnesses( $rdg->id, $succ->id );
+			}
+			
+			if( $succ eq $self->end ) {
+				@edgewits = @endwits;
+			} elsif( $succ->rank > $endrank ) {
+				# These witnesses will point to 'end' instead, not to the
+				# actual successor.
+				push( @endwits, @edgewits );
+				next;
 			}
 			my $edgelabel = $self->_path_display_label( $opts, @edgewits );
 			my $edgedef = { id => $succ->id, label => $edgelabel };
@@ -1877,7 +1931,7 @@ Returns a list of readings at a given rank, taken from the alignment table.
 =cut
 
 sub readings_at_rank {
-	my( $self, $rank ) = @_;
+	my( $self, $rank, $nolacuna ) = @_;
 	my $table = $self->alignment_table;
 	# Table rank is real rank - 1.
 	my @elements = map { $_->{'tokens'}->[$rank-1] } @{$table->{'alignment'}};
@@ -1885,6 +1939,8 @@ sub readings_at_rank {
 	foreach my $e ( @elements ) {
 		next unless ref( $e ) eq 'HASH';
 		next unless exists $e->{'t'};
+		my $rdg = $e->{'t'};
+		next if $nolacuna && $rdg->is_lacuna && $rdg->rank ne $rank;
 		$readings{$e->{'t'}->id} = $e->{'t'};
 	}
 	return values %readings;
