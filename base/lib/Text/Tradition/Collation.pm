@@ -1733,6 +1733,15 @@ my $t4 = Text::Tradition->new( input => 'Tabular',
 is( scalar $t4->collation->readings, $READINGS - 2, "Reparsed TSV merge collation has fewer readings" );
 is( scalar $t4->collation->paths, $PATHS - 4, "Reparsed TSV merge collation has fewer paths" );
 
+# Test non-ASCII sigla
+my $t5 = Text::Tradition->new( input => 'Tabular',
+							   name => 'nonascii',
+							   file => 't/data/armexample.xlsx',
+							   excel => 'xlsx' );
+my $awittsv = $t5->collation->as_tsv({ noac => 1, ascii => 1 });
+my @awitlines = split( /\n/, $awittsv );
+like( $awitlines[0], qr/_A_5315622/, "Found ASCII sigil variant in TSV" );
+
 =end testing
 
 =cut
@@ -1749,9 +1758,19 @@ sub _tabular {
 	}
     my $csv = Text::CSV->new( $csv_options );    
     my @result;
+    
     # Make the header row
-    $csv->combine( map { $_->{'witness'} } @{$table->{'alignment'}} );
+    my @witnesses = map { $_->{'witness'} } @{$table->{'alignment'}};
+    if( $opts->{ascii} ) {
+    	# TODO think of a fix for this
+    	throw( "Cannot currently produce ASCII sigla with witness layers" )
+    		unless $opts->{noac};
+    	my @awits = map { $self->tradition->witness( $_ )->ascii_sigil } @witnesses;
+    	@witnesses = @awits;
+    }    
+    $csv->combine( @witnesses );
 	push( @result, $csv->string );
+	
     # Make the rest of the rows
     foreach my $idx ( 0 .. $table->{'length'} - 1 ) {
     	my @rowobjs = map { $_->{'tokens'}->[$idx] } @{$table->{'alignment'}};

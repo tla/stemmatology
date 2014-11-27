@@ -353,6 +353,15 @@ my $t4 = Text::Tradition->new( input => 'Tabular',
 							   sep_char => "\t" );
 is( scalar $t4->collation->readings, $READINGS - 2, "Reparsed TSV merge collation has fewer readings" );
 is( scalar $t4->collation->paths, $PATHS - 4, "Reparsed TSV merge collation has fewer paths" );
+
+# Test non-ASCII sigla
+my $t5 = Text::Tradition->new( input => 'Tabular',
+							   name => 'nonascii',
+							   file => 't/data/armexample.xlsx',
+							   excel => 'xlsx' );
+my $awittsv = $t5->collation->as_tsv({ noac => 1, ascii => 1 });
+my @awitlines = split( /\n/, $awittsv );
+like( $awitlines[0], qr/_A_5315622/, "Found ASCII sigil variant in TSV" );
 }
 
 
