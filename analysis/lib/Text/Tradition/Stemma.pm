@@ -231,6 +231,39 @@ sub new_from_newick {
     return \@stemmata;
 }
 
+=head2 rename_witnesses( \%namehash, $all_extant ) 
+
+Take a hash of old -> new sigil mappings, and change the names of the witnesses.
+
+=cut
+
+sub rename_witnesses {
+	my( $self, $names, $all_extant ) = @_;
+	my $old = $self->graph;
+	my $newdot = $self->editable;
+	foreach my $k ( keys %$names ) {
+		my $v = $names->{$k};
+		$newdot =~ s/\b$k\b/$v/g;
+	}
+	$self->alter_graph( $newdot );
+	if( $all_extant ) {
+		foreach my $v ( values %$names ) {
+			$self->graph->set_vertex_attribute( $v, 'class', 'extant' );
+		}
+		foreach my $v ( $self->graph->vertices ) {
+			unless( $self->graph->has_vertex_attribute( $v, 'class' ) ) {
+				$self->graph->set_vertex_attribute( $v, 'class', 'hypothetical' );
+			}
+		}
+	} else {
+		foreach my $n ( $old->vertices ) {
+			my $v = $names->{$n};
+			my $class = $old->get_vertex_attribute( $n, 'class' );
+			$self->graph->set_vertex_attribute( $v, 'class', $class );
+		}
+	}
+}
+
 =head1 METHODS
 
 =head2 as_dot( \%options )
