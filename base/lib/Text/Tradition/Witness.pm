@@ -122,6 +122,7 @@ readings) in the collation.
 
 =begin testing
 
+use Test::More::UTF8 qw/ -utf8 /;
 use Text::Tradition;
 my $trad = Text::Tradition->new( 'name' => 'test tradition' );
 my $c = $trad->collation;
@@ -175,6 +176,24 @@ if( $xpwit ) {
 	is( @{$xpwit->text}, 157, "Got correct text length" );
 }
 
+# Test non-ASCII sigla
+my $at = Text::Tradition->new(
+	name => 'armexample',
+	input => 'Tabular',
+	excel => 'xlsx',
+	file => 't/data/armexample.xlsx' );
+foreach my $wit ( $at->witnesses ) {
+	my $sig = $wit->sigil;
+	if( $sig =~ /^\p{ASCII}+$/ ) {
+		is( $wit->ascii_sigil, '_A_' . $sig, 
+			"Correct ASCII sigil for ASCII witness $sig" );
+	} else {
+		# This is our non-ASCII example
+		is( $wit->ascii_sigil, '_A_5315622',
+			"Correct ASCII sigil for non-ASCII witness $sig" );
+	}
+}
+
 
 =end testing 
 
@@ -197,6 +216,15 @@ has 'sigil' => (
 	isa => 'Sigil',
 	predicate => 'has_sigil',
 	writer => '_set_sigil',
+	);
+	
+# An ASCII version of the sigil, for any applications that cannot
+# deal with Unicode. This should not be set directly, but will be
+# set automatically when the sigil is set.
+has 'ascii_sigil' => (
+	is => 'ro',
+	isa => 'Sigil',
+	writer => '_set_ascii_sigil',
 	);
 	
 # Other identifying information
@@ -317,6 +345,17 @@ sub BUILD {
 	if( $self->sourcetype eq 'collation' ) {
 		$self->is_collated( 1 );
 	}
+	# Make an ASCII sigil. Convert each non-ASCII character to its Unicode 
+	# number and just string them together.
+	my $asig = '_A_';
+	foreach my $char ( split( '', $self->sigil ) ) {
+		if( $char =~ /\p{ASCII}/ ) {
+			$asig .= $char;
+		} else {
+			$asig .= sprintf( "%x", ord( $char ) );
+		}
+	}
+	$self->_set_ascii_sigil( $asig ) ;
 	return $self;
 }
 
