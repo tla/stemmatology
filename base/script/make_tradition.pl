@@ -55,13 +55,14 @@ $informat = 'Tabular' if $informat =~ /^tab$/i;
 $informat = 'CollateText' if $informat =~ /^stone$/i;
 $informat = 'Tabular' if $informat =~ /^xls/i;
 
-unless( $outformat =~ /^(graphml|svg|dot|stemma(svg)?|(c|t)sv|db)$/ ) {
-    help( "Output format must be one of db, graphml, svg, csv, tsv, stemma, or dot" );
+unless( $outformat =~ /^(graphml|svg|dot|adj(acency)?|stemma(svg)?|(c|t)sv|db)$/i ) {
+    help( "Output format must be one of db, graphml, svg, csv, tsv, stemma, adjacency, or dot" );
 }
+$outformat = 'adjacency_list' if $outformat =~ /^adj/i;
 
 if( $from || $to ) {
-	help( "Subgraphs only supported in GraphML, dot, or SVG format" ) 
-		unless $outformat =~ /^(graphml|dot|svg)$/;
+	help( "Subgraphs only supported in GraphML, dot, adjacency, or SVG format" ) 
+		unless $outformat =~ /^(graphml|dot|svg|adjacency_list)$/;
 }
 
 # Do we have a base if we need it?
