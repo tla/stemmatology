@@ -457,6 +457,8 @@ warnings_exist {
 	"Got expected relationship drop warning on parse";
 
 my $c = $t->collation;
+# Force the transitive propagation of all existing relationships.
+$c->relations->propagate_all_relationships();
 
 my %rdg_ids;
 map { $rdg_ids{$_} = 1 } $c->readings;
