@@ -70,7 +70,7 @@ sub parse {
 			my @sig_parts = $xpc->findnodes( 'descendant::text()', $wit_el );
 			$sig = _stringify_sigil( @sig_parts );
 		}
-		do_warn( $opts, "Adding witness $sig ($identifier)" );
+		_do_warn( $opts, "Adding witness $sig ($identifier)" );
 		$tradition->add_witness( sigil => $sig, identifier => $identifier, 
 			sourcetype => 'collation' );
 		$sigil_for{'#'.$id} = $sig;  # Make life easy by keying on the ID ref syntax
@@ -431,7 +431,7 @@ sub _attach_transposition {
 			throw( "Lemma at $found and transposed sequence different lengths?!" );
 		}
 	} else {
-		do_warn( $opts, "WARNING: Unable to find $reftxt in base text for transposition" );
+		_do_warn( $opts, "WARNING: Unable to find $reftxt in base text for transposition" );
 	}
 	return $success;
 }
@@ -471,7 +471,7 @@ sub interpret {
 	} elsif( $reading =~ /^in[uv]\.$/ 
 			 || $reading =~ /^tr(ans(p)?)?\.$/ ) {
 		# Hope it is two words.
-		do_warn( $opts, "WARNING: want to invert a lemma that is not two words" )
+		_do_warn( $opts, "WARNING: want to invert a lemma that is not two words" )
 			unless scalar( @words ) == 2;
 		$reading = join( ' ', reverse( @words ) );
 	} elsif( $reading =~ /^iter(\.|at)$/ ) {
@@ -640,7 +640,7 @@ sub _expand_all_paths {
 	    	next if $r->is_start;
 	    	my $tag = $r->id;
 	    	$tag =~ s/^r(\d+)\.\d+/$1/;
-    		do_warn( $opts, "Deleting orphan reading $r / " . $r->text );
+    		_do_warn( $opts, "Deleting orphan reading $r / " . $r->text );
     		push( @{$suspect_apps{$tag}}, $r->id ) if $tag =~ /^\d+$/;
     		$c->del_reading( $r );
     	}
@@ -680,7 +680,7 @@ sub _dump_suspects {
 		push( @warning, _print_apparatus( $suspect ) );
 		push( @warning, "\t(Linked to readings @badrdgs)" );
 	}
-	do_warn( $opts, join( "\n", @warning ) );
+	_do_warn( $opts, join( "\n", @warning ) );
 }
 
 sub _print_apparatus {
@@ -743,7 +743,8 @@ sub _print_apparatus {
 	return $appstring;
 }
 
-sub do_warn {
+# Helper to send warning messages either to STDERR or to an array for alternate display.
+sub _do_warn {
 	my( $opts, $message ) = @_;
 	if( $opts->{'warnings_to'} ) {
 		push( @{$opts->{'warnings_to'}}, $message );
