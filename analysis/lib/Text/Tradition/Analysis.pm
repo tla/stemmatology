@@ -15,7 +15,7 @@ use TryCatch;
 
 use vars qw/ @EXPORT_OK $VERSION /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
-$VERSION = "1.3";
+$VERSION = "2.0.0";
 
 
 my $DEFAULT_SOLVER_URL = 'http://perf.byzantini.st/cgi-bin/graphcalc.cgi';
