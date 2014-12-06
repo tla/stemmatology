@@ -538,6 +538,35 @@ readings must also not be marked as nonsense or bad grammar.
 
 WARNING: This operation cannot be undone.
 
+=begin testing
+
+use Text::Tradition;
+
+my $t = Text::Tradition->new( input => 'CollateX', file => 't/data/CollateX-16.xml' );
+my $c = $t->collation;
+my $n = scalar $c->readings;
+$c->compress_readings();
+is( scalar $c->readings, $n - 6, "Compressing readings seems to work" );
+
+# Now put in a join-word and make sure the thing still works.
+my $t2 = Text::Tradition->new( input => 'CollateX', file => 't/data/CollateX-16.xml' );
+my $c2 = $t2->collation;
+# Split n21 ('unto') for testing purposes
+my $new_r = $c2->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
+my $old_r = $c2->reading( 'n21' );
+$old_r->alter_text( 'to' );
+$c2->del_path( 'n20', 'n21', 'A' );
+$c2->add_path( 'n20', 'n21p0', 'A' );
+$c2->add_path( 'n21p0', 'n21', 'A' );
+$c2->calculate_ranks();
+is( scalar $c2->readings, $n + 1, "We have our extra test reading" );
+$c2->compress_readings();
+is( scalar $c2->readings, $n - 6, "Compressing readings also works with join_next" );
+is( $c2->reading( 'n21p0' )->text, 'unto', "The joined word has no space" );
+
+
+=end testing
+
 =cut
 
 sub compress_readings {
