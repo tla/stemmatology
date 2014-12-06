@@ -72,6 +72,16 @@ unless( $stemma_enabled ) {
 		$nst = Text::Tradition->new( 'input' => 'Self', 'file' => 't/data/lexformat.xml' );
 	} [qr/DROPPING stemmata/],
 		"Got expected stemma drop warning on parse";
+} else {
+	# Test parse of existing Stemweb job id
+	$t->set_stemweb_jobid( '1234' );
+	$graphml_str = $t->collation->as_graphml;
+	try {
+		$newt = Text::Tradition->new( 'input' => 'Self', 'string' => $graphml_str );
+		is( $newt->stemweb_jobid, '1234', "Stemweb job ID was reparsed" );
+	} catch {
+		ok( 0, "Existing stemweb job ID causes parser to explode" );
+	}
 }
 }
 
