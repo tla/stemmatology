@@ -1,3 +1,10 @@
+Version 2.0.0
+=============
+* Major version bump to allow minor releases for stupid mistakes
+* New "adjacency list" output format
+* Cope with Stemweb's lack of UTF-8 support
+* Various and sundry bugfixes
+
 Version 1.3
 ===========
 * Deal with Moose objectification of its exceptions
