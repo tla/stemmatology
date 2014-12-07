@@ -121,14 +121,14 @@ try {
 {
 use Text::Tradition;
 
-my $t = Text::Tradition->new( input => 'CollateX', file => 't/data/CollateX-16.xml' );
+my $t = Text::Tradition->new( input => 'CollateX', file => 't/data/Collatex-16.xml' );
 my $c = $t->collation;
 my $n = scalar $c->readings;
 $c->compress_readings();
 is( scalar $c->readings, $n - 6, "Compressing readings seems to work" );
 
 # Now put in a join-word and make sure the thing still works.
-my $t2 = Text::Tradition->new( input => 'CollateX', file => 't/data/CollateX-16.xml' );
+my $t2 = Text::Tradition->new( input => 'CollateX', file => 't/data/Collatex-16.xml' );
 my $c2 = $t2->collation;
 # Split n21 ('unto') for testing purposes
 my $new_r = $c2->add_reading( { 'id' => 'n21p0', 'text' => 'un', 'join_next' => 1 } );
