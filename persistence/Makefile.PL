@@ -23,4 +23,5 @@ requires( 'YAML::XS' );
 requires( 'namespace::clean' );
 build_requires( 'Test::Warn' );
 build_requires( 'Test::Memory::Cycle' );
+build_requires( 'Test::More::UTF8' );
 &WriteAll;

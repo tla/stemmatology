@@ -1,3 +1,8 @@
+*** Version 1.2, 07/12/2014
+
+- Workaround for a UTF-8 encoding bug when using MySQL as the storage backend
+
+
 *** Version 1.1, 23/09/2012
 
 commit 3f54eb870cf3bae380898dbe0c21ec7a22a2c8eb
