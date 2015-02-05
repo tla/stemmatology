@@ -440,10 +440,14 @@ sub add_user {
     my $password = $userinfo->{password};
     my $role = $userinfo->{role} || 'user';
 
+    if ($userinfo->{sub}) {
+        $username = $userinfo->{sub};
+    }
+
 	throw( "No username given" ) unless $username;
 	throw( "Invalid password - must be at least " . $self->MIN_PASS_LEN 
 		. " characters long" )
-		unless ( $self->validate_password($password) || $username =~ /^https?:/ );
+		unless ( $self->validate_password($password) || $username =~ /^https?:/  || exists ($userinfo->{openid_id}) || exists ($userinfo->{sub}));
 
     my $user = Text::Tradition::User->new(
         id => $username,
@@ -513,6 +517,10 @@ sub find_user {
         _extract_openid_data($userinfo);
     }
 
+    if (exists $userinfo->{sub} && exists $userinfo->{openid_id}) {
+        return $self->_find_gplus($userinfo);
+    }
+
 	my $user;
 	if( exists $userinfo->{username} ) {
     	my $username = $userinfo->{username};
@@ -530,6 +538,49 @@ sub find_user {
 	}
 #    print STDERR "Found user, $username, email is :", $user->email, ":\n";
     return $user;
+}
+
+sub _find_gplus {
+    my ($self, $userinfo) = @_;
+
+    my $sub = $userinfo->{sub};
+    my $openid = $userinfo->{openid_id};
+
+    # Do we have a user with the google id already?
+
+    my $user = $self->find_user({
+            username => $sub
+        });
+
+    if ($user) {
+        return $user;
+    }
+
+    # Do we have a user with the openid?
+
+    $user = $self->find_user({
+            url => $openid
+        });
+
+    if (!$user) {
+        return undef;
+    }
+
+    my $new_user = $self->add_user({
+            username => $sub,
+            password => $user->password,
+            role     => $user->role,
+            active   => $user->active,
+            sub      => $sub,
+            openid_id => $openid,
+        });
+
+    foreach my $t (@{ $user->traditions }) {
+        $new_user->add_tradition($t);
+    }
+
+    #$self->delete_user({ username => $user->id });
+    return $new_user;
 }
 
 =head2 modify_user( $userinfo )
