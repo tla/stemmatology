@@ -545,12 +545,14 @@ sub _find_gplus {
 
     my $sub = $userinfo->{sub};
     my $openid = $userinfo->{openid_id};
+    my $email = $userinfo->{email};
 
     # Do we have a user with the google id already?
 
     my $user = $self->find_user({
-            username => $sub
-        });
+        username => $sub
+    });
+    warn "Found by google+id" if $user;
 
     if ($user) {
         return $user;
@@ -559,27 +561,33 @@ sub _find_gplus {
     # Do we have a user with the openid?
 
     $user = $self->find_user({
-            url => $openid
-        });
+        url => $openid
+    });
+    warn "Found by openid" if $user;
+    $user ||= $self->find_user({ email => $userinfo->{email} });
+    warn "Found by email" if $user;
 
     if (!$user) {
         return undef;
     }
 
     my $new_user = $self->add_user({
-            username => $sub,
-            password => $user->password,
-            role     => $user->role,
-            active   => $user->active,
-            sub      => $sub,
+            username  => $sub,
+            password  => $user->password,
+            role      => $user->role,
+            active    => $user->active,
+            sub       => $sub,
             openid_id => $openid,
+            email     => $email,
         });
 
     foreach my $t (@{ $user->traditions }) {
         $new_user->add_tradition($t);
     }
+    $self->update(@{ $user->traditions });
+    $self->update($new_user);
 
-    #$self->delete_user({ username => $user->id });
+    # $self->delete_user({ username => $user->id });
     return $new_user;
 }
 
