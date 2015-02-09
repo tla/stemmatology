@@ -582,9 +582,10 @@ sub _find_gplus {
         });
 
     foreach my $t (@{ $user->traditions }) {
+		$user->remove_tradition($t);
         $new_user->add_tradition($t);
     }
-    $self->update(@{ $user->traditions });
+    $self->update($user);
     $self->update($new_user);
 
     # $self->delete_user({ username => $user->id });
