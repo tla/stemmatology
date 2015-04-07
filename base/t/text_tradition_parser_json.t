@@ -52,6 +52,15 @@ foreach my $wit ( $t->witnesses ) {
 	my $graphtext = $t->collation->path_text( $wit->sigil );
 	is( $graphtext, $origtext, "Collation matches original for witness " . $wit->sigil );
 }
+
+# Check that the ranks are right
+is( $t->collation->end->rank, 19, "Ending node has the correct rank" );
+foreach my $rdg ( $t->collation->readings ) {
+	next if $rdg->is_meta;
+	my $idrank = $rdg->id;
+	$idrank =~ s/^r(\d+)\..*$/$1/;
+	is( $idrank, $rdg->rank, "Reading $rdg has the correct rank" );
+}
 }
 
 

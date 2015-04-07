@@ -96,6 +96,16 @@ foreach my $wit ( $t->witnesses ) {
 	is( $graphtext, $origtext, "Collation matches original for witness " . $wit->sigil );
 }
 
+# Check that the ranks are right
+is( $t->collation->end->rank, 19, "Ending node has the correct rank" );
+foreach my $rdg ( $t->collation->readings ) {
+	next if $rdg->is_meta;
+	my $idrank = $rdg->id;
+	$idrank =~ s/^r(\d+)\..*$/$1/;
+	is( $idrank, $rdg->rank, "Reading $rdg has the correct rank" );
+}
+
+
 =end testing
 
 =cut
@@ -161,10 +171,10 @@ sub parse {
             } # else skip it for empty readings.
         }
     }
-    
+
     # Collapse our lacunae into a single node and
     # push the end node onto all paths.
-    $c->end->rank( $length );
+    $c->end->rank( $length+1 );
     foreach my $wit ( @witnesses ) {
         my $p = $wit->path;
         my $last_rdg = shift @$p;
@@ -220,8 +230,8 @@ sub make_nodes {
 			if( exists( $unique{$word} ) ) {
 				$rdg = $unique{$word};
 			} else {
-				my %args = ( 'id' => 'r' . join( '.', $idx, $j+1 ),
-					'rank' => $idx,
+				my %args = ( 'id' => 'r' . join( '.', $idx+1, $j+1 ),
+					'rank' => $idx+1,
 					'text' => $word,
 					'collation' => $c );
 				if( $word eq '#LACUNA#' ) {
