@@ -30,19 +30,21 @@ is( ref( $t ), 'Text::Tradition', "Parsed a JSON alignment" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
     is( scalar $t->collation->paths, 32, "Collation has all paths" );
-    is( scalar $t->witnesses, 3, "Collation has all witnesses" );
+    is( scalar $t->witnesses, 2, "Collation has all witnesses" );
 }
 
 my %seen_wits;
-map { $seen_wits{$_} = 0 } qw/ A B C /;
+map { $seen_wits{$_} = 0 } qw/ A C /;
 # Check that we have the right witnesses
 foreach my $wit ( $t->witnesses ) {
 	$seen_wits{$wit->sigil} = 1;
 }
-is( scalar keys %seen_wits, 3, "No extra witnesses were made" );
+is( scalar keys %seen_wits, 2, "No extra witnesses were made" );
 foreach my $k ( keys %seen_wits ) {
 	ok( $seen_wits{$k}, "Witness $k still exists" );
 }
+# Check that witness A is layered
+ok( $t->witness('A')->is_layered, "Witness A has its pre-correction layer" );
 
 # Check that the witnesses have the right texts
 foreach my $wit ( $t->witnesses ) {

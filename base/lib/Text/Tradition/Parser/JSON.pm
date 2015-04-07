@@ -73,19 +73,21 @@ is( ref( $t ), 'Text::Tradition', "Parsed a JSON alignment" );
 if( $t ) {
     is( scalar $t->collation->readings, 26, "Collation has all readings" );
     is( scalar $t->collation->paths, 32, "Collation has all paths" );
-    is( scalar $t->witnesses, 3, "Collation has all witnesses" );
+    is( scalar $t->witnesses, 2, "Collation has all witnesses" );
 }
 
 my %seen_wits;
-map { $seen_wits{$_} = 0 } qw/ A B C /;
+map { $seen_wits{$_} = 0 } qw/ A C /;
 # Check that we have the right witnesses
 foreach my $wit ( $t->witnesses ) {
 	$seen_wits{$wit->sigil} = 1;
 }
-is( scalar keys %seen_wits, 3, "No extra witnesses were made" );
+is( scalar keys %seen_wits, 2, "No extra witnesses were made" );
 foreach my $k ( keys %seen_wits ) {
 	ok( $seen_wits{$k}, "Witness $k still exists" );
 }
+# Check that witness A is layered
+ok( $t->witness('A')->is_layered, "Witness A has its pre-correction layer" );
 
 # Check that the witnesses have the right texts
 foreach my $wit ( $t->witnesses ) {
@@ -108,6 +110,15 @@ sub parse {
 	my @witnesses; # Keep the ordered list of our witnesses
     my %ac_wits;  # Track these for later removal
     foreach my $sigil ( map { $_->{'witness'} } @{$table->{'alignment'}} ) {
+    	# Get the appropriate sigil.
+        my $aclabel = $c->ac_label;
+        if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
+        	my $real_sig = $1;
+        	my $layer_sig = $real_sig . '_ac';
+            $ac_wits{$sigil} = { layer => $layer_sig, base => $real_sig };
+            # use XML Name version of this, since ' (a.c.)' will break XML validation
+        	$sigil = $layer_sig;
+        }
     	my $wit;
     	if( $tradition->has_witness( $sigil ) ) {
     		$wit = $tradition->witness( $sigil );
@@ -118,10 +129,6 @@ sub parse {
 		}
         $wit->path( [ $c->start ] );
         push( @witnesses, $wit );
-        my $aclabel = $c->ac_label;
-        if( $sigil =~ /^(.*)\Q$aclabel\E$/ ) {
-            $ac_wits{$sigil} = $1;
-        }
     }
     
     # Save the original witness text for consistency checking. We do this
@@ -131,7 +138,7 @@ sub parse {
     foreach my $intext ( @{$table->{'alignment'}} ) {
     	my $rs = $intext->{'witness'};
     	my $is_layer = exists $ac_wits{$rs};
-    	my $wit = $tradition->witness( $is_layer ? $ac_wits{$rs} : $rs );
+    	my $wit = $tradition->witness( $is_layer ? $ac_wits{$rs}->{base} : $rs );
     	my @tokens = grep { $_ && $_->{'t'} !~ /^\#.*\#$/ } @{$intext->{'tokens'}};
     	my @words = map { _restore_punct( $_ ) } @tokens;
     	$is_layer ? $wit->layertext( \@words ) : $wit->text( \@words );
@@ -176,8 +183,8 @@ sub parse {
     # Fold any a.c. witnesses into their main witness objects, and
     # delete the independent a.c. versions.
     foreach my $a ( keys %ac_wits ) {
-    	my $ac_wit = $tradition->witness( $a );
-        my $main_wit = $tradition->witness( $ac_wits{$a} );
+    	my $ac_wit = $tradition->witness( $ac_wits{$a}->{layer} );
+        my $main_wit = $tradition->witness( $ac_wits{$a}->{base} );
         next unless $main_wit;
         $main_wit->uncorrected_path( $ac_wit->path );
         $tradition->del_witness( $ac_wit );
