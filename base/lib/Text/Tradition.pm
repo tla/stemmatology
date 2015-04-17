@@ -1,5 +1,6 @@
 package Text::Tradition;
 
+use Encode qw/ decode_utf8 /;
 use JSON qw / from_json /;
 use Module::Load;
 use Moose;
@@ -335,6 +336,103 @@ sub BUILD {
     }
     $self->_init_done( 1 );
     return $self;
+}
+
+=head2 as_graphml
+
+Export the entire tradition as XML, with the collation expressed in GraphML.
+
+=cut
+
+sub as_graphml {
+	my $self = shift;
+	return $self->_get_document( 'as_graphml', @_ );
+}
+
+=head2 as_tei_ps
+
+Export the tradition in TEI P5 format, using the parallel-segmentation 
+method of critical apparatus.
+
+=begin testing
+
+use Text::Tradition;
+use XML::LibXML;
+
+my $s = Text::Tradition->new( 
+    name  => 'inline', 
+    input => 'Tabular',
+    file  => 't/data/simple.txt',
+    );
+    
+my $docstr = $s->as_tei_ps();
+my $doc = XML::LibXML->load_xml( string => $docstr );
+my $tei = $doc->documentElement;
+is( $tei->nodeName, 'TEI', "Got a TEI document back out" );
+# TODO test existence of witnesses, and that there are 4 apps in the output
+is( $tei->getElementsByTagName('witness')->size, 3, "Found three witnesses" );
+is( $tei->getElementsByTagName('app')->size, 4, "Found four apparatus entries" );
+
+=end testing
+
+=cut
+
+sub as_tei_ps {
+	my $self = shift;
+	return $self->_get_document( 'as_tei_ps', @_ );
+}
+
+=head2 as_tei_dea( $base )
+
+Export the tradition in TEI P5 format, using the double-endpoint-attachment 
+method of critical apparatus. A single witness may be specified as the base;
+the default is to use the majority text as a base. 
+
+=cut
+
+sub as_tei_dea {
+	my $self = shift;
+	return $self->_get_document( 'as_tei_dea', @_ );
+}
+
+## TODO Implement the other export methods here.
+
+sub _get_document {
+	my( $self, $format, @args ) = @_;
+	my $doc = $self->_make_tei_frame;
+	my( $textel ) = $doc->documentElement->getElementsByTagName('text');
+	$DB::single = 1;
+	my $content = $self->collation->$format( @args );
+	$doc->documentElement->appendChild( $content );
+	return decode_utf8( $doc->toString(1) );
+}
+
+sub _make_tei_frame {
+	my $self = shift;
+	my $tei_ns = 'http://www.tei-c.org/ns/1.0';
+	my $doc = XML::LibXML->createDocument( "1.0", "UTF-8" );
+    my $root = $doc->createElementNS( $tei_ns, 'TEI' );
+	$doc->setDocumentElement( $root );
+	my $teiheader = $root->addNewChild( $tei_ns, 'teiHeader' );
+	my $filedesc = $teiheader->addNewChild( $tei_ns, 'fileDesc' );
+	$filedesc->addNewChild( $tei_ns, 'titleStmt' )->
+			addNewChild( $tei_ns, 'title' )->
+			appendText( $self->name );
+	$filedesc->addNewChild( $tei_ns, 'publicationStmt' )->
+			addNewChild( $tei_ns, 'p' )->
+			appendText( 'Created by the Text::Tradition library' );
+	my $witnesslist = $filedesc->addNewChild( $tei_ns, 'sourceDesc')->
+			addNewChild( $tei_ns, 'listWit' );
+	foreach my $wit ( $self->witnesses ) {
+		my $wit_el = $witnesslist->addNewChild( $tei_ns, 'witness' );
+		$wit_el->setAttribute( 'xml:id', $wit->sigil );
+		if( $wit->has_identifier ) {
+			$wit_el->appendText( $wit->identifier );
+		} else {
+			$wit_el->appendText( 'Unidentified manuscript' );
+		}	
+	}
+	return $doc;
 }
 
 =head2 clear_collation

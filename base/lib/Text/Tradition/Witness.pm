@@ -231,6 +231,7 @@ has 'ascii_sigil' => (
 has 'identifier' => (
 	is => 'rw',
 	isa => 'Str',
+	predicate => 'has_identifier',
 	);
 
 has 'settlement' => (

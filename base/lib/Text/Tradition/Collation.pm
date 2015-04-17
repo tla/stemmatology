@@ -7,6 +7,7 @@ use File::Which;
 use Graph;
 use IPC::Run qw( run binary );
 use JSON qw/ to_json /;
+use Set::Scalar;
 use Text::CSV;
 use Text::Tradition::Collation::Data;
 use Text::Tradition::Collation::Reading;
@@ -1683,6 +1684,104 @@ sub _add_graphml_data {
     $data_el->setAttribute( 'key', $key );
     $data_el->appendText( $value );
 }
+
+
+=head2 as_tei_ps
+
+Returns an XML::LibXML TEI 'text' element that contains the collation in 
+parallel segmentation format.
+
+=cut
+
+sub as_tei_ps {
+	my( $self, $opts ) = @_;
+	
+    # Some namespaces
+    my $tei_ns = 'http://www.tei-c.org/ns/1.0';
+
+    # Create the document and root node
+    require XML::LibXML;
+    # Put the whole text into an anonymous block
+    my $text_el = XML::LibXML::Element->new('text');
+    $text_el->setNamespace( $tei_ns );
+    my $container = $text_el->addNewChild( $tei_ns, 'body' )
+    	->addNewChild( $tei_ns, 'ab' );
+    # Now step through the text, rank by rank, making apparatus elements
+    # where necessary. We assume that the sigla will be the XML IDs of the
+    # witnesses in the final document.
+    my $table = $self->alignment_table( $opts );
+    my @all_witnesses = map { $_->{witness} } @{$table->{alignment}};
+    my $join_next;
+    foreach my $idx ( 0 .. $table->{length} - 1 ) {
+    	my @rowobjs = map { $_->{tokens}->[$idx] } @{$table->{alignment}};
+    	# Get the set of readings here.
+    	my $rdgs = Set::Scalar->new();
+    	$rdgs->insert( map { $_ ? $_->{t} : '' } @rowobjs );
+    	if( $rdgs->size == 1 ) {
+    		# It doesn't need an app. Join the reading to the current text.
+    		my $rdg = $rdgs->[0];
+    		$join_next = $self->_append_reading_text( $container, $rdg, $join_next );
+    	} else {
+    		# We need to make an apparatus.
+    		my $app = $container->addNewChild( $tei_ns, 'app' );
+    		my %wits_present;
+    		map { $wits_present{$_} = 0 } @all_witnesses;
+   			foreach my $rdg ( @$rdgs ) {
+   				next unless $rdg;
+   				map { $wits_present{$_} = 1 } $rdg->witnesses;
+   				my $rdg_el = $app->addNewChild( $tei_ns, 'rdg' );
+   				$rdg_el->setAttribute( 'wit', $self->_make_xml_witstring( $rdg ) );
+   				$join_next = $self->_append_reading_text( $rdg_el, $rdg, $join_next );
+   				my $ac_wits = $self->_make_xml_witstring( $rdg, 1 );
+   				if( $ac_wits ) {
+	   				my $rdg_ac_el = $app->addNewChild( $tei_ns, 'rdg' );
+					$rdg_ac_el->setAttribute( 'wit', $ac_wits );
+					$rdg_ac_el->setAttribute( 'type', 'a.c.' );
+					# This implies that all parallel readings will have the same
+					# join_next setting. Might want to think harder about that.
+					$join_next = $self->_append_reading_text( $rdg_el, $rdg, $join_next );
+				}
+   			}
+   			# Now check for an empty reading.
+   			my @missing = grep { $wits_present{$_} == 0 } @all_witnesses;
+   			if( @missing ) {
+   				warn( "Missing witnesses @missing at rank $idx when there is no empty reading!" )
+   					unless $rdgs->has('');
+   				my $rdg_el = $app->addNewChild( $tei_ns, 'rdg' );
+   				$rdg_el->setAttribute( 'wit', join( ' ', map { "#$_" } @missing ) );
+   			}
+   		}
+   	}
+   	# Great. Return the text element.
+   	return $text_el;
+}
+
+sub _append_reading_text {
+	my( $self, $el, $rdg, $join_next ) = @_;
+	$el->appendText( $self->wordsep ) 
+		unless $join_next || $rdg->join_prior;
+	$el->appendText( $rdg->text );
+	return $rdg->join_next;
+}
+
+sub _make_xml_witstring {
+	my( $self, $rdg, $aclayer ) = @_;
+	my @witlist;
+	my $aclabel = $self->ac_label;
+	if( $aclayer ) {
+		foreach my $wit ( $rdg->witnesses ) {
+			if( $wit =~ /^(.*)\Q$aclabel\E$/ ) {
+				push( @witlist, $1 );
+			}
+		}
+	} else {
+		@witlist = grep { $_ !~ /^(.*)\Q$aclabel\E$/ } $rdg->witnesses;
+	}
+	return join( ' ', map { "#$_" } @witlist );
+}
+
+
+=head2 as_tei_dea( $options )
 
 =head2 as_csv
 

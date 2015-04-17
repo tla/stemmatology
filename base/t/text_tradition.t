@@ -71,5 +71,27 @@ try {
 
 
 
+# =begin testing
+{
+use Text::Tradition;
+use XML::LibXML;
+
+my $s = Text::Tradition->new( 
+    name  => 'inline', 
+    input => 'Tabular',
+    file  => 't/data/simple.txt',
+    );
+    
+my $docstr = $s->as_tei_ps();
+my $doc = XML::LibXML->load_xml( string => $docstr );
+my $tei = $doc->documentElement;
+is( $tei->nodeName, 'TEI', "Got a TEI document back out" );
+# TODO test existence of witnesses, and that there are 4 apps in the output
+is( $tei->getElementsByTagName('witness')->size, 3, "Found three witnesses" );
+is( $tei->getElementsByTagName('app')->size, 4, "Found four apparatus entries" );
+}
+
+
+
 
 1;
