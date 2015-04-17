@@ -11,8 +11,10 @@ use Text::Tradition::Error;
 use Text::Tradition::Witness;
 use TryCatch;
 
-use vars qw( $VERSION );
+use vars qw( $VERSION $tei_ns );
 $VERSION = '2.0.1';
+$tei_ns = 'http://www.tei-c.org/ns/1.0';
+
 
 # Enable plugin(s) if available
 eval { with 'Text::Tradition::HasStemma'; };
@@ -379,7 +381,10 @@ is( $tei->getElementsByTagName('app')->size, 4, "Found four apparatus entries" )
 
 sub as_tei_ps {
 	my $self = shift;
-	return $self->_get_document( 'as_tei_ps', @_ );
+	my $doc = $self->_get_document( 'as_tei_ps', @_ );
+	# Add the variant encoding declaration.
+	_add_varenc_decl( $doc, 'parallel-segmentation', 'internal' );
+	return $doc;
 }
 
 =head2 as_tei_dea( $base )
@@ -392,7 +397,10 @@ the default is to use the majority text as a base.
 
 sub as_tei_dea {
 	my $self = shift;
-	return $self->_get_document( 'as_tei_dea', @_ );
+	my $doc = $self->_get_document( 'as_tei_dea', @_ );
+	# Add the variant encoding declaration.
+	_add_varenc_decl( $doc, 'double-end-point', 'internal' );
+	return $doc;
 }
 
 ## TODO Implement the other export methods here.
@@ -401,15 +409,13 @@ sub _get_document {
 	my( $self, $format, @args ) = @_;
 	my $doc = $self->_make_tei_frame;
 	my( $textel ) = $doc->documentElement->getElementsByTagName('text');
-	$DB::single = 1;
 	my $content = $self->collation->$format( @args );
 	$doc->documentElement->appendChild( $content );
-	return decode_utf8( $doc->toString(1) );
+	return $doc;
 }
 
 sub _make_tei_frame {
 	my $self = shift;
-	my $tei_ns = 'http://www.tei-c.org/ns/1.0';
 	my $doc = XML::LibXML->createDocument( "1.0", "UTF-8" );
     my $root = $doc->createElementNS( $tei_ns, 'TEI' );
 	$doc->setDocumentElement( $root );
@@ -433,6 +439,15 @@ sub _make_tei_frame {
 		}	
 	}
 	return $doc;
+}
+
+sub _add_varenc_decl {
+	my( $doc, $method, $location ) = @_;
+	my( $th ) = $doc->documentElement->getElementsByTagName( 'teiHeader' );
+	my $vdecl = $th->addNewChild( $tei_ns, 'encodingDesc' )
+		->addNewChild( $tei_ns, 'variantEncoding' );
+	$vdecl->setAttribute( 'method', $method );
+	$vdecl->setAttribute( 'location', $location );
 }
 
 =head2 clear_collation
