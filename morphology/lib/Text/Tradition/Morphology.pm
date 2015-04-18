@@ -311,6 +311,20 @@ sub relationship_added {
 	}
 }
 
+sub push_normal_form {
+	my $self = shift;
+	# Set the normal form on all orthographically related readings to match
+	# the normal form on this one.
+	my $filter = sub { 
+		my $rl = shift; 
+		my $rltype = $self->collation->relations->type( $rl->type );
+		return $rltype->bindlevel < 2 
+	};
+	foreach my $r ( $self->related_readings( $filter ) ) {
+		$r->normal_form( $self->normal_form );
+	}
+}
+
 1;
 
 =head1 LICENSE
