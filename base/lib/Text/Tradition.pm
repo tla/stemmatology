@@ -11,7 +11,7 @@ use Text::Tradition::Witness;
 use TryCatch;
 
 use vars qw( $VERSION );
-$VERSION = '2.0.1';
+$VERSION = '2.1.0';
 
 # Enable plugin(s) if available
 eval { with 'Text::Tradition::HasStemma'; };
