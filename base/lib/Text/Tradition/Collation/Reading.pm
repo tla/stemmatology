@@ -208,6 +208,27 @@ sub BUILD {
 	}
 }
 
+around make_lemma => sub {
+	my $orig = shift;
+	my $self = shift;
+	my $val = shift;
+
+	# TODO unset the lemma from any other reading at the same rank.
+	if( $val && $self->does( 'Text::Tradition::Morphology' )) {
+		# Set the normal form on all orthographically related readings to match
+		# the normal form on this one.
+		my $filter = sub { 
+			my $rl = shift; 
+			my $rltype = $self->collation->relations->type( $rl->type );
+			return $rltype->bindlevel < 2 
+		};
+		foreach my $r ( $self->related_readings( $filter ) ) {
+			$r->normal_form( $self->normal_form );
+		}
+	}
+	$self->$orig( $val );
+};
+
 =head2 is_meta
 
 A meta attribute (ha ha), which should be true if any of our 'special'

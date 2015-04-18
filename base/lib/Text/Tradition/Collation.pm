@@ -901,13 +901,22 @@ sub add_relationship {
 	my $self = shift;
     my( $source, $target, $opts ) = $self->_stringify_args( @_ );
     my( @vectors ) = $self->relations->add_relationship( $source, $target, $opts );
+    my $did_recalc;
     foreach my $v ( @vectors ) {
-    	next unless $self->get_relationship( $v )->colocated;
-    	if( $self->reading( $v->[0] )->has_rank && $self->reading( $v->[1] )->has_rank
-    		&& $self->reading( $v->[0] )->rank ne $self->reading( $v->[1] )->rank ) {
+    	my $rel = $self->get_relationship( $v );
+    	next unless $rel->colocated;
+    	my $r1 = $self->reading( $v->[0] );
+    	my $r2 =  $self->reading( $v->[1] );
+    	# If it's a spelling or orthographic relationship, and one is marked
+    	# as a lemma, set the normal form on the non-lemma to reflect that.
+    	if( $r1->does( 'Text::Tradition::Morphology' ) ) {
+    		$r1->relationship_added( $r2, $rel );
+    	}
+    	next if $did_recalc;
+    	if( $r1->has_rank && $r2->has_rank && $r1->rank ne $r2->rank ) {
     			$self->_graphcalc_done(0);
     			$self->_clear_cache;
-    			last;
+    			$did_recalc = 1;
     	}
     }
     return @vectors;
