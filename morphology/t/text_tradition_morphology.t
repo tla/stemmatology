@@ -49,6 +49,17 @@ $r3->make_lemma( 1 );
 is( $r4->normal_form, 'YAN', "normal form propagated" );
 is( $r5->normal_form, 'YAN', "normal form propagated" );
 
+# Now try modifying the normal form and making sure the change is propagated
+$r3->normal_form( 'JIGGIT' );
+is( $r4->normal_form, 'JIGGIT', "new normal form propagated" );
+is( $r5->normal_form, 'JIGGIT', "new normal form propagated" );
+
+# ...and that no change is propagated if the reading isn't a lemma.
+$r4->normal_form( 'JOLLY' );
+is( $r3->normal_form, 'JIGGIT', "normal form on non-lemma not propagated" );
+is( $r5->normal_form, 'JIGGIT', "normal form on non-lemma not propagated" );
+
+
 # Finally, try a relationship that shouldn't propagate the normal form
 my $r6 = $c->reading('w91');
 my $r7 = $c->reading('w92');

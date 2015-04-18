@@ -70,19 +70,23 @@ has 'reading_lexemes' => (
 	
 
 
-# Make normal_form default to text, transparently.
+# Make normal_form default to text, transparently; also propagate the
+# normal form given if the reading is a lemma.
 around 'normal_form' => sub {
 	my $orig = shift;
 	my $self = shift;
-	my( $arg ) = @_;
+	unless( @_ ) {
+		# return the right default
+		return $self->_has_normal_form ? $self->$orig() : $self->text;
+	}
+	my $arg = shift;
 	if( $arg && $arg eq $self->text ) {
 		$self->_clear_normal_form;
-		return $arg;
-	} elsif( !$arg && !$self->_has_normal_form ) {
-		return $self->text;
 	} else {
-		$self->$orig( @_ );
+		$self->$orig( $arg );
 	}
+	$self->push_normal_form() if $self->is_lemma;
+	return $arg;
 };
 
 =head1 READING METHODS
@@ -286,6 +290,17 @@ is( $r5->normal_form, 'TETHERA', "nothing changed yet" );
 $r3->make_lemma( 1 );
 is( $r4->normal_form, 'YAN', "normal form propagated" );
 is( $r5->normal_form, 'YAN', "normal form propagated" );
+
+# Now try modifying the normal form and making sure the change is propagated
+$r3->normal_form( 'JIGGIT' );
+is( $r4->normal_form, 'JIGGIT', "new normal form propagated" );
+is( $r5->normal_form, 'JIGGIT', "new normal form propagated" );
+
+# ...and that no change is propagated if the reading isn't a lemma.
+$r4->normal_form( 'JOLLY' );
+is( $r3->normal_form, 'JIGGIT', "normal form on non-lemma not propagated" );
+is( $r5->normal_form, 'JIGGIT', "normal form on non-lemma not propagated" );
+
 
 # Finally, try a relationship that shouldn't propagate the normal form
 my $r6 = $c->reading('w91');
