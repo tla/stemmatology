@@ -744,8 +744,11 @@ sub duplicate_reading {
 				$args{$attr->name} = $which eq 'Array' 
 					? [ $r->$acc ] : { $r->$acc };
 			} 
-		} else {
-			$args{$attr->name} = $r->$acc if $acc;
+		} elsif( $acc ) {
+			my $attrval = $r->$acc;
+			if( defined $attrval ) {
+				$args{$attr->name} = $attrval;
+			}
 		}
 	}
 	# By definition the new reading will no longer be common.
