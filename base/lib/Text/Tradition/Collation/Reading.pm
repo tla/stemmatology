@@ -43,6 +43,8 @@ reading belongs.  Required.
 
 =item text - The word or other text of the reading.
 
+=item is_lemma - The reading serves as a lemma for the constructed text.
+
 =item is_start - The reading is the starting point for the collation.
 
 =item is_end - The reading is the ending point for the collation.
@@ -65,15 +67,25 @@ One of 'text', 'is_start', 'is_end', or 'is_lacuna' is required.
 
 =head2 text
 
+=head2 is_lemma
+
 =head2 is_start
 
 =head2 is_end
 
 =head2 is_lacuna
 
-=head2 rank
+=head2 rank( $new_rank )
 
 Accessor methods for the given attributes.
+
+=head2 alter_text
+
+Changes the text of the reading.
+
+=head2 make_lemma
+
+Sets this reading as a lemma for the constructed text.
 
 =cut
 
@@ -208,16 +220,32 @@ sub BUILD {
 	}
 }
 
+=head2 
+
+=cut
+
 around make_lemma => sub {
 	my $orig = shift;
 	my $self = shift;
 	my $val = shift;
 
-	# TODO unset the lemma from any other reading at the same rank.
-	if( $val && $self->does( 'Text::Tradition::Morphology' )) {
-		$self->push_normal_form();
+	my @altered = ( $self );
+	if( $val ) {
+		# Unset the is_lemma flag for other readings at our rank
+		foreach my $rdg ( $self->collation->readings_at_rank( $self->rank ) ) {
+			next if $rdg eq $self;
+			if( $rdg->is_lemma ) {
+				$rdg->$orig( 0 );
+				push( @altered, $rdg );
+			}
+		}
+		# Call the morphology handler
+		if( $self->does( 'Text::Tradition::Morphology' ) ) {
+			push( @altered, $self->push_normal_form() );
+		}
 	}
 	$self->$orig( $val );
+	return @altered;
 };
 
 =head2 is_meta

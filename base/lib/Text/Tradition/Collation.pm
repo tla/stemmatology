@@ -195,12 +195,15 @@ The readings may be specified by object or ID.
 
 Returns all Relationship objects in the collation.
 
-=head2 add_relationship( $reading, $other_reading, $options )
+=head2 add_relationship( $reading, $other_reading, $options, $changed_readings )
 
 Adds a new relationship of the type given in $options between the two readings,
 which may be specified by object or ID.  Returns a value of ( $status, @vectors)
 where $status is true on success, and @vectors is a list of relationship edges
-that were ultimately added.
+that were ultimately added. If an array reference is passed in as $changed_readings, 
+then any readings that were altered due to the relationship creation are added to
+the array.
+
 See L<Text::Tradition::Collation::Relationship> for the available options.
 
 =cut 
@@ -902,7 +905,7 @@ sub clear_witness {
 
 sub add_relationship {
 	my $self = shift;
-    my( $source, $target, $opts ) = $self->_stringify_args( @_ );
+    my( $source, $target, $opts, $altered_readings ) = $self->_stringify_args( @_ );
     my( @vectors ) = $self->relations->add_relationship( $source, $target, $opts );
     my $did_recalc;
     foreach my $v ( @vectors ) {
@@ -913,7 +916,10 @@ sub add_relationship {
     	# If it's a spelling or orthographic relationship, and one is marked
     	# as a lemma, set the normal form on the non-lemma to reflect that.
     	if( $r1->does( 'Text::Tradition::Morphology' ) ) {
-    		$r1->relationship_added( $r2, $rel );
+    		my @changed = $r1->relationship_added( $r2, $rel );
+    		if( ref( $altered_readings ) eq 'ARRAY' ) {
+    			push( @$altered_readings, @changed );
+    		}
     	}
     	next if $did_recalc;
     	if( $r1->has_rank && $r2->has_rank && $r1->rank ne $r2->rank ) {

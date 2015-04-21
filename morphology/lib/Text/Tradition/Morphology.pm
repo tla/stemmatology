@@ -79,14 +79,17 @@ around 'normal_form' => sub {
 		# return the right default
 		return $self->_has_normal_form ? $self->$orig() : $self->text;
 	}
+	# If we are setting a new normal form, we return a list of the
+	# readings that were changed.
 	my $arg = shift;
+	my @altered = ( $self );
 	if( $arg && $arg eq $self->text ) {
 		$self->_clear_normal_form;
 	} else {
 		$self->$orig( $arg );
+		push( @altered, $self->push_normal_form() ) if $self->is_lemma;
 	}
-	$self->push_normal_form() if $self->is_lemma;
-	return $arg;
+	return @altered;
 };
 
 =head1 READING METHODS
@@ -98,15 +101,15 @@ strings ought to match the reading's normalized form.
 See L<Text::Tradition::Collation::Reading::Lexeme> for more information
 on Lexeme objects and their attributes.
 
-=head2 has_lexemes
+=head2 has_lexemes()
 
 Returns a true value if the reading has any attached lexemes.
 
-=head2 lexemes
+=head2 lexemes()
 
 Returns the Lexeme objects (if any) attached to the reading.
 
-=head2 clear_lexemes
+=head2 clear_lexemes()
 
 Wipes any associated Lexeme objects out of the reading.
 
@@ -114,7 +117,7 @@ Wipes any associated Lexeme objects out of the reading.
 
 Adds the Lexeme in $lexobj to the list of lexemes.
 
-=head2 lemmatize
+=head2 lemmatize()
 
 If the language of the reading is set, this method will use the appropriate
 Language model to determine the lexemes that belong to this reading.  See
@@ -243,10 +246,14 @@ after '_combine' => sub {
 	}
 };
 
-=head2 relationship_added
+=head2 relationship_added( $related_reading, $relationship )
 
 To be called when a relationship is set, to implement the consequences of 
 certain relationships.
+
+=head2 push_normal_form()
+
+Copy the normal form of a reading to all its orthographically related readings.
 
 =begin testing
 
@@ -263,14 +270,18 @@ my $c = $t->collation;
 # First try lemmatizing and then adding a relationship
 my $r1 = $c->reading('w42');
 my $r2 = $c->reading('w44');
-$r1->normal_form('FOO');
+my @changed = $r1->normal_form('FOO');
+is_deeply( \@changed, [ $r1 ], "Normal form change produced no side effect" );
 $r2->normal_form('BAR');
 
-$r1->make_lemma( 1 );
+@changed = $r1->make_lemma( 1 );
+is_deeply( \@changed, [ $r1 ], "Lemma flag changed only the concerned reading" );
 is( $r1->normal_form, 'FOO', "nothing changed yet" );
 is( $r2->normal_form, 'BAR', "nothing changed yet" );
 
-$c->add_relationship( $r1, $r2, { type => 'spelling' } );
+@changed = ();
+$c->add_relationship( $r1, $r2, { type => 'spelling' }, \@changed );
+is_deeply( \@changed, [ $r2 ], "We were informed that reading 2 changed" );
 is( $r2->normal_form, 'FOO', "Normal form followed lemma" );
 
 # Now try setting relationships and then lemmatizing
@@ -281,18 +292,32 @@ $r3->normal_form('YAN');
 $r4->normal_form('TAN');
 $r5->normal_form('TETHERA');
 
-$c->add_relationship( $r3, $r4, { type => 'orthographic', propagate => 1 } );
-$c->add_relationship( $r3, $r5, { type => 'orthographic', propagate => 1 } );
+@changed = ();
+$c->add_relationship( $r3, $r4, { type => 'orthographic', propagate => 1 }, \@changed );
+$c->add_relationship( $r3, $r5, { type => 'orthographic', propagate => 1 }, \@changed );
+is( scalar( @changed ), 0, "No reading side effects yet" );
 is( $r3->normal_form, 'YAN', "nothing changed yet" );
 is( $r4->normal_form, 'TAN', "nothing changed yet" );
 is( $r5->normal_form, 'TETHERA', "nothing changed yet" );
 
-$r3->make_lemma( 1 );
+@changed = $r3->make_lemma( 1 );
+my %present;
+map { $present{$_->id} = 1 } @changed;
+ok( $present{$r3->id}, "Informed of change to reading 3" );
+ok( $present{$r4->id}, "Informed of change to reading 4" );
+ok( $present{$r5->id}, "Informed of change to reading 5" );
+is( scalar keys %present, 3, "Not informed of further changes" );
 is( $r4->normal_form, 'YAN', "normal form propagated" );
 is( $r5->normal_form, 'YAN', "normal form propagated" );
 
 # Now try modifying the normal form and making sure the change is propagated
-$r3->normal_form( 'JIGGIT' );
+@changed = $r3->normal_form( 'JIGGIT' );
+%present = ();
+map { $present{$_->id} = 1 } @changed;
+ok( $present{$r3->id}, "Informed of change to reading 3" );
+ok( $present{$r4->id}, "Informed of change to reading 4" );
+ok( $present{$r5->id}, "Informed of change to reading 5" );
+is( scalar keys %present, 3, "Not informed of further changes" );
 is( $r4->normal_form, 'JIGGIT', "new normal form propagated" );
 is( $r5->normal_form, 'JIGGIT', "new normal form propagated" );
 
@@ -309,8 +334,10 @@ $r6->normal_form('BAZ');
 $r7->normal_form('QUUX');
 $r6->make_lemma( 1 );
 
-$c->add_relationship( $r6, $r7, { type => 'grammatical' } );
+@changed = ();
+$c->add_relationship( $r6, $r7, { type => 'grammatical' }, \@changed );
 is( $r7->normal_form, 'QUUX', "normal form on grammatical relationship unchanged" );
+is( scalar @changed, 0, "No readings were marked as changed" );
 
 =end testing
 
@@ -319,25 +346,30 @@ is( $r7->normal_form, 'QUUX', "normal form on grammatical relationship unchanged
 sub relationship_added {
 	my( $rdg1, $rdg2, $rel ) = @_;
 	my $lemma = $rdg1->is_lemma ? $rdg1 : ( $rdg2->is_lemma ? $rdg2 : undef );
-	if( $rel->type =~ /^(spelling|orthographic)$/ && $lemma ) {
-		my $other = $lemma->id eq $rdg1->id ? $rdg2 : $rdg1;
-		# Set the normal form on $other to match $lemma.
-		$other->normal_form( $lemma->normal_form );
+	my @altered_readings;
+	if( $lemma ) {
+		@altered_readings = $lemma->push_normal_form();
 	}
+	return @altered_readings;
 }
 
 sub push_normal_form {
 	my $self = shift;
 	# Set the normal form on all orthographically related readings to match
 	# the normal form on this one.
+	my @altered_readings;
 	my $filter = sub { 
 		my $rl = shift; 
 		my $rltype = $self->collation->relations->type( $rl->type );
 		return $rltype->bindlevel < 2 
 	};
 	foreach my $r ( $self->related_readings( $filter ) ) {
-		$r->normal_form( $self->normal_form );
+		if( $r->normal_form ne $self->normal_form ) {
+			$r->normal_form( $self->normal_form );
+			push( @altered_readings, $r );
+		}
 	}
+	return @altered_readings;
 }
 
 1;

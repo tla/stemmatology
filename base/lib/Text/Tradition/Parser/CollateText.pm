@@ -615,3 +615,7 @@ sub rstr {
 }
 
 1;
+
+=back
+
+=cut
