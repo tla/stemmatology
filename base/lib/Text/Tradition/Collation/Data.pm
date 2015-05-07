@@ -1,6 +1,7 @@
 package Text::Tradition::Collation::Data;
 use Moose;
 use Graph;
+use Text::Tradition::Datatypes;
 
 has 'sequence' => (
     is => 'ro',
@@ -68,6 +69,13 @@ has 'wordsep' => (
 	is => 'rw',
 	isa => 'Str',
 	default => ' ',
+	);
+	
+has 'direction' => (
+	is => 'ro',
+	isa => 'TextDirection', 
+	default => 'LR',
+	writer => 'change_direction',
 	);
     
 has 'start' => (

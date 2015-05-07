@@ -46,6 +46,7 @@ has _data => (
 		baselabel
 		linear
 		wordsep
+		direction
 		start
 		end
 		cached_table
@@ -213,7 +214,7 @@ sub BUILDARGS {
 	my %args = @args == 1 ? %{ $args[0] } : @args;
 	# TODO determine these from the Moose::Meta object
 	my @delegate_attrs = qw(sequence relations readings wit_list_separator baselabel 
-		linear wordsep start end cached_table _graphcalc_done);
+		linear wordsep direction start end cached_table _graphcalc_done);
 	my %data_args;
 	for my $attr (@delegate_attrs) {
 		$data_args{$attr} = delete $args{$attr} if exists $args{$attr};
@@ -1038,9 +1039,11 @@ sub as_dot {
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
 
     my %graph_attrs = (
-    	'rankdir' => 'LR',
     	'bgcolor' => 'none',
     	);
+    unless( $self->direction eq 'BI' ) {
+    	$graph_attrs{rankdir} = $self->direction;
+    }
     my %node_attrs = (
     	'fontsize' => 14,
     	'fillcolor' => 'white',

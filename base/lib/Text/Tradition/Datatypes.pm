@@ -7,6 +7,8 @@ enum 'Ternary' => [ qw( yes maybe no ) ];
 
 enum 'RelationshipScope' => [ qw( local document global ) ];
 
+enum 'TextDirection' => [ qw( LR RL BI ) ];
+
 subtype 'ReadingID',
 	as 'Str',
 	where { $_ =~ /\A$xml10_name_rx\z/ },

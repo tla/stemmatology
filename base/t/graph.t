@@ -2,7 +2,6 @@
 
 use strict; use warnings;
 use Test::More;
-use lib 'lib';
 use File::Which;
 use Text::Tradition;
 use XML::LibXML;
@@ -70,6 +69,43 @@ is( scalar( @svg_nodes ), 7,
 @svg_edges = $part_xpc->findnodes( '//svg:g[@class="edge"]' );
 is( scalar( @svg_edges ), 7,
 	"Correct number of edges in the subgraph" );
+
+# Test a right-to-left graph
+my $arabic = Text::Tradition->new(
+	input => 'Tabular',
+	sep_char => ',',
+	name => 'arabic',
+	direction => 'RL',
+	file => 't/data/arabic_snippet.csv' );
+my $rl_svg = $parser->parse_string( $arabic->collation->as_svg() );
+is( $rl_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph from start" );
+my $rl_xpc = XML::LibXML::XPathContext->new( $rl_svg->documentElement() );
+$rl_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+my %node_cx;
+foreach my $node ( $rl_xpc->findnodes( '//svg:g[@class="node"]' ) ) {
+	my $nid = $node->getAttribute('id');
+	$node_cx{$nid} = $rl_xpc->findvalue( './svg:ellipse/@cx', $node );
+}
+my @sorted = sort { $node_cx{$a} <=> $node_cx{$b} } keys( %node_cx );
+is( $sorted[0], '__END__', "End node is the leftmost" );
+is( $sorted[$#sorted], '__START__', "Start node is the rightmost" );
+
+=note 
+
+<g id="__END__" class="node"><title>__END__</title>
+<ellipse fill="white" stroke="black" cx="38.3466" cy="-47" rx="38.1938" ry="18"/>
+<text text-anchor="middle" x="38.3466" y="-43.3" font-family="Times,serif" font-size="14.00">#END#</text>
+</g>
+
+<g id="__START__" class="node"><title>__START__</title>
+<ellipse fill="white" stroke="black" cx="1366.52" cy="-47" rx="48.9926" ry="18"/
+>
+<text text-anchor="middle" x="1366.52" y="-43.3" font-family="Times,serif" font-
+size="14.00">#START#</text>
+</g>
+
+=cut
+
 
 SKIP: {
 	skip "lemmatization disabled for now", 1;
