@@ -2239,6 +2239,11 @@ sub path_text {
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
 	my $pathtext = '';
 	my $last;
+
+	if ($self->direction eq 'RL') {
+		@path = reverse @path;
+	}
+
 	foreach my $r ( @path ) {
 		unless ( $r->join_prior || !$last || $last->join_next ) {
 			$pathtext .= ' ';
