@@ -46,6 +46,7 @@ has _data => (
 		baselabel
 		linear
 		wordsep
+		direction
 		start
 		end
 		cached_table
@@ -213,7 +214,7 @@ sub BUILDARGS {
 	my %args = @args == 1 ? %{ $args[0] } : @args;
 	# TODO determine these from the Moose::Meta object
 	my @delegate_attrs = qw(sequence relations readings wit_list_separator baselabel 
-		linear wordsep start end cached_table _graphcalc_done);
+		linear wordsep direction start end cached_table _graphcalc_done);
 	my %data_args;
 	for my $attr (@delegate_attrs) {
 		$data_args{$attr} = delete $args{$attr} if exists $args{$attr};
@@ -974,6 +975,102 @@ sub reading_witnesses {
 Returns an SVG string that represents the graph, via as_dot and graphviz.
 See as_dot for a list of options.  Must have GraphViz (dot) installed to run.
 
+=begin testing
+
+use File::Which;
+use Text::Tradition;
+use XML::LibXML;
+use XML::LibXML::XPathContext;
+
+
+SKIP: {
+	skip( 'Need Graphviz installed to test graphs', 16 )
+		unless File::Which::which( 'dot' );
+
+	my $datafile = 't/data/Collatex-16.xml';
+
+	my $tradition = Text::Tradition->new( 
+		'name'  => 'inline', 
+		'input' => 'CollateX',
+		'file'  => $datafile,
+		);
+	my $collation = $tradition->collation;
+
+	# Test the svg creation
+	my $parser = XML::LibXML->new();
+	$parser->load_ext_dtd( 0 );
+	my $svg = $parser->parse_string( $collation->as_svg() );
+	is( $svg->documentElement->nodeName(), 'svg', 'Got an svg document' );
+
+	# Test for the correct number of nodes in the SVG
+	my $svg_xpc = XML::LibXML::XPathContext->new( $svg->documentElement() );
+	$svg_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	my @svg_nodes = $svg_xpc->findnodes( '//svg:g[@class="node"]' );
+	is( scalar @svg_nodes, 26, "Correct number of nodes in the graph" );
+
+	# Test for the correct number of edges
+	my @svg_edges = $svg_xpc->findnodes( '//svg:g[@class="edge"]' );
+	is( scalar @svg_edges, 32, "Correct number of edges in the graph" );
+
+	# Test svg creation for a subgraph
+	my $part_svg = $parser->parse_string( $collation->as_svg( { from => 15 } ) ); # start, no end
+	is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph to end" );
+	my $part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
+	$part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	@svg_nodes = $part_xpc->findnodes( '//svg:g[@class="node"]' );
+	is( scalar( @svg_nodes ), 9, 
+		"Correct number of nodes in the subgraph" );
+	@svg_edges = $part_xpc->findnodes( '//svg:g[@class="edge"]' );
+	is( scalar( @svg_edges ), 10,
+		"Correct number of edges in the subgraph" );
+
+	$part_svg = $parser->parse_string( $collation->as_svg( { from => 10, to => 13 } ) ); # start, no end
+	is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph in the middle" );
+	$part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
+	$part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	@svg_nodes = $part_xpc->findnodes( '//svg:g[@class="node"]' );
+	is( scalar( @svg_nodes ), 9, 
+		"Correct number of nodes in the subgraph" );
+	@svg_edges = $part_xpc->findnodes( '//svg:g[@class="edge"]' );
+	is( scalar( @svg_edges ), 11,
+		"Correct number of edges in the subgraph" );
+
+
+	$part_svg = $parser->parse_string( $collation->as_svg( { to => 5 } ) ); # start, no end
+	is( $part_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph from start" );
+	$part_xpc = XML::LibXML::XPathContext->new( $part_svg->documentElement() );
+	$part_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	@svg_nodes = $part_xpc->findnodes( '//svg:g[@class="node"]' );
+	is( scalar( @svg_nodes ), 7, 
+		"Correct number of nodes in the subgraph" );
+	@svg_edges = $part_xpc->findnodes( '//svg:g[@class="edge"]' );
+	is( scalar( @svg_edges ), 7,
+		"Correct number of edges in the subgraph" );
+
+	# Test a right-to-left graph
+	my $arabic = Text::Tradition->new(
+		input => 'Tabular',
+		sep_char => ',',
+		name => 'arabic',
+		direction => 'RL',
+		file => 't/data/arabic_snippet.csv' );
+	my $rl_svg = $parser->parse_string( $arabic->collation->as_svg() );
+	is( $rl_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph from start" );
+	my $rl_xpc = XML::LibXML::XPathContext->new( $rl_svg->documentElement() );
+	$rl_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	my %node_cx;
+	foreach my $node ( $rl_xpc->findnodes( '//svg:g[@class="node"]' ) ) {
+		my $nid = $node->getAttribute('id');
+		$node_cx{$nid} = $rl_xpc->findvalue( './svg:ellipse/@cx', $node );
+	}
+	my @sorted = sort { $node_cx{$a} <=> $node_cx{$b} } keys( %node_cx );
+	is( $sorted[0], '__END__', "End node is the leftmost" );
+	is( $sorted[$#sorted], '__START__', "Start node is the rightmost" );
+
+} #SKIP
+
+=end testing
+
 =cut
 
 sub as_svg {
@@ -1038,9 +1135,11 @@ sub as_dot {
     $graph_name = join( '_', split( /\s+/, $graph_name ) );
 
     my %graph_attrs = (
-    	'rankdir' => 'LR',
     	'bgcolor' => 'none',
     	);
+    unless( $self->direction eq 'BI' ) {
+    	$graph_attrs{rankdir} = $self->direction;
+    }
     my %node_attrs = (
     	'fontsize' => 14,
     	'fillcolor' => 'white',
