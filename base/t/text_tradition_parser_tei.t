@@ -24,6 +24,8 @@ is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
     is( scalar $t->collation->readings, 311, "Collation has all readings" );
     is( scalar $t->collation->paths, 361, "Collation has all paths" );
+    my @lemmata = grep { $_->is_lemma } $t->collation->readings;
+    is( scalar @lemmata, 7, "Collation has its lemmata" );
 }
 
 # Try to re-parse it, ensure we can use the parser twice in the same Perl

@@ -53,20 +53,20 @@
         </head>
         <p>
           <app xml:id="a1.1_0">
-            <rdg wit="#A #S #T #D #E #F #H #K #Q">Ἡ</rdg>
+            <lem wit="#A #S #T #D #E #F #H #K #Q">Ἡ</lem>
             <rdg wit="#C #P"/>
           </app> περὶ 
           <app xml:id="a1.1_1">
-            <rdg wit="#A #C #P #S #T #D #E #F #K">τῆς</rdg>
+            <lem wit="#A #C #P #S #T #D #E #F #K">τῆς</lem>
             <rdg wit="#H #Q"/>
           </app> τοῦ 
           <app xml:id="a1.1_2">
-            <rdg wit="#A #C #T #E #F #H #K">πνεύματος τοῦ ἁγίου</rdg>
+            <lem wit="#A #C #T #E #F #H #K">πνεύματος τοῦ ἁγίου</lem>
             <rdg wit="#P #S #D #Q">ἁγίου πνεύματος</rdg>
           </app>
           <app xml:id="a1.1_3">
             <rdg wit="#Q">βλασφημία</rdg>
-            <rdg wit="#A #C #P #S #T #D #E #F #H #K">βλασφημίας ἀπορία</rdg>
+            <lem wit="#A #C #P #S #T #D #E #F #H #K">βλασφημίας ἀπορία</lem>
           </app>
           <app xml:id="a1.2_0">
             <rdg wit="#E #K #Q">αὐτόθεν</rdg>

@@ -65,6 +65,8 @@ is( ref( $t ), 'Text::Tradition', "Parsed parallel-segmentation TEI" );
 if( $t ) {
     is( scalar $t->collation->readings, 311, "Collation has all readings" );
     is( scalar $t->collation->paths, 361, "Collation has all paths" );
+    my @lemmata = grep { $_->is_lemma } $t->collation->readings;
+    is( scalar @lemmata, 7, "Collation has its lemmata" );
 }
 
 # Try to re-parse it, ensure we can use the parser twice in the same Perl
@@ -353,6 +355,9 @@ sub _return_rdg {
             my @words;
             foreach ( $xn->childNodes ) {
                 my @rdg_set = _get_readings( $tradition, $_, 1, $ac, @rdg_wits );
+                if( $xn->nodeName eq 'lem' ) {
+                	map { $_->make_lemma(1) } @rdg_set;
+                }
                 push( @words, @rdg_set ) if @rdg_set;
             }
             # If we have more than one word in a reading, it should become a segment.
