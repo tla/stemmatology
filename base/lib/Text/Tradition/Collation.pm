@@ -2012,7 +2012,7 @@ sub readings_at_rank {
 		$readings{$e->{'t'}->id} = $e->{'t'};
 	}
 	return values %readings;
-}		
+}
 
 =head2 next_reading( $reading, $sigil );
 
@@ -2123,28 +2123,44 @@ sub common_readings {
 	return @common;
 }
 
-=head2 path_text( $sigil, [, $start, $end ] )
+=head2 path_text( $sigil [, $start, $end, $use_normal_form ] )
 
-Returns the text of a witness (plus its backup, if we are using a layer)
-as stored in the collation.  The text is returned as a string, where the
+Returns the text of a witness (plus its backup, if we are using a layer) as
+stored in the collation.  The text is returned as a string, where the
 individual readings are joined with spaces and the meta-readings (e.g.
-lacunae) are omitted.  Optional specification of $start and $end allows
-the generation of a subset of the witness text.
+lacunae) are omitted.  Optional specification of $start and $end allows the
+generation of a subset of the witness text. Optional specification of
+$use_normal_form produces a text based on the normal form, rather than the
+raw text, of the reading.
 
 =cut
 
 sub path_text {
-	my( $self, $wit, $start, $end ) = @_;
+	my( $self, $wit, $start, $end, $normal ) = @_;
 	$start = $self->start unless $start;
 	$end = $self->end unless $end;
 	my @path = grep { !$_->is_meta } $self->reading_sequence( $start, $end, $wit );
+	return $self->known_path_text( $normal, @path );
+}
+
+=head2 known_path_text( $use_normal_form, @sequence ) 
+
+Returns the text of a given sequence of readings. No attempt is made to
+validate the sequence in question. If $use_normal_form is set to true, the
+normal form of each reading in the sequence will be used to construct the
+text.
+
+=cut
+
+sub known_path_text {
+	my( $self, $normal, @path ) = @_;
 	my $pathtext = '';
 	my $last;
 	foreach my $r ( @path ) {
 		unless ( $r->join_prior || !$last || $last->join_next ) {
 			$pathtext .= ' ';
 		} 
-		$pathtext .= $r->text;
+		$pathtext .= $normal ? $r->normal_form : $r->text;
 		$last = $r;
 	}
 	return $pathtext;
