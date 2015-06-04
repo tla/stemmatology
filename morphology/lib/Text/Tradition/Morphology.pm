@@ -339,6 +339,15 @@ $c->add_relationship( $r6, $r7, { type => 'grammatical' }, \@changed );
 is( $r7->normal_form, 'QUUX', "normal form on grammatical relationship unchanged" );
 is( scalar @changed, 0, "No readings were marked as changed" );
 
+# Check that 'other' and 'uncertain' relationships don't propagate
+my $r8 = $c->reading('w121');
+my $r9 = $c->reading('w122');
+$r8->normal_form('THIS');
+$r9->normal_form('THAT');
+$c->add_relationship( $r8, $r9, { type => 'other' } ) ;
+$r8->make_lemma( 1 );
+is( $r9->normal_form, 'THAT', "Normal form unchanged on non-generalizable relationship" );
+
 =end testing
 
 =cut
@@ -361,7 +370,7 @@ sub push_normal_form {
 	my $filter = sub { 
 		my $rl = shift; 
 		my $rltype = $self->collation->relations->type( $rl->type );
-		return $rltype->bindlevel < 2 
+		return $rltype->bindlevel < 2 && $rltype->is_generalizable;
 	};
 	foreach my $r ( $self->related_readings( $filter ) ) {
 		if( $r->normal_form ne $self->normal_form ) {
