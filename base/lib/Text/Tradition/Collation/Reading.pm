@@ -230,9 +230,10 @@ around make_lemma => sub {
 	my $val = shift;
 
 	my @altered = ( $self );
-	if( $val ) {
+	my $c = $self->collation;
+	if( $val && $c->_graphcalc_done) {
 		# Unset the is_lemma flag for other readings at our rank
-		foreach my $rdg ( $self->collation->readings_at_rank( $self->rank ) ) {
+		foreach my $rdg ( $c->readings_at_rank( $self->rank ) ) {
 			next if $rdg eq $self;
 			if( $rdg->is_lemma ) {
 				$rdg->$orig( 0 );
