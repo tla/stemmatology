@@ -294,7 +294,13 @@ sub is_combinable {
 # into this reading.
 sub _combine {
 	my( $self, $other, $joinstr ) = @_;
-	$self->alter_text( join( $joinstr, $self->text, $other->text ) );
+
+	if ($self->collation->direction eq 'RL') {
+		$self->alter_text( join( $joinstr, $other->text, $self->text ) );
+	} else {
+		$self->alter_text( join( $joinstr, $self->text, $other->text ) );
+	}
+
 	# Change this reading to a joining one if necessary
 	$self->_set_join_next( $other->join_next );
 }

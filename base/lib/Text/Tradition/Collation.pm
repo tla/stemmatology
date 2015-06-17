@@ -2272,6 +2272,11 @@ sub known_path_text {
 	my( $self, $normal, @path ) = @_;
 	my $pathtext = '';
 	my $last;
+
+	if ($self->direction eq 'RL') {
+		@path = reverse @path;
+	}
+
 	foreach my $r ( @path ) {
 		unless ( $r->join_prior || !$last || $last->join_next ) {
 			$pathtext .= ' ';

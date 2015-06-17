@@ -19,6 +19,15 @@ around 'throw' => sub {
 	$self->$orig( %args );
 };
 
+sub throw_collation_error {
+	my ($self, $message) = shift;
+
+	$self->throw(
+		'ident' => 'Collation error',
+		'message' => $message,
+	);
+}
+
 sub _stringify {
 	my $self = shift;
 	return "Error: " . $self->ident . " // " . $self->message
