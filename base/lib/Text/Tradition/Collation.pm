@@ -47,6 +47,7 @@ has _data => (
 		linear
 		wordsep
 		direction
+		change_direction
 		start
 		end
 		cached_table
@@ -1066,6 +1067,22 @@ SKIP: {
 	my @sorted = sort { $node_cx{$a} <=> $node_cx{$b} } keys( %node_cx );
 	is( $sorted[0], '__END__', "End node is the leftmost" );
 	is( $sorted[$#sorted], '__START__', "Start node is the rightmost" );
+	
+	# Now try making it bidirectional
+	$arabic->collation->change_direction('BI');
+	my $bi_svg = $parser->parse_string( $arabic->collation->as_svg() );
+	is( $bi_svg->documentElement->nodeName(), 'svg', "Got an svg subgraph from start" );
+	my $bi_xpc = XML::LibXML::XPathContext->new( $bi_svg->documentElement() );
+	$bi_xpc->registerNs( 'svg', 'http://www.w3.org/2000/svg' );
+	my %node_cy;
+	foreach my $node ( $bi_xpc->findnodes( '//svg:g[@class="node"]' ) ) {
+		my $nid = $node->getAttribute('id');
+		$node_cy{$nid} = $rl_xpc->findvalue( './svg:ellipse/@cy', $node );
+	}
+	@sorted = sort { $node_cy{$a} <=> $node_cy{$b} } keys( %node_cy );
+	is( $sorted[0], '__START__', "Start node is the topmost" );
+	is( $sorted[$#sorted], '__END__', "End node is the bottom-most" );
+	
 
 } #SKIP
 
