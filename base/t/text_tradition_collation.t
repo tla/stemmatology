@@ -8,6 +8,7 @@ $| = 1;
 
 # =begin testing
 {
+use Test::More::UTF8;
 use Text::Tradition;
 use TryCatch;
 
@@ -60,6 +61,25 @@ try {
 } catch( Text::Tradition::Error $e ) {
 	ok( 0, "Caught a rank exception: " . $e->message );
 }
+
+# Test right-to-left reading merge.
+my $rtl = Text::Tradition->new( 
+    'name'  => 'inline', 
+    'input' => 'Tabular',
+    'sep_char' => ',',
+    'direction' => 'RL',
+    'file'  => 't/data/arabic_snippet.csv'
+    );
+my $rtlc = $rtl->collation;
+is( $rtlc->reading('r8.1')->text, 'سبب', "Got target first reading in RTL text" );
+my $pt = $rtlc->path_text('A');
+my @path = $rtlc->reading_sequence( $rtlc->start, $rtlc->end, 'A' );
+is( $rtlc->reading('r9.1')->text, 'صلاح', "Got target second reading in RTL text" );
+$rtlc->merge_readings( 'r8.1', 'r9.1', 1 );
+is( $rtlc->reading('r8.1')->text, 'سبب صلاح', "Got target merged reading in RTL text" );
+is( $rtlc->path_text('A'), $pt, "Path text is still correct" );
+is( scalar($rtlc->reading_sequence( $rtlc->start, $rtlc->end, 'A' )), 
+	scalar(@path) - 1, "Path was shortened" );
 }
 
 
