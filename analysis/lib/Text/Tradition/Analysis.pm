@@ -15,10 +15,10 @@ use TryCatch;
 
 use vars qw/ @EXPORT_OK $VERSION /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
-$VERSION = "2.0.0";
+$VERSION = "2.0.1";
 
 
-my $DEFAULT_SOLVER_URL = 'http://perf.byzantini.st/cgi-bin/graphcalc.cgi';
+my $DEFAULT_SOLVER_URL = 'http://perf.stemmaweb.net/cgi-bin/graphcalc.cgi';
 my $unsolved_problems = {};
 
 =head1 NAME
