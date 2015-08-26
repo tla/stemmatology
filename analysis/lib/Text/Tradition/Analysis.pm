@@ -15,7 +15,7 @@ use TryCatch;
 
 use vars qw/ @EXPORT_OK $VERSION /;
 @EXPORT_OK = qw/ run_analysis group_variants analyze_variant_location wit_stringify /;
-$VERSION = "2.0.1";
+$VERSION = "2.0.2";
 
 
 my $DEFAULT_SOLVER_URL = 'http://perf.stemmaweb.net/cgi-bin/graphcalc.cgi';
