@@ -173,7 +173,7 @@ my %num_readings;
 my @all_variant_ranks = sort { $a <=> $b } keys( %expected );
 # Look through the results
 my $c = $tradition->collation;
-my %analysis_opts;
+my %analysis_opts = ( solver_url => 'https://stemmaweb.net/cgi-bin/graphcalc.cgi' );
 my $results = run_analysis( $tradition, %analysis_opts );
 my @analyzed;
 foreach my $row ( @{$results->{'variants'}} ) {
