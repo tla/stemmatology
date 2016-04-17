@@ -1,3 +1,7 @@
+=== Version 2.0.4 ===
+Update test IDP solver URL; add test dependency for https:// url, ignore
+connection failures to IDP server in tests
+
 === Version 2.0.2 ===
 Update default IDP solver URL; fixes module tests
 
