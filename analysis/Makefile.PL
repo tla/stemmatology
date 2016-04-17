@@ -25,4 +25,5 @@ requires( 'TryCatch' );
 
 build_requires( 'Test::More::UTF8' );
 build_requires( 'Text::Tradition::Directory' );
+build_requires( 'LWP::Protocol::https' );
 &WriteAll;
