@@ -20,7 +20,7 @@ use Text::Tradition::TypeMap::Entry;
 extends 'KiokuX::Model';
 
 use vars qw/ $VERSION /;
-$VERSION = "1.2";
+$VERSION = "1.3";
 
 =head1 NAME
 
@@ -517,7 +517,7 @@ sub find_user {
         _extract_openid_data($userinfo);
     }
 
-    if (exists $userinfo->{sub} && exists $userinfo->{openid_id}) {
+    if (exists $userinfo->{sub}) {
         return $self->_find_gplus($userinfo);
     }
 
@@ -534,6 +534,9 @@ sub find_user {
 		$self->scan( sub { push( @matches, @_ ) 
 			if $_[0]->isa('Text::Tradition::User') 
 			&& $_[0]->email eq $userinfo->{email} } );
+		if( $userinfo->{google_user} ) {
+			@matches = grep { $_->id =~ m!https://www.google.com/accounts/o8/id! } @matches;
+		}
 		$user = shift @matches;
 	}
 #    print STDERR "Found user, $username, email is :", $user->email, ":\n";
@@ -544,7 +547,6 @@ sub _find_gplus {
     my ($self, $userinfo) = @_;
 
     my $sub = $userinfo->{sub};
-    my $openid = $userinfo->{openid_id};
     my $email = $userinfo->{email};
 
     # Do we have a user with the google id already?
@@ -558,13 +560,8 @@ sub _find_gplus {
         return $user;
     }
 
-    # Do we have a user with the openid?
-
-    $user = $self->find_user({
-        url => $openid
-    });
-    warn "Found by openid" if $user;
-    $user ||= $self->find_user({ email => $userinfo->{email} });
+    # Do we have a user with the email and an old G+ OpenID?
+    $user = $self->find_user({ email => $userinfo->{email}, google_user => 1 });
     warn "Found by email" if $user;
 
     if (!$user) {
@@ -577,7 +574,6 @@ sub _find_gplus {
             role      => $user->role,
             active    => $user->active,
             sub       => $sub,
-            openid_id => $openid,
             email     => $email,
         });
 
