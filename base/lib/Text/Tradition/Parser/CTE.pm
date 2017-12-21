@@ -36,6 +36,7 @@ initializes the Tradition from the file.
 my %sigil_for;  # Save the XML IDs for witnesses.
 my %apps;       # Save the apparatus XML for a given ID.    
 my %has_ac;     # Keep track of witnesses that have corrections.
+my $IN_NAMESPACE;
 
 sub parse {
 	my( $tradition, $opts ) = @_;
@@ -45,6 +46,7 @@ sub parse {
 	$opts->{interpret_transposition} = 1;
 	
 	# First, parse the XML.
+	$IN_NAMESPACE = undef;
     my( $tei, $xpc ) = _remove_formatting( $opts );
     return unless $tei; # we have already warned.
 
@@ -54,12 +56,13 @@ sub parse {
 	%sigil_for = ();
 	%apps = ();
 	%has_ac = ();
-	foreach my $wit_el ( $xpc->findnodes( '//sourceDesc/listWit/witness' ) ) {
+	my $witpath = '//' . join( '/', map { _ns($_) } qw/ sourceDesc listWit witness / );
+	foreach my $wit_el ( $xpc->findnodes( $witpath ) ) {
 		# The witness xml:id is used internally, and is *not* the sigil name.
 		my $id= $wit_el->getAttribute( 'xml:id' );
 		# If the witness element has an abbr element, that is the sigil. Otherwise
 		# the whole thing is the sigil.
-		my $sig = $xpc->findvalue( 'abbr', $wit_el );
+		my $sig = $xpc->findvalue( _ns('abbr'), $wit_el );
 		my $identifier = 'CTE witness';
 		if( $sig ) {
 			# The sigil is what is in the <abbr/> tag; the identifier is anything
@@ -80,7 +83,8 @@ sub parse {
 	# anchors.  Make a giant array of all of these things in sequence.
 	# TODO consider combining this with creation of graph below
 	my @base_text;
-	foreach my $pg_el ( $xpc->findnodes( '/TEI/text/body/p' ) ) {
+	my $pgpath = '/' . join( '/', map { _ns($_) } qw/ TEI text body p / );
+	foreach my $pg_el ( $xpc->findnodes( $pgpath ) ) {
 		foreach my $xn ( $pg_el->childNodes ) {
 			push( @base_text, _get_base( $xn ) );
 		}
@@ -112,7 +116,9 @@ sub parse {
             # Apparatus should be differentiable by type attribute; apparently
             # it is not. Peek at the content to categorize it.
             # Apparatus criticus is type a1; app siglorum is type a2
-            my @sigtags = $xpc->findnodes( 'descendant::*[name(witStart) or name(witEnd)]', $app );
+			my $sigpath = sprintf( 'descendant::*[name(%s) or name(%s)]', 
+				_ns('witStart'), _ns('witEnd') );
+            my @sigtags = $xpc->findnodes( $sigpath, $app );
             if( @sigtags ) {
 	        	push( @app_sig, $tag );
 	        } else {
@@ -170,11 +176,16 @@ sub _tidy_identifier {
 	return $str;
 }
 
+sub _ns {
+	my( $tag ) = @_;
+	return $IN_NAMESPACE ? "tei:$tag" : $tag;
+}
+
 # Get rid of all the formatting elements that get in the way of tokenization.
 sub _remove_formatting {
 	my( $opts ) = @_;
 	
-	# First, parse the original XML
+	# First, parse the original XML and set up the XPathContext
 	my $parser = XML::LibXML->new();
     my $doc;
     if( exists $opts->{'string'} ) {
@@ -187,10 +198,16 @@ sub _remove_formatting {
         warn "Could not find string or file option to parse";
         return;
     }
-
-    # Second, remove the formatting
 	my $xpc = XML::LibXML::XPathContext->new( $doc->documentElement );
-	my @useless = $xpc->findnodes( '//hi' );
+	# See if we are operating in a namespace.
+	my $defaultns = $doc->documentElement->getAttribute('xmlns');
+	if ($defaultns) {
+		$xpc->registerNs( 'tei', $defaultns );
+		$IN_NAMESPACE = 1;
+	}
+	
+    # Second, remove the formatting
+	my @useless = $xpc->findnodes( '//' . _ns('hi') );
 	foreach my $n ( @useless ) {
 		my $parent = $n->parentNode();
 		my @children = $n->childNodes();
@@ -214,6 +231,7 @@ sub _remove_formatting {
 		throw( "Parsed document has non-TEI root element " . $tei->nodeName );
 	}
 	$xpc = XML::LibXML::XPathContext->new( $tei );
+	$xpc->registerNs( 'tei', $defaultns ) if $IN_NAMESPACE;
 	return( $tei, $xpc );
 }
 
@@ -350,7 +368,9 @@ sub _add_readings {
         	warn "Witdetail on meta reading" if $flag; # this could get complicated.
             my $rid = $rdg->getAttribute( 'xml:id' );
             my $xpc = XML::LibXML::XPathContext->new( $xn );
-            my @details = $xpc->findnodes( './witDetail[@target="'.$rid.'"]' );
+			$xpc->registerNs( 'tei', $xn->namespaceURI ) if $IN_NAMESPACE;
+			my $detailpath = sprintf( './%s[@target="'.$rid.'"]', _ns('witDetail') );
+            my @details = $xpc->findnodes( $detailpath );
             foreach my $d ( @details ) {
                 _parse_wit_detail( $d, \%wit_rdgs, \@lemma );
             }
@@ -654,7 +674,8 @@ sub _expand_all_paths {
     		push( @{$suspect_apps{$tag}}, $_ );
     	}
 		_dump_suspects( $opts, %suspect_apps );
-    	throw( "Remaining hanging readings: @bad" );
+    	throw( 'Remaining hanging readings: ' . join(', ', 
+			map { "$_ / " . $c->reading($_)->text } @bad ) );
 	}
 	_dump_suspects( $opts, %suspect_apps ) if keys %suspect_apps;
 }
@@ -690,6 +711,7 @@ sub _print_apparatus {
 	my $appstring = '';
 	# Interpret the XML - get the lemma and readings and print them out.
 	my $xpc = XML::LibXML::XPathContext->new( $app );
+	$xpc->registerNs( 'tei', $app->namespaceURI ) if $IN_NAMESPACE;
 	my $anchor = $app->getAttribute('to');
 	if( $anchor ) {
 		# We have a lemma, so we construct it.
@@ -706,7 +728,7 @@ sub _print_apparatus {
 	}
 	$appstring .= '] ';
 	my @readings;
-	foreach my $rdg_el ( $xpc->findnodes( 'child::rdg' ) ) {
+	foreach my $rdg_el ( $xpc->findnodes( 'child::' . _ns('rdg') ) ) {
 		my $rdgtext = '';
 		my $startend = '';
 		my %detail;
